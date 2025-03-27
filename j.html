@@ -25,16 +25,18 @@
         }
         .image-wrapper {
             width: 100%;
-            max-width: 600px;
-            height: auto;
+            max-width: 800px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background-color: #ddd;
         }
         img {
             max-width: 100%;
-            height: auto;
+            max-height: 100%;
+            object-fit: contain;
             border-radius: 10px;
         }
         .reroll-button {
@@ -52,7 +54,7 @@
         }
         .submission-info {
             position: absolute;
-            bottom: 10px;
+            bottom: -50px;
             right: 10px;
             font-size: 14px;
             color: #666;
@@ -72,7 +74,7 @@
                 const rawTimestamp = randomEntry[2] ? randomEntry[2].trim() : "";
                 
                 let submissionText = `Submitted by ${author}`;
-                if (rawTimestamp) {
+                if (rawTimestamp && rawTimestamp.toLowerCase() !== "unknown") {
                     const year = rawTimestamp.substring(0, 4);
                     const month = rawTimestamp.substring(4, 6);
                     const day = rawTimestamp.substring(6, 8);
