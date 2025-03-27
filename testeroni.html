@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
+    <title>Greeting Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,25 +25,25 @@
         p {
             color: #666;
         }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            color: white;
-            background-color: #007BFF;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #0056b3;
+        input, button {
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
         }
     </style>
+    <script>
+        function greetUser() {
+            var name = document.getElementById('nameInput').value;
+            document.getElementById('greeting').innerText = 'Hello ' + name + '!';
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to My Website</h1>
-        <p>This is a simple and elegant HTML page with a clean design.</p>
-        <a href="#" class="button">Learn More</a>
+        <h1>Enter Your Name</h1>
+        <input type="text" id="nameInput" placeholder="Your Name">
+        <button onclick="greetUser()">Submit</button>
+        <h2 id="greeting"></h2>
     </div>
 </body>
 </html>
