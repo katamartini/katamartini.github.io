@@ -29,9 +29,10 @@
     <script>
         async function loadRandomImage() {
             try {
-                const response = await fetch('images.txt');
+                const response = await fetch('ggggimages.csv');
                 const text = await response.text();
-                const urls = text.split('\n').filter(url => url.trim() !== '');
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                const urls = lines.map(line => line.split(',')[0].trim());
                 const randomUrl = urls[Math.floor(Math.random() * urls.length)];
                 document.getElementById('randomImage').src = randomUrl;
             } catch (error) {
