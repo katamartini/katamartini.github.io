@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Imgur Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function loadRandomImage() {
+            try {
+                const response = await fetch('images.txt');
+                const text = await response.text();
+                const urls = text.split('\n').filter(url => url.trim() !== '');
+                const randomUrl = urls[Math.floor(Math.random() * urls.length)];
+                document.getElementById('randomImage').src = randomUrl;
+            } catch (error) {
+                console.error('Error loading image:', error);
+            }
+        }
+        window.onload = loadRandomImage;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Imgur Image</h1>
+        <img id="randomImage" src="" alt="Loading image...">
+    </div>
+</body>
+</html>
