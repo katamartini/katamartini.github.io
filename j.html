@@ -48,6 +48,11 @@
             object-fit: contain;
             /* Removed border-radius to prevent rounded corners */
         }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
         .reroll-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -78,7 +83,7 @@
                 const entries = lines.map(line => line.split(','));
                 const randomEntry = entries[Math.floor(Math.random() * entries.length)];
                 
-                const imageUrl = randomEntry[0].trim();
+                const mediaUrl = randomEntry[0].trim();
                 const author = randomEntry[1] ? randomEntry[1].trim() : "Unknown";
                 const rawTimestamp = randomEntry[2] ? randomEntry[2].trim() : "";
                 
@@ -97,10 +102,28 @@
                     }
                 }
                 
-                document.getElementById('randomImage').src = imageUrl;
+                // Check if the link is a YouTube video
+                const isYouTube = mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be");
+                
+                if (isYouTube) {
+                    // Extract the video ID from the YouTube URL
+                    const videoId = mediaUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                    if (videoId && videoId[1]) {
+                        // Embed the YouTube video
+                        const videoIframe = `<iframe src="https://www.youtube.com/embed/${videoId[1]}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+                        document.querySelector('.image-wrapper').innerHTML = videoIframe;
+                    } else {
+                        console.error('Invalid YouTube URL');
+                    }
+                } else {
+                    // If not a YouTube video, load the image
+                    document.getElementById('randomImage').src = mediaUrl;
+                    document.querySelector('.image-wrapper').innerHTML = `<img id="randomImage" src="${mediaUrl}" alt="Loading image...">`;
+                }
+                
                 document.getElementById('submissionInfo').innerText = submissionText;
             } catch (error) {
-                console.error('Error loading image:', error);
+                console.error('Error loading image or video:', error);
             }
         }
         window.onload = loadRandomImage;
