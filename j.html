@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             background-color: #f4f4f4;
-            overflow: hidden; /* No side scrollbar */
+            overflow: hidden; /* No scrollbar */
         }
         .container {
             width: 90vw;
@@ -38,14 +38,10 @@
             overflow: hidden;
             background-color: #ddd;
         }
-        img {
+        img, video, iframe {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Fills one dimension while keeping aspect ratio */
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
+            object-fit: contain; /* Fills at least one dimension while keeping aspect ratio */
         }
         .reroll-button {
             padding: 10px 20px;
@@ -100,13 +96,21 @@
                 wrapper.innerHTML = '';
 
                 if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
+                    // Extract YouTube video ID
                     const videoId = mediaUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
                     if (videoId && videoId[1]) {
                         wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId[1]}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
                     } else {
                         console.error('Invalid YouTube URL');
                     }
+                } else if (mediaUrl.endsWith('.gifv') || mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm')) {
+                    // Handle GIFV / MP4 / WebM video files
+                    wrapper.innerHTML = `<video autoplay loop muted playsinline>
+                                            <source src="${mediaUrl.replace('.gifv', '.mp4')}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                         </video>`;
                 } else {
+                    // Handle images
                     const img = document.createElement('img');
                     img.src = mediaUrl;
                     img.alt = "Loading image...";
