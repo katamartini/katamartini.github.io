@@ -115,6 +115,14 @@
                     const img = document.createElement('img');
                     img.src = mediaUrl;
                     img.alt = "Loading image...";
+                    img.onload = function () {
+                        // Check if the image is smaller than the container
+                        if (img.naturalWidth < wrapper.clientWidth && img.naturalHeight < wrapper.clientHeight) {
+                            img.style.objectFit = "cover"; // Make small images fill screen
+                        } else {
+                            img.style.objectFit = "contain"; // Default for normal-sized images
+                        }
+                    };
                     wrapper.appendChild(img);
                 }
 
