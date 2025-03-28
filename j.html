@@ -10,27 +10,23 @@
             margin: 0;
             font-family: Arial, sans-serif;
             text-align: center;
-        }
-        body {
-            padding: 0 50px;
-            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            background-color: #f4f4f4;
         }
         .container {
-            width: 100%;
-            max-width: 90%;
+            width: 90%;
             height: 84vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 20px;
             background: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            padding: 15px;
         }
         .image-wrapper {
             width: 100%;
@@ -42,8 +38,8 @@
             background-color: #ddd;
         }
         img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
         iframe {
@@ -66,7 +62,7 @@
         }
         .submission-info {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             right: 10px;
             font-size: 14px;
             color: #666;
@@ -115,14 +111,20 @@
                     const img = document.createElement('img');
                     img.src = mediaUrl;
                     img.alt = "Loading image...";
+                    
                     img.onload = function () {
-                        // Check if the image is smaller than the container
-                        if (img.naturalWidth < wrapper.clientWidth && img.naturalHeight < wrapper.clientHeight) {
-                            img.style.objectFit = "cover"; // Make small images fill screen
+                        const aspectRatio = img.naturalWidth / img.naturalHeight;
+                        const containerRatio = wrapper.clientWidth / wrapper.clientHeight;
+
+                        if (aspectRatio > containerRatio) {
+                            img.style.width = "100%";
+                            img.style.height = "auto";
                         } else {
-                            img.style.objectFit = "contain"; // Default for normal-sized images
+                            img.style.width = "auto";
+                            img.style.height = "100%";
                         }
                     };
+                    
                     wrapper.appendChild(img);
                 }
 
