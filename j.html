@@ -12,49 +12,42 @@
             text-align: center;
         }
         body {
-            padding: 0 50px 0 50px; /* Removed top padding, keeping sides */
+            padding: 0 50px;
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align content at the top */
+            align-items: flex-start;
         }
         .container {
             width: 100%;
             max-width: 90%;
-            height: 84vh; /* 84% of the viewport height */
+            height: 84vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Start content from top */
+            justify-content: flex-start;
             padding: 20px;
             background: white;
-            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden; /* Prevents overflow */
+            overflow: hidden;
         }
         .image-wrapper {
             width: 100%;
-            height: 95%; /* 95% of the container height */
+            height: 95%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             background-color: #ddd;
         }
-        img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            /* Removed border-radius to prevent rounded corners */
-        }
-        iframe {
+        img, iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
         .reroll-button {
-            margin-top: 20px;
+            margin-top: 10px;
             padding: 10px 20px;
             font-size: 16px;
             color: white;
@@ -68,14 +61,14 @@
         }
         .submission-info {
             position: absolute;
-            bottom: 20px; /* Adjusted position to avoid clipping */
+            bottom: 20px;
             right: 10px;
             font-size: 14px;
             color: #666;
         }
     </style>
     <script>
-        async function loadRandomImage() {
+        async function loadRandomMedia() {
             try {
                 const response = await fetch('ggggimages.csv');
                 const text = await response.text();
@@ -86,7 +79,7 @@
                 const mediaUrl = randomEntry[0].trim();
                 const author = randomEntry[1] ? randomEntry[1].trim() : "Unknown";
                 const rawTimestamp = randomEntry[2] ? randomEntry[2].trim() : "";
-                
+
                 let submissionText = `Submitted by ${author}`;
                 if (rawTimestamp && rawTimestamp.toLowerCase() !== "unknown") {
                     const year = rawTimestamp.substring(0, 4);
@@ -101,40 +94,37 @@
                         submissionText += ` on ${month}/${day}/${year}`;
                     }
                 }
-                
-                // Check if the link is a YouTube video
-                const isYouTube = mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be");
-                
-                if (isYouTube) {
-                    // Extract the video ID from the YouTube URL
+
+                // Select the image-wrapper and reset it
+                const wrapper = document.querySelector('.image-wrapper');
+                wrapper.innerHTML = '';
+
+                if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
                     const videoId = mediaUrl.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
                     if (videoId && videoId[1]) {
-                        // Embed the YouTube video
-                        const videoIframe = `<iframe src="https://www.youtube.com/embed/${videoId[1]}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-                        document.querySelector('.image-wrapper').innerHTML = videoIframe;
+                        wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId[1]}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
                     } else {
                         console.error('Invalid YouTube URL');
                     }
                 } else {
-                    // If not a YouTube video, load the image
-                    document.getElementById('randomImage').src = mediaUrl;
-                    document.querySelector('.image-wrapper').innerHTML = `<img id="randomImage" src="${mediaUrl}" alt="Loading image...">`;
+                    const img = document.createElement('img');
+                    img.src = mediaUrl;
+                    img.alt = "Loading image...";
+                    wrapper.appendChild(img);
                 }
-                
+
                 document.getElementById('submissionInfo').innerText = submissionText;
             } catch (error) {
-                console.error('Error loading image or video:', error);
+                console.error('Error loading media:', error);
             }
         }
-        window.onload = loadRandomImage;
+        window.onload = loadRandomMedia;
     </script>
 </head>
 <body>
     <div class="container">
-        <div class="image-wrapper">
-            <img id="randomImage" src="" alt="Loading image...">
-        </div>
-        <button class="reroll-button" onclick="loadRandomImage()">Reroll</button>
+        <div class="image-wrapper"></div>
+        <button class="reroll-button" onclick="loadRandomMedia()">Reroll</button>
         <div class="submission-info" id="submissionInfo">Loading submission info...</div>
     </div>
 </body>
