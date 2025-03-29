@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permanent Photo Upload</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #gallery { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .image-container { margin: 10px; }
+        img { max-width: 200px; max-height: 200px; border: 2px solid #ccc; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Upload a Photo</h1>
+    <input type="file" id="photoInput" accept="image/*">
+    <div id="gallery"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadImages);
+        document.getElementById("photoInput").addEventListener("change", handleFile);
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgSrc = e.target.result;
+                    saveImage(imgSrc);
+                    displayImage(imgSrc);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveImage(image) {
+            let images = JSON.parse(localStorage.getItem("images")) || [];
+            images.push(image);
+            localStorage.setItem("images", JSON.stringify(images));
+        }
+
+        function loadImages() {
+            let images = JSON.parse(localStorage.getItem("images")) || [];
+            images.forEach(displayImage);
+        }
+
+        function displayImage(src) {
+            const img = document.createElement("img");
+            img.src = src;
+            const container = document.createElement("div");
+            container.classList.add("image-container");
+            container.appendChild(img);
+            document.getElementById("gallery").appendChild(container);
+        }
+    </script>
+</body>
+</html>
