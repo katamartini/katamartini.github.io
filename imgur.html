@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imgur Gallery with Fullscreen Viewer</title>
+    <title>Imgur Gallery (5:1 Max Aspect Ratio)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,7 +58,7 @@
             transform: scale(1.02);
         }
         
-        /* Fullscreen viewer styles */
+        /* Fullscreen viewer */
         #viewer {
             position: fixed;
             top: 0;
@@ -128,10 +128,10 @@
     </style>
 </head>
 <body>
-    <h1>Imgur Gallery with Fullscreen Viewer</h1>
-    <p>Click any image to view at full resolution</p>
+    <h1>Imgur Gallery (5:1 Max Aspect Ratio)</h1>
+    <p>Includes wider images | Click to view full resolution</p>
     
-    <button id="generate-btn">Load 100 Images</button>
+    <button id="generate-btn">Load Images</button>
     <div id="stats">
         Images loaded: <span id="found-count">0</span>/100 | 
         Attempts: <span id="attempt-count">0</span>
@@ -166,6 +166,7 @@
         const CONCURRENT_CHECKS = 20;
         const RETRY_DELAY = 50;
         const TARGET_ROW_HEIGHT = 200;
+        const MAX_ASPECT_RATIO = 5; // Changed from 3 to 5 (allows wider images)
         
         let attempts = 0;
         let foundImages = 0;
@@ -238,7 +239,10 @@
                     dim => this.width === dim.width && this.height === dim.height
                 );
                 
-                if (!isPlaceholder && this.width > 10 && this.height > 10) {
+                const aspectRatio = this.width / this.height;
+                const isTooWide = aspectRatio > MAX_ASPECT_RATIO;
+                
+                if (!isPlaceholder && !isTooWide && this.width > 10 && this.height > 10) {
                     addImageToGallery(url, this.width, this.height);
                     foundImages++;
                     updateUI();
@@ -294,7 +298,7 @@
         function openViewer(imageUrl) {
             viewerImage.src = imageUrl;
             viewer.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         function closeViewer() {
@@ -313,7 +317,7 @@
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
-                    : `Only found ${foundImages} valid images`;
+                    : `Found ${foundImages} images (max 5:1 aspect ratio)`;
                 gallery.appendChild(message);
             }
         }
