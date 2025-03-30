@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Imgur Images with Size Limits</title>
+    <title>Dense Imgur Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +11,6 @@
             padding: 20px;
             background: #f5f5f5;
             text-align: center;
-            overflow-x: hidden;
         }
         h1 {
             color: #333;
@@ -36,31 +35,30 @@
         #gallery {
             margin: 20px auto;
             width: 90vw;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
+            columns: 6 250px;
+            column-gap: 8px;
         }
         .gallery-item {
             display: inline-block;
+            width: 100%;
             margin-bottom: 8px;
+            break-inside: avoid;
             position: relative;
-            line-height: 0;
         }
         .gallery-image {
+            width: 100%;
+            height: auto;
             display: block;
             border-radius: 3px;
             transition: transform 0.3s;
             background: #eee;
-            max-width: 800px;
             max-height: 600px;
-            width: auto;
-            height: auto;
+            object-fit: contain;
         }
         .gallery-item:hover .gallery-image {
             transform: scale(1.03);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 10;
+            z-index: 2;
         }
         #loading {
             display: none;
@@ -96,8 +94,8 @@
     </style>
 </head>
 <body>
-    <h1>100 Imgur Images with Size Limits</h1>
-    <p>Original dimensions (max 800×600px) at 90% window width</p>
+    <h1>Dense Imgur Gallery</h1>
+    <p>Minimal gaps with original aspect ratios (max 600px height)</p>
     
     <button id="generate-btn">Load 100 Images</button>
     <div id="stats">
@@ -124,7 +122,6 @@
         const MAX_ATTEMPTS = 1000;
         const CONCURRENT_CHECKS = 20;
         const RETRY_DELAY = 50;
-        const MAX_WIDTH = 800;
         const MAX_HEIGHT = 600;
         
         let attempts = 0;
@@ -147,7 +144,6 @@
             loadingElement.style.display = 'block';
             gallery.innerHTML = '';
             
-            // Start multiple concurrent image checks
             for (let i = 0; i < CONCURRENT_CHECKS; i++) {
                 tryNextImage();
             }
@@ -228,18 +224,12 @@
             img.alt = 'Random Imgur image';
             img.loading = 'lazy';
             
-            // Calculate scaled dimensions that maintain aspect ratio
-            let width = originalWidth;
-            let height = originalHeight;
-            
-            if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-                const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
-                width = Math.floor(width * ratio);
-                height = Math.floor(height * ratio);
+            // Scale down if needed (maintain aspect ratio)
+            if (originalHeight > MAX_HEIGHT) {
+                const ratio = MAX_HEIGHT / originalHeight;
+                img.style.width = `${originalWidth * ratio}px`;
+                img.style.height = `${MAX_HEIGHT}px`;
             }
-            
-            img.width = width;
-            img.height = height;
             
             item.appendChild(img);
             gallery.appendChild(item);
@@ -252,14 +242,35 @@
             
             if (foundImages < TARGET_COUNT) {
                 const message = document.createElement('div');
-                message.style.width = '100%';
+                message.style.gridColumn = '1 / -1';
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
                     : `Only found ${foundImages} valid images`;
                 gallery.appendChild(message);
             }
+            
+            // After all images load, adjust the masonry layout
+            setTimeout(optimizeLayout, 500);
         }
+
+        function optimizeLayout() {
+            // This function helps reduce gaps by adjusting column count
+            const galleryWidth = gallery.clientWidth;
+            const currentColCount = parseInt(getComputedStyle(gallery).columnCount);
+            const idealColCount = Math.floor(galleryWidth / 250); // 250px is our target column width
+            
+            if (idealColCount !== currentColCount) {
+                gallery.style.columns = `${idealColCount} 250px`;
+            }
+        }
+        
+        // Adjust layout on window resize
+        window.addEventListener('resize', () => {
+            if (!isSearching && foundImages > 0) {
+                optimizeLayout();
+            }
+        });
     </script>
 </body>
 </html>
