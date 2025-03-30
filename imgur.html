@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfectly Tiled Imgur Gallery</title>
+    <title>Strictly Non-Overlapping Imgur Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,15 +35,13 @@
         #gallery {
             margin: 20px auto;
             width: 90vw;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            grid-auto-rows: 200px;
-            grid-auto-flow: dense;
+            display: flex;
+            flex-wrap: wrap;
         }
         .gallery-item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-grow: 1;
+            min-width: 200px;
+            height: 200px;
             overflow: hidden;
             position: relative;
         }
@@ -92,7 +90,7 @@
     </style>
 </head>
 <body>
-    <h1>Perfectly Tiled Imgur Gallery</h1>
+    <h1>Strictly Non-Overlapping Gallery</h1>
     <p>Zero gaps, no overlap, edge-to-edge images</p>
     
     <button id="generate-btn">Load 100 Images</button>
@@ -216,13 +214,10 @@
             const item = document.createElement('div');
             item.className = 'gallery-item';
             
-            // Calculate grid spans based on aspect ratio
+            // Calculate size while maintaining aspect ratio
             const aspectRatio = originalWidth / originalHeight;
-            const gridColSpan = Math.max(1, Math.round(aspectRatio));
-            const gridRowSpan = Math.max(1, Math.round(1/aspectRatio));
-            
-            item.style.gridColumnEnd = `span ${gridColSpan}`;
-            item.style.gridRowEnd = `span ${gridRowSpan}`;
+            item.style.flexBasis = `${BASE_CELL_SIZE * Math.min(2, aspectRatio)}px`;
+            item.style.height = `${BASE_CELL_SIZE}px`;
             
             const img = document.createElement('img');
             img.className = 'gallery-image';
@@ -241,7 +236,7 @@
             
             if (foundImages < TARGET_COUNT) {
                 const message = document.createElement('div');
-                message.style.gridColumn = '1 / -1';
+                message.style.width = '100%';
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
