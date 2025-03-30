@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imgur Tight-Packed Gallery</title>
+    <title>100 Full-Size Imgur Images</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,7 @@
             padding: 20px;
             background: #f5f5f5;
             text-align: center;
+            overflow-x: hidden;
         }
         h1 {
             color: #333;
@@ -34,23 +35,30 @@
         }
         #gallery {
             margin: 20px auto;
-            width: 90%;
-            max-width: 1200px;
-            columns: 5 200px;
-            column-gap: 0;
+            width: 90vw;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+        }
+        .gallery-item {
+            display: inline-block;
+            margin-bottom: 5px;
+            position: relative;
+            line-height: 0;
         }
         .gallery-image {
-            width: 100%;
+            max-width: 90vw;
             height: auto;
             display: block;
-            margin-bottom: 0;
-            break-inside: avoid;
+            border-radius: 3px;
             transition: transform 0.3s;
+            background: #eee;
         }
-        .gallery-image:hover {
+        .gallery-item:hover .gallery-image {
             transform: scale(1.03);
-            z-index: 2;
-            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10;
         }
         #loading {
             display: none;
@@ -61,6 +69,12 @@
             margin: 15px 0;
             font-size: 14px;
             color: #666;
+            position: sticky;
+            top: 0;
+            background: rgba(245,245,245,0.9);
+            padding: 10px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
         }
         .progress-container {
             width: 80%;
@@ -77,26 +91,22 @@
             width: 0%;
             transition: width 0.3s;
         }
-        @media (max-width: 768px) {
-            #gallery {
-                columns: 3 150px;
-            }
-        }
     </style>
 </head>
 <body>
-    <h1>Imgur Tight-Packed Gallery</h1>
-    <p>Edge-to-edge display preserving original aspect ratios</p>
+    <h1>100 Full-Size Imgur Images</h1>
+    <p>Original dimensions at 90% window width</p>
     
-    <button id="generate-btn">Generate New Gallery</button>
+    <button id="generate-btn">Load 100 Images</button>
     <div id="stats">
-        Images found: <span id="found-count">0</span>/20
+        Images loaded: <span id="found-count">0</span>/100 | 
+        Attempts: <span id="attempt-count">0</span>
     </div>
     <div class="progress-container">
         <div class="progress-bar" id="progress-bar"></div>
     </div>
     
-    <div id="loading">Building your gallery...</div>
+    <div id="loading">Loading images...</div>
     
     <div id="gallery"></div>
 
@@ -105,11 +115,13 @@
         const gallery = document.getElementById('gallery');
         const loadingElement = document.getElementById('loading');
         const foundCountElement = document.getElementById('found-count');
+        const attemptCountElement = document.getElementById('attempt-count');
         const progressBar = document.getElementById('progress-bar');
         
-        const TARGET_COUNT = 20;
-        const MAX_ATTEMPTS = 300;
-        const CONCURRENT_CHECKS = 10;
+        const TARGET_COUNT = 100;
+        const MAX_ATTEMPTS = 1000;
+        const CONCURRENT_CHECKS = 20;
+        const RETRY_DELAY = 50;
         
         let attempts = 0;
         let foundImages = 0;
@@ -131,6 +143,7 @@
             loadingElement.style.display = 'block';
             gallery.innerHTML = '';
             
+            // Start multiple concurrent image checks
             for (let i = 0; i < CONCURRENT_CHECKS; i++) {
                 tryNextImage();
             }
@@ -138,7 +151,12 @@
 
         function updateUI() {
             foundCountElement.textContent = foundImages;
+            attemptCountElement.textContent = attempts;
             progressBar.style.width = `${(foundImages/TARGET_COUNT)*100}%`;
+            
+            if (attempts > MAX_ATTEMPTS * 0.8) {
+                attemptCountElement.style.color = '#ff9900';
+            }
         }
 
         function tryNextImage() {
@@ -150,6 +168,7 @@
             }
             
             attempts++;
+            updateUI();
             
             const randomId = generateRandomId();
             const extensions = ['.jpg', '.jpeg', '.png', '.gif'];
@@ -174,7 +193,7 @@
                 );
                 
                 if (!isPlaceholder && this.width > 10 && this.height > 10) {
-                    addImageToGallery(url);
+                    addImageToGallery(url, this.width, this.height);
                     foundImages++;
                     updateUI();
                     
@@ -184,24 +203,31 @@
                         finishSearch();
                     }
                 } else {
-                    setTimeout(tryNextImage, 0);
+                    setTimeout(tryNextImage, RETRY_DELAY);
                 }
             };
             
             img.onerror = function() {
-                setTimeout(tryNextImage, 0);
+                setTimeout(tryNextImage, RETRY_DELAY);
             };
             
             img.src = url;
         }
 
-        function addImageToGallery(url) {
+        function addImageToGallery(url, width, height) {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            
             const img = document.createElement('img');
             img.className = 'gallery-image';
             img.src = url;
-            img.alt = 'Imgur image';
+            img.alt = 'Random Imgur image';
             img.loading = 'lazy';
-            gallery.appendChild(img);
+            img.width = width;
+            img.height = height;
+            
+            item.appendChild(img);
+            gallery.appendChild(item);
         }
 
         function finishSearch() {
@@ -211,11 +237,11 @@
             
             if (foundImages < TARGET_COUNT) {
                 const message = document.createElement('div');
-                message.style.gridColumn = '1 / -1';
+                message.style.width = '100%';
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
-                    : `Found ${foundImages} images (target: ${TARGET_COUNT})`;
+                    : `Only found ${foundImages} valid images`;
                 gallery.appendChild(message);
             }
         }
