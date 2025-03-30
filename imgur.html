@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imgur Gallery (5:1 Max Aspect Ratio)</title>
+    <title>Taller Imgur Gallery (5:1 Max Aspect Ratio)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,8 +128,8 @@
     </style>
 </head>
 <body>
-    <h1>Imgur Gallery (5:1 Max Aspect Ratio)</h1>
-    <p>Includes wider images | Click to view full resolution</p>
+    <h1>Taller Imgur Gallery (5:1 Max Aspect Ratio)</h1>
+    <p>300px tall rows | Click to view full resolution</p>
     
     <button id="generate-btn">Load Images</button>
     <div id="stats">
@@ -165,8 +165,8 @@
         const MAX_ATTEMPTS = 1000;
         const CONCURRENT_CHECKS = 20;
         const RETRY_DELAY = 50;
-        const TARGET_ROW_HEIGHT = 200;
-        const MAX_ASPECT_RATIO = 5; // Changed from 3 to 5 (allows wider images)
+        const TARGET_ROW_HEIGHT = 300; // Changed from 200px to 300px
+        const MAX_ASPECT_RATIO = 5;
         
         let attempts = 0;
         let foundImages = 0;
@@ -268,7 +268,7 @@
             const item = document.createElement('div');
             item.className = 'gallery-item';
             
-            // Calculate proportional width based on target row height
+            // Calculate proportional width based on target row height (now 300px)
             const proportionalWidth = (originalWidth / originalHeight) * TARGET_ROW_HEIGHT;
             
             item.style.flexBasis = `${proportionalWidth}px`;
@@ -317,7 +317,7 @@
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
-                    : `Found ${foundImages} images (max 5:1 aspect ratio)`;
+                    : `Found ${foundImages} images (300px tall rows)`;
                 gallery.appendChild(message);
             }
         }
