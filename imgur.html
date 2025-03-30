@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfect Non-Overlapping Gallery</title>
+    <title>Imgur Gallery with Fullscreen Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +44,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            cursor: pointer;
         }
         .gallery-image {
             display: block;
@@ -51,7 +52,47 @@
             height: auto;
             object-fit: contain;
             background: #333;
+            transition: transform 0.2s;
         }
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.02);
+        }
+        
+        /* Fullscreen viewer styles */
+        #viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        #viewer-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        #viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
         #loading {
             display: none;
             margin: 20px 0;
@@ -87,8 +128,8 @@
     </style>
 </head>
 <body>
-    <h1>Perfect Non-Overlapping Gallery</h1>
-    <p>No overlaps, no vertical cropping, zero gaps</p>
+    <h1>Imgur Gallery with Fullscreen Viewer</h1>
+    <p>Click any image to view at full resolution</p>
     
     <button id="generate-btn">Load 100 Images</button>
     <div id="stats">
@@ -99,9 +140,15 @@
         <div class="progress-bar" id="progress-bar"></div>
     </div>
     
-    <div id="loading">Calculating perfect layout...</div>
+    <div id="loading">Loading gallery...</div>
     
     <div id="gallery"></div>
+    
+    <!-- Fullscreen viewer -->
+    <div id="viewer">
+        <span id="viewer-close">&times;</span>
+        <img id="viewer-image" src="" alt="Fullscreen view">
+    </div>
 
     <script>
         const generateBtn = document.getElementById('generate-btn');
@@ -110,6 +157,9 @@
         const foundCountElement = document.getElementById('found-count');
         const attemptCountElement = document.getElementById('attempt-count');
         const progressBar = document.getElementById('progress-bar');
+        const viewer = document.getElementById('viewer');
+        const viewerImage = document.getElementById('viewer-image');
+        const viewerClose = document.getElementById('viewer-close');
         
         const TARGET_COUNT = 100;
         const MAX_ATTEMPTS = 1000;
@@ -124,7 +174,10 @@
             {width: 161, height: 81}, {width: 1, height: 1}, {width: 130, height: 100}
         ];
 
+        // Initialize event listeners
         generateBtn.addEventListener('click', generateGallery);
+        viewerClose.addEventListener('click', closeViewer);
+        viewer.addEventListener('click', closeViewer);
 
         function generateGallery() {
             if (isSearching) return;
@@ -225,8 +278,28 @@
             img.style.height = '100%';
             img.style.width = 'auto';
             
+            // Store original URL for fullscreen view
+            img.dataset.fullUrl = url.replace(/\.\w+$/, '') + '.jpg';
+            
+            // Add click handler
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openViewer(this.dataset.fullUrl);
+            });
+            
             item.appendChild(img);
             gallery.appendChild(item);
+        }
+
+        function openViewer(imageUrl) {
+            viewerImage.src = imageUrl;
+            viewer.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeViewer() {
+            viewer.style.display = 'none';
+            document.body.style.overflow = '';
         }
 
         function finishSearch() {
