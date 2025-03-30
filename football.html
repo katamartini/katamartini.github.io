@@ -5,22 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random NFL Player</title>
     <script>
+        const players = [
+            {
+                name: "Tom Brady",
+                url: "https://www.pro-football-reference.com/players/B/BradTo00.htm",
+                image: "https://www.pro-football-reference.com/req/20210910/images/headshots/BradTo00_2020.jpg",
+                stats: "7× Super Bowl Champion, 3× MVP, 14× Pro Bowl"
+            },
+            {
+                name: "Patrick Mahomes",
+                url: "https://www.pro-football-reference.com/players/M/MahoPa00.htm",
+                image: "https://www.pro-football-reference.com/req/20210910/images/headshots/MahoPa00_2020.jpg",
+                stats: "2× Super Bowl Champion, 2× MVP, 6× Pro Bowl"
+            },
+            {
+                name: "Aaron Rodgers",
+                url: "https://www.pro-football-reference.com/players/R/RodgAa00.htm",
+                image: "https://www.pro-football-reference.com/req/20210910/images/headshots/RodgAa00_2020.jpg",
+                stats: "1× Super Bowl Champion, 4× MVP, 10× Pro Bowl"
+            }
+        ];
+
         function getRandomPlayer() {
-            const players = [
-                "https://www.pro-football-reference.com/players/B/BradTo00.htm",
-                "https://www.pro-football-reference.com/players/M/MahoPa00.htm",
-                "https://www.pro-football-reference.com/players/B/BradTe00.htm",
-                "https://www.pro-football-reference.com/players/R/RodgAa00.htm",
-                "https://www.pro-football-reference.com/players/J/JeffJu00.htm"
-            ];
-            
             const randomIndex = Math.floor(Math.random() * players.length);
-            window.open(players[randomIndex], "_blank");
+            const player = players[randomIndex];
+            
+            document.getElementById("playerName").innerText = player.name;
+            document.getElementById("playerImage").src = player.image;
+            document.getElementById("playerStats").innerText = player.stats;
+            document.getElementById("playerLink").href = player.url;
+            document.getElementById("playerInfo").style.display = "block";
         }
     </script>
 </head>
 <body>
     <h1>Random NFL Player Generator</h1>
     <button onclick="getRandomPlayer()">Get Random Player</button>
+    
+    <div id="playerInfo" style="display: none; margin-top: 20px;">
+        <h2 id="playerName"></h2>
+        <img id="playerImage" src="" alt="Player Image" style="width:200px; height:auto;">
+        <p id="playerStats"></p>
+        <p><a id="playerLink" href="#" target="_blank">View on Pro Football Reference</a></p>
+    </div>
 </body>
 </html>
