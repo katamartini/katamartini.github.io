@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100 Full-Size Imgur Images</title>
+    <title>100 Imgur Images with Size Limits</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,21 +39,23 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
         }
         .gallery-item {
             display: inline-block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             position: relative;
             line-height: 0;
         }
         .gallery-image {
-            max-width: 90vw;
-            height: auto;
             display: block;
             border-radius: 3px;
             transition: transform 0.3s;
             background: #eee;
+            max-width: 800px;
+            max-height: 600px;
+            width: auto;
+            height: auto;
         }
         .gallery-item:hover .gallery-image {
             transform: scale(1.03);
@@ -94,8 +96,8 @@
     </style>
 </head>
 <body>
-    <h1>100 Full-Size Imgur Images</h1>
-    <p>Original dimensions at 90% window width</p>
+    <h1>100 Imgur Images with Size Limits</h1>
+    <p>Original dimensions (max 800×600px) at 90% window width</p>
     
     <button id="generate-btn">Load 100 Images</button>
     <div id="stats">
@@ -122,6 +124,8 @@
         const MAX_ATTEMPTS = 1000;
         const CONCURRENT_CHECKS = 20;
         const RETRY_DELAY = 50;
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 600;
         
         let attempts = 0;
         let foundImages = 0;
@@ -214,7 +218,7 @@
             img.src = url;
         }
 
-        function addImageToGallery(url, width, height) {
+        function addImageToGallery(url, originalWidth, originalHeight) {
             const item = document.createElement('div');
             item.className = 'gallery-item';
             
@@ -223,6 +227,17 @@
             img.src = url;
             img.alt = 'Random Imgur image';
             img.loading = 'lazy';
+            
+            // Calculate scaled dimensions that maintain aspect ratio
+            let width = originalWidth;
+            let height = originalHeight;
+            
+            if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+                width = Math.floor(width * ratio);
+                height = Math.floor(height * ratio);
+            }
+            
             img.width = width;
             img.height = height;
             
