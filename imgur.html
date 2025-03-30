@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imgur Image Grid Finder</title>
+    <title>Imgur Tight-Packed Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
+            margin: 0;
             padding: 20px;
+            background: #f5f5f5;
             text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
         }
         button {
             background-color: #85BF25;
@@ -20,7 +24,7 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 4px;
-            margin: 20px 0;
+            margin: 10px 0;
             transition: all 0.3s;
         }
         button:hover { background-color: #6EA520; }
@@ -28,39 +32,27 @@
             background-color: #cccccc;
             cursor: not-allowed;
         }
-        #image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+        #gallery {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+            columns: 5 200px;
+            column-gap: 0;
         }
-        .image-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            background: #f9f9f9;
-            transition: transform 0.2s;
-        }
-        .image-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .image-preview {
+        .gallery-image {
             width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 3px;
-        }
-        .image-link {
+            height: auto;
             display: block;
-            margin-top: 8px;
-            font-size: 12px;
-            word-break: break-all;
-            color: #555;
-            text-decoration: none;
+            margin-bottom: 0;
+            break-inside: avoid;
+            transition: transform 0.3s;
         }
-        .image-link:hover { text-decoration: underline; }
-        .loading {
+        .gallery-image:hover {
+            transform: scale(1.03);
+            z-index: 2;
+            position: relative;
+        }
+        #loading {
             display: none;
             margin: 20px 0;
             font-size: 18px;
@@ -70,93 +62,83 @@
             font-size: 14px;
             color: #666;
         }
-        .success { color: #85BF25; }
-        .error { color: #ff4444; }
-        .warning { color: #ff9900; }
-        .progress-bar {
-            width: 100%;
+        .progress-container {
+            width: 80%;
+            max-width: 500px;
+            margin: 10px auto;
             height: 10px;
             background: #eee;
             border-radius: 5px;
-            margin: 10px 0;
             overflow: hidden;
         }
-        .progress {
+        .progress-bar {
             height: 100%;
             background: #85BF25;
             width: 0%;
             transition: width 0.3s;
         }
+        @media (max-width: 768px) {
+            #gallery {
+                columns: 3 150px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Imgur Image Grid Finder</h1>
-    <p>Finds 20 random non-placeholder Imgur images at once</p>
+    <h1>Imgur Tight-Packed Gallery</h1>
+    <p>Edge-to-edge display preserving original aspect ratios</p>
     
-    <button id="generate-btn">Generate 20 Random Images</button>
+    <button id="generate-btn">Generate New Gallery</button>
     <div id="stats">
-        Attempts: <span id="attempt-count">0</span> | 
-        Found: <span id="found-count">0</span>/20
+        Images found: <span id="found-count">0</span>/20
     </div>
-    <div class="progress-bar">
-        <div class="progress" id="progress-bar"></div>
-    </div>
-    
-    <div class="loading" id="loading">
-        <p>Searching for valid images...</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
     </div>
     
-    <div id="image-grid"></div>
+    <div id="loading">Building your gallery...</div>
+    
+    <div id="gallery"></div>
 
     <script>
         const generateBtn = document.getElementById('generate-btn');
-        const imageGrid = document.getElementById('image-grid');
+        const gallery = document.getElementById('gallery');
         const loadingElement = document.getElementById('loading');
-        const attemptCountElement = document.getElementById('attempt-count');
         const foundCountElement = document.getElementById('found-count');
         const progressBar = document.getElementById('progress-bar');
+        
+        const TARGET_COUNT = 20;
+        const MAX_ATTEMPTS = 300;
+        const CONCURRENT_CHECKS = 10;
         
         let attempts = 0;
         let foundImages = 0;
         let isSearching = false;
-        const TARGET_COUNT = 20;
-        const MAX_ATTEMPTS = 500; // Safety limit
-        const CONCURRENT_CHECKS = 10; // How many images to check at once
-
-        // Known Imgur placeholder dimensions
         const PLACEHOLDER_DIMENSIONS = [
-            {width: 161, height: 81},  // Standard "removed" image
-            {width: 1, height: 1},     // Tiny transparent pixel
-            {width: 130, height: 100}  // Other common placeholder
+            {width: 161, height: 81}, {width: 1, height: 1}, {width: 130, height: 100}
         ];
 
-        generateBtn.addEventListener('click', startImageSearch);
+        generateBtn.addEventListener('click', generateGallery);
 
-        function startImageSearch() {
+        function generateGallery() {
             if (isSearching) return;
             
             isSearching = true;
             attempts = 0;
             foundImages = 0;
-            updateCounters();
+            updateUI();
             generateBtn.disabled = true;
             loadingElement.style.display = 'block';
-            imageGrid.innerHTML = '';
+            gallery.innerHTML = '';
             
-            // Start multiple concurrent image checks
             for (let i = 0; i < CONCURRENT_CHECKS; i++) {
                 tryNextImage();
             }
         }
 
-        function updateCounters() {
-            attemptCountElement.textContent = attempts;
+        function updateUI() {
             foundCountElement.textContent = foundImages;
             progressBar.style.width = `${(foundImages/TARGET_COUNT)*100}%`;
-            
-            if (attempts > MAX_ATTEMPTS * 0.8) {
-                attemptCountElement.className = 'warning';
-            }
         }
 
         function tryNextImage() {
@@ -168,15 +150,13 @@
             }
             
             attempts++;
-            updateCounters();
             
-            // Generate random Imgur ID (5-7 chars)
             const randomId = generateRandomId();
             const extensions = ['.jpg', '.jpeg', '.png', '.gif'];
             const randomExt = extensions[Math.floor(Math.random() * extensions.length)];
             const imgurUrl = `https://i.imgur.com/${randomId}${randomExt}`;
             
-            verifyImage(imgurUrl);
+            verifyAndAddImage(imgurUrl);
         }
 
         function generateRandomId() {
@@ -185,7 +165,7 @@
             return Array.from({length}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
         }
 
-        function verifyImage(url) {
+        function verifyAndAddImage(url) {
             const img = new Image();
             
             img.onload = function() {
@@ -194,12 +174,12 @@
                 );
                 
                 if (!isPlaceholder && this.width > 10 && this.height > 10) {
-                    addImageToGrid(url, this.width, this.height);
+                    addImageToGallery(url);
                     foundImages++;
-                    updateCounters();
+                    updateUI();
                     
                     if (foundImages < TARGET_COUNT) {
-                        tryNextImage();
+                        setTimeout(tryNextImage, 0);
                     } else {
                         finishSearch();
                     }
@@ -215,14 +195,13 @@
             img.src = url;
         }
 
-        function addImageToGrid(url, width, height) {
-            const card = document.createElement('div');
-            card.className = 'image-card';
-            card.innerHTML = `
-                <img class="image-preview" src="${url}" alt="Imgur image" loading="lazy">
-                <a href="${url}" class="image-link" target="_blank">${width}×${height}</a>
-            `;
-            imageGrid.appendChild(card);
+        function addImageToGallery(url) {
+            const img = document.createElement('img');
+            img.className = 'gallery-image';
+            img.src = url;
+            img.alt = 'Imgur image';
+            img.loading = 'lazy';
+            gallery.appendChild(img);
         }
 
         function finishSearch() {
@@ -232,17 +211,14 @@
             
             if (foundImages < TARGET_COUNT) {
                 const message = document.createElement('div');
-                message.className = attempts >= MAX_ATTEMPTS ? 'error' : 'warning';
+                message.style.gridColumn = '1 / -1';
+                message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
-                    ? `Stopped after maximum attempts (${MAX_ATTEMPTS})` 
-                    : `Only found ${foundImages} valid images`;
-                imageGrid.appendChild(message);
+                    ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
+                    : `Found ${foundImages} images (target: ${TARGET_COUNT})`;
+                gallery.appendChild(message);
             }
         }
     </script>
-    
-    <footer>
-        <p><small>Checks image dimensions to filter out placeholders. May take many attempts to find 20 valid images.</small></p>
-    </footer>
 </body>
 </html>
