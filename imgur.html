@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taller Imgur Gallery (5:1 Max Aspect Ratio)</title>
+    <title>Imgur Gallery with Links</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -67,15 +67,35 @@
             height: 100%;
             background: rgba(0,0,0,0.9);
             display: none;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             cursor: pointer;
         }
-        #viewer-image {
+        #viewer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             max-width: 90%;
             max-height: 90%;
+        }
+        #viewer-image {
+            max-width: 100%;
+            max-height: calc(90vh - 40px);
             object-fit: contain;
+        }
+        #viewer-link {
+            color: #85BF25;
+            margin-top: 15px;
+            font-size: 16px;
+            text-decoration: none;
+            word-break: break-all;
+            padding: 0 20px;
+            text-align: center;
+        }
+        #viewer-link:hover {
+            text-decoration: underline;
         }
         #viewer-close {
             position: absolute;
@@ -128,8 +148,8 @@
     </style>
 </head>
 <body>
-    <h1>Taller Imgur Gallery (5:1 Max Aspect Ratio)</h1>
-    <p>300px tall rows | Click to view full resolution</p>
+    <h1>Imgur Gallery with Links</h1>
+    <p>Click any image to view full resolution with source link</p>
     
     <button id="generate-btn">Load Images</button>
     <div id="stats">
@@ -147,7 +167,10 @@
     <!-- Fullscreen viewer -->
     <div id="viewer">
         <span id="viewer-close">&times;</span>
-        <img id="viewer-image" src="" alt="Fullscreen view">
+        <div id="viewer-content">
+            <img id="viewer-image" src="" alt="Fullscreen view">
+            <a id="viewer-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+        </div>
     </div>
 
     <script>
@@ -159,13 +182,14 @@
         const progressBar = document.getElementById('progress-bar');
         const viewer = document.getElementById('viewer');
         const viewerImage = document.getElementById('viewer-image');
+        const viewerLink = document.getElementById('viewer-link');
         const viewerClose = document.getElementById('viewer-close');
         
         const TARGET_COUNT = 100;
         const MAX_ATTEMPTS = 1000;
         const CONCURRENT_CHECKS = 20;
         const RETRY_DELAY = 50;
-        const TARGET_ROW_HEIGHT = 300; // Changed from 200px to 300px
+        const TARGET_ROW_HEIGHT = 300;
         const MAX_ASPECT_RATIO = 5;
         
         let attempts = 0;
@@ -178,7 +202,11 @@
         // Initialize event listeners
         generateBtn.addEventListener('click', generateGallery);
         viewerClose.addEventListener('click', closeViewer);
-        viewer.addEventListener('click', closeViewer);
+        viewer.addEventListener('click', function(e) {
+            if (e.target === viewer) {
+                closeViewer();
+            }
+        });
 
         function generateGallery() {
             if (isSearching) return;
@@ -268,7 +296,6 @@
             const item = document.createElement('div');
             item.className = 'gallery-item';
             
-            // Calculate proportional width based on target row height (now 300px)
             const proportionalWidth = (originalWidth / originalHeight) * TARGET_ROW_HEIGHT;
             
             item.style.flexBasis = `${proportionalWidth}px`;
@@ -283,7 +310,8 @@
             img.style.width = 'auto';
             
             // Store original URL for fullscreen view
-            img.dataset.fullUrl = url.replace(/\.\w+$/, '') + '.jpg';
+            const fullUrl = url.replace(/\.\w+$/, '') + '.jpg';
+            img.dataset.fullUrl = fullUrl;
             
             // Add click handler
             img.addEventListener('click', function(e) {
@@ -297,6 +325,8 @@
 
         function openViewer(imageUrl) {
             viewerImage.src = imageUrl;
+            viewerLink.href = imageUrl;
+            viewerLink.textContent = imageUrl;
             viewer.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -317,7 +347,7 @@
                 message.style.color = attempts >= MAX_ATTEMPTS ? '#ff4444' : '#ff9900';
                 message.textContent = attempts >= MAX_ATTEMPTS 
                     ? `Reached maximum attempts (${MAX_ATTEMPTS})` 
-                    : `Found ${foundImages} images (300px tall rows)`;
+                    : `Found ${foundImages} images`;
                 gallery.appendChild(message);
             }
         }
