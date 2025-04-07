@@ -63,8 +63,8 @@
             let imageUrl = await getWikipediaImage(name);
 
             if (!imageUrl) {
-                console.log(`Retrying for: ${name}_(American_Football)`);
-                imageUrl = await getWikipediaImage(name + " (American Football)");
+                console.log(`Retrying for: ${name}_(American_football)`);
+                imageUrl = await getWikipediaImage(name + " (American football)");
             }
 
             return imageUrl || "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
