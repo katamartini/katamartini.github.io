@@ -66,7 +66,7 @@
             });
             html += '</tr></thead>';
 
-            // Add the rest of the rows as table data
+            // Add the rest of the rows as table data (to be sorted)
             html += '<tbody>';
             rows.slice(1).forEach(function(row) {
                 const cells = row.split(',');
@@ -99,7 +99,9 @@
             });
 
             // Rebuild the table body with sorted rows
-            rows.forEach(row => table.querySelector('tbody').appendChild(row));
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = ''; // Clear existing rows
+            rows.forEach(row => tbody.appendChild(row)); // Append sorted rows
         }
 
         function fetchCSV() {
