@@ -3,51 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheets Data</title>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <title>Display Google Sheet Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Replace with your Google Sheets API key and Sheet ID
-        const apiKey = 'YOUR_GOOGLE_API_KEY'; // Obtain from Google Cloud Console
-        const sheetId = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY'; // Found in your Google Sheet URL
-
-        function loadSheetData() {
-            gapi.client.init({
-                'apiKey': apiKey,
-            }).then(function() {
-                return gapi.client.request({
-                    'path': `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:O33`,
+        function parseCSV(data) {
+            const rows = data.split('\n');
+            let html = '<table border="1">';
+            rows.forEach(function(row) {
+                const cells = row.split(',');
+                html += '<tr>';
+                cells.forEach(function(cell) {
+                    html += `<td>${cell}</td>`;
                 });
-            }).then(function(response) {
-                const data = response.result.values;
-                if (data.length > 0) {
-                    let output = '<table border="1">';
-                    data.forEach(row => {
-                        output += '<tr>';
-                        row.forEach(cell => {
-                            output += `<td>${cell}</td>`;
-                        });
-                        output += '</tr>';
-                    });
-                    output += '</table>';
-                    document.getElementById('sheetData').innerHTML = output;
-                } else {
-                    document.getElementById('sheetData').innerHTML = 'No data found.';
-                }
-            }, function(error) {
-                console.log(error);
+                html += '</tr>';
+            });
+            html += '</table>';
+            document.getElementById('sheetData').innerHTML = html;
+        }
+
+        function fetchCSV() {
+            const sheetID = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY'; // Your Google Sheet ID
+            const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
+
+            $.get(sheetURL, function(data) {
+                parseCSV(data);
             });
         }
 
-        function start() {
-            gapi.client.load('sheets', 'v4', loadSheetData);
-        }
-
-        function onClientLoad() {
-            gapi.load('client', start);
-        }
+        window.onload = fetchCSV;
     </script>
 </head>
-<body onload="onClientLoad()">
+<body>
     <h1>Google Sheet Data</h1>
     <div id="sheetData">
         Loading data...
