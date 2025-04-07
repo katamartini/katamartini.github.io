@@ -63,7 +63,7 @@
             let imageUrl = await getWikipediaImage(name);
 
             if (!imageUrl) {
-                console.log(`Retrying for: ${name}_(American_football)`);
+                console.log(`Retrying for: ${name}_(American football)`);
                 imageUrl = await getWikipediaImage(name + " (American football)");
             }
 
@@ -98,7 +98,7 @@
             
             html += '<thead><tr>';
             headers.forEach(function(header) {
-                header = header.replace(/"/g, ''); // Remove quotation marks
+                header = header.replace(/"/g, '');
                 html += `<th onclick="sortTable(this)">${header}</th>`;
             });
             html += '</tr></thead>';
@@ -124,6 +124,9 @@
 
             html += '</tbody></table>';
             document.getElementById('sheetData').innerHTML = html;
+
+            // Sort by column 4 (index 3) after table is built
+            sortTable(document.querySelector(`#sortableTable th:nth-child(4)`));
         }
 
         function sortTable(header) {
