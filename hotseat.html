@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Google Sheet Data</title>
+    <title>Display Google Sheet Data with Images</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -48,6 +48,12 @@
             background-color: #f1f1f1;
         }
 
+        img {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 5px;
+        }
+
         #sheetData {
             margin-top: 20px;
         }
@@ -59,6 +65,8 @@
             
             // Treat the first row as headers
             const headers = rows[0].split(',');
+            headers.splice(1, 0, "Picture"); // Insert "Picture" column after the first column
+            
             html += '<thead><tr>';
             headers.forEach(function(header) {
                 header = header.replace(/"/g, ''); // Remove quotation marks
@@ -66,13 +74,20 @@
             });
             html += '</tr></thead>';
 
-            // Add the rest of the rows as table data (to be sorted)
+            // Add the rest of the rows as table data
             html += '<tbody>';
             rows.slice(1).forEach(function(row) {
                 const cells = row.split(',');
+                if (cells.length < 2) return; // Skip if row is incomplete
+
+                const personName = cells[1].replace(/"/g, ''); // Get the person's name (column 2)
+                const imageUrl = generateImageUrl(personName); // Generate the image URL
+
                 html += '<tr>';
-                cells.forEach(function(cell) {
-                    cell = cell.replace(/"/g, ''); // Remove quotation marks
+                html += `<td>${cells[0].replace(/"/g, '')}</td>`; // First column
+                html += `<td><img src="${imageUrl}" alt="${personName}"></td>`; // New image column
+                cells.slice(1).forEach(function(cell) { // Rest of the columns
+                    cell = cell.replace(/"/g, '');
                     html += `<td>${cell}</td>`;
                 });
                 html += '</tr>';
@@ -81,10 +96,15 @@
             document.getElementById('sheetData').innerHTML = html;
         }
 
+        function generateImageUrl(name) {
+            const baseImageURL = "https://your-image-storage.com/"; // Change to your actual image storage URL
+            return `${baseImageURL}${encodeURIComponent(name)}.jpg`; // Example: "John Doe" → "https://your-image-storage.com/John%20Doe.jpg"
+        }
+
         function sortTable(header) {
             const table = header.closest('table');
             const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.rows); // Get all the rows in the tbody
+            const rows = Array.from(tbody.rows); 
             const index = Array.from(header.parentElement.children).indexOf(header);
             const isAscending = header.classList.toggle('asc');
 
@@ -99,13 +119,12 @@
                 }
             });
 
-            // Clear the table body and re-add sorted rows
             tbody.innerHTML = '';
-            rows.forEach(row => tbody.appendChild(row)); // Append sorted rows back to the tbody
+            rows.forEach(row => tbody.appendChild(row));
         }
 
         function fetchCSV() {
-            const sheetID = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY'; // Your Google Sheet ID
+            const sheetID = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY';
             const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
 
             $.get(sheetURL, function(data) {
@@ -117,7 +136,7 @@
     </script>
 </head>
 <body>
-    <h1>Google Sheet Data</h1>
+    <h1>Google Sheet Data with Images</h1>
     <div id="sheetData">
         Loading data...
     </div>
