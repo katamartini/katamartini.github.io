@@ -98,7 +98,8 @@
                 }
             });
 
-            rows.forEach(row => table.querySelector('tbody').appendChild(row)); // Append sorted rows
+            // Rebuild the table body with sorted rows
+            rows.forEach(row => table.querySelector('tbody').appendChild(row));
         }
 
         function fetchCSV() {
