@@ -8,14 +8,14 @@
     <script>
         // Replace with your Google Sheets API key and Sheet ID
         const apiKey = 'YOUR_GOOGLE_API_KEY'; // Obtain from Google Cloud Console
-        const sheetId = 'YOUR_SHEET_ID'; // Found in your Google Sheet URL
+        const sheetId = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY'; // Found in your Google Sheet URL
 
         function loadSheetData() {
             gapi.client.init({
                 'apiKey': apiKey,
             }).then(function() {
                 return gapi.client.request({
-                    'path': `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:Z1000`,
+                    'path': `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:O33`,
                 });
             }).then(function(response) {
                 const data = response.result.values;
