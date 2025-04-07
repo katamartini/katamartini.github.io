@@ -5,20 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Google Sheet Data</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            cursor: pointer;
+        }
+
+        th:hover {
+            background-color: #e2e2e2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #sheetData {
+            margin-top: 20px;
+        }
+    </style>
     <script>
         function parseCSV(data) {
             const rows = data.split('\n');
-            let html = '<table border="1">';
-            rows.forEach(function(row) {
+            let html = '<table class="sortable">';
+            rows.forEach(function(row, index) {
                 const cells = row.split(',');
+                // Removing unwanted quotation marks around cells
                 html += '<tr>';
                 cells.forEach(function(cell) {
+                    cell = cell.replace(/"/g, ''); // Remove quotation marks
                     html += `<td>${cell}</td>`;
                 });
                 html += '</tr>';
             });
             html += '</table>';
             document.getElementById('sheetData').innerHTML = html;
+            // Activate sorting functionality
+            sorttable.init();
         }
 
         function fetchCSV() {
