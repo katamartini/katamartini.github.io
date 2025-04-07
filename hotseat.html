@@ -82,7 +82,10 @@
             document.getElementById('sheetData').innerHTML = html;
 
             // Activate sorting functionality
-            sorttable.init();
+            const tables = document.querySelectorAll('.sortable');
+            tables.forEach(function(table) {
+                table.classList.add('sorttable');
+            });
         }
 
         function fetchCSV() {
