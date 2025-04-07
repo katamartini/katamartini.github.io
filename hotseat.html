@@ -59,71 +59,111 @@
         }
     </style>
     <script>
-    async function parseCSV(data) {
-        const rows = data.split('\n');
-        let html = '<table id="sortableTable">';
-        
-        // Treat the first row as headers
-        const headers = rows[0].split(',');
-        headers.splice(1, 0, "Picture"); // Insert "Picture" column after the first column
-        
-        html += '<thead><tr>';
-        headers.forEach(function(header) {
-            header = header.replace(/"/g, '');
-            html += `<th onclick="sortTable(this)">${header}</th>`;
-        });
-        html += '</tr></thead>';
+        async function fetchWikipediaImage(name) {
+            let imageUrl = await getWikipediaImage(name);
 
-        html += '<tbody>';
-        
-        for (const row of rows.slice(1)) {
-            const cells = row.split(',');
-            if (cells.length < 2) continue;
+            if (!imageUrl) {
+                console.log(`Retrying for: ${name} (American football)`);
+                imageUrl = await getWikipediaImage(name + " (American football)");
+            }
 
-            const personName = cells[1].replace(/"/g, '');
-            const imageUrl = await fetchWikipediaImage(personName);
-
-            html += '<tr>';
-            html += `<td>${cells[0].replace(/"/g, '')}</td>`;
-            html += `<td><img src="${imageUrl}" alt="${personName}"></td>`;
-            cells.slice(1).forEach(function(cell) {
-                cell = cell.replace(/"/g, '');
-                html += `<td>${cell}</td>`;
-            });
-            html += '</tr>';
+            return imageUrl || "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
         }
 
-        html += '</tbody></table>';
-        document.getElementById('sheetData').innerHTML = html;
+        async function getWikipediaImage(name) {
+            const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(name)}&prop=pageimages&format=json&pithumbsize=100&origin=*`;
 
-        // Sort by column 4 (index 3) in DESCENDING order after table is built
-        sortTable(document.querySelector(`#sortableTable th:nth-child(4)`), false);
-    }
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
 
-    function sortTable(header, ascending = true) {
-        const table = header.closest('table');
-        const tbody = table.querySelector('tbody');
-        const rows = Array.from(tbody.rows); 
-        const index = Array.from(header.parentElement.children).indexOf(header);
-        
-        rows.sort((rowA, rowB) => {
-            const cellA = rowA.cells[index].textContent.trim();
-            const cellB = rowB.cells[index].textContent.trim();
-
-            if (!isNaN(cellA) && !isNaN(cellB)) {
-                return ascending ? cellA - cellB : cellB - cellA;
-            } else {
-                return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                if (pages[pageId] && pages[pageId].thumbnail) {
+                    return pages[pageId].thumbnail.source;
+                }
+            } catch (error) {
+                console.error(`Failed to fetch image for ${name}:`, error);
             }
-        });
+            return null;
+        }
 
-        tbody.innerHTML = '';
-        rows.forEach(row => tbody.appendChild(row));
+        async function parseCSV(data) {
+            const rows = data.split('\n');
+            let html = '<table id="sortableTable">';
+            
+            // Treat the first row as headers
+            const headers = rows[0].split(',');
+            headers.splice(1, 0, "Picture"); // Insert "Picture" column after the first column
+            
+            html += '<thead><tr>';
+            headers.forEach(function(header) {
+                header = header.replace(/"/g, '');
+                html += `<th onclick="sortTable(this)">${header}</th>`;
+            });
+            html += '</tr></thead>';
 
-        // Toggle sorting state when manually clicking header
-        header.onclick = () => sortTable(header, !ascending);
-    }
-</script>
+            html += '<tbody>';
+            
+            for (const row of rows.slice(1)) {
+                const cells = row.split(',');
+                if (cells.length < 2) continue;
+
+                const personName = cells[1].replace(/"/g, '');
+                const imageUrl = await fetchWikipediaImage(personName);
+
+                html += '<tr>';
+                html += `<td>${cells[0].replace(/"/g, '')}</td>`;
+                html += `<td><img src="${imageUrl}" alt="${personName}"></td>`;
+                cells.slice(1).forEach(function(cell) {
+                    cell = cell.replace(/"/g, '');
+                    html += `<td>${cell}</td>`;
+                });
+                html += '</tr>';
+            }
+
+            html += '</tbody></table>';
+            document.getElementById('sheetData').innerHTML = html;
+
+            // Sort by column 4 (index 3) in DESCENDING order after table is built
+            sortTable(document.querySelector(`#sortableTable th:nth-child(4)`), false);
+        }
+
+        function sortTable(header, ascending = true) {
+            const table = header.closest('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.rows); 
+            const index = Array.from(header.parentElement.children).indexOf(header);
+            
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[index].textContent.trim();
+                const cellB = rowB.cells[index].textContent.trim();
+
+                if (!isNaN(cellA) && !isNaN(cellB)) {
+                    return ascending ? cellA - cellB : cellB - cellA;
+                } else {
+                    return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                }
+            });
+
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+
+            // Toggle sorting state when manually clicking header
+            header.onclick = () => sortTable(header, !ascending);
+        }
+
+        function fetchCSV() {
+            const sheetID = '1GHNL6cNOH0z_oiv0bywLn2G_3n2mO-afxdznjYYmSZY';
+            const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
+
+            $.get(sheetURL, function(data) {
+                parseCSV(data);
+            });
+        }
+
+        window.onload = fetchCSV;
+    </script>
 </head>
 <body>
     <h1>Google Sheet Data with Wikipedia Images</h1>
