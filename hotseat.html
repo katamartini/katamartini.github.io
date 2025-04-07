@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Google Sheet Data with Images</title>
+    <title>Google Sheet Data with Wikipedia Images</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -59,7 +59,25 @@
         }
     </style>
     <script>
-        function parseCSV(data) {
+        async function fetchWikipediaImage(name) {
+            const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(name)}&prop=pageimages&format=json&pithumbsize=100&origin=*`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
+
+                if (pages[pageId].thumbnail) {
+                    return pages[pageId].thumbnail.source;
+                }
+            } catch (error) {
+                console.error(`Failed to fetch image for ${name}:`, error);
+            }
+            return "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"; // Default image if not found
+        }
+
+        async function parseCSV(data) {
             const rows = data.split('\n');
             let html = '<table id="sortableTable">';
             
@@ -74,14 +92,14 @@
             });
             html += '</tr></thead>';
 
-            // Add the rest of the rows as table data
             html += '<tbody>';
-            rows.slice(1).forEach(function(row) {
+            
+            for (const row of rows.slice(1)) {
                 const cells = row.split(',');
-                if (cells.length < 2) return; // Skip if row is incomplete
+                if (cells.length < 2) continue; // Skip if row is incomplete
 
                 const personName = cells[1].replace(/"/g, ''); // Get the person's name (column 2)
-                const imageUrl = generateImageUrl(personName); // Generate the image URL
+                const imageUrl = await fetchWikipediaImage(personName); // Fetch image from Wikipedia
 
                 html += '<tr>';
                 html += `<td>${cells[0].replace(/"/g, '')}</td>`; // First column
@@ -91,14 +109,10 @@
                     html += `<td>${cell}</td>`;
                 });
                 html += '</tr>';
-            });
+            }
+
             html += '</tbody></table>';
             document.getElementById('sheetData').innerHTML = html;
-        }
-
-        function generateImageUrl(name) {
-            const baseImageURL = "https://your-image-storage.com/"; // Change to your actual image storage URL
-            return `${baseImageURL}${encodeURIComponent(name)}.jpg`; // Example: "John Doe" → "https://your-image-storage.com/John%20Doe.jpg"
         }
 
         function sortTable(header) {
@@ -136,7 +150,7 @@
     </script>
 </head>
 <body>
-    <h1>Google Sheet Data with Images</h1>
+    <h1>Google Sheet Data with Wikipedia Images</h1>
     <div id="sheetData">
         Loading data...
     </div>
