@@ -83,7 +83,8 @@
 
         function sortTable(header) {
             const table = header.closest('table');
-            const rows = Array.from(table.querySelectorAll('tr:nth-child(n+2)')); // Get all rows except header
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.rows); // Get all the rows in the tbody
             const index = Array.from(header.parentElement.children).indexOf(header);
             const isAscending = header.classList.toggle('asc');
 
@@ -98,10 +99,9 @@
                 }
             });
 
-            // Rebuild the table body with sorted rows
-            const tbody = table.querySelector('tbody');
-            tbody.innerHTML = ''; // Clear existing rows
-            rows.forEach(row => tbody.appendChild(row)); // Append sorted rows
+            // Clear the table body and re-add sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row)); // Append sorted rows back to the tbody
         }
 
         function fetchCSV() {
