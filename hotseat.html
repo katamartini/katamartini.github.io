@@ -57,9 +57,20 @@
         function parseCSV(data) {
             const rows = data.split('\n');
             let html = '<table class="sortable">';
-            rows.forEach(function(row, index) {
+            
+            // Treat the first row as headers
+            const headers = rows[0].split(',');
+            html += '<thead><tr>';
+            headers.forEach(function(header) {
+                header = header.replace(/"/g, ''); // Remove quotation marks
+                html += `<th>${header}</th>`;
+            });
+            html += '</tr></thead>';
+
+            // Add the rest of the rows as table data
+            html += '<tbody>';
+            rows.slice(1).forEach(function(row) {
                 const cells = row.split(',');
-                // Removing unwanted quotation marks around cells
                 html += '<tr>';
                 cells.forEach(function(cell) {
                     cell = cell.replace(/"/g, ''); // Remove quotation marks
@@ -67,8 +78,9 @@
                 });
                 html += '</tr>';
             });
-            html += '</table>';
+            html += '</tbody></table>';
             document.getElementById('sheetData').innerHTML = html;
+
             // Activate sorting functionality
             sorttable.init();
         }
