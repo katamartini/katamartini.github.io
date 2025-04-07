@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Data</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // Replace with your Google Sheets API key and Sheet ID
+        const apiKey = 'YOUR_GOOGLE_API_KEY'; // Obtain from Google Cloud Console
+        const sheetId = 'YOUR_SHEET_ID'; // Found in your Google Sheet URL
+
+        function loadSheetData() {
+            gapi.client.init({
+                'apiKey': apiKey,
+            }).then(function() {
+                return gapi.client.request({
+                    'path': `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:Z1000`,
+                });
+            }).then(function(response) {
+                const data = response.result.values;
+                if (data.length > 0) {
+                    let output = '<table border="1">';
+                    data.forEach(row => {
+                        output += '<tr>';
+                        row.forEach(cell => {
+                            output += `<td>${cell}</td>`;
+                        });
+                        output += '</tr>';
+                    });
+                    output += '</table>';
+                    document.getElementById('sheetData').innerHTML = output;
+                } else {
+                    document.getElementById('sheetData').innerHTML = 'No data found.';
+                }
+            }, function(error) {
+                console.log(error);
+            });
+        }
+
+        function start() {
+            gapi.client.load('sheets', 'v4', loadSheetData);
+        }
+
+        function onClientLoad() {
+            gapi.load('client', start);
+        }
+    </script>
+</head>
+<body onload="onClientLoad()">
+    <h1>Google Sheet Data</h1>
+    <div id="sheetData">
+        Loading data...
+    </div>
+</body>
+</html>
