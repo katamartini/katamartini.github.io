@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Google Sheet Data</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,14 +55,14 @@
     <script>
         function parseCSV(data) {
             const rows = data.split('\n');
-            let html = '<table class="sortable">';
+            let html = '<table id="sortableTable">';
             
             // Treat the first row as headers
             const headers = rows[0].split(',');
             html += '<thead><tr>';
             headers.forEach(function(header) {
                 header = header.replace(/"/g, ''); // Remove quotation marks
-                html += `<th>${header}</th>`;
+                html += `<th onclick="sortTable(this)">${header}</th>`;
             });
             html += '</tr></thead>';
 
@@ -80,12 +79,26 @@
             });
             html += '</tbody></table>';
             document.getElementById('sheetData').innerHTML = html;
+        }
 
-            // Activate sorting functionality
-            const tables = document.querySelectorAll('.sortable');
-            tables.forEach(function(table) {
-                table.classList.add('sorttable');
+        function sortTable(header) {
+            const table = header.closest('table');
+            const rows = Array.from(table.querySelectorAll('tr:nth-child(n+2)')); // Get all rows except header
+            const index = Array.from(header.parentElement.children).indexOf(header);
+            const isAscending = header.classList.toggle('asc');
+
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[index].textContent.trim();
+                const cellB = rowB.cells[index].textContent.trim();
+
+                if (!isNaN(cellA) && !isNaN(cellB)) {
+                    return isAscending ? cellA - cellB : cellB - cellA;
+                } else {
+                    return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                }
             });
+
+            rows.forEach(row => table.querySelector('tbody').appendChild(row)); // Append sorted rows
         }
 
         function fetchCSV() {
