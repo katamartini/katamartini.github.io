@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seeded Imgur Gallery</title>
+    <title>Random Imgur Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,6 +16,9 @@
             color: white;
             margin-bottom: 10px;
         }
+        p {
+             color: white;
+         }
         button {
             background-color: #85BF25;
             color: white;
@@ -167,11 +170,11 @@
     </style>
 </head>
 <body>
-    <h1>Seeded Imgur Gallery</h1>
-    <p>Shareable links with consistent random results</p>
+    <h1>Random Imgur Generator</h1>
+     <p>Click any image to view full resolution with source link</p>
     
     <div id="share-controls">
-        <input type="text" id="seed-input" placeholder="Enter seed or leave blank">
+        <input type="text" id="seed-input" placeholder="Enter seed number or leave blank">
         <button id="generate-btn">Load Images</button>
         <div id="share-link-container" style="display: none;">
             <p>Share this gallery: <a id="share-link" href="#" target="_blank"></a></p>
