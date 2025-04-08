@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Imgur Generator</title>
+    <title>Seeded Imgur Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,9 +15,6 @@
         h1 {
             color: white;
             margin-bottom: 10px;
-        }
-        p {
-            color: white;
         }
         button {
             background-color: #85BF25;
@@ -148,13 +145,39 @@
             width: 0%;
             transition: width 0.3s;
         }
+        #share-controls {
+            margin: 15px 0;
+        }
+        #seed-input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+            margin-right: 10px;
+            width: 200px;
+        }
+        #share-link {
+            color: #85BF25;
+            word-break: break-all;
+            margin-top: 10px;
+            display: inline-block;
+            max-width: 90%;
+        }
     </style>
 </head>
 <body>
-    <h1>Random Imgur Generator</h1>
-    <p>Click any image to view full resolution with source link</p>
+    <h1>Seeded Imgur Gallery</h1>
+    <p>Shareable links with consistent random results</p>
     
-    <button id="generate-btn">Load Images</button>
+    <div id="share-controls">
+        <input type="text" id="seed-input" placeholder="Enter seed or leave blank">
+        <button id="generate-btn">Load Images</button>
+        <div id="share-link-container" style="display: none;">
+            <p>Share this gallery: <a id="share-link" href="#" target="_blank"></a></p>
+        </div>
+    </div>
+    
     <div id="stats">
         Images loaded: <span id="found-count">0</span>/100 | 
         Attempts: <span id="attempt-count">0</span>
@@ -177,7 +200,31 @@
     </div>
 
     <script>
+        // Seeded random number generator
+        class SeededRandom {
+            constructor(seed) {
+                this.seed = seed || Math.floor(Math.random() * 1000000);
+                this.current = this.seed;
+            }
+            
+            next() {
+                this.current = (this.current * 9301 + 49297) % 233280;
+                return this.current / 233280;
+            }
+            
+            randInt(min, max) {
+                return Math.floor(this.next() * (max - min + 1)) + min;
+            }
+            
+            choice(arr) {
+                return arr[this.randInt(0, arr.length - 1)];
+            }
+        }
+
         const generateBtn = document.getElementById('generate-btn');
+        const seedInput = document.getElementById('seed-input');
+        const shareLink = document.getElementById('share-link');
+        const shareLinkContainer = document.getElementById('share-link-container');
         const gallery = document.getElementById('gallery');
         const loadingElement = document.getElementById('loading');
         const foundCountElement = document.getElementById('found-count');
@@ -198,9 +245,20 @@
         let attempts = 0;
         let foundImages = 0;
         let isSearching = false;
+        let seededRandom;
         const PLACEHOLDER_DIMENSIONS = [
             {width: 161, height: 81}, {width: 1, height: 1}, {width: 130, height: 100}
         ];
+
+        // Initialize from URL or create new seed
+        function initializeFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const seed = params.get('seed');
+            if (seed) {
+                seedInput.value = seed;
+                generateGallery();
+            }
+        }
 
         // Initialize event listeners
         generateBtn.addEventListener('click', generateGallery);
@@ -213,6 +271,19 @@
 
         function generateGallery() {
             if (isSearching) return;
+            
+            const seed = seedInput.value || Math.floor(Math.random() * 1000000);
+            seededRandom = new SeededRandom(seed);
+            
+            // Update URL with seed
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('seed', seed);
+            window.history.pushState({}, '', newUrl);
+            
+            // Show share link
+            shareLink.href = newUrl.toString();
+            shareLink.textContent = newUrl.toString();
+            shareLinkContainer.style.display = 'block';
             
             isSearching = true;
             attempts = 0;
@@ -250,7 +321,7 @@
             
             const randomId = generateRandomId();
             const extensions = ['.jpg', '.jpeg', '.png', '.gif'];
-            const randomExt = extensions[Math.floor(Math.random() * extensions.length)];
+            const randomExt = seededRandom.choice(extensions);
             const imgurUrl = `https://i.imgur.com/${randomId}${randomExt}`;
             
             verifyAndAddImage(imgurUrl);
@@ -258,8 +329,12 @@
 
         function generateRandomId() {
             const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const length = 5 + Math.floor(Math.random() * 3);
-            return Array.from({length}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            const length = 5 + seededRandom.randInt(0, 2); // 5-7 chars
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars[seededRandom.randInt(0, chars.length - 1)];
+            }
+            return result;
         }
 
         function verifyAndAddImage(url) {
@@ -354,6 +429,9 @@
                 gallery.appendChild(message);
             }
         }
+
+        // Initialize on load
+        window.addEventListener('load', initializeFromUrl);
     </script>
 </body>
 </html>
