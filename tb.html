@@ -1,30 +1,161 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Color Rank & Hold-to-Highlight</title>
+  <title>Color Rank (Clean UI)</title>
   <style>
-    body {
-      background-color: #808080;
-      font-size: 200%;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    :root {
+      --gap: 14px;
+      --panel: #ececec;
+      --text: #1f2328;
+      --muted: #6b7280;
+      --round: 12px;
     }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #808080;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-size: 18px;               /* smaller than before */
+      line-height: 1.35;             /* tighter */
+    }
+
+    /* layout */
+    .layout {
+      display: grid;
+      grid-template-columns: auto minmax(280px, 360px);
+      gap: var(--gap);
+      align-items: start;
+      width: fit-content;
+      max-width: 100%;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    /* canvas side — no big white card */
+    .canvas-wrap {
+      display: inline-block; /* shrink-wrap to canvas */
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+      border-radius: var(--round);
+      overflow: hidden;
+      background: transparent; /* no white */
+    }
+    #scribble {
+      display: block;
+      max-width: 600px;
+      max-height: 600px;
+      width: 100%;
+      height: auto;
+      image-rendering: auto;
+    }
+
+    /* sidebar */
+    .sidebar {
+      background: var(--panel);
+      border-radius: var(--round);
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+      padding: 10px 12px;
+      max-height: 80vh;
+      overflow: auto;
+      min-width: 280px;
+    }
+    .sidebar h2 {
+      margin: 0 0 6px 0;
+      font-size: 1.05rem;
+      letter-spacing: .2px;
+    }
+
+    /* list */
     #colorList {
-      font-weight: bold;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      list-style-position: inside;
-      padding-left: 0;
-      margin: 0.5em 0;
+      list-style: none;              /* custom numbers */
+      margin: 0;
+      padding: 0;
+      counter-reset: rank;
     }
     #colorList li {
+      counter-increment: rank;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin: 6px 0;
       cursor: pointer;
       user-select: none;
-      padding: .15em .25em;
-      border-radius: .35em;
-      transition: background-color .15s ease;
+      transition: transform .04s ease, box-shadow .12s ease, background .12s ease;
     }
-    #colorList li:hover { background-color: rgba(255,255,255,.15); }
-    .color { padding: 0 0.5em; }
-    .hint  { font-size: 60%; color: #222; opacity: .8; margin: .25em 0 0 0; }
+    #colorList li:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,.10);
+      background: #fcfcfc;
+    }
+    #colorList li:active { transform: scale(.995); }
+
+    /* row layout inside each item */
+    .row {
+      display: grid;
+      grid-template-columns: 2ch 18px auto max-content;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .num::before {
+      content: counter(rank) ".";
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .chip {
+      width: 18px; height: 18px; border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.15);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+    }
+    .hex {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #f4f4f5;
+      border: 1px solid rgba(0,0,0,.06);
+      width: fit-content;
+    }
+    .pct {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+
+    /* progress bar */
+    .bar {
+      position: relative;
+      height: 6px;
+      border-radius: 999px;
+      background: #f1f3f5;
+      overflow: hidden;
+    }
+    .fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0%;
+      background: #bbb;
+    }
+
+    .meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: .9em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .9em;
+    }
+
+    .controls { margin-top: 10px; }
+    input[type=file] {
+      font-size: .9em;
+    }
   </style>
   <script>
     let ctx = null, cvs = null;
@@ -47,13 +178,13 @@
           ctx.drawImage(img, 0, 0);
           originalImageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
 
-          // ✅ reset caches and view for NEW image
+          // reset for new image
           maskCache.clear();
           removeHighlight();
 
+          // count colors
           const data = originalImageData.data;
           const stringCounts = {};
-
           for (let i = 0; i < data.length; i += 4) {
             const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
             if (a === 0) continue;
@@ -62,24 +193,30 @@
             stringCounts[hex].count++;
           }
 
+          // build list
           const colorList = document.getElementById("colorList");
           colorList.innerHTML = "";
+          const totalPixels = cvs.width * cvs.height;
 
           Object.entries(stringCounts)
             .sort((a, b) => b[1].count - a[1].count)
-            .forEach(([hex, info]) => {
+            .forEach(([hex, info], idx) => {
+              const pct = Math.round(info.count / totalPixels * 1000) / 10;
+
               const li = document.createElement("li");
-              const bright = Math.sqrt(
-                0.299*Math.pow(info.rgb[0]/255,2) +
-                0.587*Math.pow(info.rgb[1]/255,2) +
-                0.114*Math.pow(info.rgb[2]/255,2)
-              ) >= 0.5;
-              const pct = Math.round(info.count / (cvs.width * cvs.height) * 1000) / 10;
-
-              li.innerHTML = `<span class="color" style="color:${hex}; background-color:${bright ? 'black' : 'white'}">${hex}:</span> ${info.count} pixels (${pct}%)`;
               li.dataset.color = hex;
+              li.innerHTML = `
+                <div class="row">
+                  <span class="num"></span>
+                  <span class="chip" style="background:${hex}"></span>
+                  <span class="hex">${hex}</span>
+                  <span class="pct">${pct}%</span>
+                </div>
+                <div class="bar"><span class="fill" style="width:${pct}%; background:${hex}"></span></div>
+                <div class="meta">${info.count.toLocaleString()} pixels</div>
+              `;
 
-              // Hold-to-highlight
+              // hold-to-highlight
               li.addEventListener('pointerdown', (ev) => {
                 ev.preventDefault();
                 applyHighlight(hex);
@@ -104,14 +241,23 @@
       reader.readAsDataURL(file);
     }
 
+    // background set to exact inverse of selected color
     function applyHighlight(hex) {
       if (!ctx || !originalImageData) return;
+
       ctx.putImageData(originalImageData, 0, 0);
+
+      const rT = parseInt(hex.slice(1,3), 16);
+      const gT = parseInt(hex.slice(3,5), 16);
+      const bT = parseInt(hex.slice(5,7), 16);
+      const bg = `rgb(${255-rT},${255-gT},${255-bT})`;
+
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = "#000";
+      ctx.fillStyle = bg;
       ctx.fillRect(0, 0, cvs.width, cvs.height);
       ctx.restore();
+
       ctx.putImageData(getMask(hex), 0, 0);
     }
 
@@ -143,18 +289,27 @@
           dst[i+3] = 0;
         }
       }
-
       maskCache.set(hex, mask);
       return mask;
     }
   </script>
 </head>
 <body>
-  <canvas id="scribble" width="600" height="600"></canvas><br />
-  <ol id="colorList"></ol>
-  <div id="hint" class="hint" style="display:none;">
-    Hold mouse (or touch) on a row to highlight that color; release to return to normal.
+  <div class="layout">
+    <div class="canvas-wrap">
+      <canvas id="scribble" width="600" height="600"></canvas>
+    </div>
+
+    <aside class="sidebar">
+      <h2>Colors</h2>
+      <ol id="colorList"></ol>
+      <div id="hint" class="hint" style="display:none;">
+        Hold mouse (or touch) on a row to highlight that color; release to return to normal.
+      </div>
+      <div class="controls">
+        <input id="upload" onchange="handle()" type="file" name="upload" />
+      </div>
+    </aside>
   </div>
-  <input id="upload" onchange="handle()" type="file" name="upload" />
 </body>
 </html>
