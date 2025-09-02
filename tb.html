@@ -3,128 +3,80 @@
   <meta charset="utf-8" />
   <title>Scribble Checker</title>
   <style>
-    :root {
-      --gap: 14px;
-      --panel: #ececec;
-      --text: #1f2328;
-      --muted: #6b7280;
-      --round: 12px;
-    }
+    :root { --gap:14px; --panel:#ececec; --text:#1f2328; --muted:#6b7280; --round:12px; }
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      padding: 16px;
-      background: #808080;
-      color: var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      font-size: 18px;
-      line-height: 1.35;
+      margin: 0; padding: 16px; background: #808080; color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      font-size: 18px; line-height: 1.35;
     }
 
-    /* layout */
     .layout {
-      display: grid;
-      grid-template-columns: auto minmax(280px, 360px);
-      gap: var(--gap);
-      align-items: start;
-      width: fit-content;
-      max-width: 100%;
+      display: grid; grid-template-columns: auto minmax(280px, 360px);
+      gap: var(--gap); align-items: start; width: fit-content; max-width: 100%;
     }
-    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 900px){ .layout { grid-template-columns: 1fr; } }
 
-    /* canvas side — compact, no white bg */
-    .canvas-wrap {
-      display: inline-block;              /* shrink-wrap to canvas */
-      border-radius: var(--round);
-      box-shadow: 0 2px 6px rgba(0,0,0,.2);
-      overflow: hidden;
-      background: transparent;
-    }
-    #scribble {
-      display: block;
-      max-width: 600px;
-      max-height: 600px;
-      width: 100%;
-      height: auto;
-      image-rendering: auto;
-    }
+    .canvas-wrap { display: inline-block; border-radius: var(--round); box-shadow: 0 2px 6px rgba(0,0,0,.2); overflow: hidden; background: transparent; }
+    #scribble { display:block; max-width:600px; max-height:600px; width:100%; height:auto; image-rendering:auto; }
 
-    /* sidebar */
     .sidebar {
-      background: var(--panel);
-      border-radius: var(--round);
-      box-shadow: 0 2px 6px rgba(0,0,0,.2);
-      padding: 10px 12px;
-      max-height: 80vh;
-      overflow: auto;
-      min-width: 280px;
+      background: var(--panel); border-radius: var(--round); box-shadow: 0 2px 6px rgba(0,0,0,.2);
+      padding: 10px 12px; max-height: 80vh; overflow: auto; min-width: 280px;
     }
-    .sidebar h2 {
-      margin: 0 0 6px 0;
-      font-size: 1.05rem;
-      letter-spacing: .2px;
-    }
+    .sidebar h2 { margin: 0 0 6px 0; font-size: 1.05rem; letter-spacing: .2px; }
 
-    /* list (custom rows) */
+    /* cat card (uses goode.png) */
+    .cat-card {
+      display: none; border: 1px solid rgba(0,0,0,.08); background: #fff; border-radius: 10px;
+      padding: 10px; margin: 6px 0 10px 0; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .cat-card.show { display: block; }
+    .cat-card img { width: 100%; height: auto; max-height: 200px; object-fit: contain; border-radius: 8px; display:block; margin:0 auto 6px; }
+    .cat-card .note { color: var(--muted); font-size: .9em; }
+
+    /* list styling */
     #colorList { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
     #colorList li {
-      counter-increment: rank;
-      border: 1px solid rgba(0,0,0,.08);
-      background: #fff;
-      border-radius: 10px;
-      padding: 8px 10px;
-      margin: 6px 0;
-      cursor: pointer;
-      user-select: none;
+      counter-increment: rank; border: 1px solid rgba(0,0,0,.08); background:#fff; border-radius:10px;
+      padding: 8px 10px; margin: 6px 0; cursor: pointer; user-select: none;
       transition: transform .04s ease, box-shadow .12s ease, background .12s ease;
     }
-    #colorList li:hover { box-shadow: 0 2px 8px rgba(0,0,0,.10); background: #fcfcfc; }
+    #colorList li:hover { box-shadow: 0 2px 8px rgba(0,0,0,.10); background:#fcfcfc; }
     #colorList li:active { transform: scale(.995); }
-
-    .row {
-      display: grid;
-      grid-template-columns: 2ch 18px auto max-content;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 6px;
-    }
+    .row { display:grid; grid-template-columns: 2ch 18px auto max-content; gap:8px; align-items:center; margin-bottom:6px; }
     .num::before { content: counter(rank) "."; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .chip { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
-    .hex {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      padding: 2px 6px; border-radius: 6px; background: #f4f4f5; border: 1px solid rgba(0,0,0,.06); width: fit-content;
-    }
-    .pct { color: var(--muted); font-variant-numeric: tabular-nums; margin-left: 8px; white-space: nowrap; }
+    .chip { width:18px; height:18px; border-radius:4px; border:1px solid rgba(0,0,0,.15); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
+    .hex { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; padding:2px 6px; border-radius:6px; background:#f4f4f5; border:1px solid rgba(0,0,0,.06); width:fit-content; }
+    .pct { color: var(--muted); font-variant-numeric: tabular-nums; margin-left:8px; white-space:nowrap; }
+    .bar { position:relative; height:6px; border-radius:999px; background:#f1f3f5; overflow:hidden; }
+    .fill { position:absolute; left:0; top:0; bottom:0; width:0%; background:#bbb; }
+    .meta { margin-top:4px; color:var(--muted); font-size:.9em; font-variant-numeric: tabular-nums; }
 
-    .bar { position: relative; height: 6px; border-radius: 999px; background: #f1f3f5; overflow: hidden; }
-    .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: #bbb; }
-
-    .meta { margin-top: 4px; color: var(--muted); font-size: .9em; font-variant-numeric: tabular-nums; }
     .hint { margin-top: 8px; color: var(--muted); font-size: .9em; }
     .controls { margin-top: 10px; }
-    input[type=file] { font-size: .9em; }
+    input[type=file]{ font-size:.9em; }
   </style>
   <script>
-    let ctx = null, cvs = null;
-    let originalImageData = null;
-    const maskCache = new Map();
-    let flashInterval = null;         // controls the two white flashes
+    let ctx=null, cvs=null;
+    let originalImageData=null;
+    const maskCache=new Map();
+    let flashInterval=null;
 
-    function handle() {
-      const file = document.getElementById("upload").files[0];
-      if (!file) return;
+    function handle(){
+      const file=document.getElementById("upload").files[0];
+      if(!file) return;
 
-      const reader = new FileReader();
-      reader.onload = (e2) => {
-        const img = new Image();
-        img.onload = () => {
-          cvs = document.getElementById("scribble");
-          cvs.width = img.width;
-          cvs.height = img.height;
+      const reader=new FileReader();
+      reader.onload=(e2)=>{
+        const img=new Image();
+        img.onload=()=>{
+          cvs=document.getElementById("scribble");
+          cvs.width=img.width; cvs.height=img.height;
 
-          ctx = cvs.getContext("2d");
-          ctx.drawImage(img, 0, 0);
-          originalImageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+          ctx=cvs.getContext("2d");
+          ctx.drawImage(img,0,0);
+          originalImageData=ctx.getImageData(0,0,cvs.width,cvs.height);
 
           // reset for new image
           cancelFlash();
@@ -132,29 +84,32 @@
           removeHighlight();
 
           // count colors
-          const data = originalImageData.data;
-          const stringCounts = {};
-          for (let i = 0; i < data.length; i += 4) {
-            const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
-            if (a === 0) continue;
-            const hex = `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
-            if (!stringCounts[hex]) stringCounts[hex] = { count: 0, rgb: [r,g,b] };
+          const data=originalImageData.data;
+          const stringCounts={};
+          for(let i=0;i<data.length;i+=4){
+            const r=data[i], g=data[i+1], b=data[i+2], a=data[i+3];
+            if(a===0) continue;
+            const hex=`#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+            if(!stringCounts[hex]) stringCounts[hex]={count:0, rgb:[r,g,b]};
             stringCounts[hex].count++;
           }
 
+          // show cat if <=3 colors
+          const uniqueColors=Object.keys(stringCounts).length;
+          toggleCat(uniqueColors<=3, uniqueColors);
+
           // build list
-          const colorList = document.getElementById("colorList");
-          colorList.innerHTML = "";
-          const totalPixels = cvs.width * cvs.height;
+          const colorList=document.getElementById("colorList");
+          colorList.innerHTML="";
+          const totalPixels=cvs.width*cvs.height;
 
           Object.entries(stringCounts)
-            .sort((a, b) => b[1].count - a[1].count)
-            .forEach(([hex, info]) => {
-              const pct = Math.round(info.count / totalPixels * 1000) / 10;
-
-              const li = document.createElement("li");
-              li.dataset.color = hex;
-              li.innerHTML = `
+            .sort((a,b)=>b[1].count-a[1].count)
+            .forEach(([hex,info])=>{
+              const pct=Math.round(info.count/totalPixels*1000)/10;
+              const li=document.createElement("li");
+              li.dataset.color=hex;
+              li.innerHTML=`
                 <div class="row">
                   <span class="num"></span>
                   <span class="chip" style="background:${hex}"></span>
@@ -164,115 +119,101 @@
                 <div class="bar"><span class="fill" style="width:${pct}%; background:${hex}"></span></div>
                 <div class="meta">${info.count.toLocaleString()} pixels</div>
               `;
-
-              // Press: flash white twice, then hold actual color until release
-              li.addEventListener('pointerdown', (ev) => {
+              li.addEventListener('pointerdown',(ev)=>{
                 ev.preventDefault();
                 highlightWithFlashThenHold(hex);
-                const end = () => {
+                const end=()=>{
                   cancelFlash();
                   removeHighlight();
-                  window.removeEventListener('pointerup', end, true);
-                  window.removeEventListener('pointercancel', end, true);
-                  window.removeEventListener('blur', end, true);
+                  window.removeEventListener('pointerup',end,true);
+                  window.removeEventListener('pointercancel',end,true);
+                  window.removeEventListener('blur',end,true);
                 };
-                window.addEventListener('pointerup', end, true);
-                window.addEventListener('pointercancel', end, true);
-                window.addEventListener('blur', end, true);
+                window.addEventListener('pointerup',end,true);
+                window.addEventListener('pointercancel',end,true);
+                window.addEventListener('blur',end,true);
               });
-
               colorList.appendChild(li);
             });
 
-          document.getElementById("hint").style.display = 'block';
+          document.getElementById("hint").style.display='block';
         };
-        img.src = e2.target.result;
+        img.src=e2.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // Draw base + inverted background
-    function drawDim(bg) {
-      ctx.putImageData(originalImageData, 0, 0);
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, cvs.width, cvs.height);
+    function toggleCat(show, uniqueCount=0){
+      const el=document.getElementById('catThumb');
+      if(!el) return;
+      if(show){
+        el.classList.add('show'); el.setAttribute('aria-hidden','false');
+        const note=el.querySelector('.note');
+        if(note) note.textContent=`Nice! Only ${uniqueCount} color${uniqueCount===1?'':'s'} detected.`;
+      }else{
+        el.classList.remove('show'); el.setAttribute('aria-hidden','true');
+      }
+    }
+
+    // dim with inverted bg of selected color
+    function drawDim(bg){
+      ctx.putImageData(originalImageData,0,0);
+      ctx.save(); ctx.globalAlpha=0.65; ctx.fillStyle=bg;
+      ctx.fillRect(0,0,cvs.width,cvs.height);
       ctx.restore();
     }
 
-    // Main sequence: two quick white flashes, then hold actual color
-    function highlightWithFlashThenHold(hex) {
-      if (!ctx || !originalImageData) return;
+    // two white flashes, then hold actual color
+    function highlightWithFlashThenHold(hex){
+      if(!ctx||!originalImageData) return;
       cancelFlash();
 
-      // Inverted background from selected color
-      const rT = parseInt(hex.slice(1,3), 16);
-      const gT = parseInt(hex.slice(3,5), 16);
-      const bT = parseInt(hex.slice(5,7), 16);
-      const bg = `rgb(${255-rT},${255-gT},${255-bT})`;
+      const rT=parseInt(hex.slice(1,3),16);
+      const gT=parseInt(hex.slice(3,5),16);
+      const bT=parseInt(hex.slice(5,7),16);
+      const bg=`rgb(${255-rT},${255-gT},${255-bT})`;
 
-      let phase = 0;
-      const totalPhases = 4; // white,color,white,color
-
-      const tick = () => {
-        const white = (phase % 2 === 0);
+      let phase=0; const totalPhases=4; // white,color,white,color
+      const tick=()=>{
+        const white=(phase%2===0);
         drawDim(bg);
-        ctx.putImageData(getMask(hex, white /*asWhite*/), 0, 0);
+        ctx.putImageData(getMask(hex, white),0,0);
         phase++;
-        if (phase >= totalPhases) {
+        if(phase>=totalPhases){
           cancelFlash();
-          // settle: dim + actual color
           drawDim(bg);
-          ctx.putImageData(getMask(hex, false), 0, 0);
+          ctx.putImageData(getMask(hex,false),0,0);
         }
       };
-
-      // start immediately, then toggle at interval
       tick();
-      flashInterval = setInterval(tick, 120); // ~120ms cadence
+      flashInterval=setInterval(tick,120);
     }
 
-    function cancelFlash() {
-      if (flashInterval) { clearInterval(flashInterval); flashInterval = null; }
-    }
+    function cancelFlash(){ if(flashInterval){ clearInterval(flashInterval); flashInterval=null; } }
+    function removeHighlight(){ if(!ctx||!originalImageData) return; ctx.putImageData(originalImageData,0,0); }
 
-    function removeHighlight() {
-      if (!ctx || !originalImageData) return;
-      ctx.putImageData(originalImageData, 0, 0);
-    }
+    // mask; asWhite=true draws pure white pixels
+    function getMask(hex, asWhite=false){
+      const key=asWhite?hex+"|w":hex;
+      if(maskCache.has(key)) return maskCache.get(key);
 
-    // Build mask; when asWhite=true, draw highlighted pixels as pure white
-    function getMask(hex, asWhite=false) {
-      const key = asWhite ? hex + "|w" : hex;
-      if (maskCache.has(key)) return maskCache.get(key);
+      const w=cvs.width, h=cvs.height;
+      const src=originalImageData.data;
+      const mask=ctx.createImageData(w,h);
+      const dst=mask.data;
 
-      const w = cvs.width, h = cvs.height;
-      const src = originalImageData.data;
-      const mask = ctx.createImageData(w, h);
-      const dst = mask.data;
+      const rT=parseInt(hex.slice(1,3),16);
+      const gT=parseInt(hex.slice(3,5),16);
+      const bT=parseInt(hex.slice(5,7),16);
 
-      const rT = parseInt(hex.slice(1,3), 16);
-      const gT = parseInt(hex.slice(3,5), 16);
-      const bT = parseInt(hex.slice(5,7), 16);
-
-      for (let i = 0; i < src.length; i += 4) {
-        const r = src[i], g = src[i+1], b = src[i+2], a = src[i+3];
-        if (a !== 0 && r === rT && g === gT && b === bT) {
-          if (asWhite) {
-            dst[i] = 255; dst[i+1] = 255; dst[i+2] = 255; dst[i+3] = 255;
-          } else {
-            dst[i]   = Math.min(255, Math.round(r * 1.15));
-            dst[i+1] = Math.min(255, Math.round(g * 1.15));
-            dst[i+2] = Math.min(255, Math.round(b * 1.15));
-            dst[i+3] = 255;
-          }
-        } else {
-          dst[i+3] = 0;
-        }
+      for(let i=0;i<src.length;i+=4){
+        const r=src[i], g=src[i+1], b=src[i+2], a=src[i+3];
+        if(a!==0 && r===rT && g===gT && b===bT){
+          if(asWhite){ dst[i]=255; dst[i+1]=255; dst[i+2]=255; dst[i+3]=255; }
+          else{ dst[i]=Math.min(255,Math.round(r*1.15)); dst[i+1]=Math.min(255,Math.round(g*1.15)); dst[i+2]=Math.min(255,Math.round(b*1.15)); dst[i+3]=255; }
+        }else{ dst[i+3]=0; }
       }
-
-      maskCache.set(key, mask);
+      maskCache.set(key,mask);
       return mask;
     }
   </script>
@@ -285,9 +226,16 @@
 
     <aside class="sidebar">
       <h2>Colors</h2>
+
+      <!-- Cat thumbs-up card shown when <=3 colors -->
+      <figure id="catThumb" class="cat-card" aria-hidden="true">
+        <img src="goode.png" alt="Cat giving a thumbs up" loading="lazy" decoding="async" />
+        <figcaption class="note">3 or fewer colors used!</figcaption>
+      </figure>
+
       <ol id="colorList"></ol>
       <div id="hint" class="hint" style="display:none;">
-        Press and hold a row: pixels flash white twice, then hold with their real color. Release to return to normal.
+        Press a row to see where the color was used.
       </div>
       <div class="controls">
         <input id="upload" onchange="handle()" type="file" name="upload" />
