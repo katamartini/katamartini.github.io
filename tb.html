@@ -149,7 +149,7 @@
       if(show){
         el.classList.add('show'); el.setAttribute('aria-hidden','false');
         const note=el.querySelector('.note');
-        if(note) note.textContent=`Nice! Only ${uniqueCount} color${uniqueCount===1?'':'s'} detected.`;
+        if(note) note.textContent=`Only ${uniqueCount} color${uniqueCount===1?'':'s'} detected. Good job!`;
       }else{
         el.classList.remove('show'); el.setAttribute('aria-hidden','true');
       }
