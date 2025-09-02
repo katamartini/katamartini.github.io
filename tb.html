@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <script language="javascript">
+        function handle(e) {
+            let fileReader = new FileReader();
+            fileReader.onload = (e2) => {
+                let upload = new Image();
+                upload.onload = () => {
+
+                    let canvas = document.getElementById("scribble");
+
+                    canvas.width = upload.width;
+                    canvas.height = upload.height;
+
+                    let context = canvas.getContext("2d");
+                    context.drawImage(upload, 0, 0);
+
+                    let imageData = context.getImageData(0, 0, canvas.width, canvas.height).data; 
+
+                    let stringCounts = {};
+
+                    for (let i = 0; i < imageData.length; i += 4) {
+                        
+                        let colorString = `#${imageData[i].toString(16).padStart(2, '0')}${imageData[i + 1].toString(16).padStart(2, '0')}${imageData[i + 2].toString(16).padStart(2, '0')}`;
+
+                        if (!(colorString in stringCounts)) {
+                            stringCounts[colorString] = {count: 0, rgb: [imageData[i], imageData[i+1], imageData[i+2]]};
+                        }
+
+                        stringCounts[colorString].count++;
+
+                    }
+
+                    console.log(stringCounts);
+
+                    let colorList = document.getElementById("colorList");
+                    colorList.innerHTML = "";
+
+                    Object.entries(stringCounts).sort((a, b) => b[1].count - a[1].count).forEach(a => {
+                        let item = document.createElement("li");
+                        let bgColor = Math.sqrt( 0.299*Math.pow(a[1].rgb[0]/255,2) + 0.587*Math.pow(a[1].rgb[1]/255,2) + 0.114*Math.pow(a[1].rgb[2]/255,2) ) < 0.5;
+                        console.log(a[0], bgColor);
+                        item.innerHTML = `<span class=color style="color:${a[0]}; background-color: ${bgColor? "white": "black"}">${a[0]}:</span> ${a[1].count} pixels (${Math.round(a[1].count / (canvas.width*canvas.height) * 1000)/10}%)`
+                        colorList.appendChild(item);
+
+                    });
+
+                }
+                upload.src = e2.target.result;
+            }
+            fileReader.readAsDataURL(document.getElementById("upload").files[0]);
+        }
+    </script>
+    <style>
+        body {
+            background-color: #808080;
+            font-size: 200%;
+        }
+        #colorList {
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .color {
+            padding: 0 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="scribble" width="600" height="600"></canvas> <br />
+    <ol id="colorList"></ol>
+    <input id="upload" onchange="handle()" type="file" name="upload">
+</body>
+
+</html>
