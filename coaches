@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Active NFL Head Coaches — Sortable Table</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #111823;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --accent: #22d3ee;
+      --accent2: #a78bfa;
+      --row-odd: #0d141f;
+      --row-even: #0f172a;
+      --border: #1f2a44;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial; background: linear-gradient(120deg, #0b0f14, #0a1020); color: var(--text); }
+
+    header { padding: 28px 20px 12px; text-align: center; }
+    h1 { margin: 0 0 8px; font-weight: 800; font-size: clamp(22px, 4vw, 30px); letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: 13px; }
+
+    .card { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border: 1px solid var(--border); border-radius: 16px; margin: 16px auto; width: min(1200px, 95%); box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04); }
+
+    .toolbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .toolbar .note { color: var(--muted); font-size: 12px; }
+    .toolbar .search { position: relative; }
+    .toolbar input[type="search"] { background: #0b1423; color: var(--text); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; min-width: 260px; }
+
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    thead th { position: sticky; top: 0; background: #0b1423; border-bottom: 1px solid var(--border); text-align: left; padding: 10px 12px; font-size: 13px; letter-spacing: 0.01em; z-index: 2; cursor: pointer; user-select: none; }
+    thead th[data-sortable="false"] { cursor: default; }
+
+    tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tbody tr:nth-child(odd) { background: var(--row-odd); }
+    tbody tr:nth-child(even) { background: var(--row-even); }
+
+    .team { font-weight: 700; }
+    .coach { display: flex; align-items: center; gap: 10px; }
+    .coach img { width: 54px; height: 54px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); background: #0b1423; }
+    .coach .name { font-weight: 700; }
+    .muted { color: var(--muted); font-size: 12px; }
+
+    .sorted-asc::after { content: " ▲"; color: var(--accent); }
+    .sorted-desc::after { content: " ▼"; color: var(--accent2); }
+
+    tfoot { color: var(--muted); font-size: 12px; padding: 8px 12px; }
+    tfoot td { padding: 12px; }
+
+    @media (max-width: 800px) {
+      .coach .name { display: block; }
+      thead th:nth-child(2), tbody td:nth-child(2) { width: 70px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Active NFL Head Coaches — Sortable Table</h1>
+    <div class="sub">Data reflects each coach's <strong>active regular-season record with their current team</strong> as of early September 2025. Win% = Wins / (Wins + Losses); ties are omitted from the percentage.
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="toolbar">
+      <div class="note">Click headers to sort. Type to filter.</div>
+      <div class="search">
+        <input id="filter" type="search" placeholder="Filter by team or coach…" aria-label="Filter table" />
+      </div>
+    </div>
+
+    <div style="overflow:auto; border-radius: 0 0 16px 16px;">
+      <table id="coachTable" aria-describedby="tableHelp">
+        <thead>
+          <tr>
+            <th data-key="team">Team</th>
+            <th data-sortable="false">Picture</th>
+            <th data-key="coach">Head Coach</th>
+            <th data-key="games" data-type="number">Games</th>
+            <th data-key="wins" data-type="number">Wins</th>
+            <th data-key="losses" data-type="number">Losses</th>
+            <th data-key="pct" data-type="number">Win%</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7" id="tableHelp" class="muted">Images load live via the Wikipedia API. Records shown are the coach's <em>active</em> record with their current team (career totals can differ). Ties are excluded when computing Win%.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    // Minimal data set (active records with current team). Source: Wikipedia "List of current NFL head coaches" (Sep 2025).
+    // Note on images: we query MediaWiki API for pageimages using an explicit title for ambiguous names.
+    const COACHES = [
+      { team: 'Arizona Cardinals', coach: 'Jonathan Gannon', wins: 12, losses: 22 },
+      { team: 'Atlanta Falcons', coach: 'Raheem Morris', wins: 8, losses: 9 },
+      { team: 'Baltimore Ravens', coach: 'John Harbaugh', wins: 172, losses: 104 },
+      { team: 'Buffalo Bills', coach: 'Sean McDermott', wins: 86, losses: 45 },
+      { team: 'Carolina Panthers', coach: 'Dave Canales', wins: 5, losses: 12 },
+      { team: 'Chicago Bears', coach: 'Ben Johnson', wins: 0, losses: 0, wikiTitle: 'Ben Johnson (American football coach)' },
+      { team: 'Cincinnati Bengals', coach: 'Zac Taylor', wins: 46, losses: 52 },
+      { team: 'Cleveland Browns', coach: 'Kevin Stefanski', wins: 40, losses: 44 },
+      { team: 'Dallas Cowboys', coach: 'Brian Schottenheimer', wins: 0, losses: 0 },
+      { team: 'Denver Broncos', coach: 'Sean Payton', wins: 18, losses: 16 },
+      { team: 'Detroit Lions', coach: 'Dan Campbell', wins: 39, losses: 28 },
+      { team: 'Green Bay Packers', coach: 'Matt LaFleur', wins: 67, losses: 33 },
+      { team: 'Houston Texans', coach: 'DeMeco Ryans', wins: 20, losses: 14 },
+      { team: 'Indianapolis Colts', coach: 'Shane Steichen', wins: 17, losses: 17 },
+      { team: 'Jacksonville Jaguars', coach: 'Liam Coen', wins: 0, losses: 0 },
+      { team: 'Kansas City Chiefs', coach: 'Andy Reid', wins: 143, losses: 53 },
+      { team: 'Las Vegas Raiders', coach: 'Pete Carroll', wins: 0, losses: 0 },
+      { team: 'Los Angeles Chargers', coach: 'Jim Harbaugh', wins: 11, losses: 6 },
+      { team: 'Los Angeles Rams', coach: 'Sean McVay', wins: 80, losses: 52 },
+      { team: 'Miami Dolphins', coach: 'Mike McDaniel', wins: 28, losses: 23 },
+      { team: 'Minnesota Vikings', coach: 'Kevin O\'Connell', wins: 34, losses: 17 },
+      { team: 'New England Patriots', coach: 'Mike Vrabel', wins: 0, losses: 0 },
+      { team: 'New Orleans Saints', coach: 'Kellen Moore', wins: 0, losses: 0 },
+      { team: 'New York Giants', coach: 'Brian Daboll', wins: 18, losses: 32 },
+      { team: 'New York Jets', coach: 'Aaron Glenn', wins: 0, losses: 0 },
+      { team: 'Philadelphia Eagles', coach: 'Nick Sirianni', wins: 48, losses: 20 },
+      { team: 'Pittsburgh Steelers', coach: 'Mike Tomlin', wins: 183, losses: 107 },
+      { team: 'San Francisco 49ers', coach: 'Kyle Shanahan', wins: 70, losses: 62 },
+      { team: 'Seattle Seahawks', coach: 'Mike Macdonald', wins: 10, losses: 7, wikiTitle: 'Mike Macdonald (American football coach)' },
+      { team: 'Tampa Bay Buccaneers', coach: 'Todd Bowles', wins: 27, losses: 24 },
+      { team: 'Tennessee Titans', coach: 'Brian Callahan', wins: 3, losses: 14, wikiTitle: 'Brian Callahan (American football coach)' },
+      { team: 'Washington Commanders', coach: 'Dan Quinn', wins: 12, losses: 5 }
+    ];
+
+    // Compute derived fields
+    function computePct(w, l) {
+      const denom = w + l; // ties omitted by design
+      if (!denom) return 0;
+      return +( (w / denom) * 100 ).toFixed(3);
+    }
+
+    const rows = COACHES.map(c => ({
+      ...c,
+      games: c.wins + c.losses, // ties omitted
+      pct: computePct(c.wins, c.losses)
+    }));
+
+    const tbody = document.querySelector('#coachTable tbody');
+
+    function render(data) {
+      tbody.innerHTML = data.map(c => `
+        <tr>
+          <td class="team">${c.team}</td>
+          <td><img alt="${c.coach}" data-coach="${c.coach}" width="54" height="54" loading="lazy"/></td>
+          <td class="coach"><span class="name">${c.coach}</span></td>
+          <td>${c.games}</td>
+          <td>${c.wins}</td>
+          <td>${c.losses}</td>
+          <td>${c.pct.toFixed(3)}</td>
+        </tr>
+      `).join('');
+      // After rows are in the DOM, fetch images lazily
+      Array.from(tbody.querySelectorAll('img[data-coach]')).forEach((img, i) => {
+        const coach = data[i];
+        const title = encodeURIComponent(coach.wikiTitle || coach.coach);
+        const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=128&origin=*`;
+        fetch(url)
+          .then(r => r.json())
+          .then(j => {
+            const pages = j.query && j.query.pages ? j.query.pages : {};
+            const first = Object.values(pages)[0];
+            const src = first && first.thumbnail ? first.thumbnail.source : null;
+            if (src) img.src = src; else { img.alt = coach.coach + ' (no image)'; }
+          })
+          .catch(() => { img.alt = coach.coach + ' (image unavailable)'; });
+      });
+    }
+
+    // Sorting
+    let currentSort = { key: 'team', dir: 1 };
+    const thead = document.querySelector('#coachTable thead');
+
+    function sortBy(key, type = 'string') {
+      currentSort = currentSort.key === key ? { key, dir: -currentSort.dir } : { key, dir: 1 };
+      const sorted = [...rows].sort((a, b) => {
+        let v1 = a[key], v2 = b[key];
+        if (type === 'number') { v1 = +v1; v2 = +v2; }
+        return (v1 > v2 ? 1 : v1 < v2 ? -1 : 0) * currentSort.dir;
+      });
+      // header indicators
+      thead.querySelectorAll('th').forEach(th => th.classList.remove('sorted-asc','sorted-desc'));
+      const th = thead.querySelector(`th[data-key="${key}"]`);
+      if (th) th.classList.add(currentSort.dir === 1 ? 'sorted-asc' : 'sorted-desc');
+      render(filtered ? sorted.filter(filtered) : sorted);
+    }
+
+    thead.addEventListener('click', (e) => {
+      const th = e.target.closest('th');
+      if (!th || th.dataset.sortable === 'false') return;
+      const key = th.dataset.key;
+      const type = th.dataset.type || 'string';
+      sortBy(key, type);
+    });
+
+    // Filter
+    let filtered = null;
+    const input = document.getElementById('filter');
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      filtered = q ? (row => row.team.toLowerCase().includes(q) || row.coach.toLowerCase().includes(q)) : null;
+      sortBy(currentSort.key, thead.querySelector(`th[data-key="${currentSort.key}"]`)?.dataset.type || 'string');
+    });
+
+    // Initial render
+    render(rows);
+    sortBy('team');
+  </script>
+</body>
+</html>
