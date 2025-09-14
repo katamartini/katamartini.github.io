@@ -38,7 +38,8 @@
     thead th { position: sticky; top: 0; background: var(--header); border-bottom: 1px solid var(--border); text-align: left; padding: 10px 12px; font-size: 13px; letter-spacing: 0.01em; z-index: 2; cursor: pointer; user-select: none; }
     thead th[data-sortable="false"] { cursor: default; }
 
-    tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    /* slightly taller rows */
+    tbody td { padding: 12px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tbody tr:nth-child(odd) { background: var(--row-odd); }
     tbody tr:nth-child(even) { background: var(--row-even); }
 
@@ -89,13 +90,14 @@
             <th data-key="games" data-type="number">Games</th>
             <th data-key="wins" data-type="number">Wins</th>
             <th data-key="losses" data-type="number">Losses</th>
+            <th data-key="ties" data-type="number">Ties</th>
             <th data-key="pct" data-type="number">Win%</th>
           </tr>
         </thead>
         <tbody></tbody>
         <tfoot>
           <tr>
-            <td colspan="8" id="tableHelp" class="muted">Images load via Wikipedia. If a coach photo isn’t found, the team’s logo is used. Logo order of preference: <strong>NFL.com club logo</strong> → Wikipedia page image → Wikidata/Commons (filtered to avoid wordmarks) → Wikimedia Commons search → neutral placeholder. Records shown are the coach's <em>active</em> record with their current team (career totals can differ). Ties are excluded when computing Win%.</td>
+            <td colspan="9" id="tableHelp" class="muted">Images load via Wikipedia. If a coach photo isn’t found, the team’s logo is used. Logo order of preference: <strong>NFL.com club logo</strong> → Wikipedia page image → Wikidata/Commons (filtered to avoid wordmarks) → Wikimedia Commons search → neutral placeholder. Records shown are the coach's <em>active</em> record with their current team (career totals can differ). Ties are excluded when computing Win%.</td>
           </tr>
         </tfoot>
       </table>
@@ -348,7 +350,7 @@
       { team: 'Buffalo Bills', coach: 'Sean McDermott', wins: 86, losses: 45, hired: 2017 },
       { team: 'Carolina Panthers', coach: 'Dave Canales', wins: 5, losses: 12, hired: 2024 },
       { team: 'Chicago Bears', coach: 'Ben Johnson', wins: 0, losses: 0, hired: 2025, wikiTitle: 'Ben Johnson (American football coach)' },
-      { team: 'Cincinnati Bengals', coach: 'Zac Taylor', wins: 46, losses: 52, hired: 2019 },
+      { team: 'Cincinnati Bengals', coach: 'Zac Taylor', wins: 46, losses: 52, ties: 1, hired: 2019 },
       { team: 'Cleveland Browns', coach: 'Kevin Stefanski', coachPhoto: '', wins: 40, losses: 44, hired: 2020 },
       { team: 'Dallas Cowboys', coach: 'Brian Schottenheimer', wins: 0, losses: 0, hired: 2025 },
       { team: 'Denver Broncos', coach: 'Sean Payton', wins: 18, losses: 16, hired: 2023 },
@@ -378,10 +380,11 @@
 
     function buildRows(base, ytd) {
       return base.map(function(c){
-        var y = ytd[c.team] || { w: 0, l: 0 };
+        var y = ytd[c.team] || { w: 0, l: 0, t: 0 };
         var wins = c.wins + (y.w || 0);
         var losses = c.losses + (y.l || 0);
-        return { team: c.team, coach: c.coach, wikiTitle: c.wikiTitle, hired: c.hired, wins: wins, losses: losses, games: wins + losses, pct: computePct(wins, losses) };
+        var ties = (c.ties || 0) + (y.t || 0);
+        return { team: c.team, coach: c.coach, wikiTitle: c.wikiTitle, hired: c.hired, wins: wins, losses: losses, ties: ties, games: wins + losses + ties, pct: computePct(wins, losses) };
       });
     }
 
@@ -402,6 +405,7 @@
             '<td>' + c.games + '</td>' +
             '<td>' + c.wins + '</td>' +
             '<td>' + c.losses + '</td>' +
+            '<td>' + (c.ties || 0) + '</td>' +
             '<td>' + fmtPct(c.pct) + '</td>' +
           '</tr>'
         );
@@ -479,7 +483,8 @@
               };
               var w = get('wins'); if (w == null) w = get('W'); if (w == null) w = get('w'); if (w == null) w = 0;
               var l = get('losses'); if (l == null) l = get('L'); if (l == null) l = get('l'); if (l == null) l = 0;
-              if (name) map[normalizeTeamName(String(name))] = { w: +w || 0, l: +l || 0 };
+              var t = get('ties'); if (t == null) t = get('T'); if (t == null) t = get('t'); if (t == null) t = 0;
+              if (name) map[normalizeTeamName(String(name))] = { w: +w || 0, l: +l || 0, t: +t || 0 };
             }
             return map;
           }
@@ -589,11 +594,11 @@
       var rowCount = document.querySelectorAll('#coachTable tbody tr').length;
       rowCount === BASE.length ? pass('initial render row count matches teams') : fail('row count', rowCount, BASE.length);
 
-      // Hired column exists and rows have 8 cells
+      // Header/row counts (now 9 columns)
       var headerCells = document.querySelectorAll('#coachTable thead th').length;
-      headerCells === 8 ? pass('header has 8 columns (incl. Hired)') : fail('header column count', headerCells, 8);
+      headerCells === 9 ? pass('header has 9 columns (incl. Hired & Ties)') : fail('header column count', headerCells, 9);
       var firstRowCells = document.querySelectorAll('#coachTable tbody tr:first-child td').length;
-      firstRowCells === 8 ? pass('each row has 8 cells') : fail('row cell count', firstRowCells, 8);
+      firstRowCells === 9 ? pass('each row has 9 cells') : fail('row cell count', firstRowCells, 9);
 
       // Default sort should be Games DESC
       var gamesHeader = document.querySelector('th[data-key="games"]');
@@ -639,6 +644,20 @@
       // Helper test: firstValue
       var fv = firstValue({a:1,b:2});
       fv === 1 ? pass('firstValue basic') : fail('firstValue', fv, 1);
+
+      // Games includes ties (CIN example)
+      var cinBase = BASE.find(function(x){ return x.team==='Cincinnati Bengals'; });
+      var cinRow = buildRows([cinBase], {})[0];
+      var cinExpected = (cinBase.wins||0) + (cinBase.losses||0) + (cinBase.ties||0);
+      (cinRow.games === cinExpected)
+        ? pass('Games column includes ties (CIN)')
+        : fail('CIN games with ties', cinRow.games, cinExpected);
+
+      // Ties column renders a number
+      var tiesCell = document.querySelector('#coachTable tbody tr:first-child td:nth-child(8)');
+      (tiesCell && /^[0-9]+$/.test(tiesCell.textContent.trim()))
+        ? pass('Ties column renders numeric values')
+        : fail('Ties column numeric', tiesCell ? tiesCell.textContent : 'n/a', 'a non-negative integer');
 
       document.getElementById('testOutput').textContent = out.join('\n');
     })();
