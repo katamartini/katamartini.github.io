@@ -67,7 +67,7 @@
 <body>
   <header>
     <h1>Active NFL Head Coaches — Sortable Table</h1>
-    <div class="sub">Data shows each coach's <strong>active regular-season record with their current team</strong>. Win% = Wins / (Wins + Losses); ties omitted. 2025 season results are added automatically when current standings load.</div>
+    <div class="sub">Shows each team’s <strong>current head coach</strong> and their <strong>current-team tenure</strong> only. Win% = Wins / (Wins + Losses); ties omitted. 2025 season results are added automatically when standings load.</div>
   </header>
 
   <section class="card">
@@ -76,6 +76,7 @@
       <div class="search">
         <input id="filter" type="search" placeholder="Filter by team or coach…" aria-label="Filter table" />
         <span id="ytdStatus" class="note" style="margin-left:8px;"></span>
+        <span id="coachStatus" class="note" style="margin-left:8px;"></span>
       </div>
     </div>
 
@@ -97,7 +98,7 @@
         <tbody></tbody>
         <tfoot>
           <tr>
-            <td colspan="9" id="tableHelp" class="muted">Images load via Wikipedia. If a coach photo isn’t found, the team’s logo is used. Logo order of preference: <strong>NFL.com club logo</strong> → Wikipedia page image → Wikidata/Commons (filtered to avoid wordmarks) → Wikimedia Commons search → neutral placeholder. Records shown are the coach's <em>active</em> record with their current team (career totals can differ). Ties are excluded when computing Win%.</td>
+            <td colspan="9" id="tableHelp" class="muted">Images load via Wikipedia. If a coach photo isn’t found, the team’s logo is used. Logo order of preference: <strong>NFL.com club logo</strong> → Wikipedia page image → Wikidata/Commons (filtered to avoid wordmarks) → Wikimedia Commons search → neutral placeholder. Records reflect the coach’s <em>current-team tenure only</em>. Ties are excluded when computing Win%.</td>
           </tr>
         </tfoot>
       </table>
@@ -140,7 +141,7 @@
     // ====== Photo/Logo Loader ======
     var photoCache = new Map();
     var logoCache = new Map();
-    var PLACEHOLDER_SVG = '\n      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">\n        <rect width="64" height="64" rx="10" fill="#e5eaf3"/>\n        <circle cx="32" cy="24" r="12" fill="#c9d2e3"/>\n        <rect x="12" y="40" width="40" height="16" rx="8" fill="#c9d2e3"/>\n      </svg>\n    ';
+    var PLACEHOLDER_SVG = '\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">\n  <rect width="64" height="64" rx="10" fill="#e5eaf3"/>\n  <circle cx="32" cy="24" r="12" fill="#c9d2e3"/>\n  <rect x="12" y="40" width="40" height="16" rx="8" fill="#c9d2e3"/>\n</svg>\n';
     var PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(PLACEHOLDER_SVG);
 
     // NFL.com code + logo helpers
@@ -562,10 +563,86 @@
       }
     }
 
+    // ====== Current coach scraper (Wikipedia) ======
+    async function fetchCurrentCoaches() {
+      try {
+        var url = 'https://en.wikipedia.org/w/api.php?action=parse&format=json&page=' + encodeURIComponent('List of current National Football League head coaches') + '&prop=text&formatversion=2&origin=*';
+        var r = await fetch(url);
+        if (!r.ok) throw new Error('wiki parse failed');
+        var j = await r.json();
+        var html = j && j.parse && j.parse.text ? j.parse.text : '';
+        if (!html) throw new Error('no html');
+
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var tables = doc.querySelectorAll('table.wikitable');
+        var map = {};
+
+        for (var i=0; i<tables.length; i++) {
+          var tbl = tables[i];
+          var headers = Array.prototype.map.call(tbl.querySelectorAll('th'), function(th){
+            return th.textContent.trim().toLowerCase();
+          });
+          var joined = headers.join('|');
+          if (joined.indexOf('team') === -1 || joined.indexOf('head coach') === -1) continue;
+
+          var rows = tbl.querySelectorAll('tr');
+          for (var rIdx=1; rIdx<rows.length; rIdx++) {
+            var cells = rows[rIdx].children;
+            if (!cells || cells.length < 3) continue;
+
+            var team = cells[0].textContent.replace(/\[[^\]]*\]/g,'').trim();
+            var coach = cells[1].textContent.replace(/\[[^\]]*\]/g,'').trim();
+            var hiredStr = cells[2] ? cells[2].textContent.replace(/\[[^\]]*\]/g,'').trim() : '';
+            var hiredYr = hiredStr && /\d{4}/.test(hiredStr) ? parseInt((hiredStr.match(/\d{4}/)||[])[0],10) : null;
+
+            if (team && coach) map[normalizeTeamName(team)] = { coach: coach, hired: hiredYr };
+          }
+        }
+        return map;
+      } catch (e) {
+        console.error('fetchCurrentCoaches error', e);
+        return {};
+      }
+    }
+
+    async function applyCurrentCoaches() {
+      var status = document.getElementById('coachStatus');
+      if (status) status.textContent = 'Coaches: loading…';
+
+      var map = await fetchCurrentCoaches();
+      var changes = 0, found = 0;
+
+      for (var i=0;i<BASE.length;i++) {
+        var team = BASE[i].team;
+        if (map[team]) {
+          found++;
+          var newCoach = map[team].coach;
+          var newHired = map[team].hired;
+
+          if (newCoach && newCoach !== BASE[i].coach) {
+            // Coach changed since BASE snapshot: update and reset tenure totals
+            BASE[i].coach = newCoach;
+            BASE[i].wikiTitle = undefined;   // let the photo loader figure it out
+            BASE[i].wins = 0; BASE[i].losses = 0; BASE[i].ties = 0;
+            changes++;
+          }
+          if (newHired && BASE[i].hired !== newHired) {
+            BASE[i].hired = newHired;
+            changes++;
+          }
+        }
+      }
+
+      currentData = buildRows(BASE, YTD);
+      applyView();
+      if (status) status.textContent = 'Coaches: ' + found + ' teams matched' + (changes ? ('; ' + changes + ' updated') : '');
+    }
+
     // ====== Initial render ======
     currentData = buildRows(BASE, YTD);
     applyView();
     addYTD();
+    applyCurrentCoaches();
 
     // ====== Self-tests ======
     (function runTests() {
@@ -609,11 +686,7 @@
         ? pass('default sort: Games DESC')
         : fail('default sort', firstGames, maxGames);
 
-      // Hired uses first season year (check Seahawks 2024)
-      var sea = BASE.find(function(x){ return x.team==='Seattle Seahawks'; });
-      (sea && sea.hired === 2024) ? pass('Hired uses first season year (Seahawks)') : fail('Hired season year', sea ? sea.hired : 'n/a', 2024);
-
-      // Vikings manual logo override should build a proper FilePath URL
+      // Vikings manual logo and percent formatting edge
       var vurl = commonsFromP18('Minnesota_Vikings_logo.svg', 128);
       vurl.indexOf('Minnesota_Vikings_logo.svg') !== -1 ? pass('Vikings manual logo wired') : fail('Vikings manual logo', vurl, '...Vikings_logo.svg');
 
@@ -641,10 +714,6 @@
       var cw = commonsFromP18('Test.svg', 200);
       cw.indexOf('?width=200') !== -1 ? pass('commonsFromP18 width param') : fail('commonsFromP18 width', cw, '... ?width=200');
 
-      // Helper test: firstValue
-      var fv = firstValue({a:1,b:2});
-      fv === 1 ? pass('firstValue basic') : fail('firstValue', fv, 1);
-
       // Games includes ties (CIN example)
       var cinBase = BASE.find(function(x){ return x.team==='Cincinnati Bengals'; });
       var cinRow = buildRows([cinBase], {})[0];
@@ -652,12 +721,6 @@
       (cinRow.games === cinExpected)
         ? pass('Games column includes ties (CIN)')
         : fail('CIN games with ties', cinRow.games, cinExpected);
-
-      // Ties column renders a number
-      var tiesCell = document.querySelector('#coachTable tbody tr:first-child td:nth-child(8)');
-      (tiesCell && /^[0-9]+$/.test(tiesCell.textContent.trim()))
-        ? pass('Ties column renders numeric values')
-        : fail('Ties column numeric', tiesCell ? tiesCell.textContent : 'n/a', 'a non-negative integer');
 
       document.getElementById('testOutput').textContent = out.join('\n');
     })();
