@@ -3,200 +3,252 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spreadsheet Table Viewer</title>
+  <title>Most Played Heroes</title>
   <style>
     :root {
-      --bg: #f6f8fb;
-      --panel: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #dbe3ee;
-      --accent: #2563eb;
-      --accent-soft: #e8f0ff;
-      --hover: #f8fbff;
-      --bar-bg: #e5edf9;
-      --bar-green: #22c55e;
-      --bar-blue: #2563eb;
+      --bg: #1f2430;
+      --panel: #2a3140;
+      --panel-2: #323a4a;
+      --header: #252c39;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #b7ff2a;
+      --border: #3a4353;
+      --bar-bg: #434d5f;
+      --bar-green: #98e61d;
+      --bar-blue: #ff2a1a;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 24px;
       background: var(--bg);
       color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
     }
+
     .wrap {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-    .card {
+      width: 420px;
+      max-width: 100%;
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
-    .header {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: space-between;
+
+    .titlebar {
+      padding: 10px 12px 6px;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #ffffff;
     }
-    .title-group h1 {
-      margin: 0 0 4px 0;
-      font-size: 22px;
-    }
-    .title-group p {
-      margin: 0;
+
+    .titlebar .sub {
+      font-size: 10px;
+      font-weight: 400;
       color: var(--muted);
-      font-size: 14px;
+      margin-left: 4px;
+      vertical-align: middle;
     }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    input[type="search"] {
-      width: 280px;
-      max-width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    button {
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover { background: var(--hover); }
-    .status {
-      padding: 14px 20px;
-      color: var(--muted);
-      font-size: 14px;
-      border-bottom: 1px solid var(--border);
-      background: #fcfdff;
-    }
-    .table-wrap {
-      overflow: auto;
-      max-height: calc(100vh - 220px);
-    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 900px;
     }
-    th, td {
-      border-bottom: 1px solid var(--border);
-      padding: 10px 12px;
+
+    thead th {
+      background: var(--header);
+      color: #ffffff;
       text-align: left;
-      vertical-align: middle;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    td {
-      white-space: normal;
-    }
-    th {
-      position: sticky;
-      top: 0;
-      background: #f9fbff;
-      z-index: 1;
-      user-select: none;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
+      user-select: none;
     }
-    th:hover {
-      background: var(--accent-soft);
+
+    thead th:hover {
+      background: #2b3342;
     }
-    tbody tr:hover {
-      background: #fafcff;
+
+    tbody tr:nth-child(odd) {
+      background: var(--panel);
     }
-    .sort-indicator {
-      margin-left: 6px;
+
+    tbody tr:nth-child(even) {
+      background: var(--panel-2);
+    }
+
+    tbody td {
+      padding: 8px 10px;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-size: 12px;
+    }
+
+    .hero-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .icon-slot {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      background: linear-gradient(135deg, #4b5563, #2f3745);
+      border: 1px solid #596274;
+      display: block;
+      overflow: hidden;
+    }
+
+    .icon-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-meta {
+      min-width: 0;
+    }
+
+    .hero-name {
       color: var(--accent);
-      font-weight: bold;
-    }
-    .empty {
-      padding: 28px 20px;
-      color: var(--muted);
-    }
-    .note {
-      padding: 14px 20px 20px 20px;
-      color: var(--muted);
       font-size: 13px;
-      line-height: 1.45;
+      font-weight: 700;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .bar-cell {
-      min-width: 220px;
+
+    .hero-date {
+      color: #9fb0c7;
+      font-size: 11px;
+      margin-top: 2px;
+      line-height: 1.1;
     }
+
+    .matches-cell {
+      min-width: 140px;
+    }
+
+    .matches-value {
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
     .bar-wrap {
       width: 100%;
-      height: 20px;
+      height: 4px;
       background: var(--bar-bg);
-      overflow: hidden;
       position: relative;
-      border-radius: 0;
+      overflow: hidden;
     }
-    .bar-green {
+
+    .bar-red {
       position: absolute;
+      top: 0;
       left: 0;
-      top: 0;
-      height: 100%;
-      background: var(--bar-green);
-      border-radius: 0;
-    }
-    .bar-blue {
-      position: absolute;
-      top: 0;
       height: 100%;
       background: var(--bar-blue);
-      border-radius: 0;
     }
-    .bar-label {
-      margin-top: 4px;
-      font-size: 12px;
+
+    .win-cell {
+      text-align: right;
+      white-space: nowrap;
+      width: 70px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .totals-row td {
       color: var(--muted);
     }
-    a { color: var(--accent); }
+
+    .sort-indicator {
+      margin-left: 4px;
+      color: #cbd5e1;
+      font-size: 10px;
+    }
+
+    .status {
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      background: #222834;
+    }
+
+    .empty {
+      padding: 14px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      display: none;
+    }
+
+    .topbar {
+      padding: 8px 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar input {
+      width: 190px;
+      max-width: 100%;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 6px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .topbar button {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 6px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .topbar button:hover {
+      background: #1d2330;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <div class="header">
-        <div class="title-group">
-          <h1>Spreadsheet Table Viewer</h1>
-          <p>Loads your Google Sheet into a sortable, filterable table.</p>
-        </div>
-        <div class="controls">
-          <input id="searchBox" type="search" placeholder="Filter rows..." />
-          <button id="resetBtn" type="button">Reset</button>
-        </div>
-      </div>
-
-      <div id="status" class="status">Loading spreadsheet data...</div>
-
-      <div class="table-wrap">
-        <table id="dataTable" aria-label="Spreadsheet data table">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-        <div id="emptyState" class="empty" style="display:none;">No rows match the current filter.</div>
-      </div>
-
-      <div class="note">
-        Column 10 is displayed as a horizontal stacked bar chart using column 8 as the total and column 9 as the green portion. Column 8 is hidden.
-      </div>
+    <div class="titlebar">
+      MOST PLAYED HEROES<span class="sub">ALL TIME</span>
     </div>
+
+    <div class="topbar">
+      <input id="searchBox" type="search" placeholder="Filter heroes..." />
+      <button id="resetBtn" type="button">Reset</button>
+    </div>
+
+    <div id="status" class="status">Loading spreadsheet data...</div>
+
+    <table id="dataTable" aria-label="Most played heroes">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="emptyState" class="empty">No rows match the current filter.</div>
   </div>
 
   <script>
@@ -204,10 +256,14 @@
     const GID = "0";
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-    const CHART_COLUMN_INDEX = 9;     // column 10
-    const TOTAL_VALUE_INDEX = 7;      // column 8
-    const FRACTION_VALUE_INDEX = 8;   // column 9
-    const HIDDEN_COLUMN_INDEXES = [7]; // hide column 8
+    // Spreadsheet columns
+    const DATE_INDEX = 0;            // Last
+    const HERO_NAME_INDEX = 1;       // Column 2
+    const MATCHES_INDEX = 7;         // Column 8 (hidden as raw column)
+    const WINS_INDEX = 8;            // Column 9
+    const WINRATE_INDEX = 5;         // P% in screenshot-like layout
+    const ICON_INDEX = null;         // set to a real column index later if you add icon URLs
+    const HIDDEN_COLUMN_INDEXES = [7, 2, 3, 4, 6, 8, 9]; // hide unused/raw columns
 
     const table = document.getElementById("dataTable");
     const thead = table.querySelector("thead");
@@ -221,11 +277,7 @@
     let allRows = [];
     let filteredRows = [];
     let sortState = { col: -1, dir: "asc" };
-    let maxRegularBarValue = 0;
-
-    function isHiddenColumn(idx) {
-      return HIDDEN_COLUMN_INDEXES.includes(idx);
-    }
+    let maxMatches = 0;
 
     function parseCSV(text) {
       const rows = [];
@@ -286,7 +338,7 @@
       if (v === "") return { type: "empty", value: "" };
 
       const num = parseNumeric(v);
-      if (num !== null && /^[-+]?[$]?\d[\d,]*\.?\d*%?$/.test(v)) {
+      if (num !== null && /^[-+]?\d[\d,]*\.?\d*%?$/.test(v)) {
         return { type: "number", value: num };
       }
 
@@ -296,17 +348,6 @@
       }
 
       return { type: "text", value: v.toLowerCase() };
-    }
-
-    function isTotalRow(row) {
-      return String(row[0] ?? "").trim() === "";
-    }
-
-    function getSortValue(row, columnIndex) {
-      if (columnIndex === CHART_COLUMN_INDEX) {
-        return row[TOTAL_VALUE_INDEX];
-      }
-      return row[columnIndex];
     }
 
     function compareValues(a, b) {
@@ -323,38 +364,69 @@
       return 0;
     }
 
-    function renderStackedBar(totalValue, fractionValue) {
-      const total = parseNumeric(totalValue) ?? 0;
-      const fraction = parseNumeric(fractionValue) ?? 0;
-      const cappedFraction = Math.max(0, Math.min(fraction, total));
+    function isTotalRow(row) {
+      return normalizeValue(row[DATE_INDEX]) === "";
+    }
 
-      const totalPct = maxRegularBarValue > 0 ? Math.max(0, (total / maxRegularBarValue) * 100) : 0;
-      const greenPct = maxRegularBarValue > 0 ? Math.max(0, (cappedFraction / maxRegularBarValue) * 100) : 0;
-      const bluePct = Math.max(0, totalPct - greenPct);
+    function getSortValue(row, columnIndex) {
+      return row[columnIndex];
+    }
+
+    function renderHeroCell(row) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "hero-cell";
+
+      const icon = document.createElement("div");
+      icon.className = "icon-slot";
+
+      if (ICON_INDEX !== null && normalizeValue(row[ICON_INDEX])) {
+        const img = document.createElement("img");
+        img.src = row[ICON_INDEX];
+        img.alt = normalizeValue(row[HERO_NAME_INDEX]);
+        icon.appendChild(img);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "hero-meta";
+
+      const name = document.createElement("div");
+      name.className = "hero-name";
+      name.textContent = row[HERO_NAME_INDEX] || "";
+
+      const date = document.createElement("div");
+      date.className = "hero-date";
+      date.textContent = row[DATE_INDEX] || "";
+
+      meta.appendChild(name);
+      meta.appendChild(date);
+
+      wrapper.appendChild(icon);
+      wrapper.appendChild(meta);
+
+      return wrapper;
+    }
+
+    function renderMatchesCell(row) {
+      const matches = parseNumeric(row[MATCHES_INDEX]) ?? 0;
+      const pct = maxMatches > 0 ? (matches / maxMatches) * 100 : 0;
 
       const wrapper = document.createElement("div");
-      wrapper.className = "bar-cell";
+      wrapper.className = "matches-cell";
+
+      const value = document.createElement("div");
+      value.className = "matches-value";
+      value.textContent = matches;
 
       const barWrap = document.createElement("div");
       barWrap.className = "bar-wrap";
 
-      const green = document.createElement("div");
-      green.className = "bar-green";
-      green.style.width = `${greenPct}%`;
+      const bar = document.createElement("div");
+      bar.className = "bar-red";
+      bar.style.width = `${pct}%`;
 
-      const blue = document.createElement("div");
-      blue.className = "bar-blue";
-      blue.style.left = `${greenPct}%`;
-      blue.style.width = `${bluePct}%`;
-
-      const label = document.createElement("div");
-      label.className = "bar-label";
-      label.textContent = total;
-
-      barWrap.appendChild(green);
-      barWrap.appendChild(blue);
+      barWrap.appendChild(bar);
+      wrapper.appendChild(value);
       wrapper.appendChild(barWrap);
-      wrapper.appendChild(label);
 
       return wrapper;
     }
@@ -371,41 +443,55 @@
       filteredRows.forEach((row) => {
         const tr = document.createElement("tr");
 
-        headers.forEach((_, idx) => {
-          if (isHiddenColumn(idx)) return;
+        if (isTotalRow(row)) {
+          tr.classList.add("totals-row");
+        }
 
-          const td = document.createElement("td");
+        // Hero column
+        const heroTd = document.createElement("td");
+        if (!isTotalRow(row)) {
+          heroTd.appendChild(renderHeroCell(row));
+        } else {
+          heroTd.textContent = "";
+        }
+        tr.appendChild(heroTd);
 
-          if (idx === CHART_COLUMN_INDEX) {
-            if (isTotalRow(row)) {
-              td.textContent = row[idx] ?? "";
-            } else {
-              td.appendChild(renderStackedBar(row[TOTAL_VALUE_INDEX], row[FRACTION_VALUE_INDEX]));
-            }
-          } else {
-            td.textContent = row[idx] ?? "";
-          }
+        // Matches column
+        const matchesTd = document.createElement("td");
+        if (!isTotalRow(row)) {
+          matchesTd.appendChild(renderMatchesCell(row));
+        } else {
+          matchesTd.textContent = "";
+        }
+        tr.appendChild(matchesTd);
 
-          tr.appendChild(td);
-        });
+        // Win % column
+        const winTd = document.createElement("td");
+        winTd.className = "win-cell";
+        winTd.textContent = isTotalRow(row) ? "" : (row[WINRATE_INDEX] ?? "");
+        tr.appendChild(winTd);
 
         tbody.appendChild(tr);
       });
 
-      statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
+      statusEl.textContent = `${filteredRows.length} row(s) shown`;
     }
 
     function renderHeader() {
       thead.innerHTML = "";
       const tr = document.createElement("tr");
 
-      headers.forEach((header, idx) => {
-        if (isHiddenColumn(idx)) return;
+      const columns = [
+        { label: "Hero", index: HERO_NAME_INDEX },
+        { label: "Matches", index: MATCHES_INDEX },
+        { label: "Win %", index: WINRATE_INDEX }
+      ];
 
+      columns.forEach(col => {
         const th = document.createElement("th");
-        th.textContent = header || `Column ${idx + 1}`;
+        th.textContent = col.label;
 
-        if (sortState.col === idx) {
+        if (sortState.col === col.index) {
           const span = document.createElement("span");
           span.className = "sort-indicator";
           span.textContent = sortState.dir === "asc" ? "▲" : "▼";
@@ -413,15 +499,15 @@
         }
 
         th.addEventListener("click", () => {
-          if (sortState.col === idx) {
+          if (sortState.col === col.index) {
             sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
           } else {
-            sortState.col = idx;
-            sortState.dir = "asc";
+            sortState.col = col.index;
+            sortState.dir = "desc";
           }
 
           filteredRows.sort((a, b) => {
-            const result = compareValues(getSortValue(a, idx), getSortValue(b, idx));
+            const result = compareValues(getSortValue(a, col.index), getSortValue(b, col.index));
             return sortState.dir === "asc" ? result : -result;
           });
 
@@ -437,14 +523,17 @@
 
     function applyFilter() {
       const q = searchBox.value.trim().toLowerCase();
+
       filteredRows = !q
         ? [...allRows]
-        : allRows.filter(row => row.some(cell => String(cell ?? "").toLowerCase().includes(q)));
+        : allRows.filter(row =>
+            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(q) ||
+            String(row[DATE_INDEX] ?? "").toLowerCase().includes(q)
+          );
 
       if (sortState.col >= 0) {
-        const idx = sortState.col;
         filteredRows.sort((a, b) => {
-          const result = compareValues(getSortValue(a, idx), getSortValue(b, idx));
+          const result = compareValues(getSortValue(a, sortState.col), getSortValue(b, sortState.col));
           return sortState.dir === "asc" ? result : -result;
         });
       }
@@ -469,21 +558,26 @@
         headers = rows[0];
         allRows = rows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
-        maxRegularBarValue = Math.max(
-          ...allRows
-            .filter(row => !isTotalRow(row))
-            .map(row => parseNumeric(row[TOTAL_VALUE_INDEX]) ?? 0),
+        maxMatches = Math.max(
+          ...allRows.filter(row => !isTotalRow(row)).map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0),
           0
         );
 
         filteredRows = [...allRows];
 
+        // default sort by matches desc
+        sortState = { col: MATCHES_INDEX, dir: "desc" };
+        filteredRows.sort((a, b) => {
+          const result = compareValues(getSortValue(a, MATCHES_INDEX), getSortValue(b, MATCHES_INDEX));
+          return -result;
+        });
+
         renderHeader();
         renderTable();
       } catch (err) {
         statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
-        tbody.innerHTML = "";
         thead.innerHTML = "";
+        tbody.innerHTML = "";
         emptyState.style.display = "none";
       }
     }
@@ -492,8 +586,12 @@
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
-      sortState = { col: -1, dir: "asc" };
       filteredRows = [...allRows];
+      sortState = { col: MATCHES_INDEX, dir: "desc" };
+      filteredRows.sort((a, b) => {
+        const result = compareValues(getSortValue(a, MATCHES_INDEX), getSortValue(b, MATCHES_INDEX));
+        return -result;
+      });
       renderHeader();
       renderTable();
     });
