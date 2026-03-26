@@ -373,38 +373,47 @@
     }
 
     function renderHeroCell(row) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "hero-cell";
+  const wrapper = document.createElement("div");
+  wrapper.className = "hero-cell";
 
-      const icon = document.createElement("div");
-      icon.className = "icon-slot";
+  const icon = document.createElement("div");
+  icon.className = "icon-slot";
 
-      if (ICON_INDEX !== null && normalizeValue(row[ICON_INDEX])) {
-        const img = document.createElement("img");
-        img.src = row[ICON_INDEX];
-        img.alt = normalizeValue(row[HERO_NAME_INDEX]);
-        icon.appendChild(img);
-      }
+  const heroName = normalizeValue(row[HERO_NAME_INDEX]);
+  const fileName = `${heroName}.png`;
+  const filePath = `images/deadlock/icons/${encodeURIComponent(fileName)}`;
 
-      const meta = document.createElement("div");
-      meta.className = "hero-meta";
+  const img = document.createElement("img");
+  img.src = filePath;
+  img.alt = heroName;
+  img.loading = "lazy";
 
-      const name = document.createElement("div");
-      name.className = "hero-name";
-      name.textContent = row[HERO_NAME_INDEX] || "";
+  img.onerror = function () {
+    this.style.display = "none";
+    icon.style.background = "linear-gradient(135deg, #4b5563, #2f3745)";
+  };
 
-      const date = document.createElement("div");
-      date.className = "hero-date";
-      date.textContent = row[DATE_INDEX] || "";
+  icon.appendChild(img);
 
-      meta.appendChild(name);
-      meta.appendChild(date);
+  const meta = document.createElement("div");
+  meta.className = "hero-meta";
 
-      wrapper.appendChild(icon);
-      wrapper.appendChild(meta);
+  const name = document.createElement("div");
+  name.className = "hero-name";
+  name.textContent = heroName || "";
 
-      return wrapper;
-    }
+  const date = document.createElement("div");
+  date.className = "hero-date";
+  date.textContent = row[DATE_INDEX] || "";
+
+  meta.appendChild(name);
+  meta.appendChild(date);
+
+  wrapper.appendChild(icon);
+  wrapper.appendChild(meta);
+
+  return wrapper;
+}
 
     function renderMatchesCell(row) {
       const matches = parseNumeric(row[MATCHES_INDEX]) ?? 0;
