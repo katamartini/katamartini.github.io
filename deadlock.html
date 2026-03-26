@@ -23,10 +23,14 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       padding: 24px;
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     .wrap {
@@ -64,7 +68,7 @@
       color: #ffffff;
       text-align: left;
       font-size: 12px;
-      padding: 8px 10px;
+      padding: 7px 10px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
@@ -83,7 +87,7 @@
     }
 
     tbody td {
-      padding: 8px 10px;
+      padding: 6px 10px;
       vertical-align: middle;
       border-bottom: 1px solid rgba(255,255,255,0.03);
       font-size: 12px;
@@ -92,14 +96,14 @@
     .hero-cell {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
     }
 
     .icon-slot {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 38px;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
       background: linear-gradient(135deg, #4b5563, #2f3745);
       border: 1px solid #596274;
       display: block;
@@ -119,9 +123,9 @@
 
     .hero-name {
       color: var(--accent);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      line-height: 1.1;
+      line-height: 1.05;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -129,9 +133,9 @@
 
     .hero-date {
       color: #9fb0c7;
-      font-size: 11px;
-      margin-top: 2px;
-      line-height: 1.1;
+      font-size: 10px;
+      margin-top: 1px;
+      line-height: 1.05;
     }
 
     .matches-cell {
@@ -140,9 +144,9 @@
 
     .matches-value {
       color: #ffffff;
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .bar-wrap {
@@ -167,7 +171,7 @@
       width: 70px;
       color: #ffffff;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .totals-row td {
