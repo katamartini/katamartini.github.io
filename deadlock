@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spreadsheet Table Viewer</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #dbe3ee;
+      --accent: #2563eb;
+      --accent-soft: #e8f0ff;
+      --hover: #f8fbff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title-group h1 {
+      margin: 0 0 4px 0;
+      font-size: 22px;
+    }
+    .title-group p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    input[type="search"] {
+      width: 280px;
+      max-width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    button {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover { background: var(--hover); }
+    .status {
+      padding: 14px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      background: #fcfdff;
+    }
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 220px);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    td {
+      white-space: normal;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background: #f9fbff;
+      z-index: 1;
+      user-select: none;
+      cursor: pointer;
+    }
+    th:hover {
+      background: var(--accent-soft);
+    }
+    tbody tr:hover {
+      background: #fafcff;
+    }
+    .sort-indicator {
+      margin-left: 6px;
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .empty {
+      padding: 28px 20px;
+      color: var(--muted);
+    }
+    .note {
+      padding: 14px 20px 20px 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <div class="title-group">
+          <h1>Spreadsheet Table Viewer</h1>
+          <p>Loads your Google Sheet into a sortable, filterable table.</p>
+        </div>
+        <div class="controls">
+          <input id="searchBox" type="search" placeholder="Filter rows..." />
+          <button id="resetBtn" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div id="status" class="status">Loading spreadsheet data...</div>
+
+      <div class="table-wrap">
+        <table id="dataTable" aria-label="Spreadsheet data table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        <div id="emptyState" class="empty" style="display:none;">No rows match the current filter.</div>
+      </div>
+
+      <div class="note">
+        This page is set to load directly from your Google Sheet’s CSV export URL.<br />
+        The sheet/tab usually needs to be shared so the browser can fetch the CSV.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
+    const GID = "0";
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    const table = document.getElementById("dataTable");
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+    const statusEl = document.getElementById("status");
+    const searchBox = document.getElementById("searchBox");
+    const resetBtn = document.getElementById("resetBtn");
+    const emptyState = document.getElementById("emptyState");
+
+    let headers = [];
+    let allRows = [];
+    let filteredRows = [];
+    let sortState = { col: -1, dir: "asc" };
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+
+        if (inQuotes) {
+          if (ch === '"' && next === '"') {
+            cell += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            cell += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ",") {
+            row.push(cell);
+            cell = "";
+          } else if (ch === "\n") {
+            row.push(cell);
+            rows.push(row);
+            row = [];
+            cell = "";
+          } else if (ch === "\r") {
+          } else {
+            cell += ch;
+          }
+        }
+      }
+
+      row.push(cell);
+      rows.push(row);
+
+      return rows.filter(r => !(r.length === 1 && r[0] === ""));
+    }
+
+    function normalizeValue(value) {
+      if (value == null) return "";
+      return String(value).trim();
+    }
+
+    function inferType(value) {
+      const v = normalizeValue(value);
+      if (v === "") return { type: "empty", value: "" };
+
+      const num = Number(v.replace(/[$,%]/g, "").replace(/,/g, ""));
+      if (!Number.isNaN(num) && /^[-+]?[$]?\d[\d,]*\.?\d*%?$/.test(v)) {
+        return { type: "number", value: num };
+      }
+
+      const date = new Date(v);
+      if (!Number.isNaN(date.getTime()) && /[A-Za-z]|\d{1,2}[/-]\d{1,2}[/-]\d{2,4}/.test(v)) {
+        return { type: "date", value: date.getTime() };
+      }
+
+      return { type: "text", value: v.toLowerCase() };
+    }
+
+    function compareValues(a, b) {
+      const av = inferType(a);
+      const bv = inferType(b);
+
+      const typeOrder = { empty: 0, number: 1, date: 2, text: 3 };
+      if (av.type !== bv.type) {
+        return typeOrder[av.type] - typeOrder[bv.type];
+      }
+
+      if (av.value < bv.value) return -1;
+      if (av.value > bv.value) return 1;
+      return 0;
+    }
+
+    function renderTable() {
+      tbody.innerHTML = "";
+
+      if (!filteredRows.length) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+      }
+
+      filteredRows.forEach(row => {
+        const tr = document.createElement("tr");
+        headers.forEach((_, idx) => {
+          const td = document.createElement("td");
+          td.textContent = row[idx] ?? "";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
+    }
+
+    function renderHeader() {
+      thead.innerHTML = "";
+      const tr = document.createElement("tr");
+
+      headers.forEach((header, idx) => {
+        const th = document.createElement("th");
+        th.textContent = header || `Column ${idx + 1}`;
+
+        if (sortState.col === idx) {
+          const span = document.createElement("span");
+          span.className = "sort-indicator";
+          span.textContent = sortState.dir === "asc" ? "▲" : "▼";
+          th.appendChild(span);
+        }
+
+        th.addEventListener("click", () => {
+          if (sortState.col === idx) {
+            sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+          } else {
+            sortState.col = idx;
+            sortState.dir = "asc";
+          }
+
+          filteredRows.sort((a, b) => {
+            const result = compareValues(a[idx], b[idx]);
+            return sortState.dir === "asc" ? result : -result;
+          });
+
+          renderHeader();
+          renderTable();
+        });
+
+        tr.appendChild(th);
+      });
+
+      thead.appendChild(tr);
+    }
+
+    function applyFilter() {
+      const q = searchBox.value.trim().toLowerCase();
+      filteredRows = !q
+        ? [...allRows]
+        : allRows.filter(row => row.some(cell => String(cell ?? "").toLowerCase().includes(q)));
+
+      if (sortState.col >= 0) {
+        const idx = sortState.col;
+        filteredRows.sort((a, b) => {
+          const result = compareValues(a[idx], b[idx]);
+          return sortState.dir === "asc" ? result : -result;
+        });
+      }
+
+      renderTable();
+    }
+
+    async function loadSheet() {
+      try {
+        const res = await fetch(CSV_URL);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+
+        if (!rows.length) {
+          throw new Error("No data found.");
+        }
+
+        headers = rows[0];
+        allRows = rows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== ""));
+        filteredRows = [...allRows];
+
+        renderHeader();
+        renderTable();
+      } catch (err) {
+        statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
+        tbody.innerHTML = "";
+        thead.innerHTML = "";
+        emptyState.style.display = "none";
+      }
+    }
+
+    searchBox.addEventListener("input", applyFilter);
+
+    resetBtn.addEventListener("click", () => {
+      searchBox.value = "";
+      sortState = { col: -1, dir: "asc" };
+      filteredRows = [...allRows];
+      renderHeader();
+      renderTable();
+    });
+
+    loadSheet();
+  </script>
+</body>
+</html>
