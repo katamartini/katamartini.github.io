@@ -147,36 +147,18 @@
       overflow: hidden;
       position: relative;
     }
-    .bar-fill {
-      height: 100%;
-      background: var(--bar-fill);
-      border-radius: 999px;
-      min-width: 0;
-    }
-    .bar-total-green {
+    .bar-green {
       position: absolute;
       left: 0;
       top: 0;
       height: 100%;
       background: var(--bar-green);
     }
-    .bar-total-blue {
+    .bar-blue {
       position: absolute;
       top: 0;
       height: 100%;
       background: var(--bar-blue);
-    }
-    .bar-overlay-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: #ffffff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-      pointer-events: none;
     }
     .bar-label {
       margin-top: 4px;
@@ -211,7 +193,7 @@
       </div>
 
       <div class="note">
-        Column 10 is displayed as a horizontal bar chart using the value from column 8. The totals row uses column 9 as the green fraction over the total from column 8.
+        Column 10 is displayed as a horizontal stacked bar chart using column 8 as the total and column 9 as the green portion. The totals row does not show a bar.
       </div>
     </div>
   </div>
@@ -335,37 +317,14 @@
       return 0;
     }
 
-    function renderRegularBar(totalValue) {
-      const numeric = parseNumeric(totalValue) ?? 0;
-      const pct = maxRegularBarValue > 0 ? Math.max(0, (numeric / maxRegularBarValue) * 100) : 0;
-
-      const wrapper = document.createElement("div");
-      wrapper.className = "bar-cell";
-
-      const barWrap = document.createElement("div");
-      barWrap.className = "bar-wrap";
-
-      const barFill = document.createElement("div");
-      barFill.className = "bar-fill";
-      barFill.style.width = `${pct}%`;
-
-      const label = document.createElement("div");
-      label.className = "bar-label";
-      label.textContent = numeric;
-
-      barWrap.appendChild(barFill);
-      wrapper.appendChild(barWrap);
-      wrapper.appendChild(label);
-
-      return wrapper;
-    }
-
-    function renderTotalBar(totalValue, fractionValue) {
+    function renderStackedBar(totalValue, fractionValue) {
       const total = parseNumeric(totalValue) ?? 0;
       const fraction = parseNumeric(fractionValue) ?? 0;
+      const cappedFraction = Math.max(0, Math.min(fraction, total));
 
-      const greenPct = total > 0 ? Math.max(0, Math.min(100, (fraction / total) * 100)) : 0;
-      const bluePct = total > 0 ? Math.max(0, Math.min(100, ((total - fraction) / total) * 100)) : 0;
+      const totalPct = maxRegularBarValue > 0 ? Math.max(0, (total / maxRegularBarValue) * 100) : 0;
+      const greenPct = maxRegularBarValue > 0 ? Math.max(0, (cappedFraction / maxRegularBarValue) * 100) : 0;
+      const bluePct = Math.max(0, totalPct - greenPct);
 
       const wrapper = document.createElement("div");
       wrapper.className = "bar-cell";
@@ -374,22 +333,22 @@
       barWrap.className = "bar-wrap";
 
       const green = document.createElement("div");
-      green.className = "bar-total-green";
+      green.className = "bar-green";
       green.style.width = `${greenPct}%`;
 
       const blue = document.createElement("div");
-      blue.className = "bar-total-blue";
+      blue.className = "bar-blue";
       blue.style.left = `${greenPct}%`;
       blue.style.width = `${bluePct}%`;
 
-      const overlay = document.createElement("div");
-      overlay.className = "bar-overlay-label";
-      overlay.textContent = `${fraction} / ${total}`;
+      const label = document.createElement("div");
+      label.className = "bar-label";
+      label.textContent = total;
 
       barWrap.appendChild(green);
       barWrap.appendChild(blue);
-      barWrap.appendChild(overlay);
       wrapper.appendChild(barWrap);
+      wrapper.appendChild(label);
 
       return wrapper;
     }
@@ -411,9 +370,9 @@
 
           if (idx === CHART_COLUMN_INDEX) {
             if (isTotalRow(row)) {
-              td.appendChild(renderTotalBar(row[TOTAL_VALUE_INDEX], row[FRACTION_VALUE_INDEX]));
+              td.textContent = row[idx] ?? "";
             } else {
-              td.appendChild(renderRegularBar(row[TOTAL_VALUE_INDEX]));
+              td.appendChild(renderStackedBar(row[TOTAL_VALUE_INDEX], row[FRACTION_VALUE_INDEX]));
             }
           } else {
             td.textContent = row[idx] ?? "";
