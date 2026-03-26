@@ -16,6 +16,8 @@
       --hover: #f8fbff;
       --bar-bg: #e5edf9;
       --bar-fill: #2563eb;
+      --bar-green: #22c55e;
+      --bar-blue: #2563eb;
     }
     * { box-sizing: border-box; }
     body {
@@ -139,7 +141,7 @@
     }
     .bar-wrap {
       width: 100%;
-      height: 18px;
+      height: 20px;
       background: var(--bar-bg);
       border-radius: 999px;
       overflow: hidden;
@@ -150,6 +152,31 @@
       background: var(--bar-fill);
       border-radius: 999px;
       min-width: 0;
+    }
+    .bar-total-green {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--bar-green);
+    }
+    .bar-total-blue {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      background: var(--bar-blue);
+    }
+    .bar-overlay-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+      pointer-events: none;
     }
     .bar-label {
       margin-top: 4px;
@@ -184,7 +211,7 @@
       </div>
 
       <div class="note">
-        Column 10 is displayed as a horizontal bar chart using the value from column 8.
+        Column 10 is displayed as a horizontal bar chart using the value from column 8. The totals row uses column 9 as the green fraction over the total from column 8.
       </div>
     </div>
   </div>
@@ -194,8 +221,9 @@
     const GID = "0";
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-    const CHART_COLUMN_INDEX = 9; // column 10
-    const SOURCE_VALUE_INDEX = 7; // column 8
+    const CHART_COLUMN_INDEX = 9;     // column 10
+    const TOTAL_VALUE_INDEX = 7;      // column 8
+    const FRACTION_VALUE_INDEX = 8;   // column 9
 
     const table = document.getElementById("dataTable");
     const thead = table.querySelector("thead");
@@ -209,7 +237,7 @@
     let allRows = [];
     let filteredRows = [];
     let sortState = { col: -1, dir: "asc" };
-    let maxBarValue = 0;
+    let maxRegularBarValue = 0;
 
     function parseCSV(text) {
       const rows = [];
@@ -282,9 +310,13 @@
       return { type: "text", value: v.toLowerCase() };
     }
 
+    function isTotalRow(row) {
+      return String(row[0] ?? "").trim() === "";
+    }
+
     function getSortValue(row, columnIndex) {
       if (columnIndex === CHART_COLUMN_INDEX) {
-        return row[SOURCE_VALUE_INDEX];
+        return row[TOTAL_VALUE_INDEX];
       }
       return row[columnIndex];
     }
@@ -303,9 +335,9 @@
       return 0;
     }
 
-    function renderBar(value) {
-      const numeric = parseNumeric(value) ?? 0;
-      const pct = maxBarValue > 0 ? Math.max(0, (numeric / maxBarValue) * 100) : 0;
+    function renderRegularBar(totalValue) {
+      const numeric = parseNumeric(totalValue) ?? 0;
+      const pct = maxRegularBarValue > 0 ? Math.max(0, (numeric / maxRegularBarValue) * 100) : 0;
 
       const wrapper = document.createElement("div");
       wrapper.className = "bar-cell";
@@ -328,39 +360,73 @@
       return wrapper;
     }
 
+    function renderTotalBar(totalValue, fractionValue) {
+      const total = parseNumeric(totalValue) ?? 0;
+      const fraction = parseNumeric(fractionValue) ?? 0;
+
+      const greenPct = total > 0 ? Math.max(0, Math.min(100, (fraction / total) * 100)) : 0;
+      const bluePct = total > 0 ? Math.max(0, Math.min(100, ((total - fraction) / total) * 100)) : 0;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "bar-cell";
+
+      const barWrap = document.createElement("div");
+      barWrap.className = "bar-wrap";
+
+      const green = document.createElement("div");
+      green.className = "bar-total-green";
+      green.style.width = `${greenPct}%`;
+
+      const blue = document.createElement("div");
+      blue.className = "bar-total-blue";
+      blue.style.left = `${greenPct}%`;
+      blue.style.width = `${bluePct}%`;
+
+      const overlay = document.createElement("div");
+      overlay.className = "bar-overlay-label";
+      overlay.textContent = `${fraction} / ${total}`;
+
+      barWrap.appendChild(green);
+      barWrap.appendChild(blue);
+      barWrap.appendChild(overlay);
+      wrapper.appendChild(barWrap);
+
+      return wrapper;
+    }
+
     function renderTable() {
-  tbody.innerHTML = "";
+      tbody.innerHTML = "";
 
-  if (!filteredRows.length) {
-    emptyState.style.display = "block";
-  } else {
-    emptyState.style.display = "none";
-  }
-
-  filteredRows.forEach((row, rowIndex) => {
-    const tr = document.createElement("tr");
-
-    headers.forEach((_, idx) => {
-      const td = document.createElement("td");
-
-      if (idx === CHART_COLUMN_INDEX) {
-        if (rowIndex === 0) {
-          td.textContent = row[idx] ?? "";
-        } else {
-          td.appendChild(renderBar(row[SOURCE_VALUE_INDEX]));
-        }
+      if (!filteredRows.length) {
+        emptyState.style.display = "block";
       } else {
-        td.textContent = row[idx] ?? "";
+        emptyState.style.display = "none";
       }
 
-      tr.appendChild(td);
-    });
+      filteredRows.forEach((row) => {
+        const tr = document.createElement("tr");
 
-    tbody.appendChild(tr);
-  });
+        headers.forEach((_, idx) => {
+          const td = document.createElement("td");
 
-  statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
-}
+          if (idx === CHART_COLUMN_INDEX) {
+            if (isTotalRow(row)) {
+              td.appendChild(renderTotalBar(row[TOTAL_VALUE_INDEX], row[FRACTION_VALUE_INDEX]));
+            } else {
+              td.appendChild(renderRegularBar(row[TOTAL_VALUE_INDEX]));
+            }
+          } else {
+            td.textContent = row[idx] ?? "";
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
+    }
 
     function renderHeader() {
       thead.innerHTML = "";
@@ -434,8 +500,10 @@
         headers = rows[0];
         allRows = rows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
-        maxBarValue = Math.max(
-          ...allRows.map(row => parseNumeric(row[SOURCE_VALUE_INDEX]) ?? 0),
+        maxRegularBarValue = Math.max(
+          ...allRows
+            .filter(row => !isTotalRow(row))
+            .map(row => parseNumeric(row[TOTAL_VALUE_INDEX]) ?? 0),
           0
         );
 
