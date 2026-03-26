@@ -329,34 +329,38 @@
     }
 
     function renderTable() {
-      tbody.innerHTML = "";
+  tbody.innerHTML = "";
 
-      if (!filteredRows.length) {
-        emptyState.style.display = "block";
+  if (!filteredRows.length) {
+    emptyState.style.display = "block";
+  } else {
+    emptyState.style.display = "none";
+  }
+
+  filteredRows.forEach((row, rowIndex) => {
+    const tr = document.createElement("tr");
+
+    headers.forEach((_, idx) => {
+      const td = document.createElement("td");
+
+      if (idx === CHART_COLUMN_INDEX) {
+        if (rowIndex === 0) {
+          td.textContent = row[idx] ?? "";
+        } else {
+          td.appendChild(renderBar(row[SOURCE_VALUE_INDEX]));
+        }
       } else {
-        emptyState.style.display = "none";
+        td.textContent = row[idx] ?? "";
       }
 
-      filteredRows.forEach(row => {
-        const tr = document.createElement("tr");
+      tr.appendChild(td);
+    });
 
-        headers.forEach((_, idx) => {
-          const td = document.createElement("td");
+    tbody.appendChild(tr);
+  });
 
-          if (idx === CHART_COLUMN_INDEX) {
-            td.appendChild(renderBar(row[SOURCE_VALUE_INDEX]));
-          } else {
-            td.textContent = row[idx] ?? "";
-          }
-
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
-
-      statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
-    }
+  statusEl.textContent = `${filteredRows.length} row(s) shown` + (allRows.length !== filteredRows.length ? ` of ${allRows.length}` : "");
+}
 
     function renderHeader() {
       thead.innerHTML = "";
