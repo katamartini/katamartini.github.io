@@ -34,7 +34,7 @@
     }
 
     .wrap {
-      width: min(540px, calc(100vw - 48px));
+      width: min(520px, calc(100vw - 48px));
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
@@ -71,7 +71,6 @@
     .topbar input {
       width: 100%;
       min-width: 0;
-      max-width: 240px;
       background: #151a23;
       color: #fff;
       border: 1px solid #465062;
@@ -108,7 +107,6 @@
       table-layout: auto;
     }
 
-
     thead th {
       background: var(--header);
       color: #ffffff;
@@ -118,6 +116,7 @@
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
+      white-space: nowrap;
     }
 
     thead th:hover {
@@ -137,6 +136,19 @@
       vertical-align: middle;
       border-bottom: 1px solid rgba(255,255,255,0.03);
       font-size: 12px;
+    }
+
+    /* Keep Matches and Win % equal width; Hero gets the remaining space */
+    thead th:nth-child(2),
+    tbody td:nth-child(2),
+    thead th:nth-child(3),
+    tbody td:nth-child(3) {
+      width: 170px;
+    }
+
+    thead th:nth-child(1),
+    tbody td:nth-child(1) {
+      width: auto;
     }
 
     .hero-cell {
@@ -259,7 +271,6 @@
     <div id="status" class="status">Loading spreadsheet data...</div>
 
     <table id="dataTable" aria-label="Most played heroes">
-
       <thead></thead>
       <tbody></tbody>
     </table>
