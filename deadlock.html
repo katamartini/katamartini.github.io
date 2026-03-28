@@ -34,11 +34,11 @@
     }
 
     .wrap {
-      width: 420px;
-      max-width: 100%;
+      width: min(540px, calc(100vw - 48px));
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      overflow: hidden;
     }
 
     .titlebar {
@@ -58,17 +58,66 @@
       vertical-align: middle;
     }
 
+    .topbar {
+      padding: 10px 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar input {
+      width: 100%;
+      min-width: 0;
+      max-width: 240px;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 7px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .topbar button {
+      flex: 0 0 auto;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .topbar button:hover {
+      background: #1d2330;
+    }
+
+    .status {
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      background: #222834;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
     }
+
+    col.hero-col   { width: 46%; }
+    col.matches-col{ width: 28%; }
+    col.win-col    { width: 26%; }
 
     thead th {
       background: var(--header);
       color: #ffffff;
       text-align: left;
       font-size: 12px;
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
@@ -87,7 +136,7 @@
     }
 
     tbody td {
-      padding: 4px 10px;
+      padding: 3px 10px;
       vertical-align: middle;
       border-bottom: 1px solid rgba(255,255,255,0.03);
       font-size: 12px;
@@ -101,9 +150,9 @@
     }
 
     .icon-slot {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
       background: linear-gradient(135deg, #4b5563, #2f3745);
       border: 1px solid #596274;
       display: block;
@@ -136,10 +185,18 @@
       font-size: 10px;
       margin-top: 1px;
       line-height: 1.02;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .hero-date:hover {
+      color: #c6d6ea;
+      text-decoration: underline;
     }
 
     .stat-cell {
-      min-width: 140px;
+      min-width: 0;
     }
 
     .stat-value {
@@ -173,10 +230,6 @@
       background: var(--win-bar);
     }
 
-    .win-col {
-      width: 78px;
-    }
-
     .totals-row td {
       color: var(--muted);
     }
@@ -187,53 +240,11 @@
       font-size: 10px;
     }
 
-    .status {
-      padding: 8px 12px;
-      color: var(--muted);
-      font-size: 12px;
-      border-bottom: 1px solid var(--border);
-      background: #222834;
-    }
-
     .empty {
       padding: 14px 12px;
       color: var(--muted);
       font-size: 12px;
       display: none;
-    }
-
-    .topbar {
-      padding: 8px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .topbar input {
-      width: 190px;
-      max-width: 100%;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 6px 8px;
-      font-size: 12px;
-      outline: none;
-    }
-
-    .topbar button {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 6px 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .topbar button:hover {
-      background: #1d2330;
     }
   </style>
 </head>
@@ -251,6 +262,11 @@
     <div id="status" class="status">Loading spreadsheet data...</div>
 
     <table id="dataTable" aria-label="Most played heroes">
+      <colgroup>
+        <col class="hero-col">
+        <col class="matches-col">
+        <col class="win-col">
+      </colgroup>
       <thead></thead>
       <tbody></tbody>
     </table>
@@ -266,8 +282,9 @@
     const DATE_INDEX = 0;
     const HERO_NAME_INDEX = 1;
     const MATCHES_INDEX = 7;
-    const WINS_INDEX = 8;
     const WINRATE_INDEX = 6;
+
+    const SORT_BY_DATE = "__date__";
 
     const table = document.getElementById("dataTable");
     const thead = table.querySelector("thead");
@@ -277,10 +294,9 @@
     const resetBtn = document.getElementById("resetBtn");
     const emptyState = document.getElementById("emptyState");
 
-    let headers = [];
     let allRows = [];
     let filteredRows = [];
-    let sortState = { col: -1, dir: "asc" };
+    let sortState = { col: MATCHES_INDEX, dir: "desc" };
     let maxMatches = 0;
 
     function parseCSV(text) {
@@ -337,6 +353,41 @@
       return Number.isNaN(num) ? null : num;
     }
 
+    function parseSheetDate(value) {
+      const v = normalizeValue(value);
+      if (!v) return null;
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function startOfDay(d) {
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function formatExactDate(value) {
+      const d = parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      });
+    }
+
+    function formatDaysAgo(value) {
+      const d = parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+
+      const today = startOfDay(new Date());
+      const then = startOfDay(d);
+      const diffMs = today - then;
+      const days = Math.round(diffMs / 86400000);
+
+      if (days <= 0) return "Today";
+      if (days === 1) return "1 day ago";
+      return `${days} days ago`;
+    }
+
     function inferType(value) {
       const v = normalizeValue(value);
       if (v === "") return { type: "empty", value: "" };
@@ -373,7 +424,30 @@
     }
 
     function getSortValue(row, columnIndex) {
+      if (columnIndex === SORT_BY_DATE) {
+        const d = parseSheetDate(row[DATE_INDEX]);
+        return d ? d.toISOString() : "";
+      }
       return row[columnIndex];
+    }
+
+    function sortRows() {
+      filteredRows.sort((a, b) => {
+        const result = compareValues(getSortValue(a, sortState.col), getSortValue(b, sortState.col));
+        return sortState.dir === "asc" ? result : -result;
+      });
+    }
+
+    function setSort(col, defaultDir = "desc") {
+      if (sortState.col === col) {
+        sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+      } else {
+        sortState.col = col;
+        sortState.dir = defaultDir;
+      }
+      sortRows();
+      renderHeader();
+      renderTable();
     }
 
     function renderHeroCell(row) {
@@ -408,7 +482,12 @@
 
       const date = document.createElement("div");
       date.className = "hero-date";
-      date.textContent = row[DATE_INDEX] || "";
+      date.textContent = formatDaysAgo(row[DATE_INDEX]);
+      date.title = formatExactDate(row[DATE_INDEX]);
+      date.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setSort(SORT_BY_DATE, "desc");
+      });
 
       meta.appendChild(name);
       meta.appendChild(date);
@@ -472,25 +551,18 @@
         const heroTd = document.createElement("td");
         if (!isTotalRow(row)) {
           heroTd.appendChild(renderHeroCell(row));
-        } else {
-          heroTd.textContent = "";
         }
         tr.appendChild(heroTd);
 
         const matchesTd = document.createElement("td");
         if (!isTotalRow(row)) {
           matchesTd.appendChild(renderMatchesCell(row));
-        } else {
-          matchesTd.textContent = "";
         }
         tr.appendChild(matchesTd);
 
         const winTd = document.createElement("td");
-        winTd.className = "win-col";
         if (!isTotalRow(row)) {
           winTd.appendChild(renderWinCell(row));
-        } else {
-          winTd.textContent = "";
         }
         tr.appendChild(winTd);
 
@@ -505,9 +577,9 @@
       const tr = document.createElement("tr");
 
       const columns = [
-        { label: "Hero", index: HERO_NAME_INDEX },
-        { label: "Matches", index: MATCHES_INDEX },
-        { label: "Win %", index: WINRATE_INDEX }
+        { label: "Hero", index: HERO_NAME_INDEX, defaultDir: "asc" },
+        { label: "Matches", index: MATCHES_INDEX, defaultDir: "desc" },
+        { label: "Win %", index: WINRATE_INDEX, defaultDir: "desc" }
       ];
 
       columns.forEach(col => {
@@ -522,20 +594,7 @@
         }
 
         th.addEventListener("click", () => {
-          if (sortState.col === col.index) {
-            sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
-          } else {
-            sortState.col = col.index;
-            sortState.dir = "desc";
-          }
-
-          filteredRows.sort((a, b) => {
-            const result = compareValues(getSortValue(a, col.index), getSortValue(b, col.index));
-            return sortState.dir === "asc" ? result : -result;
-          });
-
-          renderHeader();
-          renderTable();
+          setSort(col.index, col.defaultDir);
         });
 
         tr.appendChild(th);
@@ -554,13 +613,8 @@
             String(row[DATE_INDEX] ?? "").toLowerCase().includes(q)
           );
 
-      if (sortState.col >= 0) {
-        filteredRows.sort((a, b) => {
-          const result = compareValues(getSortValue(a, sortState.col), getSortValue(b, sortState.col));
-          return sortState.dir === "asc" ? result : -result;
-        });
-      }
-
+      sortRows();
+      renderHeader();
       renderTable();
     }
 
@@ -578,7 +632,6 @@
           throw new Error("No data found.");
         }
 
-        headers = rows[0];
         allRows = rows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
         maxMatches = Math.max(
@@ -587,12 +640,7 @@
         );
 
         filteredRows = [...allRows];
-
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-        filteredRows.sort((a, b) => {
-          const result = compareValues(getSortValue(a, MATCHES_INDEX), getSortValue(b, MATCHES_INDEX));
-          return -result;
-        });
+        sortRows();
 
         renderHeader();
         renderTable();
@@ -610,10 +658,7 @@
       searchBox.value = "";
       filteredRows = [...allRows];
       sortState = { col: MATCHES_INDEX, dir: "desc" };
-      filteredRows.sort((a, b) => {
-        const result = compareValues(getSortValue(a, MATCHES_INDEX), getSortValue(b, MATCHES_INDEX));
-        return -result;
-      });
+      sortRows();
       renderHeader();
       renderTable();
     });
