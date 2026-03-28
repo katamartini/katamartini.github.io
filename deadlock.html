@@ -15,8 +15,8 @@
       --accent: #b7ff2a;
       --border: #3a4353;
       --bar-bg: #434d5f;
-      --bar-green: #98e61d;
-      --bar-blue: #ff2a1a;
+      --matches-bar: #ff2a1a;
+      --win-bar: #98e61d;
     }
 
     * { box-sizing: border-box; }
@@ -68,7 +68,7 @@
       color: #ffffff;
       text-align: left;
       font-size: 12px;
-      padding: 7px 10px;
+      padding: 6px 10px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
@@ -87,7 +87,7 @@
     }
 
     tbody td {
-      padding: 6px 10px;
+      padding: 4px 10px;
       vertical-align: middle;
       border-bottom: 1px solid rgba(255,255,255,0.03);
       font-size: 12px;
@@ -101,9 +101,9 @@
     }
 
     .icon-slot {
-      width: 32px;
-      height: 32px;
-      flex: 0 0 32px;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
       background: linear-gradient(135deg, #4b5563, #2f3745);
       border: 1px solid #596274;
       display: block;
@@ -125,7 +125,7 @@
       color: var(--accent);
       font-size: 12px;
       font-weight: 700;
-      line-height: 1.05;
+      line-height: 1.02;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -135,18 +135,19 @@
       color: #9fb0c7;
       font-size: 10px;
       margin-top: 1px;
-      line-height: 1.05;
+      line-height: 1.02;
     }
 
-    .matches-cell {
+    .stat-cell {
       min-width: 140px;
     }
 
-    .matches-value {
+    .stat-value {
       color: #ffffff;
       font-size: 12px;
       line-height: 1;
       margin-bottom: 3px;
+      white-space: nowrap;
     }
 
     .bar-wrap {
@@ -157,21 +158,23 @@
       overflow: hidden;
     }
 
-    .bar-red {
+    .bar-fill {
       position: absolute;
       top: 0;
       left: 0;
       height: 100%;
-      background: var(--bar-blue);
     }
 
-    .win-cell {
-      text-align: right;
-      white-space: nowrap;
-      width: 70px;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 12px;
+    .bar-fill.matches {
+      background: var(--matches-bar);
+    }
+
+    .bar-fill.win {
+      background: var(--win-bar);
+    }
+
+    .win-col {
+      width: 78px;
     }
 
     .totals-row td {
@@ -260,14 +263,11 @@
     const GID = "0";
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-    // Spreadsheet columns
-    const DATE_INDEX = 0;            // Last
-    const HERO_NAME_INDEX = 1;       // Column 2
-    const MATCHES_INDEX = 7;         // Column 8 (hidden as raw column)
-    const WINS_INDEX = 8;            // Column 9
-    const WINRATE_INDEX = 6;         // W% in screenshot-like layout
-    const ICON_INDEX = null;         // set to a real column index later if you add icon URLs
-    const HIDDEN_COLUMN_INDEXES = [7, 2, 3, 4, 6, 8, 9]; // hide unused/raw columns
+    const DATE_INDEX = 0;
+    const HERO_NAME_INDEX = 1;
+    const MATCHES_INDEX = 7;
+    const WINS_INDEX = 8;
+    const WINRATE_INDEX = 6;
 
     const table = document.getElementById("dataTable");
     const thead = table.querySelector("thead");
@@ -377,71 +377,80 @@
     }
 
     function renderHeroCell(row) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "hero-cell";
-      
-        const icon = document.createElement("div");
-        icon.className = "icon-slot";
-      
-        const heroName = normalizeValue(row[HERO_NAME_INDEX]).trim();
-        const fileName = `${heroName.toLowerCase()}.png`;
-        const filePath = `images/deadlock/icons/${encodeURIComponent(fileName)}`;
-      
-        const img = document.createElement("img");
-        img.src = filePath;
-        img.alt = heroName;
-        img.loading = "lazy";
-      
-        img.onerror = function () {
-          this.style.display = "none";
-          icon.style.background = "linear-gradient(135deg, #4b5563, #2f3745)";
-        };
-      
-        icon.appendChild(img);
-      
-        const meta = document.createElement("div");
-        meta.className = "hero-meta";
-      
-        const name = document.createElement("div");
-        name.className = "hero-name";
-        name.textContent = heroName || "";
-      
-        const date = document.createElement("div");
-        date.className = "hero-date";
-        date.textContent = row[DATE_INDEX] || "";
-      
-        meta.appendChild(name);
-        meta.appendChild(date);
-      
-        wrapper.appendChild(icon);
-        wrapper.appendChild(meta);
-      
-        return wrapper;
-      }
-
-    function renderMatchesCell(row) {
-      const matches = parseNumeric(row[MATCHES_INDEX]) ?? 0;
-      const pct = maxMatches > 0 ? (matches / maxMatches) * 100 : 0;
-
       const wrapper = document.createElement("div");
-      wrapper.className = "matches-cell";
+      wrapper.className = "hero-cell";
+
+      const icon = document.createElement("div");
+      icon.className = "icon-slot";
+
+      const heroName = normalizeValue(row[HERO_NAME_INDEX]).trim();
+      const fileName = `${heroName.toLowerCase()}.png`;
+      const filePath = `images/deadlock/icons/${encodeURIComponent(fileName)}`;
+
+      const img = document.createElement("img");
+      img.src = filePath;
+      img.alt = heroName;
+      img.loading = "lazy";
+
+      img.onerror = function () {
+        this.style.display = "none";
+        icon.style.background = "linear-gradient(135deg, #4b5563, #2f3745)";
+      };
+
+      icon.appendChild(img);
+
+      const meta = document.createElement("div");
+      meta.className = "hero-meta";
+
+      const name = document.createElement("div");
+      name.className = "hero-name";
+      name.textContent = heroName || "";
+
+      const date = document.createElement("div");
+      date.className = "hero-date";
+      date.textContent = row[DATE_INDEX] || "";
+
+      meta.appendChild(name);
+      meta.appendChild(date);
+
+      wrapper.appendChild(icon);
+      wrapper.appendChild(meta);
+
+      return wrapper;
+    }
+
+    function renderStatCell(valueText, pct, fillClass) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "stat-cell";
 
       const value = document.createElement("div");
-      value.className = "matches-value";
-      value.textContent = matches;
+      value.className = "stat-value";
+      value.textContent = valueText;
 
       const barWrap = document.createElement("div");
       barWrap.className = "bar-wrap";
 
       const bar = document.createElement("div");
-      bar.className = "bar-red";
-      bar.style.width = `${pct}%`;
+      bar.className = `bar-fill ${fillClass}`;
+      bar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
       barWrap.appendChild(bar);
       wrapper.appendChild(value);
       wrapper.appendChild(barWrap);
 
       return wrapper;
+    }
+
+    function renderMatchesCell(row) {
+      const matches = parseNumeric(row[MATCHES_INDEX]) ?? 0;
+      const pct = maxMatches > 0 ? (matches / maxMatches) * 100 : 0;
+      return renderStatCell(matches, pct, "matches");
+    }
+
+    function renderWinCell(row) {
+      const winRaw = normalizeValue(row[WINRATE_INDEX]);
+      const winPct = parseNumeric(winRaw) ?? 0;
+      return renderStatCell(winRaw, winPct, "win");
     }
 
     function renderTable() {
@@ -460,7 +469,6 @@
           tr.classList.add("totals-row");
         }
 
-        // Hero column
         const heroTd = document.createElement("td");
         if (!isTotalRow(row)) {
           heroTd.appendChild(renderHeroCell(row));
@@ -469,7 +477,6 @@
         }
         tr.appendChild(heroTd);
 
-        // Matches column
         const matchesTd = document.createElement("td");
         if (!isTotalRow(row)) {
           matchesTd.appendChild(renderMatchesCell(row));
@@ -478,10 +485,13 @@
         }
         tr.appendChild(matchesTd);
 
-        // Win % column
         const winTd = document.createElement("td");
-        winTd.className = "win-cell";
-        winTd.textContent = isTotalRow(row) ? "" : (row[WINRATE_INDEX] ?? "");
+        winTd.className = "win-col";
+        if (!isTotalRow(row)) {
+          winTd.appendChild(renderWinCell(row));
+        } else {
+          winTd.textContent = "";
+        }
         tr.appendChild(winTd);
 
         tbody.appendChild(tr);
@@ -578,7 +588,6 @@
 
         filteredRows = [...allRows];
 
-        // default sort by matches desc
         sortState = { col: MATCHES_INDEX, dir: "desc" };
         filteredRows.sort((a, b) => {
           const result = compareValues(getSortValue(a, MATCHES_INDEX), getSortValue(b, MATCHES_INDEX));
