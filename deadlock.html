@@ -776,7 +776,7 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-    function loadHeroIcon(heroName, size = 6) {
+    function loadHeroIcon(heroName, size = 8) {
       return new Promise((resolve) => {
         const hero = normalizeValue(heroName);
         if (!hero) {
@@ -1144,7 +1144,7 @@
           plugins: {
             heroPointPlugin: {
               icons: pointStyles,
-              size: 6
+              size: 4
             },
             legend: {
               display: false
