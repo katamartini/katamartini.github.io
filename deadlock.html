@@ -502,7 +502,7 @@
 
       <div class="chart-card">
         <div class="stats-titlebar">
-          WINRATE OVER TIME<span class="sub">ALL MATCHES</span>
+          W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span>
         </div>
         <div class="chart-body">
           <canvas id="winrateChart"></canvas>
@@ -929,13 +929,14 @@
       });
     }
 
-    function buildWinrateSeries(rows) {
+    function buildDeltaSeries(rows) {
       const dataRows = rows
         .slice(1)
         .filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
       let wins = 0;
-      let total = 0;
+      let losses = 0;
+      let classifiedMatchNumber = 0;
 
       return dataRows
         .map(row => {
@@ -945,22 +946,52 @@
 
           if (result !== "win" && result !== "loss") return null;
 
-          total += 1;
-          if (result === "win") wins += 1;
+          classifiedMatchNumber += 1;
+
+          if (result === "win") {
+            wins += 1;
+          } else {
+            losses += 1;
+          }
 
           return {
-            xLabel: date ? formatLongDate(date) : `Match ${total}`,
-            y: Number(((wins / total) * 100).toFixed(1)),
+            xLabel: date ? formatLongDate(date) : `Match ${classifiedMatchNumber}`,
+            y: wins - losses,
             hero,
             result,
-            matchNumber: total
+            matchNumber: classifiedMatchNumber
           };
         })
         .filter(Boolean);
     }
 
+    function buildTrendline(series) {
+      const n = series.length;
+      if (!n) return [];
+
+      let sumX = 0;
+      let sumY = 0;
+      let sumXY = 0;
+      let sumXX = 0;
+
+      for (let i = 0; i < n; i++) {
+        const x = i;
+        const y = series[i].y;
+        sumX += x;
+        sumY += y;
+        sumXY += x * y;
+        sumXX += x * x;
+      }
+
+      const denominator = (n * sumXX) - (sumX * sumX);
+      const slope = denominator === 0 ? 0 : ((n * sumXY) - (sumX * sumY)) / denominator;
+      const intercept = (sumY - slope * sumX) / n;
+
+      return series.map((_, i) => Number((slope * i + intercept).toFixed(2)));
+    }
+
     function renderWinrateChart(rows) {
-      const series = buildWinrateSeries(rows);
+      const series = buildDeltaSeries(rows);
 
       if (winrateChart) {
         winrateChart.destroy();
@@ -969,23 +1000,43 @@
 
       if (!series.length) return;
 
+      const trendline = buildTrendline(series);
+
+      const yValues = [...series.map(p => p.y), ...trendline];
+      const minY = Math.min(...yValues);
+      const maxY = Math.max(...yValues);
+      const yPadding = Math.max(2, Math.ceil((maxY - minY) * 0.1));
+
       winrateChart = new Chart(winrateChartCanvas, {
         type: "line",
         data: {
           labels: series.map(p => p.xLabel),
-          datasets: [{
-            label: "Win %",
-            data: series.map(p => p.y),
-            borderColor: "#98e61d",
-            backgroundColor: "rgba(152, 230, 29, 0.15)",
-            pointBackgroundColor: "#b7ff2a",
-            pointBorderColor: "#b7ff2a",
-            pointRadius: 2,
-            pointHoverRadius: 5,
-            borderWidth: 2,
-            tension: 0.2,
-            fill: false
-          }]
+          datasets: [
+            {
+              label: "W-L Delta",
+              data: series.map(p => p.y),
+              borderColor: "#98e61d",
+              backgroundColor: "rgba(152, 230, 29, 0.12)",
+              pointBackgroundColor: "#b7ff2a",
+              pointBorderColor: "#b7ff2a",
+              pointRadius: 2,
+              pointHoverRadius: 5,
+              borderWidth: 2,
+              tension: 0.2,
+              fill: false
+            },
+            {
+              label: "Trend",
+              data: trendline,
+              borderColor: "rgba(243, 244, 246, 0.35)",
+              pointRadius: 0,
+              pointHoverRadius: 0,
+              borderWidth: 2,
+              tension: 0,
+              fill: false,
+              borderDash: [6, 6]
+            }
+          ]
         },
         options: {
           responsive: true,
@@ -1007,9 +1058,15 @@
                 label(context) {
                   const i = context.dataIndex;
                   const p = series[i];
-                  return `Win rate: ${p.y}%`;
+
+                  if (context.datasetIndex === 0) {
+                    return `Delta: ${p.y > 0 ? "+" : ""}${p.y}`;
+                  }
+
+                  return `Trend: ${trendline[i] > 0 ? "+" : ""}${trendline[i]}`;
                 },
                 afterLabel(context) {
+                  if (context.datasetIndex !== 0) return "";
                   const i = context.dataIndex;
                   const p = series[i];
                   return `After match ${p.matchNumber} (${p.hero}, ${p.result})`;
@@ -1028,11 +1085,11 @@
               }
             },
             y: {
-              min: 0,
-              max: 100,
+              min: minY - yPadding,
+              max: maxY + yPadding,
               ticks: {
                 color: "#9ca3af",
-                callback: value => `${value}%`
+                callback: value => value > 0 ? `+${value}` : `${value}`
               },
               grid: {
                 color: "rgba(255,255,255,0.06)"
