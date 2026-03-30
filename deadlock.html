@@ -33,15 +33,33 @@
       align-items: flex-start;
     }
 
-    .wrap {
-      width: min(520px, calc(100vw - 48px));
+    .page {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      width: fit-content;
+      max-width: calc(100vw - 48px);
+    }
+
+    .wrap,
+    .stats-card {
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
       overflow: hidden;
     }
 
-    .titlebar {
+    .wrap {
+      width: min(520px, calc(100vw - 48px));
+    }
+
+    .stats-card {
+      width: 260px;
+      flex: 0 0 260px;
+    }
+
+    .titlebar,
+    .stats-titlebar {
       padding: 10px 12px 6px;
       font-weight: 700;
       font-size: 14px;
@@ -50,7 +68,8 @@
       color: #ffffff;
     }
 
-    .titlebar .sub {
+    .titlebar .sub,
+    .stats-titlebar .sub {
       font-size: 10px;
       font-weight: 400;
       color: var(--muted);
@@ -138,7 +157,6 @@
       font-size: 12px;
     }
 
-    /* Keep Matches and Win % equal width; Hero gets the remaining space */
     thead th:nth-child(2),
     tbody td:nth-child(2),
     thead th:nth-child(3),
@@ -255,38 +273,123 @@
       font-size: 12px;
       display: none;
     }
+
+    .stats-body {
+      padding: 12px;
+    }
+
+    .stats-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .stats-item {
+      background: #222834;
+      border: 1px solid var(--border);
+      padding: 10px 11px;
+    }
+
+    .stats-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .stats-value {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    .stats-value.small {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        flex-direction: column;
+        width: min(520px, calc(100vw - 48px));
+      }
+
+      .wrap,
+      .stats-card {
+        width: 100%;
+        flex: 0 0 auto;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="titlebar">
-      MOST PLAYED HEROES<span class="sub">ALL TIME</span>
+  <div class="page">
+    <div class="wrap">
+      <div class="titlebar">
+        MOST PLAYED HEROES<span class="sub">ALL TIME</span>
+      </div>
+
+      <div class="topbar">
+        <input id="searchBox" type="search" placeholder="Filter heroes..." />
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div id="status" class="status">Loading spreadsheet data...</div>
+
+      <table id="dataTable" aria-label="Most played heroes">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="emptyState" class="empty">No rows match the current filter.</div>
     </div>
 
-    <div class="topbar">
-      <input id="searchBox" type="search" placeholder="Filter heroes..." />
-      <button id="resetBtn" type="button">Reset</button>
+    <div class="stats-card">
+      <div class="stats-titlebar">
+        OVERALL STATS<span class="sub">MATCHES SHEET</span>
+      </div>
+      <div class="stats-body">
+        <div class="stats-grid">
+          <div class="stats-item">
+            <div class="stats-label">Matches</div>
+            <div class="stats-value" id="overallMatches">-</div>
+          </div>
+          <div class="stats-item">
+            <div class="stats-label">Wins</div>
+            <div class="stats-value" id="overallWins">-</div>
+          </div>
+          <div class="stats-item">
+            <div class="stats-label">Losses</div>
+            <div class="stats-value" id="overallLosses">-</div>
+          </div>
+          <div class="stats-item">
+            <div class="stats-label">Overall Win %</div>
+            <div class="stats-value" id="overallWinPct">-</div>
+          </div>
+          <div class="stats-item">
+            <div class="stats-label">First Match</div>
+            <div class="stats-value small" id="firstMatchPlayed">-</div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div id="status" class="status">Loading spreadsheet data...</div>
-
-    <table id="dataTable" aria-label="Most played heroes">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
-
-    <div id="emptyState" class="empty">No rows match the current filter.</div>
   </div>
 
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
-    const GID = "0";
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const HERO_GID = "0";
+    const MATCHES_GID = "852547275"; // set this to the actual gid of the matches sheet
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${HERO_GID}`;
+    const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
 
     const DATE_INDEX = 0;
     const HERO_NAME_INDEX = 1;
     const MATCHES_INDEX = 7;
     const WINRATE_INDEX = 6;
+
+    const MATCHES_SHEET_DATE_INDEX = 1;
+    const MATCHES_SHEET_RESULT_INDEX = 3;
 
     const SORT_BY_DATE = "__date__";
 
@@ -297,6 +400,12 @@
     const searchBox = document.getElementById("searchBox");
     const resetBtn = document.getElementById("resetBtn");
     const emptyState = document.getElementById("emptyState");
+
+    const overallMatchesEl = document.getElementById("overallMatches");
+    const overallWinsEl = document.getElementById("overallWins");
+    const overallLossesEl = document.getElementById("overallLosses");
+    const overallWinPctEl = document.getElementById("overallWinPct");
+    const firstMatchPlayedEl = document.getElementById("firstMatchPlayed");
 
     let allRows = [];
     let filteredRows = [];
@@ -360,8 +469,19 @@
     function parseSheetDate(value) {
       const v = normalizeValue(value);
       if (!v) return null;
+
       const d = new Date(v);
-      return Number.isNaN(d.getTime()) ? null : d;
+      if (!Number.isNaN(d.getTime())) return d;
+
+      const m = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
+      if (m) {
+        let year = Number(m[3]);
+        if (year < 100) year += 2000;
+        const parsed = new Date(year, Number(m[1]) - 1, Number(m[2]));
+        if (!Number.isNaN(parsed.getTime())) return parsed;
+      }
+
+      return null;
     }
 
     function startOfDay(d) {
@@ -374,6 +494,16 @@
       return d.toLocaleDateString(undefined, {
         year: "numeric",
         month: "numeric",
+        day: "numeric"
+      });
+    }
+
+    function formatLongDate(value) {
+      const d = parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
         day: "numeric"
       });
     }
@@ -401,8 +531,8 @@
         return { type: "number", value: num };
       }
 
-      const date = new Date(v);
-      if (!Number.isNaN(date.getTime()) && /[A-Za-z]|\d{1,2}[/-]\d{1,2}[/-]\d{2,4}/.test(v)) {
+      const date = parseSheetDate(v);
+      if (date) {
         return { type: "date", value: date.getTime() };
       }
 
@@ -536,35 +666,35 @@
       return renderStatCell(winRaw, winPct, "win");
     }
 
-function renderTable() {
-  tbody.innerHTML = "";
+    function renderTable() {
+      tbody.innerHTML = "";
 
-  if (!filteredRows.length) {
-    emptyState.style.display = "block";
-  } else {
-    emptyState.style.display = "none";
-  }
+      if (!filteredRows.length) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+      }
 
-  filteredRows.forEach((row) => {
-    const tr = document.createElement("tr");
+      filteredRows.forEach((row) => {
+        const tr = document.createElement("tr");
 
-    const heroTd = document.createElement("td");
-    heroTd.appendChild(renderHeroCell(row));
-    tr.appendChild(heroTd);
+        const heroTd = document.createElement("td");
+        heroTd.appendChild(renderHeroCell(row));
+        tr.appendChild(heroTd);
 
-    const matchesTd = document.createElement("td");
-    matchesTd.appendChild(renderMatchesCell(row));
-    tr.appendChild(matchesTd);
+        const matchesTd = document.createElement("td");
+        matchesTd.appendChild(renderMatchesCell(row));
+        tr.appendChild(matchesTd);
 
-    const winTd = document.createElement("td");
-    winTd.appendChild(renderWinCell(row));
-    tr.appendChild(winTd);
+        const winTd = document.createElement("td");
+        winTd.appendChild(renderWinCell(row));
+        tr.appendChild(winTd);
 
-    tbody.appendChild(tr);
-  });
+        tbody.appendChild(tr);
+      });
 
-  statusEl.textContent = `${filteredRows.length} row(s) shown`;
-}
+      statusEl.textContent = `${filteredRows.length} row(s) shown`;
+    }
 
     function renderHeader() {
       thead.innerHTML = "";
@@ -612,27 +742,82 @@ function renderTable() {
       renderTable();
     }
 
+    function setOverallStats(matchesRows) {
+      const dataRows = matchesRows
+        .slice(1)
+        .filter(r => r.some(cell => normalizeValue(cell) !== ""));
+
+      const totalMatches = dataRows.length;
+
+      const wins = dataRows.filter(row =>
+        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "win"
+      ).length;
+
+      const losses = dataRows.filter(row =>
+        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "loss"
+      ).length;
+
+      const firstDate = dataRows
+        .map(row => parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]))
+        .filter(Boolean)
+        .sort((a, b) => a - b)[0];
+
+      const overallWinPct = totalMatches > 0
+        ? `${Math.round((wins / totalMatches) * 100)}%`
+        : "-";
+
+      overallMatchesEl.textContent = totalMatches;
+      overallWinsEl.textContent = wins;
+      overallLossesEl.textContent = losses;
+      overallWinPctEl.textContent = overallWinPct;
+      firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : "-";
+    }
+
+    async function loadOverallStats() {
+      const res = await fetch(MATCHES_CSV_URL);
+      if (!res.ok) {
+        throw new Error(`Matches sheet HTTP ${res.status}`);
+      }
+
+      const csvText = await res.text();
+      const rows = parseCSV(csvText);
+
+      if (!rows.length) {
+        throw new Error("No matches data found.");
+      }
+
+      setOverallStats(rows);
+    }
+
     async function loadSheet() {
       try {
-        const res = await fetch(CSV_URL);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+        const [heroRes, matchesRes] = await Promise.all([
+          fetch(CSV_URL),
+          fetch(MATCHES_CSV_URL)
+        ]);
+
+        if (!heroRes.ok) {
+          throw new Error(`Hero sheet HTTP ${heroRes.status}`);
         }
 
-        const csvText = await res.text();
-        const rows = parseCSV(csvText);
-
-        if (!rows.length) {
-          throw new Error("No data found.");
+        if (!matchesRes.ok) {
+          throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
         }
 
-        allRows = rows
+        const heroCsvText = await heroRes.text();
+        const heroRows = parseCSV(heroCsvText);
+
+        if (!heroRows.length) {
+          throw new Error("No hero data found.");
+        }
+
+        allRows = heroRows
           .slice(1)
           .filter(r => r.some(cell => normalizeValue(cell) !== ""))
           .filter(r => !isTotalRow(r));
 
         maxMatches = Math.max(
-          ...allRows.filter(row => !isTotalRow(row)).map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0),
+          ...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0),
           0
         );
 
@@ -641,11 +826,21 @@ function renderTable() {
 
         renderHeader();
         renderTable();
+
+        const matchesCsvText = await matchesRes.text();
+        const matchesRows = parseCSV(matchesCsvText);
+        setOverallStats(matchesRows);
       } catch (err) {
         statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
         thead.innerHTML = "";
         tbody.innerHTML = "";
         emptyState.style.display = "none";
+
+        overallMatchesEl.textContent = "-";
+        overallWinsEl.textContent = "-";
+        overallLossesEl.textContent = "-";
+        overallWinPctEl.textContent = "-";
+        firstMatchPlayedEl.textContent = "-";
       }
     }
 
