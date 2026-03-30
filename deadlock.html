@@ -536,45 +536,35 @@
       return renderStatCell(winRaw, winPct, "win");
     }
 
-    function renderTable() {
-      tbody.innerHTML = "";
+function renderTable() {
+  tbody.innerHTML = "";
 
-      if (!filteredRows.length) {
-        emptyState.style.display = "block";
-      } else {
-        emptyState.style.display = "none";
-      }
+  if (!filteredRows.length) {
+    emptyState.style.display = "block";
+  } else {
+    emptyState.style.display = "none";
+  }
 
-      filteredRows.forEach((row) => {
-        const tr = document.createElement("tr");
+  filteredRows.forEach((row) => {
+    const tr = document.createElement("tr");
 
-        if (isTotalRow(row)) {
-          tr.classList.add("totals-row");
-        }
+    const heroTd = document.createElement("td");
+    heroTd.appendChild(renderHeroCell(row));
+    tr.appendChild(heroTd);
 
-        const heroTd = document.createElement("td");
-        if (!isTotalRow(row)) {
-          heroTd.appendChild(renderHeroCell(row));
-        }
-        tr.appendChild(heroTd);
+    const matchesTd = document.createElement("td");
+    matchesTd.appendChild(renderMatchesCell(row));
+    tr.appendChild(matchesTd);
 
-        const matchesTd = document.createElement("td");
-        if (!isTotalRow(row)) {
-          matchesTd.appendChild(renderMatchesCell(row));
-        }
-        tr.appendChild(matchesTd);
+    const winTd = document.createElement("td");
+    winTd.appendChild(renderWinCell(row));
+    tr.appendChild(winTd);
 
-        const winTd = document.createElement("td");
-        if (!isTotalRow(row)) {
-          winTd.appendChild(renderWinCell(row));
-        }
-        tr.appendChild(winTd);
+    tbody.appendChild(tr);
+  });
 
-        tbody.appendChild(tr);
-      });
-
-      statusEl.textContent = `${filteredRows.length} row(s) shown`;
-    }
+  statusEl.textContent = `${filteredRows.length} row(s) shown`;
+}
 
     function renderHeader() {
       thead.innerHTML = "";
@@ -636,7 +626,10 @@
           throw new Error("No data found.");
         }
 
-        allRows = rows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== ""));
+        allRows = rows
+          .slice(1)
+          .filter(r => r.some(cell => normalizeValue(cell) !== ""))
+          .filter(r => !isTotalRow(r));
 
         maxMatches = Math.max(
           ...allRows.filter(row => !isTotalRow(row)).map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0),
