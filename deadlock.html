@@ -74,12 +74,13 @@
     }
 
     .chart-column {
-      flex: 1 1 520px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      min-width: 420px;
-    }
+  flex: 0 0 1040px;
+  width: 1040px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 700px;
+}
 
     .titlebar,
     .stats-titlebar {
@@ -1079,8 +1080,8 @@
               borderColor: "#98e61d",
               backgroundColor: "rgba(152, 230, 29, 0.10)",
               pointStyle: pointStyles,
-              pointRadius: pointStyles.map(img => img ? 11 : 3),
-              pointHoverRadius: pointStyles.map(img => img ? 13 : 5),
+              pointRadius: pointStyles.map(img => img ? 4 : 2),
+              pointHoverRadius: pointStyles.map(img => img ? 6 : 4),
               pointBackgroundColor: "transparent",
               pointBorderColor: "transparent",
               pointBorderWidth: 0,
