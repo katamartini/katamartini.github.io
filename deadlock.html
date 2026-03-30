@@ -41,12 +41,12 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      width: fit-content;
-      max-width: calc(100vw - 48px);
+      width: min(1400px, calc(100vw - 48px));
     }
 
     .wrap,
-    .side-column {
+    .mid-column,
+    .chart-column {
       min-width: 0;
     }
 
@@ -61,15 +61,24 @@
     }
 
     .wrap {
-      width: min(520px, calc(100vw - 48px));
+      flex: 0 0 520px;
+      width: 520px;
     }
 
-    .side-column {
-      width: 260px;
+    .mid-column {
       flex: 0 0 260px;
+      width: 260px;
       display: flex;
       flex-direction: column;
       gap: 20px;
+    }
+
+    .chart-column {
+      flex: 1 1 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 420px;
     }
 
     .titlebar,
@@ -400,7 +409,7 @@
 
     .chart-body {
       padding: 12px;
-      height: 240px;
+      height: 760px;
       background: #222834;
       border-top: 1px solid var(--border);
     }
@@ -410,6 +419,29 @@
       height: 100% !important;
     }
 
+    @media (max-width: 1240px) {
+      .page {
+        flex-wrap: wrap;
+      }
+
+      .wrap {
+        flex: 1 1 520px;
+      }
+
+      .mid-column {
+        flex: 0 0 260px;
+      }
+
+      .chart-column {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+
+      .chart-body {
+        height: 420px;
+      }
+    }
+
     @media (max-width: 860px) {
       .page {
         flex-direction: column;
@@ -417,9 +449,15 @@
       }
 
       .wrap,
-      .side-column {
+      .mid-column,
+      .chart-column {
         width: 100%;
         flex: 0 0 auto;
+        min-width: 0;
+      }
+
+      .chart-body {
+        height: 320px;
       }
     }
   </style>
@@ -446,7 +484,7 @@
       <div id="emptyState" class="empty">No rows match the current filter.</div>
     </div>
 
-    <div class="side-column">
+    <div class="mid-column">
       <div class="stats-card">
         <div class="stats-titlebar">
           OVERALL STATS<span class="sub">MATCHES SHEET</span>
@@ -499,7 +537,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="chart-column">
       <div class="chart-card">
         <div class="stats-titlebar">
           W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span>
@@ -732,6 +772,26 @@
     function heroIconPath(heroName) {
       const safe = normalizeValue(heroName).toLowerCase();
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
+    }
+
+    function loadHeroIcon(heroName) {
+      return new Promise((resolve) => {
+        const hero = normalizeValue(heroName);
+        if (!hero) {
+          resolve(null);
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = heroIconPath(hero);
+      });
+    }
+
+    async function buildPointStyles(series) {
+      const styles = await Promise.all(series.map(p => loadHeroIcon(p.hero)));
+      return styles;
     }
 
     function buildIcon(heroName, className = "icon-slot") {
@@ -990,7 +1050,7 @@
       return series.map((_, i) => Number((slope * i + intercept).toFixed(2)));
     }
 
-    function renderWinrateChart(rows) {
+    async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
 
       if (winrateChart) {
@@ -1001,6 +1061,7 @@
       if (!series.length) return;
 
       const trendline = buildTrendline(series);
+      const pointStyles = await buildPointStyles(series);
 
       const yValues = [...series.map(p => p.y), ...trendline];
       const minY = Math.min(...yValues);
@@ -1016,11 +1077,13 @@
               label: "W-L Delta",
               data: series.map(p => p.y),
               borderColor: "#98e61d",
-              backgroundColor: "rgba(152, 230, 29, 0.12)",
-              pointBackgroundColor: "#b7ff2a",
-              pointBorderColor: "#b7ff2a",
-              pointRadius: 2,
-              pointHoverRadius: 5,
+              backgroundColor: "rgba(152, 230, 29, 0.10)",
+              pointStyle: pointStyles,
+              pointRadius: pointStyles.map(img => img ? 11 : 3),
+              pointHoverRadius: pointStyles.map(img => img ? 13 : 5),
+              pointBackgroundColor: "transparent",
+              pointBorderColor: "transparent",
+              pointBorderWidth: 0,
               borderWidth: 2,
               tension: 0.2,
               fill: false
@@ -1078,7 +1141,7 @@
             x: {
               ticks: {
                 color: "#9ca3af",
-                maxTicksLimit: 6
+                maxTicksLimit: 10
               },
               grid: {
                 color: "rgba(255,255,255,0.06)"
