@@ -776,31 +776,35 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-    function loadHeroIcon(heroName, size = 6) {
-      return new Promise((resolve) => {
-        const hero = normalizeValue(heroName);
-        if (!hero) {
-          resolve(null);
-          return;
-        }
-
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          canvas.width = size;
-          canvas.height = size;
-
-          const ctx = canvas.getContext("2d");
-          ctx.clearRect(0, 0, size, size);
-          ctx.imageSmoothingEnabled = true;
-          ctx.drawImage(img, 0, 0, size, size);
-
-          resolve(canvas);
-        };
-        img.onerror = () => resolve(null);
-        img.src = heroIconPath(hero);
-      });
+function loadHeroIcon(heroName, displaySize = 15) {
+  return new Promise((resolve) => {
+    const hero = normalizeValue(heroName);
+    if (!hero) {
+      resolve(null);
+      return;
     }
+
+    const img = new Image();
+    img.onload = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const sourceSize = Math.ceil(displaySize * dpr * 2); // oversample for crispness
+
+      const canvas = document.createElement("canvas");
+      canvas.width = sourceSize;
+      canvas.height = sourceSize;
+
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, sourceSize, sourceSize);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(img, 0, 0, sourceSize, sourceSize);
+
+      resolve(canvas);
+    };
+    img.onerror = () => resolve(null);
+    img.src = heroIconPath(hero);
+  });
+}
 
     async function buildPointStyles(series) {
       return Promise.all(series.map(p => loadHeroIcon(p.hero, 6)));
