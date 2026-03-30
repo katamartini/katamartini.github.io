@@ -776,38 +776,23 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-function loadHeroIcon(heroName, displaySize = 15) {
-  return new Promise((resolve) => {
-    const hero = normalizeValue(heroName);
-    if (!hero) {
-      resolve(null);
-      return;
+    function loadHeroIcon(heroName) {
+      return new Promise((resolve) => {
+        const hero = normalizeValue(heroName);
+        if (!hero) {
+          resolve(null);
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = heroIconPath(hero);
+      });
     }
 
-    const img = new Image();
-    img.onload = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const sourceSize = Math.ceil(displaySize * dpr * 2); // oversample for crispness
-
-      const canvas = document.createElement("canvas");
-      canvas.width = sourceSize;
-      canvas.height = sourceSize;
-
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, sourceSize, sourceSize);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(img, 0, 0, sourceSize, sourceSize);
-
-      resolve(canvas);
-    };
-    img.onerror = () => resolve(null);
-    img.src = heroIconPath(hero);
-  });
-}
-
     async function buildPointStyles(series) {
-      return Promise.all(series.map(p => loadHeroIcon(p.hero, 6)));
+      return Promise.all(series.map(p => loadHeroIcon(p.hero)));
     }
 
     function buildIcon(heroName, className = "icon-slot") {
@@ -1041,29 +1026,23 @@ function loadHeroIcon(heroName, displaySize = 15) {
         .filter(Boolean);
     }
 
-    function buildTrendline(series) {
+    function buildOriginTrendline(series) {
       const n = series.length;
-      if (!n) return [];
+      if (!n) return [0];
 
-      let sumX = 0;
-      let sumY = 0;
       let sumXY = 0;
       let sumXX = 0;
 
       for (let i = 0; i < n; i++) {
-        const x = i;
+        const x = i + 1;
         const y = series[i].y;
-        sumX += x;
-        sumY += y;
         sumXY += x * y;
         sumXX += x * x;
       }
 
-      const denominator = (n * sumXX) - (sumX * sumX);
-      const slope = denominator === 0 ? 0 : ((n * sumXY) - (sumX * sumY)) / denominator;
-      const intercept = (sumY - slope * sumX) / n;
+      const slope = sumXX === 0 ? 0 : sumXY / sumXX;
 
-      return series.map((_, i) => Number((slope * i + intercept).toFixed(2)));
+      return [0, ...series.map((_, i) => Number((slope * (i + 1)).toFixed(2)))];
     }
 
     const heroPointPlugin = {
@@ -1076,6 +1055,7 @@ function loadHeroIcon(heroName, displaySize = 15) {
 
         ctx.save();
         ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
 
         meta.data.forEach((point, i) => {
           const icon = icons[i];
@@ -1101,9 +1081,12 @@ function loadHeroIcon(heroName, displaySize = 15) {
       if (!series.length) return;
 
       const pointIcons = await buildPointStyles(series);
-      const trendline = buildTrendline(series);
+      const labels = ["Start", ...series.map(p => p.xLabel)];
+      const deltaData = [0, ...series.map(p => p.y)];
+      const trendline = buildOriginTrendline(series);
+      const pluginIcons = [null, ...pointIcons];
 
-      const yValues = [...series.map(p => p.y), ...trendline];
+      const yValues = [...deltaData, ...trendline];
       const minY = Math.min(...yValues);
       const maxY = Math.max(...yValues);
       const yPadding = Math.max(2, Math.ceil((maxY - minY) * 0.1));
@@ -1111,11 +1094,11 @@ function loadHeroIcon(heroName, displaySize = 15) {
       winrateChart = new Chart(chartCanvas, {
         type: "line",
         data: {
-          labels: series.map(p => p.xLabel),
+          labels,
           datasets: [
             {
               label: "W-L Delta",
-              data: series.map(p => p.y),
+              data: deltaData,
               borderColor: "#98e61d",
               backgroundColor: "rgba(152, 230, 29, 0.10)",
               pointRadius: 8,
@@ -1150,7 +1133,7 @@ function loadHeroIcon(heroName, displaySize = 15) {
           },
           plugins: {
             heroPointPlugin: {
-              icons: pointIcons,
+              icons: pluginIcons,
               size: 15
             },
             legend: {
@@ -1160,22 +1143,26 @@ function loadHeroIcon(heroName, displaySize = 15) {
               callbacks: {
                 title(items) {
                   const i = items[0].dataIndex;
-                  return series[i].xLabel;
+                  return labels[i];
                 },
                 label(context) {
                   const i = context.dataIndex;
-                  const p = series[i];
 
                   if (context.datasetIndex === 0) {
-                    return `Delta: ${p.y > 0 ? "+" : ""}${p.y}`;
+                    const value = deltaData[i];
+                    return `Delta: ${value > 0 ? "+" : ""}${value}`;
                   }
 
-                  return `Trend: ${trendline[i] > 0 ? "+" : ""}${trendline[i]}`;
+                  const value = trendline[i];
+                  return `Trend: ${value > 0 ? "+" : ""}${value}`;
                 },
                 afterLabel(context) {
                   if (context.datasetIndex !== 0) return "";
+
                   const i = context.dataIndex;
-                  const p = series[i];
+                  if (i === 0) return "Origin";
+
+                  const p = series[i - 1];
                   return `After match ${p.matchNumber} (${p.hero}, ${p.result})`;
                 }
               }
@@ -1185,7 +1172,10 @@ function loadHeroIcon(heroName, displaySize = 15) {
             x: {
               ticks: {
                 color: "#9ca3af",
-                maxTicksLimit: 10
+                maxTicksLimit: 10,
+                callback: function(value, index) {
+                  return index === 0 ? "" : this.getLabelForValue(value);
+                }
               },
               grid: {
                 color: "rgba(255,255,255,0.06)"
