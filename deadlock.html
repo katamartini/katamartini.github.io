@@ -41,7 +41,7 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      width: min(1400px, calc(100vw - 48px));
+      width: min(1900px, calc(100vw - 48px));
     }
 
     .wrap,
@@ -74,13 +74,13 @@
     }
 
     .chart-column {
-  flex: 0 0 1040px;
-  width: 1040px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-width: 700px;
-}
+      flex: 0 0 1040px;
+      width: 1040px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 700px;
+    }
 
     .titlebar,
     .stats-titlebar {
@@ -436,6 +436,7 @@
       .chart-column {
         flex: 1 1 100%;
         min-width: 0;
+        width: 100%;
       }
 
       .chart-body {
@@ -590,7 +591,7 @@
     const longestWinIconsEl = document.getElementById("longestWinIcons");
     const longestLossIconsEl = document.getElementById("longestLossIcons");
 
-    const winrateChartCanvas = document.getElementById("winrateChart");
+    const chartCanvas = document.getElementById("winrateChart");
     let winrateChart = null;
 
     let allRows = [];
@@ -775,7 +776,7 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-    function loadHeroIcon(heroName) {
+    function loadHeroIcon(heroName, size = 6) {
       return new Promise((resolve) => {
         const hero = normalizeValue(heroName);
         if (!hero) {
@@ -784,15 +785,24 @@
         }
 
         const img = new Image();
-        img.onload = () => resolve(img);
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, size, size);
+          ctx.drawImage(img, 0, 0, size, size);
+
+          resolve(canvas);
+        };
         img.onerror = () => resolve(null);
         img.src = heroIconPath(hero);
       });
     }
 
     async function buildPointStyles(series) {
-      const styles = await Promise.all(series.map(p => loadHeroIcon(p.hero)));
-      return styles;
+      return Promise.all(series.map(p => loadHeroIcon(p.hero, 6)));
     }
 
     function buildIcon(heroName, className = "icon-slot") {
@@ -1051,6 +1061,29 @@
       return series.map((_, i) => Number((slope * i + intercept).toFixed(2)));
     }
 
+    const heroPointPlugin = {
+      id: "heroPointPlugin",
+      afterDatasetsDraw(chart, args, pluginOptions) {
+        const { ctx } = chart;
+        const meta = chart.getDatasetMeta(0);
+        const icons = pluginOptions.icons || [];
+        const size = pluginOptions.size || 6;
+
+        ctx.save();
+
+        meta.data.forEach((point, i) => {
+          const icon = icons[i];
+          if (!icon) return;
+
+          const x = point.x - size / 2;
+          const y = point.y - size / 2;
+          ctx.drawImage(icon, x, y, size, size);
+        });
+
+        ctx.restore();
+      }
+    };
+
     async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
 
@@ -1069,7 +1102,7 @@
       const maxY = Math.max(...yValues);
       const yPadding = Math.max(2, Math.ceil((maxY - minY) * 0.1));
 
-      winrateChart = new Chart(winrateChartCanvas, {
+      winrateChart = new Chart(chartCanvas, {
         type: "line",
         data: {
           labels: series.map(p => p.xLabel),
@@ -1079,9 +1112,8 @@
               data: series.map(p => p.y),
               borderColor: "#98e61d",
               backgroundColor: "rgba(152, 230, 29, 0.10)",
-              pointStyle: pointStyles,
-              pointRadius: pointStyles.map(img => img ? 4 : 2),
-              pointHoverRadius: pointStyles.map(img => img ? 6 : 4),
+              pointRadius: 0,
+              pointHoverRadius: 0,
               pointBackgroundColor: "transparent",
               pointBorderColor: "transparent",
               pointBorderWidth: 0,
@@ -1110,6 +1142,10 @@
             intersect: false
           },
           plugins: {
+            heroPointPlugin: {
+              icons: pointStyles,
+              size: 6
+            },
             legend: {
               display: false
             },
@@ -1160,7 +1196,8 @@
               }
             }
           }
-        }
+        },
+        plugins: [heroPointPlugin]
       });
     }
 
