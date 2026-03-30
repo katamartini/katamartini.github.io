@@ -17,6 +17,10 @@
       --bar-bg: #434d5f;
       --matches-bar: #ff2a1a;
       --win-bar: #98e61d;
+      --streak-win-bg: #23421c;
+      --streak-win-border: #4f8f37;
+      --streak-loss-bg: #4a1f1f;
+      --streak-loss-border: #a84040;
     }
 
     * { box-sizing: border-box; }
@@ -42,7 +46,13 @@
     }
 
     .wrap,
-    .stats-card {
+    .side-column {
+      min-width: 0;
+    }
+
+    .wrap,
+    .stats-card,
+    .streaks-card {
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
@@ -53,9 +63,12 @@
       width: min(520px, calc(100vw - 48px));
     }
 
-    .stats-card {
+    .side-column {
       width: 260px;
       flex: 0 0 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .titlebar,
@@ -176,7 +189,8 @@
       min-width: 0;
     }
 
-    .icon-slot {
+    .icon-slot,
+    .streak-icon {
       width: 28px;
       height: 28px;
       flex: 0 0 28px;
@@ -186,7 +200,8 @@
       overflow: hidden;
     }
 
-    .icon-slot img {
+    .icon-slot img,
+    .streak-icon img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -257,10 +272,6 @@
       background: var(--win-bar);
     }
 
-    .totals-row td {
-      color: var(--muted);
-    }
-
     .sort-indicator {
       margin-left: 4px;
       color: #cbd5e1;
@@ -297,16 +308,75 @@
       margin-bottom: 6px;
     }
 
-    .stats-value {
+    .stats-value-big {
       color: #ffffff;
       font-size: 24px;
       font-weight: 700;
       line-height: 1.05;
     }
 
-    .stats-value.small {
+    .stats-value-small {
+      color: #ffffff;
       font-size: 16px;
       line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .streaks-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .streak-box {
+      border: 1px solid;
+      padding: 10px;
+    }
+
+    .streak-box.win {
+      background: var(--streak-win-bg);
+      border-color: var(--streak-win-border);
+    }
+
+    .streak-box.loss {
+      background: var(--streak-loss-bg);
+      border-color: var(--streak-loss-border);
+    }
+
+    .streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .streak-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 700;
+    }
+
+    .streak-count {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .streak-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 28px;
+    }
+
+    .streak-empty {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
     }
 
     @media (max-width: 860px) {
@@ -316,7 +386,7 @@
       }
 
       .wrap,
-      .stats-card {
+      .side-column {
         width: 100%;
         flex: 0 0 auto;
       }
@@ -345,31 +415,56 @@
       <div id="emptyState" class="empty">No rows match the current filter.</div>
     </div>
 
-    <div class="stats-card">
-      <div class="stats-titlebar">
-        OVERALL STATS<span class="sub">MATCHES SHEET</span>
+    <div class="side-column">
+      <div class="stats-card">
+        <div class="stats-titlebar">
+          OVERALL STATS<span class="sub">MATCHES SHEET</span>
+        </div>
+        <div class="stats-body">
+          <div class="stats-grid">
+            <div class="stats-item">
+              <div class="stats-label">Matches</div>
+              <div class="stats-value-big" id="overallMatches">-</div>
+            </div>
+            <div class="stats-item">
+              <div class="stats-label">Wins</div>
+              <div class="stats-value-big" id="overallWins">-</div>
+            </div>
+            <div class="stats-item">
+              <div class="stats-label">Losses</div>
+              <div class="stats-value-big" id="overallLosses">-</div>
+            </div>
+            <div class="stats-item">
+              <div class="stats-label">Overall Win %</div>
+              <div class="stats-value-big" id="overallWinPct">-</div>
+            </div>
+            <div class="stats-item">
+              <div class="stats-label">First Match</div>
+              <div class="stats-value-small" id="firstMatchPlayed">-</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="stats-body">
-        <div class="stats-grid">
-          <div class="stats-item">
-            <div class="stats-label">Matches</div>
-            <div class="stats-value" id="overallMatches">-</div>
+
+      <div class="streaks-card">
+        <div class="stats-titlebar">
+          STREAKS<span class="sub">LONGEST RUNS</span>
+        </div>
+        <div class="streaks-body">
+          <div class="streak-box win">
+            <div class="streak-header">
+              <div class="streak-title">Longest Win Streak</div>
+              <div class="streak-count" id="longestWinCount">-</div>
+            </div>
+            <div class="streak-icons" id="longestWinIcons"></div>
           </div>
-          <div class="stats-item">
-            <div class="stats-label">Wins</div>
-            <div class="stats-value" id="overallWins">-</div>
-          </div>
-          <div class="stats-item">
-            <div class="stats-label">Losses</div>
-            <div class="stats-value" id="overallLosses">-</div>
-          </div>
-          <div class="stats-item">
-            <div class="stats-label">Overall Win %</div>
-            <div class="stats-value" id="overallWinPct">-</div>
-          </div>
-          <div class="stats-item">
-            <div class="stats-label">First Match</div>
-            <div class="stats-value small" id="firstMatchPlayed">-</div>
+
+          <div class="streak-box loss">
+            <div class="streak-header">
+              <div class="streak-title">Longest Loss Streak</div>
+              <div class="streak-count" id="longestLossCount">-</div>
+            </div>
+            <div class="streak-icons" id="longestLossIcons"></div>
           </div>
         </div>
       </div>
@@ -379,7 +474,7 @@
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const HERO_GID = "0";
-    const MATCHES_GID = "852547275"; // set this to the actual gid of the matches sheet
+    const MATCHES_GID = "852547275"; // replace with your actual matches gid
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${HERO_GID}`;
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
 
@@ -389,6 +484,7 @@
     const WINRATE_INDEX = 6;
 
     const MATCHES_SHEET_DATE_INDEX = 1;
+    const MATCHES_SHEET_HERO_INDEX = 2;
     const MATCHES_SHEET_RESULT_INDEX = 3;
 
     const SORT_BY_DATE = "__date__";
@@ -406,6 +502,11 @@
     const overallLossesEl = document.getElementById("overallLosses");
     const overallWinPctEl = document.getElementById("overallWinPct");
     const firstMatchPlayedEl = document.getElementById("firstMatchPlayed");
+
+    const longestWinCountEl = document.getElementById("longestWinCount");
+    const longestLossCountEl = document.getElementById("longestLossCount");
+    const longestWinIconsEl = document.getElementById("longestWinIcons");
+    const longestLossIconsEl = document.getElementById("longestLossIcons");
 
     let allRows = [];
     let filteredRows = [];
@@ -499,7 +600,7 @@
     }
 
     function formatLongDate(value) {
-      const d = parseSheetDate(value);
+      const d = value instanceof Date ? value : parseSheetDate(value);
       if (!d) return normalizeValue(value);
       return d.toLocaleDateString(undefined, {
         year: "numeric",
@@ -584,28 +685,35 @@
       renderTable();
     }
 
+    function heroIconPath(heroName) {
+      const safe = normalizeValue(heroName).toLowerCase();
+      return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
+    }
+
+    function buildIcon(heroName, className = "icon-slot") {
+      const slot = document.createElement("div");
+      slot.className = className;
+
+      const img = document.createElement("img");
+      img.src = heroIconPath(heroName);
+      img.alt = heroName;
+      img.loading = "lazy";
+      img.title = heroName;
+
+      img.onerror = function () {
+        this.style.display = "none";
+      };
+
+      slot.appendChild(img);
+      return slot;
+    }
+
     function renderHeroCell(row) {
       const wrapper = document.createElement("div");
       wrapper.className = "hero-cell";
 
-      const icon = document.createElement("div");
-      icon.className = "icon-slot";
-
       const heroName = normalizeValue(row[HERO_NAME_INDEX]).trim();
-      const fileName = `${heroName.toLowerCase()}.png`;
-      const filePath = `images/deadlock/icons/${encodeURIComponent(fileName)}`;
-
-      const img = document.createElement("img");
-      img.src = filePath;
-      img.alt = heroName;
-      img.loading = "lazy";
-
-      img.onerror = function () {
-        this.style.display = "none";
-        icon.style.background = "linear-gradient(135deg, #4b5563, #2f3745)";
-      };
-
-      icon.appendChild(img);
+      const icon = buildIcon(heroName, "icon-slot");
 
       const meta = document.createElement("div");
       meta.className = "hero-meta";
@@ -669,11 +777,7 @@
     function renderTable() {
       tbody.innerHTML = "";
 
-      if (!filteredRows.length) {
-        emptyState.style.display = "block";
-      } else {
-        emptyState.style.display = "none";
-      }
+      emptyState.style.display = filteredRows.length ? "none" : "block";
 
       filteredRows.forEach((row) => {
         const tr = document.createElement("tr");
@@ -742,6 +846,45 @@
       renderTable();
     }
 
+    function findLongestStreak(rows, targetResult) {
+      let best = [];
+      let current = [];
+
+      for (const row of rows) {
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+
+        if (!hero) continue;
+
+        if (result === targetResult) {
+          current.push(hero);
+          if (current.length > best.length) {
+            best = [...current];
+          }
+        } else {
+          current = [];
+        }
+      }
+
+      return best;
+    }
+
+    function renderStreak(container, heroes) {
+      container.innerHTML = "";
+
+      if (!heroes.length) {
+        const empty = document.createElement("div");
+        empty.className = "streak-empty";
+        empty.textContent = "No streak found";
+        container.appendChild(empty);
+        return;
+      }
+
+      heroes.forEach(hero => {
+        container.appendChild(buildIcon(hero, "streak-icon"));
+      });
+    }
+
     function setOverallStats(matchesRows) {
       const dataRows = matchesRows
         .slice(1)
@@ -771,22 +914,15 @@
       overallLossesEl.textContent = losses;
       overallWinPctEl.textContent = overallWinPct;
       firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : "-";
-    }
 
-    async function loadOverallStats() {
-      const res = await fetch(MATCHES_CSV_URL);
-      if (!res.ok) {
-        throw new Error(`Matches sheet HTTP ${res.status}`);
-      }
+      const longestWin = findLongestStreak(dataRows, "win");
+      const longestLoss = findLongestStreak(dataRows, "loss");
 
-      const csvText = await res.text();
-      const rows = parseCSV(csvText);
+      longestWinCountEl.textContent = longestWin.length;
+      longestLossCountEl.textContent = longestLoss.length;
 
-      if (!rows.length) {
-        throw new Error("No matches data found.");
-      }
-
-      setOverallStats(rows);
+      renderStreak(longestWinIconsEl, longestWin);
+      renderStreak(longestLossIconsEl, longestLoss);
     }
 
     async function loadSheet() {
@@ -796,13 +932,8 @@
           fetch(MATCHES_CSV_URL)
         ]);
 
-        if (!heroRes.ok) {
-          throw new Error(`Hero sheet HTTP ${heroRes.status}`);
-        }
-
-        if (!matchesRes.ok) {
-          throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
-        }
+        if (!heroRes.ok) throw new Error(`Hero sheet HTTP ${heroRes.status}`);
+        if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
 
         const heroCsvText = await heroRes.text();
         const heroRows = parseCSV(heroCsvText);
@@ -823,12 +954,16 @@
 
         filteredRows = [...allRows];
         sortRows();
-
         renderHeader();
         renderTable();
 
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
+
+        if (!matchesRows.length) {
+          throw new Error("No matches data found.");
+        }
+
         setOverallStats(matchesRows);
       } catch (err) {
         statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
@@ -841,6 +976,11 @@
         overallLossesEl.textContent = "-";
         overallWinPctEl.textContent = "-";
         firstMatchPlayedEl.textContent = "-";
+
+        longestWinCountEl.textContent = "-";
+        longestLossCountEl.textContent = "-";
+        longestWinIconsEl.innerHTML = "";
+        longestLossIconsEl.innerHTML = "";
       }
     }
 
