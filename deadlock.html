@@ -52,7 +52,8 @@
 
     .wrap,
     .stats-card,
-    .streaks-card {
+    .streaks-card,
+    .chart-card {
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
@@ -189,22 +190,22 @@
       min-width: 0;
     }
 
-   .icon-slot {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
-  background: linear-gradient(135deg, #4b5563, #2f3745);
-  border: 1px solid #596274;
-  display: block;
-  overflow: hidden;
-}
+    .icon-slot {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      background: linear-gradient(135deg, #4b5563, #2f3745);
+      border: 1px solid #596274;
+      display: block;
+      overflow: hidden;
+    }
 
-.icon-slot img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
+    .icon-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
 
     .hero-meta {
       min-width: 0;
@@ -370,6 +371,7 @@
       flex-wrap: wrap;
       gap: 6px;
       min-height: 32px;
+      align-items: center;
     }
 
     .streak-icon {
@@ -383,7 +385,7 @@
       background: transparent;
       border: none;
     }
-    
+
     .streak-icon img {
       width: 100%;
       height: 100%;
@@ -394,6 +396,18 @@
     .streak-empty {
       color: rgba(255,255,255,0.7);
       font-size: 12px;
+    }
+
+    .chart-body {
+      padding: 12px;
+      height: 240px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+    }
+
+    .chart-body canvas {
+      width: 100% !important;
+      height: 100% !important;
     }
 
     @media (max-width: 860px) {
@@ -485,13 +499,23 @@
           </div>
         </div>
       </div>
+
+      <div class="chart-card">
+        <div class="stats-titlebar">
+          WINRATE OVER TIME<span class="sub">ALL MATCHES</span>
+        </div>
+        <div class="chart-body">
+          <canvas id="winrateChart"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const HERO_GID = "0";
-    const MATCHES_GID = "852547275"; // replace with your actual matches gid
+    const MATCHES_GID = "852547275";
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${HERO_GID}`;
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
 
@@ -524,6 +548,9 @@
     const longestLossCountEl = document.getElementById("longestLossCount");
     const longestWinIconsEl = document.getElementById("longestWinIcons");
     const longestLossIconsEl = document.getElementById("longestLossIcons");
+
+    const winrateChartCanvas = document.getElementById("winrateChart");
+    let winrateChart = null;
 
     let allRows = [];
     let filteredRows = [];
@@ -902,22 +929,141 @@
       });
     }
 
+    function buildWinrateSeries(rows) {
+      const dataRows = rows
+        .slice(1)
+        .filter(r => r.some(cell => normalizeValue(cell) !== ""));
+
+      let wins = 0;
+      let total = 0;
+
+      return dataRows
+        .map(row => {
+          const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+          const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+          const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+
+          if (result !== "win" && result !== "loss") return null;
+
+          total += 1;
+          if (result === "win") wins += 1;
+
+          return {
+            xLabel: date ? formatLongDate(date) : `Match ${total}`,
+            y: Number(((wins / total) * 100).toFixed(1)),
+            hero,
+            result,
+            matchNumber: total
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function renderWinrateChart(rows) {
+      const series = buildWinrateSeries(rows);
+
+      if (winrateChart) {
+        winrateChart.destroy();
+        winrateChart = null;
+      }
+
+      if (!series.length) return;
+
+      winrateChart = new Chart(winrateChartCanvas, {
+        type: "line",
+        data: {
+          labels: series.map(p => p.xLabel),
+          datasets: [{
+            label: "Win %",
+            data: series.map(p => p.y),
+            borderColor: "#98e61d",
+            backgroundColor: "rgba(152, 230, 29, 0.15)",
+            pointBackgroundColor: "#b7ff2a",
+            pointBorderColor: "#b7ff2a",
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            borderWidth: 2,
+            tension: 0.2,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: "nearest",
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                title(items) {
+                  const i = items[0].dataIndex;
+                  return series[i].xLabel;
+                },
+                label(context) {
+                  const i = context.dataIndex;
+                  const p = series[i];
+                  return `Win rate: ${p.y}%`;
+                },
+                afterLabel(context) {
+                  const i = context.dataIndex;
+                  const p = series[i];
+                  return `After match ${p.matchNumber} (${p.hero}, ${p.result})`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "#9ca3af",
+                maxTicksLimit: 6
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              ticks: {
+                color: "#9ca3af",
+                callback: value => `${value}%`
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            }
+          }
+        }
+      });
+    }
+
     function setOverallStats(matchesRows) {
       const dataRows = matchesRows
         .slice(1)
         .filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
-      const totalMatches = dataRows.length;
+      const classifiedRows = dataRows.filter(row => {
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        return result === "win" || result === "loss";
+      });
 
-      const wins = dataRows.filter(row =>
+      const totalMatches = classifiedRows.length;
+
+      const wins = classifiedRows.filter(row =>
         normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "win"
       ).length;
 
-      const losses = dataRows.filter(row =>
+      const losses = classifiedRows.filter(row =>
         normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "loss"
       ).length;
 
-      const firstDate = dataRows
+      const firstDate = classifiedRows
         .map(row => parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]))
         .filter(Boolean)
         .sort((a, b) => a - b)[0];
@@ -932,14 +1078,16 @@
       overallWinPctEl.textContent = overallWinPct;
       firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : "-";
 
-      const longestWin = findLongestStreak(dataRows, "win");
-      const longestLoss = findLongestStreak(dataRows, "loss");
+      const longestWin = findLongestStreak(classifiedRows, "win");
+      const longestLoss = findLongestStreak(classifiedRows, "loss");
 
       longestWinCountEl.textContent = longestWin.length;
       longestLossCountEl.textContent = longestLoss.length;
 
       renderStreak(longestWinIconsEl, longestWin);
       renderStreak(longestLossIconsEl, longestLoss);
+
+      renderWinrateChart(matchesRows);
     }
 
     async function loadSheet() {
@@ -998,6 +1146,11 @@
         longestLossCountEl.textContent = "-";
         longestWinIconsEl.innerHTML = "";
         longestLossIconsEl.innerHTML = "";
+
+        if (winrateChart) {
+          winrateChart.destroy();
+          winrateChart = null;
+        }
       }
     }
 
