@@ -1210,7 +1210,7 @@
         );
     
         const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
-        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.4));
+        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
     
         ctx.save();
         ctx.imageSmoothingEnabled = true;
@@ -1227,11 +1227,7 @@
     
         ctx.restore();
     
-        ctx.save();
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.lineJoin = "round";
-        ctx.lineCap = "round";
+        const peakEntries = [];
     
         meta.data.forEach((point, i) => {
           if (i === 0) return;
@@ -1242,28 +1238,52 @@
           const rankParsed = parsePeakRankLabel(p.peakRank);
           if (!rankParsed) return;
     
-          const rankIcon = rankIcons[i - 1];
+          peakEntries.push({
+            point,
+            rankParsed,
+            rankIcon: rankIcons[i - 1]
+          });
+        });
+    
+        if (!peakEntries.length) return;
+    
+        const alignedIconCenterY = Math.max(
+          chartArea.top + rankIconSize / 2 + 4,
+          Math.min(
+            ...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift)
+          )
+        );
+    
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+    
+        peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
           const iconCenterX = point.x;
-          const iconCenterY = point.y - dynamicSize / 2 - badgeLift;
+          const iconCenterY = alignedIconCenterY;
           const iconX = iconCenterX - rankIconSize / 2;
           const iconY = iconCenterY - rankIconSize / 2;
     
           const lineStartY = iconY + rankIconSize + 1;
           const lineEndY = point.y - dynamicSize / 2 - 4;
     
-          ctx.strokeStyle = "rgba(255,255,255,0.22)";
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(iconCenterX, lineStartY);
-          ctx.lineTo(iconCenterX, lineEndY);
-          ctx.stroke();
+          if (lineEndY > lineStartY) {
+            ctx.strokeStyle = "rgba(255,255,255,0.18)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(iconCenterX, lineStartY);
+            ctx.lineTo(iconCenterX, lineEndY);
+            ctx.stroke();
+          }
     
           if (rankIcon) {
             ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
           }
     
           if (rankParsed.numeral) {
-            const numeralY = iconCenterY + 2.5;
+            const numeralY = iconCenterY + 1.5;
     
             ctx.save();
             ctx.translate(iconCenterX, numeralY);
