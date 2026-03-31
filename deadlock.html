@@ -1137,29 +1137,39 @@
     }
 
     const heroPointPlugin = {
-      id: "heroPointPlugin",
-      afterDatasetsDraw(chart, args, pluginOptions) {
-        const { ctx } = chart;
-        const meta = chart.getDatasetMeta(0);
-        const icons = pluginOptions.icons || [];
-        const size = pluginOptions.size || 6;
+  id: "heroPointPlugin",
+  afterDatasetsDraw(chart, args, pluginOptions) {
+    const { ctx, chartArea } = chart;
+    const meta = chart.getDatasetMeta(0);
+    const icons = pluginOptions.icons || [];
+    const pointCount = meta.data.length || 1;
 
-        ctx.save();
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
+    const minSize = pluginOptions.minSize ?? 10;
+    const maxSize = pluginOptions.maxSize ?? 22;
+    const widthFactor = pluginOptions.widthFactor ?? 0.018;
 
-        meta.data.forEach((point, i) => {
-          const icon = icons[i];
-          if (!icon) return;
+    const dynamicSize = Math.max(
+      minSize,
+      Math.min(maxSize, chartArea.width * widthFactor)
+    );
 
-          const x = point.x - size / 2;
-          const y = point.y - size / 2;
-          ctx.drawImage(icon, x, y, size, size);
-        });
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
-        ctx.restore();
-      }
-    };
+    meta.data.forEach((point, i) => {
+      const icon = icons[i];
+      if (!icon) return;
+
+      const size = dynamicSize;
+      const x = point.x - size / 2;
+      const y = point.y - size / 2;
+      ctx.drawImage(icon, x, y, size, size);
+    });
+
+    ctx.restore();
+  }
+};
 
     async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
@@ -1225,7 +1235,9 @@
           plugins: {
             heroPointPlugin: {
               icons: pluginIcons,
-              size: 15
+              minSize: 10,
+              maxSize: 22,
+              widthFactor: 0.018
             },
             legend: {
               display: false
