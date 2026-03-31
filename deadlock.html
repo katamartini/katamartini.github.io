@@ -1210,6 +1210,7 @@
         );
     
         const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
+        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
     
         ctx.save();
         ctx.imageSmoothingEnabled = true;
@@ -1230,6 +1231,7 @@
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.lineJoin = "round";
+        ctx.lineCap = "round";
     
         meta.data.forEach((point, i) => {
           if (i === 0) return;
@@ -1242,9 +1244,19 @@
     
           const rankIcon = rankIcons[i - 1];
           const iconCenterX = point.x;
-          const iconCenterY = point.y - dynamicSize / 2 - 8 - rankIconSize / 2;
+          const iconCenterY = point.y - dynamicSize / 2 - badgeLift;
           const iconX = iconCenterX - rankIconSize / 2;
           const iconY = iconCenterY - rankIconSize / 2;
+    
+          const lineStartY = iconY + rankIconSize + 1;
+          const lineEndY = point.y - dynamicSize / 2 - 4;
+    
+          ctx.strokeStyle = "rgba(255,255,255,0.22)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(iconCenterX, lineStartY);
+          ctx.lineTo(iconCenterX, lineEndY);
+          ctx.stroke();
     
           if (rankIcon) {
             ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
@@ -1252,18 +1264,18 @@
     
           if (rankParsed.numeral) {
             const numeralY = iconCenterY + 1.5;
-          
+    
             ctx.save();
             ctx.translate(iconCenterX, numeralY);
             ctx.scale(0.88, 1);
-          
+    
             ctx.font = `700 ${numeralFontSize}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
             ctx.lineWidth = 3;
             ctx.strokeText(rankParsed.numeral, 0, 0);
             ctx.fillStyle = "#ffffff";
             ctx.fillText(rankParsed.numeral, 0, 0);
-          
+    
             ctx.restore();
           } else if (!rankIcon) {
             ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
