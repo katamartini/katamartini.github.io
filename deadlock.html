@@ -628,6 +628,7 @@
     const MATCHES_SHEET_DATE_INDEX = 1;
     const MATCHES_SHEET_HERO_INDEX = 2;
     const MATCHES_SHEET_RESULT_INDEX = 3;
+    const MATCHES_SHEET_PEAK_RANK_INDEX = 5;
 
     const SORT_BY_DATE = "__date__";
 
@@ -1095,6 +1096,7 @@
           const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
           const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
           const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+          const peakRank = normalizeValue(row[MATCHES_SHEET_PEAK_RANK_INDEX]);
 
           if (result !== "win" && result !== "loss") return null;
 
@@ -1111,7 +1113,8 @@
             y: wins - losses,
             hero,
             result,
-            matchNumber: classifiedMatchNumber
+            matchNumber: classifiedMatchNumber,
+            peakRank
           };
         })
         .filter(Boolean);
@@ -1137,39 +1140,62 @@
     }
 
     const heroPointPlugin = {
-  id: "heroPointPlugin",
-  afterDatasetsDraw(chart, args, pluginOptions) {
-    const { ctx, chartArea } = chart;
-    const meta = chart.getDatasetMeta(0);
-    const icons = pluginOptions.icons || [];
-    const pointCount = meta.data.length || 1;
+      id: "heroPointPlugin",
+      afterDatasetsDraw(chart, args, pluginOptions) {
+        const { ctx, chartArea } = chart;
+        const meta = chart.getDatasetMeta(0);
+        const icons = pluginOptions.icons || [];
+        const series = pluginOptions.series || [];
 
-    const minSize = pluginOptions.minSize ?? 10;
-    const maxSize = pluginOptions.maxSize ?? 22;
-    const widthFactor = pluginOptions.widthFactor ?? 0.018;
+        const minSize = pluginOptions.minSize ?? 10;
+        const maxSize = pluginOptions.maxSize ?? 22;
+        const widthFactor = pluginOptions.widthFactor ?? 0.018;
 
-    const dynamicSize = Math.max(
-      minSize,
-      Math.min(maxSize, chartArea.width * widthFactor)
-    );
+        const dynamicSize = Math.max(
+          minSize,
+          Math.min(maxSize, chartArea.width * widthFactor)
+        );
 
-    ctx.save();
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
 
-    meta.data.forEach((point, i) => {
-      const icon = icons[i];
-      if (!icon) return;
+        meta.data.forEach((point, i) => {
+          const icon = icons[i];
+          if (!icon) return;
 
-      const size = dynamicSize;
-      const x = point.x - size / 2;
-      const y = point.y - size / 2;
-      ctx.drawImage(icon, x, y, size, size);
-    });
+          const size = dynamicSize;
+          const x = point.x - size / 2;
+          const y = point.y - size / 2;
+          ctx.drawImage(icon, x, y, size, size);
+        });
 
-    ctx.restore();
-  }
-};
+        ctx.restore();
+
+        ctx.save();
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+
+        meta.data.forEach((point, i) => {
+          if (i === 0) return;
+
+          const p = series[i - 1];
+          if (!p || !p.peakRank) return;
+
+          const labelY = point.y - dynamicSize / 2 - 8;
+
+          ctx.strokeStyle = "rgba(31, 36, 48, 0.95)";
+          ctx.lineWidth = 3;
+          ctx.strokeText(p.peakRank, point.x, labelY);
+
+          ctx.fillStyle = "#ffffff";
+          ctx.fillText(p.peakRank, point.x, labelY);
+        });
+
+        ctx.restore();
+      }
+    };
 
     async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
@@ -1235,6 +1261,7 @@
           plugins: {
             heroPointPlugin: {
               icons: pluginIcons,
+              series,
               minSize: 10,
               maxSize: 22,
               widthFactor: 0.018
@@ -1266,7 +1293,13 @@
                   if (i === 0) return "Origin";
 
                   const p = series[i - 1];
-                  return `After match ${p.matchNumber} (${p.hero}, ${p.result})`;
+                  const lines = [`After match ${p.matchNumber} (${p.hero}, ${p.result})`];
+
+                  if (p.peakRank) {
+                    lines.push(`New peak: ${p.peakRank}`);
+                  }
+
+                  return lines;
                 }
               }
             }
