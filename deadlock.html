@@ -423,6 +423,28 @@
 
     .chart-card {
       width: 100%;
+      position: relative;
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .chart-expand-btn {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .chart-expand-btn:hover {
+      background: #1d2330;
     }
 
     .chart-body {
@@ -435,6 +457,26 @@
     .chart-body canvas {
       width: 100% !important;
       height: 100% !important;
+    }
+
+    .chart-card:fullscreen,
+    .chart-card:-webkit-full-screen {
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      margin: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .chart-card:fullscreen .chart-body,
+    .chart-card:-webkit-full-screen .chart-body {
+      height: calc(100vh - 48px);
+    }
+
+    .chart-card:fullscreen .stats-titlebar,
+    .chart-card:-webkit-full-screen .stats-titlebar {
+      padding-right: 12px;
     }
 
     @media (max-width: 1500px) {
@@ -556,9 +598,12 @@
     </div>
 
     <div class="chart-column">
-      <div class="chart-card">
+      <div class="chart-card" id="chartCard">
         <div class="stats-titlebar">
-          W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span>
+          <div class="chart-header">
+            <div>W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span></div>
+            <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
+          </div>
         </div>
         <div class="chart-body">
           <canvas id="winrateChart"></canvas>
@@ -607,6 +652,8 @@
     const longestWinDatesEl = document.getElementById("longestWinDates");
     const longestLossDatesEl = document.getElementById("longestLossDates");
 
+    const chartCard = document.getElementById("chartCard");
+    const expandChartBtn = document.getElementById("expandChartBtn");
     const chartCanvas = document.getElementById("winrateChart");
     let winrateChart = null;
 
@@ -1292,6 +1339,33 @@
       renderWinrateChart(matchesRows);
     }
 
+    function isChartFullscreen() {
+      return document.fullscreenElement === chartCard ||
+             document.webkitFullscreenElement === chartCard;
+    }
+
+    async function toggleChartFullscreen() {
+      try {
+        if (!isChartFullscreen()) {
+          if (chartCard.requestFullscreen) {
+            await chartCard.requestFullscreen();
+          } else if (chartCard.webkitRequestFullscreen) {
+            await chartCard.webkitRequestFullscreen();
+          }
+          expandChartBtn.textContent = "Collapse";
+        } else {
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen();
+          }
+          expandChartBtn.textContent = "Expand";
+        }
+      } catch (err) {
+        console.error("Fullscreen toggle failed:", err);
+      }
+    }
+
     async function loadSheet() {
       try {
         const [heroRes, matchesRes] = await Promise.all([
@@ -1367,6 +1441,22 @@
       sortRows();
       renderHeader();
       renderTable();
+    });
+
+    expandChartBtn.addEventListener("click", toggleChartFullscreen);
+
+    document.addEventListener("fullscreenchange", () => {
+      expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
+      if (winrateChart) {
+        setTimeout(() => winrateChart.resize(), 50);
+      }
+    });
+
+    document.addEventListener("webkitfullscreenchange", () => {
+      expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
+      if (winrateChart) {
+        setTimeout(() => winrateChart.resize(), 50);
+      }
     });
 
     loadSheet();
