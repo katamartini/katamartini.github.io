@@ -1195,7 +1195,7 @@
         const heroIcons = pluginOptions.heroIcons || [];
         const rankIcons = pluginOptions.rankIcons || [];
         const series = pluginOptions.series || [];
-
+    
         const minSize = pluginOptions.minSize ?? 10;
         const maxSize = pluginOptions.maxSize ?? 22;
         const widthFactor = pluginOptions.widthFactor ?? 0.018;
@@ -1203,71 +1203,70 @@
           minSize,
           Math.min(maxSize, chartArea.width * widthFactor)
         );
-
+    
         const rankIconSize = Math.max(
           Math.round(dynamicSize * 1.15),
           Math.min(28, dynamicSize + 2)
         );
-
-        const numeralFontSize = Math.max(11, Math.min(18, Math.round(rankIconSize * 0.75)));
-        const labelGap = 4;
-        const numeralGap = 3;
-
+    
+        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
+    
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-
+    
         meta.data.forEach((point, i) => {
           const icon = heroIcons[i];
           if (!icon) return;
-
+    
           const x = point.x - dynamicSize / 2;
           const y = point.y - dynamicSize / 2;
           ctx.drawImage(icon, x, y, dynamicSize, dynamicSize);
         });
-
+    
         ctx.restore();
-
+    
         ctx.save();
         ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
+        ctx.textBaseline = "middle";
         ctx.lineJoin = "round";
-
+    
         meta.data.forEach((point, i) => {
           if (i === 0) return;
-
+    
           const p = series[i - 1];
           if (!p || !p.peakRank) return;
-
+    
           const rankParsed = parsePeakRankLabel(p.peakRank);
           if (!rankParsed) return;
-
+    
           const rankIcon = rankIcons[i - 1];
-          const iconTopY = point.y - dynamicSize / 2 - labelGap - rankIconSize;
-          const iconX = point.x - rankIconSize / 2;
-
+          const iconCenterX = point.x;
+          const iconCenterY = point.y - dynamicSize / 2 - 8 - rankIconSize / 2;
+          const iconX = iconCenterX - rankIconSize / 2;
+          const iconY = iconCenterY - rankIconSize / 2;
+    
+          if (rankIcon) {
+            ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
+          }
+    
           if (rankParsed.numeral) {
-            const numeralY = iconTopY - numeralGap;
             ctx.font = `700 ${numeralFontSize}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 4;
-            ctx.strokeText(rankParsed.numeral, point.x, numeralY);
+            ctx.lineWidth = 3;
+            ctx.strokeText(rankParsed.numeral, iconCenterX, iconCenterY + 0.5);
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.numeral, point.x, numeralY);
-          }
-
-          if (rankIcon) {
-            ctx.drawImage(rankIcon, iconX, iconTopY, rankIconSize, rankIconSize);
-          } else {
-            ctx.font = `700 ${Math.max(11, numeralFontSize - 1)}px Arial`;
+            ctx.fillText(rankParsed.numeral, iconCenterX, iconCenterY + 0.5);
+          } else if (!rankIcon) {
+            ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 4;
-            ctx.strokeText(rankParsed.rankName, point.x, iconTopY + rankIconSize);
+            ctx.lineWidth = 3;
+            ctx.strokeText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.rankName, point.x, iconTopY + rankIconSize);
+            ctx.fillText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
           }
         });
-
+    
         ctx.restore();
       }
     };
