@@ -41,11 +41,11 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      width: min(1900px, calc(100vw - 48px));
+      width: min(100%, calc(100vw - 48px));
     }
 
+    .left-column,
     .wrap,
-    .mid-column,
     .chart-column {
       min-width: 0;
     }
@@ -60,12 +60,7 @@
       overflow: hidden;
     }
 
-    .wrap {
-      flex: 0 0 520px;
-      width: 520px;
-    }
-
-    .mid-column {
+    .left-column {
       flex: 0 0 260px;
       width: 260px;
       display: flex;
@@ -73,13 +68,16 @@
       gap: 20px;
     }
 
+    .wrap {
+      flex: 0 0 520px;
+      width: 520px;
+    }
+
     .chart-column {
-      flex: 0 0 1040px;
-      width: 1040px;
+      flex: 1 1 auto;
+      min-width: 500px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      min-width: 700px;
     }
 
     .titlebar,
@@ -408,6 +406,10 @@
       font-size: 12px;
     }
 
+    .chart-card {
+      width: 100%;
+    }
+
     .chart-body {
       padding: 12px;
       height: 760px;
@@ -420,38 +422,29 @@
       height: 100% !important;
     }
 
-    @media (max-width: 1240px) {
+    @media (max-width: 1500px) {
       .page {
         flex-wrap: wrap;
-      }
-
-      .wrap {
-        flex: 1 1 520px;
-      }
-
-      .mid-column {
-        flex: 0 0 260px;
       }
 
       .chart-column {
         flex: 1 1 100%;
         min-width: 0;
-        width: 100%;
       }
 
       .chart-body {
-        height: 420px;
+        height: 480px;
       }
     }
 
-    @media (max-width: 860px) {
+    @media (max-width: 980px) {
       .page {
         flex-direction: column;
         width: min(520px, calc(100vw - 48px));
       }
 
+      .left-column,
       .wrap,
-      .mid-column,
       .chart-column {
         width: 100%;
         flex: 0 0 auto;
@@ -466,27 +459,7 @@
 </head>
 <body>
   <div class="page">
-    <div class="wrap">
-      <div class="titlebar">
-        MOST PLAYED HEROES<span class="sub">ALL TIME</span>
-      </div>
-
-      <div class="topbar">
-        <input id="searchBox" type="search" placeholder="Filter heroes..." />
-        <button id="resetBtn" type="button">Reset</button>
-      </div>
-
-      <div id="status" class="status">Loading spreadsheet data...</div>
-
-      <table id="dataTable" aria-label="Most played heroes">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-
-      <div id="emptyState" class="empty">No rows match the current filter.</div>
-    </div>
-
-    <div class="mid-column">
+    <div class="left-column">
       <div class="stats-card">
         <div class="stats-titlebar">
           OVERALL STATS<span class="sub">MATCHES SHEET</span>
@@ -539,6 +512,26 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="wrap">
+      <div class="titlebar">
+        MOST PLAYED HEROES<span class="sub">ALL TIME</span>
+      </div>
+
+      <div class="topbar">
+        <input id="searchBox" type="search" placeholder="Filter heroes..." />
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div id="status" class="status">Loading spreadsheet data...</div>
+
+      <table id="dataTable" aria-label="Most played heroes">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="emptyState" class="empty">No rows match the current filter.</div>
     </div>
 
     <div class="chart-column">
