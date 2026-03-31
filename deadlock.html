@@ -1251,12 +1251,20 @@
           }
     
           if (rankParsed.numeral) {
+            const numeralY = iconCenterY + 1.5;
+          
+            ctx.save();
+            ctx.translate(iconCenterX, numeralY);
+            ctx.scale(0.88, 1);
+          
             ctx.font = `700 ${numeralFontSize}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
             ctx.lineWidth = 3;
-            ctx.strokeText(rankParsed.numeral, iconCenterX, iconCenterY + 0.5);
+            ctx.strokeText(rankParsed.numeral, 0, 0);
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.numeral, iconCenterX, iconCenterY + 0.5);
+            ctx.fillText(rankParsed.numeral, 0, 0);
+          
+            ctx.restore();
           } else if (!rankIcon) {
             ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
