@@ -358,12 +358,27 @@
       margin-bottom: 8px;
     }
 
+    .streak-title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
     .streak-title {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.4px;
       color: rgba(255,255,255,0.8);
       font-weight: 700;
+    }
+
+    .streak-dates {
+      font-size: 10px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .streak-count {
@@ -497,7 +512,10 @@
         <div class="streaks-body">
           <div class="streak-box win">
             <div class="streak-header">
-              <div class="streak-title">Longest Win Streak</div>
+              <div class="streak-title-wrap">
+                <div class="streak-title">Longest Win Streak</div>
+                <div class="streak-dates" id="longestWinDates"></div>
+              </div>
               <div class="streak-count" id="longestWinCount">-</div>
             </div>
             <div class="streak-icons" id="longestWinIcons"></div>
@@ -505,7 +523,10 @@
 
           <div class="streak-box loss">
             <div class="streak-header">
-              <div class="streak-title">Longest Loss Streak</div>
+              <div class="streak-title-wrap">
+                <div class="streak-title">Longest Loss Streak</div>
+                <div class="streak-dates" id="longestLossDates"></div>
+              </div>
               <div class="streak-count" id="longestLossCount">-</div>
             </div>
             <div class="streak-icons" id="longestLossIcons"></div>
@@ -583,6 +604,8 @@
     const longestLossCountEl = document.getElementById("longestLossCount");
     const longestWinIconsEl = document.getElementById("longestWinIcons");
     const longestLossIconsEl = document.getElementById("longestLossIcons");
+    const longestWinDatesEl = document.getElementById("longestWinDates");
+    const longestLossDatesEl = document.getElementById("longestLossDates");
 
     const chartCanvas = document.getElementById("winrateChart");
     let winrateChart = null;
@@ -686,6 +709,14 @@
         month: "short",
         day: "numeric"
       });
+    }
+
+    function formatDateRange(startDate, endDate) {
+      if (!startDate && !endDate) return "";
+      if (startDate && endDate) {
+        return `${formatLongDate(startDate)} – ${formatLongDate(endDate)}`;
+      }
+      return formatLongDate(startDate || endDate);
     }
 
     function formatDaysAgo(value) {
@@ -945,22 +976,42 @@
     }
 
     function findLongestStreak(rows, targetResult) {
-      let best = [];
-      let current = [];
+      let best = {
+        heroes: [],
+        startDate: null,
+        endDate: null
+      };
+
+      let currentHeroes = [];
+      let currentStartDate = null;
+      let currentEndDate = null;
 
       for (const row of rows) {
         const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
         const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
         if (!hero) continue;
 
         if (result === targetResult) {
-          current.push(hero);
-          if (current.length > best.length) {
-            best = [...current];
+          if (currentHeroes.length === 0) {
+            currentStartDate = date;
+          }
+
+          currentHeroes.push(hero);
+          currentEndDate = date;
+
+          if (currentHeroes.length > best.heroes.length) {
+            best = {
+              heroes: [...currentHeroes],
+              startDate: currentStartDate,
+              endDate: currentEndDate
+            };
           }
         } else {
-          current = [];
+          currentHeroes = [];
+          currentStartDate = null;
+          currentEndDate = null;
         }
       }
 
@@ -1229,11 +1280,14 @@
       const longestWin = findLongestStreak(classifiedRows, "win");
       const longestLoss = findLongestStreak(classifiedRows, "loss");
 
-      longestWinCountEl.textContent = longestWin.length;
-      longestLossCountEl.textContent = longestLoss.length;
+      longestWinCountEl.textContent = longestWin.heroes.length;
+      longestLossCountEl.textContent = longestLoss.heroes.length;
 
-      renderStreak(longestWinIconsEl, longestWin);
-      renderStreak(longestLossIconsEl, longestLoss);
+      longestWinDatesEl.textContent = formatDateRange(longestWin.startDate, longestWin.endDate);
+      longestLossDatesEl.textContent = formatDateRange(longestLoss.startDate, longestLoss.endDate);
+
+      renderStreak(longestWinIconsEl, longestWin.heroes);
+      renderStreak(longestLossIconsEl, longestLoss.heroes);
 
       renderWinrateChart(matchesRows);
     }
@@ -1292,6 +1346,8 @@
 
         longestWinCountEl.textContent = "-";
         longestLossCountEl.textContent = "-";
+        longestWinDatesEl.textContent = "";
+        longestLossDatesEl.textContent = "";
         longestWinIconsEl.innerHTML = "";
         longestLossIconsEl.innerHTML = "";
 
