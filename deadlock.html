@@ -1514,7 +1514,7 @@
         .sort((a, b) => a - b)[0];
 
       const overallWinPct = totalMatches > 0
-        ? `${Math.round((wins / totalMatches) * 100)}%`
+        ? `${((wins / totalMatches) * 100).toFixed(2)}%`
         : "-";
 
       overallMatchesEl.textContent = totalMatches;
