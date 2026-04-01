@@ -134,6 +134,40 @@
       background: #1d2330;
     }
 
+    .sliderbar {
+      padding: 10px 12px 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sliderbar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .sliderbar-label {
+      color: #ffffff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .sliderbar-value {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .sliderbar input[type="range"] {
+      width: 100%;
+      margin: 0;
+    }
+
     .status {
       padding: 8px 12px;
       color: var(--muted);
@@ -585,12 +619,20 @@
 
     <div class="wrap">
       <div class="titlebar">
-        MOST PLAYED HEROES<span class="sub">ALL TIME</span>
+        MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span>
       </div>
 
       <div class="topbar">
         <input id="searchBox" type="search" placeholder="Filter heroes..." />
         <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="sliderbar">
+        <div class="sliderbar-top">
+          <div class="sliderbar-label">Table State After X Games</div>
+          <div class="sliderbar-value" id="gamesSliderLabel">-</div>
+        </div>
+        <input id="gamesSlider" type="range" min="0" max="0" value="0" step="1" />
       </div>
 
       <div id="status" class="status">Loading spreadsheet data...</div>
@@ -649,6 +691,9 @@
     const searchBox = document.getElementById("searchBox");
     const resetBtn = document.getElementById("resetBtn");
     const emptyState = document.getElementById("emptyState");
+    const gamesSlider = document.getElementById("gamesSlider");
+    const gamesSliderLabel = document.getElementById("gamesSliderLabel");
+    const heroTableSub = document.getElementById("heroTableSub");
 
     const overallMatchesEl = document.getElementById("overallMatches");
     const overallWinsEl = document.getElementById("overallWins");
@@ -673,6 +718,9 @@
     let filteredRows = [];
     let sortState = { col: MATCHES_INDEX, dir: "desc" };
     let maxMatches = 0;
+    let allMatchRows = [];
+    let classifiedMatchRows = [];
+    let sliderGameCount = 0;
 
     function parseCSV(text) {
       const rows = [];
@@ -1033,7 +1081,7 @@
         tbody.appendChild(tr);
       });
 
-      statusEl.textContent = `${filteredRows.length} row(s) shown`;
+      statusEl.textContent = `${filteredRows.length} hero row(s) shown`;
     }
 
     function renderHeader() {
@@ -1549,6 +1597,73 @@
       renderWinrateChart(matchesRows);
     }
 
+    function buildHeroRowsFromMatches(matchRowsSubset) {
+      const heroMap = new Map();
+
+      matchRowsSubset.forEach(row => {
+        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+
+        if (!hero) return;
+        if (result !== "win" && result !== "loss") return;
+
+        if (!heroMap.has(hero)) {
+          heroMap.set(hero, {
+            hero,
+            matches: 0,
+            wins: 0,
+            lastDate: null
+          });
+        }
+
+        const entry = heroMap.get(hero);
+        entry.matches += 1;
+        if (result === "win") entry.wins += 1;
+        if (date && (!entry.lastDate || date > entry.lastDate)) {
+          entry.lastDate = date;
+        }
+      });
+
+      return Array.from(heroMap.values()).map(entry => {
+        const winPct = entry.matches > 0 ? (entry.wins / entry.matches) * 100 : 0;
+        return [
+          entry.lastDate ? entry.lastDate.toISOString().slice(0, 10) : "",
+          entry.hero,
+          "",
+          "",
+          "",
+          "",
+          `${winPct.toFixed(2)}%`,
+          String(entry.matches)
+        ];
+      });
+    }
+
+    function updateHeroTableForSlider() {
+      const subset = classifiedMatchRows.slice(0, sliderGameCount);
+      const builtRows = buildHeroRowsFromMatches(subset);
+
+      allRows = builtRows;
+      maxMatches = Math.max(...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0), 0);
+
+      filteredRows = !searchBox.value.trim()
+        ? [...allRows]
+        : allRows.filter(row =>
+            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase()) ||
+            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase())
+          );
+
+      sortState = { col: MATCHES_INDEX, dir: "desc" };
+      sortRows();
+      renderHeader();
+      renderTable();
+
+      const total = classifiedMatchRows.length;
+      gamesSliderLabel.textContent = `${sliderGameCount} / ${total} games`;
+      heroTableSub.textContent = sliderGameCount >= total ? "ALL TIME" : `AFTER ${sliderGameCount} GAMES`;
+    }
+
     function isChartFullscreen() {
       return document.fullscreenElement === chartCard ||
              document.webkitFullscreenElement === chartCard;
@@ -1586,27 +1701,7 @@
         if (!heroRes.ok) throw new Error(`Hero sheet HTTP ${heroRes.status}`);
         if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
 
-        const heroCsvText = await heroRes.text();
-        const heroRows = parseCSV(heroCsvText);
-
-        if (!heroRows.length) {
-          throw new Error("No hero data found.");
-        }
-
-        allRows = heroRows
-          .slice(1)
-          .filter(r => r.some(cell => normalizeValue(cell) !== ""))
-          .filter(r => !isTotalRow(r));
-
-        maxMatches = Math.max(
-          ...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0),
-          0
-        );
-
-        filteredRows = [...allRows];
-        sortRows();
-        renderHeader();
-        renderTable();
+        await heroRes.text(); // no longer used for the slider-driven table, but harmless to fetch
 
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
@@ -1615,6 +1710,21 @@
           throw new Error("No matches data found.");
         }
 
+        allMatchRows = matchesRows;
+        classifiedMatchRows = matchesRows
+          .slice(1)
+          .filter(r => r.some(cell => normalizeValue(cell) !== ""))
+          .filter(row => {
+            const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+            return result === "win" || result === "loss";
+          });
+
+        gamesSlider.min = 0;
+        gamesSlider.max = String(classifiedMatchRows.length);
+        gamesSlider.value = String(classifiedMatchRows.length);
+        sliderGameCount = classifiedMatchRows.length;
+
+        updateHeroTableForSlider();
         setOverallStats(matchesRows);
       } catch (err) {
         statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
@@ -1642,15 +1752,20 @@
       }
     }
 
-    searchBox.addEventListener("input", applyFilter);
+    searchBox.addEventListener("input", () => {
+      updateHeroTableForSlider();
+    });
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
-      filteredRows = [...allRows];
-      sortState = { col: MATCHES_INDEX, dir: "desc" };
-      sortRows();
-      renderHeader();
-      renderTable();
+      gamesSlider.value = gamesSlider.max;
+      sliderGameCount = Number(gamesSlider.max);
+      updateHeroTableForSlider();
+    });
+
+    gamesSlider.addEventListener("input", () => {
+      sliderGameCount = Number(gamesSlider.value);
+      updateHeroTableForSlider();
     });
 
     resetZoomBtn.addEventListener("click", () => {
