@@ -1210,11 +1210,21 @@
         const minSize = pluginOptions.minSize ?? 10;
         const maxSize = pluginOptions.maxSize ?? 22;
         const widthFactor = pluginOptions.widthFactor ?? 0.018;
+        const zoomBoost = pluginOptions.zoomBoost ?? 0.35;
+        
+        const xScale = chart.scales.x;
+        const totalPoints = Math.max(1, (series?.length || 0) + 1);
+        const visibleMin = Number.isFinite(xScale?.min) ? xScale.min : 0;
+        const visibleMax = Number.isFinite(xScale?.max) ? xScale.max : totalPoints - 1;
+        const visiblePoints = Math.max(1, visibleMax - visibleMin + 1);
+        
+        const baseSize = chartArea.width * widthFactor;
+        const zoomScaleFactor = Math.sqrt(totalPoints / visiblePoints);
         const dynamicSize = Math.max(
           minSize,
-          Math.min(maxSize, chartArea.width * widthFactor)
+          Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost))
         );
-
+        
         const rankIconSize = Math.max(
           Math.round(dynamicSize * 1.15),
           Math.min(28, dynamicSize + 2)
