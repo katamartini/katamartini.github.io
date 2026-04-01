@@ -433,6 +433,12 @@
       gap: 10px;
     }
 
+    .chart-btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
     .chart-expand-btn {
       background: #151a23;
       color: #fff;
@@ -602,7 +608,10 @@
         <div class="stats-titlebar">
           <div class="chart-header">
             <div>W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span></div>
-            <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
+            <div class="chart-btn-group">
+              <button id="resetZoomBtn" class="chart-expand-btn" type="button">Reset Zoom</button>
+              <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
+            </div>
           </div>
         </div>
         <div class="chart-body">
@@ -613,6 +622,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const HERO_GID = "0";
@@ -655,6 +665,7 @@
 
     const chartCard = document.getElementById("chartCard");
     const expandChartBtn = document.getElementById("expandChartBtn");
+    const resetZoomBtn = document.getElementById("resetZoomBtn");
     const chartCanvas = document.getElementById("winrateChart");
     let winrateChart = null;
 
@@ -1195,7 +1206,7 @@
         const heroIcons = pluginOptions.heroIcons || [];
         const rankIcons = pluginOptions.rankIcons || [];
         const series = pluginOptions.series || [];
-    
+
         const minSize = pluginOptions.minSize ?? 10;
         const maxSize = pluginOptions.maxSize ?? 22;
         const widthFactor = pluginOptions.widthFactor ?? 0.018;
@@ -1203,72 +1214,72 @@
           minSize,
           Math.min(maxSize, chartArea.width * widthFactor)
         );
-    
+
         const rankIconSize = Math.max(
           Math.round(dynamicSize * 1.15),
           Math.min(28, dynamicSize + 2)
         );
-    
+
         const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
         const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
-    
+
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-    
+
         meta.data.forEach((point, i) => {
           const icon = heroIcons[i];
           if (!icon) return;
-    
+
           const x = point.x - dynamicSize / 2;
           const y = point.y - dynamicSize / 2;
           ctx.drawImage(icon, x, y, dynamicSize, dynamicSize);
         });
-    
+
         ctx.restore();
-    
+
         const peakEntries = [];
-    
+
         meta.data.forEach((point, i) => {
           if (i === 0) return;
-    
+
           const p = series[i - 1];
           if (!p || !p.peakRank) return;
-    
+
           const rankParsed = parsePeakRankLabel(p.peakRank);
           if (!rankParsed) return;
-    
+
           peakEntries.push({
             point,
             rankParsed,
             rankIcon: rankIcons[i - 1]
           });
         });
-    
+
         if (!peakEntries.length) return;
-    
+
         const alignedIconCenterY = Math.max(
           chartArea.top + rankIconSize / 2 + 4,
           Math.min(
             ...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift)
           )
         );
-    
+
         ctx.save();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.lineJoin = "round";
         ctx.lineCap = "round";
-    
+
         peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
           const iconCenterX = point.x;
           const iconCenterY = alignedIconCenterY;
           const iconX = iconCenterX - rankIconSize / 2;
           const iconY = iconCenterY - rankIconSize / 2;
-    
+
           const lineStartY = iconY + rankIconSize + 1;
           const lineEndY = point.y - dynamicSize / 2 - 4;
-    
+
           if (lineEndY > lineStartY) {
             ctx.strokeStyle = "rgba(255,255,255,0.18)";
             ctx.lineWidth = 1.5;
@@ -1277,25 +1288,25 @@
             ctx.lineTo(iconCenterX, lineEndY);
             ctx.stroke();
           }
-    
+
           if (rankIcon) {
             ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
           }
-    
+
           if (rankParsed.numeral) {
             const numeralY = iconCenterY + 1.5;
-    
+
             ctx.save();
             ctx.translate(iconCenterX, numeralY);
             ctx.scale(0.88, 1);
-    
+
             ctx.font = `700 ${numeralFontSize}px Arial`;
             ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
             ctx.lineWidth = 3;
             ctx.strokeText(rankParsed.numeral, 0, 0);
             ctx.fillStyle = "#ffffff";
             ctx.fillText(rankParsed.numeral, 0, 0);
-    
+
             ctx.restore();
           } else if (!rankIcon) {
             ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
@@ -1306,7 +1317,7 @@
             ctx.fillText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
           }
         });
-    
+
         ctx.restore();
       }
     };
@@ -1418,6 +1429,32 @@
 
                   return lines;
                 }
+              }
+            },
+            zoom: {
+              limits: {
+                x: { min: 0, max: labels.length - 1 },
+                y: { min: "original", max: "original" }
+              },
+              pan: {
+                enabled: true,
+                mode: "xy",
+                modifierKey: "shift"
+              },
+              zoom: {
+                wheel: {
+                  enabled: true
+                },
+                pinch: {
+                  enabled: true
+                },
+                drag: {
+                  enabled: true,
+                  backgroundColor: "rgba(255,255,255,0.10)",
+                  borderColor: "rgba(255,255,255,0.25)",
+                  borderWidth: 1
+                },
+                mode: "xy"
               }
             }
           },
@@ -1603,6 +1640,12 @@
       sortRows();
       renderHeader();
       renderTable();
+    });
+
+    resetZoomBtn.addEventListener("click", () => {
+      if (winrateChart) {
+        winrateChart.resetZoom();
+      }
     });
 
     expandChartBtn.addEventListener("click", toggleChartFullscreen);
