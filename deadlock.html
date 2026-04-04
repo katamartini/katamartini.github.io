@@ -53,6 +53,7 @@
     .wrap,
     .stats-card,
     .streaks-card,
+    .calendar-card,
     .chart-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -455,6 +456,115 @@
       font-size: 12px;
     }
 
+    .calendar-body {
+      padding: 12px;
+      background: #222834;
+    }
+
+    .calendar-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .calendar-nav {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 5px 9px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .calendar-nav:hover {
+      background: #1d2330;
+    }
+
+    .calendar-month-label {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      flex: 1 1 auto;
+    }
+
+    .calendar-weekdays,
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .calendar-weekdays {
+      margin-bottom: 6px;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .calendar-day {
+      min-height: 62px;
+      background: #2a3140;
+      border: 1px solid var(--border);
+      padding: 6px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .calendar-day.other-month {
+      opacity: 0.38;
+    }
+
+    .calendar-day.has-games {
+      border-color: #4a5568;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .calendar-day.today {
+      outline: 1px solid rgba(183,255,42,0.55);
+    }
+
+    .calendar-day-number {
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .calendar-records {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: auto;
+    }
+
+    .calendar-record {
+      font-size: 10px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .calendar-record.wins {
+      color: #98e61d;
+    }
+
+    .calendar-record.losses {
+      color: #ff7b72;
+    }
+
+    .calendar-record.empty {
+      color: var(--muted);
+    }
+
     .chart-card {
       width: 100%;
       position: relative;
@@ -615,6 +725,31 @@
           </div>
         </div>
       </div>
+
+      <div class="calendar-card">
+        <div class="stats-titlebar">
+          CALENDAR<span class="sub">DAILY WINS / LOSSES</span>
+        </div>
+        <div class="calendar-body">
+          <div class="calendar-controls">
+            <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
+            <div id="calendarMonthLabel" class="calendar-month-label">-</div>
+            <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
+          </div>
+
+          <div class="calendar-weekdays">
+            <div class="calendar-weekday">Sun</div>
+            <div class="calendar-weekday">Mon</div>
+            <div class="calendar-weekday">Tue</div>
+            <div class="calendar-weekday">Wed</div>
+            <div class="calendar-weekday">Thu</div>
+            <div class="calendar-weekday">Fri</div>
+            <div class="calendar-weekday">Sat</div>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
+      </div>
     </div>
 
     <div class="wrap">
@@ -708,6 +843,11 @@
     const longestWinDatesEl = document.getElementById("longestWinDates");
     const longestLossDatesEl = document.getElementById("longestLossDates");
 
+    const calendarGrid = document.getElementById("calendarGrid");
+    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
+    const calendarPrevBtn = document.getElementById("calendarPrevBtn");
+    const calendarNextBtn = document.getElementById("calendarNextBtn");
+
     const chartCard = document.getElementById("chartCard");
     const expandChartBtn = document.getElementById("expandChartBtn");
     const resetZoomBtn = document.getElementById("resetZoomBtn");
@@ -721,6 +861,8 @@
     let allMatchRows = [];
     let classifiedMatchRows = [];
     let sliderGameCount = 0;
+    let calendarViewDate = startOfDay(new Date());
+    let dailyResultsMap = new Map();
 
     function parseCSV(text) {
       const rows = [];
@@ -780,22 +922,49 @@
       const v = normalizeValue(value);
       if (!v) return null;
 
-      const d = new Date(v);
-      if (!Number.isNaN(d.getTime())) return d;
-
-      const m = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
+      let m = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
       if (m) {
         let year = Number(m[3]);
         if (year < 100) year += 2000;
         const parsed = new Date(year, Number(m[1]) - 1, Number(m[2]));
-        if (!Number.isNaN(parsed.getTime())) return parsed;
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+      }
+
+      m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (m) {
+        const parsed = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
       }
 
       return null;
     }
 
+    function formatLocalYMD(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const d = String(date.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
     function startOfDay(d) {
       return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function localDateKey(date) {
+      return formatLocalYMD(startOfDay(date));
+    }
+
+    function monthStart(date) {
+      return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+
+    function monthEnd(date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+
+    function addMonths(date, delta) {
+      return new Date(date.getFullYear(), date.getMonth() + delta, 1);
     }
 
     function formatExactDate(value) {
@@ -871,14 +1040,10 @@
       return 0;
     }
 
-    function isTotalRow(row) {
-      return normalizeValue(row[DATE_INDEX]) === "";
-    }
-
     function getSortValue(row, columnIndex) {
       if (columnIndex === SORT_BY_DATE) {
         const d = parseSheetDate(row[DATE_INDEX]);
-        return d ? d.toISOString() : "";
+        return d ? d.getTime() : "";
       }
       return row[columnIndex];
     }
@@ -1115,21 +1280,6 @@
       thead.appendChild(tr);
     }
 
-    function applyFilter() {
-      const q = searchBox.value.trim().toLowerCase();
-
-      filteredRows = !q
-        ? [...allRows]
-        : allRows.filter(row =>
-            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(q) ||
-            String(row[DATE_INDEX] ?? "").toLowerCase().includes(q)
-          );
-
-      sortRows();
-      renderHeader();
-      renderTable();
-    }
-
     function findLongestStreak(rows, targetResult) {
       let best = {
         heroes: [],
@@ -1187,6 +1337,102 @@
       heroes.forEach(hero => {
         container.appendChild(buildIcon(hero, "streak-icon"));
       });
+    }
+
+    function buildDailyResultsMap(rows) {
+      const map = new Map();
+
+      rows.forEach(row => {
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+
+        if (!date) return;
+        if (result !== "win" && result !== "loss") return;
+
+        const key = localDateKey(date);
+
+        if (!map.has(key)) {
+          map.set(key, { wins: 0, losses: 0 });
+        }
+
+        const entry = map.get(key);
+
+        if (result === "win") {
+          entry.wins += 1;
+        } else {
+          entry.losses += 1;
+        }
+      });
+
+      return map;
+    }
+
+    function renderCalendar() {
+      if (!calendarGrid || !calendarMonthLabel) return;
+
+      calendarGrid.innerHTML = "";
+
+      const viewStart = monthStart(calendarViewDate);
+      calendarMonthLabel.textContent = viewStart.toLocaleDateString(undefined, {
+        month: "long",
+        year: "numeric"
+      });
+
+      const gridStart = new Date(viewStart);
+      gridStart.setDate(viewStart.getDate() - viewStart.getDay());
+
+      const todayKey = localDateKey(new Date());
+
+      for (let i = 0; i < 42; i++) {
+        const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+        const cellKey = localDateKey(cellDate);
+        const counts = dailyResultsMap.get(cellKey) || { wins: 0, losses: 0 };
+
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+
+        if (cellDate.getMonth() !== viewStart.getMonth()) {
+          cell.classList.add("other-month");
+        }
+
+        if (cellKey === todayKey) {
+          cell.classList.add("today");
+        }
+
+        if (counts.wins > 0 || counts.losses > 0) {
+          cell.classList.add("has-games");
+        }
+
+        const number = document.createElement("div");
+        number.className = "calendar-day-number";
+        number.textContent = cellDate.getDate();
+
+        const records = document.createElement("div");
+        records.className = "calendar-records";
+
+        if (counts.wins === 0 && counts.losses === 0) {
+          const empty = document.createElement("div");
+          empty.className = "calendar-record empty";
+          empty.textContent = "—";
+          records.appendChild(empty);
+        } else {
+          const wins = document.createElement("div");
+          wins.className = "calendar-record wins";
+          wins.textContent = `W: ${counts.wins}`;
+
+          const losses = document.createElement("div");
+          losses.className = "calendar-record losses";
+          losses.textContent = `L: ${counts.losses}`;
+
+          records.appendChild(wins);
+          records.appendChild(losses);
+        }
+
+        cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses}`;
+        cell.appendChild(number);
+        cell.appendChild(records);
+        calendarGrid.appendChild(cell);
+      }
     }
 
     function buildDeltaSeries(rows) {
@@ -1259,20 +1505,20 @@
         const maxSize = pluginOptions.maxSize ?? 22;
         const widthFactor = pluginOptions.widthFactor ?? 0.018;
         const zoomBoost = pluginOptions.zoomBoost ?? 0.35;
-        
+
         const xScale = chart.scales.x;
         const totalPoints = Math.max(1, (series?.length || 0) + 1);
         const visibleMin = Number.isFinite(xScale?.min) ? xScale.min : 0;
         const visibleMax = Number.isFinite(xScale?.max) ? xScale.max : totalPoints - 1;
         const visiblePoints = Math.max(1, visibleMax - visibleMin + 1);
-        
+
         const baseSize = chartArea.width * widthFactor;
         const zoomScaleFactor = Math.sqrt(totalPoints / visiblePoints);
         const dynamicSize = Math.max(
           minSize,
           Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost))
         );
-        
+
         const rankIconSize = Math.max(
           Math.round(dynamicSize * 1.15),
           Math.min(28, dynamicSize + 2)
@@ -1594,6 +1840,9 @@
       renderStreak(longestWinIconsEl, longestWin.heroes);
       renderStreak(longestLossIconsEl, longestLoss.heroes);
 
+      dailyResultsMap = buildDailyResultsMap(classifiedRows);
+      renderCalendar();
+
       renderWinrateChart(matchesRows);
     }
 
@@ -1628,7 +1877,7 @@
       return Array.from(heroMap.values()).map(entry => {
         const winPct = entry.matches > 0 ? (entry.wins / entry.matches) * 100 : 0;
         return [
-          entry.lastDate ? entry.lastDate.toISOString().slice(0, 10) : "",
+          entry.lastDate ? formatLocalYMD(entry.lastDate) : "",
           entry.hero,
           "",
           "",
@@ -1701,7 +1950,7 @@
         if (!heroRes.ok) throw new Error(`Hero sheet HTTP ${heroRes.status}`);
         if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
 
-        await heroRes.text(); // no longer used for the slider-driven table, but harmless to fetch
+        await heroRes.text();
 
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
@@ -1745,6 +1994,9 @@
         longestWinIconsEl.innerHTML = "";
         longestLossIconsEl.innerHTML = "";
 
+        dailyResultsMap = new Map();
+        renderCalendar();
+
         if (winrateChart) {
           winrateChart.destroy();
           winrateChart = null;
@@ -1766,6 +2018,16 @@
     gamesSlider.addEventListener("input", () => {
       sliderGameCount = Number(gamesSlider.value);
       updateHeroTableForSlider();
+    });
+
+    calendarPrevBtn.addEventListener("click", () => {
+      calendarViewDate = addMonths(calendarViewDate, -1);
+      renderCalendar();
+    });
+
+    calendarNextBtn.addEventListener("click", () => {
+      calendarViewDate = addMonths(calendarViewDate, 1);
+      renderCalendar();
     });
 
     resetZoomBtn.addEventListener("click", () => {
