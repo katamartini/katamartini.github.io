@@ -1107,9 +1107,15 @@
       renderTable();
     }
 
+    const HERO_ICON_NAME_ALIASES = {
+      "mo & krill": "mo+krill",
+      "the doorman": "doorman"
+    };
+
     function heroIconPath(heroName) {
-      const safe = normalizeValue(heroName).toLowerCase();
-      return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
+      const normalized = normalizeValue(heroName).toLowerCase();
+      const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
+      return `images/deadlock/icons/${encodeURIComponent(fileBaseName + ".png")}`;
     }
 
     function rankIconPath(rankName) {
