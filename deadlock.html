@@ -1198,6 +1198,14 @@
     const MATCHES_SHEET_COUNTS_INDEX = 10;
     const MATCHES_SHEET_NON_COUNT_REASON_INDEX = 11;
     const MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX = -1;
+    const MATCHES_SHEET_KILLS_INDEX = 15;
+    const MATCHES_SHEET_DEATHS_INDEX = 16;
+    const MATCHES_SHEET_ASSISTS_INDEX = 17;
+    const MATCHES_SHEET_SOULS_INDEX = 14;
+    const MATCHES_SHEET_DAMAGE_INDEX = 18;
+    const MATCHES_SHEET_HEALING_INDEX = 20;
+    const MATCHES_SHEET_DURATION_SECONDS_INDEX = 23;
+    const MATCHES_SHEET_DURATION_MINUTES_INDEX = -1;
 
     const MATCHES_HEADER_ALIASES = {
       matchId: ["match_id", "match id", "id"],
@@ -1568,16 +1576,35 @@
     }
 
     function normalizeHeaderName(value) {
-      return normalizeValue(value).toLowerCase().replace(/[_\s]+/g, " ").trim();
+      return normalizeValue(value)
+        .toLowerCase()
+        .replace(/[   ]/g, " ")
+        .replace(/[-_\s]+/g, " ")
+        .replace(/[^a-z0-9 ]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
     function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
       if (!Array.isArray(headerRow) || !headerRow.length) return fallbackIndex;
       const normalizedHeaders = headerRow.map(normalizeHeaderName);
-      for (const alias of aliases) {
-        const idx = normalizedHeaders.indexOf(normalizeHeaderName(alias));
+      const normalizedAliases = aliases.map(normalizeHeaderName).filter(Boolean);
+
+      for (const alias of normalizedAliases) {
+        const idx = normalizedHeaders.indexOf(alias);
         if (idx !== -1) return idx;
       }
+
+      for (const alias of normalizedAliases) {
+        const aliasTokens = alias.split(" ").filter(Boolean);
+        const idx = normalizedHeaders.findIndex(header => {
+          if (!header) return false;
+          if (header.includes(alias)) return true;
+          return aliasTokens.every(token => header.includes(token));
+        });
+        if (idx !== -1) return idx;
+      }
+
       return fallbackIndex;
     }
 
@@ -1636,13 +1663,22 @@
     function getHeaderIndexes(rows) {
       const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
       return {
-        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills),
-        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths),
-        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists),
-        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls),
-        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage),
-        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing)
+        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills, MATCHES_SHEET_KILLS_INDEX),
+        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths, MATCHES_SHEET_DEATHS_INDEX),
+        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists, MATCHES_SHEET_ASSISTS_INDEX),
+        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls, MATCHES_SHEET_SOULS_INDEX),
+        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage, MATCHES_SHEET_DAMAGE_INDEX),
+        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing, MATCHES_SHEET_HEALING_INDEX),
+        durationSeconds: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX),
+        durationMinutes: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
       };
+    }
+
+    function getFirstAvailableMetricCell(row, headerAliases) {
+      if (!Array.isArray(allMatchRows) || !allMatchRows.length || !Array.isArray(row)) return "";
+      const headerRow = allMatchRows[0] || [];
+      const idx = findHeaderIndex(headerRow, headerAliases);
+      return idx >= 0 ? normalizeValue(row[idx]) : "";
     }
 
     function buildRecordConfigs() {
@@ -1690,10 +1726,47 @@
     }
 
     function getDurationSeconds(row) {
-      const durationSeconds = parseDurationToSeconds(row[headerIndexes.durationSeconds]);
+      if (!Array.isArray(row)) return null;
+
+      const candidateIndexes = [
+        headerIndexes.durationSeconds,
+        MATCHES_SHEET_DURATION_SECONDS_INDEX,
+        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX)
+      ].filter(idx => Number.isInteger(idx) && idx >= 0);
+
+      for (const idx of candidateIndexes) {
+        const raw = normalizeValue(row[idx]);
+        const parsed = parseDurationToSeconds(raw);
+        if (parsed !== null && parsed > 0) return parsed;
+      }
+
+      const durationSecondsRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationSeconds);
+      const durationSeconds = parseDurationToSeconds(durationSecondsRaw);
       if (durationSeconds !== null && durationSeconds > 0) return durationSeconds;
 
-      const durationMinutesRaw = normalizeValue(row[headerIndexes.durationMinutes]);
+      const candidateMinuteIndexes = [
+        headerIndexes.durationMinutes,
+        MATCHES_SHEET_DURATION_MINUTES_INDEX,
+        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
+      ].filter(idx => Number.isInteger(idx) && idx >= 0);
+
+      for (const idx of candidateMinuteIndexes) {
+        const raw = normalizeValue(row[idx]);
+        if (!raw) continue;
+
+        const durationMinutes = parseNumeric(raw);
+        if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
+
+        const parsedDuration = parseDurationToSeconds(raw);
+        if (parsedDuration !== null && parsedDuration > 0) {
+          if (/^\d{1,3}:\d{1,2}(?::\d{1,2})?$/.test(raw) || /sec|second/i.test(raw)) {
+            return parsedDuration;
+          }
+          return parsedDuration * 60;
+        }
+      }
+
+      const durationMinutesRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationMinutes);
       if (durationMinutesRaw) {
         const durationMinutes = parseNumeric(durationMinutesRaw);
         if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
