@@ -950,7 +950,7 @@
       return null;
     }
 
-    function formatLocalYMD(date) {    function formatLocalYMD(date) {
+    function formatLocalYMD(date) {
       if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
       const y = date.getFullYear();
       const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -1107,7 +1107,7 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-    function loadHeroIcon(heroName) {    function loadHeroIcon(heroName) {
+    function loadHeroIcon(heroName) {
       return new Promise((resolve) => {
         const hero = normalizeValue(heroName);
         if (!hero) {
@@ -1126,7 +1126,7 @@
       return Promise.all(series.map(p => loadHeroIcon(p.hero)));
     }
 
-    function buildIcon(heroName, className = "icon-slot") {    function buildIcon(heroName, className = "icon-slot") {
+    function buildIcon(heroName, className = "icon-slot") {
       const slot = document.createElement("div");
       slot.className = className;
 
@@ -1462,7 +1462,7 @@
         .filter(Boolean);
     }
 
-    function buildOriginTrendline(series) {    function buildOriginTrendline(series) {
+    function buildOriginTrendline(series) {
       const n = series.length;
       if (!n) return [0];
 
@@ -1524,7 +1524,7 @@
       }
     };
 
-    async function renderWinrateChart(rows) {    async function renderWinrateChart(rows) {
+    async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
 
       if (winrateChart) {
