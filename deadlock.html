@@ -2180,9 +2180,8 @@
     }
 
     function renderWinCell(row) {
-      const winRaw = normalizeValue(row[WINRATE_INDEX]);
-      const winPct = parseNumeric(winRaw) ?? 0;
-      return renderStatCell(winRaw, winPct, "win");
+      const winPct = parseNumeric(row[WINRATE_INDEX]) ?? 0;
+      return renderStatCell(`${winPct.toFixed(2)}%`, winPct, "win");
     }
 
     function renderDetailCell(mainText, subText = "") {
@@ -2206,6 +2205,7 @@
 
     function renderTable() {
       tbody.innerHTML = "";
+      table.classList.toggle("table-detailed", isDetailedView);
 
       emptyState.style.display = filteredRows.length ? "none" : "block";
 
@@ -2227,6 +2227,28 @@
         winTd.appendChild(renderWinCell(row));
         tr.appendChild(winTd);
 
+        if (isDetailedView) {
+          const kpgTd = document.createElement("td");
+          kpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[KPG_INDEX]))));
+          tr.appendChild(kpgTd);
+
+          const dpgTd = document.createElement("td");
+          dpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[DPG_INDEX]))));
+          tr.appendChild(dpgTd);
+
+          const apgTd = document.createElement("td");
+          apgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[APG_INDEX]))));
+          tr.appendChild(apgTd);
+
+          const spmTd = document.createElement("td");
+          spmTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[SPM_INDEX]))));
+          tr.appendChild(spmTd);
+
+          const avgLengthTd = document.createElement("td");
+          avgLengthTd.appendChild(renderDetailCell(formatDuration(parseNumeric(row[AVG_LENGTH_INDEX]))));
+          tr.appendChild(avgLengthTd);
+        }
+
         tbody.appendChild(tr);
       });
 
@@ -2242,6 +2264,16 @@
         { label: "Matches", index: MATCHES_INDEX, defaultDir: "desc" },
         { label: "Win %", index: WINRATE_INDEX, defaultDir: "desc" }
       ];
+
+      if (isDetailedView) {
+        columns.push(
+          { label: "K / Game", index: KPG_INDEX, defaultDir: "desc" },
+          { label: "D / Game", index: DPG_INDEX, defaultDir: "desc" },
+          { label: "A / Game", index: APG_INDEX, defaultDir: "desc" },
+          { label: "Souls / Min", index: SPM_INDEX, defaultDir: "desc" },
+          { label: "Avg Length", index: AVG_LENGTH_INDEX, defaultDir: "desc" }
+        );
+      }
 
       columns.forEach(col => {
         const th = document.createElement("th");
@@ -2861,7 +2893,12 @@
             hero,
             matches: 0,
             wins: 0,
-            lastDate: null
+            lastDate: null,
+            totalKills: 0,
+            totalDeaths: 0,
+            totalAssists: 0,
+            totalSouls: 0,
+            totalDurationSeconds: 0
           });
         }
 
@@ -2871,10 +2908,26 @@
         if (date && (!entry.lastDate || date > entry.lastDate)) {
           entry.lastDate = date;
         }
+
+        entry.totalKills += parseNumeric(row[headerIndexes.kills]) ?? 0;
+        entry.totalDeaths += parseNumeric(row[headerIndexes.deaths]) ?? 0;
+        entry.totalAssists += parseNumeric(row[headerIndexes.assists]) ?? 0;
+        entry.totalSouls += parseNumeric(row[headerIndexes.souls]) ?? 0;
+        entry.totalDurationSeconds += getDurationSeconds(row) ?? 0;
       });
 
       return Array.from(heroMap.values()).map(entry => {
         const winPct = entry.matches > 0 ? (entry.wins / entry.matches) * 100 : 0;
+        const killsPerGame = entry.matches > 0 ? entry.totalKills / entry.matches : NaN;
+        const deathsPerGame = entry.matches > 0 ? entry.totalDeaths / entry.matches : NaN;
+        const assistsPerGame = entry.matches > 0 ? entry.totalAssists / entry.matches : NaN;
+        const soulsPerMinute = entry.totalDurationSeconds > 0
+          ? entry.totalSouls / (entry.totalDurationSeconds / 60)
+          : NaN;
+        const avgLengthSeconds = entry.matches > 0 && entry.totalDurationSeconds > 0
+          ? entry.totalDurationSeconds / entry.matches
+          : NaN;
+
         return [
           entry.lastDate ? formatLocalYMD(entry.lastDate) : "",
           entry.hero,
@@ -2882,8 +2935,13 @@
           "",
           "",
           "",
-          `${winPct.toFixed(2)}%`,
-          String(entry.matches)
+          winPct,
+          entry.matches,
+          killsPerGame,
+          deathsPerGame,
+          assistsPerGame,
+          soulsPerMinute,
+          avgLengthSeconds
         ];
       });
     }
