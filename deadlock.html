@@ -379,6 +379,52 @@
       display: none;
     }
 
+    .viewtoggle {
+      padding: 8px 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .viewtoggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .viewtoggle-label input {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .detail-value {
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    .detail-sub {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 2px;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+
+    .table-detailed thead th,
+    .table-detailed tbody td {
+      width: auto !important;
+    }
+
     .stats-body {
       padding: 12px;
     }
@@ -1105,6 +1151,13 @@
         <button id="resetBtn" type="button">Reset</button>
       </div>
 
+      <div class="viewtoggle">
+        <label class="viewtoggle-label" for="detailedViewToggle">
+          <input id="detailedViewToggle" type="checkbox" />
+          Detailed View
+        </label>
+      </div>
+
       <div class="datefilterbar">
         <div class="datefilter-field">
           <label class="datefilter-label" for="startDateInput">Start Date</label>
@@ -1188,6 +1241,11 @@
     const HERO_NAME_INDEX = 1;
     const MATCHES_INDEX = 7;
     const WINRATE_INDEX = 6;
+    const KPG_INDEX = 8;
+    const DPG_INDEX = 9;
+    const APG_INDEX = 10;
+    const SPM_INDEX = 11;
+    const AVG_LENGTH_INDEX = 12;
 
     const MATCHES_SHEET_ID_INDEX = 0;
     const MATCHES_SHEET_DATE_INDEX = 1;
@@ -1247,6 +1305,7 @@
     const statusEl = document.getElementById("status");
     const searchBox = document.getElementById("searchBox");
     const resetBtn = document.getElementById("resetBtn");
+    const detailedViewToggle = document.getElementById("detailedViewToggle");
     const startDateInput = document.getElementById("startDateInput");
     const endDateInput = document.getElementById("endDateInput");
     const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
@@ -1308,6 +1367,7 @@
     let calendarViewDate = startOfDay(new Date());
     let dailyResultsMap = new Map();
     let headerIndexes = {};
+    let isDetailedView = false;
 
     function parseCSV(text) {
       const rows = [];
@@ -2125,6 +2185,25 @@
       return renderStatCell(winRaw, winPct, "win");
     }
 
+    function renderDetailCell(mainText, subText = "") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "detail-cell";
+
+      const value = document.createElement("div");
+      value.className = "detail-value";
+      value.textContent = mainText || "-";
+      wrapper.appendChild(value);
+
+      if (subText) {
+        const sub = document.createElement("div");
+        sub.className = "detail-sub";
+        sub.textContent = subText;
+        wrapper.appendChild(sub);
+      }
+
+      return wrapper;
+    }
+
     function renderTable() {
       tbody.innerHTML = "";
 
@@ -2761,6 +2840,10 @@
       renderWinrateChart(matchesRows);
     }
 
+    function formatDetailedAverage(value) {
+      return Number.isFinite(value) ? value.toFixed(2) : "-";
+    }
+
     function buildHeroRowsFromMatches(matchRowsSubset) {
       const heroMap = new Map();
 
@@ -2883,7 +2966,12 @@
             String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchTerm)
           );
 
-      sortState = { col: MATCHES_INDEX, dir: "desc" };
+      if (!isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX].includes(sortState.col)) {
+        sortState = { col: MATCHES_INDEX, dir: "desc" };
+      }
+      if (isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX, KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
+        sortState = { col: MATCHES_INDEX, dir: "desc" };
+      }
       sortRows();
       renderHeader();
       renderTable();
@@ -2984,6 +3072,14 @@
         }
       }
     }
+
+    detailedViewToggle.addEventListener("change", () => {
+      isDetailedView = !!detailedViewToggle.checked;
+      if (!isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
+        sortState = { col: MATCHES_INDEX, dir: "desc" };
+      }
+      updateHeroTableForSlider();
+    });
 
     searchBox.addEventListener("input", () => {
       updateHeroTableForSlider();
