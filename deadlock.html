@@ -820,6 +820,11 @@
     const MATCHES_SHEET_RESULT_INDEX = 7;
     const MATCHES_SHEET_COUNTS_INDEX = 10;
     const MATCHES_SHEET_NON_COUNT_REASON_INDEX = 11;
+    const MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX = -1;
+
+    const MATCHES_HEADER_ALIASES = {
+      peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"]
+    };
 
     const SORT_BY_DATE = "__date__";
 
@@ -1107,6 +1112,60 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
+    function rankIconPath(rankName) {
+      const safe = normalizeValue(rankName);
+      if (!safe) return "";
+      return `images/deadlock/ranks/${encodeURIComponent(safe + ".png")}`;
+    }
+
+    function normalizeHeaderName(value) {
+      return normalizeValue(value).toLowerCase().replace(/[_\s]+/g, " ").trim();
+    }
+
+    function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
+      if (!Array.isArray(headerRow) || !headerRow.length) return fallbackIndex;
+      const normalizedHeaders = headerRow.map(normalizeHeaderName);
+      for (const alias of aliases) {
+        const idx = normalizedHeaders.indexOf(normalizeHeaderName(alias));
+        if (idx !== -1) return idx;
+      }
+      return fallbackIndex;
+    }
+
+    function getPeakRankIndex(rows) {
+      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
+      return findHeaderIndex(
+        headerRow,
+        MATCHES_HEADER_ALIASES.peakRank,
+        MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
+      );
+    }
+
+    function getPeakRankValue(row, peakRankIndex) {
+      if (!Array.isArray(row) || !Number.isInteger(peakRankIndex) || peakRankIndex < 0) return "";
+      return normalizeValue(row[peakRankIndex]);
+    }
+
+    function parsePeakRankLabel(value) {
+      const raw = normalizeValue(value);
+      if (!raw) return null;
+
+      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
+      if (!parts) {
+        return {
+          full: raw,
+          rankName: raw,
+          numeral: ""
+        };
+      }
+
+      return {
+        full: raw,
+        rankName: normalizeValue(parts[1]),
+        numeral: normalizeValue(parts[2] || "").toUpperCase()
+      };
+    }
+
     function loadHeroIcon(heroName) {
       return new Promise((resolve) => {
         const hero = normalizeValue(heroName);
@@ -1122,8 +1181,30 @@
       });
     }
 
+    function loadRankIcon(rankName) {
+      return new Promise((resolve) => {
+        const rank = normalizeValue(rankName);
+        if (!rank) {
+          resolve(null);
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = rankIconPath(rank);
+      });
+    }
+
     async function buildPointStyles(series) {
       return Promise.all(series.map(p => loadHeroIcon(p.hero)));
+    }
+
+    async function buildRankPointStyles(series) {
+      return Promise.all(series.map(p => {
+        const parsed = parsePeakRankLabel(p.peakRank);
+        return parsed ? loadRankIcon(parsed.rankName) : Promise.resolve(null);
+      }));
     }
 
     function buildIcon(heroName, className = "icon-slot") {
@@ -1427,6 +1508,8 @@
         .slice(1)
         .filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
+      const peakRankIndex = getPeakRankIndex(rows);
+
       let wins = 0;
       let losses = 0;
       let classifiedMatchNumber = 0;
@@ -1440,6 +1523,7 @@
           const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
           const modeName = normalizeValue(row[MATCHES_SHEET_MODE_NAME_INDEX]);
           const matchId = normalizeValue(row[MATCHES_SHEET_ID_INDEX]);
+          const peakRank = getPeakRankValue(row, peakRankIndex);
 
           classifiedMatchNumber += 1;
 
@@ -1456,7 +1540,8 @@
             result,
             matchNumber: classifiedMatchNumber,
             modeName,
-            matchId
+            matchId,
+            peakRank
           };
         })
         .filter(Boolean);
@@ -1487,6 +1572,7 @@
         const { ctx, chartArea } = chart;
         const meta = chart.getDatasetMeta(0);
         const heroIcons = pluginOptions.heroIcons || [];
+        const rankIcons = pluginOptions.rankIcons || [];
         const series = pluginOptions.series || [];
 
         const minSize = pluginOptions.minSize ?? 10;
@@ -1507,6 +1593,14 @@
           Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost))
         );
 
+        const rankIconSize = Math.max(
+          Math.round(dynamicSize * 1.15),
+          Math.min(28, dynamicSize + 2)
+        );
+
+        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
+        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
+
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
@@ -1518,6 +1612,88 @@
           const x = point.x - dynamicSize / 2;
           const y = point.y - dynamicSize / 2;
           ctx.drawImage(icon, x, y, dynamicSize, dynamicSize);
+        });
+
+        ctx.restore();
+
+        const peakEntries = [];
+
+        meta.data.forEach((point, i) => {
+          if (i === 0) return;
+
+          const p = series[i - 1];
+          if (!p || !p.peakRank) return;
+
+          const rankParsed = parsePeakRankLabel(p.peakRank);
+          if (!rankParsed) return;
+
+          peakEntries.push({
+            point,
+            rankParsed,
+            rankIcon: rankIcons[i - 1]
+          });
+        });
+
+        if (!peakEntries.length) return;
+
+        const alignedIconCenterY = Math.max(
+          chartArea.top + rankIconSize / 2 + 4,
+          Math.min(
+            ...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift)
+          )
+        );
+
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
+          const iconCenterX = point.x;
+          const iconCenterY = alignedIconCenterY;
+          const iconX = iconCenterX - rankIconSize / 2;
+          const iconY = iconCenterY - rankIconSize / 2;
+
+          const lineStartY = iconY + rankIconSize + 1;
+          const lineEndY = point.y - dynamicSize / 2 - 4;
+
+          if (lineEndY > lineStartY) {
+            ctx.strokeStyle = "rgba(255,255,255,0.18)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(iconCenterX, lineStartY);
+            ctx.lineTo(iconCenterX, lineEndY);
+            ctx.stroke();
+          }
+
+          if (rankIcon) {
+            ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
+          }
+
+          if (rankParsed.numeral) {
+            const numeralY = iconCenterY + 1.5;
+
+            ctx.save();
+            ctx.translate(iconCenterX, numeralY);
+            ctx.scale(0.88, 1);
+
+            ctx.font = `700 ${numeralFontSize}px Arial`;
+            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
+            ctx.lineWidth = 3;
+            ctx.strokeText(rankParsed.numeral, 0, 0);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(rankParsed.numeral, 0, 0);
+
+            ctx.restore();
+          } else if (!rankIcon) {
+            ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
+            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
+            ctx.lineWidth = 3;
+            ctx.strokeText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
+          }
         });
 
         ctx.restore();
@@ -1535,6 +1711,7 @@
       if (!series.length) return;
 
       const pointIcons = await buildPointStyles(series);
+      const rankPointIcons = await buildRankPointStyles(series);
 
       const labels = ["Start", ...series.map(p => p.xLabel)];
       const deltaData = [0, ...series.map(p => p.y)];
@@ -1589,6 +1766,7 @@
           plugins: {
             heroPointPlugin: {
               heroIcons: pluginHeroIcons,
+              rankIcons: rankPointIcons,
               series,
               minSize: 10,
               maxSize: 36,
@@ -1629,6 +1807,9 @@
                   }
                   if (p.matchId) {
                     lines.push(`Match ID: ${p.matchId}`);
+                  }
+                  if (p.peakRank) {
+                    lines.push(`New peak: ${p.peakRank}`);
                   }
 
                   return lines;
