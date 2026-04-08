@@ -136,6 +136,57 @@
       background: #1d2330;
     }
 
+    .datefilterbar {
+      padding: 10px 12px 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .datefilter-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .datefilter-label {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .datefilterbar input[type="date"] {
+      width: 100%;
+      min-width: 0;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 7px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .datefilterbar button {
+      flex: 0 0 auto;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      align-self: end;
+    }
+
+    .datefilterbar button:hover {
+      background: #1d2330;
+    }
+
     .sliderbar {
       padding: 10px 12px 12px;
       background: #222834;
@@ -743,6 +794,10 @@
         min-width: 0;
       }
 
+      .datefilterbar {
+        grid-template-columns: 1fr;
+      }
+
       .chart-body {
         height: 320px;
       }
@@ -863,6 +918,18 @@
         <button id="resetBtn" type="button">Reset</button>
       </div>
 
+      <div class="datefilterbar">
+        <div class="datefilter-field">
+          <label class="datefilter-label" for="startDateInput">Start Date</label>
+          <input id="startDateInput" type="date" />
+        </div>
+        <div class="datefilter-field">
+          <label class="datefilter-label" for="endDateInput">End Date</label>
+          <input id="endDateInput" type="date" />
+        </div>
+        <button id="clearDateRangeBtn" type="button">Clear Dates</button>
+      </div>
+
       <div class="sliderbar">
         <div class="sliderbar-top">
           <div class="sliderbar-label">Table State After X Games</div>
@@ -941,6 +1008,9 @@
     const statusEl = document.getElementById("status");
     const searchBox = document.getElementById("searchBox");
     const resetBtn = document.getElementById("resetBtn");
+    const startDateInput = document.getElementById("startDateInput");
+    const endDateInput = document.getElementById("endDateInput");
+    const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
     const emptyState = document.getElementById("emptyState");
     const gamesSlider = document.getElementById("gamesSlider");
     const gamesSliderLabel = document.getElementById("gamesSliderLabel");
@@ -2194,18 +2264,82 @@
       });
     }
 
+
+    function getDateInputValue(inputEl) {
+      return inputEl ? normalizeValue(inputEl.value) : "";
+    }
+
+    function getActiveDateRange() {
+      const startValue = getDateInputValue(startDateInput);
+      const endValue = getDateInputValue(endDateInput);
+
+      const startDate = startValue ? parseSheetDate(startValue) : null;
+      const endDate = endValue ? parseSheetDate(endValue) : null;
+
+      return {
+        startDate: startDate ? startOfDay(startDate) : null,
+        endDate: endDate ? startOfDay(endDate) : null
+      };
+    }
+
+    function isRowWithinActiveDateRange(row) {
+      const { startDate, endDate } = getActiveDateRange();
+      if (!startDate && !endDate) return true;
+
+      const rowDate = parseMatchDateTime(row);
+      if (!rowDate) return false;
+
+      const rowDay = startOfDay(rowDate);
+
+      if (startDate && rowDay < startDate) return false;
+      if (endDate && rowDay > endDate) return false;
+
+      return true;
+    }
+
+    function getDateRangeFilteredMatches() {
+      return classifiedMatchRows.filter(isRowWithinActiveDateRange);
+    }
+
+    function syncSliderToFilteredMatches() {
+      const datedMatches = getDateRangeFilteredMatches();
+      const total = datedMatches.length;
+      const currentValue = Number(gamesSlider.value || 0);
+
+      gamesSlider.min = 0;
+      gamesSlider.max = String(total);
+
+      sliderGameCount = Math.min(currentValue || total, total);
+      gamesSlider.value = String(sliderGameCount);
+
+      return datedMatches;
+    }
+
+    function formatDateRangeShort(startDate, endDate) {
+      if (!startDate && !endDate) return "ALL TIME";
+      if (startDate && endDate) {
+        return `${formatLongDate(startDate)} – ${formatLongDate(endDate)}`;
+      }
+      if (startDate) {
+        return `${formatLongDate(startDate)}+`;
+      }
+      return `Through ${formatLongDate(endDate)}`;
+    }
+
     function updateHeroTableForSlider() {
-      const subset = classifiedMatchRows.slice(0, sliderGameCount);
+      const datedMatches = syncSliderToFilteredMatches();
+      const subset = datedMatches.slice(0, sliderGameCount);
       const builtRows = buildHeroRowsFromMatches(subset);
 
       allRows = builtRows;
       maxMatches = Math.max(...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0), 0);
 
-      filteredRows = !searchBox.value.trim()
+      const searchTerm = searchBox.value.trim().toLowerCase();
+      filteredRows = !searchTerm
         ? [...allRows]
         : allRows.filter(row =>
-            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase()) ||
-            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase())
+            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchTerm) ||
+            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchTerm)
           );
 
       sortState = { col: MATCHES_INDEX, dir: "desc" };
@@ -2213,9 +2347,12 @@
       renderHeader();
       renderTable();
 
-      const total = classifiedMatchRows.length;
+      const total = datedMatches.length;
+      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
       gamesSliderLabel.textContent = `${sliderGameCount} / ${total} games`;
-      heroTableSub.textContent = sliderGameCount >= total ? "ALL TIME" : `AFTER ${sliderGameCount} GAMES`;
+      heroTableSub.textContent = sliderGameCount >= total
+        ? rangeLabel
+        : `${rangeLabel} • AFTER ${sliderGameCount} GAMES`;
     }
 
     function isChartFullscreen() {
@@ -2312,6 +2449,28 @@
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
+      startDateInput.value = "";
+      endDateInput.value = "";
+      gamesSlider.value = String(classifiedMatchRows.length);
+      sliderGameCount = classifiedMatchRows.length;
+      updateHeroTableForSlider();
+    });
+
+    clearDateRangeBtn.addEventListener("click", () => {
+      startDateInput.value = "";
+      endDateInput.value = "";
+      gamesSlider.value = String(classifiedMatchRows.length);
+      sliderGameCount = classifiedMatchRows.length;
+      updateHeroTableForSlider();
+    });
+
+    startDateInput.addEventListener("change", () => {
+      gamesSlider.value = gamesSlider.max;
+      sliderGameCount = Number(gamesSlider.max);
+      updateHeroTableForSlider();
+    });
+
+    endDateInput.addEventListener("change", () => {
       gamesSlider.value = gamesSlider.max;
       sliderGameCount = Number(gamesSlider.max);
       updateHeroTableForSlider();
