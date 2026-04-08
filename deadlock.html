@@ -53,8 +53,8 @@
     .wrap,
     .stats-card,
     .streaks-card,
-    .records-card,
     .calendar-card,
+    .records-card,
     .chart-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -566,86 +566,89 @@
       color: var(--muted);
     }
 
-
     .records-body {
       padding: 12px;
+      background: #222834;
     }
 
     .records-grid {
       display: grid;
+      grid-template-columns: 1fr;
       gap: 10px;
     }
 
-    .record-item {
-      background: #222834;
+    .record-box {
+      background: #2a3140;
       border: 1px solid var(--border);
-      padding: 10px 11px;
-      display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 10px;
-      align-items: center;
-      min-width: 0;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-height: 76px;
     }
 
-    .record-icon {
-      width: 34px;
-      height: 34px;
-      flex: 0 0 34px;
-      background: linear-gradient(135deg, #4b5563, #2f3745);
-      border: 1px solid #596274;
-      display: block;
-      overflow: hidden;
-    }
-
-    .record-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .record-content {
-      min-width: 0;
+    .record-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
     }
 
     .record-label {
       color: var(--muted);
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 4px;
+      letter-spacing: 0.35px;
+      font-weight: 700;
     }
 
     .record-value {
       color: #ffffff;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 4px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .record-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .record-icon {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
     }
 
     .record-meta {
-      color: #9fb0c7;
-      font-size: 10px;
-      line-height: 1.2;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 1px;
-      min-width: 0;
+      gap: 2px;
     }
 
     .record-hero {
       color: var(--accent);
+      font-size: 12px;
       font-weight: 700;
+      line-height: 1.05;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .record-date {
+    .record-date,
+    .record-extra {
       color: #9fb0c7;
+      font-size: 10px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
 
     .chart-card {
       width: 100%;
@@ -808,13 +811,19 @@
         </div>
       </div>
 
-
       <div class="records-card">
         <div class="stats-titlebar">
-          RECORDS<span class="sub">COUNTED MATCHES</span>
+          RECORDS<span class="sub">COUNTED MATCH HIGHS</span>
         </div>
         <div class="records-body">
-          <div id="recordsGrid" class="records-grid"></div>
+          <div class="records-grid">
+            <div class="record-box" id="recordKills"></div>
+            <div class="record-box" id="recordDeaths"></div>
+            <div class="record-box" id="recordAssists"></div>
+            <div class="record-box" id="recordSouls"></div>
+            <div class="record-box" id="recordDamage"></div>
+            <div class="record-box" id="recordHealing"></div>
+          </div>
         </div>
       </div>
 
@@ -916,22 +925,13 @@
 
     const MATCHES_HEADER_ALIASES = {
       peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"],
-      kills: ["kills", "player_kills"],
-      deaths: ["deaths", "player_deaths"],
-      assists: ["assists", "player_assists"],
-      souls: ["souls", "net_worth", "net worth", "player_souls"],
-      damage: ["player_damage", "player damage", "damage", "hero_damage", "hero damage"],
-      healing: ["healing", "healing_done", "healing done", "player_healing", "player healing"]
+      kills: ["kills", "player_kills", "player kills"],
+      deaths: ["deaths", "player_deaths", "player deaths"],
+      assists: ["assists", "player_assists", "player assists"],
+      souls: ["souls", "net_worth", "net worth"],
+      damage: ["player_damage", "player damage", "damage"],
+      healing: ["healing", "healing_done", "healing done"]
     };
-
-    const RECORD_DEFINITIONS = [
-      { key: "kills", label: "Most Kills" },
-      { key: "deaths", label: "Most Deaths" },
-      { key: "assists", label: "Most Assists" },
-      { key: "souls", label: "Most Souls" },
-      { key: "damage", label: "Most Damage" },
-      { key: "healing", label: "Most Healing" }
-    ];
 
     const SORT_BY_DATE = "__date__";
 
@@ -959,11 +959,19 @@
     const longestWinDatesEl = document.getElementById("longestWinDates");
     const longestLossDatesEl = document.getElementById("longestLossDates");
 
+    const recordBoxEls = {
+      kills: document.getElementById("recordKills"),
+      deaths: document.getElementById("recordDeaths"),
+      assists: document.getElementById("recordAssists"),
+      souls: document.getElementById("recordSouls"),
+      damage: document.getElementById("recordDamage"),
+      healing: document.getElementById("recordHealing")
+    };
+
     const calendarGrid = document.getElementById("calendarGrid");
     const calendarMonthLabel = document.getElementById("calendarMonthLabel");
     const calendarPrevBtn = document.getElementById("calendarPrevBtn");
     const calendarNextBtn = document.getElementById("calendarNextBtn");
-    const recordsGrid = document.getElementById("recordsGrid");
 
     const chartCard = document.getElementById("chartCard");
     const expandChartBtn = document.getElementById("expandChartBtn");
@@ -980,6 +988,7 @@
     let sliderGameCount = 0;
     let calendarViewDate = startOfDay(new Date());
     let dailyResultsMap = new Map();
+    let headerIndexes = {};
 
     function parseCSV(text) {
       const rows = [];
@@ -1260,94 +1269,106 @@
       return normalizeValue(row[peakRankIndex]);
     }
 
-
-    function getRecordColumnIndexes(rows) {
+    function getHeaderIndexes(rows) {
       const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      const indexes = {};
-
-      for (const def of RECORD_DEFINITIONS) {
-        indexes[def.key] = findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES[def.key] || [], -1);
-      }
-
-      return indexes;
+      return {
+        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills),
+        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths),
+        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists),
+        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls),
+        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage),
+        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing)
+      };
     }
 
-    function buildRecordItem(label, record) {
-      const item = document.createElement("div");
-      item.className = "record-item";
+    function buildRecordConfigs() {
+      return [
+        { key: "kills", label: "Most Kills" },
+        { key: "deaths", label: "Most Deaths" },
+        { key: "assists", label: "Most Assists" },
+        { key: "souls", label: "Most Souls" },
+        { key: "damage", label: "Most Damage" },
+        { key: "healing", label: "Most Healing" }
+      ];
+    }
 
-      const icon = buildIcon(record?.hero || "", "record-icon");
-      item.appendChild(icon);
+    function formatRecordNumber(value) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) return "-";
+      return num.toLocaleString();
+    }
 
-      const content = document.createElement("div");
-      content.className = "record-content";
+    function chooseBetterRecordRow(currentBest, candidateRow, metricIndex) {
+      const candidateValue = parseNumeric(candidateRow[metricIndex]);
+      if (candidateValue === null) return currentBest;
+      if (!currentBest) return candidateRow;
 
-      const labelEl = document.createElement("div");
-      labelEl.className = "record-label";
-      labelEl.textContent = label;
+      const currentValue = parseNumeric(currentBest[metricIndex]);
+      if (currentValue === null || candidateValue > currentValue) return candidateRow;
+      if (candidateValue < currentValue) return currentBest;
 
-      const valueEl = document.createElement("div");
-      valueEl.className = "record-value";
-      valueEl.textContent = record ? record.displayValue : "-";
+      const currentDate = parseSheetDate(currentBest[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(currentBest[MATCHES_SHEET_DATE_INDEX]);
+      const candidateDate = parseSheetDate(candidateRow[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(candidateRow[MATCHES_SHEET_DATE_INDEX]);
 
-      const meta = document.createElement("div");
-      meta.className = "record-meta";
+      if (candidateDate && (!currentDate || candidateDate > currentDate)) return candidateRow;
+      return currentBest;
+    }
 
-      const heroEl = document.createElement("div");
-      heroEl.className = "record-hero";
-      heroEl.textContent = record?.hero || "No data";
+    function renderSingleRecordBox(container, label, row, metricIndex) {
+      if (!container) return;
 
-      const dateEl = document.createElement("div");
-      dateEl.className = "record-date";
-      dateEl.textContent = record?.dateText || "";
+      if (!row || metricIndex < 0) {
+        container.innerHTML = `
+          <div class="record-top">
+            <div class="record-label">${label}</div>
+            <div class="record-value">-</div>
+          </div>
+          <div class="record-main">
+            <div class="record-meta">
+              <div class="record-hero">No data</div>
+              <div class="record-date">-</div>
+              <div class="record-extra">K/D/A: - / - / - • -</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
 
-      meta.appendChild(heroEl);
-      if (dateEl.textContent) meta.appendChild(dateEl);
+      const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]) || "Unknown";
+      const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]) || "-";
+      const kills = parseNumeric(row[headerIndexes.kills]);
+      const deaths = parseNumeric(row[headerIndexes.deaths]);
+      const assists = parseNumeric(row[headerIndexes.assists]);
+      const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+      const iconHtml = buildIcon(hero, "icon-slot record-icon").outerHTML;
 
-      content.appendChild(labelEl);
-      content.appendChild(valueEl);
-      content.appendChild(meta);
-      item.appendChild(content);
-
-      return item;
+      container.innerHTML = `
+        <div class="record-top">
+          <div class="record-label">${label}</div>
+          <div class="record-value">${formatRecordNumber(parseNumeric(row[metricIndex]))}</div>
+        </div>
+        <div class="record-main">
+          ${iconHtml}
+          <div class="record-meta">
+            <div class="record-hero">${hero}</div>
+            <div class="record-date">${date ? formatLongDate(date) : "-"}</div>
+            <div class="record-extra">K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : "-"}</div>
+          </div>
+        </div>
+      `;
     }
 
     function renderRecords(matchesRows, classifiedRows) {
-      if (!recordsGrid) return;
-      recordsGrid.innerHTML = "";
-
-      const indexes = getRecordColumnIndexes(matchesRows);
-      const bestByKey = {};
-
-      for (const row of classifiedRows) {
-        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
-        const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
-
-        for (const def of RECORD_DEFINITIONS) {
-          const idx = indexes[def.key];
-          if (!Number.isInteger(idx) || idx < 0) continue;
-
-          const raw = normalizeValue(row[idx]);
-          const value = parseNumeric(raw);
-          if (value === null) continue;
-
-          const current = bestByKey[def.key];
-          const shouldReplace = !current || value > current.value || (value === current.value && date && (!current.date || date > current.date));
-
-          if (shouldReplace) {
-            bestByKey[def.key] = {
-              value,
-              displayValue: raw || String(value),
-              hero,
-              date,
-              dateText: date ? formatLongDate(date) : ""
-            };
+      headerIndexes = getHeaderIndexes(matchesRows);
+      for (const config of buildRecordConfigs()) {
+        const metricIndex = headerIndexes[config.key];
+        let bestRow = null;
+        if (metricIndex >= 0) {
+          for (const row of classifiedRows) {
+            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex);
           }
         }
-      }
-
-      for (const def of RECORD_DEFINITIONS) {
-        recordsGrid.appendChild(buildRecordItem(def.label, bestByKey[def.key] || null));
+        renderSingleRecordBox(recordBoxEls[config.key], config.label, bestRow, metricIndex);
       }
     }
 
@@ -2121,10 +2142,10 @@
 
       renderStreak(longestWinIconsEl, longestWin.heroes);
       renderStreak(longestLossIconsEl, longestLoss.heroes);
+      renderRecords(matchesRows, classifiedRows);
 
       dailyResultsMap = buildDailyResultsMap(classifiedRows);
       renderCalendar();
-      renderRecords(matchesRows, classifiedRows);
 
       renderWinrateChart(matchesRows);
     }
@@ -2269,9 +2290,14 @@
         longestWinIconsEl.innerHTML = "";
         longestLossIconsEl.innerHTML = "";
 
+        Object.values(recordBoxEls).forEach(el => {
+          if (el) {
+            el.innerHTML = '<div class="record-top"><div class="record-label">-</div><div class="record-value">-</div></div><div class="record-main"><div class="record-meta"><div class="record-hero">No data</div><div class="record-date">-</div><div class="record-extra">K/D/A: - / - / - • -</div></div></div>';
+          }
+        });
+
         dailyResultsMap = new Map();
         renderCalendar();
-        renderRecords([], []);
 
         if (winrateChart) {
           winrateChart.destroy();
