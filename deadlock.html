@@ -701,6 +701,191 @@
       text-overflow: ellipsis;
     }
 
+    .hero-clickable {
+      cursor: pointer;
+    }
+
+    .hero-clickable:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hero-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 11, 18, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 1000;
+    }
+
+    .hero-modal-overlay.open {
+      display: flex;
+    }
+
+    .hero-modal {
+      width: min(980px, calc(100vw - 48px));
+      max-height: min(88vh, 920px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .hero-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .hero-modal-title-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+    }
+
+    .hero-modal-title {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    .hero-modal-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .hero-modal-close {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .hero-modal-close:hover {
+      background: #1d2330;
+    }
+
+    .hero-modal-body {
+      padding: 12px;
+      background: #222834;
+      overflow: auto;
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-modal-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .hero-modal-stat {
+      background: #2a3140;
+      border: 1px solid var(--border);
+      padding: 10px;
+    }
+
+    .hero-modal-stat-label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .hero-modal-stat-value {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .hero-history-wrap {
+      background: #2a3140;
+      border: 1px solid var(--border);
+      padding: 10px;
+    }
+
+    .hero-history-title {
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      margin-bottom: 8px;
+    }
+
+    .hero-history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+      gap: 8px;
+    }
+
+    .hero-history-box {
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 4px;
+    }
+
+    .hero-history-box.win {
+      background: #23421c;
+      border-color: #4f8f37;
+    }
+
+    .hero-history-box.loss {
+      background: #4a1f1f;
+      border-color: #a84040;
+    }
+
+    .hero-history-box .icon-slot {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      border: none;
+      background: transparent;
+    }
+
+    .hero-history-empty {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-modal {
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+      }
+
+      .hero-modal-stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     .chart-card {
       width: 100%;
       position: relative;
@@ -878,6 +1063,8 @@
             <div class="record-box" id="recordSouls"></div>
             <div class="record-box" id="recordDamage"></div>
             <div class="record-box" id="recordHealing"></div>
+            <div class="record-box" id="recordShortestGame"></div>
+            <div class="record-box" id="recordLongestGame"></div>
           </div>
         </div>
       </div>
@@ -966,6 +1153,28 @@
     </div>
   </div>
 
+  <div id="heroModalOverlay" class="hero-modal-overlay" aria-hidden="true">
+    <div class="hero-modal" role="dialog" aria-modal="true" aria-labelledby="heroModalTitle">
+      <div class="hero-modal-header">
+        <div class="hero-modal-title-wrap">
+          <div id="heroModalTitleIcon" class="icon-slot hero-modal-title-icon"></div>
+          <div>
+            <div id="heroModalTitle" class="hero-modal-title">Hero History</div>
+            <div id="heroModalSubtitle" class="hero-modal-subtitle">-</div>
+          </div>
+        </div>
+        <button id="heroModalCloseBtn" class="hero-modal-close" type="button">Close</button>
+      </div>
+      <div class="hero-modal-body">
+        <div id="heroModalStatsGrid" class="hero-modal-stats-grid"></div>
+        <div class="hero-history-wrap">
+          <div class="hero-history-title">Game History</div>
+          <div id="heroHistoryGrid" class="hero-history-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script>
@@ -991,13 +1200,35 @@
     const MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX = -1;
 
     const MATCHES_HEADER_ALIASES = {
+      matchId: ["match_id", "match id", "id"],
+      date: ["match_date_est", "match date est", "match_date", "match date", "date"],
+      startTime: ["match_start_time_est", "match start time est", "match_start_time", "match start time", "start time"],
+      modeName: ["mode_name", "mode name", "mode"],
+      hero: ["selected_hero", "selected hero", "hero"],
+      result: ["game_result", "game result", "result"],
+      counts: ["counts_in_stats", "counts in stats", "counts"],
+      nonCountReason: ["non_count_reason", "non count reason", "reason"],
       peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"],
       kills: ["kills", "player_kills", "player kills"],
       deaths: ["deaths", "player_deaths", "player deaths"],
       assists: ["assists", "player_assists", "player assists"],
       souls: ["souls", "net_worth", "net worth"],
       damage: ["player_damage", "player damage", "damage"],
-      healing: ["healing", "healing_done", "healing done"]
+      healing: ["healing", "healing_done", "healing done"],
+      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds"],
+      durationMinutes: ["duration_minutes", "duration minutes", "match_duration_minutes", "match duration minutes", "duration_min", "duration min"]
+    };
+
+    let matchesColumnIndexes = {
+      matchId: MATCHES_SHEET_ID_INDEX,
+      date: MATCHES_SHEET_DATE_INDEX,
+      startTime: MATCHES_SHEET_START_TIME_INDEX,
+      modeName: MATCHES_SHEET_MODE_NAME_INDEX,
+      hero: MATCHES_SHEET_HERO_INDEX,
+      result: MATCHES_SHEET_RESULT_INDEX,
+      counts: MATCHES_SHEET_COUNTS_INDEX,
+      nonCountReason: MATCHES_SHEET_NON_COUNT_REASON_INDEX,
+      peakRank: MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
     };
 
     const SORT_BY_DATE = "__date__";
@@ -1035,8 +1266,18 @@
       assists: document.getElementById("recordAssists"),
       souls: document.getElementById("recordSouls"),
       damage: document.getElementById("recordDamage"),
-      healing: document.getElementById("recordHealing")
+      healing: document.getElementById("recordHealing"),
+      shortestGame: document.getElementById("recordShortestGame"),
+      longestGame: document.getElementById("recordLongestGame")
     };
+
+    const heroModalOverlay = document.getElementById("heroModalOverlay");
+    const heroModalCloseBtn = document.getElementById("heroModalCloseBtn");
+    const heroModalTitle = document.getElementById("heroModalTitle");
+    const heroModalSubtitle = document.getElementById("heroModalSubtitle");
+    const heroModalTitleIcon = document.getElementById("heroModalTitleIcon");
+    const heroModalStatsGrid = document.getElementById("heroModalStatsGrid");
+    const heroHistoryGrid = document.getElementById("heroHistoryGrid");
 
     const calendarGrid = document.getElementById("calendarGrid");
     const calendarMonthLabel = document.getElementById("calendarMonthLabel");
@@ -1173,8 +1414,8 @@
     function parseMatchDateTime(row) {
       if (!Array.isArray(row)) return null;
 
-      const startTimeValue = normalizeValue(row[MATCHES_SHEET_START_TIME_INDEX]);
-      const dateValue = normalizeValue(row[MATCHES_SHEET_DATE_INDEX]);
+      const startTimeValue = getMatchStartTimeValue(row);
+      const dateValue = getMatchDateValue(row);
 
       const parsedStart = startTimeValue ? parseSheetDate(startTimeValue) : null;
       if (parsedStart) return parsedStart;
@@ -1274,11 +1515,11 @@
     }
 
     function isCountedMatch(row) {
-      return normalizeValue(row[MATCHES_SHEET_COUNTS_INDEX]).toLowerCase() === "yes";
+      return getMatchCountsValue(row).toLowerCase() === "yes";
     }
 
     function isClassifiedCountedMatch(row) {
-      const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+      const result = getMatchResultValue(row).toLowerCase();
       return isCountedMatch(row) && (result === "win" || result === "loss");
     }
 
@@ -1340,18 +1581,56 @@
       return fallbackIndex;
     }
 
-    function getPeakRankIndex(rows) {
+    function resolveMatchesColumnIndexes(rows) {
       const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      return findHeaderIndex(
-        headerRow,
-        MATCHES_HEADER_ALIASES.peakRank,
-        MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
-      );
+      matchesColumnIndexes = {
+        matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId, MATCHES_SHEET_ID_INDEX),
+        date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date, MATCHES_SHEET_DATE_INDEX),
+        startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime, MATCHES_SHEET_START_TIME_INDEX),
+        modeName: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.modeName, MATCHES_SHEET_MODE_NAME_INDEX),
+        hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero, MATCHES_SHEET_HERO_INDEX),
+        result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result, MATCHES_SHEET_RESULT_INDEX),
+        counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts, MATCHES_SHEET_COUNTS_INDEX),
+        nonCountReason: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.nonCountReason, MATCHES_SHEET_NON_COUNT_REASON_INDEX),
+        peakRank: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.peakRank, MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX)
+      };
+      return matchesColumnIndexes;
+    }
+
+    function getMatchCell(row, index) {
+      if (!Array.isArray(row) || !Number.isInteger(index) || index < 0) return "";
+      return normalizeValue(row[index]);
+    }
+
+    function getMatchDateValue(row) {
+      return getMatchCell(row, matchesColumnIndexes.date);
+    }
+
+    function getMatchStartTimeValue(row) {
+      return getMatchCell(row, matchesColumnIndexes.startTime);
+    }
+
+    function getMatchHeroValue(row) {
+      return getMatchCell(row, matchesColumnIndexes.hero);
+    }
+
+    function getMatchResultValue(row) {
+      return getMatchCell(row, matchesColumnIndexes.result);
+    }
+
+    function getMatchCountsValue(row) {
+      return getMatchCell(row, matchesColumnIndexes.counts);
+    }
+
+    function getPeakRankIndex(rows) {
+      return resolveMatchesColumnIndexes(rows).peakRank;
     }
 
     function getPeakRankValue(row, peakRankIndex) {
-      if (!Array.isArray(row) || !Number.isInteger(peakRankIndex) || peakRankIndex < 0) return "";
-      return normalizeValue(row[peakRankIndex]);
+      if (Number.isInteger(peakRankIndex) && peakRankIndex >= 0) {
+        return getMatchCell(row, peakRankIndex);
+      }
+      return getMatchCell(row, matchesColumnIndexes.peakRank);
     }
 
     function getHeaderIndexes(rows) {
@@ -1368,12 +1647,14 @@
 
     function buildRecordConfigs() {
       return [
-        { key: "kills", label: "Most Kills" },
-        { key: "deaths", label: "Most Deaths" },
-        { key: "assists", label: "Most Assists" },
-        { key: "souls", label: "Most Souls" },
-        { key: "damage", label: "Most Damage" },
-        { key: "healing", label: "Most Healing" }
+        { key: "kills", label: "Most Kills", mode: "max" },
+        { key: "deaths", label: "Most Deaths", mode: "max" },
+        { key: "assists", label: "Most Assists", mode: "max" },
+        { key: "souls", label: "Most Souls", mode: "max" },
+        { key: "damage", label: "Most Damage", mode: "max" },
+        { key: "healing", label: "Most Healing", mode: "max" },
+        { key: "durationSeconds", label: "Shortest Game", mode: "min", isDuration: true, recordKey: "shortestGame" },
+        { key: "durationSeconds", label: "Longest Game", mode: "max", isDuration: true, recordKey: "longestGame" }
       ];
     }
 
@@ -1383,26 +1664,157 @@
       return num.toLocaleString();
     }
 
-    function chooseBetterRecordRow(currentBest, candidateRow, metricIndex) {
-      const candidateValue = parseNumeric(candidateRow[metricIndex]);
+    function getDurationSeconds(row) {
+      const durationSeconds = parseNumeric(row[headerIndexes.durationSeconds]);
+      if (durationSeconds !== null && durationSeconds > 0) return durationSeconds;
+
+      const durationMinutes = parseNumeric(row[headerIndexes.durationMinutes]);
+      if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
+
+      return null;
+    }
+
+    function formatDuration(seconds) {
+      const totalSeconds = Number(seconds);
+      if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return "-";
+
+      const rounded = Math.round(totalSeconds);
+      const hours = Math.floor(rounded / 3600);
+      const minutes = Math.floor((rounded % 3600) / 60);
+      const secs = rounded % 60;
+
+      if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+      }
+
+      return `${minutes}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function getRowMetricValue(row, metricIndex, config = {}) {
+      if (config.isDuration) {
+        return getDurationSeconds(row);
+      }
+      return parseNumeric(row[metricIndex]);
+    }
+
+    function chooseBetterRecordRow(currentBest, candidateRow, metricIndex, config = {}) {
+      const candidateValue = getRowMetricValue(candidateRow, metricIndex, config);
       if (candidateValue === null) return currentBest;
       if (!currentBest) return candidateRow;
 
-      const currentValue = parseNumeric(currentBest[metricIndex]);
-      if (currentValue === null || candidateValue > currentValue) return candidateRow;
-      if (candidateValue < currentValue) return currentBest;
+      const currentValue = getRowMetricValue(currentBest, metricIndex, config);
+      if (currentValue === null) return candidateRow;
 
-      const currentDate = parseSheetDate(currentBest[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(currentBest[MATCHES_SHEET_DATE_INDEX]);
-      const candidateDate = parseSheetDate(candidateRow[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(candidateRow[MATCHES_SHEET_DATE_INDEX]);
+      const shouldReplace = config.mode === "min" ? candidateValue < currentValue : candidateValue > currentValue;
+      if (shouldReplace) return candidateRow;
 
+      const isWorse = config.mode === "min" ? candidateValue > currentValue : candidateValue < currentValue;
+      if (isWorse) return currentBest;
+
+      const currentDate = parseMatchDateTime(currentBest);
+      const candidateDate = parseMatchDateTime(candidateRow);
       if (candidateDate && (!currentDate || candidateDate > currentDate)) return candidateRow;
       return currentBest;
     }
 
-    function renderSingleRecordBox(container, label, row, metricIndex) {
+    function formatPerGame(value) {
+      return Number.isFinite(value) ? value.toFixed(2) : "-";
+    }
+
+    function formatSoulsPerMinute(totalSouls, totalDurationSeconds) {
+      if (!Number.isFinite(totalSouls) || !Number.isFinite(totalDurationSeconds) || totalDurationSeconds <= 0) return "-";
+      return (totalSouls / (totalDurationSeconds / 60)).toFixed(2);
+    }
+
+    function getCurrentVisibleMatchSubset() {
+      const datedMatches = syncSliderToFilteredMatches();
+      return datedMatches.slice(0, sliderGameCount);
+    }
+
+    function renderHeroModalStats(stats) {
+      if (!heroModalStatsGrid) return;
+      const cards = [
+        { label: "Kills / Game", value: formatPerGame(stats.killsPerGame) },
+        { label: "Deaths / Game", value: formatPerGame(stats.deathsPerGame) },
+        { label: "Assists / Game", value: formatPerGame(stats.assistsPerGame) },
+        { label: "Souls / Minute", value: stats.soulsPerMinute },
+        { label: "Avg Game Length", value: stats.avgGameLength }
+      ];
+
+      heroModalStatsGrid.innerHTML = cards.map(card => `
+        <div class="hero-modal-stat">
+          <div class="hero-modal-stat-label">${card.label}</div>
+          <div class="hero-modal-stat-value">${card.value}</div>
+        </div>
+      `).join("");
+    }
+
+    function openHeroHistoryModal(heroName) {
+      const targetHero = normalizeValue(heroName);
+      if (!targetHero) return;
+
+      const matches = getCurrentVisibleMatchSubset().filter(row => getMatchHeroValue(row) === targetHero);
+      const wins = matches.filter(row => getMatchResultValue(row).toLowerCase() === "win").length;
+      const losses = matches.filter(row => getMatchResultValue(row).toLowerCase() === "loss").length;
+      const totalKills = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.kills]) ?? 0), 0);
+      const totalDeaths = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.deaths]) ?? 0), 0);
+      const totalAssists = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.assists]) ?? 0), 0);
+      const totalSouls = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.souls]) ?? 0), 0);
+      const totalDurationSeconds = matches.reduce((sum, row) => sum + (getDurationSeconds(row) ?? 0), 0);
+      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
+
+      heroModalTitle.textContent = targetHero;
+      heroModalSubtitle.textContent = `${matches.length} game(s) • ${wins}-${losses} • ${rangeLabel}${sliderGameCount < syncSliderToFilteredMatches().length ? ` • after ${sliderGameCount} games` : ""}`;
+      heroModalTitleIcon.innerHTML = `
+        <img src="${heroIconPath(targetHero)}" alt="${targetHero}" loading="lazy" onerror="this.style.display='none'">
+      `;
+
+      renderHeroModalStats({
+        killsPerGame: matches.length ? totalKills / matches.length : NaN,
+        deathsPerGame: matches.length ? totalDeaths / matches.length : NaN,
+        assistsPerGame: matches.length ? totalAssists / matches.length : NaN,
+        soulsPerMinute: formatSoulsPerMinute(totalSouls, totalDurationSeconds),
+        avgGameLength: matches.length && totalDurationSeconds > 0 ? formatDuration(totalDurationSeconds / matches.length) : "-"
+      });
+
+      if (!matches.length) {
+        heroHistoryGrid.innerHTML = '<div class="hero-history-empty">No games for this hero in the current view.</div>';
+      } else {
+        heroHistoryGrid.innerHTML = matches.map(row => {
+          const result = getMatchResultValue(row).toLowerCase();
+          const iconHtml = buildIcon(targetHero, "icon-slot").outerHTML;
+          const dt = parseMatchDateTime(row);
+          const kills = parseNumeric(row[headerIndexes.kills]);
+          const deaths = parseNumeric(row[headerIndexes.deaths]);
+          const assists = parseNumeric(row[headerIndexes.assists]);
+          const souls = parseNumeric(row[headerIndexes.souls]);
+          const duration = getDurationSeconds(row);
+          const spm = duration && souls !== null ? (souls / (duration / 60)).toFixed(2) : "-";
+          const title = [
+            formatShortDateTime(dt),
+            `Result: ${result ? result[0].toUpperCase() + result.slice(1) : "-"}`,
+            `K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"}`,
+            `Souls: ${souls !== null ? formatRecordNumber(souls) : "-"}`,
+            `Souls / Min: ${spm}`,
+            `Game Length: ${formatDuration(duration)}`
+          ].join("\n");
+          return `<div class="hero-history-box ${result === "win" ? "win" : "loss"}" title="${title.replace(/"/g, '&quot;')}">${iconHtml}</div>`;
+        }).join("");
+      }
+
+      heroModalOverlay.classList.add("open");
+      heroModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeHeroHistoryModal() {
+      heroModalOverlay.classList.remove("open");
+      heroModalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function renderSingleRecordBox(container, label, row, metricIndex, config = {}) {
       if (!container) return;
 
-      if (!row || metricIndex < 0) {
+      if (!row || (metricIndex < 0 && !config.isDuration)) {
         container.innerHTML = `
           <div class="record-top">
             <div class="record-label">${label}</div>
@@ -1419,18 +1831,19 @@
         return;
       }
 
-      const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]) || "Unknown";
-      const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]) || "-";
+      const hero = getMatchHeroValue(row) || "Unknown";
+      const result = getMatchResultValue(row) || "-";
       const kills = parseNumeric(row[headerIndexes.kills]);
       const deaths = parseNumeric(row[headerIndexes.deaths]);
       const assists = parseNumeric(row[headerIndexes.assists]);
-      const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+      const date = parseMatchDateTime(row);
       const iconHtml = buildIcon(hero, "icon-slot record-icon").outerHTML;
+      const metricValue = getRowMetricValue(row, metricIndex, config);
 
       container.innerHTML = `
         <div class="record-top">
           <div class="record-label">${label}</div>
-          <div class="record-value">${formatRecordNumber(parseNumeric(row[metricIndex]))}</div>
+          <div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div>
         </div>
         <div class="record-main">
           ${iconHtml}
@@ -1448,12 +1861,13 @@
       for (const config of buildRecordConfigs()) {
         const metricIndex = headerIndexes[config.key];
         let bestRow = null;
-        if (metricIndex >= 0) {
+        const hasMetric = config.isDuration ? (headerIndexes.durationSeconds >= 0 || headerIndexes.durationMinutes >= 0) : metricIndex >= 0;
+        if (hasMetric) {
           for (const row of classifiedRows) {
-            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex);
+            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
           }
         }
-        renderSingleRecordBox(recordBoxEls[config.key], config.label, bestRow, metricIndex);
+        renderSingleRecordBox(recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
       }
     }
 
@@ -1611,7 +2025,10 @@
         const tr = document.createElement("tr");
 
         const heroTd = document.createElement("td");
+        heroTd.className = "hero-clickable";
+        heroTd.title = `View ${normalizeValue(row[HERO_NAME_INDEX])} history`;
         heroTd.appendChild(renderHeroCell(row));
+        heroTd.addEventListener("click", () => openHeroHistoryModal(normalizeValue(row[HERO_NAME_INDEX])));
         tr.appendChild(heroTd);
 
         const matchesTd = document.createElement("td");
@@ -1671,9 +2088,9 @@
       let currentEndDate = null;
 
       for (const row of rows) {
-        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
-        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+        const result = getMatchResultValue(row).toLowerCase();
+        const hero = getMatchHeroValue(row);
+        const date = parseMatchDateTime(row);
 
         if (!hero || !isCountedMatch(row)) continue;
 
@@ -1722,8 +2139,8 @@
       const map = new Map();
 
       rows.forEach(row => {
-        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+        const result = getMatchResultValue(row).toLowerCase();
+        const date = parseMatchDateTime(row);
 
         if (!date || !isCountedMatch(row)) return;
         if (result !== "win" && result !== "loss") return;
@@ -1829,9 +2246,9 @@
         .map(row => {
           if (!isClassifiedCountedMatch(row)) return null;
 
-          const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+          const result = getMatchResultValue(row).toLowerCase();
           const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
-          const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+          const hero = getMatchHeroValue(row);
           const modeName = normalizeValue(row[MATCHES_SHEET_MODE_NAME_INDEX]);
           const matchId = normalizeValue(row[MATCHES_SHEET_ID_INDEX]);
           const peakRank = getPeakRankValue(row, peakRankIndex);
@@ -2194,11 +2611,11 @@
       const totalMatches = classifiedRows.length;
 
       const wins = classifiedRows.filter(row =>
-        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "win"
+        getMatchResultValue(row).toLowerCase() === "win"
       ).length;
 
       const losses = classifiedRows.filter(row =>
-        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "loss"
+        getMatchResultValue(row).toLowerCase() === "loss"
       ).length;
 
       const firstDate = classifiedRows
@@ -2239,9 +2656,9 @@
       const heroMap = new Map();
 
       matchRowsSubset.forEach(row => {
-        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
-        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+        const hero = getMatchHeroValue(row);
+        const result = getMatchResultValue(row).toLowerCase();
+        const date = parseMatchDateTime(row);
 
         if (!hero) return;
         if (!isCountedMatch(row)) return;
@@ -2411,6 +2828,7 @@
         }
 
         allMatchRows = matchesRows;
+        resolveMatchesColumnIndexes(matchesRows);
         classifiedMatchRows = matchesRows
           .slice(1)
           .filter(r => r.some(cell => normalizeValue(cell) !== ""))
@@ -2512,6 +2930,18 @@
     });
 
     expandChartBtn.addEventListener("click", toggleChartFullscreen);
+
+    heroModalCloseBtn.addEventListener("click", closeHeroHistoryModal);
+    heroModalOverlay.addEventListener("click", (e) => {
+      if (e.target === heroModalOverlay) {
+        closeHeroHistoryModal();
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && heroModalOverlay.classList.contains("open")) {
+        closeHeroHistoryModal();
+      }
+    });
 
     document.addEventListener("fullscreenchange", () => {
       expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
