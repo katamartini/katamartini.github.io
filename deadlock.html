@@ -669,7 +669,7 @@
     <div class="left-column">
       <div class="stats-card">
         <div class="stats-titlebar">
-          OVERALL STATS<span class="sub">MATCHES SHEET</span>
+          OVERALL STATS<span class="sub">COUNTED MATCHES</span>
         </div>
         <div class="stats-body">
           <div class="stats-grid">
@@ -728,7 +728,7 @@
 
       <div class="calendar-card">
         <div class="stats-titlebar">
-          CALENDAR<span class="sub">DAILY WINS / LOSSES</span>
+          CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span>
         </div>
         <div class="calendar-body">
           <div class="calendar-controls">
@@ -784,7 +784,7 @@
       <div class="chart-card" id="chartCard">
         <div class="stats-titlebar">
           <div class="chart-header">
-            <div>W-L DELTA OVER TIME<span class="sub">ALL MATCHES</span></div>
+            <div>W-L DELTA OVER TIME<span class="sub">COUNTED MATCHES</span></div>
             <div class="chart-btn-group">
               <button id="resetZoomBtn" class="chart-expand-btn" type="button">Reset Zoom</button>
               <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
@@ -803,7 +803,7 @@
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const HERO_GID = "0";
-    const MATCHES_GID = "852547275";
+    const MATCHES_GID = "632247101";
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${HERO_GID}`;
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
 
@@ -812,10 +812,14 @@
     const MATCHES_INDEX = 7;
     const WINRATE_INDEX = 6;
 
+    const MATCHES_SHEET_ID_INDEX = 0;
     const MATCHES_SHEET_DATE_INDEX = 1;
-    const MATCHES_SHEET_HERO_INDEX = 2;
-    const MATCHES_SHEET_RESULT_INDEX = 3;
-    const MATCHES_SHEET_PEAK_RANK_INDEX = 5;
+    const MATCHES_SHEET_START_TIME_INDEX = 2;
+    const MATCHES_SHEET_MODE_NAME_INDEX = 4;
+    const MATCHES_SHEET_HERO_INDEX = 6;
+    const MATCHES_SHEET_RESULT_INDEX = 7;
+    const MATCHES_SHEET_COUNTS_INDEX = 10;
+    const MATCHES_SHEET_NON_COUNT_REASON_INDEX = 11;
 
     const SORT_BY_DATE = "__date__";
 
@@ -930,16 +934,23 @@
         return Number.isNaN(parsed.getTime()) ? null : parsed;
       }
 
-      m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
       if (m) {
-        const parsed = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+        const parsed = new Date(
+          Number(m[1]),
+          Number(m[2]) - 1,
+          Number(m[3]),
+          Number(m[4] || 0),
+          Number(m[5] || 0),
+          Number(m[6] || 0)
+        );
         return Number.isNaN(parsed.getTime()) ? null : parsed;
       }
 
       return null;
     }
 
-    function formatLocalYMD(date) {
+    function formatLocalYMD(date) {    function formatLocalYMD(date) {
       if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
       const y = date.getFullYear();
       const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -970,10 +981,13 @@
     function formatExactDate(value) {
       const d = parseSheetDate(value);
       if (!d) return normalizeValue(value);
-      return d.toLocaleDateString(undefined, {
+      const hasTime = d.getHours() || d.getMinutes() || d.getSeconds();
+      return d.toLocaleString(undefined, {
         year: "numeric",
         month: "numeric",
-        day: "numeric"
+        day: "numeric",
+        hour: hasTime ? "numeric" : undefined,
+        minute: hasTime ? "2-digit" : undefined
       });
     }
 
@@ -984,6 +998,18 @@
         year: "numeric",
         month: "short",
         day: "numeric"
+      });
+    }
+
+    function formatShortDateTime(value) {
+      const d = value instanceof Date ? value : parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
       });
     }
 
@@ -1040,6 +1066,15 @@
       return 0;
     }
 
+    function isCountedMatch(row) {
+      return normalizeValue(row[MATCHES_SHEET_COUNTS_INDEX]).toLowerCase() === "yes";
+    }
+
+    function isClassifiedCountedMatch(row) {
+      const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+      return isCountedMatch(row) && (result === "win" || result === "loss");
+    }
+
     function getSortValue(row, columnIndex) {
       if (columnIndex === SORT_BY_DATE) {
         const d = parseSheetDate(row[DATE_INDEX]);
@@ -1072,33 +1107,7 @@
       return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
-    function rankIconPath(rankName) {
-      const safe = normalizeValue(rankName);
-      if (!safe) return "";
-      return `images/deadlock/ranks/${encodeURIComponent(safe + ".png")}`;
-    }
-
-    function parsePeakRankLabel(value) {
-      const raw = normalizeValue(value);
-      if (!raw) return null;
-
-      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
-      if (!parts) {
-        return {
-          full: raw,
-          rankName: raw,
-          numeral: ""
-        };
-      }
-
-      return {
-        full: raw,
-        rankName: normalizeValue(parts[1]),
-        numeral: normalizeValue(parts[2] || "").toUpperCase()
-      };
-    }
-
-    function loadHeroIcon(heroName) {
+    function loadHeroIcon(heroName) {    function loadHeroIcon(heroName) {
       return new Promise((resolve) => {
         const hero = normalizeValue(heroName);
         if (!hero) {
@@ -1113,33 +1122,11 @@
       });
     }
 
-    function loadRankIcon(rankName) {
-      return new Promise((resolve) => {
-        const rank = normalizeValue(rankName);
-        if (!rank) {
-          resolve(null);
-          return;
-        }
-
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = rankIconPath(rank);
-      });
-    }
-
     async function buildPointStyles(series) {
       return Promise.all(series.map(p => loadHeroIcon(p.hero)));
     }
 
-    async function buildRankPointStyles(series) {
-      return Promise.all(series.map(p => {
-        const parsed = parsePeakRankLabel(p.peakRank);
-        return parsed ? loadRankIcon(parsed.rankName) : Promise.resolve(null);
-      }));
-    }
-
-    function buildIcon(heroName, className = "icon-slot") {
+    function buildIcon(heroName, className = "icon-slot") {    function buildIcon(heroName, className = "icon-slot") {
       const slot = document.createElement("div");
       slot.className = className;
 
@@ -1246,7 +1233,7 @@
         tbody.appendChild(tr);
       });
 
-      statusEl.textContent = `${filteredRows.length} hero row(s) shown`;
+      statusEl.textContent = `${filteredRows.length} hero row(s) shown from counted matches`;
     }
 
     function renderHeader() {
@@ -1296,7 +1283,7 @@
         const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
         const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
-        if (!hero) continue;
+        if (!hero || !isCountedMatch(row)) continue;
 
         if (result === targetResult) {
           if (currentHeroes.length === 0) {
@@ -1346,7 +1333,7 @@
         const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
         const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
-        if (!date) return;
+        if (!date || !isCountedMatch(row)) return;
         if (result !== "win" && result !== "loss") return;
 
         const key = localDateKey(date);
@@ -1446,12 +1433,13 @@
 
       return dataRows
         .map(row => {
-          const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-          const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
-          const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
-          const peakRank = normalizeValue(row[MATCHES_SHEET_PEAK_RANK_INDEX]);
+          if (!isClassifiedCountedMatch(row)) return null;
 
-          if (result !== "win" && result !== "loss") return null;
+          const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+          const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
+          const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+          const modeName = normalizeValue(row[MATCHES_SHEET_MODE_NAME_INDEX]);
+          const matchId = normalizeValue(row[MATCHES_SHEET_ID_INDEX]);
 
           classifiedMatchNumber += 1;
 
@@ -1462,18 +1450,19 @@
           }
 
           return {
-            xLabel: date ? formatLongDate(date) : `Match ${classifiedMatchNumber}`,
+            xLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`,
             y: wins - losses,
             hero,
             result,
             matchNumber: classifiedMatchNumber,
-            peakRank
+            modeName,
+            matchId
           };
         })
         .filter(Boolean);
     }
 
-    function buildOriginTrendline(series) {
+    function buildOriginTrendline(series) {    function buildOriginTrendline(series) {
       const n = series.length;
       if (!n) return [0];
 
@@ -1498,7 +1487,6 @@
         const { ctx, chartArea } = chart;
         const meta = chart.getDatasetMeta(0);
         const heroIcons = pluginOptions.heroIcons || [];
-        const rankIcons = pluginOptions.rankIcons || [];
         const series = pluginOptions.series || [];
 
         const minSize = pluginOptions.minSize ?? 10;
@@ -1519,14 +1507,6 @@
           Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost))
         );
 
-        const rankIconSize = Math.max(
-          Math.round(dynamicSize * 1.15),
-          Math.min(28, dynamicSize + 2)
-        );
-
-        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
-        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
-
         ctx.save();
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
@@ -1541,92 +1521,10 @@
         });
 
         ctx.restore();
-
-        const peakEntries = [];
-
-        meta.data.forEach((point, i) => {
-          if (i === 0) return;
-
-          const p = series[i - 1];
-          if (!p || !p.peakRank) return;
-
-          const rankParsed = parsePeakRankLabel(p.peakRank);
-          if (!rankParsed) return;
-
-          peakEntries.push({
-            point,
-            rankParsed,
-            rankIcon: rankIcons[i - 1]
-          });
-        });
-
-        if (!peakEntries.length) return;
-
-        const alignedIconCenterY = Math.max(
-          chartArea.top + rankIconSize / 2 + 4,
-          Math.min(
-            ...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift)
-          )
-        );
-
-        ctx.save();
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.lineJoin = "round";
-        ctx.lineCap = "round";
-
-        peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
-          const iconCenterX = point.x;
-          const iconCenterY = alignedIconCenterY;
-          const iconX = iconCenterX - rankIconSize / 2;
-          const iconY = iconCenterY - rankIconSize / 2;
-
-          const lineStartY = iconY + rankIconSize + 1;
-          const lineEndY = point.y - dynamicSize / 2 - 4;
-
-          if (lineEndY > lineStartY) {
-            ctx.strokeStyle = "rgba(255,255,255,0.18)";
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(iconCenterX, lineStartY);
-            ctx.lineTo(iconCenterX, lineEndY);
-            ctx.stroke();
-          }
-
-          if (rankIcon) {
-            ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
-          }
-
-          if (rankParsed.numeral) {
-            const numeralY = iconCenterY + 1.5;
-
-            ctx.save();
-            ctx.translate(iconCenterX, numeralY);
-            ctx.scale(0.88, 1);
-
-            ctx.font = `700 ${numeralFontSize}px Arial`;
-            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 3;
-            ctx.strokeText(rankParsed.numeral, 0, 0);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.numeral, 0, 0);
-
-            ctx.restore();
-          } else if (!rankIcon) {
-            ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
-            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 3;
-            ctx.strokeText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
-          }
-        });
-
-        ctx.restore();
       }
     };
 
-    async function renderWinrateChart(rows) {
+    async function renderWinrateChart(rows) {    async function renderWinrateChart(rows) {
       const series = buildDeltaSeries(rows);
 
       if (winrateChart) {
@@ -1637,7 +1535,6 @@
       if (!series.length) return;
 
       const pointIcons = await buildPointStyles(series);
-      const rankPointIcons = await buildRankPointStyles(series);
 
       const labels = ["Start", ...series.map(p => p.xLabel)];
       const deltaData = [0, ...series.map(p => p.y)];
@@ -1692,7 +1589,6 @@
           plugins: {
             heroPointPlugin: {
               heroIcons: pluginHeroIcons,
-              rankIcons: rankPointIcons,
               series,
               minSize: 10,
               maxSize: 36,
@@ -1728,8 +1624,11 @@
                   const p = series[i - 1];
                   const lines = [`After match ${p.matchNumber} (${p.hero}, ${p.result})`];
 
-                  if (p.peakRank) {
-                    lines.push(`New peak: ${p.peakRank}`);
+                  if (p.modeName) {
+                    lines.push(`Mode: ${p.modeName}`);
+                  }
+                  if (p.matchId) {
+                    lines.push(`Match ID: ${p.matchId}`);
                   }
 
                   return lines;
@@ -1798,10 +1697,7 @@
         .slice(1)
         .filter(r => r.some(cell => normalizeValue(cell) !== ""));
 
-      const classifiedRows = dataRows.filter(row => {
-        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-        return result === "win" || result === "loss";
-      });
+      const classifiedRows = dataRows.filter(isClassifiedCountedMatch);
 
       const totalMatches = classifiedRows.length;
 
@@ -1855,6 +1751,7 @@
         const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
         if (!hero) return;
+        if (!isCountedMatch(row)) return;
         if (result !== "win" && result !== "loss") return;
 
         if (!heroMap.has(hero)) {
@@ -1942,15 +1839,9 @@
 
     async function loadSheet() {
       try {
-        const [heroRes, matchesRes] = await Promise.all([
-          fetch(CSV_URL),
-          fetch(MATCHES_CSV_URL)
-        ]);
+        const matchesRes = await fetch(MATCHES_CSV_URL);
 
-        if (!heroRes.ok) throw new Error(`Hero sheet HTTP ${heroRes.status}`);
         if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
-
-        await heroRes.text();
 
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
@@ -1963,10 +1854,7 @@
         classifiedMatchRows = matchesRows
           .slice(1)
           .filter(r => r.some(cell => normalizeValue(cell) !== ""))
-          .filter(row => {
-            const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
-            return result === "win" || result === "loss";
-          });
+          .filter(isClassifiedCountedMatch);
 
         gamesSlider.min = 0;
         gamesSlider.max = String(classifiedMatchRows.length);
