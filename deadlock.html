@@ -1170,6 +1170,21 @@
       return new Date(date.getFullYear(), date.getMonth() + delta, 1);
     }
 
+    function parseMatchDateTime(row) {
+      if (!Array.isArray(row)) return null;
+
+      const startTimeValue = normalizeValue(row[MATCHES_SHEET_START_TIME_INDEX]);
+      const dateValue = normalizeValue(row[MATCHES_SHEET_DATE_INDEX]);
+
+      const parsedStart = startTimeValue ? parseSheetDate(startTimeValue) : null;
+      if (parsedStart) return parsedStart;
+
+      const parsedDate = dateValue ? parseSheetDate(dateValue) : null;
+      if (parsedDate) return parsedDate;
+
+      return null;
+    }
+
     function formatExactDate(value) {
       const d = parseSheetDate(value);
       if (!d) return normalizeValue(value);
@@ -2464,17 +2479,16 @@
       updateHeroTableForSlider();
     });
 
-    startDateInput.addEventListener("change", () => {
+    function handleDateRangeInput() {
       gamesSlider.value = gamesSlider.max;
       sliderGameCount = Number(gamesSlider.max);
       updateHeroTableForSlider();
-    });
+    }
 
-    endDateInput.addEventListener("change", () => {
-      gamesSlider.value = gamesSlider.max;
-      sliderGameCount = Number(gamesSlider.max);
-      updateHeroTableForSlider();
-    });
+    startDateInput.addEventListener("change", handleDateRangeInput);
+    endDateInput.addEventListener("change", handleDateRangeInput);
+    startDateInput.addEventListener("input", handleDateRangeInput);
+    endDateInput.addEventListener("input", handleDateRangeInput);
 
     gamesSlider.addEventListener("input", () => {
       sliderGameCount = Number(gamesSlider.value);
