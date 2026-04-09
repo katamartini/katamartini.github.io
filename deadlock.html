@@ -797,22 +797,7 @@
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const MATCHES_GID = "632247101";
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
-    const RANK_PROGRESS_CSV = `match_id,rank
-58163762,Seeker II
-58247879,Seeker V
-59889587,Alchemist I
-60177133,Alchemist IV
-60365523,Arcanist II
-63104303,Ritualist III
-64269662,Ritualist IV
-68067208,Ritualist V
-68798348,Ritualist VI
-69061888,Emissary I
-69100690,Emissary II
-69698704,Emissary III
-71324558,Emissary IV
-71360244,Emissary V
-72878928,Emissary VI`;
+    const RANK_PROGRESS_CSV_URL = "rank_progression.csv";
 
     const DATE_INDEX = 0;
     const HERO_NAME_INDEX = 1;
@@ -869,6 +854,21 @@
       "the doorman": "doorman"
     };
 
+    const RANK_ICON_FILE_MAP = {
+      Alchemist: 'Alchemist',
+      Arcanist: 'Arcanist',
+      Archon: 'Archon',
+      Ascendant: 'Ascendant',
+      Emissary: 'Emissary',
+      Eternus: 'Eternus',
+      Initiate: 'Initiate',
+      Obscurus: 'Obscurus',
+      Oracle: 'Oracle',
+      Phantom: 'Phantom',
+      Ritualist: 'Ritualist',
+      Seeker: 'Seeker'
+    };
+
     const state = {
       matchesRows: [],
       classifiedMatchRows: [],
@@ -899,7 +899,6 @@
       winrateChart: null,
       currentView: "heroes",
       dataLoaded: false,
-      rankProgressRows: [],
       rankByMatchId: new Map()
     };
 
@@ -978,7 +977,7 @@
       { key: "startTimeDisplay", label: "Start Time", defaultDir: "desc" },
       { key: "hero", label: "Hero", defaultDir: "asc", className: "hero-col" },
       { key: "result", label: "Result", defaultDir: "desc" },
-      { key: "rank", label: "Rank", defaultDir: "desc" },
+      { key: "peakRank", label: "Rank", defaultDir: "desc" },
       { key: "kills", label: "K", defaultDir: "desc" },
       { key: "deaths", label: "D", defaultDir: "desc" },
       { key: "assists", label: "A", defaultDir: "desc" },
@@ -1016,24 +1015,17 @@
       return rows.filter(r => !(r.length === 1 && r[0] === ""));
     }
 
-    function buildRankProgressMap(rows) {
-      const map = new Map();
-      if (!Array.isArray(rows) || rows.length < 2) return map;
-      const header = rows[0].map(v => normalizeHeaderName(v));
-      const matchIdIdx = header.indexOf('match id') !== -1 ? header.indexOf('match id') : header.indexOf('match_id');
-      const rankIdx = header.indexOf('rank');
-      if (matchIdIdx === -1 || rankIdx === -1) return map;
+    function parseRankProgressionRows(rows) {
+      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
+      const matchIdIndex = findHeaderIndex(headerRow, ['match_id', 'match id', 'id'], 0);
+      const rankIndex = findHeaderIndex(headerRow, ['rank', 'peak_rank', 'peak rank'], 1);
+      const rankMap = new Map();
       rows.slice(1).forEach(row => {
-        const matchId = normalizeValue(row[matchIdIdx]);
-        const rank = normalizeValue(row[rankIdx]);
-        if (matchId && rank) map.set(matchId, rank);
+        const matchId = normalizeValue(row[matchIdIndex]);
+        const rank = normalizeValue(row[rankIndex]);
+        if (matchId && rank) rankMap.set(matchId, rank);
       });
-      return map;
-    }
-
-    function getRankForMatchId(matchId) {
-      const key = normalizeValue(matchId);
-      return key ? (state.rankByMatchId.get(key) || '') : '';
+      return rankMap;
     }
 
     function parseNumeric(value) {
@@ -1181,51 +1173,11 @@
       const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
       return `images/deadlock/icons/${encodeURIComponent(fileBaseName + '.png')}`;
     }
-    const RANK_ICON_NAME_MAP = {
-      alchemist: 'Alchemist',
-      arcanist: 'Arcanist',
-      archon: 'Archon',
-      ascendant: 'Ascendant',
-      emissary: 'Emissary',
-      eternus: 'Eternus',
-      initiate: 'Initiate',
-      obscurus: 'Obscurus',
-      oracle: 'Oracle',
-      phantom: 'Phantom',
-      ritualist: 'Ritualist',
-      seeker: 'Seeker'
-    };
-
-    function getCanonicalRankName(rankName) {
-      const raw = normalizeValue(rankName);
-      if (!raw) return '';
-      const key = raw.toLowerCase().replace(/[^a-z]/g, '');
-      return RANK_ICON_NAME_MAP[key] || raw;
-    }
-
     function rankIconPath(rankName) {
-      const canonical = getCanonicalRankName(rankName);
-      if (!canonical) return '';
-      return `images/deadlock/ranks/${encodeURIComponent(canonical + '.png')}`;
-    }
-
-    function getRankIconCandidates(rankName) {
-      const canonical = getCanonicalRankName(rankName);
-      if (!canonical) return [];
-      const lower = canonical.toLowerCase();
-      const candidates = [
-        canonical,
-        lower,
-        canonical.replace(/\s+/g, ''),
-        lower.replace(/\s+/g, ''),
-        canonical.replace(/\s+/g, '_'),
-        lower.replace(/\s+/g, '_'),
-        canonical.replace(/\s+/g, '-'),
-        lower.replace(/\s+/g, '-')
-      ];
-      return [...new Set(candidates)]
-        .filter(Boolean)
-        .map(name => `images/deadlock/ranks/${encodeURIComponent(name + '.png')}`);
+      const safe = normalizeValue(rankName);
+      if (!safe) return '';
+      const mappedName = RANK_ICON_FILE_MAP[safe] || safe;
+      return `images/deadlock/ranks/${encodeURIComponent(mappedName + '.png')}`;
     }
 
     function buildIcon(heroName, className = 'icon-slot') {
@@ -1269,8 +1221,7 @@
     function getMatchCountsValue(row) { return getMatchCell(row, state.matchesColumnIndexes.counts); }
     function getPeakRankValue(row) {
       const matchId = getMatchCell(row, state.matchesColumnIndexes.matchId);
-      const externalRank = getRankForMatchId(matchId);
-      if (externalRank) return externalRank;
+      if (matchId && state.rankByMatchId.has(matchId)) return state.rankByMatchId.get(matchId);
       return getMatchCell(row, state.matchesColumnIndexes.peakRank);
     }
 
@@ -1375,39 +1326,19 @@
       return new Promise(resolve => {
         const rank = normalizeValue(rankName);
         if (!rank) return resolve(null);
-
-        const candidates = getRankIconCandidates(rank);
-        let index = 0;
-
-        function tryNext() {
-          if (index >= candidates.length) {
-            resolve(null);
-            return;
-          }
-
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = () => {
-            index += 1;
-            tryNext();
-          };
-          img.src = candidates[index];
-        }
-
-        tryNext();
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = rankIconPath(rank);
       });
     }
 
     function parsePeakRankLabel(value) {
       const raw = normalizeValue(value);
       if (!raw) return null;
-      const parts = raw.match(/^(.*?)(?:\s+([IVXLCDM]+))?$/i);
-      if (!parts) return { full: raw, rankName: getCanonicalRankName(raw), numeral: '' };
-      return {
-        full: raw,
-        rankName: getCanonicalRankName(parts[1]),
-        numeral: normalizeValue(parts[2] || '').toUpperCase()
-      };
+      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
+      if (!parts) return { full: raw, rankName: raw, numeral: '' };
+      return { full: raw, rankName: normalizeValue(parts[1]), numeral: normalizeValue(parts[2] || '').toUpperCase() };
     }
 
     function buildHeroRowsFromMatches(matchRowsSubset) {
@@ -1465,7 +1396,7 @@
             dateTime,
             hero: getMatchHeroValue(row),
             result: getMatchResultValue(row).toLowerCase(),
-            rank: getRankForMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId)),
+            peakRank: getPeakRankValue(row),
             counts: getMatchCountsValue(row).toLowerCase(),
             kills: parseNumeric(row[state.gamesHeaderIndexes.kills]),
             deaths: parseNumeric(row[state.gamesHeaderIndexes.deaths]),
@@ -2080,6 +2011,7 @@
         const timeTd = document.createElement('td'); timeTd.textContent = row.startTimeDisplay || '-'; tr.appendChild(timeTd);
         const heroTd = document.createElement('td'); heroTd.className = 'hero-col'; const heroWrap = document.createElement('div'); heroWrap.className = 'hero-cell'; heroWrap.appendChild(buildIcon(row.hero)); const heroName = document.createElement('div'); heroName.className = 'hero-name'; heroName.textContent = row.hero || '-'; heroWrap.appendChild(heroName); heroTd.appendChild(heroWrap); tr.appendChild(heroTd);
         const resultTd = document.createElement('td'); resultTd.innerHTML = resultPill(row.result); tr.appendChild(resultTd);
+        const rankTd = document.createElement('td'); rankTd.textContent = row.peakRank || '-'; tr.appendChild(rankTd);
         ["kills","deaths","assists","souls","damage","objectiveDamage","healing","durationSeconds"].forEach(key => {
           const td = document.createElement('td'); td.className = 'num'; td.textContent = key === 'durationSeconds' ? formatDuration(row.durationSeconds) : formatRecordNumber(row[key]); tr.appendChild(td);
         });
@@ -2097,7 +2029,7 @@
         if (hero && row.hero !== hero) return false;
         if (result && row.result !== result) return false;
         if (search) {
-          const haystack = [row.matchId, row.hero, row.result, row.date, row.startTimeRaw, row.startTimeDisplay].join(' ').toLowerCase();
+          const haystack = [row.matchId, row.hero, row.result, row.peakRank, row.date, row.startTimeRaw, row.startTimeDisplay].join(' ').toLowerCase();
           if (!haystack.includes(search)) return false;
         }
         return true;
@@ -2136,13 +2068,21 @@
     async function loadAppData() {
       if (state.dataLoaded) return;
       try {
-        state.rankProgressRows = parseCSV(RANK_PROGRESS_CSV);
-        state.rankByMatchId = buildRankProgressMap(state.rankProgressRows);
-        const matchesRes = await fetch(MATCHES_CSV_URL);
+        const [matchesRes, ranksRes] = await Promise.all([
+          fetch(MATCHES_CSV_URL),
+          fetch(RANK_PROGRESS_CSV_URL).catch(() => null)
+        ]);
         if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
         if (!matchesRows.length) throw new Error('No matches data found.');
+        if (ranksRes && ranksRes.ok) {
+          const ranksCsvText = await ranksRes.text();
+          const ranksRows = parseCSV(ranksCsvText);
+          state.rankByMatchId = parseRankProgressionRows(ranksRows);
+        } else {
+          state.rankByMatchId = new Map();
+        }
         state.matchesRows = matchesRows;
         resolveMatchesColumnIndexes(matchesRows);
         state.heroHeaderIndexes = getHeaderIndexes(matchesRows);
