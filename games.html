@@ -132,9 +132,9 @@
     thead th {
       background: var(--header);
       color: #ffffff;
-      text-align: left;
+      text-align: center;
       font-size: 12px;
-      padding: 8px 10px;
+      padding: 6px 8px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
@@ -157,11 +157,12 @@
     }
 
     tbody td {
-      padding: 6px 10px;
+      padding: 4px 8px;
       vertical-align: middle;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       font-size: 12px;
       white-space: nowrap;
+      text-align: center;
     }
 
     .sort-indicator {
@@ -173,14 +174,15 @@
     .hero-cell {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 6px;
       min-width: 0;
     }
 
     .icon-slot {
-      width: 28px;
-      height: 28px;
-      flex: 0 0 28px;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
       background: linear-gradient(135deg, #4b5563, #2f3745);
       border: 1px solid #596274;
       overflow: hidden;
@@ -196,6 +198,7 @@
     .hero-name {
       color: var(--accent);
       font-weight: 700;
+      text-align: center;
     }
 
     .result-pill {
@@ -203,7 +206,7 @@
       align-items: center;
       justify-content: center;
       min-width: 54px;
-      padding: 4px 8px;
+      padding: 3px 7px;
       border: 1px solid transparent;
       font-size: 11px;
       font-weight: 700;
@@ -230,7 +233,7 @@
     }
 
     .num {
-      text-align: right;
+      text-align: center;
       font-variant-numeric: tabular-nums;
     }
 
@@ -405,6 +408,7 @@
             cell += ch;
           }
         }
+
       }
 
       row.push(cell);
