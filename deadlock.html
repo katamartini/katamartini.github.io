@@ -32,9 +32,6 @@
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
       overflow-x: auto;
     }
 
@@ -44,6 +41,7 @@
       gap: 20px;
       width: max-content;
       min-width: calc(100vw - 48px);
+      margin: 0 auto;
     }
 
     .left-column,
@@ -1032,6 +1030,10 @@
         overflow-x: hidden;
       }
 
+      .site-nav-wrap {
+        width: min(100%, calc(100vw - 48px));
+      }
+
       .page {
         flex-direction: column;
         width: min(100%, calc(100vw - 48px));
@@ -1055,9 +1057,62 @@
         height: 320px;
       }
     }
+
+    .site-nav-wrap {
+      width: min(100%, calc(100vw - 48px));
+      margin: 0 auto 16px;
+    }
+
+    .site-nav {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .site-nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      background: #222834;
+      border-right: 1px solid var(--border);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .site-nav-link:last-child {
+      border-right: none;
+    }
+
+    .site-nav-link:hover {
+      background: #2b3342;
+    }
+
+    .site-nav-link-active {
+      background: #151a23;
+      color: var(--accent);
+    }
+
   </style>
 </head>
 <body>
+  <div class="site-nav-wrap">
+    <div class="site-nav">
+      <a href="index.html" class="site-nav-link site-nav-link-active">Hero Stats</a>
+      <a href="games.html" class="site-nav-link">Games</a>
+    </div>
+  </div>
+
   <div class="page">
     <div class="left-column">
       <div class="stats-card">
