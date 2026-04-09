@@ -797,7 +797,22 @@
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
     const MATCHES_GID = "632247101";
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
-    const RANK_PROGRESS_CSV_URL = "rank_progression.csv";
+    const EMBEDDED_RANK_PROGRESS_CSV = `match_id,rank
+58163762,Seeker II
+58247879,Seeker V
+59889587,Alchemist I
+60177133,Alchemist IV
+60365523,Arcanist II
+63104303,Ritualist III
+64269662,Ritualist IV
+68067208,Ritualist V
+68798348,Ritualist VI
+69061888,Emissary I
+69100690,Emissary II
+69698704,Emissary III
+71324558,Emissary IV
+71360244,Emissary V
+72878928,Emissary VI`;
 
     const DATE_INDEX = 0;
     const HERO_NAME_INDEX = 1;
@@ -2068,21 +2083,13 @@
     async function loadAppData() {
       if (state.dataLoaded) return;
       try {
-        const [matchesRes, ranksRes] = await Promise.all([
-          fetch(MATCHES_CSV_URL),
-          fetch(RANK_PROGRESS_CSV_URL).catch(() => null)
-        ]);
+        const matchesRes = await fetch(MATCHES_CSV_URL);
         if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
         const matchesCsvText = await matchesRes.text();
         const matchesRows = parseCSV(matchesCsvText);
         if (!matchesRows.length) throw new Error('No matches data found.');
-        if (ranksRes && ranksRes.ok) {
-          const ranksCsvText = await ranksRes.text();
-          const ranksRows = parseCSV(ranksCsvText);
-          state.rankByMatchId = parseRankProgressionRows(ranksRows);
-        } else {
-          state.rankByMatchId = new Map();
-        }
+        const ranksRows = parseCSV(EMBEDDED_RANK_PROGRESS_CSV);
+        state.rankByMatchId = parseRankProgressionRows(ranksRows);
         state.matchesRows = matchesRows;
         resolveMatchesColumnIndexes(matchesRows);
         state.heroHeaderIndexes = getHeaderIndexes(matchesRows);
