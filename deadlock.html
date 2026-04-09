@@ -1036,7 +1036,7 @@
       const rankIndex = findHeaderIndex(headerRow, ['rank', 'peak_rank', 'peak rank'], 1);
       const rankMap = new Map();
       rows.slice(1).forEach(row => {
-        const matchId = normalizeValue(row[matchIdIndex]);
+        const matchId = normalizeMatchId(row[matchIdIndex]);
         const rank = normalizeValue(row[rankIndex]);
         if (matchId && rank) rankMap.set(matchId, rank);
       });
@@ -1235,7 +1235,7 @@
     function getMatchResultValue(row) { return getMatchCell(row, state.matchesColumnIndexes.result); }
     function getMatchCountsValue(row) { return getMatchCell(row, state.matchesColumnIndexes.counts); }
     function getPeakRankValue(row) {
-      const matchId = getMatchCell(row, state.matchesColumnIndexes.matchId);
+      const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
       if (matchId && state.rankByMatchId.has(matchId)) return state.rankByMatchId.get(matchId);
       return getMatchCell(row, state.matchesColumnIndexes.peakRank);
     }
@@ -1792,7 +1792,7 @@
         const date = parseSheetDate(getMatchStartTimeValue(row)) || parseSheetDate(getMatchDateValue(row));
         const hero = getMatchHeroValue(row);
         const modeName = getMatchCell(row, state.matchesColumnIndexes.modeName);
-        const matchId = getMatchCell(row, state.matchesColumnIndexes.matchId);
+        const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
         const peakRank = peakRankIndex >= 0 ? getPeakRankValue(row) : '';
         classifiedMatchNumber += 1;
         if (result === 'win') wins += 1; else losses += 1;
