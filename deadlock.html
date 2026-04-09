@@ -54,7 +54,6 @@
     .stats-card,
     .streaks-card,
     .calendar-card,
-    .records-card,
     .chart-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -133,57 +132,6 @@
     }
 
     .topbar button:hover {
-      background: #1d2330;
-    }
-
-    .datefilterbar {
-      padding: 10px 12px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 8px;
-      align-items: end;
-    }
-
-    .datefilter-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .datefilter-label {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-    }
-
-    .datefilterbar input[type="date"] {
-      width: 100%;
-      min-width: 0;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 8px;
-      font-size: 12px;
-      outline: none;
-    }
-
-    .datefilterbar button {
-      flex: 0 0 auto;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      align-self: end;
-    }
-
-    .datefilterbar button:hover {
       background: #1d2330;
     }
 
@@ -377,52 +325,6 @@
       color: var(--muted);
       font-size: 12px;
       display: none;
-    }
-
-    .viewtoggle {
-      padding: 8px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .viewtoggle-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .viewtoggle-label input {
-      margin: 0;
-      cursor: pointer;
-    }
-
-    .detail-value {
-      color: #ffffff;
-      font-size: 12px;
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-
-    .detail-sub {
-      color: var(--muted);
-      font-size: 10px;
-      margin-top: 2px;
-      line-height: 1.05;
-      white-space: nowrap;
-    }
-
-    .table-detailed thead th,
-    .table-detailed tbody td {
-      width: auto !important;
     }
 
     .stats-body {
@@ -663,275 +565,6 @@
       color: var(--muted);
     }
 
-    .records-body {
-      padding: 12px;
-      background: #222834;
-    }
-
-    .records-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .record-box {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 9px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      min-height: 76px;
-    }
-
-    .record-top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .record-label {
-      color: var(--muted);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      font-weight: 700;
-    }
-
-    .record-value {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .record-main {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .record-icon {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-    }
-
-    .record-meta {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .record-hero {
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.05;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .record-date,
-    .record-extra {
-      color: #9fb0c7;
-      font-size: 10px;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .hero-clickable {
-      cursor: pointer;
-    }
-
-    .hero-clickable:hover {
-      background: rgba(255,255,255,0.03);
-    }
-
-    .hero-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(8, 11, 18, 0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      z-index: 1000;
-    }
-
-    .hero-modal-overlay.open {
-      display: flex;
-    }
-
-    .hero-modal {
-      width: min(980px, calc(100vw - 48px));
-      max-height: min(88vh, 920px);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .hero-modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-modal-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .hero-modal-title-icon {
-      width: 40px;
-      height: 40px;
-      flex: 0 0 40px;
-    }
-
-    .hero-modal-title {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.05;
-    }
-
-    .hero-modal-subtitle {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    .hero-modal-close {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-
-    .hero-modal-close:hover {
-      background: #1d2330;
-    }
-
-    .hero-modal-body {
-      padding: 12px;
-      background: #222834;
-      overflow: auto;
-      display: grid;
-      gap: 12px;
-    }
-
-    .hero-modal-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .hero-modal-stat {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 10px;
-    }
-
-    .hero-modal-stat-label {
-      color: var(--muted);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .hero-modal-stat-value {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .hero-history-wrap {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 10px;
-    }
-
-    .hero-history-title {
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      margin-bottom: 8px;
-    }
-
-    .hero-history-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-      gap: 8px;
-    }
-
-    .hero-history-box {
-      aspect-ratio: 1 / 1;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding: 4px;
-    }
-
-    .hero-history-box.win {
-      background: #23421c;
-      border-color: #4f8f37;
-    }
-
-    .hero-history-box.loss {
-      background: #4a1f1f;
-      border-color: #a84040;
-    }
-
-    .hero-history-box .icon-slot {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-      border: none;
-      background: transparent;
-    }
-
-    .hero-history-empty {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-modal {
-        width: calc(100vw - 24px);
-        max-height: calc(100vh - 24px);
-      }
-
-      .hero-modal-stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
     .chart-card {
       width: 100%;
       position: relative;
@@ -1025,10 +658,6 @@
         min-width: 0;
       }
 
-      .datefilterbar {
-        grid-template-columns: 1fr;
-      }
-
       .chart-body {
         height: 320px;
       }
@@ -1097,24 +726,6 @@
         </div>
       </div>
 
-      <div class="records-card">
-        <div class="stats-titlebar">
-          RECORDS<span class="sub">COUNTED MATCH HIGHS</span>
-        </div>
-        <div class="records-body">
-          <div class="records-grid">
-            <div class="record-box" id="recordKills"></div>
-            <div class="record-box" id="recordDeaths"></div>
-            <div class="record-box" id="recordAssists"></div>
-            <div class="record-box" id="recordSouls"></div>
-            <div class="record-box" id="recordDamage"></div>
-            <div class="record-box" id="recordHealing"></div>
-            <div class="record-box" id="recordShortestGame"></div>
-            <div class="record-box" id="recordLongestGame"></div>
-          </div>
-        </div>
-      </div>
-
       <div class="calendar-card">
         <div class="stats-titlebar">
           CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span>
@@ -1149,25 +760,6 @@
       <div class="topbar">
         <input id="searchBox" type="search" placeholder="Filter heroes..." />
         <button id="resetBtn" type="button">Reset</button>
-      </div>
-
-      <div class="viewtoggle">
-        <label class="viewtoggle-label" for="detailedViewToggle">
-          <input id="detailedViewToggle" type="checkbox" />
-          Detailed View
-        </label>
-      </div>
-
-      <div class="datefilterbar">
-        <div class="datefilter-field">
-          <label class="datefilter-label" for="startDateInput">Start Date</label>
-          <input id="startDateInput" type="date" />
-        </div>
-        <div class="datefilter-field">
-          <label class="datefilter-label" for="endDateInput">End Date</label>
-          <input id="endDateInput" type="date" />
-        </div>
-        <button id="clearDateRangeBtn" type="button">Clear Dates</button>
       </div>
 
       <div class="sliderbar">
@@ -1206,28 +798,6 @@
     </div>
   </div>
 
-  <div id="heroModalOverlay" class="hero-modal-overlay" aria-hidden="true">
-    <div class="hero-modal" role="dialog" aria-modal="true" aria-labelledby="heroModalTitle">
-      <div class="hero-modal-header">
-        <div class="hero-modal-title-wrap">
-          <div id="heroModalTitleIcon" class="icon-slot hero-modal-title-icon"></div>
-          <div>
-            <div id="heroModalTitle" class="hero-modal-title">Hero History</div>
-            <div id="heroModalSubtitle" class="hero-modal-subtitle">-</div>
-          </div>
-        </div>
-        <button id="heroModalCloseBtn" class="hero-modal-close" type="button">Close</button>
-      </div>
-      <div class="hero-modal-body">
-        <div id="heroModalStatsGrid" class="hero-modal-stats-grid"></div>
-        <div class="hero-history-wrap">
-          <div class="hero-history-title">Game History</div>
-          <div id="heroHistoryGrid" class="hero-history-grid"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script>
@@ -1241,11 +811,6 @@
     const HERO_NAME_INDEX = 1;
     const MATCHES_INDEX = 7;
     const WINRATE_INDEX = 6;
-    const KPG_INDEX = 8;
-    const DPG_INDEX = 9;
-    const APG_INDEX = 10;
-    const SPM_INDEX = 11;
-    const AVG_LENGTH_INDEX = 12;
 
     const MATCHES_SHEET_ID_INDEX = 0;
     const MATCHES_SHEET_DATE_INDEX = 1;
@@ -1256,45 +821,9 @@
     const MATCHES_SHEET_COUNTS_INDEX = 10;
     const MATCHES_SHEET_NON_COUNT_REASON_INDEX = 11;
     const MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX = -1;
-    const MATCHES_SHEET_KILLS_INDEX = 15;
-    const MATCHES_SHEET_DEATHS_INDEX = 16;
-    const MATCHES_SHEET_ASSISTS_INDEX = 17;
-    const MATCHES_SHEET_SOULS_INDEX = 14;
-    const MATCHES_SHEET_DAMAGE_INDEX = 18;
-    const MATCHES_SHEET_HEALING_INDEX = 20;
-    const MATCHES_SHEET_DURATION_SECONDS_INDEX = 23;
-    const MATCHES_SHEET_DURATION_MINUTES_INDEX = -1;
 
     const MATCHES_HEADER_ALIASES = {
-      matchId: ["match_id", "match id", "id"],
-      date: ["match_date_est", "match date est", "match_date", "match date", "date"],
-      startTime: ["match_start_time_est", "match start time est", "match_start_time", "match start time", "start time"],
-      modeName: ["mode_name", "mode name", "mode"],
-      hero: ["selected_hero", "selected hero", "hero"],
-      result: ["game_result", "game result", "result"],
-      counts: ["counts_in_stats", "counts in stats", "counts"],
-      nonCountReason: ["non_count_reason", "non count reason", "reason"],
-      peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"],
-      kills: ["kills", "player_kills", "player kills"],
-      deaths: ["deaths", "player_deaths", "player deaths"],
-      assists: ["assists", "player_assists", "player assists"],
-      souls: ["souls", "net_worth", "net worth"],
-      damage: ["player_damage", "player damage", "damage"],
-      healing: ["healing", "healing_done", "healing done"],
-      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec", "match_length_seconds", "match length seconds", "game_length_seconds", "game length seconds", "game_duration_seconds", "game duration seconds", "length_seconds", "length seconds"],
-      durationMinutes: ["duration_minutes", "duration minutes", "match_duration_minutes", "match duration minutes", "duration_min", "duration min", "duration_mins", "duration mins", "match_length_minutes", "match length minutes", "game_length_minutes", "game length minutes", "game_duration_minutes", "game duration minutes", "length_minutes", "length minutes", "duration"]
-    };
-
-    let matchesColumnIndexes = {
-      matchId: MATCHES_SHEET_ID_INDEX,
-      date: MATCHES_SHEET_DATE_INDEX,
-      startTime: MATCHES_SHEET_START_TIME_INDEX,
-      modeName: MATCHES_SHEET_MODE_NAME_INDEX,
-      hero: MATCHES_SHEET_HERO_INDEX,
-      result: MATCHES_SHEET_RESULT_INDEX,
-      counts: MATCHES_SHEET_COUNTS_INDEX,
-      nonCountReason: MATCHES_SHEET_NON_COUNT_REASON_INDEX,
-      peakRank: MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
+      peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"]
     };
 
     const SORT_BY_DATE = "__date__";
@@ -1305,10 +834,6 @@
     const statusEl = document.getElementById("status");
     const searchBox = document.getElementById("searchBox");
     const resetBtn = document.getElementById("resetBtn");
-    const detailedViewToggle = document.getElementById("detailedViewToggle");
-    const startDateInput = document.getElementById("startDateInput");
-    const endDateInput = document.getElementById("endDateInput");
-    const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
     const emptyState = document.getElementById("emptyState");
     const gamesSlider = document.getElementById("gamesSlider");
     const gamesSliderLabel = document.getElementById("gamesSliderLabel");
@@ -1326,25 +851,6 @@
     const longestLossIconsEl = document.getElementById("longestLossIcons");
     const longestWinDatesEl = document.getElementById("longestWinDates");
     const longestLossDatesEl = document.getElementById("longestLossDates");
-
-    const recordBoxEls = {
-      kills: document.getElementById("recordKills"),
-      deaths: document.getElementById("recordDeaths"),
-      assists: document.getElementById("recordAssists"),
-      souls: document.getElementById("recordSouls"),
-      damage: document.getElementById("recordDamage"),
-      healing: document.getElementById("recordHealing"),
-      shortestGame: document.getElementById("recordShortestGame"),
-      longestGame: document.getElementById("recordLongestGame")
-    };
-
-    const heroModalOverlay = document.getElementById("heroModalOverlay");
-    const heroModalCloseBtn = document.getElementById("heroModalCloseBtn");
-    const heroModalTitle = document.getElementById("heroModalTitle");
-    const heroModalSubtitle = document.getElementById("heroModalSubtitle");
-    const heroModalTitleIcon = document.getElementById("heroModalTitleIcon");
-    const heroModalStatsGrid = document.getElementById("heroModalStatsGrid");
-    const heroHistoryGrid = document.getElementById("heroHistoryGrid");
 
     const calendarGrid = document.getElementById("calendarGrid");
     const calendarMonthLabel = document.getElementById("calendarMonthLabel");
@@ -1366,8 +872,6 @@
     let sliderGameCount = 0;
     let calendarViewDate = startOfDay(new Date());
     let dailyResultsMap = new Map();
-    let headerIndexes = {};
-    let isDetailedView = false;
 
     function parseCSV(text) {
       const rows = [];
@@ -1479,21 +983,6 @@
       return new Date(date.getFullYear(), date.getMonth() + delta, 1);
     }
 
-    function parseMatchDateTime(row) {
-      if (!Array.isArray(row)) return null;
-
-      const startTimeValue = getMatchStartTimeValue(row);
-      const dateValue = getMatchDateValue(row);
-
-      const parsedStart = startTimeValue ? parseSheetDate(startTimeValue) : null;
-      if (parsedStart) return parsedStart;
-
-      const parsedDate = dateValue ? parseSheetDate(dateValue) : null;
-      if (parsedDate) return parsedDate;
-
-      return null;
-    }
-
     function formatExactDate(value) {
       const d = parseSheetDate(value);
       if (!d) return normalizeValue(value);
@@ -1583,11 +1072,11 @@
     }
 
     function isCountedMatch(row) {
-      return getMatchCountsValue(row).toLowerCase() === "yes";
+      return normalizeValue(row[MATCHES_SHEET_COUNTS_INDEX]).toLowerCase() === "yes";
     }
 
     function isClassifiedCountedMatch(row) {
-      const result = getMatchResultValue(row).toLowerCase();
+      const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
       return isCountedMatch(row) && (result === "win" || result === "loss");
     }
 
@@ -1618,15 +1107,9 @@
       renderTable();
     }
 
-    const HERO_ICON_NAME_ALIASES = {
-      "mo & krill": "mo+krill",
-      "the doorman": "doorman"
-    };
-
     function heroIconPath(heroName) {
-      const normalized = normalizeValue(heroName).toLowerCase();
-      const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
-      return `images/deadlock/icons/${encodeURIComponent(fileBaseName + ".png")}`;
+      const safe = normalizeValue(heroName).toLowerCase();
+      return `images/deadlock/icons/${encodeURIComponent(safe + ".png")}`;
     }
 
     function rankIconPath(rankName) {
@@ -1636,408 +1119,31 @@
     }
 
     function normalizeHeaderName(value) {
-      return normalizeValue(value)
-        .toLowerCase()
-        .replace(/[   ]/g, " ")
-        .replace(/[-_\s]+/g, " ")
-        .replace(/[^a-z0-9 ]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+      return normalizeValue(value).toLowerCase().replace(/[_\s]+/g, " ").trim();
     }
 
     function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
       if (!Array.isArray(headerRow) || !headerRow.length) return fallbackIndex;
       const normalizedHeaders = headerRow.map(normalizeHeaderName);
-      const normalizedAliases = aliases.map(normalizeHeaderName).filter(Boolean);
-
-      for (const alias of normalizedAliases) {
-        const idx = normalizedHeaders.indexOf(alias);
+      for (const alias of aliases) {
+        const idx = normalizedHeaders.indexOf(normalizeHeaderName(alias));
         if (idx !== -1) return idx;
       }
-
-      for (const alias of normalizedAliases) {
-        const aliasTokens = alias.split(" ").filter(Boolean);
-        const idx = normalizedHeaders.findIndex(header => {
-          if (!header) return false;
-          if (header.includes(alias)) return true;
-          return aliasTokens.every(token => header.includes(token));
-        });
-        if (idx !== -1) return idx;
-      }
-
       return fallbackIndex;
     }
 
-    function resolveMatchesColumnIndexes(rows) {
-      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      matchesColumnIndexes = {
-        matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId, MATCHES_SHEET_ID_INDEX),
-        date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date, MATCHES_SHEET_DATE_INDEX),
-        startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime, MATCHES_SHEET_START_TIME_INDEX),
-        modeName: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.modeName, MATCHES_SHEET_MODE_NAME_INDEX),
-        hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero, MATCHES_SHEET_HERO_INDEX),
-        result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result, MATCHES_SHEET_RESULT_INDEX),
-        counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts, MATCHES_SHEET_COUNTS_INDEX),
-        nonCountReason: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.nonCountReason, MATCHES_SHEET_NON_COUNT_REASON_INDEX),
-        peakRank: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.peakRank, MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX)
-      };
-      return matchesColumnIndexes;
-    }
-
-    function getMatchCell(row, index) {
-      if (!Array.isArray(row) || !Number.isInteger(index) || index < 0) return "";
-      return normalizeValue(row[index]);
-    }
-
-    function getMatchDateValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.date);
-    }
-
-    function getMatchStartTimeValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.startTime);
-    }
-
-    function getMatchHeroValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.hero);
-    }
-
-    function getMatchResultValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.result);
-    }
-
-    function getMatchCountsValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.counts);
-    }
-
     function getPeakRankIndex(rows) {
-      return resolveMatchesColumnIndexes(rows).peakRank;
+      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
+      return findHeaderIndex(
+        headerRow,
+        MATCHES_HEADER_ALIASES.peakRank,
+        MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
+      );
     }
 
     function getPeakRankValue(row, peakRankIndex) {
-      if (Number.isInteger(peakRankIndex) && peakRankIndex >= 0) {
-        return getMatchCell(row, peakRankIndex);
-      }
-      return getMatchCell(row, matchesColumnIndexes.peakRank);
-    }
-
-    function getHeaderIndexes(rows) {
-      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      return {
-        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills, MATCHES_SHEET_KILLS_INDEX),
-        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths, MATCHES_SHEET_DEATHS_INDEX),
-        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists, MATCHES_SHEET_ASSISTS_INDEX),
-        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls, MATCHES_SHEET_SOULS_INDEX),
-        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage, MATCHES_SHEET_DAMAGE_INDEX),
-        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing, MATCHES_SHEET_HEALING_INDEX),
-        durationSeconds: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX),
-        durationMinutes: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
-      };
-    }
-
-    function getFirstAvailableMetricCell(row, headerAliases) {
-      if (!Array.isArray(allMatchRows) || !allMatchRows.length || !Array.isArray(row)) return "";
-      const headerRow = allMatchRows[0] || [];
-      const idx = findHeaderIndex(headerRow, headerAliases);
-      return idx >= 0 ? normalizeValue(row[idx]) : "";
-    }
-
-    function buildRecordConfigs() {
-      return [
-        { key: "kills", label: "Most Kills", mode: "max" },
-        { key: "deaths", label: "Most Deaths", mode: "max" },
-        { key: "assists", label: "Most Assists", mode: "max" },
-        { key: "souls", label: "Most Souls", mode: "max" },
-        { key: "damage", label: "Most Damage", mode: "max" },
-        { key: "healing", label: "Most Healing", mode: "max" },
-        { key: "durationSeconds", label: "Shortest Game", mode: "min", isDuration: true, recordKey: "shortestGame" },
-        { key: "durationSeconds", label: "Longest Game", mode: "max", isDuration: true, recordKey: "longestGame" }
-      ];
-    }
-
-    function formatRecordNumber(value) {
-      const num = Number(value);
-      if (!Number.isFinite(num)) return "-";
-      return num.toLocaleString();
-    }
-
-    function parseDurationToSeconds(value) {
-      const raw = normalizeValue(value);
-      if (!raw) return null;
-
-      const numeric = parseNumeric(raw);
-      if (numeric !== null && numeric > 0) return numeric;
-
-      const hhmmss = raw.match(/^(\d{1,3}):(\d{1,2}):(\d{1,2})$/);
-      if (hhmmss) {
-        return (Number(hhmmss[1]) * 3600) + (Number(hhmmss[2]) * 60) + Number(hhmmss[3]);
-      }
-
-      const mmss = raw.match(/^(\d{1,3}):(\d{1,2})$/);
-      if (mmss) {
-        return (Number(mmss[1]) * 60) + Number(mmss[2]);
-      }
-
-      const verbose = raw.match(/^(?:(\d+(?:\.\d+)?)\s*h(?:ours?)?)?\s*(?:(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?)?\s*(?:(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?)?$/i);
-      if (verbose && (verbose[1] || verbose[2] || verbose[3])) {
-        return (Number(verbose[1] || 0) * 3600) + (Number(verbose[2] || 0) * 60) + Number(verbose[3] || 0);
-      }
-
-      return null;
-    }
-
-    function getDurationSeconds(row) {
-      if (!Array.isArray(row)) return null;
-
-      const candidateIndexes = [
-        headerIndexes.durationSeconds,
-        MATCHES_SHEET_DURATION_SECONDS_INDEX,
-        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX)
-      ].filter(idx => Number.isInteger(idx) && idx >= 0);
-
-      for (const idx of candidateIndexes) {
-        const raw = normalizeValue(row[idx]);
-        const parsed = parseDurationToSeconds(raw);
-        if (parsed !== null && parsed > 0) return parsed;
-      }
-
-      const durationSecondsRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationSeconds);
-      const durationSeconds = parseDurationToSeconds(durationSecondsRaw);
-      if (durationSeconds !== null && durationSeconds > 0) return durationSeconds;
-
-      const candidateMinuteIndexes = [
-        headerIndexes.durationMinutes,
-        MATCHES_SHEET_DURATION_MINUTES_INDEX,
-        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
-      ].filter(idx => Number.isInteger(idx) && idx >= 0);
-
-      for (const idx of candidateMinuteIndexes) {
-        const raw = normalizeValue(row[idx]);
-        if (!raw) continue;
-
-        const durationMinutes = parseNumeric(raw);
-        if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
-
-        const parsedDuration = parseDurationToSeconds(raw);
-        if (parsedDuration !== null && parsedDuration > 0) {
-          if (/^\d{1,3}:\d{1,2}(?::\d{1,2})?$/.test(raw) || /sec|second/i.test(raw)) {
-            return parsedDuration;
-          }
-          return parsedDuration * 60;
-        }
-      }
-
-      const durationMinutesRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationMinutes);
-      if (durationMinutesRaw) {
-        const durationMinutes = parseNumeric(durationMinutesRaw);
-        if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
-
-        const parsedDuration = parseDurationToSeconds(durationMinutesRaw);
-        if (parsedDuration !== null && parsedDuration > 0) {
-          if (/^\d{1,3}:\d{1,2}(?::\d{1,2})?$/.test(durationMinutesRaw) || /sec|second/i.test(durationMinutesRaw)) {
-            return parsedDuration;
-          }
-          return parsedDuration * 60;
-        }
-      }
-
-      return null;
-    }
-
-    function formatDuration(seconds) {
-      const totalSeconds = Number(seconds);
-      if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return "-";
-
-      const rounded = Math.round(totalSeconds);
-      const hours = Math.floor(rounded / 3600);
-      const minutes = Math.floor((rounded % 3600) / 60);
-      const secs = rounded % 60;
-
-      if (hours > 0) {
-        return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-      }
-
-      return `${minutes}:${String(secs).padStart(2, "0")}`;
-    }
-
-    function getRowMetricValue(row, metricIndex, config = {}) {
-      if (config.isDuration) {
-        return getDurationSeconds(row);
-      }
-      return parseNumeric(row[metricIndex]);
-    }
-
-    function chooseBetterRecordRow(currentBest, candidateRow, metricIndex, config = {}) {
-      const candidateValue = getRowMetricValue(candidateRow, metricIndex, config);
-      if (candidateValue === null) return currentBest;
-      if (!currentBest) return candidateRow;
-
-      const currentValue = getRowMetricValue(currentBest, metricIndex, config);
-      if (currentValue === null) return candidateRow;
-
-      const shouldReplace = config.mode === "min" ? candidateValue < currentValue : candidateValue > currentValue;
-      if (shouldReplace) return candidateRow;
-
-      const isWorse = config.mode === "min" ? candidateValue > currentValue : candidateValue < currentValue;
-      if (isWorse) return currentBest;
-
-      const currentDate = parseMatchDateTime(currentBest);
-      const candidateDate = parseMatchDateTime(candidateRow);
-      if (candidateDate && (!currentDate || candidateDate > currentDate)) return candidateRow;
-      return currentBest;
-    }
-
-    function formatPerGame(value) {
-      return Number.isFinite(value) ? value.toFixed(2) : "-";
-    }
-
-    function formatSoulsPerMinute(totalSouls, totalDurationSeconds) {
-      if (!Number.isFinite(totalSouls) || !Number.isFinite(totalDurationSeconds) || totalDurationSeconds <= 0) return "-";
-      return (totalSouls / (totalDurationSeconds / 60)).toFixed(2);
-    }
-
-    function getCurrentVisibleMatchSubset() {
-      const datedMatches = syncSliderToFilteredMatches();
-      return datedMatches.slice(0, sliderGameCount);
-    }
-
-    function renderHeroModalStats(stats) {
-      if (!heroModalStatsGrid) return;
-      const cards = [
-        { label: "Kills / Game", value: formatPerGame(stats.killsPerGame) },
-        { label: "Deaths / Game", value: formatPerGame(stats.deathsPerGame) },
-        { label: "Assists / Game", value: formatPerGame(stats.assistsPerGame) },
-        { label: "Souls / Minute", value: stats.soulsPerMinute },
-        { label: "Avg Game Length", value: stats.avgGameLength }
-      ];
-
-      heroModalStatsGrid.innerHTML = cards.map(card => `
-        <div class="hero-modal-stat">
-          <div class="hero-modal-stat-label">${card.label}</div>
-          <div class="hero-modal-stat-value">${card.value}</div>
-        </div>
-      `).join("");
-    }
-
-    function openHeroHistoryModal(heroName) {
-      const targetHero = normalizeValue(heroName);
-      if (!targetHero) return;
-
-      const matches = getCurrentVisibleMatchSubset().filter(row => getMatchHeroValue(row) === targetHero);
-      const wins = matches.filter(row => getMatchResultValue(row).toLowerCase() === "win").length;
-      const losses = matches.filter(row => getMatchResultValue(row).toLowerCase() === "loss").length;
-      const totalKills = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.kills]) ?? 0), 0);
-      const totalDeaths = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.deaths]) ?? 0), 0);
-      const totalAssists = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.assists]) ?? 0), 0);
-      const totalSouls = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.souls]) ?? 0), 0);
-      const totalDurationSeconds = matches.reduce((sum, row) => sum + (getDurationSeconds(row) ?? 0), 0);
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
-
-      heroModalTitle.textContent = targetHero;
-      heroModalSubtitle.textContent = `${matches.length} game(s) • ${wins}-${losses} • ${rangeLabel}${sliderGameCount < syncSliderToFilteredMatches().length ? ` • after ${sliderGameCount} games` : ""}`;
-      heroModalTitleIcon.innerHTML = `
-        <img src="${heroIconPath(targetHero)}" alt="${targetHero}" loading="lazy" onerror="this.style.display='none'">
-      `;
-
-      renderHeroModalStats({
-        killsPerGame: matches.length ? totalKills / matches.length : NaN,
-        deathsPerGame: matches.length ? totalDeaths / matches.length : NaN,
-        assistsPerGame: matches.length ? totalAssists / matches.length : NaN,
-        soulsPerMinute: formatSoulsPerMinute(totalSouls, totalDurationSeconds),
-        avgGameLength: matches.length && totalDurationSeconds > 0 ? formatDuration(totalDurationSeconds / matches.length) : "-"
-      });
-
-      if (!matches.length) {
-        heroHistoryGrid.innerHTML = '<div class="hero-history-empty">No games for this hero in the current view.</div>';
-      } else {
-        heroHistoryGrid.innerHTML = matches.map(row => {
-          const result = getMatchResultValue(row).toLowerCase();
-          const iconHtml = buildIcon(targetHero, "icon-slot").outerHTML;
-          const dt = parseMatchDateTime(row);
-          const kills = parseNumeric(row[headerIndexes.kills]);
-          const deaths = parseNumeric(row[headerIndexes.deaths]);
-          const assists = parseNumeric(row[headerIndexes.assists]);
-          const souls = parseNumeric(row[headerIndexes.souls]);
-          const duration = getDurationSeconds(row);
-          const spm = duration && souls !== null ? (souls / (duration / 60)).toFixed(2) : "-";
-          const title = [
-            formatShortDateTime(dt),
-            `Result: ${result ? result[0].toUpperCase() + result.slice(1) : "-"}`,
-            `K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"}`,
-            `Souls: ${souls !== null ? formatRecordNumber(souls) : "-"}`,
-            `Souls / Min: ${spm}`,
-            `Game Length: ${formatDuration(duration)}`
-          ].join("\n");
-          return `<div class="hero-history-box ${result === "win" ? "win" : "loss"}" title="${title.replace(/"/g, '&quot;')}">${iconHtml}</div>`;
-        }).join("");
-      }
-
-      heroModalOverlay.classList.add("open");
-      heroModalOverlay.setAttribute("aria-hidden", "false");
-    }
-
-    function closeHeroHistoryModal() {
-      heroModalOverlay.classList.remove("open");
-      heroModalOverlay.setAttribute("aria-hidden", "true");
-    }
-
-    function renderSingleRecordBox(container, label, row, metricIndex, config = {}) {
-      if (!container) return;
-
-      if (!row || (metricIndex < 0 && !config.isDuration)) {
-        container.innerHTML = `
-          <div class="record-top">
-            <div class="record-label">${label}</div>
-            <div class="record-value">-</div>
-          </div>
-          <div class="record-main">
-            <div class="record-meta">
-              <div class="record-hero">No data</div>
-              <div class="record-date">-</div>
-              <div class="record-extra">K/D/A: - / - / - • -</div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      const hero = getMatchHeroValue(row) || "Unknown";
-      const result = getMatchResultValue(row) || "-";
-      const kills = parseNumeric(row[headerIndexes.kills]);
-      const deaths = parseNumeric(row[headerIndexes.deaths]);
-      const assists = parseNumeric(row[headerIndexes.assists]);
-      const date = parseMatchDateTime(row);
-      const iconHtml = buildIcon(hero, "icon-slot record-icon").outerHTML;
-      const metricValue = getRowMetricValue(row, metricIndex, config);
-
-      container.innerHTML = `
-        <div class="record-top">
-          <div class="record-label">${label}</div>
-          <div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div>
-        </div>
-        <div class="record-main">
-          ${iconHtml}
-          <div class="record-meta">
-            <div class="record-hero">${hero}</div>
-            <div class="record-date">${date ? formatLongDate(date) : "-"}</div>
-            <div class="record-extra">K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : "-"}</div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderRecords(matchesRows, classifiedRows) {
-      headerIndexes = getHeaderIndexes(matchesRows);
-      for (const config of buildRecordConfigs()) {
-        const metricIndex = headerIndexes[config.key];
-        let bestRow = null;
-        const hasMetric = config.isDuration ? (headerIndexes.durationSeconds >= 0 || headerIndexes.durationMinutes >= 0) : metricIndex >= 0;
-        if (hasMetric) {
-          for (const row of classifiedRows) {
-            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-          }
-        }
-        renderSingleRecordBox(recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
-      }
+      if (!Array.isArray(row) || !Number.isInteger(peakRankIndex) || peakRankIndex < 0) return "";
+      return normalizeValue(row[peakRankIndex]);
     }
 
     function parsePeakRankLabel(value) {
@@ -2180,32 +1286,13 @@
     }
 
     function renderWinCell(row) {
-      const winPct = parseNumeric(row[WINRATE_INDEX]) ?? 0;
-      return renderStatCell(`${winPct.toFixed(2)}%`, winPct, "win");
-    }
-
-    function renderDetailCell(mainText, subText = "") {
-      const wrapper = document.createElement("div");
-      wrapper.className = "detail-cell";
-
-      const value = document.createElement("div");
-      value.className = "detail-value";
-      value.textContent = mainText || "-";
-      wrapper.appendChild(value);
-
-      if (subText) {
-        const sub = document.createElement("div");
-        sub.className = "detail-sub";
-        sub.textContent = subText;
-        wrapper.appendChild(sub);
-      }
-
-      return wrapper;
+      const winRaw = normalizeValue(row[WINRATE_INDEX]);
+      const winPct = parseNumeric(winRaw) ?? 0;
+      return renderStatCell(winRaw, winPct, "win");
     }
 
     function renderTable() {
       tbody.innerHTML = "";
-      table.classList.toggle("table-detailed", isDetailedView);
 
       emptyState.style.display = filteredRows.length ? "none" : "block";
 
@@ -2213,10 +1300,7 @@
         const tr = document.createElement("tr");
 
         const heroTd = document.createElement("td");
-        heroTd.className = "hero-clickable";
-        heroTd.title = `View ${normalizeValue(row[HERO_NAME_INDEX])} history`;
         heroTd.appendChild(renderHeroCell(row));
-        heroTd.addEventListener("click", () => openHeroHistoryModal(normalizeValue(row[HERO_NAME_INDEX])));
         tr.appendChild(heroTd);
 
         const matchesTd = document.createElement("td");
@@ -2226,28 +1310,6 @@
         const winTd = document.createElement("td");
         winTd.appendChild(renderWinCell(row));
         tr.appendChild(winTd);
-
-        if (isDetailedView) {
-          const kpgTd = document.createElement("td");
-          kpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[KPG_INDEX]))));
-          tr.appendChild(kpgTd);
-
-          const dpgTd = document.createElement("td");
-          dpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[DPG_INDEX]))));
-          tr.appendChild(dpgTd);
-
-          const apgTd = document.createElement("td");
-          apgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[APG_INDEX]))));
-          tr.appendChild(apgTd);
-
-          const spmTd = document.createElement("td");
-          spmTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[SPM_INDEX]))));
-          tr.appendChild(spmTd);
-
-          const avgLengthTd = document.createElement("td");
-          avgLengthTd.appendChild(renderDetailCell(formatDuration(parseNumeric(row[AVG_LENGTH_INDEX]))));
-          tr.appendChild(avgLengthTd);
-        }
 
         tbody.appendChild(tr);
       });
@@ -2264,16 +1326,6 @@
         { label: "Matches", index: MATCHES_INDEX, defaultDir: "desc" },
         { label: "Win %", index: WINRATE_INDEX, defaultDir: "desc" }
       ];
-
-      if (isDetailedView) {
-        columns.push(
-          { label: "K / Game", index: KPG_INDEX, defaultDir: "desc" },
-          { label: "D / Game", index: DPG_INDEX, defaultDir: "desc" },
-          { label: "A / Game", index: APG_INDEX, defaultDir: "desc" },
-          { label: "Souls / Min", index: SPM_INDEX, defaultDir: "desc" },
-          { label: "Avg Length", index: AVG_LENGTH_INDEX, defaultDir: "desc" }
-        );
-      }
 
       columns.forEach(col => {
         const th = document.createElement("th");
@@ -2308,9 +1360,9 @@
       let currentEndDate = null;
 
       for (const row of rows) {
-        const result = getMatchResultValue(row).toLowerCase();
-        const hero = getMatchHeroValue(row);
-        const date = parseMatchDateTime(row);
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
         if (!hero || !isCountedMatch(row)) continue;
 
@@ -2359,8 +1411,8 @@
       const map = new Map();
 
       rows.forEach(row => {
-        const result = getMatchResultValue(row).toLowerCase();
-        const date = parseMatchDateTime(row);
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
         if (!date || !isCountedMatch(row)) return;
         if (result !== "win" && result !== "loss") return;
@@ -2466,9 +1518,9 @@
         .map(row => {
           if (!isClassifiedCountedMatch(row)) return null;
 
-          const result = getMatchResultValue(row).toLowerCase();
+          const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
           const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
-          const hero = getMatchHeroValue(row);
+          const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
           const modeName = normalizeValue(row[MATCHES_SHEET_MODE_NAME_INDEX]);
           const matchId = normalizeValue(row[MATCHES_SHEET_ID_INDEX]);
           const peakRank = getPeakRankValue(row, peakRankIndex);
@@ -2831,11 +1883,11 @@
       const totalMatches = classifiedRows.length;
 
       const wins = classifiedRows.filter(row =>
-        getMatchResultValue(row).toLowerCase() === "win"
+        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "win"
       ).length;
 
       const losses = classifiedRows.filter(row =>
-        getMatchResultValue(row).toLowerCase() === "loss"
+        normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase() === "loss"
       ).length;
 
       const firstDate = classifiedRows
@@ -2864,7 +1916,6 @@
 
       renderStreak(longestWinIconsEl, longestWin.heroes);
       renderStreak(longestLossIconsEl, longestLoss.heroes);
-      renderRecords(matchesRows, classifiedRows);
 
       dailyResultsMap = buildDailyResultsMap(classifiedRows);
       renderCalendar();
@@ -2872,17 +1923,13 @@
       renderWinrateChart(matchesRows);
     }
 
-    function formatDetailedAverage(value) {
-      return Number.isFinite(value) ? value.toFixed(2) : "-";
-    }
-
     function buildHeroRowsFromMatches(matchRowsSubset) {
       const heroMap = new Map();
 
       matchRowsSubset.forEach(row => {
-        const hero = getMatchHeroValue(row);
-        const result = getMatchResultValue(row).toLowerCase();
-        const date = parseMatchDateTime(row);
+        const hero = normalizeValue(row[MATCHES_SHEET_HERO_INDEX]);
+        const result = normalizeValue(row[MATCHES_SHEET_RESULT_INDEX]).toLowerCase();
+        const date = parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
 
         if (!hero) return;
         if (!isCountedMatch(row)) return;
@@ -2893,12 +1940,7 @@
             hero,
             matches: 0,
             wins: 0,
-            lastDate: null,
-            totalKills: 0,
-            totalDeaths: 0,
-            totalAssists: 0,
-            totalSouls: 0,
-            totalDurationSeconds: 0
+            lastDate: null
           });
         }
 
@@ -2908,26 +1950,10 @@
         if (date && (!entry.lastDate || date > entry.lastDate)) {
           entry.lastDate = date;
         }
-
-        entry.totalKills += parseNumeric(row[headerIndexes.kills]) ?? 0;
-        entry.totalDeaths += parseNumeric(row[headerIndexes.deaths]) ?? 0;
-        entry.totalAssists += parseNumeric(row[headerIndexes.assists]) ?? 0;
-        entry.totalSouls += parseNumeric(row[headerIndexes.souls]) ?? 0;
-        entry.totalDurationSeconds += getDurationSeconds(row) ?? 0;
       });
 
       return Array.from(heroMap.values()).map(entry => {
         const winPct = entry.matches > 0 ? (entry.wins / entry.matches) * 100 : 0;
-        const killsPerGame = entry.matches > 0 ? entry.totalKills / entry.matches : NaN;
-        const deathsPerGame = entry.matches > 0 ? entry.totalDeaths / entry.matches : NaN;
-        const assistsPerGame = entry.matches > 0 ? entry.totalAssists / entry.matches : NaN;
-        const soulsPerMinute = entry.totalDurationSeconds > 0
-          ? entry.totalSouls / (entry.totalDurationSeconds / 60)
-          : NaN;
-        const avgLengthSeconds = entry.matches > 0 && entry.totalDurationSeconds > 0
-          ? entry.totalDurationSeconds / entry.matches
-          : NaN;
-
         return [
           entry.lastDate ? formatLocalYMD(entry.lastDate) : "",
           entry.hero,
@@ -2935,111 +1961,34 @@
           "",
           "",
           "",
-          winPct,
-          entry.matches,
-          killsPerGame,
-          deathsPerGame,
-          assistsPerGame,
-          soulsPerMinute,
-          avgLengthSeconds
+          `${winPct.toFixed(2)}%`,
+          String(entry.matches)
         ];
       });
     }
 
-
-    function getDateInputValue(inputEl) {
-      return inputEl ? normalizeValue(inputEl.value) : "";
-    }
-
-    function getActiveDateRange() {
-      const startValue = getDateInputValue(startDateInput);
-      const endValue = getDateInputValue(endDateInput);
-
-      const startDate = startValue ? parseSheetDate(startValue) : null;
-      const endDate = endValue ? parseSheetDate(endValue) : null;
-
-      return {
-        startDate: startDate ? startOfDay(startDate) : null,
-        endDate: endDate ? startOfDay(endDate) : null
-      };
-    }
-
-    function isRowWithinActiveDateRange(row) {
-      const { startDate, endDate } = getActiveDateRange();
-      if (!startDate && !endDate) return true;
-
-      const rowDate = parseMatchDateTime(row);
-      if (!rowDate) return false;
-
-      const rowDay = startOfDay(rowDate);
-
-      if (startDate && rowDay < startDate) return false;
-      if (endDate && rowDay > endDate) return false;
-
-      return true;
-    }
-
-    function getDateRangeFilteredMatches() {
-      return classifiedMatchRows.filter(isRowWithinActiveDateRange);
-    }
-
-    function syncSliderToFilteredMatches() {
-      const datedMatches = getDateRangeFilteredMatches();
-      const total = datedMatches.length;
-      const currentValue = Number(gamesSlider.value || 0);
-
-      gamesSlider.min = 0;
-      gamesSlider.max = String(total);
-
-      sliderGameCount = Math.min(currentValue || total, total);
-      gamesSlider.value = String(sliderGameCount);
-
-      return datedMatches;
-    }
-
-    function formatDateRangeShort(startDate, endDate) {
-      if (!startDate && !endDate) return "ALL TIME";
-      if (startDate && endDate) {
-        return `${formatLongDate(startDate)} – ${formatLongDate(endDate)}`;
-      }
-      if (startDate) {
-        return `${formatLongDate(startDate)}+`;
-      }
-      return `Through ${formatLongDate(endDate)}`;
-    }
-
     function updateHeroTableForSlider() {
-      const datedMatches = syncSliderToFilteredMatches();
-      const subset = datedMatches.slice(0, sliderGameCount);
+      const subset = classifiedMatchRows.slice(0, sliderGameCount);
       const builtRows = buildHeroRowsFromMatches(subset);
 
       allRows = builtRows;
       maxMatches = Math.max(...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0), 0);
 
-      const searchTerm = searchBox.value.trim().toLowerCase();
-      filteredRows = !searchTerm
+      filteredRows = !searchBox.value.trim()
         ? [...allRows]
         : allRows.filter(row =>
-            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchTerm) ||
-            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchTerm)
+            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase()) ||
+            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchBox.value.trim().toLowerCase())
           );
 
-      if (!isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
-      if (isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX, KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
+      sortState = { col: MATCHES_INDEX, dir: "desc" };
       sortRows();
       renderHeader();
       renderTable();
 
-      const total = datedMatches.length;
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
+      const total = classifiedMatchRows.length;
       gamesSliderLabel.textContent = `${sliderGameCount} / ${total} games`;
-      heroTableSub.textContent = sliderGameCount >= total
-        ? rangeLabel
-        : `${rangeLabel} • AFTER ${sliderGameCount} GAMES`;
+      heroTableSub.textContent = sliderGameCount >= total ? "ALL TIME" : `AFTER ${sliderGameCount} GAMES`;
     }
 
     function isChartFullscreen() {
@@ -3083,7 +2032,6 @@
         }
 
         allMatchRows = matchesRows;
-        resolveMatchesColumnIndexes(matchesRows);
         classifiedMatchRows = matchesRows
           .slice(1)
           .filter(r => r.some(cell => normalizeValue(cell) !== ""))
@@ -3115,12 +2063,6 @@
         longestWinIconsEl.innerHTML = "";
         longestLossIconsEl.innerHTML = "";
 
-        Object.values(recordBoxEls).forEach(el => {
-          if (el) {
-            el.innerHTML = '<div class="record-top"><div class="record-label">-</div><div class="record-value">-</div></div><div class="record-main"><div class="record-meta"><div class="record-hero">No data</div><div class="record-date">-</div><div class="record-extra">K/D/A: - / - / - • -</div></div></div>';
-          }
-        });
-
         dailyResultsMap = new Map();
         renderCalendar();
 
@@ -3131,45 +2073,16 @@
       }
     }
 
-    detailedViewToggle.addEventListener("change", () => {
-      isDetailedView = !!detailedViewToggle.checked;
-      if (!isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
-      updateHeroTableForSlider();
-    });
-
     searchBox.addEventListener("input", () => {
       updateHeroTableForSlider();
     });
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
-      startDateInput.value = "";
-      endDateInput.value = "";
-      gamesSlider.value = String(classifiedMatchRows.length);
-      sliderGameCount = classifiedMatchRows.length;
-      updateHeroTableForSlider();
-    });
-
-    clearDateRangeBtn.addEventListener("click", () => {
-      startDateInput.value = "";
-      endDateInput.value = "";
-      gamesSlider.value = String(classifiedMatchRows.length);
-      sliderGameCount = classifiedMatchRows.length;
-      updateHeroTableForSlider();
-    });
-
-    function handleDateRangeInput() {
       gamesSlider.value = gamesSlider.max;
       sliderGameCount = Number(gamesSlider.max);
       updateHeroTableForSlider();
-    }
-
-    startDateInput.addEventListener("change", handleDateRangeInput);
-    endDateInput.addEventListener("change", handleDateRangeInput);
-    startDateInput.addEventListener("input", handleDateRangeInput);
-    endDateInput.addEventListener("input", handleDateRangeInput);
+    });
 
     gamesSlider.addEventListener("input", () => {
       sliderGameCount = Number(gamesSlider.value);
@@ -3193,18 +2106,6 @@
     });
 
     expandChartBtn.addEventListener("click", toggleChartFullscreen);
-
-    heroModalCloseBtn.addEventListener("click", closeHeroHistoryModal);
-    heroModalOverlay.addEventListener("click", (e) => {
-      if (e.target === heroModalOverlay) {
-        closeHeroHistoryModal();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && heroModalOverlay.classList.contains("open")) {
-        closeHeroHistoryModal();
-      }
-    });
 
     document.addEventListener("fullscreenchange", () => {
       expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
