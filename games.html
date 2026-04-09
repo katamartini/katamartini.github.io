@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Most Played Heroes</title>
+  <title>Game List</title>
   <style>
     :root {
       --bg: #1f2430;
@@ -14,13 +14,8 @@
       --muted: #9ca3af;
       --accent: #b7ff2a;
       --border: #3a4353;
-      --bar-bg: #434d5f;
-      --matches-bar: #ff2a1a;
-      --win-bar: #98e61d;
-      --streak-win-bg: #23421c;
-      --streak-win-border: #4f8f37;
-      --streak-loss-bg: #4a1f1f;
-      --streak-loss-border: #a84040;
+      --win: #98e61d;
+      --loss: #ff7b72;
     }
 
     * { box-sizing: border-box; }
@@ -28,69 +23,28 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 24px;
+      padding: 20px;
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      overflow-x: auto;
     }
 
     .page {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      width: max-content;
-      min-width: calc(100vw - 48px);
+      width: min(1400px, calc(100vw - 40px));
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .left-column,
-    .wrap,
-    .chart-column {
-      min-width: 0;
-    }
-
-    .wrap,
-    .stats-card,
-    .streaks-card,
-    .calendar-card,
-    .records-card,
-    .chart-card {
+    .card {
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
       overflow: hidden;
     }
 
-    .left-column {
-      flex: 0 0 260px;
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .wrap {
-      flex: 0 0 520px;
-      width: 520px;
-      max-width: none;
-      transition: width 0.18s ease, flex-basis 0.18s ease;
-    }
-
-    .wrap.wrap-detailed {
-      flex: 0 0 1060px;
-      width: 1060px;
-    }
-
-    .chart-column {
-      flex: 1 1 auto;
-      min-width: 500px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .titlebar,
-    .stats-titlebar {
+    .titlebar {
       padding: 10px 12px 6px;
       font-weight: 700;
       font-size: 14px;
@@ -99,8 +53,7 @@
       color: #ffffff;
     }
 
-    .titlebar .sub,
-    .stats-titlebar .sub {
+    .titlebar .sub {
       font-size: 10px;
       font-weight: 400;
       color: var(--muted);
@@ -108,59 +61,25 @@
       vertical-align: middle;
     }
 
-    .topbar {
-      padding: 10px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .topbar input {
-      width: 100%;
-      min-width: 0;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 8px;
-      font-size: 12px;
-      outline: none;
-    }
-
-    .topbar button {
-      flex: 0 0 auto;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 10px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .topbar button:hover {
-      background: #1d2330;
-    }
-
-    .datefilterbar {
+    .toolbar {
       padding: 10px 12px 12px;
       background: #222834;
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: 1fr 1fr auto;
+      grid-template-columns: minmax(180px, 1.5fr) repeat(2, minmax(140px, 1fr)) auto;
       gap: 8px;
       align-items: end;
     }
 
-    .datefilter-field {
+    .field {
       display: flex;
       flex-direction: column;
       gap: 4px;
       min-width: 0;
     }
 
-    .datefilter-label {
+    .field label {
       color: var(--muted);
       font-size: 10px;
       font-weight: 700;
@@ -168,99 +87,70 @@
       letter-spacing: 0.35px;
     }
 
-    .datefilterbar input[type="date"] {
+    .toolbar input,
+    .toolbar select,
+    .toolbar button {
       width: 100%;
       min-width: 0;
       background: #151a23;
       color: #fff;
       border: 1px solid #465062;
-      padding: 7px 8px;
+      padding: 8px 9px;
       font-size: 12px;
       outline: none;
     }
 
-    .datefilterbar button {
-      flex: 0 0 auto;
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 10px;
-      font-size: 12px;
+    .toolbar button {
       cursor: pointer;
-      align-self: end;
+      width: auto;
+      min-width: 96px;
     }
 
-    .datefilterbar button:hover {
+    .toolbar button:hover {
       background: #1d2330;
     }
 
-    .sliderbar {
-      padding: 10px 12px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .sliderbar-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .sliderbar-label {
-      color: #ffffff;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-    }
-
-    .sliderbar-value {
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .sliderbar input[type="range"] {
-      width: 100%;
-      margin: 0;
-    }
-
-    .status {
+    .statusbar {
       padding: 8px 12px;
       color: var(--muted);
       font-size: 12px;
-      border-bottom: 1px solid var(--border);
       background: #222834;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-wrap {
+      overflow: auto;
     }
 
     table {
       width: 100%;
-      min-width: 100%;
+      min-width: 1120px;
       border-collapse: collapse;
       table-layout: auto;
-    }
-
-    .wrap.wrap-detailed table {
-      min-width: 1060px;
     }
 
     thead th {
       background: var(--header);
       color: #ffffff;
-      text-align: left;
+      text-align: center;
       font-size: 12px;
-      padding: 7px 10px;
+      padding: 6px 8px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
       white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
     thead th:hover {
       background: #2b3342;
+    }
+
+    thead th.hero-col {
+      text-align: left;
+      min-width: 150px;
     }
 
     tbody tr:nth-child(odd) {
@@ -272,38 +162,39 @@
     }
 
     tbody td {
-      padding: 3px 10px;
+      padding: 4px 8px;
       vertical-align: middle;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       font-size: 12px;
+      white-space: nowrap;
+      text-align: center;
     }
 
-    thead th:nth-child(2),
-    tbody td:nth-child(2),
-    thead th:nth-child(3),
-    tbody td:nth-child(3) {
-      width: 170px;
+    tbody td.hero-col {
+      text-align: left;
+      min-width: 150px;
     }
 
-    thead th:nth-child(1),
-    tbody td:nth-child(1) {
-      width: auto;
+    .sort-indicator {
+      margin-left: 4px;
+      color: #cbd5e1;
+      font-size: 10px;
     }
 
     .hero-cell {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: flex-start;
+      gap: 6px;
       min-width: 0;
     }
 
     .icon-slot {
-      width: 28px;
-      height: 28px;
-      flex: 0 0 28px;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
       background: linear-gradient(135deg, #4b5563, #2f3745);
       border: 1px solid #596274;
-      display: block;
       overflow: hidden;
     }
 
@@ -314,74 +205,46 @@
       display: block;
     }
 
-    .hero-meta {
-      min-width: 0;
-    }
-
     .hero-name {
       color: var(--accent);
-      font-size: 12px;
       font-weight: 700;
-      line-height: 1.02;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: left;
     }
 
-    .hero-date {
-      color: #9fb0c7;
-      font-size: 10px;
-      margin-top: 1px;
-      line-height: 1.02;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
+    .result-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 54px;
+      padding: 3px 7px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
-    .hero-date:hover {
-      color: #c6d6ea;
-      text-decoration: underline;
+    .result-pill.win {
+      color: #eaffd0;
+      background: rgba(152, 230, 29, 0.16);
+      border-color: rgba(152, 230, 29, 0.35);
     }
 
-    .stat-cell {
-      min-width: 0;
+    .result-pill.loss {
+      color: #ffd8d3;
+      background: rgba(255, 123, 114, 0.16);
+      border-color: rgba(255, 123, 114, 0.35);
     }
 
-    .stat-value {
-      color: #ffffff;
-      font-size: 12px;
-      line-height: 1;
-      margin-bottom: 3px;
-      white-space: nowrap;
+    .result-pill.other {
+      color: #d8dee9;
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
     }
 
-    .bar-wrap {
-      width: 100%;
-      height: 4px;
-      background: var(--bar-bg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-    }
-
-    .bar-fill.matches {
-      background: var(--matches-bar);
-    }
-
-    .bar-fill.win {
-      background: var(--win-bar);
-    }
-
-    .sort-indicator {
-      margin-left: 4px;
-      color: #cbd5e1;
-      font-size: 10px;
+    .num {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
     }
 
     .empty {
@@ -391,675 +254,29 @@
       display: none;
     }
 
-    .viewtoggle {
-      padding: 8px 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .viewtoggle-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .viewtoggle-label input {
-      margin: 0;
-      cursor: pointer;
-    }
-
-    .detail-value {
-      color: #ffffff;
-      font-size: 12px;
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-
-    .detail-sub {
-      color: var(--muted);
-      font-size: 10px;
-      margin-top: 2px;
-      line-height: 1.05;
-      white-space: nowrap;
-    }
-
-    .table-detailed thead th,
-    .table-detailed tbody td {
-      width: auto !important;
-    }
-
-    .stats-body {
-      padding: 12px;
-    }
-
-    .stats-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .stats-item {
-      background: #222834;
-      border: 1px solid var(--border);
-      padding: 10px 11px;
-    }
-
-    .stats-label {
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 6px;
-    }
-
-    .stats-value-big {
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 1.01;
-    }
-
-    .stats-value-small {
-      color: #ffffff;
-      font-size: 16px;
-      line-height: 1.2;
-      font-weight: 700;
-    }
-
-    .streaks-body {
-      padding: 12px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .streak-box {
-      border: 1px solid;
-      padding: 10px;
-    }
-
-    .streak-box.win {
-      background: var(--streak-win-bg);
-      border-color: var(--streak-win-border);
-    }
-
-    .streak-box.loss {
-      background: var(--streak-loss-bg);
-      border-color: var(--streak-loss-border);
-    }
-
-    .streak-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .streak-title-wrap {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .streak-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: rgba(255,255,255,0.8);
-      font-weight: 700;
-    }
-
-    .streak-dates {
-      font-size: 10px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    .streak-count {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .streak-icons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      min-height: 32px;
-      align-items: center;
-    }
-
-    .streak-icon {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: transparent;
-      border: none;
-    }
-
-    .streak-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .streak-empty {
-      color: rgba(255,255,255,0.7);
-      font-size: 12px;
-    }
-
-    .calendar-body {
-      padding: 12px;
-      background: #222834;
-    }
-
-    .calendar-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .calendar-nav {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 5px 9px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .calendar-nav:hover {
-      background: #1d2330;
-    }
-
-    .calendar-month-label {
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: center;
-      flex: 1 1 auto;
-    }
-
-    .calendar-weekdays,
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 6px;
-    }
-
-    .calendar-weekdays {
-      margin-bottom: 6px;
-    }
-
-    .calendar-weekday {
-      text-align: center;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-    }
-
-    .calendar-day {
-      min-height: 62px;
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 6px 5px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .calendar-day.other-month {
-      opacity: 0.38;
-    }
-
-    .calendar-day.has-games {
-      border-color: #4a5568;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-    }
-
-    .calendar-day.today {
-      outline: 1px solid rgba(183,255,42,0.55);
-    }
-
-    .calendar-day-number {
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .calendar-records {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin-top: auto;
-    }
-
-    .calendar-record {
-      font-size: 10px;
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-
-    .calendar-record.wins {
-      color: #98e61d;
-    }
-
-    .calendar-record.losses {
-      color: #ff7b72;
-    }
-
-    .calendar-record.empty {
-      color: var(--muted);
-    }
-
-    .records-body {
-      padding: 12px;
-      background: #222834;
-    }
-
-    .records-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .record-box {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 9px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      min-height: 76px;
-    }
-
-    .record-top {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .record-label {
-      color: var(--muted);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      font-weight: 700;
-    }
-
-    .record-value {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .record-main {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .record-icon {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-    }
-
-    .record-meta {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .record-hero {
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.05;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .record-date,
-    .record-extra {
-      color: #9fb0c7;
-      font-size: 10px;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .hero-clickable {
-      cursor: pointer;
-    }
-
-    .hero-clickable:hover {
-      background: rgba(255,255,255,0.03);
-    }
-
-    .hero-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(8, 11, 18, 0.82);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      z-index: 1000;
-    }
-
-    .hero-modal-overlay.open {
-      display: flex;
-    }
-
-    .hero-modal {
-      width: min(980px, calc(100vw - 48px));
-      max-height: min(88vh, 920px);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .hero-modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px;
-      background: #222834;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-modal-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .hero-modal-title-icon {
-      width: 40px;
-      height: 40px;
-      flex: 0 0 40px;
-    }
-
-    .hero-modal-title {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.05;
-    }
-
-    .hero-modal-subtitle {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    .hero-modal-close {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 7px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-
-    .hero-modal-close:hover {
-      background: #1d2330;
-    }
-
-    .hero-modal-body {
-      padding: 12px;
-      background: #222834;
-      overflow: auto;
-      display: grid;
-      gap: 12px;
-    }
-
-    .hero-modal-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .hero-modal-stat {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 10px;
-    }
-
-    .hero-modal-stat-label {
-      color: var(--muted);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .hero-modal-stat-value {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .hero-history-wrap {
-      background: #2a3140;
-      border: 1px solid var(--border);
-      padding: 10px;
-    }
-
-    .hero-history-title {
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      margin-bottom: 8px;
-    }
-
-    .hero-history-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-      gap: 8px;
-    }
-
-    .hero-history-box {
-      aspect-ratio: 1 / 1;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding: 4px;
-    }
-
-    .hero-history-box.win {
-      background: #23421c;
-      border-color: #4f8f37;
-    }
-
-    .hero-history-box.loss {
-      background: #4a1f1f;
-      border-color: #a84040;
-    }
-
-    .hero-history-box .icon-slot {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-      border: none;
-      background: transparent;
-    }
-
-    .hero-history-empty {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    @media (max-width: 980px) {
-      .hero-modal {
+    @media (max-width: 1200px) {
+      .page,
+      .site-nav-wrap {
         width: calc(100vw - 24px);
-        max-height: calc(100vh - 24px);
       }
 
-      .hero-modal-stats-grid {
+      body {
+        padding: 12px;
+      }
+
+      .toolbar {
         grid-template-columns: 1fr 1fr;
       }
     }
 
-    .chart-card {
-      width: 100%;
-      position: relative;
-    }
-
-    .chart-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .chart-btn-group {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .chart-expand-btn {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      padding: 6px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-
-    .chart-expand-btn:hover {
-      background: #1d2330;
-    }
-
-    .chart-body {
-      padding: 12px;
-      height: 760px;
-      background: #222834;
-      border-top: 1px solid var(--border);
-    }
-
-    .chart-body canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    .chart-card:fullscreen,
-    .chart-card:-webkit-full-screen {
-      width: 100vw;
-      height: 100vh;
-      max-width: none;
-      margin: 0;
-      border: none;
-      box-shadow: none;
-    }
-
-    .chart-card:fullscreen .chart-body,
-    .chart-card:-webkit-full-screen .chart-body {
-      height: calc(100vh - 48px);
-    }
-
-    .chart-card:fullscreen .stats-titlebar,
-    .chart-card:-webkit-full-screen .stats-titlebar {
-      padding-right: 12px;
-    }
-
-    @media (max-width: 1500px) {
-      .page {
-        flex-wrap: wrap;
-        width: 100%;
-        min-width: 0;
-      }
-
-      .chart-column {
-        flex: 1 1 100%;
-        min-width: 0;
-      }
-
-      .chart-body {
-        height: 480px;
-      }
-    }
-
-    @media (max-width: 980px) {
-      body {
-        overflow-x: hidden;
-      }
-
-      .site-nav-wrap {
-        width: min(100%, calc(100vw - 48px));
-      }
-
-      .page {
-        flex-direction: column;
-        width: min(100%, calc(100vw - 48px));
-        min-width: 0;
-      }
-
-      .left-column,
-      .wrap,
-      .wrap.wrap-detailed,
-      .chart-column {
-        width: 100%;
-        flex: 0 0 auto;
-        min-width: 0;
-      }
-
-      .datefilterbar {
+    @media (max-width: 760px) {
+      .toolbar {
         grid-template-columns: 1fr;
-      }
-
-      .chart-body {
-        height: 320px;
       }
     }
 
     .site-nav-wrap {
-      width: min(100%, calc(100vw - 48px));
+      width: min(1400px, calc(100vw - 40px));
       margin: 0 auto 16px;
     }
 
@@ -1108,344 +325,117 @@
 <body>
   <div class="site-nav-wrap">
     <div class="site-nav">
-      <a href="index.html" class="site-nav-link site-nav-link-active">Hero Stats</a>
-      <a href="games.html" class="site-nav-link">Games</a>
+      <a href="deadlock.html" class="site-nav-link">Hero Stats</a>
+      <a href="games.html" class="site-nav-link site-nav-link-active">Games</a>
     </div>
   </div>
 
   <div class="page">
-    <div class="left-column">
-      <div class="stats-card">
-        <div class="stats-titlebar">
-          OVERALL STATS<span class="sub">COUNTED MATCHES</span>
-        </div>
-        <div class="stats-body">
-          <div class="stats-grid">
-            <div class="stats-item">
-              <div class="stats-label">Matches</div>
-              <div class="stats-value-big" id="overallMatches">-</div>
-            </div>
-            <div class="stats-item">
-              <div class="stats-label">Wins</div>
-              <div class="stats-value-big" id="overallWins">-</div>
-            </div>
-            <div class="stats-item">
-              <div class="stats-label">Losses</div>
-              <div class="stats-value-big" id="overallLosses">-</div>
-            </div>
-            <div class="stats-item">
-              <div class="stats-label">Overall Win %</div>
-              <div class="stats-value-big" id="overallWinPct">-</div>
-            </div>
-            <div class="stats-item">
-              <div class="stats-label">First Match</div>
-              <div class="stats-value-small" id="firstMatchPlayed">-</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="streaks-card">
-        <div class="stats-titlebar">
-          STREAKS<span class="sub">LONGEST RUNS</span>
-        </div>
-        <div class="streaks-body">
-          <div class="streak-box win">
-            <div class="streak-header">
-              <div class="streak-title-wrap">
-                <div class="streak-title">Longest Win Streak</div>
-                <div class="streak-dates" id="longestWinDates"></div>
-              </div>
-              <div class="streak-count" id="longestWinCount">-</div>
-            </div>
-            <div class="streak-icons" id="longestWinIcons"></div>
-          </div>
-
-          <div class="streak-box loss">
-            <div class="streak-header">
-              <div class="streak-title-wrap">
-                <div class="streak-title">Longest Loss Streak</div>
-                <div class="streak-dates" id="longestLossDates"></div>
-              </div>
-              <div class="streak-count" id="longestLossCount">-</div>
-            </div>
-            <div class="streak-icons" id="longestLossIcons"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="records-card">
-        <div class="stats-titlebar">
-          RECORDS<span class="sub">COUNTED MATCH HIGHS</span>
-        </div>
-        <div class="records-body">
-          <div class="records-grid">
-            <div class="record-box" id="recordKills"></div>
-            <div class="record-box" id="recordDeaths"></div>
-            <div class="record-box" id="recordAssists"></div>
-            <div class="record-box" id="recordSouls"></div>
-            <div class="record-box" id="recordDamage"></div>
-            <div class="record-box" id="recordHealing"></div>
-            <div class="record-box" id="recordShortestGame"></div>
-            <div class="record-box" id="recordLongestGame"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="calendar-card">
-        <div class="stats-titlebar">
-          CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span>
-        </div>
-        <div class="calendar-body">
-          <div class="calendar-controls">
-            <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
-            <div id="calendarMonthLabel" class="calendar-month-label">-</div>
-            <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
-          </div>
-
-          <div class="calendar-weekdays">
-            <div class="calendar-weekday">Sun</div>
-            <div class="calendar-weekday">Mon</div>
-            <div class="calendar-weekday">Tue</div>
-            <div class="calendar-weekday">Wed</div>
-            <div class="calendar-weekday">Thu</div>
-            <div class="calendar-weekday">Fri</div>
-            <div class="calendar-weekday">Sat</div>
-          </div>
-
-          <div id="calendarGrid" class="calendar-grid"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="wrap" id="mainTableWrap">
+    <div class="card">
       <div class="titlebar">
-        MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span>
+        GAMES<span class="sub">COUNTED MATCHES</span>
       </div>
 
-      <div class="topbar">
-        <input id="searchBox" type="search" placeholder="Filter heroes..." />
+      <div class="toolbar">
+        <div class="field">
+          <label for="searchBox">Search</label>
+          <input id="searchBox" type="search" placeholder="Search hero or match id..." />
+        </div>
+
+        <div class="field">
+          <label for="heroFilter">Hero</label>
+          <select id="heroFilter">
+            <option value="">All Heroes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="resultFilter">Result</label>
+          <select id="resultFilter">
+            <option value="">All Results</option>
+            <option value="win">Win</option>
+            <option value="loss">Loss</option>
+          </select>
+        </div>
+
         <button id="resetBtn" type="button">Reset</button>
       </div>
 
-      <div class="viewtoggle">
-        <label class="viewtoggle-label" for="detailedViewToggle">
-          <input id="detailedViewToggle" type="checkbox" />
-          Detailed View
-        </label>
+      <div id="statusEl" class="statusbar">Loading matches...</div>
+
+      <div class="table-wrap">
+        <table id="gamesTable" aria-label="Games list">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
       </div>
 
-      <div class="datefilterbar">
-        <div class="datefilter-field">
-          <label class="datefilter-label" for="startDateInput">Start Date</label>
-          <input id="startDateInput" type="date" />
-        </div>
-        <div class="datefilter-field">
-          <label class="datefilter-label" for="endDateInput">End Date</label>
-          <input id="endDateInput" type="date" />
-        </div>
-        <button id="clearDateRangeBtn" type="button">Clear Dates</button>
-      </div>
-
-      <div class="sliderbar">
-        <div class="sliderbar-top">
-          <div class="sliderbar-label">Table State After X Games</div>
-          <div class="sliderbar-value" id="gamesSliderLabel">-</div>
-        </div>
-        <input id="gamesSlider" type="range" min="0" max="0" value="0" step="1" />
-      </div>
-
-      <div id="status" class="status">Loading spreadsheet data...</div>
-
-      <table id="dataTable" aria-label="Most played heroes">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-
-      <div id="emptyState" class="empty">No rows match the current filter.</div>
-    </div>
-
-    <div class="chart-column">
-      <div class="chart-card" id="chartCard">
-        <div class="stats-titlebar">
-          <div class="chart-header">
-            <div>W-L DELTA OVER TIME<span class="sub">COUNTED MATCHES</span></div>
-            <div class="chart-btn-group">
-              <button id="resetZoomBtn" class="chart-expand-btn" type="button">Reset Zoom</button>
-              <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
-            </div>
-          </div>
-        </div>
-        <div class="chart-body">
-          <canvas id="winrateChart"></canvas>
-        </div>
-      </div>
+      <div id="emptyState" class="empty">No games match the current filters.</div>
     </div>
   </div>
 
-  <div id="heroModalOverlay" class="hero-modal-overlay" aria-hidden="true">
-    <div class="hero-modal" role="dialog" aria-modal="true" aria-labelledby="heroModalTitle">
-      <div class="hero-modal-header">
-        <div class="hero-modal-title-wrap">
-          <div id="heroModalTitleIcon" class="icon-slot hero-modal-title-icon"></div>
-          <div>
-            <div id="heroModalTitle" class="hero-modal-title">Hero History</div>
-            <div id="heroModalSubtitle" class="hero-modal-subtitle">-</div>
-          </div>
-        </div>
-        <button id="heroModalCloseBtn" class="hero-modal-close" type="button">Close</button>
-      </div>
-      <div class="hero-modal-body">
-        <div id="heroModalStatsGrid" class="hero-modal-stats-grid"></div>
-        <div class="hero-history-wrap">
-          <div class="hero-history-title">Game History</div>
-          <div id="heroHistoryGrid" class="hero-history-grid"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script>
     const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
-    const HERO_GID = "0";
     const MATCHES_GID = "632247101";
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${HERO_GID}`;
     const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
-
-    const DATE_INDEX = 0;
-    const HERO_NAME_INDEX = 1;
-    const MATCHES_INDEX = 7;
-    const WINRATE_INDEX = 6;
-    const KPG_INDEX = 8;
-    const DPG_INDEX = 9;
-    const APG_INDEX = 10;
-    const SPM_INDEX = 11;
-    const AVG_LENGTH_INDEX = 12;
-
-    const MATCHES_SHEET_ID_INDEX = 0;
-    const MATCHES_SHEET_DATE_INDEX = 1;
-    const MATCHES_SHEET_START_TIME_INDEX = 2;
-    const MATCHES_SHEET_MODE_NAME_INDEX = 4;
-    const MATCHES_SHEET_HERO_INDEX = 6;
-    const MATCHES_SHEET_RESULT_INDEX = 7;
-    const MATCHES_SHEET_COUNTS_INDEX = 10;
-    const MATCHES_SHEET_NON_COUNT_REASON_INDEX = 11;
-    const MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX = -1;
-    const MATCHES_SHEET_KILLS_INDEX = 15;
-    const MATCHES_SHEET_DEATHS_INDEX = 16;
-    const MATCHES_SHEET_ASSISTS_INDEX = 17;
-    const MATCHES_SHEET_SOULS_INDEX = 14;
-    const MATCHES_SHEET_DAMAGE_INDEX = 18;
-    const MATCHES_SHEET_HEALING_INDEX = 20;
-    const MATCHES_SHEET_DURATION_SECONDS_INDEX = 23;
-    const MATCHES_SHEET_DURATION_MINUTES_INDEX = -1;
 
     const MATCHES_HEADER_ALIASES = {
       matchId: ["match_id", "match id", "id"],
       date: ["match_date_est", "match date est", "match_date", "match date", "date"],
       startTime: ["match_start_time_est", "match start time est", "match_start_time", "match start time", "start time"],
-      modeName: ["mode_name", "mode name", "mode"],
       hero: ["selected_hero", "selected hero", "hero"],
       result: ["game_result", "game result", "result"],
       counts: ["counts_in_stats", "counts in stats", "counts"],
-      nonCountReason: ["non_count_reason", "non count reason", "reason"],
-      peakRank: ["peak_rank", "peak rank", "new_peak_rank", "new peak rank"],
+      souls: ["souls", "net_worth", "net worth"],
       kills: ["kills", "player_kills", "player kills"],
       deaths: ["deaths", "player_deaths", "player deaths"],
       assists: ["assists", "player_assists", "player assists"],
-      souls: ["souls", "net_worth", "net worth"],
       damage: ["player_damage", "player damage", "damage"],
+      objectiveDamage: ["objective_damage", "objective damage", "obj damage"],
       healing: ["healing", "healing_done", "healing done"],
-      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec", "match_length_seconds", "match length seconds", "game_length_seconds", "game length seconds", "game_duration_seconds", "game duration seconds", "length_seconds", "length seconds"],
-      durationMinutes: ["duration_minutes", "duration minutes", "match_duration_minutes", "match duration minutes", "duration_min", "duration min", "duration_mins", "duration mins", "match_length_minutes", "match length minutes", "game_length_minutes", "game length minutes", "game_duration_minutes", "game duration minutes", "length_minutes", "length minutes", "duration"]
+      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec"]
     };
 
-    let matchesColumnIndexes = {
-      matchId: MATCHES_SHEET_ID_INDEX,
-      date: MATCHES_SHEET_DATE_INDEX,
-      startTime: MATCHES_SHEET_START_TIME_INDEX,
-      modeName: MATCHES_SHEET_MODE_NAME_INDEX,
-      hero: MATCHES_SHEET_HERO_INDEX,
-      result: MATCHES_SHEET_RESULT_INDEX,
-      counts: MATCHES_SHEET_COUNTS_INDEX,
-      nonCountReason: MATCHES_SHEET_NON_COUNT_REASON_INDEX,
-      peakRank: MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX
+    const HERO_ICON_NAME_ALIASES = {
+      "mo & krill": "mo+krill",
+      "the doorman": "doorman"
     };
 
-    const SORT_BY_DATE = "__date__";
-
-    const table = document.getElementById("dataTable");
+    const searchBox = document.getElementById("searchBox");
+    const heroFilter = document.getElementById("heroFilter");
+    const resultFilter = document.getElementById("resultFilter");
+    const resetBtn = document.getElementById("resetBtn");
+    const statusEl = document.getElementById("statusEl");
+    const emptyState = document.getElementById("emptyState");
+    const table = document.getElementById("gamesTable");
     const thead = table.querySelector("thead");
     const tbody = table.querySelector("tbody");
-    const statusEl = document.getElementById("status");
-    const searchBox = document.getElementById("searchBox");
-    const resetBtn = document.getElementById("resetBtn");
-    const detailedViewToggle = document.getElementById("detailedViewToggle");
-    const startDateInput = document.getElementById("startDateInput");
-    const endDateInput = document.getElementById("endDateInput");
-    const clearDateRangeBtn = document.getElementById("clearDateRangeBtn");
-    const emptyState = document.getElementById("emptyState");
-    const gamesSlider = document.getElementById("gamesSlider");
-    const gamesSliderLabel = document.getElementById("gamesSliderLabel");
-    const heroTableSub = document.getElementById("heroTableSub");
-    const wrapEl = document.getElementById("mainTableWrap");
 
-    const overallMatchesEl = document.getElementById("overallMatches");
-    const overallWinsEl = document.getElementById("overallWins");
-    const overallLossesEl = document.getElementById("overallLosses");
-    const overallWinPctEl = document.getElementById("overallWinPct");
-    const firstMatchPlayedEl = document.getElementById("firstMatchPlayed");
-
-    const longestWinCountEl = document.getElementById("longestWinCount");
-    const longestLossCountEl = document.getElementById("longestLossCount");
-    const longestWinIconsEl = document.getElementById("longestWinIcons");
-    const longestLossIconsEl = document.getElementById("longestLossIcons");
-    const longestWinDatesEl = document.getElementById("longestWinDates");
-    const longestLossDatesEl = document.getElementById("longestLossDates");
-
-    const recordBoxEls = {
-      kills: document.getElementById("recordKills"),
-      deaths: document.getElementById("recordDeaths"),
-      assists: document.getElementById("recordAssists"),
-      souls: document.getElementById("recordSouls"),
-      damage: document.getElementById("recordDamage"),
-      healing: document.getElementById("recordHealing"),
-      shortestGame: document.getElementById("recordShortestGame"),
-      longestGame: document.getElementById("recordLongestGame")
-    };
-
-    const heroModalOverlay = document.getElementById("heroModalOverlay");
-    const heroModalCloseBtn = document.getElementById("heroModalCloseBtn");
-    const heroModalTitle = document.getElementById("heroModalTitle");
-    const heroModalSubtitle = document.getElementById("heroModalSubtitle");
-    const heroModalTitleIcon = document.getElementById("heroModalTitleIcon");
-    const heroModalStatsGrid = document.getElementById("heroModalStatsGrid");
-    const heroHistoryGrid = document.getElementById("heroHistoryGrid");
-
-    const calendarGrid = document.getElementById("calendarGrid");
-    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
-    const calendarPrevBtn = document.getElementById("calendarPrevBtn");
-    const calendarNextBtn = document.getElementById("calendarNextBtn");
-
-    const chartCard = document.getElementById("chartCard");
-    const expandChartBtn = document.getElementById("expandChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const chartCanvas = document.getElementById("winrateChart");
-    let winrateChart = null;
-
+    let headerIndexes = {};
     let allRows = [];
     let filteredRows = [];
-    let sortState = { col: MATCHES_INDEX, dir: "desc" };
-    let maxMatches = 0;
-    let allMatchRows = [];
-    let classifiedMatchRows = [];
-    let sliderGameCount = 0;
-    let calendarViewDate = startOfDay(new Date());
-    let dailyResultsMap = new Map();
-    let headerIndexes = {};
-    let isDetailedView = false;
+    let sortState = { key: "dateTime", dir: "desc" };
+
+    const columns = [
+      { key: "date", label: "Date", defaultDir: "desc" },
+      { key: "startTimeDisplay", label: "Start Time", defaultDir: "desc" },
+      { key: "hero", label: "Hero", defaultDir: "asc", className: "hero-col" },
+      { key: "result", label: "Result", defaultDir: "desc" },
+      { key: "kills", label: "K", defaultDir: "desc" },
+      { key: "deaths", label: "D", defaultDir: "desc" },
+      { key: "assists", label: "A", defaultDir: "desc" },
+      { key: "souls", label: "Souls", defaultDir: "desc" },
+      { key: "damage", label: "Player Dmg", defaultDir: "desc" },
+      { key: "objectiveDamage", label: "Obj Dmg", defaultDir: "desc" },
+      { key: "healing", label: "Healing", defaultDir: "desc" },
+      { key: "durationSeconds", label: "Length", defaultDir: "desc" },
+      { key: "matchId", label: "Match ID", defaultDir: "desc" }
+    ];
+
+    function normalizeValue(value) {
+      if (value == null) return "";
+      return String(value).trim();
+    }
 
     function parseCSV(text) {
       const rows = [];
@@ -1482,17 +472,41 @@
             cell += ch;
           }
         }
+
       }
 
       row.push(cell);
       rows.push(row);
-
       return rows.filter(r => !(r.length === 1 && r[0] === ""));
     }
 
-    function normalizeValue(value) {
-      if (value == null) return "";
-      return String(value).trim();
+    function normalizeHeaderName(value) {
+      return normalizeValue(value)
+        .toLowerCase()
+        .replace(/[-_\s]+/g, " ")
+        .replace(/[^a-z0-9 ]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
+      const normalizedHeaders = headerRow.map(normalizeHeaderName);
+      const normalizedAliases = aliases.map(normalizeHeaderName);
+
+      for (const alias of normalizedAliases) {
+        const idx = normalizedHeaders.indexOf(alias);
+        if (idx !== -1) return idx;
+      }
+
+      for (const alias of normalizedAliases) {
+        const tokens = alias.split(" ").filter(Boolean);
+        const idx = normalizedHeaders.findIndex(header =>
+          tokens.every(token => header.includes(token))
+        );
+        if (idx !== -1) return idx;
+      }
+
+      return fallbackIndex;
     }
 
     function parseNumeric(value) {
@@ -1509,13 +523,13 @@
       if (m) {
         let year = Number(m[3]);
         if (year < 100) year += 2000;
-        const parsed = new Date(year, Number(m[1]) - 1, Number(m[2]));
-        return Number.isNaN(parsed.getTime()) ? null : parsed;
+        const d = new Date(year, Number(m[1]) - 1, Number(m[2]));
+        return Number.isNaN(d.getTime()) ? null : d;
       }
 
       m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
       if (m) {
-        const parsed = new Date(
+        const d = new Date(
           Number(m[1]),
           Number(m[2]) - 1,
           Number(m[3]),
@@ -1523,319 +537,39 @@
           Number(m[5] || 0),
           Number(m[6] || 0)
         );
-        return Number.isNaN(parsed.getTime()) ? null : parsed;
+        return Number.isNaN(d.getTime()) ? null : d;
       }
 
       return null;
     }
 
-    function formatLocalYMD(date) {
-      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, "0");
-      const d = String(date.getDate()).padStart(2, "0");
-      return `${y}-${m}-${d}`;
-    }
-
-    function startOfDay(d) {
-      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    }
-
-    function localDateKey(date) {
-      return formatLocalYMD(startOfDay(date));
-    }
-
-    function monthStart(date) {
-      return new Date(date.getFullYear(), date.getMonth(), 1);
-    }
-
-    function monthEnd(date) {
-      return new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    }
-
-    function addMonths(date, delta) {
-      return new Date(date.getFullYear(), date.getMonth() + delta, 1);
-    }
-
-    function parseMatchDateTime(row) {
-      if (!Array.isArray(row)) return null;
-
-      const startTimeValue = getMatchStartTimeValue(row);
-      const dateValue = getMatchDateValue(row);
-
-      const parsedStart = startTimeValue ? parseSheetDate(startTimeValue) : null;
-      if (parsedStart) return parsedStart;
-
-      const parsedDate = dateValue ? parseSheetDate(dateValue) : null;
-      if (parsedDate) return parsedDate;
-
-      return null;
-    }
-
-    function formatExactDate(value) {
-      const d = parseSheetDate(value);
-      if (!d) return normalizeValue(value);
-      const hasTime = d.getHours() || d.getMinutes() || d.getSeconds();
-      return d.toLocaleString(undefined, {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: hasTime ? "numeric" : undefined,
-        minute: hasTime ? "2-digit" : undefined
-      });
-    }
-
-    function formatLongDate(value) {
-      const d = value instanceof Date ? value : parseSheetDate(value);
-      if (!d) return normalizeValue(value);
-      return d.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      });
-    }
-
-    function formatShortDateTime(value) {
-      const d = value instanceof Date ? value : parseSheetDate(value);
-      if (!d) return normalizeValue(value);
-      return d.toLocaleString(undefined, {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit"
-      });
-    }
-
-    function formatDateRange(startDate, endDate) {
-      if (!startDate && !endDate) return "";
-      if (startDate && endDate) {
-        return `${formatLongDate(startDate)} – ${formatLongDate(endDate)}`;
-      }
-      return formatLongDate(startDate || endDate);
-    }
-
-    function formatDaysAgo(value) {
-      const d = parseSheetDate(value);
-      if (!d) return normalizeValue(value);
-
-      const today = startOfDay(new Date());
-      const then = startOfDay(d);
-      const diffMs = today - then;
-      const days = Math.round(diffMs / 86400000);
-
-      if (days <= 0) return "Today";
-      if (days === 1) return "1 day ago";
-      return `${days} days ago`;
-    }
-
-    function inferType(value) {
+    function parseTimeOnly(value) {
       const v = normalizeValue(value);
-      if (v === "") return { type: "empty", value: "" };
+      if (!v) return null;
 
-      const num = parseNumeric(v);
-      if (num !== null && /^[-+]?\d[\d,]*\.?\d*%?$/.test(v)) {
-        return { type: "number", value: num };
+      let m = v.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+      if (m) {
+        let hours = Number(m[1]);
+        const minutes = Number(m[2]);
+        const seconds = Number(m[3] || 0);
+        const meridiem = m[4].toUpperCase();
+
+        if (meridiem === "AM" && hours === 12) hours = 0;
+        if (meridiem === "PM" && hours !== 12) hours += 12;
+
+        return { hours, minutes, seconds };
       }
 
-      const date = parseSheetDate(v);
-      if (date) {
-        return { type: "date", value: date.getTime() };
+      m = v.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+      if (m) {
+        return {
+          hours: Number(m[1]),
+          minutes: Number(m[2]),
+          seconds: Number(m[3] || 0)
+        };
       }
 
-      return { type: "text", value: v.toLowerCase() };
-    }
-
-    function compareValues(a, b) {
-      const av = inferType(a);
-      const bv = inferType(b);
-
-      const typeOrder = { empty: 0, number: 1, date: 2, text: 3 };
-      if (av.type !== bv.type) {
-        return typeOrder[av.type] - typeOrder[bv.type];
-      }
-
-      if (av.value < bv.value) return -1;
-      if (av.value > bv.value) return 1;
-      return 0;
-    }
-
-    function isCountedMatch(row) {
-      return getMatchCountsValue(row).toLowerCase() === "yes";
-    }
-
-    function isClassifiedCountedMatch(row) {
-      const result = getMatchResultValue(row).toLowerCase();
-      return isCountedMatch(row) && (result === "win" || result === "loss");
-    }
-
-    function getSortValue(row, columnIndex) {
-      if (columnIndex === SORT_BY_DATE) {
-        const d = parseSheetDate(row[DATE_INDEX]);
-        return d ? d.getTime() : "";
-      }
-      return row[columnIndex];
-    }
-
-    function sortRows() {
-      filteredRows.sort((a, b) => {
-        const result = compareValues(getSortValue(a, sortState.col), getSortValue(b, sortState.col));
-        return sortState.dir === "asc" ? result : -result;
-      });
-    }
-
-    function setSort(col, defaultDir = "desc") {
-      if (sortState.col === col) {
-        sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
-      } else {
-        sortState.col = col;
-        sortState.dir = defaultDir;
-      }
-      sortRows();
-      renderHeader();
-      renderTable();
-    }
-
-    const HERO_ICON_NAME_ALIASES = {
-      "mo & krill": "mo+krill",
-      "the doorman": "doorman"
-    };
-
-    function heroIconPath(heroName) {
-      const normalized = normalizeValue(heroName).toLowerCase();
-      const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
-      return `images/deadlock/icons/${encodeURIComponent(fileBaseName + ".png")}`;
-    }
-
-    function rankIconPath(rankName) {
-      const safe = normalizeValue(rankName);
-      if (!safe) return "";
-      return `images/deadlock/ranks/${encodeURIComponent(safe + ".png")}`;
-    }
-
-    function normalizeHeaderName(value) {
-      return normalizeValue(value)
-        .toLowerCase()
-        .replace(/[   ]/g, " ")
-        .replace(/[-_\s]+/g, " ")
-        .replace(/[^a-z0-9 ]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
-      if (!Array.isArray(headerRow) || !headerRow.length) return fallbackIndex;
-      const normalizedHeaders = headerRow.map(normalizeHeaderName);
-      const normalizedAliases = aliases.map(normalizeHeaderName).filter(Boolean);
-
-      for (const alias of normalizedAliases) {
-        const idx = normalizedHeaders.indexOf(alias);
-        if (idx !== -1) return idx;
-      }
-
-      for (const alias of normalizedAliases) {
-        const aliasTokens = alias.split(" ").filter(Boolean);
-        const idx = normalizedHeaders.findIndex(header => {
-          if (!header) return false;
-          if (header.includes(alias)) return true;
-          return aliasTokens.every(token => header.includes(token));
-        });
-        if (idx !== -1) return idx;
-      }
-
-      return fallbackIndex;
-    }
-
-    function resolveMatchesColumnIndexes(rows) {
-      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      matchesColumnIndexes = {
-        matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId, MATCHES_SHEET_ID_INDEX),
-        date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date, MATCHES_SHEET_DATE_INDEX),
-        startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime, MATCHES_SHEET_START_TIME_INDEX),
-        modeName: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.modeName, MATCHES_SHEET_MODE_NAME_INDEX),
-        hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero, MATCHES_SHEET_HERO_INDEX),
-        result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result, MATCHES_SHEET_RESULT_INDEX),
-        counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts, MATCHES_SHEET_COUNTS_INDEX),
-        nonCountReason: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.nonCountReason, MATCHES_SHEET_NON_COUNT_REASON_INDEX),
-        peakRank: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.peakRank, MATCHES_SHEET_PEAK_RANK_FALLBACK_INDEX)
-      };
-      return matchesColumnIndexes;
-    }
-
-    function getMatchCell(row, index) {
-      if (!Array.isArray(row) || !Number.isInteger(index) || index < 0) return "";
-      return normalizeValue(row[index]);
-    }
-
-    function getMatchDateValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.date);
-    }
-
-    function getMatchStartTimeValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.startTime);
-    }
-
-    function getMatchHeroValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.hero);
-    }
-
-    function getMatchResultValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.result);
-    }
-
-    function getMatchCountsValue(row) {
-      return getMatchCell(row, matchesColumnIndexes.counts);
-    }
-
-    function getPeakRankIndex(rows) {
-      return resolveMatchesColumnIndexes(rows).peakRank;
-    }
-
-    function getPeakRankValue(row, peakRankIndex) {
-      if (Number.isInteger(peakRankIndex) && peakRankIndex >= 0) {
-        return getMatchCell(row, peakRankIndex);
-      }
-      return getMatchCell(row, matchesColumnIndexes.peakRank);
-    }
-
-    function getHeaderIndexes(rows) {
-      const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
-      return {
-        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills, MATCHES_SHEET_KILLS_INDEX),
-        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths, MATCHES_SHEET_DEATHS_INDEX),
-        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists, MATCHES_SHEET_ASSISTS_INDEX),
-        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls, MATCHES_SHEET_SOULS_INDEX),
-        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage, MATCHES_SHEET_DAMAGE_INDEX),
-        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing, MATCHES_SHEET_HEALING_INDEX),
-        durationSeconds: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX),
-        durationMinutes: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
-      };
-    }
-
-    function getFirstAvailableMetricCell(row, headerAliases) {
-      if (!Array.isArray(allMatchRows) || !allMatchRows.length || !Array.isArray(row)) return "";
-      const headerRow = allMatchRows[0] || [];
-      const idx = findHeaderIndex(headerRow, headerAliases);
-      return idx >= 0 ? normalizeValue(row[idx]) : "";
-    }
-
-    function buildRecordConfigs() {
-      return [
-        { key: "kills", label: "Most Kills", mode: "max" },
-        { key: "deaths", label: "Most Deaths", mode: "max" },
-        { key: "assists", label: "Most Assists", mode: "max" },
-        { key: "souls", label: "Most Souls", mode: "max" },
-        { key: "damage", label: "Most Damage", mode: "max" },
-        { key: "healing", label: "Most Healing", mode: "max" },
-        { key: "durationSeconds", label: "Shortest Game", mode: "min", isDuration: true, recordKey: "shortestGame" },
-        { key: "durationSeconds", label: "Longest Game", mode: "max", isDuration: true, recordKey: "longestGame" }
-      ];
-    }
-
-    function formatRecordNumber(value) {
-      const num = Number(value);
-      if (!Number.isFinite(num)) return "-";
-      return num.toLocaleString();
+      return null;
     }
 
     function parseDurationToSeconds(value) {
@@ -1847,85 +581,22 @@
 
       const hhmmss = raw.match(/^(\d{1,3}):(\d{1,2}):(\d{1,2})$/);
       if (hhmmss) {
-        return (Number(hhmmss[1]) * 3600) + (Number(hhmmss[2]) * 60) + Number(hhmmss[3]);
+        return Number(hhmmss[1]) * 3600 + Number(hhmmss[2]) * 60 + Number(hhmmss[3]);
       }
 
       const mmss = raw.match(/^(\d{1,3}):(\d{1,2})$/);
       if (mmss) {
-        return (Number(mmss[1]) * 60) + Number(mmss[2]);
-      }
-
-      const verbose = raw.match(/^(?:(\d+(?:\.\d+)?)\s*h(?:ours?)?)?\s*(?:(\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?)?\s*(?:(\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?)?$/i);
-      if (verbose && (verbose[1] || verbose[2] || verbose[3])) {
-        return (Number(verbose[1] || 0) * 3600) + (Number(verbose[2] || 0) * 60) + Number(verbose[3] || 0);
-      }
-
-      return null;
-    }
-
-    function getDurationSeconds(row) {
-      if (!Array.isArray(row)) return null;
-
-      const candidateIndexes = [
-        headerIndexes.durationSeconds,
-        MATCHES_SHEET_DURATION_SECONDS_INDEX,
-        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX)
-      ].filter(idx => Number.isInteger(idx) && idx >= 0);
-
-      for (const idx of candidateIndexes) {
-        const raw = normalizeValue(row[idx]);
-        const parsed = parseDurationToSeconds(raw);
-        if (parsed !== null && parsed > 0) return parsed;
-      }
-
-      const durationSecondsRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationSeconds);
-      const durationSeconds = parseDurationToSeconds(durationSecondsRaw);
-      if (durationSeconds !== null && durationSeconds > 0) return durationSeconds;
-
-      const candidateMinuteIndexes = [
-        headerIndexes.durationMinutes,
-        MATCHES_SHEET_DURATION_MINUTES_INDEX,
-        findHeaderIndex(allMatchRows[0] || [], MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
-      ].filter(idx => Number.isInteger(idx) && idx >= 0);
-
-      for (const idx of candidateMinuteIndexes) {
-        const raw = normalizeValue(row[idx]);
-        if (!raw) continue;
-
-        const durationMinutes = parseNumeric(raw);
-        if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
-
-        const parsedDuration = parseDurationToSeconds(raw);
-        if (parsedDuration !== null && parsedDuration > 0) {
-          if (/^\d{1,3}:\d{1,2}(?::\d{1,2})?$/.test(raw) || /sec|second/i.test(raw)) {
-            return parsedDuration;
-          }
-          return parsedDuration * 60;
-        }
-      }
-
-      const durationMinutesRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationMinutes);
-      if (durationMinutesRaw) {
-        const durationMinutes = parseNumeric(durationMinutesRaw);
-        if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
-
-        const parsedDuration = parseDurationToSeconds(durationMinutesRaw);
-        if (parsedDuration !== null && parsedDuration > 0) {
-          if (/^\d{1,3}:\d{1,2}(?::\d{1,2})?$/.test(durationMinutesRaw) || /sec|second/i.test(durationMinutesRaw)) {
-            return parsedDuration;
-          }
-          return parsedDuration * 60;
-        }
+        return Number(mmss[1]) * 60 + Number(mmss[2]);
       }
 
       return null;
     }
 
     function formatDuration(seconds) {
-      const totalSeconds = Number(seconds);
-      if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return "-";
+      const total = Number(seconds);
+      if (!Number.isFinite(total) || total <= 0) return "-";
 
-      const rounded = Math.round(totalSeconds);
+      const rounded = Math.round(total);
       const hours = Math.floor(rounded / 3600);
       const minutes = Math.floor((rounded % 3600) / 60);
       const secs = rounded % 60;
@@ -1933,250 +604,32 @@
       if (hours > 0) {
         return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
       }
-
       return `${minutes}:${String(secs).padStart(2, "0")}`;
     }
 
-    function getRowMetricValue(row, metricIndex, config = {}) {
-      if (config.isDuration) {
-        return getDurationSeconds(row);
-      }
-      return parseNumeric(row[metricIndex]);
-    }
-
-    function chooseBetterRecordRow(currentBest, candidateRow, metricIndex, config = {}) {
-      const candidateValue = getRowMetricValue(candidateRow, metricIndex, config);
-      if (candidateValue === null) return currentBest;
-      if (!currentBest) return candidateRow;
-
-      const currentValue = getRowMetricValue(currentBest, metricIndex, config);
-      if (currentValue === null) return candidateRow;
-
-      const shouldReplace = config.mode === "min" ? candidateValue < currentValue : candidateValue > currentValue;
-      if (shouldReplace) return candidateRow;
-
-      const isWorse = config.mode === "min" ? candidateValue > currentValue : candidateValue < currentValue;
-      if (isWorse) return currentBest;
-
-      const currentDate = parseMatchDateTime(currentBest);
-      const candidateDate = parseMatchDateTime(candidateRow);
-      if (candidateDate && (!currentDate || candidateDate > currentDate)) return candidateRow;
-      return currentBest;
-    }
-
-    function formatPerGame(value) {
-      return Number.isFinite(value) ? value.toFixed(2) : "-";
-    }
-
-    function formatSoulsPerMinute(totalSouls, totalDurationSeconds) {
-      if (!Number.isFinite(totalSouls) || !Number.isFinite(totalDurationSeconds) || totalDurationSeconds <= 0) return "-";
-      return (totalSouls / (totalDurationSeconds / 60)).toFixed(2);
-    }
-
-    function getCurrentVisibleMatchSubset() {
-      const datedMatches = syncSliderToFilteredMatches();
-      return datedMatches.slice(0, sliderGameCount);
-    }
-
-    function renderHeroModalStats(stats) {
-      if (!heroModalStatsGrid) return;
-      const cards = [
-        { label: "Kills / Game", value: formatPerGame(stats.killsPerGame) },
-        { label: "Deaths / Game", value: formatPerGame(stats.deathsPerGame) },
-        { label: "Assists / Game", value: formatPerGame(stats.assistsPerGame) },
-        { label: "Souls / Minute", value: stats.soulsPerMinute },
-        { label: "Avg Game Length", value: stats.avgGameLength }
-      ];
-
-      heroModalStatsGrid.innerHTML = cards.map(card => `
-        <div class="hero-modal-stat">
-          <div class="hero-modal-stat-label">${card.label}</div>
-          <div class="hero-modal-stat-value">${card.value}</div>
-        </div>
-      `).join("");
-    }
-
-    function openHeroHistoryModal(heroName) {
-      const targetHero = normalizeValue(heroName);
-      if (!targetHero) return;
-
-      const matches = getCurrentVisibleMatchSubset().filter(row => getMatchHeroValue(row) === targetHero);
-      const wins = matches.filter(row => getMatchResultValue(row).toLowerCase() === "win").length;
-      const losses = matches.filter(row => getMatchResultValue(row).toLowerCase() === "loss").length;
-      const totalKills = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.kills]) ?? 0), 0);
-      const totalDeaths = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.deaths]) ?? 0), 0);
-      const totalAssists = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.assists]) ?? 0), 0);
-      const totalSouls = matches.reduce((sum, row) => sum + (parseNumeric(row[headerIndexes.souls]) ?? 0), 0);
-      const totalDurationSeconds = matches.reduce((sum, row) => sum + (getDurationSeconds(row) ?? 0), 0);
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
-
-      heroModalTitle.textContent = targetHero;
-      heroModalSubtitle.textContent = `${matches.length} game(s) • ${wins}-${losses} • ${rangeLabel}${sliderGameCount < syncSliderToFilteredMatches().length ? ` • after ${sliderGameCount} games` : ""}`;
-      heroModalTitleIcon.innerHTML = `
-        <img src="${heroIconPath(targetHero)}" alt="${targetHero}" loading="lazy" onerror="this.style.display='none'">
-      `;
-
-      renderHeroModalStats({
-        killsPerGame: matches.length ? totalKills / matches.length : NaN,
-        deathsPerGame: matches.length ? totalDeaths / matches.length : NaN,
-        assistsPerGame: matches.length ? totalAssists / matches.length : NaN,
-        soulsPerMinute: formatSoulsPerMinute(totalSouls, totalDurationSeconds),
-        avgGameLength: matches.length && totalDurationSeconds > 0 ? formatDuration(totalDurationSeconds / matches.length) : "-"
-      });
-
-      if (!matches.length) {
-        heroHistoryGrid.innerHTML = '<div class="hero-history-empty">No games for this hero in the current view.</div>';
-      } else {
-        heroHistoryGrid.innerHTML = matches.map(row => {
-          const result = getMatchResultValue(row).toLowerCase();
-          const iconHtml = buildIcon(targetHero, "icon-slot").outerHTML;
-          const dt = parseMatchDateTime(row);
-          const kills = parseNumeric(row[headerIndexes.kills]);
-          const deaths = parseNumeric(row[headerIndexes.deaths]);
-          const assists = parseNumeric(row[headerIndexes.assists]);
-          const souls = parseNumeric(row[headerIndexes.souls]);
-          const duration = getDurationSeconds(row);
-          const spm = duration && souls !== null ? (souls / (duration / 60)).toFixed(2) : "-";
-          const title = [
-            formatShortDateTime(dt),
-            `Result: ${result ? result[0].toUpperCase() + result.slice(1) : "-"}`,
-            `K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"}`,
-            `Souls: ${souls !== null ? formatRecordNumber(souls) : "-"}`,
-            `Souls / Min: ${spm}`,
-            `Game Length: ${formatDuration(duration)}`
-          ].join("\n");
-          return `<div class="hero-history-box ${result === "win" ? "win" : "loss"}" title="${title.replace(/"/g, '&quot;')}">${iconHtml}</div>`;
-        }).join("");
-      }
-
-      heroModalOverlay.classList.add("open");
-      heroModalOverlay.setAttribute("aria-hidden", "false");
-    }
-
-    function closeHeroHistoryModal() {
-      heroModalOverlay.classList.remove("open");
-      heroModalOverlay.setAttribute("aria-hidden", "true");
-    }
-
-    function renderSingleRecordBox(container, label, row, metricIndex, config = {}) {
-      if (!container) return;
-
-      if (!row || (metricIndex < 0 && !config.isDuration)) {
-        container.innerHTML = `
-          <div class="record-top">
-            <div class="record-label">${label}</div>
-            <div class="record-value">-</div>
-          </div>
-          <div class="record-main">
-            <div class="record-meta">
-              <div class="record-hero">No data</div>
-              <div class="record-date">-</div>
-              <div class="record-extra">K/D/A: - / - / - • -</div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      const hero = getMatchHeroValue(row) || "Unknown";
-      const result = getMatchResultValue(row) || "-";
-      const kills = parseNumeric(row[headerIndexes.kills]);
-      const deaths = parseNumeric(row[headerIndexes.deaths]);
-      const assists = parseNumeric(row[headerIndexes.assists]);
-      const date = parseMatchDateTime(row);
-      const iconHtml = buildIcon(hero, "icon-slot record-icon").outerHTML;
-      const metricValue = getRowMetricValue(row, metricIndex, config);
-
-      container.innerHTML = `
-        <div class="record-top">
-          <div class="record-label">${label}</div>
-          <div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div>
-        </div>
-        <div class="record-main">
-          ${iconHtml}
-          <div class="record-meta">
-            <div class="record-hero">${hero}</div>
-            <div class="record-date">${date ? formatLongDate(date) : "-"}</div>
-            <div class="record-extra">K/D/A: ${kills ?? "-"} / ${deaths ?? "-"} / ${assists ?? "-"} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : "-"}</div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderRecords(matchesRows, classifiedRows) {
-      headerIndexes = getHeaderIndexes(matchesRows);
-      for (const config of buildRecordConfigs()) {
-        const metricIndex = headerIndexes[config.key];
-        let bestRow = null;
-        const hasMetric = config.isDuration ? (headerIndexes.durationSeconds >= 0 || headerIndexes.durationMinutes >= 0) : metricIndex >= 0;
-        if (hasMetric) {
-          for (const row of classifiedRows) {
-            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-          }
-        }
-        renderSingleRecordBox(recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
-      }
-    }
-
-    function parsePeakRankLabel(value) {
-      const raw = normalizeValue(value);
-      if (!raw) return null;
-
-      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
-      if (!parts) {
-        return {
-          full: raw,
-          rankName: raw,
-          numeral: ""
-        };
-      }
-
-      return {
-        full: raw,
-        rankName: normalizeValue(parts[1]),
-        numeral: normalizeValue(parts[2] || "").toUpperCase()
-      };
-    }
-
-    function loadHeroIcon(heroName) {
-      return new Promise((resolve) => {
-        const hero = normalizeValue(heroName);
-        if (!hero) {
-          resolve(null);
-          return;
-        }
-
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = heroIconPath(hero);
+    function formatDate(value) {
+      const d = value instanceof Date ? value : parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
       });
     }
 
-    function loadRankIcon(rankName) {
-      return new Promise((resolve) => {
-        const rank = normalizeValue(rankName);
-        if (!rank) {
-          resolve(null);
-          return;
-        }
-
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = rankIconPath(rank);
+    function formatTimeFromParts(parts) {
+      if (!parts) return "-";
+      const temp = new Date(2000, 0, 1, parts.hours, parts.minutes, parts.seconds || 0);
+      return temp.toLocaleTimeString(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
       });
     }
 
-    async function buildPointStyles(series) {
-      return Promise.all(series.map(p => loadHeroIcon(p.hero)));
-    }
-
-    async function buildRankPointStyles(series) {
-      return Promise.all(series.map(p => {
-        const parsed = parsePeakRankLabel(p.peakRank);
-        return parsed ? loadRankIcon(parsed.rankName) : Promise.resolve(null);
-      }));
+    function heroIconPath(heroName) {
+      const normalized = normalizeValue(heroName).toLowerCase();
+      const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
+      return `images/deadlock/icons/${encodeURIComponent(fileBaseName + ".png")}`;
     }
 
     function buildIcon(heroName, className = "icon-slot") {
@@ -2187,8 +640,6 @@
       img.src = heroIconPath(heroName);
       img.alt = heroName;
       img.loading = "lazy";
-      img.title = heroName;
-
       img.onerror = function () {
         this.style.display = "none";
       };
@@ -2197,1111 +648,293 @@
       return slot;
     }
 
-    function renderHeroCell(row) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "hero-cell";
-
-      const heroName = normalizeValue(row[HERO_NAME_INDEX]).trim();
-      const icon = buildIcon(heroName, "icon-slot");
-
-      const meta = document.createElement("div");
-      meta.className = "hero-meta";
-
-      const name = document.createElement("div");
-      name.className = "hero-name";
-      name.textContent = heroName || "";
-
-      const date = document.createElement("div");
-      date.className = "hero-date";
-      date.textContent = formatDaysAgo(row[DATE_INDEX]);
-      date.title = formatExactDate(row[DATE_INDEX]);
-      date.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setSort(SORT_BY_DATE, "desc");
-      });
-
-      meta.appendChild(name);
-      meta.appendChild(date);
-
-      wrapper.appendChild(icon);
-      wrapper.appendChild(meta);
-
-      return wrapper;
+    function resolveIndexes(rows) {
+      const headerRow = rows[0] || [];
+      headerIndexes = {
+        matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId),
+        date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date),
+        startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime),
+        hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero),
+        result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result),
+        counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts),
+        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls),
+        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills),
+        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths),
+        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists),
+        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage),
+        objectiveDamage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.objectiveDamage),
+        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing),
+        durationSeconds: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds)
+      };
     }
 
-    function renderStatCell(valueText, pct, fillClass) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "stat-cell";
-
-      const value = document.createElement("div");
-      value.className = "stat-value";
-      value.textContent = valueText;
-
-      const barWrap = document.createElement("div");
-      barWrap.className = "bar-wrap";
-
-      const bar = document.createElement("div");
-      bar.className = `bar-fill ${fillClass}`;
-      bar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-
-      barWrap.appendChild(bar);
-      wrapper.appendChild(value);
-      wrapper.appendChild(barWrap);
-
-      return wrapper;
+    function cell(row, key) {
+      const idx = headerIndexes[key];
+      if (!Number.isInteger(idx) || idx < 0) return "";
+      return normalizeValue(row[idx]);
     }
 
-    function renderMatchesCell(row) {
-      const matches = parseNumeric(row[MATCHES_INDEX]) ?? 0;
-      const pct = maxMatches > 0 ? (matches / maxMatches) * 100 : 0;
-      return renderStatCell(matches, pct, "matches");
+    function buildMatchObjects(rows) {
+      return rows.slice(1)
+        .filter(r => r.some(c => normalizeValue(c) !== ""))
+        .map(row => {
+          const startTimeRaw = cell(row, "startTime");
+          const dateRaw = cell(row, "date");
+          const dateObj = parseSheetDate(dateRaw);
+          const startTimeDateObj = parseSheetDate(startTimeRaw);
+          const startTimeParts = parseTimeOnly(startTimeRaw);
+
+          let dateTime = null;
+          if (startTimeDateObj) {
+            dateTime = startTimeDateObj;
+          } else if (dateObj && startTimeParts) {
+            dateTime = new Date(
+              dateObj.getFullYear(),
+              dateObj.getMonth(),
+              dateObj.getDate(),
+              startTimeParts.hours,
+              startTimeParts.minutes,
+              startTimeParts.seconds || 0
+            );
+          } else if (dateObj) {
+            dateTime = dateObj;
+          }
+
+          const durationSeconds = parseDurationToSeconds(cell(row, "durationSeconds"));
+
+          return {
+            raw: row,
+            matchId: cell(row, "matchId"),
+            date: dateRaw,
+            dateObj,
+            startTimeRaw,
+            startTimeParts,
+            startTimeDisplay: startTimeParts
+              ? formatTimeFromParts(startTimeParts)
+              : (startTimeDateObj
+                  ? startTimeDateObj.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })
+                  : normalizeValue(startTimeRaw) || "-"),
+            dateTime,
+            hero: cell(row, "hero"),
+            result: cell(row, "result").toLowerCase(),
+            counts: cell(row, "counts").toLowerCase(),
+            kills: parseNumeric(cell(row, "kills")),
+            deaths: parseNumeric(cell(row, "deaths")),
+            assists: parseNumeric(cell(row, "assists")),
+            souls: parseNumeric(cell(row, "souls")),
+            damage: parseNumeric(cell(row, "damage")),
+            objectiveDamage: parseNumeric(cell(row, "objectiveDamage")),
+            healing: parseNumeric(cell(row, "healing")),
+            durationSeconds
+          };
+        })
+        .filter(row => row.counts === "yes");
     }
 
-    function renderWinCell(row) {
-      const winPct = parseNumeric(row[WINRATE_INDEX]) ?? 0;
-      return renderStatCell(`${winPct.toFixed(2)}%`, winPct, "win");
+    function populateFilters() {
+      const heroes = [...new Set(allRows.map(r => r.hero).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      heroFilter.innerHTML = `<option value="">All Heroes</option>` +
+        heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join("");
     }
 
-    function renderDetailCell(mainText, subText = "") {
-      const wrapper = document.createElement("div");
-      wrapper.className = "detail-cell";
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
 
-      const value = document.createElement("div");
-      value.className = "detail-value";
-      value.textContent = mainText || "-";
-      wrapper.appendChild(value);
-
-      if (subText) {
-        const sub = document.createElement("div");
-        sub.className = "detail-sub";
-        sub.textContent = subText;
-        wrapper.appendChild(sub);
+    function getSortValue(row, key) {
+      if (key === "date") return row.dateObj ? row.dateObj.getTime() : -Infinity;
+      if (key === "startTimeDisplay") {
+        if (row.startTimeParts) {
+          return row.startTimeParts.hours * 3600 + row.startTimeParts.minutes * 60 + (row.startTimeParts.seconds || 0);
+        }
+        return row.dateTime ? row.dateTime.getTime() : -Infinity;
       }
-
-      return wrapper;
+      if (key === "dateTime") return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      return row[key];
     }
 
-    function renderTable() {
-      tbody.innerHTML = "";
-      table.classList.toggle("table-detailed", isDetailedView);
-      wrapEl.classList.toggle("wrap-detailed", isDetailedView);
+    function compareValues(a, b) {
+      if (a == null && b == null) return 0;
+      if (a == null) return -1;
+      if (b == null) return 1;
 
-      emptyState.style.display = filteredRows.length ? "none" : "block";
+      if (typeof a === "number" && typeof b === "number") return a - b;
 
-      filteredRows.forEach((row) => {
-        const tr = document.createElement("tr");
+      const aStr = String(a).toLowerCase();
+      const bStr = String(b).toLowerCase();
+      if (aStr < bStr) return -1;
+      if (aStr > bStr) return 1;
+      return 0;
+    }
 
-        const heroTd = document.createElement("td");
-        heroTd.className = "hero-clickable";
-        heroTd.title = `View ${normalizeValue(row[HERO_NAME_INDEX])} history`;
-        heroTd.appendChild(renderHeroCell(row));
-        heroTd.addEventListener("click", () => openHeroHistoryModal(normalizeValue(row[HERO_NAME_INDEX])));
-        tr.appendChild(heroTd);
+    function sortRows() {
+      filteredRows.sort((a, b) => {
+        const result = compareValues(getSortValue(a, sortState.key), getSortValue(b, sortState.key));
+        return sortState.dir === "asc" ? result : -result;
+      });
+    }
 
-        const matchesTd = document.createElement("td");
-        matchesTd.appendChild(renderMatchesCell(row));
-        tr.appendChild(matchesTd);
+    function setSort(key, defaultDir = "desc") {
+      if (sortState.key === key) {
+        sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+      } else {
+        sortState.key = key;
+        sortState.dir = defaultDir;
+      }
+      sortRows();
+      renderHeader();
+      renderTable();
+    }
 
-        const winTd = document.createElement("td");
-        winTd.appendChild(renderWinCell(row));
-        tr.appendChild(winTd);
+    function applyFilters() {
+      const search = searchBox.value.trim().toLowerCase();
+      const hero = heroFilter.value;
+      const result = resultFilter.value;
 
-        if (isDetailedView) {
-          const kpgTd = document.createElement("td");
-          kpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[KPG_INDEX]))));
-          tr.appendChild(kpgTd);
+      filteredRows = allRows.filter(row => {
+        if (hero && row.hero !== hero) return false;
+        if (result && row.result !== result) return false;
 
-          const dpgTd = document.createElement("td");
-          dpgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[DPG_INDEX]))));
-          tr.appendChild(dpgTd);
+        if (search) {
+          const haystack = [
+            row.matchId,
+            row.hero,
+            row.result,
+            row.date,
+            row.startTimeRaw,
+            row.startTimeDisplay
+          ].join(" ").toLowerCase();
 
-          const apgTd = document.createElement("td");
-          apgTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[APG_INDEX]))));
-          tr.appendChild(apgTd);
-
-          const spmTd = document.createElement("td");
-          spmTd.appendChild(renderDetailCell(formatDetailedAverage(parseNumeric(row[SPM_INDEX]))));
-          tr.appendChild(spmTd);
-
-          const avgLengthTd = document.createElement("td");
-          avgLengthTd.appendChild(renderDetailCell(formatDuration(parseNumeric(row[AVG_LENGTH_INDEX]))));
-          tr.appendChild(avgLengthTd);
+          if (!haystack.includes(search)) return false;
         }
 
-        tbody.appendChild(tr);
+        return true;
       });
 
-      statusEl.textContent = `${filteredRows.length} hero row(s) shown from counted matches`;
+      sortRows();
+      renderHeader();
+      renderTable();
     }
 
     function renderHeader() {
       thead.innerHTML = "";
       const tr = document.createElement("tr");
 
-      const columns = [
-        { label: "Hero", index: HERO_NAME_INDEX, defaultDir: "asc" },
-        { label: "Matches", index: MATCHES_INDEX, defaultDir: "desc" },
-        { label: "Win %", index: WINRATE_INDEX, defaultDir: "desc" }
-      ];
-
-      if (isDetailedView) {
-        columns.push(
-          { label: "K / Game", index: KPG_INDEX, defaultDir: "desc" },
-          { label: "D / Game", index: DPG_INDEX, defaultDir: "desc" },
-          { label: "A / Game", index: APG_INDEX, defaultDir: "desc" },
-          { label: "Souls / Min", index: SPM_INDEX, defaultDir: "desc" },
-          { label: "Avg Length", index: AVG_LENGTH_INDEX, defaultDir: "desc" }
-        );
-      }
-
       columns.forEach(col => {
         const th = document.createElement("th");
         th.textContent = col.label;
+        if (col.className) th.classList.add(col.className);
 
-        if (sortState.col === col.index) {
+        if (sortState.key === col.key) {
           const span = document.createElement("span");
           span.className = "sort-indicator";
           span.textContent = sortState.dir === "asc" ? "▲" : "▼";
           th.appendChild(span);
         }
 
-        th.addEventListener("click", () => {
-          setSort(col.index, col.defaultDir);
-        });
-
+        th.addEventListener("click", () => setSort(col.key, col.defaultDir));
         tr.appendChild(th);
       });
 
       thead.appendChild(tr);
     }
 
-    function findLongestStreak(rows, targetResult) {
-      let best = {
-        heroes: [],
-        startDate: null,
-        endDate: null
-      };
-
-      let currentHeroes = [];
-      let currentStartDate = null;
-      let currentEndDate = null;
-
-      for (const row of rows) {
-        const result = getMatchResultValue(row).toLowerCase();
-        const hero = getMatchHeroValue(row);
-        const date = parseMatchDateTime(row);
-
-        if (!hero || !isCountedMatch(row)) continue;
-
-        if (result === targetResult) {
-          if (currentHeroes.length === 0) {
-            currentStartDate = date;
-          }
-
-          currentHeroes.push(hero);
-          currentEndDate = date;
-
-          if (currentHeroes.length > best.heroes.length) {
-            best = {
-              heroes: [...currentHeroes],
-              startDate: currentStartDate,
-              endDate: currentEndDate
-            };
-          }
-        } else {
-          currentHeroes = [];
-          currentStartDate = null;
-          currentEndDate = null;
-        }
-      }
-
-      return best;
+    function resultPill(result) {
+      const cls = result === "win" ? "win" : result === "loss" ? "loss" : "other";
+      const label = result ? result[0].toUpperCase() + result.slice(1) : "-";
+      return `<span class="result-pill ${cls}">${escapeHtml(label)}</span>`;
     }
 
-    function renderStreak(container, heroes) {
-      container.innerHTML = "";
-
-      if (!heroes.length) {
-        const empty = document.createElement("div");
-        empty.className = "streak-empty";
-        empty.textContent = "No streak found";
-        container.appendChild(empty);
-        return;
-      }
-
-      heroes.forEach(hero => {
-        container.appendChild(buildIcon(hero, "streak-icon"));
-      });
+    function formatNumber(value) {
+      return Number.isFinite(value) ? value.toLocaleString() : "-";
     }
 
-    function buildDailyResultsMap(rows) {
-      const map = new Map();
+    function renderTable() {
+      tbody.innerHTML = "";
+      emptyState.style.display = filteredRows.length ? "none" : "block";
 
-      rows.forEach(row => {
-        const result = getMatchResultValue(row).toLowerCase();
-        const date = parseMatchDateTime(row);
+      filteredRows.forEach(row => {
+        const tr = document.createElement("tr");
 
-        if (!date || !isCountedMatch(row)) return;
-        if (result !== "win" && result !== "loss") return;
+        const dateTd = document.createElement("td");
+        dateTd.textContent = formatDate(row.dateObj || row.date);
+        tr.appendChild(dateTd);
 
-        const key = localDateKey(date);
+        const timeTd = document.createElement("td");
+        timeTd.textContent = row.startTimeDisplay || "-";
+        tr.appendChild(timeTd);
 
-        if (!map.has(key)) {
-          map.set(key, { wins: 0, losses: 0 });
-        }
+        const heroTd = document.createElement("td");
+        heroTd.className = "hero-col";
+        const heroWrap = document.createElement("div");
+        heroWrap.className = "hero-cell";
+        heroWrap.appendChild(buildIcon(row.hero));
+        const heroName = document.createElement("div");
+        heroName.className = "hero-name";
+        heroName.textContent = row.hero || "-";
+        heroWrap.appendChild(heroName);
+        heroTd.appendChild(heroWrap);
+        tr.appendChild(heroTd);
 
-        const entry = map.get(key);
+        const resultTd = document.createElement("td");
+        resultTd.innerHTML = resultPill(row.result);
+        tr.appendChild(resultTd);
 
-        if (result === "win") {
-          entry.wins += 1;
-        } else {
-          entry.losses += 1;
-        }
-      });
-
-      return map;
-    }
-
-    function renderCalendar() {
-      if (!calendarGrid || !calendarMonthLabel) return;
-
-      calendarGrid.innerHTML = "";
-
-      const viewStart = monthStart(calendarViewDate);
-      calendarMonthLabel.textContent = viewStart.toLocaleDateString(undefined, {
-        month: "long",
-        year: "numeric"
-      });
-
-      const gridStart = new Date(viewStart);
-      gridStart.setDate(viewStart.getDate() - viewStart.getDay());
-
-      const todayKey = localDateKey(new Date());
-
-      for (let i = 0; i < 42; i++) {
-        const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
-        const cellKey = localDateKey(cellDate);
-        const counts = dailyResultsMap.get(cellKey) || { wins: 0, losses: 0 };
-
-        const cell = document.createElement("div");
-        cell.className = "calendar-day";
-
-        if (cellDate.getMonth() !== viewStart.getMonth()) {
-          cell.classList.add("other-month");
-        }
-
-        if (cellKey === todayKey) {
-          cell.classList.add("today");
-        }
-
-        if (counts.wins > 0 || counts.losses > 0) {
-          cell.classList.add("has-games");
-        }
-
-        const number = document.createElement("div");
-        number.className = "calendar-day-number";
-        number.textContent = cellDate.getDate();
-
-        const records = document.createElement("div");
-        records.className = "calendar-records";
-
-        if (counts.wins === 0 && counts.losses === 0) {
-          const empty = document.createElement("div");
-          empty.className = "calendar-record empty";
-          empty.textContent = "—";
-          records.appendChild(empty);
-        } else {
-          const wins = document.createElement("div");
-          wins.className = "calendar-record wins";
-          wins.textContent = `W: ${counts.wins}`;
-
-          const losses = document.createElement("div");
-          losses.className = "calendar-record losses";
-          losses.textContent = `L: ${counts.losses}`;
-
-          records.appendChild(wins);
-          records.appendChild(losses);
-        }
-
-        cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses}`;
-        cell.appendChild(number);
-        cell.appendChild(records);
-        calendarGrid.appendChild(cell);
-      }
-    }
-
-    function buildDeltaSeries(rows) {
-      const dataRows = rows
-        .slice(1)
-        .filter(r => r.some(cell => normalizeValue(cell) !== ""));
-
-      const peakRankIndex = getPeakRankIndex(rows);
-
-      let wins = 0;
-      let losses = 0;
-      let classifiedMatchNumber = 0;
-
-      return dataRows
-        .map(row => {
-          if (!isClassifiedCountedMatch(row)) return null;
-
-          const result = getMatchResultValue(row).toLowerCase();
-          const date = parseSheetDate(row[MATCHES_SHEET_START_TIME_INDEX]) || parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]);
-          const hero = getMatchHeroValue(row);
-          const modeName = normalizeValue(row[MATCHES_SHEET_MODE_NAME_INDEX]);
-          const matchId = normalizeValue(row[MATCHES_SHEET_ID_INDEX]);
-          const peakRank = getPeakRankValue(row, peakRankIndex);
-
-          classifiedMatchNumber += 1;
-
-          if (result === "win") {
-            wins += 1;
-          } else {
-            losses += 1;
-          }
-
-          return {
-            xLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`,
-            y: wins - losses,
-            hero,
-            result,
-            matchNumber: classifiedMatchNumber,
-            modeName,
-            matchId,
-            peakRank
-          };
-        })
-        .filter(Boolean);
-    }
-
-    function buildOriginTrendline(series) {
-      const n = series.length;
-      if (!n) return [0];
-
-      let sumXY = 0;
-      let sumXX = 0;
-
-      for (let i = 0; i < n; i++) {
-        const x = i + 1;
-        const y = series[i].y;
-        sumXY += x * y;
-        sumXX += x * x;
-      }
-
-      const slope = sumXX === 0 ? 0 : sumXY / sumXX;
-
-      return [0, ...series.map((_, i) => Number((slope * (i + 1)).toFixed(2)))];
-    }
-
-    const heroPointPlugin = {
-      id: "heroPointPlugin",
-      afterDatasetsDraw(chart, args, pluginOptions) {
-        const { ctx, chartArea } = chart;
-        const meta = chart.getDatasetMeta(0);
-        const heroIcons = pluginOptions.heroIcons || [];
-        const rankIcons = pluginOptions.rankIcons || [];
-        const series = pluginOptions.series || [];
-
-        const minSize = pluginOptions.minSize ?? 10;
-        const maxSize = pluginOptions.maxSize ?? 22;
-        const widthFactor = pluginOptions.widthFactor ?? 0.018;
-        const zoomBoost = pluginOptions.zoomBoost ?? 0.35;
-
-        const xScale = chart.scales.x;
-        const totalPoints = Math.max(1, (series?.length || 0) + 1);
-        const visibleMin = Number.isFinite(xScale?.min) ? xScale.min : 0;
-        const visibleMax = Number.isFinite(xScale?.max) ? xScale.max : totalPoints - 1;
-        const visiblePoints = Math.max(1, visibleMax - visibleMin + 1);
-
-        const baseSize = chartArea.width * widthFactor;
-        const zoomScaleFactor = Math.sqrt(totalPoints / visiblePoints);
-        const dynamicSize = Math.max(
-          minSize,
-          Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost))
-        );
-
-        const rankIconSize = Math.max(
-          Math.round(dynamicSize * 1.15),
-          Math.min(28, dynamicSize + 2)
-        );
-
-        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
-        const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
-
-        ctx.save();
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-
-        meta.data.forEach((point, i) => {
-          const icon = heroIcons[i];
-          if (!icon) return;
-
-          const x = point.x - dynamicSize / 2;
-          const y = point.y - dynamicSize / 2;
-          ctx.drawImage(icon, x, y, dynamicSize, dynamicSize);
+        ["kills","deaths","assists","souls","damage","objectiveDamage","healing","durationSeconds"].forEach(key => {
+          const td = document.createElement("td");
+          td.className = "num";
+          td.textContent = key === "durationSeconds" ? formatDuration(row.durationSeconds) : formatNumber(row[key]);
+          tr.appendChild(td);
         });
 
-        ctx.restore();
+        const matchIdTd = document.createElement("td");
+        matchIdTd.textContent = row.matchId || "-";
+        tr.appendChild(matchIdTd);
 
-        const peakEntries = [];
-
-        meta.data.forEach((point, i) => {
-          if (i === 0) return;
-
-          const p = series[i - 1];
-          if (!p || !p.peakRank) return;
-
-          const rankParsed = parsePeakRankLabel(p.peakRank);
-          if (!rankParsed) return;
-
-          peakEntries.push({
-            point,
-            rankParsed,
-            rankIcon: rankIcons[i - 1]
-          });
-        });
-
-        if (!peakEntries.length) return;
-
-        const alignedIconCenterY = Math.max(
-          chartArea.top + rankIconSize / 2 + 4,
-          Math.min(
-            ...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift)
-          )
-        );
-
-        ctx.save();
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.lineJoin = "round";
-        ctx.lineCap = "round";
-
-        peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
-          const iconCenterX = point.x;
-          const iconCenterY = alignedIconCenterY;
-          const iconX = iconCenterX - rankIconSize / 2;
-          const iconY = iconCenterY - rankIconSize / 2;
-
-          const lineStartY = iconY + rankIconSize + 1;
-          const lineEndY = point.y - dynamicSize / 2 - 4;
-
-          if (lineEndY > lineStartY) {
-            ctx.strokeStyle = "rgba(255,255,255,0.18)";
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(iconCenterX, lineStartY);
-            ctx.lineTo(iconCenterX, lineEndY);
-            ctx.stroke();
-          }
-
-          if (rankIcon) {
-            ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
-          }
-
-          if (rankParsed.numeral) {
-            const numeralY = iconCenterY + 1.5;
-
-            ctx.save();
-            ctx.translate(iconCenterX, numeralY);
-            ctx.scale(0.88, 1);
-
-            ctx.font = `700 ${numeralFontSize}px Arial`;
-            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 3;
-            ctx.strokeText(rankParsed.numeral, 0, 0);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.numeral, 0, 0);
-
-            ctx.restore();
-          } else if (!rankIcon) {
-            ctx.font = `700 ${Math.max(10, numeralFontSize)}px Arial`;
-            ctx.strokeStyle = "rgba(31, 36, 48, 0.98)";
-            ctx.lineWidth = 3;
-            ctx.strokeText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText(rankParsed.rankName, iconCenterX, iconCenterY + 0.5);
-          }
-        });
-
-        ctx.restore();
-      }
-    };
-
-    async function renderWinrateChart(rows) {
-      const series = buildDeltaSeries(rows);
-
-      if (winrateChart) {
-        winrateChart.destroy();
-        winrateChart = null;
-      }
-
-      if (!series.length) return;
-
-      const pointIcons = await buildPointStyles(series);
-      const rankPointIcons = await buildRankPointStyles(series);
-
-      const labels = ["Start", ...series.map(p => p.xLabel)];
-      const deltaData = [0, ...series.map(p => p.y)];
-      const trendline = buildOriginTrendline(series);
-      const pluginHeroIcons = [null, ...pointIcons];
-
-      const yValues = [...deltaData, ...trendline];
-      const minY = Math.min(...yValues);
-      const maxY = Math.max(...yValues);
-      const yPadding = Math.max(2, Math.ceil((maxY - minY) * 0.1));
-
-      winrateChart = new Chart(chartCanvas, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "W-L Delta",
-              data: deltaData,
-              borderColor: "#98e61d",
-              backgroundColor: "rgba(152, 230, 29, 0.10)",
-              pointRadius: 8,
-              pointHoverRadius: 10,
-              pointHitRadius: 14,
-              pointBackgroundColor: "rgba(0,0,0,0)",
-              pointBorderColor: "rgba(0,0,0,0)",
-              pointBorderWidth: 0,
-              borderWidth: 2,
-              tension: 0.2,
-              fill: false
-            },
-            {
-              label: "Trend",
-              data: trendline,
-              borderColor: "rgba(243, 244, 246, 0.35)",
-              pointRadius: 0,
-              pointHoverRadius: 0,
-              borderWidth: 2,
-              tension: 0,
-              fill: false,
-              borderDash: [6, 6]
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            mode: "nearest",
-            intersect: false
-          },
-          plugins: {
-            heroPointPlugin: {
-              heroIcons: pluginHeroIcons,
-              rankIcons: rankPointIcons,
-              series,
-              minSize: 10,
-              maxSize: 36,
-              widthFactor: 0.018,
-              zoomBoost: 0.9
-            },
-            legend: {
-              display: false
-            },
-            tooltip: {
-              callbacks: {
-                title(items) {
-                  const i = items[0].dataIndex;
-                  return labels[i];
-                },
-                label(context) {
-                  const i = context.dataIndex;
-
-                  if (context.datasetIndex === 0) {
-                    const value = deltaData[i];
-                    return `Delta: ${value > 0 ? "+" : ""}${value}`;
-                  }
-
-                  const value = trendline[i];
-                  return `Trend: ${value > 0 ? "+" : ""}${value}`;
-                },
-                afterLabel(context) {
-                  if (context.datasetIndex !== 0) return "";
-
-                  const i = context.dataIndex;
-                  if (i === 0) return "Origin";
-
-                  const p = series[i - 1];
-                  const lines = [`After match ${p.matchNumber} (${p.hero}, ${p.result})`];
-
-                  if (p.modeName) {
-                    lines.push(`Mode: ${p.modeName}`);
-                  }
-                  if (p.matchId) {
-                    lines.push(`Match ID: ${p.matchId}`);
-                  }
-                  if (p.peakRank) {
-                    lines.push(`New peak: ${p.peakRank}`);
-                  }
-
-                  return lines;
-                }
-              }
-            },
-            zoom: {
-              limits: {
-                x: { min: 0, max: labels.length - 1 },
-                y: { min: "original", max: "original" }
-              },
-              pan: {
-                enabled: true,
-                mode: "xy",
-                modifierKey: "shift"
-              },
-              zoom: {
-                wheel: {
-                  enabled: true
-                },
-                pinch: {
-                  enabled: true
-                },
-                drag: {
-                  enabled: true,
-                  backgroundColor: "rgba(255,255,255,0.10)",
-                  borderColor: "rgba(255,255,255,0.25)",
-                  borderWidth: 1
-                },
-                mode: "xy"
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                color: "#9ca3af",
-                maxTicksLimit: 10,
-                callback: function(value, index) {
-                  return index === 0 ? "" : this.getLabelForValue(value);
-                }
-              },
-              grid: {
-                color: "rgba(255,255,255,0.06)"
-              }
-            },
-            y: {
-              min: minY - yPadding,
-              max: maxY + yPadding,
-              ticks: {
-                color: "#9ca3af",
-                callback: value => value > 0 ? `+${value}` : `${value}`
-              },
-              grid: {
-                color: "rgba(255,255,255,0.06)"
-              }
-            }
-          }
-        },
-        plugins: [heroPointPlugin]
-      });
-    }
-
-    function setOverallStats(matchesRows) {
-      const dataRows = matchesRows
-        .slice(1)
-        .filter(r => r.some(cell => normalizeValue(cell) !== ""));
-
-      const classifiedRows = dataRows.filter(isClassifiedCountedMatch);
-
-      const totalMatches = classifiedRows.length;
-
-      const wins = classifiedRows.filter(row =>
-        getMatchResultValue(row).toLowerCase() === "win"
-      ).length;
-
-      const losses = classifiedRows.filter(row =>
-        getMatchResultValue(row).toLowerCase() === "loss"
-      ).length;
-
-      const firstDate = classifiedRows
-        .map(row => parseSheetDate(row[MATCHES_SHEET_DATE_INDEX]))
-        .filter(Boolean)
-        .sort((a, b) => a - b)[0];
-
-      const overallWinPct = totalMatches > 0
-        ? `${((wins / totalMatches) * 100).toFixed(2)}%`
-        : "-";
-
-      overallMatchesEl.textContent = totalMatches;
-      overallWinsEl.textContent = wins;
-      overallLossesEl.textContent = losses;
-      overallWinPctEl.textContent = overallWinPct;
-      firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : "-";
-
-      const longestWin = findLongestStreak(classifiedRows, "win");
-      const longestLoss = findLongestStreak(classifiedRows, "loss");
-
-      longestWinCountEl.textContent = longestWin.heroes.length;
-      longestLossCountEl.textContent = longestLoss.heroes.length;
-
-      longestWinDatesEl.textContent = formatDateRange(longestWin.startDate, longestWin.endDate);
-      longestLossDatesEl.textContent = formatDateRange(longestLoss.startDate, longestLoss.endDate);
-
-      renderStreak(longestWinIconsEl, longestWin.heroes);
-      renderStreak(longestLossIconsEl, longestLoss.heroes);
-      renderRecords(matchesRows, classifiedRows);
-
-      dailyResultsMap = buildDailyResultsMap(classifiedRows);
-      renderCalendar();
-
-      renderWinrateChart(matchesRows);
-    }
-
-    function formatDetailedAverage(value) {
-      return Number.isFinite(value) ? value.toFixed(2) : "-";
-    }
-
-    function buildHeroRowsFromMatches(matchRowsSubset) {
-      const heroMap = new Map();
-
-      matchRowsSubset.forEach(row => {
-        const hero = getMatchHeroValue(row);
-        const result = getMatchResultValue(row).toLowerCase();
-        const date = parseMatchDateTime(row);
-
-        if (!hero) return;
-        if (!isCountedMatch(row)) return;
-        if (result !== "win" && result !== "loss") return;
-
-        if (!heroMap.has(hero)) {
-          heroMap.set(hero, {
-            hero,
-            matches: 0,
-            wins: 0,
-            lastDate: null,
-            totalKills: 0,
-            totalDeaths: 0,
-            totalAssists: 0,
-            totalSouls: 0,
-            totalDurationSeconds: 0
-          });
-        }
-
-        const entry = heroMap.get(hero);
-        entry.matches += 1;
-        if (result === "win") entry.wins += 1;
-        if (date && (!entry.lastDate || date > entry.lastDate)) {
-          entry.lastDate = date;
-        }
-
-        entry.totalKills += parseNumeric(row[headerIndexes.kills]) ?? 0;
-        entry.totalDeaths += parseNumeric(row[headerIndexes.deaths]) ?? 0;
-        entry.totalAssists += parseNumeric(row[headerIndexes.assists]) ?? 0;
-        entry.totalSouls += parseNumeric(row[headerIndexes.souls]) ?? 0;
-        entry.totalDurationSeconds += getDurationSeconds(row) ?? 0;
+        tbody.appendChild(tr);
       });
 
-      return Array.from(heroMap.values()).map(entry => {
-        const winPct = entry.matches > 0 ? (entry.wins / entry.matches) * 100 : 0;
-        const killsPerGame = entry.matches > 0 ? entry.totalKills / entry.matches : NaN;
-        const deathsPerGame = entry.matches > 0 ? entry.totalDeaths / entry.matches : NaN;
-        const assistsPerGame = entry.matches > 0 ? entry.totalAssists / entry.matches : NaN;
-        const soulsPerMinute = entry.totalDurationSeconds > 0
-          ? entry.totalSouls / (entry.totalDurationSeconds / 60)
-          : NaN;
-        const avgLengthSeconds = entry.matches > 0 && entry.totalDurationSeconds > 0
-          ? entry.totalDurationSeconds / entry.matches
-          : NaN;
-
-        return [
-          entry.lastDate ? formatLocalYMD(entry.lastDate) : "",
-          entry.hero,
-          "",
-          "",
-          "",
-          "",
-          winPct,
-          entry.matches,
-          killsPerGame,
-          deathsPerGame,
-          assistsPerGame,
-          soulsPerMinute,
-          avgLengthSeconds
-        ];
-      });
+      statusEl.textContent = `${filteredRows.length} counted game(s) shown`;
     }
 
-    function getDateInputValue(inputEl) {
-      return inputEl ? normalizeValue(inputEl.value) : "";
-    }
-
-    function getActiveDateRange() {
-      const startValue = getDateInputValue(startDateInput);
-      const endValue = getDateInputValue(endDateInput);
-
-      const startDate = startValue ? parseSheetDate(startValue) : null;
-      const endDate = endValue ? parseSheetDate(endValue) : null;
-
-      return {
-        startDate: startDate ? startOfDay(startDate) : null,
-        endDate: endDate ? startOfDay(endDate) : null
-      };
-    }
-
-    function isRowWithinActiveDateRange(row) {
-      const { startDate, endDate } = getActiveDateRange();
-      if (!startDate && !endDate) return true;
-
-      const rowDate = parseMatchDateTime(row);
-      if (!rowDate) return false;
-
-      const rowDay = startOfDay(rowDate);
-
-      if (startDate && rowDay < startDate) return false;
-      if (endDate && rowDay > endDate) return false;
-
-      return true;
-    }
-
-    function getDateRangeFilteredMatches() {
-      return classifiedMatchRows.filter(isRowWithinActiveDateRange);
-    }
-
-    function syncSliderToFilteredMatches() {
-      const datedMatches = getDateRangeFilteredMatches();
-      const total = datedMatches.length;
-      const currentValue = Number(gamesSlider.value || 0);
-
-      gamesSlider.min = 0;
-      gamesSlider.max = String(total);
-
-      sliderGameCount = Math.min(currentValue || total, total);
-      gamesSlider.value = String(sliderGameCount);
-
-      return datedMatches;
-    }
-
-    function formatDateRangeShort(startDate, endDate) {
-      if (!startDate && !endDate) return "ALL TIME";
-      if (startDate && endDate) {
-        return `${formatLongDate(startDate)} – ${formatLongDate(endDate)}`;
-      }
-      if (startDate) {
-        return `${formatLongDate(startDate)}+`;
-      }
-      return `Through ${formatLongDate(endDate)}`;
-    }
-
-    function updateHeroTableForSlider() {
-      const datedMatches = syncSliderToFilteredMatches();
-      const subset = datedMatches.slice(0, sliderGameCount);
-      const builtRows = buildHeroRowsFromMatches(subset);
-
-      allRows = builtRows;
-      maxMatches = Math.max(...allRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0), 0);
-
-      const searchTerm = searchBox.value.trim().toLowerCase();
-      filteredRows = !searchTerm
-        ? [...allRows]
-        : allRows.filter(row =>
-            String(row[HERO_NAME_INDEX] ?? "").toLowerCase().includes(searchTerm) ||
-            String(row[DATE_INDEX] ?? "").toLowerCase().includes(searchTerm)
-          );
-
-      if (!isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
-      if (isDetailedView && ![HERO_NAME_INDEX, MATCHES_INDEX, WINRATE_INDEX, KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
-      sortRows();
-      renderHeader();
-      renderTable();
-
-      const total = datedMatches.length;
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
-      gamesSliderLabel.textContent = `${sliderGameCount} / ${total} games`;
-      heroTableSub.textContent = sliderGameCount >= total
-        ? rangeLabel
-        : `${rangeLabel} • AFTER ${sliderGameCount} GAMES`;
-    }
-
-    function isChartFullscreen() {
-      return document.fullscreenElement === chartCard ||
-             document.webkitFullscreenElement === chartCard;
-    }
-
-    async function toggleChartFullscreen() {
+    async function loadData() {
       try {
-        if (!isChartFullscreen()) {
-          if (chartCard.requestFullscreen) {
-            await chartCard.requestFullscreen();
-          } else if (chartCard.webkitRequestFullscreen) {
-            await chartCard.webkitRequestFullscreen();
-          }
-          expandChartBtn.textContent = "Collapse";
-        } else {
-          if (document.exitFullscreen) {
-            await document.exitFullscreen();
-          } else if (document.webkitExitFullscreen) {
-            await document.webkitExitFullscreen();
-          }
-          expandChartBtn.textContent = "Expand";
-        }
+        const res = await fetch(MATCHES_CSV_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const text = await res.text();
+        const rows = parseCSV(text);
+        if (!rows.length) throw new Error("No rows found");
+
+        resolveIndexes(rows);
+        allRows = buildMatchObjects(rows);
+
+        populateFilters();
+        applyFilters();
       } catch (err) {
-        console.error("Fullscreen toggle failed:", err);
-      }
-    }
-
-    async function loadSheet() {
-      try {
-        const matchesRes = await fetch(MATCHES_CSV_URL);
-
-        if (!matchesRes.ok) throw new Error(`Matches sheet HTTP ${matchesRes.status}`);
-
-        const matchesCsvText = await matchesRes.text();
-        const matchesRows = parseCSV(matchesCsvText);
-
-        if (!matchesRows.length) {
-          throw new Error("No matches data found.");
-        }
-
-        allMatchRows = matchesRows;
-        resolveMatchesColumnIndexes(matchesRows);
-        classifiedMatchRows = matchesRows
-          .slice(1)
-          .filter(r => r.some(cell => normalizeValue(cell) !== ""))
-          .filter(isClassifiedCountedMatch);
-
-        gamesSlider.min = 0;
-        gamesSlider.max = String(classifiedMatchRows.length);
-        gamesSlider.value = String(classifiedMatchRows.length);
-        sliderGameCount = classifiedMatchRows.length;
-
-        updateHeroTableForSlider();
-        setOverallStats(matchesRows);
-      } catch (err) {
-        statusEl.innerHTML = `Could not load the Google Sheet automatically. Error: <strong>${err.message}</strong>`;
+        statusEl.innerHTML = `Could not load match data. Error: <strong>${escapeHtml(err.message)}</strong>`;
         thead.innerHTML = "";
         tbody.innerHTML = "";
-        emptyState.style.display = "none";
-
-        overallMatchesEl.textContent = "-";
-        overallWinsEl.textContent = "-";
-        overallLossesEl.textContent = "-";
-        overallWinPctEl.textContent = "-";
-        firstMatchPlayedEl.textContent = "-";
-
-        longestWinCountEl.textContent = "-";
-        longestLossCountEl.textContent = "-";
-        longestWinDatesEl.textContent = "";
-        longestLossDatesEl.textContent = "";
-        longestWinIconsEl.innerHTML = "";
-        longestLossIconsEl.innerHTML = "";
-
-        Object.values(recordBoxEls).forEach(el => {
-          if (el) {
-            el.innerHTML = '<div class="record-top"><div class="record-label">-</div><div class="record-value">-</div></div><div class="record-main"><div class="record-meta"><div class="record-hero">No data</div><div class="record-date">-</div><div class="record-extra">K/D/A: - / - / - • -</div></div></div>';
-          }
-        });
-
-        dailyResultsMap = new Map();
-        renderCalendar();
-
-        if (winrateChart) {
-          winrateChart.destroy();
-          winrateChart = null;
-        }
       }
     }
 
-    detailedViewToggle.addEventListener("change", () => {
-      isDetailedView = !!detailedViewToggle.checked;
-      wrapEl.classList.toggle("wrap-detailed", isDetailedView);
-
-      if (!isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
-        sortState = { col: MATCHES_INDEX, dir: "desc" };
-      }
-      updateHeroTableForSlider();
-    });
-
-    searchBox.addEventListener("input", () => {
-      updateHeroTableForSlider();
-    });
+    searchBox.addEventListener("input", applyFilters);
+    heroFilter.addEventListener("change", applyFilters);
+    resultFilter.addEventListener("change", applyFilters);
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
-      startDateInput.value = "";
-      endDateInput.value = "";
-      gamesSlider.value = String(classifiedMatchRows.length);
-      sliderGameCount = classifiedMatchRows.length;
-      updateHeroTableForSlider();
+      heroFilter.value = "";
+      resultFilter.value = "";
+      sortState = { key: "dateTime", dir: "desc" };
+      applyFilters();
     });
 
-    clearDateRangeBtn.addEventListener("click", () => {
-      startDateInput.value = "";
-      endDateInput.value = "";
-      gamesSlider.value = String(classifiedMatchRows.length);
-      sliderGameCount = classifiedMatchRows.length;
-      updateHeroTableForSlider();
-    });
-
-    function handleDateRangeInput() {
-      gamesSlider.value = gamesSlider.max;
-      sliderGameCount = Number(gamesSlider.max);
-      updateHeroTableForSlider();
-    }
-
-    startDateInput.addEventListener("change", handleDateRangeInput);
-    endDateInput.addEventListener("change", handleDateRangeInput);
-    startDateInput.addEventListener("input", handleDateRangeInput);
-    endDateInput.addEventListener("input", handleDateRangeInput);
-
-    gamesSlider.addEventListener("input", () => {
-      sliderGameCount = Number(gamesSlider.value);
-      updateHeroTableForSlider();
-    });
-
-    calendarPrevBtn.addEventListener("click", () => {
-      calendarViewDate = addMonths(calendarViewDate, -1);
-      renderCalendar();
-    });
-
-    calendarNextBtn.addEventListener("click", () => {
-      calendarViewDate = addMonths(calendarViewDate, 1);
-      renderCalendar();
-    });
-
-    resetZoomBtn.addEventListener("click", () => {
-      if (winrateChart) {
-        winrateChart.resetZoom();
-      }
-    });
-
-    expandChartBtn.addEventListener("click", toggleChartFullscreen);
-
-    heroModalCloseBtn.addEventListener("click", closeHeroHistoryModal);
-    heroModalOverlay.addEventListener("click", (e) => {
-      if (e.target === heroModalOverlay) {
-        closeHeroHistoryModal();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && heroModalOverlay.classList.contains("open")) {
-        closeHeroHistoryModal();
-      }
-    });
-
-    document.addEventListener("fullscreenchange", () => {
-      expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
-      if (winrateChart) {
-        setTimeout(() => winrateChart.resize(), 50);
-      }
-    });
-
-    document.addEventListener("webkitfullscreenchange", () => {
-      expandChartBtn.textContent = isChartFullscreen() ? "Collapse" : "Expand";
-      if (winrateChart) {
-        setTimeout(() => winrateChart.resize(), 50);
-      }
-    });
-
-    wrapEl.classList.toggle("wrap-detailed", isDetailedView);
-    loadSheet();
+    loadData();
   </script>
 </body>
 </html>
