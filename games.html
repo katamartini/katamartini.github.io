@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game List</title>
+  <style>
+    :root {
+      --bg: #1f2430;
+      --panel: #2a3140;
+      --panel-2: #323a4a;
+      --header: #252c39;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #b7ff2a;
+      --border: #3a4353;
+      --win: #98e61d;
+      --loss: #ff7b72;
+      --bar-bg: #434d5f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: min(1800px, calc(100vw - 48px));
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .titlebar {
+      padding: 10px 12px 6px;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #ffffff;
+    }
+
+    .titlebar .sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .toolbar {
+      padding: 10px 12px 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: minmax(180px, 1.4fr) repeat(4, minmax(120px, 1fr)) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .toolbar input,
+    .toolbar select,
+    .toolbar button {
+      width: 100%;
+      min-width: 0;
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      padding: 8px 9px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .toolbar button {
+      cursor: pointer;
+      width: auto;
+      min-width: 96px;
+    }
+
+    .toolbar button:hover {
+      background: #1d2330;
+    }
+
+    .statusbar {
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      background: #222834;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-wrap {
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1600px;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+
+    thead th {
+      background: var(--header);
+      color: #ffffff;
+      text-align: left;
+      font-size: 12px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    thead th:hover {
+      background: #2b3342;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: var(--panel);
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--panel-2);
+    }
+
+    tbody td {
+      padding: 6px 10px;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .sort-indicator {
+      margin-left: 4px;
+      color: #cbd5e1;
+      font-size: 10px;
+    }
+
+    .hero-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .icon-slot {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      background: linear-gradient(135deg, #4b5563, #2f3745);
+      border: 1px solid #596274;
+      overflow: hidden;
+    }
+
+    .icon-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero-name {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .result-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 54px;
+      padding: 4px 8px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .result-pill.win {
+      color: #eaffd0;
+      background: rgba(152, 230, 29, 0.16);
+      border-color: rgba(152, 230, 29, 0.35);
+    }
+
+    .result-pill.loss {
+      color: #ffd8d3;
+      background: rgba(255, 123, 114, 0.16);
+      border-color: rgba(255, 123, 114, 0.35);
+    }
+
+    .result-pill.other {
+      color: #d8dee9;
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .counts-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      padding: 3px 7px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .counts-pill.yes {
+      color: #eaffd0;
+      background: rgba(152, 230, 29, 0.16);
+      border-color: rgba(152, 230, 29, 0.35);
+    }
+
+    .counts-pill.no {
+      color: #ffd8d3;
+      background: rgba(255, 123, 114, 0.16);
+      border-color: rgba(255, 123, 114, 0.35);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .empty {
+      padding: 14px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      .page {
+        width: calc(100vw - 24px);
+      }
+
+      body {
+        padding: 12px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="titlebar">
+        GAMES<span class="sub">MATCH LIST + STATS</span>
+      </div>
+
+      <div class="toolbar">
+        <div class="field">
+          <label for="searchBox">Search</label>
+          <input id="searchBox" type="search" placeholder="Search hero, mode, match id..." />
+        </div>
+
+        <div class="field">
+          <label for="heroFilter">Hero</label>
+          <select id="heroFilter">
+            <option value="">All Heroes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="resultFilter">Result</label>
+          <select id="resultFilter">
+            <option value="">All Results</option>
+            <option value="win">Win</option>
+            <option value="loss">Loss</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="modeFilter">Mode</label>
+          <select id="modeFilter">
+            <option value="">All Modes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="countsFilter">Counts</label>
+          <select id="countsFilter">
+            <option value="">All</option>
+            <option value="yes">Counted Only</option>
+            <option value="no">Non-counted Only</option>
+          </select>
+        </div>
+
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div id="statusEl" class="statusbar">Loading matches...</div>
+
+      <div class="table-wrap">
+        <table id="gamesTable" aria-label="Games list">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty">No games match the current filters.</div>
+    </div>
+  </div>
+
+  <script>
+    const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
+    const MATCHES_GID = "632247101";
+    const MATCHES_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MATCHES_GID}`;
+
+    const MATCHES_HEADER_ALIASES = {
+      matchId: ["match_id", "match id", "id"],
+      date: ["match_date_est", "match date est", "match_date", "match date", "date"],
+      startTime: ["match_start_time_est", "match start time est", "match_start_time", "match start time", "start time"],
+      modeName: ["mode_name", "mode name", "mode"],
+      hero: ["selected_hero", "selected hero", "hero"],
+      result: ["game_result", "game result", "result"],
+      counts: ["counts_in_stats", "counts in stats", "counts"],
+      nonCountReason: ["non_count_reason", "non count reason", "reason"],
+      souls: ["souls", "net_worth", "net worth"],
+      kills: ["kills", "player_kills", "player kills"],
+      deaths: ["deaths", "player_deaths", "player deaths"],
+      assists: ["assists", "player_assists", "player assists"],
+      damage: ["player_damage", "player damage", "damage"],
+      objectiveDamage: ["objective_damage", "objective damage", "obj damage"],
+      healing: ["healing", "healing_done", "healing done"],
+      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec"],
+      modeReason: ["non_count_reason", "non count reason", "reason"]
+    };
+
+    const HERO_ICON_NAME_ALIASES = {
+      "mo & krill": "mo+krill",
+      "the doorman": "doorman"
+    };
+
+    const searchBox = document.getElementById("searchBox");
+    const heroFilter = document.getElementById("heroFilter");
+    const resultFilter = document.getElementById("resultFilter");
+    const modeFilter = document.getElementById("modeFilter");
+    const countsFilter = document.getElementById("countsFilter");
+    const resetBtn = document.getElementById("resetBtn");
+    const statusEl = document.getElementById("statusEl");
+    const emptyState = document.getElementById("emptyState");
+    const table = document.getElementById("gamesTable");
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+
+    let headerIndexes = {};
+    let allRows = [];
+    let filteredRows = [];
+    let sortState = { key: "dateTime", dir: "desc" };
+
+    const columns = [
+      { key: "date", label: "Date", defaultDir: "desc" },
+      { key: "startTime", label: "Start Time", defaultDir: "desc" },
+      { key: "hero", label: "Hero", defaultDir: "asc" },
+      { key: "result", label: "Result", defaultDir: "desc" },
+      { key: "modeName", label: "Mode", defaultDir: "asc" },
+      { key: "kills", label: "K", defaultDir: "desc", numeric: true },
+      { key: "deaths", label: "D", defaultDir: "desc", numeric: true },
+      { key: "assists", label: "A", defaultDir: "desc", numeric: true },
+      { key: "souls", label: "Souls", defaultDir: "desc", numeric: true },
+      { key: "damage", label: "Player Dmg", defaultDir: "desc", numeric: true },
+      { key: "objectiveDamage", label: "Obj Dmg", defaultDir: "desc", numeric: true },
+      { key: "healing", label: "Healing", defaultDir: "desc", numeric: true },
+      { key: "durationSeconds", label: "Length", defaultDir: "desc", numeric: true },
+      { key: "counts", label: "Counts", defaultDir: "desc" },
+      { key: "matchId", label: "Match ID", defaultDir: "desc" },
+      { key: "nonCountReason", label: "Reason", defaultDir: "asc" }
+    ];
+
+    function normalizeValue(value) {
+      if (value == null) return "";
+      return String(value).trim();
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+
+        if (inQuotes) {
+          if (ch === '"' && next === '"') {
+            cell += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            cell += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ",") {
+            row.push(cell);
+            cell = "";
+          } else if (ch === "\n") {
+            row.push(cell);
+            rows.push(row);
+            row = [];
+            cell = "";
+          } else if (ch === "\r") {
+          } else {
+            cell += ch;
+          }
+        }
+      }
+
+      row.push(cell);
+      rows.push(row);
+      return rows.filter(r => !(r.length === 1 && r[0] === ""));
+    }
+
+    function normalizeHeaderName(value) {
+      return normalizeValue(value)
+        .toLowerCase()
+        .replace(/[-_\s]+/g, " ")
+        .replace(/[^a-z0-9 ]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function findHeaderIndex(headerRow, aliases, fallbackIndex = -1) {
+      const normalizedHeaders = headerRow.map(normalizeHeaderName);
+      const normalizedAliases = aliases.map(normalizeHeaderName);
+
+      for (const alias of normalizedAliases) {
+        const idx = normalizedHeaders.indexOf(alias);
+        if (idx !== -1) return idx;
+      }
+
+      for (const alias of normalizedAliases) {
+        const tokens = alias.split(" ").filter(Boolean);
+        const idx = normalizedHeaders.findIndex(header =>
+          tokens.every(token => header.includes(token))
+        );
+        if (idx !== -1) return idx;
+      }
+
+      return fallbackIndex;
+    }
+
+    function parseNumeric(value) {
+      const v = normalizeValue(value).replace(/[$,%]/g, "").replace(/,/g, "");
+      const num = Number(v);
+      return Number.isNaN(num) ? null : num;
+    }
+
+    function parseSheetDate(value) {
+      const v = normalizeValue(value);
+      if (!v) return null;
+
+      let m = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
+      if (m) {
+        let year = Number(m[3]);
+        if (year < 100) year += 2000;
+        const d = new Date(year, Number(m[1]) - 1, Number(m[2]));
+        return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+      if (m) {
+        const d = new Date(
+          Number(m[1]),
+          Number(m[2]) - 1,
+          Number(m[3]),
+          Number(m[4] || 0),
+          Number(m[5] || 0),
+          Number(m[6] || 0)
+        );
+        return Number.isNaN(d.getTime()) ? null : d;
+      }
+
+      return null;
+    }
+
+    function parseDurationToSeconds(value) {
+      const raw = normalizeValue(value);
+      if (!raw) return null;
+
+      const numeric = parseNumeric(raw);
+      if (numeric !== null && numeric > 0) return numeric;
+
+      const hhmmss = raw.match(/^(\d{1,3}):(\d{1,2}):(\d{1,2})$/);
+      if (hhmmss) {
+        return Number(hhmmss[1]) * 3600 + Number(hhmmss[2]) * 60 + Number(hhmmss[3]);
+      }
+
+      const mmss = raw.match(/^(\d{1,3}):(\d{1,2})$/);
+      if (mmss) {
+        return Number(mmss[1]) * 60 + Number(mmss[2]);
+      }
+
+      return null;
+    }
+
+    function formatDuration(seconds) {
+      const total = Number(seconds);
+      if (!Number.isFinite(total) || total <= 0) return "-";
+
+      const rounded = Math.round(total);
+      const hours = Math.floor(rounded / 3600);
+      const minutes = Math.floor((rounded % 3600) / 60);
+      const secs = rounded % 60;
+
+      if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+      }
+      return `${minutes}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function formatDate(value) {
+      const d = value instanceof Date ? value : parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function formatTime(value) {
+      const d = value instanceof Date ? value : parseSheetDate(value);
+      if (!d) return normalizeValue(value);
+      return d.toLocaleTimeString(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
+      });
+    }
+
+    function heroIconPath(heroName) {
+      const normalized = normalizeValue(heroName).toLowerCase();
+      const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
+      return `images/deadlock/icons/${encodeURIComponent(fileBaseName + ".png")}`;
+    }
+
+    function buildIcon(heroName, className = "icon-slot") {
+      const slot = document.createElement("div");
+      slot.className = className;
+
+      const img = document.createElement("img");
+      img.src = heroIconPath(heroName);
+      img.alt = heroName;
+      img.loading = "lazy";
+      img.onerror = function () {
+        this.style.display = "none";
+      };
+
+      slot.appendChild(img);
+      return slot;
+    }
+
+    function resolveIndexes(rows) {
+      const headerRow = rows[0] || [];
+      headerIndexes = {
+        matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId),
+        date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date),
+        startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime),
+        modeName: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.modeName),
+        hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero),
+        result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result),
+        counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts),
+        nonCountReason: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.nonCountReason),
+        souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls),
+        kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills),
+        deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths),
+        assists: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.assists),
+        damage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.damage),
+        objectiveDamage: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.objectiveDamage),
+        healing: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.healing),
+        durationSeconds: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds)
+      };
+    }
+
+    function cell(row, key) {
+      const idx = headerIndexes[key];
+      if (!Number.isInteger(idx) || idx < 0) return "";
+      return normalizeValue(row[idx]);
+    }
+
+    function buildMatchObjects(rows) {
+      return rows.slice(1)
+        .filter(r => r.some(c => normalizeValue(c) !== ""))
+        .map(row => {
+          const startTimeRaw = cell(row, "startTime");
+          const dateRaw = cell(row, "date");
+          const dateTime = parseSheetDate(startTimeRaw) || parseSheetDate(dateRaw);
+          const durationSeconds = parseDurationToSeconds(cell(row, "durationSeconds"));
+
+          return {
+            raw: row,
+            matchId: cell(row, "matchId"),
+            date: dateRaw,
+            startTime: startTimeRaw,
+            dateTime,
+            hero: cell(row, "hero"),
+            result: cell(row, "result").toLowerCase(),
+            modeName: cell(row, "modeName"),
+            counts: cell(row, "counts").toLowerCase(),
+            nonCountReason: cell(row, "nonCountReason"),
+            kills: parseNumeric(cell(row, "kills")),
+            deaths: parseNumeric(cell(row, "deaths")),
+            assists: parseNumeric(cell(row, "assists")),
+            souls: parseNumeric(cell(row, "souls")),
+            damage: parseNumeric(cell(row, "damage")),
+            objectiveDamage: parseNumeric(cell(row, "objectiveDamage")),
+            healing: parseNumeric(cell(row, "healing")),
+            durationSeconds
+          };
+        });
+    }
+
+    function populateFilters() {
+      const heroes = [...new Set(allRows.map(r => r.hero).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      const modes = [...new Set(allRows.map(r => r.modeName).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+
+      heroFilter.innerHTML = `<option value="">All Heroes</option>` +
+        heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join("");
+
+      modeFilter.innerHTML = `<option value="">All Modes</option>` +
+        modes.map(mode => `<option value="${escapeHtml(mode)}">${escapeHtml(mode)}</option>`).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function getSortValue(row, key) {
+      if (key === "date") return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      if (key === "startTime") return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      if (key === "dateTime") return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      return row[key];
+    }
+
+    function compareValues(a, b) {
+      if (a == null && b == null) return 0;
+      if (a == null) return -1;
+      if (b == null) return 1;
+
+      if (typeof a === "number" && typeof b === "number") return a - b;
+
+      const aStr = String(a).toLowerCase();
+      const bStr = String(b).toLowerCase();
+      if (aStr < bStr) return -1;
+      if (aStr > bStr) return 1;
+      return 0;
+    }
+
+    function sortRows() {
+      filteredRows.sort((a, b) => {
+        const result = compareValues(getSortValue(a, sortState.key), getSortValue(b, sortState.key));
+        return sortState.dir === "asc" ? result : -result;
+      });
+    }
+
+    function setSort(key, defaultDir = "desc") {
+      if (sortState.key === key) {
+        sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+      } else {
+        sortState.key = key;
+        sortState.dir = defaultDir;
+      }
+      sortRows();
+      renderHeader();
+      renderTable();
+    }
+
+    function applyFilters() {
+      const search = searchBox.value.trim().toLowerCase();
+      const hero = heroFilter.value;
+      const result = resultFilter.value;
+      const mode = modeFilter.value;
+      const counts = countsFilter.value;
+
+      filteredRows = allRows.filter(row => {
+        if (hero && row.hero !== hero) return false;
+        if (result && row.result !== result) return false;
+        if (mode && row.modeName !== mode) return false;
+        if (counts && row.counts !== counts) return false;
+
+        if (search) {
+          const haystack = [
+            row.matchId,
+            row.hero,
+            row.result,
+            row.modeName,
+            row.nonCountReason,
+            row.date,
+            row.startTime
+          ].join(" ").toLowerCase();
+
+          if (!haystack.includes(search)) return false;
+        }
+
+        return true;
+      });
+
+      sortRows();
+      renderHeader();
+      renderTable();
+    }
+
+    function renderHeader() {
+      thead.innerHTML = "";
+      const tr = document.createElement("tr");
+
+      columns.forEach(col => {
+        const th = document.createElement("th");
+        th.textContent = col.label;
+
+        if (sortState.key === col.key) {
+          const span = document.createElement("span");
+          span.className = "sort-indicator";
+          span.textContent = sortState.dir === "asc" ? "▲" : "▼";
+          th.appendChild(span);
+        }
+
+        th.addEventListener("click", () => setSort(col.key, col.defaultDir));
+        tr.appendChild(th);
+      });
+
+      thead.appendChild(tr);
+    }
+
+    function resultPill(result) {
+      const cls = result === "win" ? "win" : result === "loss" ? "loss" : "other";
+      const label = result ? result[0].toUpperCase() + result.slice(1) : "-";
+      return `<span class="result-pill ${cls}">${escapeHtml(label)}</span>`;
+    }
+
+    function countsPill(value) {
+      const yes = value === "yes";
+      return `<span class="counts-pill ${yes ? "yes" : "no"}">${yes ? "Yes" : "No"}</span>`;
+    }
+
+    function formatNumber(value) {
+      return Number.isFinite(value) ? value.toLocaleString() : "-";
+    }
+
+    function renderTable() {
+      tbody.innerHTML = "";
+      emptyState.style.display = filteredRows.length ? "none" : "block";
+
+      filteredRows.forEach(row => {
+        const tr = document.createElement("tr");
+
+        const heroTd = document.createElement("td");
+        const heroWrap = document.createElement("div");
+        heroWrap.className = "hero-cell";
+        heroWrap.appendChild(buildIcon(row.hero));
+        const heroName = document.createElement("div");
+        heroName.className = "hero-name";
+        heroName.textContent = row.hero || "-";
+        heroWrap.appendChild(heroName);
+        heroTd.appendChild(heroWrap);
+        
+        const cells = {
+          date: formatDate(row.dateTime || row.date),
+          startTime: formatTime(row.dateTime || row.startTime),
+          result: resultPill(row.result),
+          modeName: escapeHtml(row.modeName || "-"),
+          kills: formatNumber(row.kills),
+          deaths: formatNumber(row.deaths),
+          assists: formatNumber(row.assists),
+          souls: formatNumber(row.souls),
+          damage: formatNumber(row.damage),
+          objectiveDamage: formatNumber(row.objectiveDamage),
+          healing: formatNumber(row.healing),
+          durationSeconds: formatDuration(row.durationSeconds),
+          counts: countsPill(row.counts),
+          matchId: escapeHtml(row.matchId || "-"),
+          nonCountReason: escapeHtml(row.nonCountReason || "-")
+        };
+
+        const dateTd = document.createElement("td");
+        dateTd.textContent = cells.date;
+        tr.appendChild(dateTd);
+
+        const timeTd = document.createElement("td");
+        timeTd.textContent = cells.startTime;
+        tr.appendChild(timeTd);
+
+        tr.appendChild(heroTd);
+
+        const resultTd = document.createElement("td");
+        resultTd.innerHTML = cells.result;
+        tr.appendChild(resultTd);
+
+        const modeTd = document.createElement("td");
+        modeTd.textContent = row.modeName || "-";
+        tr.appendChild(modeTd);
+
+        ["kills","deaths","assists","souls","damage","objectiveDamage","healing","durationSeconds"].forEach(key => {
+          const td = document.createElement("td");
+          td.className = "num";
+          td.textContent = key === "durationSeconds" ? cells[key] : formatNumber(row[key]);
+          tr.appendChild(td);
+        });
+
+        const countsTd = document.createElement("td");
+        countsTd.innerHTML = cells.counts;
+        tr.appendChild(countsTd);
+
+        const matchIdTd = document.createElement("td");
+        matchIdTd.textContent = row.matchId || "-";
+        tr.appendChild(matchIdTd);
+
+        const reasonTd = document.createElement("td");
+        reasonTd.className = row.nonCountReason ? "" : "muted";
+        reasonTd.textContent = row.nonCountReason || "-";
+        tr.appendChild(reasonTd);
+
+        tbody.appendChild(tr);
+      });
+
+      statusEl.textContent = `${filteredRows.length} game(s) shown`;
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch(MATCHES_CSV_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const text = await res.text();
+        const rows = parseCSV(text);
+        if (!rows.length) throw new Error("No rows found");
+
+        resolveIndexes(rows);
+        allRows = buildMatchObjects(rows);
+
+        populateFilters();
+        applyFilters();
+      } catch (err) {
+        statusEl.innerHTML = `Could not load match data. Error: <strong>${escapeHtml(err.message)}</strong>`;
+        thead.innerHTML = "";
+        tbody.innerHTML = "";
+      }
+    }
+
+    searchBox.addEventListener("input", applyFilters);
+    heroFilter.addEventListener("change", applyFilters);
+    resultFilter.addEventListener("change", applyFilters);
+    modeFilter.addEventListener("change", applyFilters);
+    countsFilter.addEventListener("change", applyFilters);
+
+    resetBtn.addEventListener("click", () => {
+      searchBox.value = "";
+      heroFilter.value = "";
+      resultFilter.value = "";
+      modeFilter.value = "";
+      countsFilter.value = "";
+      sortState = { key: "dateTime", dir: "desc" };
+      applyFilters();
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
