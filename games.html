@@ -16,7 +16,6 @@
       --border: #3a4353;
       --win: #98e61d;
       --loss: #ff7b72;
-      --bar-bg: #434d5f;
     }
 
     * { box-sizing: border-box; }
@@ -68,7 +67,7 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: minmax(180px, 1.4fr) repeat(4, minmax(120px, 1fr)) auto;
+      grid-template-columns: minmax(180px, 1.5fr) repeat(2, minmax(140px, 1fr)) auto;
       gap: 8px;
       align-items: end;
     }
@@ -125,7 +124,7 @@
 
     table {
       width: 100%;
-      min-width: 1600px;
+      min-width: 1200px;
       border-collapse: collapse;
       table-layout: auto;
     }
@@ -230,33 +229,6 @@
       border-color: rgba(255,255,255,0.12);
     }
 
-    .counts-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 42px;
-      padding: 3px 7px;
-      border: 1px solid transparent;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .counts-pill.yes {
-      color: #eaffd0;
-      background: rgba(152, 230, 29, 0.16);
-      border-color: rgba(152, 230, 29, 0.35);
-    }
-
-    .counts-pill.no {
-      color: #ffd8d3;
-      background: rgba(255, 123, 114, 0.16);
-      border-color: rgba(255, 123, 114, 0.35);
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
     .num {
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -294,13 +266,13 @@
   <div class="page">
     <div class="card">
       <div class="titlebar">
-        GAMES<span class="sub">MATCH LIST + STATS</span>
+        GAMES<span class="sub">COUNTED MATCHES</span>
       </div>
 
       <div class="toolbar">
         <div class="field">
           <label for="searchBox">Search</label>
-          <input id="searchBox" type="search" placeholder="Search hero, mode, match id..." />
+          <input id="searchBox" type="search" placeholder="Search hero or match id..." />
         </div>
 
         <div class="field">
@@ -316,22 +288,6 @@
             <option value="">All Results</option>
             <option value="win">Win</option>
             <option value="loss">Loss</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="modeFilter">Mode</label>
-          <select id="modeFilter">
-            <option value="">All Modes</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="countsFilter">Counts</label>
-          <select id="countsFilter">
-            <option value="">All</option>
-            <option value="yes">Counted Only</option>
-            <option value="no">Non-counted Only</option>
           </select>
         </div>
 
@@ -360,11 +316,9 @@
       matchId: ["match_id", "match id", "id"],
       date: ["match_date_est", "match date est", "match_date", "match date", "date"],
       startTime: ["match_start_time_est", "match start time est", "match_start_time", "match start time", "start time"],
-      modeName: ["mode_name", "mode name", "mode"],
       hero: ["selected_hero", "selected hero", "hero"],
       result: ["game_result", "game result", "result"],
       counts: ["counts_in_stats", "counts in stats", "counts"],
-      nonCountReason: ["non_count_reason", "non count reason", "reason"],
       souls: ["souls", "net_worth", "net worth"],
       kills: ["kills", "player_kills", "player kills"],
       deaths: ["deaths", "player_deaths", "player deaths"],
@@ -372,8 +326,7 @@
       damage: ["player_damage", "player damage", "damage"],
       objectiveDamage: ["objective_damage", "objective damage", "obj damage"],
       healing: ["healing", "healing_done", "healing done"],
-      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec"],
-      modeReason: ["non_count_reason", "non count reason", "reason"]
+      durationSeconds: ["duration_seconds", "duration seconds", "match_duration_seconds", "match duration seconds", "duration_secs", "duration secs", "duration_sec", "duration sec"]
     };
 
     const HERO_ICON_NAME_ALIASES = {
@@ -384,8 +337,6 @@
     const searchBox = document.getElementById("searchBox");
     const heroFilter = document.getElementById("heroFilter");
     const resultFilter = document.getElementById("resultFilter");
-    const modeFilter = document.getElementById("modeFilter");
-    const countsFilter = document.getElementById("countsFilter");
     const resetBtn = document.getElementById("resetBtn");
     const statusEl = document.getElementById("statusEl");
     const emptyState = document.getElementById("emptyState");
@@ -400,21 +351,18 @@
 
     const columns = [
       { key: "date", label: "Date", defaultDir: "desc" },
-      { key: "startTime", label: "Start Time", defaultDir: "desc" },
+      { key: "startTimeDisplay", label: "Start Time", defaultDir: "desc" },
       { key: "hero", label: "Hero", defaultDir: "asc" },
       { key: "result", label: "Result", defaultDir: "desc" },
-      { key: "modeName", label: "Mode", defaultDir: "asc" },
-      { key: "kills", label: "K", defaultDir: "desc", numeric: true },
-      { key: "deaths", label: "D", defaultDir: "desc", numeric: true },
-      { key: "assists", label: "A", defaultDir: "desc", numeric: true },
-      { key: "souls", label: "Souls", defaultDir: "desc", numeric: true },
-      { key: "damage", label: "Player Dmg", defaultDir: "desc", numeric: true },
-      { key: "objectiveDamage", label: "Obj Dmg", defaultDir: "desc", numeric: true },
-      { key: "healing", label: "Healing", defaultDir: "desc", numeric: true },
-      { key: "durationSeconds", label: "Length", defaultDir: "desc", numeric: true },
-      { key: "counts", label: "Counts", defaultDir: "desc" },
-      { key: "matchId", label: "Match ID", defaultDir: "desc" },
-      { key: "nonCountReason", label: "Reason", defaultDir: "asc" }
+      { key: "kills", label: "K", defaultDir: "desc" },
+      { key: "deaths", label: "D", defaultDir: "desc" },
+      { key: "assists", label: "A", defaultDir: "desc" },
+      { key: "souls", label: "Souls", defaultDir: "desc" },
+      { key: "damage", label: "Player Dmg", defaultDir: "desc" },
+      { key: "objectiveDamage", label: "Obj Dmg", defaultDir: "desc" },
+      { key: "healing", label: "Healing", defaultDir: "desc" },
+      { key: "durationSeconds", label: "Length", defaultDir: "desc" },
+      { key: "matchId", label: "Match ID", defaultDir: "desc" }
     ];
 
     function normalizeValue(value) {
@@ -527,6 +475,35 @@
       return null;
     }
 
+    function parseTimeOnly(value) {
+      const v = normalizeValue(value);
+      if (!v) return null;
+
+      let m = v.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+      if (m) {
+        let hours = Number(m[1]);
+        const minutes = Number(m[2]);
+        const seconds = Number(m[3] || 0);
+        const meridiem = m[4].toUpperCase();
+
+        if (meridiem === "AM" && hours === 12) hours = 0;
+        if (meridiem === "PM" && hours !== 12) hours += 12;
+
+        return { hours, minutes, seconds };
+      }
+
+      m = v.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+      if (m) {
+        return {
+          hours: Number(m[1]),
+          minutes: Number(m[2]),
+          seconds: Number(m[3] || 0)
+        };
+      }
+
+      return null;
+    }
+
     function parseDurationToSeconds(value) {
       const raw = normalizeValue(value);
       if (!raw) return null;
@@ -572,10 +549,10 @@
       });
     }
 
-    function formatTime(value) {
-      const d = value instanceof Date ? value : parseSheetDate(value);
-      if (!d) return normalizeValue(value);
-      return d.toLocaleTimeString(undefined, {
+    function formatTimeFromParts(parts) {
+      if (!parts) return "-";
+      const temp = new Date(2000, 0, 1, parts.hours, parts.minutes, parts.seconds || 0);
+      return temp.toLocaleTimeString(undefined, {
         hour: "numeric",
         minute: "2-digit"
       });
@@ -609,11 +586,9 @@
         matchId: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.matchId),
         date: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.date),
         startTime: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.startTime),
-        modeName: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.modeName),
         hero: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.hero),
         result: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.result),
         counts: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.counts),
-        nonCountReason: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.nonCountReason),
         souls: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.souls),
         kills: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.kills),
         deaths: findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.deaths),
@@ -637,20 +612,44 @@
         .map(row => {
           const startTimeRaw = cell(row, "startTime");
           const dateRaw = cell(row, "date");
-          const dateTime = parseSheetDate(startTimeRaw) || parseSheetDate(dateRaw);
+          const dateObj = parseSheetDate(dateRaw);
+          const startTimeDateObj = parseSheetDate(startTimeRaw);
+          const startTimeParts = parseTimeOnly(startTimeRaw);
+
+          let dateTime = null;
+          if (startTimeDateObj) {
+            dateTime = startTimeDateObj;
+          } else if (dateObj && startTimeParts) {
+            dateTime = new Date(
+              dateObj.getFullYear(),
+              dateObj.getMonth(),
+              dateObj.getDate(),
+              startTimeParts.hours,
+              startTimeParts.minutes,
+              startTimeParts.seconds || 0
+            );
+          } else if (dateObj) {
+            dateTime = dateObj;
+          }
+
           const durationSeconds = parseDurationToSeconds(cell(row, "durationSeconds"));
 
           return {
             raw: row,
             matchId: cell(row, "matchId"),
             date: dateRaw,
-            startTime: startTimeRaw,
+            dateObj,
+            startTimeRaw,
+            startTimeParts,
+            startTimeDisplay: startTimeParts
+              ? formatTimeFromParts(startTimeParts)
+              : (startTimeDateObj
+                  ? startTimeDateObj.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })
+                  : normalizeValue(startTimeRaw) || "-"),
             dateTime,
             hero: cell(row, "hero"),
             result: cell(row, "result").toLowerCase(),
-            modeName: cell(row, "modeName"),
             counts: cell(row, "counts").toLowerCase(),
-            nonCountReason: cell(row, "nonCountReason"),
             kills: parseNumeric(cell(row, "kills")),
             deaths: parseNumeric(cell(row, "deaths")),
             assists: parseNumeric(cell(row, "assists")),
@@ -660,18 +659,14 @@
             healing: parseNumeric(cell(row, "healing")),
             durationSeconds
           };
-        });
+        })
+        .filter(row => row.counts === "yes");
     }
 
     function populateFilters() {
       const heroes = [...new Set(allRows.map(r => r.hero).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-      const modes = [...new Set(allRows.map(r => r.modeName).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-
       heroFilter.innerHTML = `<option value="">All Heroes</option>` +
         heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join("");
-
-      modeFilter.innerHTML = `<option value="">All Modes</option>` +
-        modes.map(mode => `<option value="${escapeHtml(mode)}">${escapeHtml(mode)}</option>`).join("");
     }
 
     function escapeHtml(value) {
@@ -683,8 +678,13 @@
     }
 
     function getSortValue(row, key) {
-      if (key === "date") return row.dateTime ? row.dateTime.getTime() : -Infinity;
-      if (key === "startTime") return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      if (key === "date") return row.dateObj ? row.dateObj.getTime() : -Infinity;
+      if (key === "startTimeDisplay") {
+        if (row.startTimeParts) {
+          return row.startTimeParts.hours * 3600 + row.startTimeParts.minutes * 60 + (row.startTimeParts.seconds || 0);
+        }
+        return row.dateTime ? row.dateTime.getTime() : -Infinity;
+      }
       if (key === "dateTime") return row.dateTime ? row.dateTime.getTime() : -Infinity;
       return row[key];
     }
@@ -726,24 +726,19 @@
       const search = searchBox.value.trim().toLowerCase();
       const hero = heroFilter.value;
       const result = resultFilter.value;
-      const mode = modeFilter.value;
-      const counts = countsFilter.value;
 
       filteredRows = allRows.filter(row => {
         if (hero && row.hero !== hero) return false;
         if (result && row.result !== result) return false;
-        if (mode && row.modeName !== mode) return false;
-        if (counts && row.counts !== counts) return false;
 
         if (search) {
           const haystack = [
             row.matchId,
             row.hero,
             row.result,
-            row.modeName,
-            row.nonCountReason,
             row.date,
-            row.startTime
+            row.startTimeRaw,
+            row.startTimeDisplay
           ].join(" ").toLowerCase();
 
           if (!haystack.includes(search)) return false;
@@ -785,11 +780,6 @@
       return `<span class="result-pill ${cls}">${escapeHtml(label)}</span>`;
     }
 
-    function countsPill(value) {
-      const yes = value === "yes";
-      return `<span class="counts-pill ${yes ? "yes" : "no"}">${yes ? "Yes" : "No"}</span>`;
-    }
-
     function formatNumber(value) {
       return Number.isFinite(value) ? value.toLocaleString() : "-";
     }
@@ -801,6 +791,14 @@
       filteredRows.forEach(row => {
         const tr = document.createElement("tr");
 
+        const dateTd = document.createElement("td");
+        dateTd.textContent = formatDate(row.dateObj || row.date);
+        tr.appendChild(dateTd);
+
+        const timeTd = document.createElement("td");
+        timeTd.textContent = row.startTimeDisplay || "-";
+        tr.appendChild(timeTd);
+
         const heroTd = document.createElement("td");
         const heroWrap = document.createElement("div");
         heroWrap.className = "hero-cell";
@@ -810,67 +808,27 @@
         heroName.textContent = row.hero || "-";
         heroWrap.appendChild(heroName);
         heroTd.appendChild(heroWrap);
-        
-        const cells = {
-          date: formatDate(row.dateTime || row.date),
-          startTime: formatTime(row.dateTime || row.startTime),
-          result: resultPill(row.result),
-          modeName: escapeHtml(row.modeName || "-"),
-          kills: formatNumber(row.kills),
-          deaths: formatNumber(row.deaths),
-          assists: formatNumber(row.assists),
-          souls: formatNumber(row.souls),
-          damage: formatNumber(row.damage),
-          objectiveDamage: formatNumber(row.objectiveDamage),
-          healing: formatNumber(row.healing),
-          durationSeconds: formatDuration(row.durationSeconds),
-          counts: countsPill(row.counts),
-          matchId: escapeHtml(row.matchId || "-"),
-          nonCountReason: escapeHtml(row.nonCountReason || "-")
-        };
-
-        const dateTd = document.createElement("td");
-        dateTd.textContent = cells.date;
-        tr.appendChild(dateTd);
-
-        const timeTd = document.createElement("td");
-        timeTd.textContent = cells.startTime;
-        tr.appendChild(timeTd);
-
         tr.appendChild(heroTd);
 
         const resultTd = document.createElement("td");
-        resultTd.innerHTML = cells.result;
+        resultTd.innerHTML = resultPill(row.result);
         tr.appendChild(resultTd);
-
-        const modeTd = document.createElement("td");
-        modeTd.textContent = row.modeName || "-";
-        tr.appendChild(modeTd);
 
         ["kills","deaths","assists","souls","damage","objectiveDamage","healing","durationSeconds"].forEach(key => {
           const td = document.createElement("td");
           td.className = "num";
-          td.textContent = key === "durationSeconds" ? cells[key] : formatNumber(row[key]);
+          td.textContent = key === "durationSeconds" ? formatDuration(row.durationSeconds) : formatNumber(row[key]);
           tr.appendChild(td);
         });
-
-        const countsTd = document.createElement("td");
-        countsTd.innerHTML = cells.counts;
-        tr.appendChild(countsTd);
 
         const matchIdTd = document.createElement("td");
         matchIdTd.textContent = row.matchId || "-";
         tr.appendChild(matchIdTd);
 
-        const reasonTd = document.createElement("td");
-        reasonTd.className = row.nonCountReason ? "" : "muted";
-        reasonTd.textContent = row.nonCountReason || "-";
-        tr.appendChild(reasonTd);
-
         tbody.appendChild(tr);
       });
 
-      statusEl.textContent = `${filteredRows.length} game(s) shown`;
+      statusEl.textContent = `${filteredRows.length} counted game(s) shown`;
     }
 
     async function loadData() {
@@ -897,15 +855,11 @@
     searchBox.addEventListener("input", applyFilters);
     heroFilter.addEventListener("change", applyFilters);
     resultFilter.addEventListener("change", applyFilters);
-    modeFilter.addEventListener("change", applyFilters);
-    countsFilter.addEventListener("change", applyFilters);
 
     resetBtn.addEventListener("click", () => {
       searchBox.value = "";
       heroFilter.value = "";
       resultFilter.value = "";
-      modeFilter.value = "";
-      countsFilter.value = "";
       sortState = { key: "dateTime", dir: "desc" };
       applyFilters();
     });
