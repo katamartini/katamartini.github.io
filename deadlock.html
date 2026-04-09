@@ -35,13 +35,15 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      overflow-x: auto;
     }
 
     .page {
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      width: min(100%, calc(100vw - 48px));
+      width: max-content;
+      min-width: calc(100vw - 48px);
     }
 
     .left-column,
@@ -73,6 +75,13 @@
     .wrap {
       flex: 0 0 520px;
       width: 520px;
+      max-width: none;
+      transition: width 0.18s ease, flex-basis 0.18s ease;
+    }
+
+    .wrap.wrap-detailed {
+      flex: 0 0 1060px;
+      width: 1060px;
     }
 
     .chart-column {
@@ -231,8 +240,13 @@
 
     table {
       width: 100%;
+      min-width: 100%;
       border-collapse: collapse;
       table-layout: auto;
+    }
+
+    .wrap.wrap-detailed table {
+      min-width: 1060px;
     }
 
     thead th {
@@ -999,6 +1013,8 @@
     @media (max-width: 1500px) {
       .page {
         flex-wrap: wrap;
+        width: 100%;
+        min-width: 0;
       }
 
       .chart-column {
@@ -1012,13 +1028,19 @@
     }
 
     @media (max-width: 980px) {
+      body {
+        overflow-x: hidden;
+      }
+
       .page {
         flex-direction: column;
-        width: min(520px, calc(100vw - 48px));
+        width: min(100%, calc(100vw - 48px));
+        min-width: 0;
       }
 
       .left-column,
       .wrap,
+      .wrap.wrap-detailed,
       .chart-column {
         width: 100%;
         flex: 0 0 auto;
@@ -1141,7 +1163,7 @@
       </div>
     </div>
 
-    <div class="wrap">
+    <div class="wrap" id="mainTableWrap">
       <div class="titlebar">
         MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span>
       </div>
@@ -1313,6 +1335,7 @@
     const gamesSlider = document.getElementById("gamesSlider");
     const gamesSliderLabel = document.getElementById("gamesSliderLabel");
     const heroTableSub = document.getElementById("heroTableSub");
+    const wrapEl = document.getElementById("mainTableWrap");
 
     const overallMatchesEl = document.getElementById("overallMatches");
     const overallWinsEl = document.getElementById("overallWins");
@@ -1638,7 +1661,7 @@
     function normalizeHeaderName(value) {
       return normalizeValue(value)
         .toLowerCase()
-        .replace(/[   ]/g, " ")
+        .replace(/[   ]/g, " ")
         .replace(/[-_\s]+/g, " ")
         .replace(/[^a-z0-9 ]+/g, " ")
         .replace(/\s+/g, " ")
@@ -2206,6 +2229,7 @@
     function renderTable() {
       tbody.innerHTML = "";
       table.classList.toggle("table-detailed", isDetailedView);
+      wrapEl.classList.toggle("wrap-detailed", isDetailedView);
 
       emptyState.style.display = filteredRows.length ? "none" : "block";
 
@@ -2946,7 +2970,6 @@
       });
     }
 
-
     function getDateInputValue(inputEl) {
       return inputEl ? normalizeValue(inputEl.value) : "";
     }
@@ -3133,6 +3156,8 @@
 
     detailedViewToggle.addEventListener("change", () => {
       isDetailedView = !!detailedViewToggle.checked;
+      wrapEl.classList.toggle("wrap-detailed", isDetailedView);
+
       if (!isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(sortState.col)) {
         sortState = { col: MATCHES_INDEX, dir: "desc" };
       }
@@ -3220,6 +3245,7 @@
       }
     });
 
+    wrapEl.classList.toggle("wrap-detailed", isDetailedView);
     loadSheet();
   </script>
 </body>
