@@ -1181,10 +1181,51 @@
       const fileBaseName = HERO_ICON_NAME_ALIASES[normalized] || normalized;
       return `images/deadlock/icons/${encodeURIComponent(fileBaseName + '.png')}`;
     }
+    const RANK_ICON_NAME_MAP = {
+      alchemist: 'Alchemist',
+      arcanist: 'Arcanist',
+      archon: 'Archon',
+      ascendant: 'Ascendant',
+      emissary: 'Emissary',
+      eternus: 'Eternus',
+      initiate: 'Initiate',
+      obscurus: 'Obscurus',
+      oracle: 'Oracle',
+      phantom: 'Phantom',
+      ritualist: 'Ritualist',
+      seeker: 'Seeker'
+    };
+
+    function getCanonicalRankName(rankName) {
+      const raw = normalizeValue(rankName);
+      if (!raw) return '';
+      const key = raw.toLowerCase().replace(/[^a-z]/g, '');
+      return RANK_ICON_NAME_MAP[key] || raw;
+    }
+
     function rankIconPath(rankName) {
-      const safe = normalizeValue(rankName);
-      if (!safe) return '';
-      return `images/deadlock/ranks/${encodeURIComponent(safe + '.png')}`;
+      const canonical = getCanonicalRankName(rankName);
+      if (!canonical) return '';
+      return `images/deadlock/ranks/${encodeURIComponent(canonical + '.png')}`;
+    }
+
+    function getRankIconCandidates(rankName) {
+      const canonical = getCanonicalRankName(rankName);
+      if (!canonical) return [];
+      const lower = canonical.toLowerCase();
+      const candidates = [
+        canonical,
+        lower,
+        canonical.replace(/\s+/g, ''),
+        lower.replace(/\s+/g, ''),
+        canonical.replace(/\s+/g, '_'),
+        lower.replace(/\s+/g, '_'),
+        canonical.replace(/\s+/g, '-'),
+        lower.replace(/\s+/g, '-')
+      ];
+      return [...new Set(candidates)]
+        .filter(Boolean)
+        .map(name => `images/deadlock/ranks/${encodeURIComponent(name + '.png')}`);
     }
 
     function buildIcon(heroName, className = 'icon-slot') {
@@ -1334,19 +1375,39 @@
       return new Promise(resolve => {
         const rank = normalizeValue(rankName);
         if (!rank) return resolve(null);
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = rankIconPath(rank);
+
+        const candidates = getRankIconCandidates(rank);
+        let index = 0;
+
+        function tryNext() {
+          if (index >= candidates.length) {
+            resolve(null);
+            return;
+          }
+
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            index += 1;
+            tryNext();
+          };
+          img.src = candidates[index];
+        }
+
+        tryNext();
       });
     }
 
     function parsePeakRankLabel(value) {
       const raw = normalizeValue(value);
       if (!raw) return null;
-      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
-      if (!parts) return { full: raw, rankName: raw, numeral: '' };
-      return { full: raw, rankName: normalizeValue(parts[1]), numeral: normalizeValue(parts[2] || '').toUpperCase() };
+      const parts = raw.match(/^(.*?)(?:\s+([IVXLCDM]+))?$/i);
+      if (!parts) return { full: raw, rankName: getCanonicalRankName(raw), numeral: '' };
+      return {
+        full: raw,
+        rankName: getCanonicalRankName(parts[1]),
+        numeral: normalizeValue(parts[2] || '').toUpperCase()
+      };
     }
 
     function buildHeroRowsFromMatches(matchRowsSubset) {
