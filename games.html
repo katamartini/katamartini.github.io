@@ -23,14 +23,14 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 24px;
+      padding: 20px;
       background: var(--bg);
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
     }
 
     .page {
-      width: min(1800px, calc(100vw - 48px));
+      width: min(1400px, calc(100vw - 40px));
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -124,7 +124,7 @@
 
     table {
       width: 100%;
-      min-width: 1200px;
+      min-width: 1120px;
       border-collapse: collapse;
       table-layout: auto;
     }
@@ -148,6 +148,11 @@
       background: #2b3342;
     }
 
+    thead th.hero-col {
+      text-align: left;
+      min-width: 150px;
+    }
+
     tbody tr:nth-child(odd) {
       background: var(--panel);
     }
@@ -165,6 +170,11 @@
       text-align: center;
     }
 
+    tbody td.hero-col {
+      text-align: left;
+      min-width: 150px;
+    }
+
     .sort-indicator {
       margin-left: 4px;
       color: #cbd5e1;
@@ -174,7 +184,7 @@
     .hero-cell {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 6px;
       min-width: 0;
     }
@@ -198,7 +208,7 @@
     .hero-name {
       color: var(--accent);
       font-weight: 700;
-      text-align: center;
+      text-align: left;
     }
 
     .result-pill {
@@ -355,7 +365,7 @@
     const columns = [
       { key: "date", label: "Date", defaultDir: "desc" },
       { key: "startTimeDisplay", label: "Start Time", defaultDir: "desc" },
-      { key: "hero", label: "Hero", defaultDir: "asc" },
+      { key: "hero", label: "Hero", defaultDir: "asc", className: "hero-col" },
       { key: "result", label: "Result", defaultDir: "desc" },
       { key: "kills", label: "K", defaultDir: "desc" },
       { key: "deaths", label: "D", defaultDir: "desc" },
@@ -763,6 +773,7 @@
       columns.forEach(col => {
         const th = document.createElement("th");
         th.textContent = col.label;
+        if (col.className) th.classList.add(col.className);
 
         if (sortState.key === col.key) {
           const span = document.createElement("span");
@@ -804,6 +815,7 @@
         tr.appendChild(timeTd);
 
         const heroTd = document.createElement("td");
+        heroTd.className = "hero-col";
         const heroWrap = document.createElement("div");
         heroWrap.className = "hero-cell";
         heroWrap.appendChild(buildIcon(row.hero));
