@@ -1030,6 +1030,14 @@
       return rows.filter(r => !(r.length === 1 && r[0] === ""));
     }
 
+    function normalizeMatchId(value) {
+      const raw = normalizeValue(value);
+      if (!raw) return "";
+      const numeric = Number(raw);
+      if (Number.isFinite(numeric)) return String(Math.trunc(numeric));
+      return raw.replace(/\.0+$/, "").trim();
+    }
+
     function parseRankProgressionRows(rows) {
       const headerRow = Array.isArray(rows) && rows.length ? rows[0] : [];
       const matchIdIndex = findHeaderIndex(headerRow, ['match_id', 'match id', 'id'], 0);
