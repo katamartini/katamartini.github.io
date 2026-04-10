@@ -86,171 +86,12 @@
     .view.is-active { display: block; }
 
     .hero-page {
-      width: min(1800px, 100%);
-      min-width: 0;
-      margin: 0 auto;
-    }
-
-    .hero-dashboard {
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      width: 100%;
+      width: min(1800px, 100%);
       min-width: 0;
-    }
-
-    .wrap,
-    .stats-card,
-    .streaks-card,
-    .calendar-card,
-    .records-card,
-    .chart-card,
-    .card,
-    .cards-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    }
-    
-    .stats-card,
-    .streaks-card,
-    .calendar-card,
-    .records-card,
-    .chart-card,
-    .card,
-    .cards-panel {
-      overflow: hidden;
-    }
-    
-    .wrap {
-      overflow-x: auto;
-      overflow-y: visible;
-    }
-    
-    #dataTable {
-      min-width: 100%;
-    }
-    
-    .wrap.wrap-detailed #dataTable {
-      min-width: 1060px;
-    }
-
-    .wrap {
-      flex: 1 1 auto;
-      min-width: 640px;
-      max-width: none;
-      transition: width 0.18s ease, flex-basis 0.18s ease;
-    }
-
-    .wrap.wrap-detailed {
-      min-width: 1060px;
-    }
-
-    .cards-panel {
-      flex: 0 0 560px;
-      width: 560px;
-      min-width: 560px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .cards-panel-top {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .cards-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .cards-zone {
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 4px;
-      border: 1px dashed transparent;
-      transition: border-color 0.15s ease, background 0.15s ease;
-    }
-
-    .cards-zone.is-active-drop {
-      border-color: rgba(183,255,42,0.45);
-      background: rgba(183,255,42,0.04);
-    }
-
-    .cards-zone-empty {
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 12px;
-      border: 1px dashed rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-    }
-
-    .draggable-card {
-      position: relative;
-    }
-
-    .draggable-card.dragging {
-      opacity: 0.45;
-    }
-
-    .card-drop-target {
-      outline: 2px dashed rgba(183,255,42,0.55);
-      outline-offset: 2px;
-    }
-
-    .card-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .card-drag-handle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      height: 24px;
-      padding: 0 6px;
-      border: 1px solid var(--border);
-      background: #151a23;
-      color: var(--muted);
-      cursor: grab;
-      user-select: none;
-      font-size: 14px;
-      line-height: 1;
-      flex: 0 0 auto;
-    }
-
-    .card-drag-handle:hover {
-      background: #1d2330;
-      color: #fff;
-    }
-
-    .card-drag-handle:active {
-      cursor: grabbing;
-    }
-
-    .layout-reset-btn {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      font-size: 12px;
-      padding: 7px 10px;
-      cursor: pointer;
-    }
-
-    .layout-reset-btn:hover {
-      background: #1d2330;
+      margin: 0 auto;
     }
 
     .games-page,
@@ -260,6 +101,50 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+    }
+
+    .left-column,
+    .wrap,
+    .chart-column { min-width: 0; }
+
+    .wrap,
+    .stats-card,
+    .streaks-card,
+    .calendar-card,
+    .records-card,
+    .chart-card,
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .left-column {
+      flex: 0 0 260px;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .wrap {
+      flex: 0 0 520px;
+      width: 520px;
+      max-width: none;
+      transition: width 0.18s ease, flex-basis 0.18s ease;
+    }
+
+    .wrap.wrap-detailed {
+      flex: 0 0 1060px;
+      width: 1060px;
+    }
+
+    .chart-column {
+      flex: 1 1 auto;
+      min-width: 420px;
+      display: flex;
+      flex-direction: column;
     }
 
     .titlebar,
@@ -748,16 +633,8 @@
     .num { text-align: center; font-variant-numeric: tabular-nums; }
 
     @media (max-width: 1500px) {
-      .hero-dashboard { flex-wrap: wrap; }
-      .wrap {
-        flex: 1 1 100%;
-        min-width: 0;
-      }
-      .cards-panel {
-        flex: 1 1 100%;
-        min-width: 0;
-        width: 100%;
-      }
+      .hero-page { flex-wrap: wrap; width: 100%; min-width: 0; }
+      .chart-column { flex: 1 1 100%; min-width: 0; }
       .chart-body { height: 480px; }
     }
 
@@ -769,18 +646,11 @@
 
     @media (max-width: 980px) {
       body { overflow-x: hidden; }
-      .hero-dashboard {
+      .hero-page {
         flex-direction: column;
         width: min(100%, calc(100vw - 24px));
       }
-      .wrap, .wrap.wrap-detailed, .cards-panel {
-        width: 100%;
-        min-width: 0;
-        flex: 0 0 auto;
-      }
-      .cards-columns {
-        grid-template-columns: 1fr;
-      }
+      .left-column, .wrap, .wrap.wrap-detailed { width: 100%; flex: 0 0 auto; min-width: 0; }
       .datefilterbar { grid-template-columns: 1fr; }
       .chart-body { height: 320px; }
       .hero-modal { width: calc(100vw - 24px); max-height: calc(100vh - 24px); }
@@ -804,112 +674,80 @@
 
     <section id="heroesView" class="view is-active">
       <div class="hero-page">
-        <div class="hero-dashboard">
-          <div class="wrap" id="mainTableWrap">
-            <div class="titlebar">MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span></div>
-            <div class="topbar"><input id="heroSearchBox" type="search" placeholder="Filter heroes..." /><button id="heroResetBtn" type="button">Reset</button></div>
-            <div class="viewtoggle"><label class="viewtoggle-label" for="detailedViewToggle"><input id="detailedViewToggle" type="checkbox" /> Detailed View</label></div>
-            <div class="datefilterbar">
-              <div class="datefilter-field"><label class="datefilter-label" for="startDateInput">Start Date</label><input id="startDateInput" type="date" /></div>
-              <div class="datefilter-field"><label class="datefilter-label" for="endDateInput">End Date</label><input id="endDateInput" type="date" /></div>
-              <button id="clearDateRangeBtn" type="button">Clear Dates</button>
-            </div>
-            <div class="sliderbar">
-              <div class="sliderbar-top"><div class="sliderbar-label">Table State After X Games</div><div class="sliderbar-value" id="gamesSliderLabel">-</div></div>
-              <input id="gamesSlider" type="range" min="0" max="0" value="0" step="1" />
-            </div>
-            <div id="heroStatus" class="status">Loading spreadsheet data...</div>
-            <table id="dataTable" aria-label="Most played heroes"><thead></thead><tbody></tbody></table>
-            <div id="heroEmptyState" class="empty">No rows match the current filter.</div>
+        <div class="left-column">
+          <div class="stats-card">
+            <div class="stats-titlebar">OVERALL STATS<span class="sub">COUNTED MATCHES</span></div>
+            <div class="stats-body"><div class="stats-grid">
+              <div class="stats-item"><div class="stats-label">Matches</div><div class="stats-value-big" id="overallMatches">-</div></div>
+              <div class="stats-item"><div class="stats-label">Wins</div><div class="stats-value-big" id="overallWins">-</div></div>
+              <div class="stats-item"><div class="stats-label">Losses</div><div class="stats-value-big" id="overallLosses">-</div></div>
+              <div class="stats-item"><div class="stats-label">Overall Win %</div><div class="stats-value-big" id="overallWinPct">-</div></div>
+              <div class="stats-item"><div class="stats-label">First Match</div><div class="stats-value-small" id="firstMatchPlayed">-</div></div>
+            </div></div>
           </div>
 
-          <div class="cards-panel">
-            <div class="cards-panel-top">
-              <button id="resetHeroCardLayoutBtn" class="layout-reset-btn" type="button">Reset Layout</button>
-            </div>
-            <div class="cards-columns">
-              <div id="heroCardsCol1" class="cards-zone"></div>
-              <div id="heroCardsCol2" class="cards-zone"></div>
+          <div class="streaks-card">
+            <div class="stats-titlebar">STREAKS<span class="sub">LONGEST RUNS</span></div>
+            <div class="streaks-body">
+              <div class="streak-box win">
+                <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Win Streak</div><div class="streak-dates" id="longestWinDates"></div></div><div class="streak-count" id="longestWinCount">-</div></div>
+                <div class="streak-icons" id="longestWinIcons"></div>
+              </div>
+              <div class="streak-box loss">
+                <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Loss Streak</div><div class="streak-dates" id="longestLossDates"></div></div><div class="streak-count" id="longestLossCount">-</div></div>
+                <div class="streak-icons" id="longestLossIcons"></div>
+              </div>
             </div>
           </div>
+
+          <div class="records-card">
+            <div class="stats-titlebar">RECORDS<span class="sub">COUNTED MATCH HIGHS</span></div>
+            <div class="records-body"><div class="records-grid">
+              <div class="record-box" id="recordKills"></div>
+              <div class="record-box" id="recordDeaths"></div>
+              <div class="record-box" id="recordAssists"></div>
+              <div class="record-box" id="recordSouls"></div>
+              <div class="record-box" id="recordDamage"></div>
+              <div class="record-box" id="recordHealing"></div>
+              <div class="record-box" id="recordShortestGame"></div>
+              <div class="record-box" id="recordLongestGame"></div>
+            </div></div>
+          </div>
+
+          <div class="calendar-card">
+            <div class="stats-titlebar">CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></div>
+            <div class="calendar-body">
+              <div class="calendar-controls">
+                <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
+                <div id="calendarMonthLabel" class="calendar-month-label">-</div>
+                <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
+              </div>
+              <div class="calendar-weekdays">
+                <div class="calendar-weekday">Sun</div><div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div>
+              </div>
+              <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wrap" id="mainTableWrap">
+          <div class="titlebar">MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span></div>
+          <div class="topbar"><input id="heroSearchBox" type="search" placeholder="Filter heroes..." /><button id="heroResetBtn" type="button">Reset</button></div>
+          <div class="viewtoggle"><label class="viewtoggle-label" for="detailedViewToggle"><input id="detailedViewToggle" type="checkbox" /> Detailed View</label></div>
+          <div class="datefilterbar">
+            <div class="datefilter-field"><label class="datefilter-label" for="startDateInput">Start Date</label><input id="startDateInput" type="date" /></div>
+            <div class="datefilter-field"><label class="datefilter-label" for="endDateInput">End Date</label><input id="endDateInput" type="date" /></div>
+            <button id="clearDateRangeBtn" type="button">Clear Dates</button>
+          </div>
+          <div class="sliderbar">
+            <div class="sliderbar-top"><div class="sliderbar-label">Table State After X Games</div><div class="sliderbar-value" id="gamesSliderLabel">-</div></div>
+            <input id="gamesSlider" type="range" min="0" max="0" value="0" step="1" />
+          </div>
+          <div id="heroStatus" class="status">Loading spreadsheet data...</div>
+          <table id="dataTable" aria-label="Most played heroes"><thead></thead><tbody></tbody></table>
+          <div id="heroEmptyState" class="empty">No rows match the current filter.</div>
         </div>
       </div>
-
-      <template id="heroCardsTemplate">
-        <div class="stats-card draggable-card" data-card-id="overall">
-          <div class="stats-titlebar">
-            <div class="card-header-row">
-              <span>OVERALL STATS<span class="sub">COUNTED MATCHES</span></span>
-              <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
-            </div>
-          </div>
-          <div class="stats-body"><div class="stats-grid">
-            <div class="stats-item"><div class="stats-label">Matches</div><div class="stats-value-big" id="overallMatches">-</div></div>
-            <div class="stats-item"><div class="stats-label">Wins</div><div class="stats-value-big" id="overallWins">-</div></div>
-            <div class="stats-item"><div class="stats-label">Losses</div><div class="stats-value-big" id="overallLosses">-</div></div>
-            <div class="stats-item"><div class="stats-label">Overall Win %</div><div class="stats-value-big" id="overallWinPct">-</div></div>
-            <div class="stats-item"><div class="stats-label">First Match</div><div class="stats-value-small" id="firstMatchPlayed">-</div></div>
-          </div></div>
-        </div>
-
-        <div class="streaks-card draggable-card" data-card-id="streaks">
-          <div class="stats-titlebar">
-            <div class="card-header-row">
-              <span>STREAKS<span class="sub">LONGEST RUNS</span></span>
-              <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
-            </div>
-          </div>
-          <div class="streaks-body">
-            <div class="streak-box win">
-              <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Win Streak</div><div class="streak-dates" id="longestWinDates"></div></div><div class="streak-count" id="longestWinCount">-</div></div>
-              <div class="streak-icons" id="longestWinIcons"></div>
-            </div>
-            <div class="streak-box loss">
-              <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Loss Streak</div><div class="streak-dates" id="longestLossDates"></div></div><div class="streak-count" id="longestLossCount">-</div></div>
-              <div class="streak-icons" id="longestLossIcons"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="records-card draggable-card" data-card-id="records">
-          <div class="stats-titlebar">
-            <div class="card-header-row">
-              <span>RECORDS<span class="sub">COUNTED MATCH HIGHS</span></span>
-              <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
-            </div>
-          </div>
-          <div class="records-body"><div class="records-grid">
-            <div class="record-box" id="recordKills"></div>
-            <div class="record-box" id="recordDeaths"></div>
-            <div class="record-box" id="recordAssists"></div>
-            <div class="record-box" id="recordSouls"></div>
-            <div class="record-box" id="recordDamage"></div>
-            <div class="record-box" id="recordHealing"></div>
-            <div class="record-box" id="recordShortestGame"></div>
-            <div class="record-box" id="recordLongestGame"></div>
-          </div></div>
-        </div>
-
-        <div class="calendar-card draggable-card" data-card-id="calendar">
-          <div class="stats-titlebar">
-            <div class="card-header-row">
-              <span>CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></span>
-              <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
-            </div>
-          </div>
-          <div class="calendar-body">
-            <div class="calendar-controls">
-              <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
-              <div id="calendarMonthLabel" class="calendar-month-label">-</div>
-              <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
-            </div>
-            <div class="calendar-weekdays">
-              <div class="calendar-weekday">Sun</div><div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div>
-            </div>
-            <div id="calendarGrid" class="calendar-grid"></div>
-          </div>
-        </div>
-      </template>
     </section>
 
     <section id="gamesView" class="view">
@@ -1058,12 +896,6 @@
       Seeker: 'Seeker'
     };
 
-    const HERO_CARD_LAYOUT_KEY = 'deadlock.heroCardsLayout.v3';
-    const DEFAULT_HERO_CARD_LAYOUT = {
-      col1: ['overall', 'streaks', 'records', 'calendar'],
-      col2: []
-    };
-
     const state = {
       matchesRows: [],
       classifiedMatchRows: [],
@@ -1119,11 +951,31 @@
       heroTableSub: document.getElementById('heroTableSub'),
       mainTableWrap: document.getElementById('mainTableWrap'),
 
-      heroCardsCol1: document.getElementById('heroCardsCol1'),
-      heroCardsCol2: document.getElementById('heroCardsCol2'),
-      resetHeroCardLayoutBtn: document.getElementById('resetHeroCardLayoutBtn'),
-      heroCardsTemplate: document.getElementById('heroCardsTemplate'),
-
+      overallMatchesEl: document.getElementById('overallMatches'),
+      overallWinsEl: document.getElementById('overallWins'),
+      overallLossesEl: document.getElementById('overallLosses'),
+      overallWinPctEl: document.getElementById('overallWinPct'),
+      firstMatchPlayedEl: document.getElementById('firstMatchPlayed'),
+      longestWinCountEl: document.getElementById('longestWinCount'),
+      longestLossCountEl: document.getElementById('longestLossCount'),
+      longestWinIconsEl: document.getElementById('longestWinIcons'),
+      longestLossIconsEl: document.getElementById('longestLossIcons'),
+      longestWinDatesEl: document.getElementById('longestWinDates'),
+      longestLossDatesEl: document.getElementById('longestLossDates'),
+      recordBoxEls: {
+        kills: document.getElementById('recordKills'),
+        deaths: document.getElementById('recordDeaths'),
+        assists: document.getElementById('recordAssists'),
+        souls: document.getElementById('recordSouls'),
+        damage: document.getElementById('recordDamage'),
+        healing: document.getElementById('recordHealing'),
+        shortestGame: document.getElementById('recordShortestGame'),
+        longestGame: document.getElementById('recordLongestGame')
+      },
+      calendarGrid: document.getElementById('calendarGrid'),
+      calendarMonthLabel: document.getElementById('calendarMonthLabel'),
+      calendarPrevBtn: document.getElementById('calendarPrevBtn'),
+      calendarNextBtn: document.getElementById('calendarNextBtn'),
       chartCard: document.getElementById('chartCard'),
       expandChartBtn: document.getElementById('expandChartBtn'),
       resetZoomBtn: document.getElementById('resetZoomBtn'),
@@ -1377,194 +1229,6 @@
       return slot;
     }
 
-    function hydrateHeroCards() {
-      const templateContent = els.heroCardsTemplate.content.cloneNode(true);
-      const tempWrap = document.createElement('div');
-      tempWrap.appendChild(templateContent);
-      return Array.from(tempWrap.children);
-    }
-
-    function getHeroCards() {
-      return Array.from(document.querySelectorAll('.draggable-card[data-card-id]'));
-    }
-
-    function getZoneCards(zoneEl) {
-      return Array.from(zoneEl.querySelectorAll('.draggable-card[data-card-id]'));
-    }
-
-    function renderZoneEmptyState(zoneEl) {
-      const existing = zoneEl.querySelector('.cards-zone-empty');
-      if (existing) existing.remove();
-      if (!getZoneCards(zoneEl).length) {
-        const empty = document.createElement('div');
-        empty.className = 'cards-zone-empty';
-        empty.textContent = 'Drop cards here';
-        zoneEl.appendChild(empty);
-      }
-    }
-
-    function renderZoneEmptyStates() {
-      renderZoneEmptyState(els.heroCardsCol1);
-      renderZoneEmptyState(els.heroCardsCol2);
-    }
-
-    function saveHeroCardLayout() {
-      const layout = {
-        col1: getZoneCards(els.heroCardsCol1).map(card => card.dataset.cardId).filter(Boolean),
-        col2: getZoneCards(els.heroCardsCol2).map(card => card.dataset.cardId).filter(Boolean)
-      };
-      localStorage.setItem(HERO_CARD_LAYOUT_KEY, JSON.stringify(layout));
-      renderZoneEmptyStates();
-    }
-
-    function applyHeroCardLayout(layout) {
-      const allCards = new Map(getHeroCards().map(card => [card.dataset.cardId, card]));
-      els.heroCardsCol1.innerHTML = '';
-      els.heroCardsCol2.innerHTML = '';
-
-      const used = new Set();
-
-      (layout.col1 || []).forEach(id => {
-        const card = allCards.get(id);
-        if (card) {
-          els.heroCardsCol1.appendChild(card);
-          used.add(id);
-        }
-      });
-
-      (layout.col2 || []).forEach(id => {
-        const card = allCards.get(id);
-        if (card) {
-          els.heroCardsCol2.appendChild(card);
-          used.add(id);
-        }
-      });
-
-      for (const [id, card] of allCards.entries()) {
-        if (!used.has(id)) els.heroCardsCol1.appendChild(card);
-      }
-
-      renderZoneEmptyStates();
-    }
-
-    function loadHeroCardLayout() {
-      try {
-        const raw = localStorage.getItem(HERO_CARD_LAYOUT_KEY);
-        if (!raw) {
-          applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-          return;
-        }
-        const parsed = JSON.parse(raw);
-        const layout = {
-          col1: Array.isArray(parsed.col1) ? parsed.col1 : DEFAULT_HERO_CARD_LAYOUT.col1,
-          col2: Array.isArray(parsed.col2) ? parsed.col2 : DEFAULT_HERO_CARD_LAYOUT.col2
-        };
-        applyHeroCardLayout(layout);
-      } catch {
-        applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-      }
-    }
-
-    function resetHeroCardLayout() {
-      localStorage.removeItem(HERO_CARD_LAYOUT_KEY);
-      applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-      saveHeroCardLayout();
-    }
-
-    function setupHeroCardDragAndDrop() {
-      let draggingCard = null;
-
-      function refreshTargets() {
-        document.querySelectorAll('.card-drop-target').forEach(el => el.classList.remove('card-drop-target'));
-        [els.heroCardsCol1, els.heroCardsCol2].forEach(zone => zone.classList.remove('is-active-drop'));
-      }
-
-      function setupCard(card) {
-        const handle = card.querySelector('.card-drag-handle');
-        if (!handle) return;
-
-        handle.addEventListener('dragstart', e => {
-          draggingCard = card;
-          card.classList.add('dragging');
-          if (e.dataTransfer) {
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', card.dataset.cardId || '');
-          }
-          refreshTargets();
-        });
-
-        handle.addEventListener('dragend', () => {
-          if (draggingCard) draggingCard.classList.remove('dragging');
-          refreshTargets();
-          draggingCard = null;
-          saveHeroCardLayout();
-        });
-
-        card.addEventListener('dragover', e => {
-          if (!draggingCard || draggingCard === card) return;
-          e.preventDefault();
-
-          const zone = card.parentElement;
-          const rect = card.getBoundingClientRect();
-          const before = e.clientY < rect.top + rect.height / 2;
-
-          refreshTargets();
-          zone.classList.add('is-active-drop');
-          card.classList.add('card-drop-target');
-
-          if (before) zone.insertBefore(draggingCard, card);
-          else zone.insertBefore(draggingCard, card.nextSibling);
-
-          renderZoneEmptyStates();
-        });
-
-        card.addEventListener('drop', e => {
-          e.preventDefault();
-          refreshTargets();
-          saveHeroCardLayout();
-        });
-      }
-
-      getHeroCards().forEach(setupCard);
-
-      [els.heroCardsCol1, els.heroCardsCol2].forEach(zone => {
-        zone.addEventListener('dragover', e => {
-          if (!draggingCard) return;
-          e.preventDefault();
-          zone.classList.add('is-active-drop');
-
-          const cards = getZoneCards(zone);
-          if (!cards.length) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-            return;
-          }
-
-          const lastCard = cards[cards.length - 1];
-          const zoneRect = zone.getBoundingClientRect();
-          if (e.clientY > zoneRect.bottom - 60) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-          } else if (!cards.includes(draggingCard)) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-          }
-        });
-
-        zone.addEventListener('drop', e => {
-          e.preventDefault();
-          zone.classList.remove('is-active-drop');
-          saveHeroCardLayout();
-        });
-
-        zone.addEventListener('dragleave', e => {
-          if (!zone.contains(e.relatedTarget)) {
-            zone.classList.remove('is-active-drop');
-          }
-        });
-      });
-    }
-
     function getMatchCell(row, index) {
       if (!Array.isArray(row) || !Number.isInteger(index) || index < 0) return '';
       return normalizeValue(row[index]);
@@ -1682,6 +1346,35 @@
       const secs = rounded % 60;
       if (hours > 0) return `${hours}:${String(minutes).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
       return `${minutes}:${String(secs).padStart(2,'0')}`;
+    }
+
+    function loadHeroIcon(heroName) {
+      return new Promise(resolve => {
+        const hero = normalizeValue(heroName);
+        if (!hero) return resolve(null);
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = heroIconPath(hero);
+      });
+    }
+    function loadRankIcon(rankName) {
+      return new Promise(resolve => {
+        const rank = normalizeValue(rankName);
+        if (!rank) return resolve(null);
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = rankIconPath(rank);
+      });
+    }
+
+    function parsePeakRankLabel(value) {
+      const raw = normalizeValue(value);
+      if (!raw) return null;
+      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
+      if (!parts) return { full: raw, rankName: raw, numeral: '' };
+      return { full: raw, rankName: normalizeValue(parts[1]), numeral: normalizeValue(parts[2] || '').toUpperCase() };
     }
 
     function buildHeroRowsFromMatches(matchRowsSubset) {
@@ -2008,13 +1701,9 @@
     }
 
     function renderCalendar() {
-      const calendarGrid = document.getElementById('calendarGrid');
-      const calendarMonthLabel = document.getElementById('calendarMonthLabel');
-      if (!calendarGrid || !calendarMonthLabel) return;
-
-      calendarGrid.innerHTML = '';
+      els.calendarGrid.innerHTML = '';
       const viewStart = monthStart(state.calendarViewDate);
-      calendarMonthLabel.textContent = viewStart.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      els.calendarMonthLabel.textContent = viewStart.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
       const gridStart = new Date(viewStart); gridStart.setDate(viewStart.getDate() - viewStart.getDay());
       const todayKey = localDateKey(new Date());
       for (let i = 0; i < 42; i++) {
@@ -2027,15 +1716,14 @@
         if (counts.wins > 0 || counts.losses > 0) cell.classList.add('has-games');
         const number = document.createElement('div'); number.className = 'calendar-day-number'; number.textContent = cellDate.getDate();
         const records = document.createElement('div'); records.className = 'calendar-records';
-        if (counts.wins === 0 && counts.losses === 0) {
-          const empty = document.createElement('div'); empty.className = 'calendar-record empty'; empty.textContent = '—'; records.appendChild(empty);
-        } else {
+        if (counts.wins === 0 && counts.losses === 0) { const empty = document.createElement('div'); empty.className = 'calendar-record empty'; empty.textContent = '—'; records.appendChild(empty); }
+        else {
           const wins = document.createElement('div'); wins.className = 'calendar-record wins'; wins.textContent = `W: ${counts.wins}`;
           const losses = document.createElement('div'); losses.className = 'calendar-record losses'; losses.textContent = `L: ${counts.losses}`;
           records.appendChild(wins); records.appendChild(losses);
         }
         cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses}`;
-        cell.appendChild(number); cell.appendChild(records); calendarGrid.appendChild(cell);
+        cell.appendChild(number); cell.appendChild(records); els.calendarGrid.appendChild(cell);
       }
     }
 
@@ -2056,63 +1744,23 @@
       return currentBest;
     }
 
-    function renderSingleRecordBox(container, label, row, metricIndex, config = {}) {
+    function renderSingleRecordBox(container, label, row, metricIndex, config={}) {
       if (!container) return;
-    
-      const metricValue = row ? getRowMetricValue(row, metricIndex, config) : null;
-    
-      if (!row || metricValue === null) {
-        container.innerHTML = `
-          <div class="record-top">
-            <div class="record-label">${label}</div>
-            <div class="record-value">-</div>
-          </div>
-          <div class="record-main">
-            <div class="record-meta">
-              <div class="record-hero">No data</div>
-              <div class="record-date">-</div>
-              <div class="record-extra">K/D/A: - / - / - • -</div>
-            </div>
-          </div>
-        `;
+      if (!row || (metricIndex < 0 && !config.isDuration)) {
+        container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">-</div></div><div class="record-main"><div class="record-meta"><div class="record-hero">No data</div><div class="record-date">-</div><div class="record-extra">K/D/A: - / - / - • -</div></div></div>`;
         return;
       }
-    
       const hero = getMatchHeroValue(row) || 'Unknown';
       const result = getMatchResultValue(row) || '-';
       const kills = parseNumeric(row[state.heroHeaderIndexes.kills]);
       const deaths = parseNumeric(row[state.heroHeaderIndexes.deaths]);
       const assists = parseNumeric(row[state.heroHeaderIndexes.assists]);
       const date = parseMatchDateTime(row);
-    
-      container.innerHTML = `
-        <div class="record-top">
-          <div class="record-label">${label}</div>
-          <div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div>
-        </div>
-        <div class="record-main">
-          ${buildIcon(hero, 'icon-slot record-icon').outerHTML}
-          <div class="record-meta">
-            <div class="record-hero">${hero}</div>
-            <div class="record-date">${date ? formatLongDate(date) : '-'}</div>
-            <div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-'}</div>
-          </div>
-        </div>
-      `;
+      const metricValue = getRowMetricValue(row, metricIndex, config);
+      container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div></div><div class="record-main">${buildIcon(hero, 'icon-slot record-icon').outerHTML}<div class="record-meta"><div class="record-hero">${hero}</div><div class="record-date">${date ? formatLongDate(date) : '-'}</div><div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-'}</div></div></div>`;
     }
 
     function renderRecords() {
-      const recordBoxEls = {
-        kills: document.getElementById('recordKills'),
-        deaths: document.getElementById('recordDeaths'),
-        assists: document.getElementById('recordAssists'),
-        souls: document.getElementById('recordSouls'),
-        damage: document.getElementById('recordDamage'),
-        healing: document.getElementById('recordHealing'),
-        shortestGame: document.getElementById('recordShortestGame'),
-        longestGame: document.getElementById('recordLongestGame')
-      };
-
       const configs = [
         { key: 'kills', label: 'Most Kills', mode: 'max' },
         { key: 'deaths', label: 'Most Deaths', mode: 'max' },
@@ -2123,66 +1771,34 @@
         { key: 'durationSeconds', label: 'Shortest Game', mode: 'min', isDuration: true, recordKey: 'shortestGame' },
         { key: 'durationSeconds', label: 'Longest Game', mode: 'max', isDuration: true, recordKey: 'longestGame' }
       ];
-
       for (const config of configs) {
         const metricIndex = state.heroHeaderIndexes[config.key];
         let bestRow = null;
-
-        if (config.isDuration) {
-          for (const row of state.classifiedMatchRows) {
-            if (getDurationSeconds(row) !== null) {
-              bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-            }
-          }
-        } else if (metricIndex >= 0) {
-          for (const row of state.classifiedMatchRows) {
-            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-          }
-        }
-
-        renderSingleRecordBox(
-          recordBoxEls[config.recordKey || config.key],
-          config.label,
-          bestRow,
-          metricIndex,
-          config
-        );
+        const hasMetric = config.isDuration ? (state.heroHeaderIndexes.durationSeconds >= 0 || state.heroHeaderIndexes.durationMinutes >= 0) : metricIndex >= 0;
+        if (hasMetric) for (const row of state.classifiedMatchRows) bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
+        renderSingleRecordBox(els.recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
       }
     }
 
-    function setOverallStats() { {
-      const overallMatchesEl = document.getElementById('overallMatches');
-      const overallWinsEl = document.getElementById('overallWins');
-      const overallLossesEl = document.getElementById('overallLosses');
-      const overallWinPctEl = document.getElementById('overallWinPct');
-      const firstMatchPlayedEl = document.getElementById('firstMatchPlayed');
-      const longestWinCountEl = document.getElementById('longestWinCount');
-      const longestLossCountEl = document.getElementById('longestLossCount');
-      const longestWinIconsEl = document.getElementById('longestWinIcons');
-      const longestLossIconsEl = document.getElementById('longestLossIcons');
-      const longestWinDatesEl = document.getElementById('longestWinDates');
-      const longestLossDatesEl = document.getElementById('longestLossDates');
-
-      if (!overallMatchesEl) return;
-
+    function setOverallStats() {
       const classifiedRows = state.classifiedMatchRows;
       const totalMatches = classifiedRows.length;
       const wins = classifiedRows.filter(row => getMatchResultValue(row).toLowerCase() === 'win').length;
       const losses = classifiedRows.filter(row => getMatchResultValue(row).toLowerCase() === 'loss').length;
       const firstDate = classifiedRows.map(row => parseSheetDate(getMatchDateValue(row))).filter(Boolean).sort((a,b)=>a-b)[0];
-      overallMatchesEl.textContent = totalMatches;
-      overallWinsEl.textContent = wins;
-      overallLossesEl.textContent = losses;
-      overallWinPctEl.textContent = totalMatches > 0 ? `${((wins / totalMatches) * 100).toFixed(2)}%` : '-';
-      firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : '-';
+      els.overallMatchesEl.textContent = totalMatches;
+      els.overallWinsEl.textContent = wins;
+      els.overallLossesEl.textContent = losses;
+      els.overallWinPctEl.textContent = totalMatches > 0 ? `${((wins / totalMatches) * 100).toFixed(2)}%` : '-';
+      els.firstMatchPlayedEl.textContent = firstDate ? formatLongDate(firstDate) : '-';
       const longestWin = findLongestStreak(classifiedRows, 'win');
       const longestLoss = findLongestStreak(classifiedRows, 'loss');
-      longestWinCountEl.textContent = longestWin.heroes.length;
-      longestLossCountEl.textContent = longestLoss.heroes.length;
-      longestWinDatesEl.textContent = formatDateRange(longestWin.startDate, longestWin.endDate);
-      longestLossDatesEl.textContent = formatDateRange(longestLoss.startDate, longestLoss.endDate);
-      renderStreak(longestWinIconsEl, longestWin.heroes);
-      renderStreak(longestLossIconsEl, longestLoss.heroes);
+      els.longestWinCountEl.textContent = longestWin.heroes.length;
+      els.longestLossCountEl.textContent = longestLoss.heroes.length;
+      els.longestWinDatesEl.textContent = formatDateRange(longestWin.startDate, longestWin.endDate);
+      els.longestLossDatesEl.textContent = formatDateRange(longestLoss.startDate, longestLoss.endDate);
+      renderStreak(els.longestWinIconsEl, longestWin.heroes);
+      renderStreak(els.longestLossIconsEl, longestLoss.heroes);
       state.dailyResultsMap = buildDailyResultsMap(classifiedRows);
       renderCalendar();
       renderRecords();
@@ -2480,7 +2096,6 @@
     function isChartFullscreen() {
       return document.fullscreenElement === els.chartCard || document.webkitFullscreenElement === els.chartCard;
     }
-
     async function toggleChartFullscreen() {
       try {
         if (!isChartFullscreen()) {
@@ -2492,9 +2107,7 @@
           else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
           els.expandChartBtn.textContent = 'Expand';
         }
-      } catch (err) {
-        console.error('Fullscreen toggle failed:', err);
-      }
+      } catch (err) { console.error('Fullscreen toggle failed:', err); }
     }
 
     async function loadAppData() {
@@ -2536,7 +2149,6 @@
     }));
 
     els.heroSearchBox.addEventListener('input', updateHeroTableForSlider);
-
     els.heroResetBtn.addEventListener('click', () => {
       els.heroSearchBox.value = '';
       els.startDateInput.value = '';
@@ -2545,7 +2157,6 @@
       state.sliderGameCount = state.classifiedMatchRows.length;
       updateHeroTableForSlider();
     });
-
     els.clearDateRangeBtn.addEventListener('click', () => {
       els.startDateInput.value = '';
       els.endDateInput.value = '';
@@ -2553,52 +2164,28 @@
       state.sliderGameCount = state.classifiedMatchRows.length;
       updateHeroTableForSlider();
     });
-
     function handleDateRangeInput() {
       els.gamesSlider.value = els.gamesSlider.max;
       state.sliderGameCount = Number(els.gamesSlider.max);
       updateHeroTableForSlider();
     }
-
     els.startDateInput.addEventListener('change', handleDateRangeInput);
     els.endDateInput.addEventListener('change', handleDateRangeInput);
     els.startDateInput.addEventListener('input', handleDateRangeInput);
     els.endDateInput.addEventListener('input', handleDateRangeInput);
-
-    els.gamesSlider.addEventListener('input', () => {
-      state.sliderGameCount = Number(els.gamesSlider.value);
-      updateHeroTableForSlider();
-    });
-
+    els.gamesSlider.addEventListener('input', () => { state.sliderGameCount = Number(els.gamesSlider.value); updateHeroTableForSlider(); });
     els.detailedViewToggle.addEventListener('change', () => {
       state.isDetailedView = !!els.detailedViewToggle.checked;
-      if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) {
-        state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
-      }
+      if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
       updateHeroTableForSlider();
     });
-
-    document.addEventListener('click', e => {
-      if (e.target && e.target.id === 'calendarPrevBtn') {
-        state.calendarViewDate = addMonths(state.calendarViewDate, -1);
-        renderCalendar();
-      }
-      if (e.target && e.target.id === 'calendarNextBtn') {
-        state.calendarViewDate = addMonths(state.calendarViewDate, 1);
-        renderCalendar();
-      }
-    });
-
-    els.resetZoomBtn.addEventListener('click', () => {
-      if (state.winrateChart) state.winrateChart.resetZoom();
-    });
-
+    els.calendarPrevBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, -1); renderCalendar(); });
+    els.calendarNextBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, 1); renderCalendar(); });
+    els.resetZoomBtn.addEventListener('click', () => { if (state.winrateChart) state.winrateChart.resetZoom(); });
     els.expandChartBtn.addEventListener('click', toggleChartFullscreen);
-
     els.gamesSearchBox.addEventListener('input', applyGamesFilters);
     els.heroFilter.addEventListener('change', applyGamesFilters);
     els.resultFilter.addEventListener('change', applyGamesFilters);
-
     els.gamesResetBtn.addEventListener('click', () => {
       els.gamesSearchBox.value = '';
       els.heroFilter.value = '';
@@ -2606,41 +2193,17 @@
       state.gamesSortState = { key: 'dateTime', dir: 'desc' };
       applyGamesFilters();
     });
-
     els.heroModalCloseBtn.addEventListener('click', closeHeroHistoryModal);
-    els.heroModalOverlay.addEventListener('click', e => {
-      if (e.target === els.heroModalOverlay) closeHeroHistoryModal();
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal();
-    });
-
+    els.heroModalOverlay.addEventListener('click', e => { if (e.target === els.heroModalOverlay) closeHeroHistoryModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal(); });
     window.addEventListener('resize', () => {
       if (state.winrateChart && state.currentView === 'graph') state.winrateChart.resize();
     });
-
-    document.addEventListener('fullscreenchange', () => {
-      els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand';
-      if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50);
-    });
-
-    document.addEventListener('webkitfullscreenchange', () => {
-      els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand';
-      if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50);
-    });
-
-    els.resetHeroCardLayoutBtn.addEventListener('click', resetHeroCardLayout);
+    document.addEventListener('fullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
+    document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
 
     const initialHash = location.hash.replace('#', '');
     switchView(['heroes', 'games', 'graph'].includes(initialHash) ? initialHash : 'heroes', false);
-
-    const mountedCards = hydrateHeroCards();
-    mountedCards.forEach(card => els.heroCardsCol1.appendChild(card));
-    loadHeroCardLayout();
-    setupHeroCardDragAndDrop();
-    renderZoneEmptyStates();
-
     loadAppData();
   </script>
 </body>
