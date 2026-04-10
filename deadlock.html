@@ -299,7 +299,7 @@
     }
 
     .wrap.wrap-detailed table { min-width: 1060px; }
-    #gamesTable { min-width: 1060px; }
+    #gamesTable { min-width: 1260px; }
 
     thead th {
       background: var(--header);
@@ -1010,7 +1010,9 @@
       { key: "deaths", label: "D", defaultDir: "desc" },
       { key: "assists", label: "A", defaultDir: "desc" },
       { key: "souls", label: "Souls", defaultDir: "desc" },
+      { key: "soulsPerMinute", label: "Souls/Min", defaultDir: "desc" },
       { key: "damage", label: "Player Dmg", defaultDir: "desc" },
+      { key: "damagePerMinute", label: "Dmg/Min", defaultDir: "desc" },
       { key: "objectiveDamage", label: "Obj Dmg", defaultDir: "desc" },
       { key: "healing", label: "Healing", defaultDir: "desc" },
       { key: "durationSeconds", label: "Length", defaultDir: "desc" },
@@ -1417,10 +1419,26 @@
           const dateObj = parseSheetDate(dateRaw);
           const startTimeDateObj = parseSheetDate(startTimeRaw);
           const startTimeParts = parseTimeOnly(startTimeRaw);
+
           let dateTime = null;
           if (startTimeDateObj) dateTime = startTimeDateObj;
-          else if (dateObj && startTimeParts) dateTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), startTimeParts.hours, startTimeParts.minutes, startTimeParts.seconds || 0);
-          else if (dateObj) dateTime = dateObj;
+          else if (dateObj && startTimeParts) {
+            dateTime = new Date(
+              dateObj.getFullYear(),
+              dateObj.getMonth(),
+              dateObj.getDate(),
+              startTimeParts.hours,
+              startTimeParts.minutes,
+              startTimeParts.seconds || 0
+            );
+          } else if (dateObj) {
+            dateTime = dateObj;
+          }
+
+          const souls = parseNumeric(row[state.gamesHeaderIndexes.souls]);
+          const damage = parseNumeric(row[state.gamesHeaderIndexes.damage]);
+          const durationSeconds = getDurationSeconds(row);
+
           return {
             raw: row,
             matchId: getMatchCell(row, state.matchesColumnIndexes.matchId),
@@ -1428,7 +1446,11 @@
             dateObj,
             startTimeRaw,
             startTimeParts,
-            startTimeDisplay: startTimeParts ? formatTimeFromParts(startTimeParts) : (startTimeDateObj ? startTimeDateObj.toLocaleTimeString(undefined, { hour:'numeric', minute:'2-digit' }) : normalizeValue(startTimeRaw) || '-'),
+            startTimeDisplay: startTimeParts
+              ? formatTimeFromParts(startTimeParts)
+              : (startTimeDateObj
+                  ? startTimeDateObj.toLocaleTimeString(undefined, { hour:'numeric', minute:'2-digit' })
+                  : normalizeValue(startTimeRaw) || '-'),
             dateTime,
             hero: getMatchHeroValue(row),
             result: getMatchResultValue(row).toLowerCase(),
@@ -1437,11 +1459,17 @@
             kills: parseNumeric(row[state.gamesHeaderIndexes.kills]),
             deaths: parseNumeric(row[state.gamesHeaderIndexes.deaths]),
             assists: parseNumeric(row[state.gamesHeaderIndexes.assists]),
-            souls: parseNumeric(row[state.gamesHeaderIndexes.souls]),
-            damage: parseNumeric(row[state.gamesHeaderIndexes.damage]),
+            souls,
+            soulsPerMinute: (Number.isFinite(souls) && Number.isFinite(durationSeconds) && durationSeconds > 0)
+              ? souls / (durationSeconds / 60)
+              : null,
+            damage,
+            damagePerMinute: (Number.isFinite(damage) && Number.isFinite(durationSeconds) && durationSeconds > 0)
+              ? damage / (durationSeconds / 60)
+              : null,
             objectiveDamage: parseNumeric(row[state.gamesHeaderIndexes.objectiveDamage]),
             healing: parseNumeric(row[state.gamesHeaderIndexes.healing]),
-            durationSeconds: getDurationSeconds(row)
+            durationSeconds
           };
         })
         .filter(row => row.counts === 'yes');
@@ -1531,6 +1559,7 @@
     function formatPerGame(value) { return Number.isFinite(value) ? value.toFixed(2) : '-'; }
     function formatRecordNumber(value) { const num = Number(value); return Number.isFinite(num) ? num.toLocaleString() : '-'; }
     function formatSoulsPerMinute(totalSouls, totalDurationSeconds) { return (!Number.isFinite(totalSouls) || !Number.isFinite(totalDurationSeconds) || totalDurationSeconds <= 0) ? '-' : (totalSouls / (totalDurationSeconds / 60)).toFixed(2); }
+    function formatRate(value) { return Number.isFinite(value) ? value.toFixed(2) : '-'; }
 
     function renderStatCell(valueText, pct, fillClass) {
       const wrapper = document.createElement('div');
@@ -2041,19 +2070,71 @@
     function renderGamesTable() {
       els.gamesTbody.innerHTML = '';
       els.gamesEmptyState.style.display = state.filteredGamesRows.length ? 'none' : 'block';
+
       state.filteredGamesRows.forEach(row => {
         const tr = document.createElement('tr');
-        const dateTd = document.createElement('td'); dateTd.textContent = formatDate(row.dateObj || row.date); tr.appendChild(dateTd);
-        const timeTd = document.createElement('td'); timeTd.textContent = row.startTimeDisplay || '-'; tr.appendChild(timeTd);
-        const heroTd = document.createElement('td'); heroTd.className = 'hero-col'; const heroWrap = document.createElement('div'); heroWrap.className = 'hero-cell'; heroWrap.appendChild(buildIcon(row.hero)); const heroName = document.createElement('div'); heroName.className = 'hero-name'; heroName.textContent = row.hero || '-'; heroWrap.appendChild(heroName); heroTd.appendChild(heroWrap); tr.appendChild(heroTd);
-        const resultTd = document.createElement('td'); resultTd.innerHTML = resultPill(row.result); tr.appendChild(resultTd);
-        const rankTd = document.createElement('td'); rankTd.textContent = row.peakRank || '-'; tr.appendChild(rankTd);
-        ["kills","deaths","assists","souls","damage","objectiveDamage","healing","durationSeconds"].forEach(key => {
-          const td = document.createElement('td'); td.className = 'num'; td.textContent = key === 'durationSeconds' ? formatDuration(row.durationSeconds) : formatRecordNumber(row[key]); tr.appendChild(td);
+
+        const dateTd = document.createElement('td');
+        dateTd.textContent = formatDate(row.dateObj || row.date);
+        tr.appendChild(dateTd);
+
+        const timeTd = document.createElement('td');
+        timeTd.textContent = row.startTimeDisplay || '-';
+        tr.appendChild(timeTd);
+
+        const heroTd = document.createElement('td');
+        heroTd.className = 'hero-col';
+        const heroWrap = document.createElement('div');
+        heroWrap.className = 'hero-cell';
+        heroWrap.appendChild(buildIcon(row.hero));
+        const heroName = document.createElement('div');
+        heroName.className = 'hero-name';
+        heroName.textContent = row.hero || '-';
+        heroWrap.appendChild(heroName);
+        heroTd.appendChild(heroWrap);
+        tr.appendChild(heroTd);
+
+        const resultTd = document.createElement('td');
+        resultTd.innerHTML = resultPill(row.result);
+        tr.appendChild(resultTd);
+
+        const rankTd = document.createElement('td');
+        rankTd.textContent = row.peakRank || '-';
+        tr.appendChild(rankTd);
+
+        [
+          "kills",
+          "deaths",
+          "assists",
+          "souls",
+          "soulsPerMinute",
+          "damage",
+          "damagePerMinute",
+          "objectiveDamage",
+          "healing",
+          "durationSeconds"
+        ].forEach(key => {
+          const td = document.createElement('td');
+          td.className = 'num';
+
+          if (key === 'durationSeconds') {
+            td.textContent = formatDuration(row.durationSeconds);
+          } else if (key === 'soulsPerMinute' || key === 'damagePerMinute') {
+            td.textContent = formatRate(row[key]);
+          } else {
+            td.textContent = formatRecordNumber(row[key]);
+          }
+
+          tr.appendChild(td);
         });
-        const matchIdTd = document.createElement('td'); matchIdTd.textContent = row.matchId || '-'; tr.appendChild(matchIdTd);
+
+        const matchIdTd = document.createElement('td');
+        matchIdTd.textContent = row.matchId || '-';
+        tr.appendChild(matchIdTd);
+
         els.gamesTbody.appendChild(tr);
       });
+
       els.gamesStatusEl.textContent = `${state.filteredGamesRows.length} counted game(s) shown`;
     }
 
