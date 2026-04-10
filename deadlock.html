@@ -1867,7 +1867,6 @@
     }
 
     function buildDeltaSeries() {
-      const peakRankIndex = state.matchesColumnIndexes.peakRank;
       let wins = 0, losses = 0, classifiedMatchNumber = 0;
       return state.matchesRows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== '')).map(row => {
         if (!isClassifiedCountedMatch(row)) return null;
@@ -1876,10 +1875,21 @@
         const hero = getMatchHeroValue(row);
         const modeName = getMatchCell(row, state.matchesColumnIndexes.modeName);
         const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
-        const peakRank = peakRankIndex >= 0 ? getPeakRankValue(row) : '';
+        const peakRank = getPeakRankValue(row);
+    
         classifiedMatchNumber += 1;
         if (result === 'win') wins += 1; else losses += 1;
-        return { xLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`, y: wins - losses, hero, result, matchNumber: classifiedMatchNumber, modeName, matchId, peakRank };
+    
+        return {
+          xLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`,
+          y: wins - losses,
+          hero,
+          result,
+          matchNumber: classifiedMatchNumber,
+          modeName,
+          matchId,
+          peakRank
+        };
       }).filter(Boolean);
     }
 
