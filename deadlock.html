@@ -94,7 +94,8 @@
       margin: 0 auto;
     }
 
-    .games-page {
+    .games-page,
+    .graph-page {
       width: min(1400px, 100%);
       margin: 0 auto;
       display: flex;
@@ -639,7 +640,7 @@
 
     @media (max-width: 1200px) {
       body { padding: 12px; }
-      .site-shell, .site-nav-wrap, .games-page { width: calc(100vw - 24px); }
+      .site-shell, .site-nav-wrap, .games-page, .graph-page { width: calc(100vw - 24px); }
       .toolbar { grid-template-columns: 1fr 1fr; }
     }
 
@@ -649,7 +650,7 @@
         flex-direction: column;
         width: min(100%, calc(100vw - 24px));
       }
-      .left-column, .wrap, .wrap.wrap-detailed, .chart-column { width: 100%; flex: 0 0 auto; min-width: 0; }
+      .left-column, .wrap, .wrap.wrap-detailed { width: 100%; flex: 0 0 auto; min-width: 0; }
       .datefilterbar { grid-template-columns: 1fr; }
       .chart-body { height: 320px; }
       .hero-modal { width: calc(100vw - 24px); max-height: calc(100vh - 24px); }
@@ -667,6 +668,7 @@
       <div class="site-nav">
         <a href="#heroes" class="site-nav-link site-nav-link-active" data-view="heroes">Hero Stats</a>
         <a href="#games" class="site-nav-link" data-view="games">Games</a>
+        <a href="#graph" class="site-nav-link" data-view="graph">Graph</a>
       </div>
     </div>
 
@@ -745,13 +747,6 @@
           <table id="dataTable" aria-label="Most played heroes"><thead></thead><tbody></tbody></table>
           <div id="heroEmptyState" class="empty">No rows match the current filter.</div>
         </div>
-
-        <div class="chart-column">
-          <div class="chart-card" id="chartCard">
-            <div class="stats-titlebar"><div class="chart-header"><div>W-L DELTA OVER TIME<span class="sub">COUNTED MATCHES</span></div><div class="chart-btn-group"><button id="resetZoomBtn" class="chart-expand-btn" type="button">Reset Zoom</button><button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button></div></div></div>
-            <div class="chart-body"><canvas id="winrateChart"></canvas></div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -770,6 +765,23 @@
             <table id="gamesTable" aria-label="Games list"><thead></thead><tbody></tbody></table>
           </div>
           <div id="gamesEmptyState" class="empty">No games match the current filters.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="graphView" class="view">
+      <div class="graph-page">
+        <div class="chart-card" id="chartCard">
+          <div class="stats-titlebar">
+            <div class="chart-header">
+              <div>W-L DELTA OVER TIME<span class="sub">COUNTED MATCHES</span></div>
+              <div class="chart-btn-group">
+                <button id="resetZoomBtn" class="chart-expand-btn" type="button">Reset Zoom</button>
+                <button id="expandChartBtn" class="chart-expand-btn" type="button">Expand</button>
+              </div>
+            </div>
+          </div>
+          <div class="chart-body"><canvas id="winrateChart"></canvas></div>
         </div>
       </div>
     </section>
@@ -921,6 +933,7 @@
       navLinks: Array.from(document.querySelectorAll('.site-nav-link')),
       heroesView: document.getElementById('heroesView'),
       gamesView: document.getElementById('gamesView'),
+      graphView: document.getElementById('graphView'),
 
       heroTable: document.getElementById('dataTable'),
       heroThead: document.querySelector('#dataTable thead'),
@@ -2063,12 +2076,21 @@
     }
 
     function switchView(viewName, updateHash = true) {
-      state.currentView = viewName === 'games' ? 'games' : 'heroes';
+      state.currentView = ['heroes', 'games', 'graph'].includes(viewName) ? viewName : 'heroes';
+
       els.heroesView.classList.toggle('is-active', state.currentView === 'heroes');
       els.gamesView.classList.toggle('is-active', state.currentView === 'games');
-      els.navLinks.forEach(link => link.classList.toggle('site-nav-link-active', link.dataset.view === state.currentView));
+      els.graphView.classList.toggle('is-active', state.currentView === 'graph');
+
+      els.navLinks.forEach(link => {
+        link.classList.toggle('site-nav-link-active', link.dataset.view === state.currentView);
+      });
+
       if (updateHash) history.replaceState(null, '', `#${state.currentView}`);
-      if (state.currentView === 'heroes' && state.winrateChart) setTimeout(() => state.winrateChart.resize(), 0);
+
+      if (state.winrateChart && state.currentView === 'graph') {
+        setTimeout(() => state.winrateChart.resize(), 0);
+      }
     }
 
     function isChartFullscreen() {
@@ -2156,7 +2178,6 @@
       state.isDetailedView = !!els.detailedViewToggle.checked;
       if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
       updateHeroTableForSlider();
-      if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 0);
     });
     els.calendarPrevBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, -1); renderCalendar(); });
     els.calendarNextBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, 1); renderCalendar(); });
@@ -2175,11 +2196,14 @@
     els.heroModalCloseBtn.addEventListener('click', closeHeroHistoryModal);
     els.heroModalOverlay.addEventListener('click', e => { if (e.target === els.heroModalOverlay) closeHeroHistoryModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal(); });
-    window.addEventListener('resize', () => { if (state.winrateChart && state.currentView === 'heroes') state.winrateChart.resize(); });
+    window.addEventListener('resize', () => {
+      if (state.winrateChart && state.currentView === 'graph') state.winrateChart.resize();
+    });
     document.addEventListener('fullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
     document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
 
-    switchView(location.hash === '#games' ? 'games' : 'heroes', false);
+    const initialHash = location.hash.replace('#', '');
+    switchView(['heroes', 'games', 'graph'].includes(initialHash) ? initialHash : 'heroes', false);
     loadAppData();
   </script>
 </body>
