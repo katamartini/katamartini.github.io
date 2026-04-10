@@ -299,7 +299,7 @@
     }
 
     .wrap.wrap-detailed table { min-width: 1060px; }
-    #gamesTable { min-width: 1260px; }
+    #gamesTable { min-width: 1360px; }
 
     thead th {
       background: var(--header);
@@ -631,6 +631,11 @@
     .result-pill.loss { color: #ffd8d3; background: rgba(255, 123, 114, 0.16); border-color: rgba(255, 123, 114, 0.35); }
     .result-pill.other { color: #d8dee9; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
     .num { text-align: center; font-variant-numeric: tabular-nums; }
+
+    .wl-diff-new-max {
+      color: #ffd54a;
+      font-weight: 700;
+    }
 
     @media (max-width: 1500px) {
       .hero-page { flex-wrap: wrap; width: 100%; min-width: 0; }
@@ -1005,6 +1010,7 @@
       { key: "startTimeDisplay", label: "Start Time", defaultDir: "desc" },
       { key: "hero", label: "Hero", defaultDir: "asc", className: "hero-col" },
       { key: "result", label: "Result", defaultDir: "desc" },
+      { key: "wlDifferential", label: "W/L Differential", defaultDir: "desc" },
       { key: "peakRank", label: "Rank", defaultDir: "desc" },
       { key: "kills", label: "K", defaultDir: "desc" },
       { key: "deaths", label: "D", defaultDir: "desc" },
@@ -1411,7 +1417,7 @@
     }
 
     function buildGamesRows(rows) {
-      return rows.slice(1)
+      const builtRows = rows.slice(1)
         .filter(r => r.some(c => normalizeValue(c) !== ''))
         .map(row => {
           const startTimeRaw = getMatchStartTimeValue(row);
@@ -1435,6 +1441,7 @@
             dateTime = dateObj;
           }
 
+          const result = getMatchResultValue(row).toLowerCase();
           const souls = parseNumeric(row[state.gamesHeaderIndexes.souls]);
           const damage = parseNumeric(row[state.gamesHeaderIndexes.damage]);
           const durationSeconds = getDurationSeconds(row);
@@ -1453,7 +1460,10 @@
                   : normalizeValue(startTimeRaw) || '-'),
             dateTime,
             hero: getMatchHeroValue(row),
-            result: getMatchResultValue(row).toLowerCase(),
+            result,
+            wlStep: result === 'win' ? 1 : result === 'loss' ? -1 : 0,
+            wlDifferential: null,
+            isNewWlMax: false,
             peakRank: getPeakRankValue(row),
             counts: getMatchCountsValue(row).toLowerCase(),
             kills: parseNumeric(row[state.gamesHeaderIndexes.kills]),
@@ -1473,6 +1483,31 @@
           };
         })
         .filter(row => row.counts === 'yes');
+
+      const chronologicalRows = [...builtRows].sort((a, b) => {
+        const aTime = a.dateTime ? a.dateTime.getTime() : (a.dateObj ? a.dateObj.getTime() : -Infinity);
+        const bTime = b.dateTime ? b.dateTime.getTime() : (b.dateObj ? b.dateObj.getTime() : -Infinity);
+        if (aTime !== bTime) return aTime - bTime;
+
+        const aId = parseNumeric(a.matchId) ?? 0;
+        const bId = parseNumeric(b.matchId) ?? 0;
+        return aId - bId;
+      });
+
+      let runningDiff = 0;
+      let maxDiffSoFar = -Infinity;
+
+      chronologicalRows.forEach(row => {
+        runningDiff += row.wlStep;
+        row.wlDifferential = runningDiff;
+
+        if (runningDiff > maxDiffSoFar) {
+          row.isNewWlMax = true;
+          maxDiffSoFar = runningDiff;
+        }
+      });
+
+      return builtRows;
     }
 
     function getHeroSortValue(row, columnIndex) {
@@ -1499,12 +1534,25 @@
     }
 
     function getGamesSortValue(row, key) {
-      if (key === 'date') return row.dateObj ? row.dateObj.getTime() : -Infinity;
+      if (key === 'date') {
+        const primaryTime = row.dateTime
+          ? row.dateTime.getTime()
+          : row.dateObj
+            ? row.dateObj.getTime()
+            : -Infinity;
+
+        const matchIdNum = parseNumeric(row.matchId) ?? 0;
+
+        return (primaryTime * 1000000000) + matchIdNum;
+      }
+
       if (key === 'startTimeDisplay') {
         if (row.startTimeParts) return row.startTimeParts.hours * 3600 + row.startTimeParts.minutes * 60 + (row.startTimeParts.seconds || 0);
         return row.dateTime ? row.dateTime.getTime() : -Infinity;
       }
+
       if (key === 'dateTime') return row.dateTime ? row.dateTime.getTime() : -Infinity;
+
       return row[key];
     }
 
@@ -2098,6 +2146,13 @@
         resultTd.innerHTML = resultPill(row.result);
         tr.appendChild(resultTd);
 
+        const diffTd = document.createElement('td');
+        diffTd.className = 'num';
+        if (row.isNewWlMax) diffTd.classList.add('wl-diff-new-max');
+        diffTd.textContent =
+          row.wlDifferential > 0 ? `+${row.wlDifferential}` : String(row.wlDifferential);
+        tr.appendChild(diffTd);
+
         const rankTd = document.createElement('td');
         rankTd.textContent = row.peakRank || '-';
         tr.appendChild(rankTd);
@@ -2146,7 +2201,7 @@
         if (hero && row.hero !== hero) return false;
         if (result && row.result !== result) return false;
         if (search) {
-          const haystack = [row.matchId, row.hero, row.result, row.peakRank, row.date, row.startTimeRaw, row.startTimeDisplay].join(' ').toLowerCase();
+          const haystack = [row.matchId, row.hero, row.result, row.peakRank, row.date, row.startTimeRaw, row.startTimeDisplay, row.wlDifferential].join(' ').toLowerCase();
           if (!haystack.includes(search)) return false;
         }
         return true;
