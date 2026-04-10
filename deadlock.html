@@ -1673,6 +1673,17 @@
       return null;
     }
 
+    function formatDuration(seconds) {
+      const totalSeconds = Number(seconds);
+      if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return '-';
+      const rounded = Math.round(totalSeconds);
+      const hours = Math.floor(rounded / 3600);
+      const minutes = Math.floor((rounded % 3600) / 60);
+      const secs = rounded % 60;
+      if (hours > 0) return `${hours}:${String(minutes).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      return `${minutes}:${String(secs).padStart(2,'0')}`;
+    }
+
     function buildHeroRowsFromMatches(matchRowsSubset) {
       const heroMap = new Map();
       matchRowsSubset.forEach(row => {
@@ -2101,7 +2112,7 @@
         shortestGame: document.getElementById('recordShortestGame'),
         longestGame: document.getElementById('recordLongestGame')
       };
-    
+
       const configs = [
         { key: 'kills', label: 'Most Kills', mode: 'max' },
         { key: 'deaths', label: 'Most Deaths', mode: 'max' },
@@ -2112,11 +2123,11 @@
         { key: 'durationSeconds', label: 'Shortest Game', mode: 'min', isDuration: true, recordKey: 'shortestGame' },
         { key: 'durationSeconds', label: 'Longest Game', mode: 'max', isDuration: true, recordKey: 'longestGame' }
       ];
-    
+
       for (const config of configs) {
         const metricIndex = state.heroHeaderIndexes[config.key];
         let bestRow = null;
-    
+
         if (config.isDuration) {
           for (const row of state.classifiedMatchRows) {
             if (getDurationSeconds(row) !== null) {
@@ -2128,7 +2139,7 @@
             bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
           }
         }
-    
+
         renderSingleRecordBox(
           recordBoxEls[config.recordKey || config.key],
           config.label,
@@ -2139,7 +2150,7 @@
       }
     }
 
-    function setOverallStats() {
+    function setOverallStats() { {
       const overallMatchesEl = document.getElementById('overallMatches');
       const overallWinsEl = document.getElementById('overallWins');
       const overallLossesEl = document.getElementById('overallLosses');
