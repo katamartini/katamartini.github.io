@@ -128,6 +128,77 @@
       gap: 20px;
     }
 
+    .cards-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .draggable-card {
+      position: relative;
+    }
+
+    .draggable-card.dragging {
+      opacity: 0.45;
+    }
+
+    .card-drop-target {
+      outline: 2px dashed rgba(183,255,42,0.55);
+      outline-offset: 2px;
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-drag-handle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 6px;
+      border: 1px solid var(--border);
+      background: #151a23;
+      color: var(--muted);
+      cursor: grab;
+      user-select: none;
+      font-size: 14px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .card-drag-handle:hover {
+      background: #1d2330;
+      color: #fff;
+    }
+
+    .card-drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .layout-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .layout-reset-btn {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      font-size: 12px;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .layout-reset-btn:hover {
+      background: #1d2330;
+    }
+
     .wrap {
       flex: 0 0 520px;
       width: 520px;
@@ -675,57 +746,83 @@
     <section id="heroesView" class="view is-active">
       <div class="hero-page">
         <div class="left-column">
-          <div class="stats-card">
-            <div class="stats-titlebar">OVERALL STATS<span class="sub">COUNTED MATCHES</span></div>
-            <div class="stats-body"><div class="stats-grid">
-              <div class="stats-item"><div class="stats-label">Matches</div><div class="stats-value-big" id="overallMatches">-</div></div>
-              <div class="stats-item"><div class="stats-label">Wins</div><div class="stats-value-big" id="overallWins">-</div></div>
-              <div class="stats-item"><div class="stats-label">Losses</div><div class="stats-value-big" id="overallLosses">-</div></div>
-              <div class="stats-item"><div class="stats-label">Overall Win %</div><div class="stats-value-big" id="overallWinPct">-</div></div>
-              <div class="stats-item"><div class="stats-label">First Match</div><div class="stats-value-small" id="firstMatchPlayed">-</div></div>
-            </div></div>
+          <div class="layout-actions">
+            <button id="resetHeroCardLayoutBtn" class="layout-reset-btn" type="button">Reset Layout</button>
           </div>
 
-          <div class="streaks-card">
-            <div class="stats-titlebar">STREAKS<span class="sub">LONGEST RUNS</span></div>
-            <div class="streaks-body">
-              <div class="streak-box win">
-                <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Win Streak</div><div class="streak-dates" id="longestWinDates"></div></div><div class="streak-count" id="longestWinCount">-</div></div>
-                <div class="streak-icons" id="longestWinIcons"></div>
+          <div id="heroCardsColumn" class="cards-column">
+            <div class="stats-card draggable-card" data-card-id="overall">
+              <div class="stats-titlebar">
+                <div class="card-header-row">
+                  <span>OVERALL STATS<span class="sub">COUNTED MATCHES</span></span>
+                  <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
+                </div>
               </div>
-              <div class="streak-box loss">
-                <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Loss Streak</div><div class="streak-dates" id="longestLossDates"></div></div><div class="streak-count" id="longestLossCount">-</div></div>
-                <div class="streak-icons" id="longestLossIcons"></div>
+              <div class="stats-body"><div class="stats-grid">
+                <div class="stats-item"><div class="stats-label">Matches</div><div class="stats-value-big" id="overallMatches">-</div></div>
+                <div class="stats-item"><div class="stats-label">Wins</div><div class="stats-value-big" id="overallWins">-</div></div>
+                <div class="stats-item"><div class="stats-label">Losses</div><div class="stats-value-big" id="overallLosses">-</div></div>
+                <div class="stats-item"><div class="stats-label">Overall Win %</div><div class="stats-value-big" id="overallWinPct">-</div></div>
+                <div class="stats-item"><div class="stats-label">First Match</div><div class="stats-value-small" id="firstMatchPlayed">-</div></div>
+              </div></div>
+            </div>
+
+            <div class="streaks-card draggable-card" data-card-id="streaks">
+              <div class="stats-titlebar">
+                <div class="card-header-row">
+                  <span>STREAKS<span class="sub">LONGEST RUNS</span></span>
+                  <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
+                </div>
+              </div>
+              <div class="streaks-body">
+                <div class="streak-box win">
+                  <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Win Streak</div><div class="streak-dates" id="longestWinDates"></div></div><div class="streak-count" id="longestWinCount">-</div></div>
+                  <div class="streak-icons" id="longestWinIcons"></div>
+                </div>
+                <div class="streak-box loss">
+                  <div class="streak-header"><div class="streak-title-wrap"><div class="streak-title">Longest Loss Streak</div><div class="streak-dates" id="longestLossDates"></div></div><div class="streak-count" id="longestLossCount">-</div></div>
+                  <div class="streak-icons" id="longestLossIcons"></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="records-card">
-            <div class="stats-titlebar">RECORDS<span class="sub">COUNTED MATCH HIGHS</span></div>
-            <div class="records-body"><div class="records-grid">
-              <div class="record-box" id="recordKills"></div>
-              <div class="record-box" id="recordDeaths"></div>
-              <div class="record-box" id="recordAssists"></div>
-              <div class="record-box" id="recordSouls"></div>
-              <div class="record-box" id="recordDamage"></div>
-              <div class="record-box" id="recordHealing"></div>
-              <div class="record-box" id="recordShortestGame"></div>
-              <div class="record-box" id="recordLongestGame"></div>
-            </div></div>
-          </div>
+            <div class="records-card draggable-card" data-card-id="records">
+              <div class="stats-titlebar">
+                <div class="card-header-row">
+                  <span>RECORDS<span class="sub">COUNTED MATCH HIGHS</span></span>
+                  <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
+                </div>
+              </div>
+              <div class="records-body"><div class="records-grid">
+                <div class="record-box" id="recordKills"></div>
+                <div class="record-box" id="recordDeaths"></div>
+                <div class="record-box" id="recordAssists"></div>
+                <div class="record-box" id="recordSouls"></div>
+                <div class="record-box" id="recordDamage"></div>
+                <div class="record-box" id="recordHealing"></div>
+                <div class="record-box" id="recordShortestGame"></div>
+                <div class="record-box" id="recordLongestGame"></div>
+              </div></div>
+            </div>
 
-          <div class="calendar-card">
-            <div class="stats-titlebar">CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></div>
-            <div class="calendar-body">
-              <div class="calendar-controls">
-                <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
-                <div id="calendarMonthLabel" class="calendar-month-label">-</div>
-                <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
+            <div class="calendar-card draggable-card" data-card-id="calendar">
+              <div class="stats-titlebar">
+                <div class="card-header-row">
+                  <span>CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></span>
+                  <span class="card-drag-handle" draggable="true" title="Drag to reorder">⠿</span>
+                </div>
               </div>
-              <div class="calendar-weekdays">
-                <div class="calendar-weekday">Sun</div><div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div>
+              <div class="calendar-body">
+                <div class="calendar-controls">
+                  <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
+                  <div id="calendarMonthLabel" class="calendar-month-label">-</div>
+                  <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
+                </div>
+                <div class="calendar-weekdays">
+                  <div class="calendar-weekday">Sun</div><div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
               </div>
-              <div id="calendarGrid" class="calendar-grid"></div>
             </div>
           </div>
         </div>
@@ -896,6 +993,9 @@
       Seeker: 'Seeker'
     };
 
+    const HERO_CARD_LAYOUT_KEY = 'deadlock.heroCardsLayout.v1';
+    const DEFAULT_HERO_CARD_ORDER = ['overall', 'streaks', 'records', 'calendar'];
+
     const state = {
       matchesRows: [],
       classifiedMatchRows: [],
@@ -950,6 +1050,8 @@
       gamesSliderLabel: document.getElementById('gamesSliderLabel'),
       heroTableSub: document.getElementById('heroTableSub'),
       mainTableWrap: document.getElementById('mainTableWrap'),
+      heroCardsColumn: document.getElementById('heroCardsColumn'),
+      resetHeroCardLayoutBtn: document.getElementById('resetHeroCardLayoutBtn'),
 
       overallMatchesEl: document.getElementById('overallMatches'),
       overallWinsEl: document.getElementById('overallWins'),
@@ -1375,6 +1477,111 @@
       const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
       if (!parts) return { full: raw, rankName: raw, numeral: '' };
       return { full: raw, rankName: normalizeValue(parts[1]), numeral: normalizeValue(parts[2] || '').toUpperCase() };
+    }
+
+    function getHeroCards() {
+      return Array.from(document.querySelectorAll('#heroCardsColumn .draggable-card'));
+    }
+
+    function saveHeroCardOrder() {
+      const order = getHeroCards().map(card => card.dataset.cardId).filter(Boolean);
+      localStorage.setItem(HERO_CARD_LAYOUT_KEY, JSON.stringify(order));
+    }
+
+    function applyHeroCardOrder(order) {
+      if (!els.heroCardsColumn || !Array.isArray(order)) return;
+      const cardMap = new Map(getHeroCards().map(card => [card.dataset.cardId, card]));
+      order.forEach(id => {
+        const card = cardMap.get(id);
+        if (card) els.heroCardsColumn.appendChild(card);
+      });
+    }
+
+    function loadHeroCardOrder() {
+      try {
+        const raw = localStorage.getItem(HERO_CARD_LAYOUT_KEY);
+        if (!raw) {
+          applyHeroCardOrder(DEFAULT_HERO_CARD_ORDER);
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) {
+          applyHeroCardOrder(DEFAULT_HERO_CARD_ORDER);
+          return;
+        }
+        const merged = [
+          ...parsed.filter(id => DEFAULT_HERO_CARD_ORDER.includes(id)),
+          ...DEFAULT_HERO_CARD_ORDER.filter(id => !parsed.includes(id))
+        ];
+        applyHeroCardOrder(merged);
+      } catch {
+        applyHeroCardOrder(DEFAULT_HERO_CARD_ORDER);
+      }
+    }
+
+    function resetHeroCardOrder() {
+      localStorage.removeItem(HERO_CARD_LAYOUT_KEY);
+      applyHeroCardOrder(DEFAULT_HERO_CARD_ORDER);
+    }
+
+    function setupHeroCardDragAndDrop() {
+      const cards = getHeroCards();
+      let draggingCard = null;
+
+      cards.forEach(card => {
+        const handle = card.querySelector('.card-drag-handle');
+        if (!handle) return;
+
+        handle.addEventListener('dragstart', e => {
+          draggingCard = card;
+          card.classList.add('dragging');
+          if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', card.dataset.cardId || '');
+          }
+        });
+
+        handle.addEventListener('dragend', () => {
+          if (draggingCard) draggingCard.classList.remove('dragging');
+          getHeroCards().forEach(c => c.classList.remove('card-drop-target'));
+          draggingCard = null;
+          saveHeroCardOrder();
+        });
+
+        card.addEventListener('dragover', e => {
+          if (!draggingCard || draggingCard === card) return;
+          e.preventDefault();
+
+          const rect = card.getBoundingClientRect();
+          const before = e.clientY < rect.top + rect.height / 2;
+
+          getHeroCards().forEach(c => c.classList.remove('card-drop-target'));
+          card.classList.add('card-drop-target');
+
+          if (before) {
+            els.heroCardsColumn.insertBefore(draggingCard, card);
+          } else {
+            els.heroCardsColumn.insertBefore(draggingCard, card.nextSibling);
+          }
+        });
+
+        card.addEventListener('drop', e => {
+          e.preventDefault();
+          getHeroCards().forEach(c => c.classList.remove('card-drop-target'));
+          saveHeroCardOrder();
+        });
+
+        card.addEventListener('dragleave', e => {
+          if (!card.contains(e.relatedTarget)) {
+            card.classList.remove('card-drop-target');
+          }
+        });
+      });
+
+      els.heroCardsColumn.addEventListener('dragover', e => {
+        if (!draggingCard) return;
+        e.preventDefault();
+      });
     }
 
     function buildHeroRowsFromMatches(matchRowsSubset) {
@@ -2202,8 +2409,13 @@
     document.addEventListener('fullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
     document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
 
+    els.resetHeroCardLayoutBtn.addEventListener('click', resetHeroCardOrder);
+
     const initialHash = location.hash.replace('#', '');
     switchView(['heroes', 'games', 'graph'].includes(initialHash) ? initialHash : 'heroes', false);
+
+    loadHeroCardOrder();
+    setupHeroCardDragAndDrop();
     loadAppData();
   </script>
 </body>
