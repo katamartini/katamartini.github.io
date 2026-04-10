@@ -110,7 +110,29 @@
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+    
+    .stats-card,
+    .streaks-card,
+    .calendar-card,
+    .records-card,
+    .chart-card,
+    .card,
+    .cards-panel {
       overflow: hidden;
+    }
+    
+    .wrap {
+      overflow-x: auto;
+      overflow-y: visible;
+    }
+    
+    #dataTable {
+      min-width: 100%;
+    }
+    
+    .wrap.wrap-detailed #dataTable {
+      min-width: 1060px;
     }
 
     .wrap {
@@ -2023,20 +2045,49 @@
       return currentBest;
     }
 
-    function renderSingleRecordBox(container, label, row, metricIndex, config={}) {
+    function renderSingleRecordBox(container, label, row, metricIndex, config = {}) {
       if (!container) return;
-      if (!row || (metricIndex < 0 && !config.isDuration)) {
-        container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">-</div></div><div class="record-main"><div class="record-meta"><div class="record-hero">No data</div><div class="record-date">-</div><div class="record-extra">K/D/A: - / - / - • -</div></div></div>`;
+    
+      const metricValue = row ? getRowMetricValue(row, metricIndex, config) : null;
+    
+      if (!row || metricValue === null) {
+        container.innerHTML = `
+          <div class="record-top">
+            <div class="record-label">${label}</div>
+            <div class="record-value">-</div>
+          </div>
+          <div class="record-main">
+            <div class="record-meta">
+              <div class="record-hero">No data</div>
+              <div class="record-date">-</div>
+              <div class="record-extra">K/D/A: - / - / - • -</div>
+            </div>
+          </div>
+        `;
         return;
       }
+    
       const hero = getMatchHeroValue(row) || 'Unknown';
       const result = getMatchResultValue(row) || '-';
       const kills = parseNumeric(row[state.heroHeaderIndexes.kills]);
       const deaths = parseNumeric(row[state.heroHeaderIndexes.deaths]);
       const assists = parseNumeric(row[state.heroHeaderIndexes.assists]);
       const date = parseMatchDateTime(row);
-      const metricValue = getRowMetricValue(row, metricIndex, config);
-      container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div></div><div class="record-main">${buildIcon(hero, 'icon-slot record-icon').outerHTML}<div class="record-meta"><div class="record-hero">${hero}</div><div class="record-date">${date ? formatLongDate(date) : '-'}</div><div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-'}</div></div></div>`;
+    
+      container.innerHTML = `
+        <div class="record-top">
+          <div class="record-label">${label}</div>
+          <div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div>
+        </div>
+        <div class="record-main">
+          ${buildIcon(hero, 'icon-slot record-icon').outerHTML}
+          <div class="record-meta">
+            <div class="record-hero">${hero}</div>
+            <div class="record-date">${date ? formatLongDate(date) : '-'}</div>
+            <div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-'}</div>
+          </div>
+        </div>
+      `;
     }
 
     function renderRecords() {
@@ -2050,7 +2101,7 @@
         shortestGame: document.getElementById('recordShortestGame'),
         longestGame: document.getElementById('recordLongestGame')
       };
-
+    
       const configs = [
         { key: 'kills', label: 'Most Kills', mode: 'max' },
         { key: 'deaths', label: 'Most Deaths', mode: 'max' },
@@ -2061,12 +2112,30 @@
         { key: 'durationSeconds', label: 'Shortest Game', mode: 'min', isDuration: true, recordKey: 'shortestGame' },
         { key: 'durationSeconds', label: 'Longest Game', mode: 'max', isDuration: true, recordKey: 'longestGame' }
       ];
+    
       for (const config of configs) {
         const metricIndex = state.heroHeaderIndexes[config.key];
         let bestRow = null;
-        const hasMetric = config.isDuration ? (state.heroHeaderIndexes.durationSeconds >= 0 || state.heroHeaderIndexes.durationMinutes >= 0) : metricIndex >= 0;
-        if (hasMetric) for (const row of state.classifiedMatchRows) bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-        renderSingleRecordBox(recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
+    
+        if (config.isDuration) {
+          for (const row of state.classifiedMatchRows) {
+            if (getDurationSeconds(row) !== null) {
+              bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
+            }
+          }
+        } else if (metricIndex >= 0) {
+          for (const row of state.classifiedMatchRows) {
+            bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
+          }
+        }
+    
+        renderSingleRecordBox(
+          recordBoxEls[config.recordKey || config.key],
+          config.label,
+          bestRow,
+          metricIndex,
+          config
+        );
       }
     }
 
