@@ -99,17 +99,55 @@
       min-width: 0;
     }
 
-    .cards-rail {
-      flex: 0 0 260px;
-      width: 260px;
-      min-width: 260px;
+    .wrap,
+    .stats-card,
+    .streaks-card,
+    .calendar-card,
+    .records-card,
+    .chart-card,
+    .card,
+    .cards-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .wrap {
+      flex: 1 1 auto;
+      min-width: 640px;
+      max-width: none;
+      transition: width 0.18s ease, flex-basis 0.18s ease;
+    }
+
+    .wrap.wrap-detailed {
+      min-width: 1060px;
+    }
+
+    .cards-panel {
+      flex: 0 0 560px;
+      width: 560px;
+      min-width: 560px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+    }
+
+    .cards-panel-top {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .cards-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
     .cards-zone {
-      min-height: 140px;
+      min-height: 160px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -124,7 +162,7 @@
     }
 
     .cards-zone-empty {
-      min-height: 80px;
+      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -132,28 +170,6 @@
       font-size: 12px;
       border: 1px dashed rgba(255,255,255,0.08);
       background: rgba(255,255,255,0.02);
-    }
-
-    .games-page,
-    .graph-page {
-      width: min(1400px, 100%);
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .wrap,
-    .stats-card,
-    .streaks-card,
-    .calendar-card,
-    .records-card,
-    .chart-card,
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-      overflow: hidden;
     }
 
     .draggable-card {
@@ -202,11 +218,6 @@
       cursor: grabbing;
     }
 
-    .layout-actions {
-      display: flex;
-      justify-content: flex-end;
-    }
-
     .layout-reset-btn {
       background: #151a23;
       color: #fff;
@@ -220,15 +231,13 @@
       background: #1d2330;
     }
 
-    .wrap {
-      flex: 1 1 auto;
-      min-width: 520px;
-      max-width: none;
-      transition: width 0.18s ease, flex-basis 0.18s ease;
-    }
-
-    .wrap.wrap-detailed {
-      min-width: 1060px;
+    .games-page,
+    .graph-page {
+      width: min(1400px, 100%);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .titlebar,
@@ -718,14 +727,14 @@
 
     @media (max-width: 1500px) {
       .hero-dashboard { flex-wrap: wrap; }
-      .cards-rail {
-        flex: 1 1 260px;
-        min-width: 260px;
-      }
       .wrap {
         flex: 1 1 100%;
         min-width: 0;
-        order: 2;
+      }
+      .cards-panel {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
       }
       .chart-body { height: 480px; }
     }
@@ -742,10 +751,13 @@
         flex-direction: column;
         width: min(100%, calc(100vw - 24px));
       }
-      .cards-rail, .wrap, .wrap.wrap-detailed {
+      .wrap, .wrap.wrap-detailed, .cards-panel {
         width: 100%;
         min-width: 0;
         flex: 0 0 auto;
+      }
+      .cards-columns {
+        grid-template-columns: 1fr;
       }
       .datefilterbar { grid-template-columns: 1fr; }
       .chart-body { height: 320px; }
@@ -771,13 +783,6 @@
     <section id="heroesView" class="view is-active">
       <div class="hero-page">
         <div class="hero-dashboard">
-          <div class="cards-rail">
-            <div class="layout-actions">
-              <button id="resetHeroCardLayoutBtn" class="layout-reset-btn" type="button">Reset Layout</button>
-            </div>
-            <div id="heroCardsLeftZone" class="cards-zone"></div>
-          </div>
-
           <div class="wrap" id="mainTableWrap">
             <div class="titlebar">MOST PLAYED HEROES<span class="sub" id="heroTableSub">ALL TIME</span></div>
             <div class="topbar"><input id="heroSearchBox" type="search" placeholder="Filter heroes..." /><button id="heroResetBtn" type="button">Reset</button></div>
@@ -796,13 +801,18 @@
             <div id="heroEmptyState" class="empty">No rows match the current filter.</div>
           </div>
 
-          <div class="cards-rail">
-            <div id="heroCardsRightZone" class="cards-zone"></div>
+          <div class="cards-panel">
+            <div class="cards-panel-top">
+              <button id="resetHeroCardLayoutBtn" class="layout-reset-btn" type="button">Reset Layout</button>
+            </div>
+            <div class="cards-columns">
+              <div id="heroCardsCol1" class="cards-zone"></div>
+              <div id="heroCardsCol2" class="cards-zone"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- movable cards -->
       <template id="heroCardsTemplate">
         <div class="stats-card draggable-card" data-card-id="overall">
           <div class="stats-titlebar">
@@ -1026,10 +1036,10 @@
       Seeker: 'Seeker'
     };
 
-    const HERO_CARD_LAYOUT_KEY = 'deadlock.heroCardsLayout.v2';
+    const HERO_CARD_LAYOUT_KEY = 'deadlock.heroCardsLayout.v3';
     const DEFAULT_HERO_CARD_LAYOUT = {
-      left: ['overall', 'streaks', 'records', 'calendar'],
-      right: []
+      col1: ['overall', 'streaks', 'records', 'calendar'],
+      col2: []
     };
 
     const state = {
@@ -1086,8 +1096,9 @@
       gamesSliderLabel: document.getElementById('gamesSliderLabel'),
       heroTableSub: document.getElementById('heroTableSub'),
       mainTableWrap: document.getElementById('mainTableWrap'),
-      heroCardsLeftZone: document.getElementById('heroCardsLeftZone'),
-      heroCardsRightZone: document.getElementById('heroCardsRightZone'),
+
+      heroCardsCol1: document.getElementById('heroCardsCol1'),
+      heroCardsCol2: document.getElementById('heroCardsCol2'),
       resetHeroCardLayoutBtn: document.getElementById('resetHeroCardLayoutBtn'),
       heroCardsTemplate: document.getElementById('heroCardsTemplate'),
 
@@ -1344,6 +1355,194 @@
       return slot;
     }
 
+    function hydrateHeroCards() {
+      const templateContent = els.heroCardsTemplate.content.cloneNode(true);
+      const tempWrap = document.createElement('div');
+      tempWrap.appendChild(templateContent);
+      return Array.from(tempWrap.children);
+    }
+
+    function getHeroCards() {
+      return Array.from(document.querySelectorAll('.draggable-card[data-card-id]'));
+    }
+
+    function getZoneCards(zoneEl) {
+      return Array.from(zoneEl.querySelectorAll('.draggable-card[data-card-id]'));
+    }
+
+    function renderZoneEmptyState(zoneEl) {
+      const existing = zoneEl.querySelector('.cards-zone-empty');
+      if (existing) existing.remove();
+      if (!getZoneCards(zoneEl).length) {
+        const empty = document.createElement('div');
+        empty.className = 'cards-zone-empty';
+        empty.textContent = 'Drop cards here';
+        zoneEl.appendChild(empty);
+      }
+    }
+
+    function renderZoneEmptyStates() {
+      renderZoneEmptyState(els.heroCardsCol1);
+      renderZoneEmptyState(els.heroCardsCol2);
+    }
+
+    function saveHeroCardLayout() {
+      const layout = {
+        col1: getZoneCards(els.heroCardsCol1).map(card => card.dataset.cardId).filter(Boolean),
+        col2: getZoneCards(els.heroCardsCol2).map(card => card.dataset.cardId).filter(Boolean)
+      };
+      localStorage.setItem(HERO_CARD_LAYOUT_KEY, JSON.stringify(layout));
+      renderZoneEmptyStates();
+    }
+
+    function applyHeroCardLayout(layout) {
+      const allCards = new Map(getHeroCards().map(card => [card.dataset.cardId, card]));
+      els.heroCardsCol1.innerHTML = '';
+      els.heroCardsCol2.innerHTML = '';
+
+      const used = new Set();
+
+      (layout.col1 || []).forEach(id => {
+        const card = allCards.get(id);
+        if (card) {
+          els.heroCardsCol1.appendChild(card);
+          used.add(id);
+        }
+      });
+
+      (layout.col2 || []).forEach(id => {
+        const card = allCards.get(id);
+        if (card) {
+          els.heroCardsCol2.appendChild(card);
+          used.add(id);
+        }
+      });
+
+      for (const [id, card] of allCards.entries()) {
+        if (!used.has(id)) els.heroCardsCol1.appendChild(card);
+      }
+
+      renderZoneEmptyStates();
+    }
+
+    function loadHeroCardLayout() {
+      try {
+        const raw = localStorage.getItem(HERO_CARD_LAYOUT_KEY);
+        if (!raw) {
+          applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        const layout = {
+          col1: Array.isArray(parsed.col1) ? parsed.col1 : DEFAULT_HERO_CARD_LAYOUT.col1,
+          col2: Array.isArray(parsed.col2) ? parsed.col2 : DEFAULT_HERO_CARD_LAYOUT.col2
+        };
+        applyHeroCardLayout(layout);
+      } catch {
+        applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
+      }
+    }
+
+    function resetHeroCardLayout() {
+      localStorage.removeItem(HERO_CARD_LAYOUT_KEY);
+      applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
+      saveHeroCardLayout();
+    }
+
+    function setupHeroCardDragAndDrop() {
+      let draggingCard = null;
+
+      function refreshTargets() {
+        document.querySelectorAll('.card-drop-target').forEach(el => el.classList.remove('card-drop-target'));
+        [els.heroCardsCol1, els.heroCardsCol2].forEach(zone => zone.classList.remove('is-active-drop'));
+      }
+
+      function setupCard(card) {
+        const handle = card.querySelector('.card-drag-handle');
+        if (!handle) return;
+
+        handle.addEventListener('dragstart', e => {
+          draggingCard = card;
+          card.classList.add('dragging');
+          if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', card.dataset.cardId || '');
+          }
+          refreshTargets();
+        });
+
+        handle.addEventListener('dragend', () => {
+          if (draggingCard) draggingCard.classList.remove('dragging');
+          refreshTargets();
+          draggingCard = null;
+          saveHeroCardLayout();
+        });
+
+        card.addEventListener('dragover', e => {
+          if (!draggingCard || draggingCard === card) return;
+          e.preventDefault();
+
+          const zone = card.parentElement;
+          const rect = card.getBoundingClientRect();
+          const before = e.clientY < rect.top + rect.height / 2;
+
+          refreshTargets();
+          zone.classList.add('is-active-drop');
+          card.classList.add('card-drop-target');
+
+          if (before) zone.insertBefore(draggingCard, card);
+          else zone.insertBefore(draggingCard, card.nextSibling);
+
+          renderZoneEmptyStates();
+        });
+
+        card.addEventListener('drop', e => {
+          e.preventDefault();
+          refreshTargets();
+          saveHeroCardLayout();
+        });
+      }
+
+      getHeroCards().forEach(setupCard);
+
+      [els.heroCardsCol1, els.heroCardsCol2].forEach(zone => {
+        zone.addEventListener('dragover', e => {
+          if (!draggingCard) return;
+          e.preventDefault();
+          zone.classList.add('is-active-drop');
+
+          const cards = getZoneCards(zone);
+          if (!cards.length) {
+            zone.appendChild(draggingCard);
+            renderZoneEmptyStates();
+            return;
+          }
+
+          const lastCard = cards[cards.length - 1];
+          const zoneRect = zone.getBoundingClientRect();
+          if (e.clientY > zoneRect.bottom - 60) {
+            zone.appendChild(draggingCard);
+            renderZoneEmptyStates();
+          } else if (!cards.includes(draggingCard)) {
+            zone.appendChild(draggingCard);
+            renderZoneEmptyStates();
+          }
+        });
+
+        zone.addEventListener('drop', e => {
+          e.preventDefault();
+          zone.classList.remove('is-active-drop');
+          saveHeroCardLayout();
+        });
+
+        zone.addEventListener('dragleave', e => {
+          if (!zone.contains(e.relatedTarget)) {
+            zone.classList.remove('is-active-drop');
+          }
+        });
+      });
+    }
+
     function getMatchCell(row, index) {
       if (!Array.isArray(row) || !Number.isInteger(index) || index < 0) return '';
       return normalizeValue(row[index]);
@@ -1450,234 +1649,6 @@
         if (durationMinutes !== null && durationMinutes > 0) return durationMinutes * 60;
       }
       return null;
-    }
-
-    function formatDuration(seconds) {
-      const totalSeconds = Number(seconds);
-      if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) return '-';
-      const rounded = Math.round(totalSeconds);
-      const hours = Math.floor(rounded / 3600);
-      const minutes = Math.floor((rounded % 3600) / 60);
-      const secs = rounded % 60;
-      if (hours > 0) return `${hours}:${String(minutes).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-      return `${minutes}:${String(secs).padStart(2,'0')}`;
-    }
-
-    function loadHeroIcon(heroName) {
-      return new Promise(resolve => {
-        const hero = normalizeValue(heroName);
-        if (!hero) return resolve(null);
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = heroIconPath(hero);
-      });
-    }
-    function loadRankIcon(rankName) {
-      return new Promise(resolve => {
-        const rank = normalizeValue(rankName);
-        if (!rank) return resolve(null);
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = rankIconPath(rank);
-      });
-    }
-
-    function parsePeakRankLabel(value) {
-      const raw = normalizeValue(value);
-      if (!raw) return null;
-      const parts = raw.match(/^(.*?)(?:\s+([IVXLCM]+))?$/i);
-      if (!parts) return { full: raw, rankName: raw, numeral: '' };
-      return { full: raw, rankName: normalizeValue(parts[1]), numeral: normalizeValue(parts[2] || '').toUpperCase() };
-    }
-
-    function hydrateHeroCards() {
-      const templateContent = els.heroCardsTemplate.content.cloneNode(true);
-      const tempWrap = document.createElement('div');
-      tempWrap.appendChild(templateContent);
-      return Array.from(tempWrap.children);
-    }
-
-    function getHeroCards() {
-      return Array.from(document.querySelectorAll('.draggable-card[data-card-id]'));
-    }
-
-    function getZoneCards(zoneEl) {
-      return Array.from(zoneEl.querySelectorAll('.draggable-card[data-card-id]'));
-    }
-
-    function renderZoneEmptyState(zoneEl) {
-      const existing = zoneEl.querySelector('.cards-zone-empty');
-      if (existing) existing.remove();
-      if (!getZoneCards(zoneEl).length) {
-        const empty = document.createElement('div');
-        empty.className = 'cards-zone-empty';
-        empty.textContent = 'Drop cards here';
-        zoneEl.appendChild(empty);
-      }
-    }
-
-    function renderZoneEmptyStates() {
-      renderZoneEmptyState(els.heroCardsLeftZone);
-      renderZoneEmptyState(els.heroCardsRightZone);
-    }
-
-    function saveHeroCardLayout() {
-      const layout = {
-        left: getZoneCards(els.heroCardsLeftZone).map(card => card.dataset.cardId).filter(Boolean),
-        right: getZoneCards(els.heroCardsRightZone).map(card => card.dataset.cardId).filter(Boolean)
-      };
-      localStorage.setItem(HERO_CARD_LAYOUT_KEY, JSON.stringify(layout));
-      renderZoneEmptyStates();
-    }
-
-    function applyHeroCardLayout(layout) {
-      const allCards = new Map(getHeroCards().map(card => [card.dataset.cardId, card]));
-      els.heroCardsLeftZone.innerHTML = '';
-      els.heroCardsRightZone.innerHTML = '';
-
-      const used = new Set();
-
-      (layout.left || []).forEach(id => {
-        const card = allCards.get(id);
-        if (card) {
-          els.heroCardsLeftZone.appendChild(card);
-          used.add(id);
-        }
-      });
-
-      (layout.right || []).forEach(id => {
-        const card = allCards.get(id);
-        if (card) {
-          els.heroCardsRightZone.appendChild(card);
-          used.add(id);
-        }
-      });
-
-      for (const [id, card] of allCards.entries()) {
-        if (!used.has(id)) els.heroCardsLeftZone.appendChild(card);
-      }
-
-      renderZoneEmptyStates();
-    }
-
-    function loadHeroCardLayout() {
-      try {
-        const raw = localStorage.getItem(HERO_CARD_LAYOUT_KEY);
-        if (!raw) {
-          applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-          return;
-        }
-        const parsed = JSON.parse(raw);
-        const layout = {
-          left: Array.isArray(parsed.left) ? parsed.left : DEFAULT_HERO_CARD_LAYOUT.left,
-          right: Array.isArray(parsed.right) ? parsed.right : DEFAULT_HERO_CARD_LAYOUT.right
-        };
-        applyHeroCardLayout(layout);
-      } catch {
-        applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-      }
-    }
-
-    function resetHeroCardLayout() {
-      localStorage.removeItem(HERO_CARD_LAYOUT_KEY);
-      applyHeroCardLayout(DEFAULT_HERO_CARD_LAYOUT);
-      saveHeroCardLayout();
-    }
-
-    function setupHeroCardDragAndDrop() {
-      let draggingCard = null;
-
-      function refreshTargets() {
-        document.querySelectorAll('.card-drop-target').forEach(el => el.classList.remove('card-drop-target'));
-        [els.heroCardsLeftZone, els.heroCardsRightZone].forEach(zone => zone.classList.remove('is-active-drop'));
-      }
-
-      function setupCard(card) {
-        const handle = card.querySelector('.card-drag-handle');
-        if (!handle) return;
-
-        handle.addEventListener('dragstart', e => {
-          draggingCard = card;
-          card.classList.add('dragging');
-          if (e.dataTransfer) {
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', card.dataset.cardId || '');
-          }
-          refreshTargets();
-        });
-
-        handle.addEventListener('dragend', () => {
-          if (draggingCard) draggingCard.classList.remove('dragging');
-          refreshTargets();
-          draggingCard = null;
-          saveHeroCardLayout();
-        });
-
-        card.addEventListener('dragover', e => {
-          if (!draggingCard || draggingCard === card) return;
-          e.preventDefault();
-
-          const zone = card.parentElement;
-          const rect = card.getBoundingClientRect();
-          const before = e.clientY < rect.top + rect.height / 2;
-
-          refreshTargets();
-          zone.classList.add('is-active-drop');
-          card.classList.add('card-drop-target');
-
-          if (before) zone.insertBefore(draggingCard, card);
-          else zone.insertBefore(draggingCard, card.nextSibling);
-
-          renderZoneEmptyStates();
-        });
-
-        card.addEventListener('drop', e => {
-          e.preventDefault();
-          refreshTargets();
-          saveHeroCardLayout();
-        });
-      }
-
-      getHeroCards().forEach(setupCard);
-
-      [els.heroCardsLeftZone, els.heroCardsRightZone].forEach(zone => {
-        zone.addEventListener('dragover', e => {
-          if (!draggingCard) return;
-          e.preventDefault();
-          zone.classList.add('is-active-drop');
-
-          const cards = getZoneCards(zone);
-          if (!cards.length) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-            return;
-          }
-
-          const lastCard = cards[cards.length - 1];
-          const zoneRect = zone.getBoundingClientRect();
-          if (e.clientY > zoneRect.bottom - 60) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-          } else if (!cards.includes(draggingCard)) {
-            zone.appendChild(draggingCard);
-            renderZoneEmptyStates();
-          }
-        });
-
-        zone.addEventListener('drop', e => {
-          e.preventDefault();
-          zone.classList.remove('is-active-drop');
-          saveHeroCardLayout();
-        });
-
-        zone.addEventListener('dragleave', e => {
-          if (!zone.contains(e.relatedTarget)) {
-            zone.classList.remove('is-active-drop');
-          }
-        });
-      });
     }
 
     function buildHeroRowsFromMatches(matchRowsSubset) {
@@ -2429,6 +2400,7 @@
     function isChartFullscreen() {
       return document.fullscreenElement === els.chartCard || document.webkitFullscreenElement === els.chartCard;
     }
+
     async function toggleChartFullscreen() {
       try {
         if (!isChartFullscreen()) {
@@ -2440,7 +2412,9 @@
           else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
           els.expandChartBtn.textContent = 'Expand';
         }
-      } catch (err) { console.error('Fullscreen toggle failed:', err); }
+      } catch (err) {
+        console.error('Fullscreen toggle failed:', err);
+      }
     }
 
     async function loadAppData() {
@@ -2482,6 +2456,7 @@
     }));
 
     els.heroSearchBox.addEventListener('input', updateHeroTableForSlider);
+
     els.heroResetBtn.addEventListener('click', () => {
       els.heroSearchBox.value = '';
       els.startDateInput.value = '';
@@ -2490,6 +2465,7 @@
       state.sliderGameCount = state.classifiedMatchRows.length;
       updateHeroTableForSlider();
     });
+
     els.clearDateRangeBtn.addEventListener('click', () => {
       els.startDateInput.value = '';
       els.endDateInput.value = '';
@@ -2497,19 +2473,28 @@
       state.sliderGameCount = state.classifiedMatchRows.length;
       updateHeroTableForSlider();
     });
+
     function handleDateRangeInput() {
       els.gamesSlider.value = els.gamesSlider.max;
       state.sliderGameCount = Number(els.gamesSlider.max);
       updateHeroTableForSlider();
     }
+
     els.startDateInput.addEventListener('change', handleDateRangeInput);
     els.endDateInput.addEventListener('change', handleDateRangeInput);
     els.startDateInput.addEventListener('input', handleDateRangeInput);
     els.endDateInput.addEventListener('input', handleDateRangeInput);
-    els.gamesSlider.addEventListener('input', () => { state.sliderGameCount = Number(els.gamesSlider.value); updateHeroTableForSlider(); });
+
+    els.gamesSlider.addEventListener('input', () => {
+      state.sliderGameCount = Number(els.gamesSlider.value);
+      updateHeroTableForSlider();
+    });
+
     els.detailedViewToggle.addEventListener('change', () => {
       state.isDetailedView = !!els.detailedViewToggle.checked;
-      if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
+      if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) {
+        state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
+      }
       updateHeroTableForSlider();
     });
 
@@ -2524,11 +2509,16 @@
       }
     });
 
-    els.resetZoomBtn.addEventListener('click', () => { if (state.winrateChart) state.winrateChart.resetZoom(); });
+    els.resetZoomBtn.addEventListener('click', () => {
+      if (state.winrateChart) state.winrateChart.resetZoom();
+    });
+
     els.expandChartBtn.addEventListener('click', toggleChartFullscreen);
+
     els.gamesSearchBox.addEventListener('input', applyGamesFilters);
     els.heroFilter.addEventListener('change', applyGamesFilters);
     els.resultFilter.addEventListener('change', applyGamesFilters);
+
     els.gamesResetBtn.addEventListener('click', () => {
       els.gamesSearchBox.value = '';
       els.heroFilter.value = '';
@@ -2536,23 +2526,37 @@
       state.gamesSortState = { key: 'dateTime', dir: 'desc' };
       applyGamesFilters();
     });
+
     els.heroModalCloseBtn.addEventListener('click', closeHeroHistoryModal);
-    els.heroModalOverlay.addEventListener('click', e => { if (e.target === els.heroModalOverlay) closeHeroHistoryModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal(); });
+    els.heroModalOverlay.addEventListener('click', e => {
+      if (e.target === els.heroModalOverlay) closeHeroHistoryModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal();
+    });
+
     window.addEventListener('resize', () => {
       if (state.winrateChart && state.currentView === 'graph') state.winrateChart.resize();
     });
-    document.addEventListener('fullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
-    document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
+
+    document.addEventListener('fullscreenchange', () => {
+      els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand';
+      if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50);
+    });
+
+    document.addEventListener('webkitfullscreenchange', () => {
+      els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand';
+      if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50);
+    });
 
     els.resetHeroCardLayoutBtn.addEventListener('click', resetHeroCardLayout);
 
     const initialHash = location.hash.replace('#', '');
     switchView(['heroes', 'games', 'graph'].includes(initialHash) ? initialHash : 'heroes', false);
 
-    // mount cards once, then apply saved layout
     const mountedCards = hydrateHeroCards();
-    mountedCards.forEach(card => els.heroCardsLeftZone.appendChild(card));
+    mountedCards.forEach(card => els.heroCardsCol1.appendChild(card));
     loadHeroCardLayout();
     setupHeroCardDragAndDrop();
     renderZoneEmptyStates();
