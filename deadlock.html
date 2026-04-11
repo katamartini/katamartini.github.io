@@ -1868,29 +1868,39 @@
 
     function buildDeltaSeries() {
       let wins = 0, losses = 0, classifiedMatchNumber = 0;
-      return state.matchesRows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== '')).map(row => {
-        if (!isClassifiedCountedMatch(row)) return null;
-        const result = getMatchResultValue(row).toLowerCase();
-        const date = parseSheetDate(getMatchStartTimeValue(row)) || parseSheetDate(getMatchDateValue(row));
-        const hero = getMatchHeroValue(row);
-        const modeName = getMatchCell(row, state.matchesColumnIndexes.modeName);
-        const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
-        const peakRank = getPeakRankValue(row);
     
-        classifiedMatchNumber += 1;
-        if (result === 'win') wins += 1; else losses += 1;
+      return state.matchesRows
+        .slice(1)
+        .filter(r => r.some(cell => normalizeValue(cell) !== ''))
+        .map(row => {
+          if (!isClassifiedCountedMatch(row)) return null;
     
-        return {
-          xLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`,
-          y: wins - losses,
-          hero,
-          result,
-          matchNumber: classifiedMatchNumber,
-          modeName,
-          matchId,
-          peakRank
-        };
-      }).filter(Boolean);
+          const result = getMatchResultValue(row).toLowerCase();
+          const date = parseSheetDate(getMatchStartTimeValue(row)) || parseSheetDate(getMatchDateValue(row));
+          const hero = getMatchHeroValue(row);
+          const modeName = getMatchCell(row, state.matchesColumnIndexes.modeName);
+          const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
+          const peakRank = getPeakRankValue(row);
+    
+          classifiedMatchNumber += 1;
+          if (result === 'win') wins += 1;
+          else losses += 1;
+    
+          return {
+            xLabel: date
+              ? `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
+              : `Match ${classifiedMatchNumber}`,
+            fullLabel: date ? formatShortDateTime(date) : `Match ${classifiedMatchNumber}`,
+            y: wins - losses,
+            hero,
+            result,
+            matchNumber: classifiedMatchNumber,
+            modeName,
+            matchId,
+            peakRank
+          };
+        })
+        .filter(Boolean);
     }
 
     function buildOriginTrendline(series) {
@@ -1994,7 +2004,11 @@
             legend: { display: false },
             tooltip: {
               callbacks: {
-                title(items) { const i = items[0].dataIndex; return labels[i]; },
+                title(items) {
+                    const i = items[0].dataIndex;
+                    if (i === 0) return 'Start';
+                    return series[i - 1]?.fullLabel || labels[i];
+                  },
                 label(context) {
                   const i = context.dataIndex;
                   if (context.datasetIndex === 0) { const value = deltaData[i]; return `Delta: ${value > 0 ? '+' : ''}${value}`; }
