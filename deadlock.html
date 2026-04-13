@@ -728,72 +728,6 @@
       align-items: end;
     }
 
-    .records-hero-picker {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 40px;
-      flex-wrap: wrap;
-    }
-
-    .records-all-heroes-btn,
-    .records-hero-icon-btn {
-      background: #151a23;
-      color: #fff;
-      border: 1px solid #465062;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .records-all-heroes-btn {
-      padding: 8px 12px;
-      min-height: 40px;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
-      white-space: nowrap;
-    }
-
-    .records-hero-icon-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .records-hero-icon-btn {
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .records-hero-icon-btn .icon-slot {
-      width: 28px;
-      height: 28px;
-      flex: 0 0 28px;
-      border: none;
-      background: transparent;
-    }
-
-    .records-all-heroes-btn:hover,
-    .records-hero-icon-btn:hover {
-      background: #1d2330;
-      border-color: #5a6578;
-      transform: translateY(-1px);
-    }
-
-    .records-all-heroes-btn.is-active,
-    .records-hero-icon-btn.is-active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(183,255,42,0.28) inset;
-      background: #1c2411;
-      color: var(--accent);
-    }
-
     .records-summary-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1033,39 +967,44 @@
       width: 100%;
     }
 
+    .records-all-heroes-btn,
+    .records-hero-icon-btn {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
     .records-all-heroes-btn {
       display: block;
       width: fit-content;
       min-width: 120px;
       margin: 0 auto 12px;
       padding: 8px 14px;
+      min-height: 40px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      white-space: nowrap;
     }
 
     .records-hero-icon-row {
       width: 100%;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(var(--records-hero-count, 38), minmax(0, 1fr));
+      gap: 2px;
       align-items: center;
-      gap: 4px;
-      overflow: visible;
-    }
-
-    .records-hero-icon-row > * {
-      flex: 0 0 40px;
-      width: 40px;
-      min-width: 40px;
-      max-width: 40px;
+      overflow: hidden;
     }
 
     .records-hero-icon-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      max-width: 40px;
-      min-height: 40px;
-      max-height: 40px;
-      padding: 2px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 1px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1073,9 +1012,9 @@
     }
 
     .records-hero-icon-btn .icon-slot {
-      width: 84%;
-      height: 84%;
-      flex: 0 0 84%;
+      width: 88%;
+      height: 88%;
+      flex: 0 0 auto;
       border: none;
       background: transparent;
       overflow: hidden;
@@ -1089,6 +1028,22 @@
       transform-origin: center center;
       image-rendering: auto;
     }
+
+    .records-all-heroes-btn:hover,
+    .records-hero-icon-btn:hover {
+      background: #1d2330;
+      border-color: #5a6578;
+      transform: translateY(-1px);
+    }
+
+    .records-all-heroes-btn.is-active,
+    .records-hero-icon-btn.is-active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(183,255,42,0.28) inset;
+      background: #1c2411;
+      color: var(--accent);
+    }
+
 
 
 </style>
@@ -2980,6 +2935,7 @@
 
       if (els.recordsHeroIconRow) {
         els.recordsHeroIconRow.innerHTML = '';
+        els.recordsHeroIconRow.style.setProperty('--records-hero-count', String(Math.max(heroes.length, 1)));
         heroes.forEach(hero => {
           const btn = document.createElement('button');
           btn.type = 'button';
