@@ -1025,199 +1025,70 @@
       .toolbar { grid-template-columns: 1fr; }
       .records-toolbar { grid-template-columns: 1fr; }
     }
-  
-    .records-hero-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-      gap: 10px;
+
+    .records-hero-picker {
+      display: flex;
+      flex-direction: column;
       align-items: stretch;
-    }
-    .records-hero-grid > * {
       width: 100%;
-      min-width: 0;
     }
-    .records-hero-btn,
-    .records-all-btn {
+
+    .records-all-heroes-btn {
+      display: block;
+      width: fit-content;
+      min-width: 120px;
+      margin: 0 auto 12px;
+      padding: 8px 14px;
+    }
+
+    .records-hero-icon-row {
       width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      overflow: visible;
+    }
+
+    .records-hero-icon-row > * {
+      flex: 0 0 40px;
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+    }
+
+    .records-hero-icon-btn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      min-height: 40px;
+      max-height: 40px;
+      padding: 2px;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-    }
-    .records-hero-grid {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)) !important;
-      gap: 10px !important;
-      align-items: stretch !important;
-    }
-    .records-hero-grid > * {
-      width: 100% !important;
-      min-width: 0 !important;
-    }
-    .records-hero-btn,
-    .records-all-btn {
-      width: 100% !important;
-      justify-content: center !important;
-    }
-    .records-hero-grid,
-    #recordsHeroGrid,
-    .records-hero-buttons {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)) !important;
-      gap: 10px !important;
-      align-items: stretch !important;
-      justify-items: stretch !important;
+      overflow: hidden;
     }
 
-    .records-hero-grid > *,
-    #recordsHeroGrid > *,
-    .records-hero-buttons > * {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: none !important;
+    .records-hero-icon-btn .icon-slot {
+      width: 84%;
+      height: 84%;
+      flex: 0 0 84%;
+      border: none;
+      background: transparent;
+      overflow: hidden;
     }
 
-    .records-hero-btn,
-    .records-all-btn,
-    .records-hero-grid button,
-    #recordsHeroGrid button,
-    .records-hero-buttons button {
-      width: 100% !important;
-      max-width: none !important;
-      justify-content: center !important;
+    .records-hero-icon-btn .icon-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.18);
+      transform-origin: center center;
+      image-rendering: auto;
     }
-
-    .records-all-btn {
-      grid-column: 1 / -1 !important;
-    }
-    .records-toolbar,
-    .records-filter-wrap,
-    .records-hero-picker,
-    .records-controls-row {
-      display: block !important;
-      width: 100% !important;
-      max-width: none !important;
-      grid-template-columns: 1fr !important;
-      grid-template-areas: none !important;
-    }
-
-    .records-toolbar > *,
-    .records-filter-wrap > *,
-    .records-hero-picker > *,
-    .records-controls-row > * {
-      width: 100% !important;
-      max-width: none !important;
-    }
-
-    .records-scope-box,
-    #recordsScopeBox,
-    .scope-box,
-    #scopeBox {
-      display: none !important;
-      width: 0 !important;
-      min-width: 0 !important;
-      max-width: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      overflow: hidden !important;
-    }
-
-    .records-hero-grid,
-    #recordsHeroGrid,
-    .records-hero-buttons {
-      width: 100% !important;
-      display: grid !important;
-      grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)) !important;
-      gap: 10px !important;
-      align-items: stretch !important;
-      justify-items: stretch !important;
-    }
-
-    .records-hero-grid > *,
-    #recordsHeroGrid > *,
-    .records-hero-buttons > * {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: none !important;
-    }
-
-    .records-hero-btn,
-    .records-all-btn,
-    .records-hero-grid button,
-    #recordsHeroGrid button,
-    .records-hero-buttons button {
-      width: 100% !important;
-      max-width: none !important;
-      justify-content: center !important;
-    }
-
-    .records-all-btn {
-      grid-column: 1 / -1 !important;
-    }
-    /* Records hero picker layout */
-    .records-all-btn {
-      display: block !important;
-      width: fit-content !important;
-      min-width: 120px !important;
-      max-width: none !important;
-      margin: 0 auto 12px auto !important;
-      padding: 8px 14px !important;
-      grid-column: auto !important;
-      justify-content: center !important;
-    }
-
-    .records-hero-grid,
-    #recordsHeroGrid,
-    .records-hero-buttons {
-      width: 100% !important;
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      justify-content: space-between !important;
-      align-items: center !important;
-      gap: 4px !important;
-      overflow: visible !important;
-    }
-
-    .records-hero-grid > *,
-    #recordsHeroGrid > *,
-    .records-hero-buttons > * {
-      flex: 0 0 40px !important;
-      width: 40px !important;
-      min-width: 40px !important;
-      max-width: 40px !important;
-    }
-
-    .records-hero-btn,
-    .records-hero-grid button,
-    #recordsHeroGrid button,
-    .records-hero-buttons button {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      max-width: 40px !important;
-      min-height: 40px !important;
-      max-height: 40px !important;
-      padding: 2px !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      overflow: hidden !important;
-    }
-
-    .records-hero-btn img,
-    .records-hero-grid button img,
-    #recordsHeroGrid button img,
-    .records-hero-buttons button img {
-      width: 84% !important;
-      height: 84% !important;
-      object-fit: cover !important;
-      transform: scale(1.18) !important;
-      transform-origin: center center !important;
-      image-rendering: auto !important;
-    }
-
-
 
 
 </style>
@@ -1573,7 +1444,9 @@
       currentView: "heroes",
       dataLoaded: false,
       rankByMatchId: new Map(),
-      selectedRecordsHero: ''
+      selectedRecordsHero: '',
+      activeDateRange: { startDate: null, endDate: null },
+      durationIndexCandidates: { seconds: [], minutes: [] }
     };
 
     const els = {
@@ -1971,6 +1844,38 @@
       };
     }
 
+    function getUniqueValidIndexes(indexes) {
+      return [...new Set(indexes.filter(idx => Number.isInteger(idx) && idx >= 0))];
+    }
+
+    function updateCachedDateRange() {
+      const startValue = normalizeValue(els.startDateInput?.value);
+      const endValue = normalizeValue(els.endDateInput?.value);
+      const startDate = startValue ? parseSheetDate(startValue) : null;
+      const endDate = endValue ? parseSheetDate(endValue) : null;
+      state.activeDateRange = {
+        startDate: startDate ? startOfDay(startDate) : null,
+        endDate: endDate ? startOfDay(endDate) : null
+      };
+      return state.activeDateRange;
+    }
+
+    function cacheDurationIndexCandidates() {
+      const headerRow = state.matchesRows[0] || [];
+      state.durationIndexCandidates = {
+        seconds: getUniqueValidIndexes([
+          state.heroHeaderIndexes.durationSeconds,
+          MATCHES_SHEET_DURATION_SECONDS_INDEX,
+          findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX)
+        ]),
+        minutes: getUniqueValidIndexes([
+          state.heroHeaderIndexes.durationMinutes,
+          MATCHES_SHEET_DURATION_MINUTES_INDEX,
+          findHeaderIndex(headerRow, MATCHES_HEADER_ALIASES.durationMinutes, MATCHES_SHEET_DURATION_MINUTES_INDEX)
+        ])
+      };
+    }
+
     function getFirstAvailableMetricCell(row, headerAliases) {
       if (!Array.isArray(state.matchesRows) || !state.matchesRows.length || !Array.isArray(row)) return '';
       const idx = findHeaderIndex(state.matchesRows[0] || [], headerAliases);
@@ -1992,21 +1897,15 @@
     }
 
     function getDurationSeconds(row) {
-      const headerIndexes = state.heroHeaderIndexes;
-      const candidateIndexes = [
-        headerIndexes.durationSeconds,
-        MATCHES_SHEET_DURATION_SECONDS_INDEX,
-        findHeaderIndex(state.matchesRows[0] || [], MATCHES_HEADER_ALIASES.durationSeconds, MATCHES_SHEET_DURATION_SECONDS_INDEX)
-      ].filter(idx => Number.isInteger(idx) && idx >= 0);
-      for (const idx of candidateIndexes) {
+      const { seconds = [], minutes = [] } = state.durationIndexCandidates || {};
+      for (const idx of seconds) {
         const parsed = parseDurationToSeconds(normalizeValue(row[idx]));
         if (parsed !== null && parsed > 0) return parsed;
       }
       const durationSecondsRaw = getFirstAvailableMetricCell(row, MATCHES_HEADER_ALIASES.durationSeconds);
       const durationSeconds = parseDurationToSeconds(durationSecondsRaw);
       if (durationSeconds !== null && durationSeconds > 0) return durationSeconds;
-      const candidateMinuteIndexes = [headerIndexes.durationMinutes].filter(idx => Number.isInteger(idx) && idx >= 0);
-      for (const idx of candidateMinuteIndexes) {
+      for (const idx of minutes) {
         const raw = normalizeValue(row[idx]);
         if (!raw) continue;
         const durationMinutes = parseNumeric(raw);
@@ -2242,15 +2141,11 @@
     }
 
     function getActiveDateRange() {
-      const startValue = normalizeValue(els.startDateInput.value);
-      const endValue = normalizeValue(els.endDateInput.value);
-      const startDate = startValue ? parseSheetDate(startValue) : null;
-      const endDate = endValue ? parseSheetDate(endValue) : null;
-      return { startDate: startDate ? startOfDay(startDate) : null, endDate: endDate ? startOfDay(endDate) : null };
+      return state.activeDateRange || { startDate: null, endDate: null };
     }
 
-    function isRowWithinActiveDateRange(row) {
-      const { startDate, endDate } = getActiveDateRange();
+    function isRowWithinDateRange(row, dateRange = state.activeDateRange) {
+      const { startDate, endDate } = dateRange || {};
       if (!startDate && !endDate) return true;
       const rowDate = parseMatchDateTime(row);
       if (!rowDate) return false;
@@ -2260,10 +2155,12 @@
       return true;
     }
 
-    function getDateRangeFilteredMatches() { return state.classifiedMatchRows.filter(isRowWithinActiveDateRange); }
+    function getDateRangeFilteredMatches(dateRange = state.activeDateRange) {
+      return state.classifiedMatchRows.filter(row => isRowWithinDateRange(row, dateRange));
+    }
 
-    function syncSliderToFilteredMatches() {
-      const datedMatches = getDateRangeFilteredMatches();
+    function syncSliderToFilteredMatches(dateRange = state.activeDateRange) {
+      const datedMatches = getDateRangeFilteredMatches(dateRange);
       const total = datedMatches.length;
       const currentValue = Number(els.gamesSlider.value || 0);
       els.gamesSlider.min = 0;
@@ -2389,7 +2286,8 @@
     }
 
     function updateHeroTableForSlider() {
-      const datedMatches = syncSliderToFilteredMatches();
+      const activeDateRange = updateCachedDateRange();
+      const datedMatches = syncSliderToFilteredMatches(activeDateRange);
       const subset = datedMatches.slice(0, state.sliderGameCount);
       state.heroRows = buildHeroRowsFromMatches(subset);
       state.maxMatches = Math.max(...state.heroRows.map(row => parseNumeric(row[MATCHES_INDEX]) ?? 0), 0);
@@ -2401,7 +2299,8 @@
       renderHeroHeader();
       renderHeroTable();
       const total = datedMatches.length;
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
+      const { startDate, endDate } = activeDateRange;
+      const rangeLabel = formatDateRangeShort(startDate, endDate);
       els.gamesSliderLabel.textContent = `${state.sliderGameCount} / ${total} games`;
       els.heroTableSub.textContent = state.sliderGameCount >= total ? rangeLabel : `${rangeLabel} • AFTER ${state.sliderGameCount} GAMES`;
     }
@@ -2795,27 +2694,27 @@
       const assists = parseNumeric(row[state.heroHeaderIndexes.assists]);
       const date = parseMatchDateTime(row);
       const metricValue = getRowMetricValue(row, metricIndex, config);
-      container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div></div><div class="record-main">${buildIcon(hero, 'icon-slot record-icon').outerHTML}<div class="record-meta"><div class="record-hero">${hero}</div><div class="record-date">${date ? formatLongDate(date) : '-'}</div><div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-'}</div></div></div>`;
+      container.innerHTML = `<div class="record-top"><div class="record-label">${label}</div><div class="record-value">${config.isDuration ? formatDuration(metricValue) : formatRecordNumber(metricValue)}</div></div><div class="record-main">${buildIcon(hero, 'icon-slot record-icon').outerHTML}<div class="record-meta"><div class="record-hero">${escapeHtml(hero)}</div><div class="record-date">${date ? formatLongDate(date) : '-'}</div><div class="record-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${escapeHtml(result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-')}</div></div></div>`;
     }
 
     function renderRecords() {
       const configs = [
-        { key: 'kills', label: 'Most Kills', mode: 'max' },
-        { key: 'deaths', label: 'Most Deaths', mode: 'max' },
-        { key: 'assists', label: 'Most Assists', mode: 'max' },
-        { key: 'souls', label: 'Most Souls', mode: 'max' },
-        { key: 'damage', label: 'Most Damage', mode: 'max' },
-        { key: 'healing', label: 'Most Healing', mode: 'max' },
-        { key: 'durationSeconds', label: 'Shortest Game', mode: 'min', isDuration: true, recordKey: 'shortestGame' },
-        { key: 'durationSeconds', label: 'Longest Game', mode: 'max', isDuration: true, recordKey: 'longestGame' }
+        { metricKey: 'kills', label: 'Most Kills', mode: 'max', target: 'kills' },
+        { metricKey: 'deaths', label: 'Most Deaths', mode: 'max', target: 'deaths' },
+        { metricKey: 'assists', label: 'Most Assists', mode: 'max', target: 'assists' },
+        { metricKey: 'souls', label: 'Most Souls', mode: 'max', target: 'souls' },
+        { metricKey: 'damage', label: 'Most Damage', mode: 'max', target: 'damage' },
+        { metricKey: 'healing', label: 'Most Healing', mode: 'max', target: 'healing' },
+        { metricKey: 'shortestGame', label: 'Shortest Game', mode: 'min', target: 'shortestGame' },
+        { metricKey: 'longestGame', label: 'Longest Game', mode: 'max', target: 'longestGame' }
       ];
-      for (const config of configs) {
-        const metricIndex = state.heroHeaderIndexes[config.key];
-        let bestRow = null;
-        const hasMetric = config.isDuration ? (state.heroHeaderIndexes.durationSeconds >= 0 || state.heroHeaderIndexes.durationMinutes >= 0) : metricIndex >= 0;
-        if (hasMetric) for (const row of state.classifiedMatchRows) bestRow = chooseBetterRecordRow(bestRow, row, metricIndex, config);
-        renderSingleRecordBox(els.recordBoxEls[config.recordKey || config.key], config.label, bestRow, metricIndex, config);
-      }
+
+      configs.forEach(config => {
+        const result = chooseBestRecordByMetric(state.classifiedMatchRows, config.metricKey, config.mode);
+        const metricIndex = state.heroHeaderIndexes[config.metricKey] ?? -1;
+        const legacyConfig = { mode: config.mode, isDuration: config.metricKey === 'shortestGame' || config.metricKey === 'longestGame' };
+        renderSingleRecordBox(els.recordBoxEls[config.target], config.label, result.row, metricIndex, legacyConfig);
+      });
     }
 
     function setOverallStats() {
@@ -3044,7 +2943,8 @@
       const totalAssists = matches.reduce((sum,row) => sum + (parseNumeric(row[state.heroHeaderIndexes.assists]) ?? 0), 0);
       const totalSouls = matches.reduce((sum,row) => sum + (parseNumeric(row[state.heroHeaderIndexes.souls]) ?? 0), 0);
       const totalDurationSeconds = matches.reduce((sum,row) => sum + (getDurationSeconds(row) ?? 0), 0);
-      const rangeLabel = formatDateRangeShort(...Object.values(getActiveDateRange()));
+      const { startDate, endDate } = activeDateRange;
+      const rangeLabel = formatDateRangeShort(startDate, endDate);
       els.heroModalTitle.textContent = targetHero;
       els.heroModalSubtitle.textContent = `${matches.length} game(s) • ${wins}-${losses} • ${rangeLabel}${state.sliderGameCount < syncSliderToFilteredMatches().length ? ` • after ${state.sliderGameCount} games` : ''}`;
       els.heroModalTitleIcon.innerHTML = `<img src="${heroIconPath(targetHero)}" alt="${targetHero}" loading="lazy" onerror="this.style.display='none'">`;
@@ -3280,6 +3180,8 @@
         resolveMatchesColumnIndexes(matchesRows);
         state.heroHeaderIndexes = getHeaderIndexes(matchesRows);
         state.gamesHeaderIndexes = state.heroHeaderIndexes;
+        cacheDurationIndexCandidates();
+        updateCachedDateRange();
         state.classifiedMatchRows = matchesRows.slice(1).filter(r => r.some(cell => normalizeValue(cell) !== '')).filter(isClassifiedCountedMatch);
         state.gamesRows = buildGamesRows(matchesRows);
         populateGamesFilters();
