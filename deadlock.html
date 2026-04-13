@@ -95,7 +95,8 @@
     }
 
     .games-page,
-    .graph-page {
+    .graph-page,
+    .records-page {
       width: min(1400px, 100%);
       margin: 0 auto;
       display: flex;
@@ -714,6 +715,208 @@
       font-weight: 700;
     }
 
+    .records-page .card { width: 100%; }
+
+    .records-toolbar {
+      padding: 10px 12px 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: minmax(220px, 1.4fr) minmax(170px, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .records-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+    }
+
+    .records-summary-card,
+    .records-streak-card,
+    .records-section-card {
+      background: #2a3140;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .records-summary-label,
+    .records-summary-sub,
+    .records-streak-subtitle {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      font-weight: 700;
+    }
+
+    .records-summary-card {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 88px;
+    }
+
+    .records-summary-value {
+      color: #ffffff;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .records-summary-sub {
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 400;
+      font-size: 11px;
+    }
+
+    .records-streaks-grid,
+    .records-sections-grid {
+      display: grid;
+      gap: 12px;
+      padding: 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+    }
+
+    .records-streaks-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .records-streak-card {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .records-streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .records-streak-title {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .records-streak-value {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .records-streak-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 36px;
+      align-items: center;
+    }
+
+    .records-section-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .records-section-titlebar {
+      padding: 10px 12px 8px;
+      background: var(--header);
+      border-bottom: 1px solid var(--border);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .records-section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      background: #222834;
+    }
+
+    .records-page-box {
+      background: #2a3140;
+      border: 1px solid var(--border);
+      padding: 10px;
+      min-height: 94px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .records-page-box-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .records-page-box-label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      font-weight: 700;
+    }
+
+    .records-page-box-value {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .records-page-box-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .records-page-box-meta {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .records-page-box-hero {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .records-page-box-date,
+    .records-page-box-extra {
+      color: #9fb0c7;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+
     @media (max-width: 1500px) {
       .hero-page { flex-wrap: wrap; width: 100%; min-width: 0; }
       .chart-column { flex: 1 1 100%; min-width: 0; }
@@ -722,8 +925,12 @@
 
     @media (max-width: 1200px) {
       body { padding: 12px; }
-      .site-shell, .site-nav-wrap, .games-page, .graph-page { width: calc(100vw - 24px); }
+      .site-shell, .site-nav-wrap, .games-page, .graph-page, .records-page { width: calc(100vw - 24px); }
       .toolbar { grid-template-columns: 1fr 1fr; }
+      .records-toolbar { grid-template-columns: 1fr 1fr; }
+      .records-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .records-streaks-grid,
+      .records-section-grid { grid-template-columns: 1fr; }
       .calendar-year-wrap { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
     }
 
@@ -739,6 +946,10 @@
       }
       .left-column, .wrap, .wrap.wrap-detailed { width: 100%; flex: 0 0 auto; min-width: 0; }
       .datefilterbar { grid-template-columns: 1fr; }
+      .records-summary-grid { grid-template-columns: 1fr; }
+      .records-streaks-grid,
+      .records-sections-grid,
+      .records-section-grid { grid-template-columns: 1fr; }
       .chart-body { height: 320px; }
       .hero-modal { width: calc(100vw - 24px); max-height: calc(100vh - 24px); }
       .hero-modal-stats-grid { grid-template-columns: 1fr 1fr; }
@@ -746,6 +957,7 @@
 
     @media (max-width: 760px) {
       .toolbar { grid-template-columns: 1fr; }
+      .records-toolbar { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -757,6 +969,7 @@
         <a href="#games" class="site-nav-link" data-view="games">Games</a>
         <a href="#graph" class="site-nav-link" data-view="graph">Graph</a>
         <a href="#calendar" class="site-nav-link" data-view="calendar">Calendar</a>
+        <a href="#records" class="site-nav-link" data-view="records">Records</a>
       </div>
     </div>
 
@@ -867,6 +1080,109 @@
           <div class="stats-titlebar">CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></div>
           <div class="calendar-year-body">
             <div id="calendarYearWrap" class="calendar-year-wrap"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recordsView" class="view">
+      <div class="records-page">
+        <div class="card">
+          <div class="stats-titlebar">RECORDS<span class="sub">OVERALL OR BY HERO</span></div>
+          <div class="records-toolbar">
+            <div class="field">
+              <label for="recordsHeroFilter">Hero</label>
+              <select id="recordsHeroFilter"><option value="">All Heroes</option></select>
+            </div>
+            <div class="field">
+              <label for="recordsScopeLabel">Scope</label>
+              <input id="recordsScopeLabel" type="text" value="Counted wins and losses" readonly />
+            </div>
+            <button id="recordsResetBtn" type="button">Reset</button>
+          </div>
+
+          <div class="records-summary-grid">
+            <div class="records-summary-card">
+              <div class="records-summary-label">Matches</div>
+              <div class="records-summary-value" id="recordsSummaryMatches">-</div>
+              <div class="records-summary-sub" id="recordsSummaryRange">Counted matches</div>
+            </div>
+            <div class="records-summary-card">
+              <div class="records-summary-label">Win-Loss</div>
+              <div class="records-summary-value" id="recordsSummaryWinLoss">-</div>
+              <div class="records-summary-sub">Wins and losses in current filter</div>
+            </div>
+            <div class="records-summary-card">
+              <div class="records-summary-label">Win %</div>
+              <div class="records-summary-value" id="recordsSummaryWinPct">-</div>
+              <div class="records-summary-sub">Current selection</div>
+            </div>
+            <div class="records-summary-card">
+              <div class="records-summary-label">First Match</div>
+              <div class="records-summary-value" id="recordsSummaryFirstMatch">-</div>
+              <div class="records-summary-sub">Earliest counted match</div>
+            </div>
+          </div>
+
+          <div class="records-streaks-grid">
+            <div class="records-streak-card">
+              <div class="records-streak-header">
+                <div>
+                  <div class="records-streak-title">Longest Win Streak</div>
+                  <div class="records-streak-subtitle" id="recordsWinStreakDates">-</div>
+                </div>
+                <div class="records-streak-value" id="recordsWinStreakCount">-</div>
+              </div>
+              <div class="records-streak-icons" id="recordsWinStreakIcons"></div>
+            </div>
+            <div class="records-streak-card">
+              <div class="records-streak-header">
+                <div>
+                  <div class="records-streak-title">Longest Loss Streak</div>
+                  <div class="records-streak-subtitle" id="recordsLossStreakDates">-</div>
+                </div>
+                <div class="records-streak-value" id="recordsLossStreakCount">-</div>
+              </div>
+              <div class="records-streak-icons" id="recordsLossStreakIcons"></div>
+            </div>
+          </div>
+
+          <div class="records-sections-grid">
+            <div class="records-section-card">
+              <div class="records-section-titlebar">Combat</div>
+              <div class="records-section-grid">
+                <div class="records-page-box" id="recordsPageKills"></div>
+                <div class="records-page-box" id="recordsPageDeaths"></div>
+                <div class="records-page-box" id="recordsPageAssists"></div>
+                <div class="records-page-box" id="recordsPageKda"></div>
+              </div>
+            </div>
+
+            <div class="records-section-card">
+              <div class="records-section-titlebar">Economy</div>
+              <div class="records-section-grid">
+                <div class="records-page-box" id="recordsPageSouls"></div>
+                <div class="records-page-box" id="recordsPageSoulsPerMinute"></div>
+                <div class="records-page-box" id="recordsPageDamagePerMinute"></div>
+                <div class="records-page-box" id="recordsPageObjectiveDamage"></div>
+              </div>
+            </div>
+
+            <div class="records-section-card">
+              <div class="records-section-titlebar">Damage and Healing</div>
+              <div class="records-section-grid">
+                <div class="records-page-box" id="recordsPageDamage"></div>
+                <div class="records-page-box" id="recordsPageHealing"></div>
+              </div>
+            </div>
+
+            <div class="records-section-card">
+              <div class="records-section-titlebar">Match</div>
+              <div class="records-section-grid">
+                <div class="records-page-box" id="recordsPageShortestGame"></div>
+                <div class="records-page-box" id="recordsPageLongestGame"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1006,6 +1322,7 @@
       gamesView: document.getElementById('gamesView'),
       graphView: document.getElementById('graphView'),
       calendarView: document.getElementById('calendarView'),
+      recordsView: document.getElementById('recordsView'),
 
       heroTable: document.getElementById('dataTable'),
       heroThead: document.querySelector('#dataTable thead'),
@@ -1049,6 +1366,34 @@
       expandChartBtn: document.getElementById('expandChartBtn'),
       resetZoomBtn: document.getElementById('resetZoomBtn'),
       chartCanvas: document.getElementById('winrateChart'),
+
+      recordsHeroFilter: document.getElementById('recordsHeroFilter'),
+      recordsResetBtn: document.getElementById('recordsResetBtn'),
+      recordsSummaryMatches: document.getElementById('recordsSummaryMatches'),
+      recordsSummaryWinLoss: document.getElementById('recordsSummaryWinLoss'),
+      recordsSummaryWinPct: document.getElementById('recordsSummaryWinPct'),
+      recordsSummaryFirstMatch: document.getElementById('recordsSummaryFirstMatch'),
+      recordsSummaryRange: document.getElementById('recordsSummaryRange'),
+      recordsWinStreakCount: document.getElementById('recordsWinStreakCount'),
+      recordsLossStreakCount: document.getElementById('recordsLossStreakCount'),
+      recordsWinStreakDates: document.getElementById('recordsWinStreakDates'),
+      recordsLossStreakDates: document.getElementById('recordsLossStreakDates'),
+      recordsWinStreakIcons: document.getElementById('recordsWinStreakIcons'),
+      recordsLossStreakIcons: document.getElementById('recordsLossStreakIcons'),
+      recordsPageBoxes: {
+        kills: document.getElementById('recordsPageKills'),
+        deaths: document.getElementById('recordsPageDeaths'),
+        assists: document.getElementById('recordsPageAssists'),
+        kda: document.getElementById('recordsPageKda'),
+        souls: document.getElementById('recordsPageSouls'),
+        soulsPerMinute: document.getElementById('recordsPageSoulsPerMinute'),
+        damage: document.getElementById('recordsPageDamage'),
+        damagePerMinute: document.getElementById('recordsPageDamagePerMinute'),
+        objectiveDamage: document.getElementById('recordsPageObjectiveDamage'),
+        healing: document.getElementById('recordsPageHealing'),
+        shortestGame: document.getElementById('recordsPageShortestGame'),
+        longestGame: document.getElementById('recordsPageLongestGame')
+      },
 
       gamesTable: document.getElementById('gamesTable'),
       gamesThead: document.querySelector('#gamesTable thead'),
@@ -1975,6 +2320,175 @@
 
     function getRowMetricValue(row, metricIndex, config={}) { return config.isDuration ? getDurationSeconds(row) : parseNumeric(row[metricIndex]); }
 
+    function getRecordsFilteredRows() {
+      const selectedHero = normalizeValue(els.recordsHeroFilter?.value);
+      if (!selectedHero) return [...state.classifiedMatchRows];
+      return state.classifiedMatchRows.filter(row => getMatchHeroValue(row) === selectedHero);
+    }
+
+    function getRowKda(row) {
+      const kills = parseNumeric(row[state.heroHeaderIndexes.kills]);
+      const deaths = parseNumeric(row[state.heroHeaderIndexes.deaths]);
+      const assists = parseNumeric(row[state.heroHeaderIndexes.assists]);
+      if (!Number.isFinite(kills) || !Number.isFinite(assists)) return null;
+      return (kills + assists) / Math.max(1, Number.isFinite(deaths) ? deaths : 0);
+    }
+
+    function getRowSoulsPerMinute(row) {
+      const souls = parseNumeric(row[state.heroHeaderIndexes.souls]);
+      const durationSeconds = getDurationSeconds(row);
+      if (!Number.isFinite(souls) || !Number.isFinite(durationSeconds) || durationSeconds <= 0) return null;
+      return souls / (durationSeconds / 60);
+    }
+
+    function getRowDamagePerMinute(row) {
+      const damage = parseNumeric(row[state.heroHeaderIndexes.damage]);
+      const durationSeconds = getDurationSeconds(row);
+      if (!Number.isFinite(damage) || !Number.isFinite(durationSeconds) || durationSeconds <= 0) return null;
+      return damage / (durationSeconds / 60);
+    }
+
+    function getRecordMetricValue(row, metricKey) {
+      if (!row) return null;
+      switch (metricKey) {
+        case 'kda': return getRowKda(row);
+        case 'soulsPerMinute': return getRowSoulsPerMinute(row);
+        case 'damagePerMinute': return getRowDamagePerMinute(row);
+        case 'shortestGame':
+        case 'longestGame': return getDurationSeconds(row);
+        default: {
+          const idx = state.heroHeaderIndexes[metricKey];
+          return Number.isInteger(idx) && idx >= 0 ? parseNumeric(row[idx]) : null;
+        }
+      }
+    }
+
+    function chooseBestRecordByMetric(rows, metricKey, mode='max') {
+      let bestRow = null;
+      let bestValue = null;
+      rows.forEach(row => {
+        const value = getRecordMetricValue(row, metricKey);
+        if (value === null || !Number.isFinite(value)) return;
+        if (bestRow === null) {
+          bestRow = row;
+          bestValue = value;
+          return;
+        }
+        const better = mode === 'min' ? value < bestValue : value > bestValue;
+        const worse = mode === 'min' ? value > bestValue : value < bestValue;
+        if (better) {
+          bestRow = row;
+          bestValue = value;
+        } else if (!worse) {
+          const candidateDate = parseMatchDateTime(row);
+          const currentDate = parseMatchDateTime(bestRow);
+          if (candidateDate && (!currentDate || candidateDate > currentDate)) {
+            bestRow = row;
+            bestValue = value;
+          }
+        }
+      });
+      return { row: bestRow, value: bestValue };
+    }
+
+    function formatRecordDisplayValue(metricKey, value) {
+      if (!Number.isFinite(value)) return '-';
+      if (metricKey === 'kda' || metricKey === 'soulsPerMinute' || metricKey === 'damagePerMinute') return value.toFixed(2);
+      if (metricKey === 'shortestGame' || metricKey === 'longestGame') return formatDuration(value);
+      return formatRecordNumber(value);
+    }
+
+    function renderRecordsPageBox(container, label, metricKey, recordResult) {
+      if (!container) return;
+      const row = recordResult?.row;
+      const value = recordResult?.value;
+      if (!row || !Number.isFinite(value)) {
+        container.innerHTML = `
+          <div class="records-page-box-top">
+            <div class="records-page-box-label">${label}</div>
+            <div class="records-page-box-value">-</div>
+          </div>
+          <div class="records-page-box-main">
+            <div class="records-page-box-meta">
+              <div class="records-page-box-hero">No data</div>
+              <div class="records-page-box-date">-</div>
+              <div class="records-page-box-extra">No counted matches in this filter</div>
+            </div>
+          </div>`;
+        return;
+      }
+
+      const hero = getMatchHeroValue(row) || 'Unknown';
+      const result = getMatchResultValue(row) || '-';
+      const kills = parseNumeric(row[state.heroHeaderIndexes.kills]);
+      const deaths = parseNumeric(row[state.heroHeaderIndexes.deaths]);
+      const assists = parseNumeric(row[state.heroHeaderIndexes.assists]);
+      const date = parseMatchDateTime(row);
+      const matchId = normalizeMatchId(getMatchCell(row, state.matchesColumnIndexes.matchId));
+
+      container.innerHTML = `
+        <div class="records-page-box-top">
+          <div class="records-page-box-label">${label}</div>
+          <div class="records-page-box-value">${formatRecordDisplayValue(metricKey, value)}</div>
+        </div>
+        <div class="records-page-box-main">
+          ${buildIcon(hero, 'icon-slot record-icon').outerHTML}
+          <div class="records-page-box-meta">
+            <div class="records-page-box-hero">${escapeHtml(hero)}</div>
+            <div class="records-page-box-date">${date ? formatLongDate(date) : '-'}${matchId ? ` • Match ${escapeHtml(matchId)}` : ''}</div>
+            <div class="records-page-box-extra">K/D/A: ${kills ?? '-'} / ${deaths ?? '-'} / ${assists ?? '-'} • ${escapeHtml(result ? result[0].toUpperCase() + result.slice(1).toLowerCase() : '-')}</div>
+          </div>
+        </div>`;
+    }
+
+    function renderRecordsPage() {
+      const rows = getRecordsFilteredRows();
+      const selectedHero = normalizeValue(els.recordsHeroFilter?.value);
+      const wins = rows.filter(row => getMatchResultValue(row).toLowerCase() === 'win').length;
+      const losses = rows.filter(row => getMatchResultValue(row).toLowerCase() === 'loss').length;
+      const totalMatches = rows.length;
+      const firstDate = rows
+        .map(row => parseMatchDateTime(row))
+        .filter(Boolean)
+        .sort((a,b) => a - b)[0];
+
+      els.recordsSummaryMatches.textContent = String(totalMatches);
+      els.recordsSummaryWinLoss.textContent = `${wins}-${losses}`;
+      els.recordsSummaryWinPct.textContent = totalMatches > 0 ? `${((wins / totalMatches) * 100).toFixed(2)}%` : '-';
+      els.recordsSummaryFirstMatch.textContent = firstDate ? formatLongDate(firstDate) : '-';
+      els.recordsSummaryRange.textContent = selectedHero ? `${selectedHero} only` : 'All counted heroes';
+
+      const winStreak = findLongestStreak(rows, 'win');
+      const lossStreak = findLongestStreak(rows, 'loss');
+      els.recordsWinStreakCount.textContent = String(winStreak.heroes.length || 0);
+      els.recordsLossStreakCount.textContent = String(lossStreak.heroes.length || 0);
+      els.recordsWinStreakDates.textContent = formatDateRange(winStreak.startDate, winStreak.endDate) || '-';
+      els.recordsLossStreakDates.textContent = formatDateRange(lossStreak.startDate, lossStreak.endDate) || '-';
+      renderStreak(els.recordsWinStreakIcons, winStreak.heroes);
+      renderStreak(els.recordsLossStreakIcons, lossStreak.heroes);
+
+      const recordConfigs = [
+        ['kills', 'Most Kills', 'max'],
+        ['deaths', 'Most Deaths', 'max'],
+        ['assists', 'Most Assists', 'max'],
+        ['kda', 'Best KDA', 'max'],
+        ['souls', 'Most Souls', 'max'],
+        ['soulsPerMinute', 'Highest Souls / Min', 'max'],
+        ['damagePerMinute', 'Highest Dmg / Min', 'max'],
+        ['objectiveDamage', 'Most Obj Dmg', 'max'],
+        ['damage', 'Most Player Dmg', 'max'],
+        ['healing', 'Most Healing', 'max'],
+        ['shortestGame', 'Shortest Game', 'min'],
+        ['longestGame', 'Longest Game', 'max']
+      ];
+
+      recordConfigs.forEach(([metricKey, label, mode]) => {
+        const result = chooseBestRecordByMetric(rows, metricKey, mode);
+        const targetKey = metricKey in els.recordsPageBoxes ? metricKey : metricKey;
+        renderRecordsPageBox(els.recordsPageBoxes[targetKey], label, metricKey, result);
+      });
+    }
+
     function chooseBetterRecordRow(currentBest, candidateRow, metricIndex, config={}) {
       const candidateValue = getRowMetricValue(candidateRow, metricIndex, config);
       if (candidateValue === null) return currentBest;
@@ -2283,7 +2797,9 @@
 
     function populateGamesFilters() {
       const heroes = [...new Set(state.gamesRows.map(r => r.hero).filter(Boolean))].sort((a,b) => a.localeCompare(b));
-      els.heroFilter.innerHTML = `<option value="">All Heroes</option>` + heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join('');
+      const optionsHtml = `<option value="">All Heroes</option>` + heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join('');
+      els.heroFilter.innerHTML = optionsHtml;
+      if (els.recordsHeroFilter) els.recordsHeroFilter.innerHTML = optionsHtml;
     }
 
     function renderGamesHeader() {
@@ -2405,12 +2921,13 @@
     }
 
     function switchView(viewName, updateHash = true) {
-      state.currentView = ['heroes', 'games', 'graph', 'calendar'].includes(viewName) ? viewName : 'heroes';
+      state.currentView = ['heroes', 'games', 'graph', 'calendar', 'records'].includes(viewName) ? viewName : 'heroes';
 
       els.heroesView.classList.toggle('is-active', state.currentView === 'heroes');
       els.gamesView.classList.toggle('is-active', state.currentView === 'games');
       els.graphView.classList.toggle('is-active', state.currentView === 'graph');
       els.calendarView.classList.toggle('is-active', state.currentView === 'calendar');
+      els.recordsView.classList.toggle('is-active', state.currentView === 'records');
 
       els.navLinks.forEach(link => {
         link.classList.toggle('site-nav-link-active', link.dataset.view === state.currentView);
@@ -2478,6 +2995,7 @@
         state.sliderGameCount = state.classifiedMatchRows.length;
         updateHeroTableForSlider();
         setOverallStats();
+        renderRecordsPage();
         await renderWinrateChart();
         applyGamesFilters();
         state.dataLoaded = true;
@@ -2536,6 +3054,11 @@
       state.gamesSortState = { key: 'dateTime', dir: 'desc' };
       applyGamesFilters();
     });
+    els.recordsHeroFilter?.addEventListener('change', renderRecordsPage);
+    els.recordsResetBtn?.addEventListener('click', () => {
+      if (els.recordsHeroFilter) els.recordsHeroFilter.value = '';
+      renderRecordsPage();
+    });
     els.heroModalCloseBtn.addEventListener('click', closeHeroHistoryModal);
     els.heroModalOverlay.addEventListener('click', e => { if (e.target === els.heroModalOverlay) closeHeroHistoryModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.heroModalOverlay.classList.contains('open')) closeHeroHistoryModal(); });
@@ -2546,7 +3069,7 @@
     document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
 
     const initialHash = location.hash.replace('#', '');
-    switchView(['heroes', 'games', 'graph', 'calendar'].includes(initialHash) ? initialHash : 'heroes', false);
+    switchView(['heroes', 'games', 'graph', 'calendar', 'records'].includes(initialHash) ? initialHash : 'heroes', false);
     loadAppData();
   </script>
 </body>
