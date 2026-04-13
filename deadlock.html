@@ -960,6 +960,19 @@
       .records-toolbar { grid-template-columns: 1fr; }
     }
 
+        .records-toolbar {
+      padding: 10px 12px 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: block;
+    }
+
+    .records-toolbar .field {
+      width: 100%;
+      display: block;
+    }
+
     .records-hero-picker {
       display: flex;
       flex-direction: column;
@@ -992,18 +1005,21 @@
 
     .records-hero-icon-row {
       width: 100%;
-      display: grid;
-      grid-template-columns: repeat(var(--records-hero-count, 38), minmax(0, 1fr));
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      justify-content: stretch;
       gap: 2px;
-      align-items: center;
       overflow: hidden;
     }
 
     .records-hero-icon-btn {
-      width: 100%;
+      flex: 1 1 0;
+      width: auto;
       aspect-ratio: 1 / 1;
       min-width: 0;
       min-height: 0;
+      max-width: none;
       padding: 1px;
       display: inline-flex;
       align-items: center;
@@ -2935,7 +2951,6 @@
 
       if (els.recordsHeroIconRow) {
         els.recordsHeroIconRow.innerHTML = '';
-        els.recordsHeroIconRow.style.setProperty('--records-hero-count', String(Math.max(heroes.length, 1)));
         heroes.forEach(hero => {
           const btn = document.createElement('button');
           btn.type = 'button';
