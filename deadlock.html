@@ -1155,6 +1155,68 @@
     .records-all-btn {
       grid-column: 1 / -1 !important;
     }
+    /* Records hero picker layout */
+    .records-all-btn {
+      display: block !important;
+      width: fit-content !important;
+      min-width: 120px !important;
+      max-width: none !important;
+      margin: 0 auto 12px auto !important;
+      padding: 8px 14px !important;
+      grid-column: auto !important;
+      justify-content: center !important;
+    }
+
+    .records-hero-grid,
+    #recordsHeroGrid,
+    .records-hero-buttons {
+      width: 100% !important;
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 4px !important;
+      overflow: visible !important;
+    }
+
+    .records-hero-grid > *,
+    #recordsHeroGrid > *,
+    .records-hero-buttons > * {
+      flex: 0 0 40px !important;
+      width: 40px !important;
+      min-width: 40px !important;
+      max-width: 40px !important;
+    }
+
+    .records-hero-btn,
+    .records-hero-grid button,
+    #recordsHeroGrid button,
+    .records-hero-buttons button {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      max-width: 40px !important;
+      min-height: 40px !important;
+      max-height: 40px !important;
+      padding: 2px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+    }
+
+    .records-hero-btn img,
+    .records-hero-grid button img,
+    #recordsHeroGrid button img,
+    .records-hero-buttons button img {
+      width: 84% !important;
+      height: 84% !important;
+      object-fit: cover !important;
+      transform: scale(1.18) !important;
+      transform-origin: center center !important;
+      image-rendering: auto !important;
+    }
+
 
 
 
