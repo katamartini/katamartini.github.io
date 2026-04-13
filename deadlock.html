@@ -1090,6 +1090,72 @@
     .records-all-btn {
       grid-column: 1 / -1 !important;
     }
+    .records-toolbar,
+    .records-filter-wrap,
+    .records-hero-picker,
+    .records-controls-row {
+      display: block !important;
+      width: 100% !important;
+      max-width: none !important;
+      grid-template-columns: 1fr !important;
+      grid-template-areas: none !important;
+    }
+
+    .records-toolbar > *,
+    .records-filter-wrap > *,
+    .records-hero-picker > *,
+    .records-controls-row > * {
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    .records-scope-box,
+    #recordsScopeBox,
+    .scope-box,
+    #scopeBox {
+      display: none !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      max-width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .records-hero-grid,
+    #recordsHeroGrid,
+    .records-hero-buttons {
+      width: 100% !important;
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)) !important;
+      gap: 10px !important;
+      align-items: stretch !important;
+      justify-items: stretch !important;
+    }
+
+    .records-hero-grid > *,
+    #recordsHeroGrid > *,
+    .records-hero-buttons > * {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+    }
+
+    .records-hero-btn,
+    .records-all-btn,
+    .records-hero-grid button,
+    #recordsHeroGrid button,
+    .records-hero-buttons button {
+      width: 100% !important;
+      max-width: none !important;
+      justify-content: center !important;
+    }
+
+    .records-all-btn {
+      grid-column: 1 / -1 !important;
+    }
+
 
 
 </style>
