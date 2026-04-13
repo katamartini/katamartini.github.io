@@ -723,9 +723,75 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: minmax(220px, 1.4fr) minmax(170px, 1fr) auto;
+      grid-template-columns: minmax(280px, 1.8fr) minmax(170px, 1fr);
       gap: 8px;
       align-items: end;
+    }
+
+    .records-hero-picker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      flex-wrap: wrap;
+    }
+
+    .records-all-heroes-btn,
+    .records-hero-icon-btn {
+      background: #151a23;
+      color: #fff;
+      border: 1px solid #465062;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .records-all-heroes-btn {
+      padding: 8px 12px;
+      min-height: 40px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+      white-space: nowrap;
+    }
+
+    .records-hero-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .records-hero-icon-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .records-hero-icon-btn .icon-slot {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      border: none;
+      background: transparent;
+    }
+
+    .records-all-heroes-btn:hover,
+    .records-hero-icon-btn:hover {
+      background: #1d2330;
+      border-color: #5a6578;
+      transform: translateY(-1px);
+    }
+
+    .records-all-heroes-btn.is-active,
+    .records-hero-icon-btn.is-active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(183,255,42,0.28) inset;
+      background: #1c2411;
+      color: var(--accent);
     }
 
     .records-summary-grid {
@@ -927,7 +993,7 @@
       body { padding: 12px; }
       .site-shell, .site-nav-wrap, .games-page, .graph-page, .records-page { width: calc(100vw - 24px); }
       .toolbar { grid-template-columns: 1fr 1fr; }
-      .records-toolbar { grid-template-columns: 1fr 1fr; }
+      .records-toolbar { grid-template-columns: 1fr; }
       .records-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .records-streaks-grid,
       .records-section-grid { grid-template-columns: 1fr; }
@@ -1091,14 +1157,16 @@
           <div class="stats-titlebar">RECORDS<span class="sub">OVERALL OR BY HERO</span></div>
           <div class="records-toolbar">
             <div class="field">
-              <label for="recordsHeroFilter">Hero</label>
-              <select id="recordsHeroFilter"><option value="">All Heroes</option></select>
+              <label>Hero</label>
+              <div id="recordsHeroPicker" class="records-hero-picker">
+                <button id="recordsAllHeroesBtn" class="records-all-heroes-btn is-active" type="button">All Heroes</button>
+                <div id="recordsHeroIconRow" class="records-hero-icon-row"></div>
+              </div>
             </div>
             <div class="field">
               <label for="recordsScopeLabel">Scope</label>
               <input id="recordsScopeLabel" type="text" value="Counted wins and losses" readonly />
             </div>
-            <button id="recordsResetBtn" type="button">Reset</button>
           </div>
 
           <div class="records-summary-grid">
@@ -1313,7 +1381,8 @@
       winrateChart: null,
       currentView: "heroes",
       dataLoaded: false,
-      rankByMatchId: new Map()
+      rankByMatchId: new Map(),
+      selectedRecordsHero: ''
     };
 
     const els = {
@@ -1367,8 +1436,9 @@
       resetZoomBtn: document.getElementById('resetZoomBtn'),
       chartCanvas: document.getElementById('winrateChart'),
 
-      recordsHeroFilter: document.getElementById('recordsHeroFilter'),
-      recordsResetBtn: document.getElementById('recordsResetBtn'),
+      recordsHeroPicker: document.getElementById('recordsHeroPicker'),
+      recordsAllHeroesBtn: document.getElementById('recordsAllHeroesBtn'),
+      recordsHeroIconRow: document.getElementById('recordsHeroIconRow'),
       recordsSummaryMatches: document.getElementById('recordsSummaryMatches'),
       recordsSummaryWinLoss: document.getElementById('recordsSummaryWinLoss'),
       recordsSummaryWinPct: document.getElementById('recordsSummaryWinPct'),
@@ -2321,9 +2391,26 @@
     function getRowMetricValue(row, metricIndex, config={}) { return config.isDuration ? getDurationSeconds(row) : parseNumeric(row[metricIndex]); }
 
     function getRecordsFilteredRows() {
-      const selectedHero = normalizeValue(els.recordsHeroFilter?.value);
+      const selectedHero = normalizeValue(state.selectedRecordsHero);
       if (!selectedHero) return [...state.classifiedMatchRows];
       return state.classifiedMatchRows.filter(row => getMatchHeroValue(row) === selectedHero);
+    }
+
+    function updateRecordsHeroPickerActiveState() {
+      if (els.recordsAllHeroesBtn) {
+        els.recordsAllHeroesBtn.classList.toggle('is-active', !state.selectedRecordsHero);
+      }
+      if (els.recordsHeroIconRow) {
+        Array.from(els.recordsHeroIconRow.querySelectorAll('.records-hero-icon-btn')).forEach(btn => {
+          btn.classList.toggle('is-active', btn.dataset.hero === state.selectedRecordsHero);
+        });
+      }
+    }
+
+    function setSelectedRecordsHero(heroName = '') {
+      state.selectedRecordsHero = normalizeValue(heroName);
+      updateRecordsHeroPickerActiveState();
+      renderRecordsPage();
     }
 
     function getRowKda(row) {
@@ -2443,7 +2530,7 @@
 
     function renderRecordsPage() {
       const rows = getRecordsFilteredRows();
-      const selectedHero = normalizeValue(els.recordsHeroFilter?.value);
+      const selectedHero = normalizeValue(state.selectedRecordsHero);
       const wins = rows.filter(row => getMatchResultValue(row).toLowerCase() === 'win').length;
       const losses = rows.filter(row => getMatchResultValue(row).toLowerCase() === 'loss').length;
       const totalMatches = rows.length;
@@ -2799,7 +2886,23 @@
       const heroes = [...new Set(state.gamesRows.map(r => r.hero).filter(Boolean))].sort((a,b) => a.localeCompare(b));
       const optionsHtml = `<option value="">All Heroes</option>` + heroes.map(hero => `<option value="${escapeHtml(hero)}">${escapeHtml(hero)}</option>`).join('');
       els.heroFilter.innerHTML = optionsHtml;
-      if (els.recordsHeroFilter) els.recordsHeroFilter.innerHTML = optionsHtml;
+
+      if (els.recordsHeroIconRow) {
+        els.recordsHeroIconRow.innerHTML = '';
+        heroes.forEach(hero => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'records-hero-icon-btn';
+          btn.dataset.hero = hero;
+          btn.title = hero;
+          btn.setAttribute('aria-label', hero);
+          btn.appendChild(buildIcon(hero, 'icon-slot'));
+          btn.addEventListener('click', () => setSelectedRecordsHero(hero));
+          els.recordsHeroIconRow.appendChild(btn);
+        });
+      }
+
+      updateRecordsHeroPickerActiveState();
     }
 
     function renderGamesHeader() {
@@ -3054,10 +3157,8 @@
       state.gamesSortState = { key: 'dateTime', dir: 'desc' };
       applyGamesFilters();
     });
-    els.recordsHeroFilter?.addEventListener('change', renderRecordsPage);
-    els.recordsResetBtn?.addEventListener('click', () => {
-      if (els.recordsHeroFilter) els.recordsHeroFilter.value = '';
-      renderRecordsPage();
+    els.recordsAllHeroesBtn?.addEventListener('click', () => {
+      setSelectedRecordsHero('');
     });
     els.heroModalCloseBtn.addEventListener('click', closeHeroHistoryModal);
     els.heroModalOverlay.addEventListener('click', e => { if (e.target === els.heroModalOverlay) closeHeroHistoryModal(); });
