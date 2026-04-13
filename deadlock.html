@@ -1025,7 +1025,41 @@
       .toolbar { grid-template-columns: 1fr; }
       .records-toolbar { grid-template-columns: 1fr; }
     }
-  </style>
+  
+    .records-hero-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+    .records-hero-grid > * {
+      width: 100%;
+      min-width: 0;
+    }
+    .records-hero-btn,
+    .records-all-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .records-hero-grid {
+      width: 100% !important;
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)) !important;
+      gap: 10px !important;
+      align-items: stretch !important;
+    }
+    .records-hero-grid > * {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .records-hero-btn,
+    .records-all-btn {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+
+</style>
 </head>
 <body>
   <div class="site-shell">
