@@ -1841,6 +1841,33 @@
       return map;
     }
 
+
+    function getCalendarDayStyle(wins, losses) {
+      const total = wins + losses;
+      if (total <= 0) return null;
+
+      const winPct = wins / total;
+      const lossPct = losses / total;
+
+      const intensity = 0.14 + (Math.abs(winPct - 0.5) * 2) * 0.22;
+      const borderIntensity = 0.24 + (Math.abs(winPct - 0.5) * 2) * 0.28;
+
+      let rgb;
+      if (wins === losses) {
+        rgb = [180, 160, 70];
+      } else if (winPct > 0.5) {
+        rgb = [80, 180, 100];
+      } else {
+        rgb = [200, 80, 80];
+      }
+
+      return {
+        background: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${intensity.toFixed(3)})`,
+        borderColor: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${borderIntensity.toFixed(3)})`,
+        winPct
+      };
+    }
+
     function renderMonthCalendar(year, month) {
       const monthCard = document.createElement('div');
       monthCard.className = 'calendar-month-card';
@@ -1883,9 +1910,12 @@
         cell.className = 'calendar-day';
 
         if (cellKey === todayKey) cell.classList.add('today');
-        if (counts.wins > 0 && counts.losses === 0) cell.classList.add('win-day');
-        else if (counts.losses > 0 && counts.wins === 0) cell.classList.add('loss-day');
-        else if (counts.wins > 0 && counts.losses > 0) cell.classList.add('mixed-day');
+
+        const dayStyle = getCalendarDayStyle(counts.wins, counts.losses);
+        if (dayStyle) {
+          cell.style.background = dayStyle.background;
+          cell.style.borderColor = dayStyle.borderColor;
+        }
 
         const number = document.createElement('div');
         number.className = 'calendar-day-number';
@@ -1912,7 +1942,9 @@
           records.appendChild(losses);
         }
 
-        cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses}`;
+        const totalGames = counts.wins + counts.losses;
+        const winPctText = totalGames > 0 ? `${((counts.wins / totalGames) * 100).toFixed(1)}% win` : 'No games';
+        cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses} | ${winPctText}`;
         cell.appendChild(number);
         cell.appendChild(records);
         grid.appendChild(cell);
