@@ -501,9 +501,47 @@
     }
     .streak-empty { color: rgba(255,255,255,0.7); font-size: 12px; }
 
+    .calendar-year-body {
+      padding: 12px;
+      background: #222834;
+      border-top: 1px solid var(--border);
+    }
+
+    .calendar-year-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .calendar-month-card {
+      background: #2a3140;
+      border: 1px solid var(--border);
+      padding: 12px;
+    }
+
+    .calendar-month-title {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
     .calendar-weekdays,
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-    .calendar-weekdays { margin-bottom: 6px; }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .calendar-weekdays {
+      margin-bottom: 6px;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+    }
+
     .calendar-day {
       min-height: 62px;
       background: #2a3140;
@@ -513,15 +551,54 @@
       flex-direction: column;
       gap: 4px;
     }
-    .calendar-day.other-month { opacity: 0.38; }
-    .calendar-day.has-games { border-color: #4a5568; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03); }
-    .calendar-day.today { outline: 1px solid rgba(183,255,42,0.55); }
-    .calendar-day-number { color: #ffffff; font-size: 11px; font-weight: 700; }
-    .calendar-records { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
-    .calendar-record { font-size: 10px; line-height: 1.1; white-space: nowrap; }
+
+    .calendar-day.empty {
+      background: transparent;
+      border: none;
+      min-height: 62px;
+    }
+
+    .calendar-day.today {
+      outline: 1px solid rgba(183,255,42,0.55);
+    }
+
+    .calendar-day-number {
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .calendar-records {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: auto;
+    }
+
+    .calendar-record {
+      font-size: 10px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
     .calendar-record.wins { color: #98e61d; }
     .calendar-record.losses { color: #ff7b72; }
     .calendar-record.empty { color: var(--muted); }
+
+    .calendar-day.win-day {
+      background: rgba(80, 180, 100, 0.18);
+      border-color: rgba(80, 180, 100, 0.35);
+    }
+
+    .calendar-day.loss-day {
+      background: rgba(200, 80, 80, 0.18);
+      border-color: rgba(200, 80, 80, 0.35);
+    }
+
+    .calendar-day.mixed-day {
+      background: rgba(180, 160, 70, 0.18);
+      border-color: rgba(180, 160, 70, 0.35);
+    }
 
     .records-grid { grid-template-columns: 1fr; }
     .record-box { min-height: 76px; gap: 7px; }
@@ -647,6 +724,11 @@
       body { padding: 12px; }
       .site-shell, .site-nav-wrap, .games-page, .graph-page { width: calc(100vw - 24px); }
       .toolbar { grid-template-columns: 1fr 1fr; }
+      .calendar-year-wrap { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
+    }
+
+    @media (max-width: 800px) {
+      .calendar-year-wrap { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 980px) {
@@ -674,6 +756,7 @@
         <a href="#heroes" class="site-nav-link site-nav-link-active" data-view="heroes">Hero Stats</a>
         <a href="#games" class="site-nav-link" data-view="games">Games</a>
         <a href="#graph" class="site-nav-link" data-view="graph">Graph</a>
+        <a href="#calendar" class="site-nav-link" data-view="calendar">Calendar</a>
       </div>
     </div>
 
@@ -719,20 +802,7 @@
             </div></div>
           </div>
 
-          <div class="calendar-card">
-            <div class="stats-titlebar">CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></div>
-            <div class="calendar-body">
-              <div class="calendar-controls">
-                <button id="calendarPrevBtn" class="calendar-nav" type="button">◀</button>
-                <div id="calendarMonthLabel" class="calendar-month-label">-</div>
-                <button id="calendarNextBtn" class="calendar-nav" type="button">▶</button>
-              </div>
-              <div class="calendar-weekdays">
-                <div class="calendar-weekday">Sun</div><div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div>
-              </div>
-              <div id="calendarGrid" class="calendar-grid"></div>
-            </div>
-          </div>
+
         </div>
 
         <div class="wrap" id="mainTableWrap">
@@ -787,6 +857,17 @@
             </div>
           </div>
           <div class="chart-body"><canvas id="winrateChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendarView" class="view">
+      <div class="games-page">
+        <div class="card">
+          <div class="stats-titlebar">CALENDAR<span class="sub">COUNTED DAILY WINS / LOSSES</span></div>
+          <div class="calendar-year-body">
+            <div id="calendarYearWrap" class="calendar-year-wrap"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -924,6 +1005,7 @@
       heroesView: document.getElementById('heroesView'),
       gamesView: document.getElementById('gamesView'),
       graphView: document.getElementById('graphView'),
+      calendarView: document.getElementById('calendarView'),
 
       heroTable: document.getElementById('dataTable'),
       heroThead: document.querySelector('#dataTable thead'),
@@ -962,10 +1044,7 @@
         shortestGame: document.getElementById('recordShortestGame'),
         longestGame: document.getElementById('recordLongestGame')
       },
-      calendarGrid: document.getElementById('calendarGrid'),
-      calendarMonthLabel: document.getElementById('calendarMonthLabel'),
-      calendarPrevBtn: document.getElementById('calendarPrevBtn'),
-      calendarNextBtn: document.getElementById('calendarNextBtn'),
+      calendarYearWrap: document.getElementById('calendarYearWrap'),
       chartCard: document.getElementById('chartCard'),
       expandChartBtn: document.getElementById('expandChartBtn'),
       resetZoomBtn: document.getElementById('resetZoomBtn'),
@@ -1762,30 +1841,103 @@
       return map;
     }
 
-    function renderCalendar() {
-      els.calendarGrid.innerHTML = '';
-      const viewStart = monthStart(state.calendarViewDate);
-      els.calendarMonthLabel.textContent = viewStart.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-      const gridStart = new Date(viewStart); gridStart.setDate(viewStart.getDate() - viewStart.getDay());
+    function renderMonthCalendar(year, month) {
+      const monthCard = document.createElement('div');
+      monthCard.className = 'calendar-month-card';
+
+      const title = document.createElement('div');
+      title.className = 'calendar-month-title';
+      title.textContent = new Date(year, month, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+      monthCard.appendChild(title);
+
+      const weekdays = document.createElement('div');
+      weekdays.className = 'calendar-weekdays';
+      ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+        const el = document.createElement('div');
+        el.className = 'calendar-weekday';
+        el.textContent = day;
+        weekdays.appendChild(el);
+      });
+      monthCard.appendChild(weekdays);
+
+      const grid = document.createElement('div');
+      grid.className = 'calendar-grid';
+
+      const firstOfMonth = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const leadingBlanks = firstOfMonth.getDay();
       const todayKey = localDateKey(new Date());
-      for (let i = 0; i < 42; i++) {
-        const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+
+      for (let i = 0; i < leadingBlanks; i++) {
+        const blank = document.createElement('div');
+        blank.className = 'calendar-day empty';
+        grid.appendChild(blank);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cellDate = new Date(year, month, day);
         const cellKey = localDateKey(cellDate);
         const counts = state.dailyResultsMap.get(cellKey) || { wins: 0, losses: 0 };
-        const cell = document.createElement('div'); cell.className = 'calendar-day';
-        if (cellDate.getMonth() !== viewStart.getMonth()) cell.classList.add('other-month');
+
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day';
+
         if (cellKey === todayKey) cell.classList.add('today');
-        if (counts.wins > 0 || counts.losses > 0) cell.classList.add('has-games');
-        const number = document.createElement('div'); number.className = 'calendar-day-number'; number.textContent = cellDate.getDate();
-        const records = document.createElement('div'); records.className = 'calendar-records';
-        if (counts.wins === 0 && counts.losses === 0) { const empty = document.createElement('div'); empty.className = 'calendar-record empty'; empty.textContent = '—'; records.appendChild(empty); }
-        else {
-          const wins = document.createElement('div'); wins.className = 'calendar-record wins'; wins.textContent = `W: ${counts.wins}`;
-          const losses = document.createElement('div'); losses.className = 'calendar-record losses'; losses.textContent = `L: ${counts.losses}`;
-          records.appendChild(wins); records.appendChild(losses);
+        if (counts.wins > 0 && counts.losses === 0) cell.classList.add('win-day');
+        else if (counts.losses > 0 && counts.wins === 0) cell.classList.add('loss-day');
+        else if (counts.wins > 0 && counts.losses > 0) cell.classList.add('mixed-day');
+
+        const number = document.createElement('div');
+        number.className = 'calendar-day-number';
+        number.textContent = day;
+
+        const records = document.createElement('div');
+        records.className = 'calendar-records';
+
+        if (counts.wins === 0 && counts.losses === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'calendar-record empty';
+          empty.textContent = '—';
+          records.appendChild(empty);
+        } else {
+          const wins = document.createElement('div');
+          wins.className = 'calendar-record wins';
+          wins.textContent = `W: ${counts.wins}`;
+
+          const losses = document.createElement('div');
+          losses.className = 'calendar-record losses';
+          losses.textContent = `L: ${counts.losses}`;
+
+          records.appendChild(wins);
+          records.appendChild(losses);
         }
+
         cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses}`;
-        cell.appendChild(number); cell.appendChild(records); els.calendarGrid.appendChild(cell);
+        cell.appendChild(number);
+        cell.appendChild(records);
+        grid.appendChild(cell);
+      }
+
+      monthCard.appendChild(grid);
+      return monthCard;
+    }
+
+    function renderCalendar() {
+      if (!els.calendarYearWrap) return;
+      els.calendarYearWrap.innerHTML = '';
+
+      const countedRows = state.classifiedMatchRows || [];
+      const years = [...new Set(
+        countedRows
+          .map(row => parseMatchDateTime(row))
+          .filter(Boolean)
+          .map(date => date.getFullYear())
+      )].sort((a, b) => b - a);
+
+      const yearToRender = years.length ? years[0] : new Date().getFullYear();
+
+      for (let month = 0; month < 12; month++) {
+        els.calendarYearWrap.appendChild(renderMonthCalendar(yearToRender, month));
       }
     }
 
@@ -2221,11 +2373,12 @@
     }
 
     function switchView(viewName, updateHash = true) {
-      state.currentView = ['heroes', 'games', 'graph'].includes(viewName) ? viewName : 'heroes';
+      state.currentView = ['heroes', 'games', 'graph', 'calendar'].includes(viewName) ? viewName : 'heroes';
 
       els.heroesView.classList.toggle('is-active', state.currentView === 'heroes');
       els.gamesView.classList.toggle('is-active', state.currentView === 'games');
       els.graphView.classList.toggle('is-active', state.currentView === 'graph');
+      els.calendarView.classList.toggle('is-active', state.currentView === 'calendar');
 
       els.navLinks.forEach(link => {
         link.classList.toggle('site-nav-link-active', link.dataset.view === state.currentView);
@@ -2339,8 +2492,6 @@
       if (!state.isDetailedView && [KPG_INDEX, DPG_INDEX, APG_INDEX, SPM_INDEX, AVG_LENGTH_INDEX].includes(state.heroSortState.col)) state.heroSortState = { col: MATCHES_INDEX, dir: 'desc' };
       updateHeroTableForSlider();
     });
-    els.calendarPrevBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, -1); renderCalendar(); });
-    els.calendarNextBtn.addEventListener('click', () => { state.calendarViewDate = addMonths(state.calendarViewDate, 1); renderCalendar(); });
     els.resetZoomBtn.addEventListener('click', () => { if (state.winrateChart) state.winrateChart.resetZoom(); });
     els.expandChartBtn.addEventListener('click', toggleChartFullscreen);
     els.gamesSearchBox.addEventListener('input', applyGamesFilters);
@@ -2363,7 +2514,7 @@
     document.addEventListener('webkitfullscreenchange', () => { els.expandChartBtn.textContent = isChartFullscreen() ? 'Collapse' : 'Expand'; if (state.winrateChart) setTimeout(() => state.winrateChart.resize(), 50); });
 
     const initialHash = location.hash.replace('#', '');
-    switchView(['heroes', 'games', 'graph'].includes(initialHash) ? initialHash : 'heroes', false);
+    switchView(['heroes', 'games', 'graph', 'calendar'].includes(initialHash) ? initialHash : 'heroes', false);
     loadAppData();
   </script>
 </body>
