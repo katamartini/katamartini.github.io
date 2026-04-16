@@ -2270,7 +2270,7 @@
       renderHeroHeader();
       renderHeroTable();
       const total = datedMatches.length;
-      const { startDate, endDate } = activeDateRange;
+      const { startDate, endDate } = getActiveDateRange();
       const rangeLabel = formatDateRangeShort(startDate, endDate);
       els.gamesSliderLabel.textContent = `${state.sliderGameCount} / ${total} games`;
       els.heroTableSub.textContent = state.sliderGameCount >= total ? rangeLabel : `${rangeLabel} • AFTER ${state.sliderGameCount} GAMES`;
