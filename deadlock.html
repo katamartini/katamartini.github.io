@@ -2914,7 +2914,7 @@
       const totalAssists = matches.reduce((sum,row) => sum + (parseNumeric(row[state.heroHeaderIndexes.assists]) ?? 0), 0);
       const totalSouls = matches.reduce((sum,row) => sum + (parseNumeric(row[state.heroHeaderIndexes.souls]) ?? 0), 0);
       const totalDurationSeconds = matches.reduce((sum,row) => sum + (getDurationSeconds(row) ?? 0), 0);
-      const { startDate, endDate } = activeDateRange;
+      const { startDate, endDate } = getActiveDateRange();
       const rangeLabel = formatDateRangeShort(startDate, endDate);
       els.heroModalTitle.textContent = targetHero;
       els.heroModalSubtitle.textContent = `${matches.length} game(s) • ${wins}-${losses} • ${rangeLabel}${state.sliderGameCount < syncSliderToFilteredMatches().length ? ` • after ${state.sliderGameCount} games` : ''}`;
