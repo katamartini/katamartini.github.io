@@ -544,19 +544,18 @@
     }
 
     .calendar-day {
-      min-height: 62px;
+      min-height: 86px;
       background: #2a3140;
       border: 1px solid var(--border);
-      padding: 6px 5px;
+      padding: 6px 6px 5px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
     }
 
     .calendar-day.empty {
       background: transparent;
       border: none;
-      min-height: 62px;
+      min-height: 86px;
     }
 
     .calendar-day.today {
@@ -567,24 +566,42 @@
       color: #ffffff;
       font-size: 11px;
       font-weight: 700;
+      line-height: 1;
     }
 
-    .calendar-records {
+    .calendar-day-main {
+      flex: 1 1 auto;
       display: flex;
-      flex-direction: column;
-      gap: 2px;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 4px 0 2px;
+    }
+
+    .calendar-day-diff {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .calendar-day-diff.positive { color: #98e61d; }
+    .calendar-day-diff.negative { color: #ff7b72; }
+    .calendar-day-diff.even { color: #d8dee9; }
+    .calendar-day-diff.empty { color: var(--muted); }
+
+    .calendar-record-line {
       margin-top: auto;
-    }
-
-    .calendar-record {
-      font-size: 10px;
+      text-align: center;
+      font-size: 11px;
       line-height: 1.1;
+      font-weight: 700;
+      color: #cfd6df;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
-
-    .calendar-record.wins { color: #98e61d; }
-    .calendar-record.losses { color: #ff7b72; }
-    .calendar-record.empty { color: var(--muted); }
 
     .calendar-day.win-day {
       background: rgba(80, 180, 100, 0.18);
@@ -2381,6 +2398,8 @@
         const cellDate = new Date(year, month, day);
         const cellKey = localDateKey(cellDate);
         const counts = state.dailyResultsMap.get(cellKey) || { wins: 0, losses: 0 };
+        const diff = counts.wins - counts.losses;
+        const hasGames = (counts.wins + counts.losses) > 0;
 
         const cell = document.createElement('div');
         cell.className = 'calendar-day';
@@ -2397,32 +2416,39 @@
         number.className = 'calendar-day-number';
         number.textContent = day;
 
-        const records = document.createElement('div');
-        records.className = 'calendar-records';
+        const main = document.createElement('div');
+        main.className = 'calendar-day-main';
 
-        if (counts.wins === 0 && counts.losses === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'calendar-record empty';
-          empty.textContent = '—';
-          records.appendChild(empty);
+        const diffEl = document.createElement('div');
+        diffEl.className = 'calendar-day-diff';
+
+        if (!hasGames) {
+          diffEl.classList.add('empty');
+          diffEl.textContent = '—';
+        } else if (diff > 0) {
+          diffEl.classList.add('positive');
+          diffEl.textContent = `+${diff}`;
+        } else if (diff < 0) {
+          diffEl.classList.add('negative');
+          diffEl.textContent = String(diff);
         } else {
-          const wins = document.createElement('div');
-          wins.className = 'calendar-record wins';
-          wins.textContent = `W: ${counts.wins}`;
-
-          const losses = document.createElement('div');
-          losses.className = 'calendar-record losses';
-          losses.textContent = `L: ${counts.losses}`;
-
-          records.appendChild(wins);
-          records.appendChild(losses);
+          diffEl.classList.add('even');
+          diffEl.textContent = '0';
         }
+
+        main.appendChild(diffEl);
+
+        const recordLine = document.createElement('div');
+        recordLine.className = 'calendar-record-line';
+        recordLine.textContent = hasGames ? `${counts.wins}-${counts.losses}` : '—';
 
         const totalGames = counts.wins + counts.losses;
         const winPctText = totalGames > 0 ? `${((counts.wins / totalGames) * 100).toFixed(1)}% win` : 'No games';
-        cell.title = `${formatExactDate(cellKey)} | Wins: ${counts.wins} | Losses: ${counts.losses} | ${winPctText}`;
+        cell.title = `${formatExactDate(cellKey)} | Record: ${counts.wins}-${counts.losses} | Diff: ${diff > 0 ? '+' : ''}${diff} | ${winPctText}`;
+
         cell.appendChild(number);
-        cell.appendChild(records);
+        cell.appendChild(main);
+        cell.appendChild(recordLine);
         grid.appendChild(cell);
       }
 
