@@ -2803,9 +2803,20 @@
         const baseSize = chartArea.width * widthFactor;
         const zoomScaleFactor = Math.sqrt(totalPoints / visiblePoints);
         const dynamicSize = Math.max(minSize, Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost)));
-        const rankIconSize = Math.max(Math.round(dynamicSize * 1.15), Math.min(28, dynamicSize + 2));
-        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconSize * 0.5)));
+        const rankIconHeight = Math.max(Math.round(dynamicSize * 1.15), Math.min(28, dynamicSize + 2));
+        const maxRankIconWidth = Math.round(rankIconHeight * 2.2);
+        const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconHeight * 0.5)));
         const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
+
+        function getRankDrawSize(img) {
+          if (!img || !img.naturalWidth || !img.naturalHeight) {
+            return { width: rankIconHeight, height: rankIconHeight };
+          }
+
+          const aspect = img.naturalWidth / img.naturalHeight;
+          const width = Math.min(maxRankIconWidth, Math.round(rankIconHeight * aspect));
+          return { width, height: rankIconHeight };
+        }
         ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
         meta.data.forEach((point, i) => {
           const icon = heroIcons[i]; if (!icon) return;
@@ -2821,16 +2832,32 @@
           peakEntries.push({ point, rankParsed, rankIcon: rankIcons[i-1] });
         });
         if (!peakEntries.length) return;
-        const alignedIconCenterY = Math.max(chartArea.top + rankIconSize/2 + 4, Math.min(...peakEntries.map(({point}) => point.y - dynamicSize/2 - badgeLift)));
+        const alignedIconCenterY = Math.max(
+          chartArea.top + rankIconHeight / 2 + 4,
+          Math.min(...peakEntries.map(({ point }) => point.y - dynamicSize / 2 - badgeLift))
+        );
         ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.lineJoin='round'; ctx.lineCap='round';
         peakEntries.forEach(({ point, rankParsed, rankIcon }) => {
-          const iconCenterX = point.x, iconCenterY = alignedIconCenterY;
-          const iconX = iconCenterX - rankIconSize/2, iconY = iconCenterY - rankIconSize/2;
-          const lineStartY = iconY + rankIconSize + 1, lineEndY = point.y - dynamicSize/2 - 4;
+          const iconCenterX = point.x;
+          const iconCenterY = alignedIconCenterY;
+          const drawSize = getRankDrawSize(rankIcon);
+          const iconX = iconCenterX - drawSize.width / 2;
+          const iconY = iconCenterY - drawSize.height / 2;
+          const lineStartY = iconY + drawSize.height + 1;
+          const lineEndY = point.y - dynamicSize / 2 - 4;
+
           if (lineEndY > lineStartY) {
-            ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(iconCenterX, lineStartY); ctx.lineTo(iconCenterX, lineEndY); ctx.stroke();
+            ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(iconCenterX, lineStartY);
+            ctx.lineTo(iconCenterX, lineEndY);
+            ctx.stroke();
           }
-          if (rankIcon) ctx.drawImage(rankIcon, iconX, iconY, rankIconSize, rankIconSize);
+
+          if (rankIcon) {
+            ctx.drawImage(rankIcon, iconX, iconY, drawSize.width, drawSize.height);
+          }
           if (rankParsed.numeral) {
             const numeralY = iconCenterY + 1.5;
             ctx.save(); ctx.translate(iconCenterX, numeralY); ctx.scale(0.88,1); ctx.font = `700 ${numeralFontSize}px Arial`; ctx.strokeStyle='rgba(31, 36, 48, 0.98)'; ctx.lineWidth=3; ctx.strokeText(rankParsed.numeral, 0, 0); ctx.fillStyle='#ffffff'; ctx.fillText(rankParsed.numeral,0,0); ctx.restore();
