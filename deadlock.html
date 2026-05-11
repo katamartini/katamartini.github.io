@@ -2804,7 +2804,6 @@
         const zoomScaleFactor = Math.sqrt(totalPoints / visiblePoints);
         const dynamicSize = Math.max(minSize, Math.min(maxSize, baseSize * (1 + (zoomScaleFactor - 1) * zoomBoost)));
         const rankIconHeight = Math.max(Math.round(dynamicSize * 1.15), Math.min(28, dynamicSize + 2));
-        const maxRankIconWidth = Math.round(rankIconHeight * 2.2);
         const numeralFontSize = Math.max(9, Math.min(14, Math.round(rankIconHeight * 0.5)));
         const badgeLift = Math.max(18, Math.round(dynamicSize * 1.05));
 
@@ -2814,7 +2813,7 @@
           }
 
           const aspect = img.naturalWidth / img.naturalHeight;
-          const width = Math.min(maxRankIconWidth, Math.round(rankIconHeight * aspect));
+          const width = Math.round(rankIconHeight * aspect);
           return { width, height: rankIconHeight };
         }
         ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
