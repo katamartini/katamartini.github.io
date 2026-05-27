@@ -283,6 +283,134 @@
       border: 1px solid rgba(255,255,255,0.08);
     }
 
+    .draft-hero-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      vertical-align: middle;
+      margin: 0 3px 2px 0;
+    }
+
+    .subset-hero-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-count {
+      color: var(--muted);
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .draft-hero-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      vertical-align: middle;
+      margin: 0 3px 2px 0;
+    }
+
+    .subset-hero-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-count {
+      color: var(--muted);
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .draft-hero-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      vertical-align: middle;
+      margin: 0 3px 2px 0;
+    }
+
+    .subset-hero-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-count {
+      color: var(--muted);
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .draft-hero-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      vertical-align: middle;
+      margin: 0 3px 2px 0;
+    }
+
+    .subset-hero-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .subset-count {
+      color: var(--muted);
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -931,73 +1059,25 @@
       matches.sort((a, b) => String(b.matchID).localeCompare(String(a.matchID), undefined, { numeric: true }));
       const isExactSearch = unique.length === 6;
 
-      if (!matches.length) {
-        summary.textContent = isExactSearch
-          ? "No exact match found for that six-hero draft."
-          : `No drafts found containing ${unique.join(" / ")}.`;
-        return;
-      }
+      if (!m    function renderSubset(title, items) {
+      if (!items.length) return "";
+      const body = items.map(x => {
+        const heroes = x.key.split("|");
+        return `<span class="subset-icons">${heroes.map(h => iconHtml(h, "subset-hero-icon")).join("")}</span><span class="subset-count">×${x.count}</span>`;
+      }).join(" ");
+      return `<div class="why-line"><span>${title}: </span>${body}</div>`;
+    }
 
-      summary.textContent = isExactSearch
-        ? `Found ${matches.length} exact match${matches.length === 1 ? "" : "es"}.`
+    function renderResults(items) {1 ? "" : "es"}.`
         : `Found ${matches.length} draft${matches.length === 1 ? "" : "s"} containing ${unique.join(" / ")}.`;
       results.classList.remove("hidden");
       results.innerHTML = `
         <div class="match-head">
-          <div>Match ID</div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div>Heroes</div>
-        </div>
-        ${matches.map(m => `
-          <div class="match-row">
-            <div><b>${escapeHtml(m.matchID)}</b></div>
-            <div>${escapeHtml(m.region)}</div>
-            <div><b>${escapeHtml(m.team)}</b></div>
-            <div>${escapeHtml(m.result)}</div>
-            <div>${escapeHtml([m.round, m.game ? `Game ${m.game}` : ""].filter(Boolean).join(" / "))}</div>
-            <div class="match-heroes">${m.heroes.map(h => iconHtml(h)).join("")}</div>
-          </div>
-        `).join("")}
-      `;
-      activateRenderedIcons();
-    }
-
-    function activateRenderedIcons() {
-      document.querySelectorAll("img[data-hero-icon]").forEach(img => {
-        attachIconFallback(img, img.dataset.heroIcon);
-      });
-    }
-
-    function renderRegions(regions) {
-      const select = $("region");
-      const current = select.value || "All";
-      const sig = regions.join("|");
-      if (sig === lastRegions.join("|")) return;
-      lastRegions = regions;
-      select.innerHTML = `<option>All</option>` + regions.map(r => `<option>${escapeHtml(r)}</option>`).join("");
-      select.value = regions.includes(current) ? current : "All";
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
-    }
-
-    function renderSubset(title, items) {
-      if (!items.length) return "";
-      const body = items.map(x => `<span><b>${escapeHtml(x.key.replaceAll("|", " / "))}</b> ×${x.count}</span>`).join("; ");
-      return `<div class="why-line"><span>${title}: </span>${body}</div>`;
-    }
-
-    function renderResults(items) {
-      $("shownCount").textContent = intFmt(items.length);
-      const root = $("results");
-      if (!items.length) {
-        root.innerHTML = `<div class="draft-row"><div class="status">No candidates yet. Load the sheet, loosen filters, or add heroes to the universe.</div></div>`;
-        return;
-      }
-      root.innerHTML = items.map((item, idx) => `
+          <div>Match ID</div><div>Region</div><div>Team</div><div>Result</div      root.innerHTML = items.map((item, idx) => `
         <div class="draft-row">
           <div class="rank">#${idx + 1}</div>
           <div>
-            <div class="heroes">${item.heroes.map(h => `<span class="chip">${escapeHtml(h)}</span>`).join("")}</div>
+            <div class="heroes">${item.heroes.map(h => iconHtml(h, "draft-hero-icon")).join("")}</div>
             <div class="mini-scores">
               <div class="mini">Heroes<b>${fmt(item.heroAvg, 1)}</b></div>
               <div class="mini">Duos<b>${fmt(item.duoAvg, 1)}</b></div>
@@ -1014,9 +1094,62 @@
           </div>
         </div>
       `).join("");
-    }
-
-    function scheduleRecompute() {
+      activateRenderedIcons();
+    }in("")}</div>
+            <div class="mini-scores">
+              <div class="mini">Heroes<b>${fmt(item.heroAvg, 1)}</b></div>
+              <div class="mini">Duos<b>${fmt(item.duoAvg, 1)}</b></div>
+              <div class="mini">Trios<b>${fmt(item.trioAvg, 1)}</b></div>
+              <div class="mini">Quads<b>${fmt(item.quadAvg, 1)}</b></div>
+              <div class="mini">Fives<b>${fmt(item.fiveAvg, 1)}</b></div>
+            </div>
+          </div>
+          <div class="score mono">${fmt(item.total)}</div>
+          <div class="why">
+            ${renderSubset("5-hero cores", item.topFives)}
+            ${renderSubset("Quads", item.topQuads)}
+            ${renderSubset("Trios", item.topTrios)}
+          </div>
+        </div>
+      `).join("");
+      activateRenderedIcons();
+    }in("")}</div>
+            <div class="mini-scores">
+              <div class="mini">Heroes<b>${fmt(item.heroAvg, 1)}</b></div>
+              <div class="mini">Duos<b>${fmt(item.duoAvg, 1)}</b></div>
+              <div class="mini">Trios<b>${fmt(item.trioAvg, 1)}</b></div>
+              <div class="mini">Quads<b>${fmt(item.quadAvg, 1)}</b></div>
+              <div class="mini">Fives<b>${fmt(item.fiveAvg, 1)}</b></div>
+            </div>
+          </div>
+          <div class="score mono">${fmt(item.total)}</div>
+          <div class="why">
+            ${renderSubset("5-hero cores", item.topFives)}
+            ${renderSubset("Quads", item.topQuads)}
+            ${renderSubset("Trios", item.topTrios)}
+          </div>
+        </div>
+      `).join("");
+      activateRenderedIcons();
+    }in("")}</div>
+            <div class="mini-scores">
+              <div class="mini">Heroes<b>${fmt(item.heroAvg, 1)}</b></div>
+              <div class="mini">Duos<b>${fmt(item.duoAvg, 1)}</b></div>
+              <div class="mini">Trios<b>${fmt(item.trioAvg, 1)}</b></div>
+              <div class="mini">Quads<b>${fmt(item.quadAvg, 1)}</b></div>
+              <div class="mini">Fives<b>${fmt(item.fiveAvg, 1)}</b></div>
+            </div>
+          </div>
+          <div class="score mono">${fmt(item.total)}</div>
+          <div class="why">
+            ${renderSubset("5-hero cores", item.topFives)}
+            ${renderSubset("Quads", item.topQuads)}
+            ${renderSubset("Trios", item.topTrios)}
+          </div>
+        </div>
+      `).join("");
+      activateRenderedIcons();
+    } scheduleRecompute() {
       clearTimeout(recomputeTimer);
       recomputeTimer = setTimeout(recompute, 180);
     }
@@ -1057,88 +1190,4 @@
       $("uniqueQuads").textContent = intFmt(maps.quads.size);
       $("uniqueFives").textContent = intFmt(maps.fives.size);
 
-      if (heroUniverse.length < 6 || !built.drafts.length) {
-        renderResults([]);
-        return;
-      }
-      renderResults(generateLikelyUnseen(heroUniverse, maps, weights));
-    }
-
-    function useCachedSheetIfAvailable() {
-      try {
-        const cachedText = localStorage.getItem(CACHE_KEY);
-        const cachedAt = Number(localStorage.getItem(CACHE_TIME_KEY) || 0);
-        if (!cachedText || !cachedAt) return false;
-
-        records = rowsToObjects(parseCsv(cachedText));
-        if (!records.length) return false;
-
-        const ageMinutes = Math.round((Date.now() - cachedAt) / 60000);
-        setStatus("cached");
-        setSourceNote(`Using cached draft sheet from ${ageMinutes} minute${ageMinutes === 1 ? "" : "s"} ago. Reload data to refresh.`);
-        recompute();
-        return Date.now() - cachedAt < CACHE_MAX_AGE_MS;
-      } catch (err) {
-        return false;
-      }
-    }
-
-    async function loadSheet(options = {}) {
-      const force = !!options.force;
-      if (!force && useCachedSheetIfAvailable()) return;
-
-      setStatus("loading");
-      setSourceNote("Loading public draft sheet...");
-      $("error").classList.add("hidden");
-      try {
-        const res = await fetch(DEFAULT_CSV_URL, { cache: force ? "reload" : "default" });
-        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-        const text = await res.text();
-        records = rowsToObjects(parseCsv(text));
-        if (!records.length) throw new Error("No rows found in CSV.");
-
-        try {
-          localStorage.setItem(CACHE_KEY, text);
-          localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
-        } catch (cacheErr) {
-          // Local storage can fail in private browsing or quota-limited contexts. The page still works without it.
-        }
-
-        setStatus("loaded");
-        setSourceNote("Using freshly loaded public draft sheet.");
-        recompute();
-      } catch (err) {
-        if (!records.length) {
-          setStatus("error");
-          $("error").textContent = `${err.message || err}. Make sure the sheet is public, or publish/export the tab as CSV and paste that URL here.`;
-          $("error").classList.remove("hidden");
-        } else {
-          setStatus("cached");
-          setSourceNote("Could not refresh, so the cached draft sheet is still being used.");
-        }
-      }
-    }
-
-    function attachEvents() {
-      $("loadBtn").addEventListener("click", () => loadSheet({ force: true }));
-      const leaderboardIds = [
-        "region", "resultFilter", "topN", "minScore", "includeText", "excludeText", "manualHeroes",
-        "wHeroes", "wDuos", "wTrios", "wQuads", "wFives"
-      ];
-      leaderboardIds.forEach(id => $(id).addEventListener("input", scheduleRecompute));
-      leaderboardIds.forEach(id => $(id).addEventListener("change", scheduleRecompute));
-
-      const draftSearchIds = ["draftHero0", "draftHero1", "draftHero2", "draftHero3", "draftHero4", "draftHero5"];
-      draftSearchIds.forEach(id => $(id).addEventListener("input", scheduleDraftSearchOnly));
-      draftSearchIds.forEach(id => $(id).addEventListener("change", scheduleDraftSearchOnly));
-      $("clearSearchBtn").addEventListener("click", () => {
-        for (let i = 0; i < 6; i++) $(`draftHero${i}`).value = "";
-        scheduleRecompute();
-      });
-    }
-
-    attachEvents();
-    loadSheet();
-  </script>
-</body>
-</html>
+      if (heroUniverse.length < 6 || !built.d
