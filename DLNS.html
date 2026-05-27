@@ -511,6 +511,9 @@
     let records = [];
     let lastRegions = [];
     let recomputeTimer = null;
+    let draftSearchTimer = null;
+    let currentHeroUniverse = [];
+    let currentAllDrafts = [];
 
     const CACHE_KEY = "likelyUnseenDrafts.csv.v1";
     const CACHE_TIME_KEY = "likelyUnseenDrafts.csvTime.v1";
@@ -793,46 +796,54 @@
     }
 
     function generateLikelyUnseen(heroUniverse, maps, weights) {
-      const topN = Number($("topN").value) || 50;
+      const topN = Number($("topN").value) || 5;
       const minScore = Number($("minScore").value) || 0;
       const required = splitList($("includeText").value);
       const banned = splitList($("excludeText").value);
       const heroPool = heroUniverse.filter(h => !banned.includes(h));
-      const candidates = [];
+      const heroPoolSet = new Set(heroPool);
+      const candidatesByKey = new Map();
 
-      if (required.some(h => !heroPool.includes(h))) return [];
+      if (required.some(h => !heroPoolSet.has(h))) return [];
       if (required.length > 6) return [];
 
-      const remaining = heroPool.filter(h => !required.includes(h));
-      const needed = 6 - required.length;
+      const maybeAddCandidate = (combo) => {
+        const unique = [...new Set(combo)].sort((a, b) => a.localeCompare(b));
+        if (unique.length !== 6) return;
+        if (unique.some(h => banned.includes(h))) return;
+        if (!required.every(h => unique.includes(h))) return;
 
-      combos(remaining, needed, part => {
-        const combo = [...required, ...part].sort((a, b) => a.localeCompare(b));
-        const draftKey = keyOf(combo);
+        const draftKey = keyOf(unique);
         if (maps.sixes.has(draftKey)) return;
+        if (candidatesByKey.has(draftKey)) return;
 
-        const score = calcScore(combo, maps, weights);
+        const score = calcScore(unique, maps, weights);
         if (score.total < minScore) return;
 
-        const item = {
-          heroes: combo,
+        candidatesByKey.set(draftKey, {
+          heroes: unique,
           draftKey,
           ...score,
-          topFives: topSeenSubsets(combo, 5, maps.fives, 3),
-          topQuads: topSeenSubsets(combo, 4, maps.quads, 3),
-          topTrios: topSeenSubsets(combo, 3, maps.trios, 3),
-        };
+          topFives: topSeenSubsets(unique, 5, maps.fives, 3),
+          topQuads: topSeenSubsets(unique, 4, maps.quads, 3),
+          topTrios: topSeenSubsets(unique, 3, maps.trios, 3),
+        });
+      };
 
-        if (candidates.length < topN) {
-          candidates.push(item);
-          candidates.sort((a, b) => a.total - b.total);
-        } else if (item.total > candidates[0].total) {
-          candidates[0] = item;
-          candidates.sort((a, b) => a.total - b.total);
+      for (const fiveKey of maps.fives.keys()) {
+        const core = fiveKey.split("|");
+        for (const h of heroPool) {
+          if (!core.includes(h)) maybeAddCandidate([...core, h]);
         }
-      });
+      }
 
-      return candidates.sort((a, b) => b.total - a.total);
+      if (candidatesByKey.size < topN && heroPool.length <= 32) {
+        combos(heroPool, 6, maybeAddCandidate);
+      }
+
+      return [...candidatesByKey.values()]
+        .sort((a, b) => b.total - a.total)
+        .slice(0, topN);
     }
 
     function buildAllCompleteDrafts() {
@@ -915,8 +926,9 @@
         return;
       }
 
-      const allDrafts = buildAllCompleteDrafts();
+      const allDrafts = currentAllDrafts.length ? currentAllDrafts : buildAllCompleteDrafts();
       const matches = allDrafts.filter(d => unique.every(h => d.heroes.includes(h)));
+      matches.sort((a, b) => String(b.matchID).localeCompare(String(a.matchID), undefined, { numeric: true }));
       const isExactSearch = unique.length === 6;
 
       if (!matches.length) {
@@ -941,7 +953,7 @@
             <div><b>${escapeHtml(m.team)}</b></div>
             <div>${escapeHtml(m.result)}</div>
             <div>${escapeHtml([m.round, m.game ? `Game ${m.game}` : ""].filter(Boolean).join(" / "))}</div>
-            <div class="match-heroes">${m.heroes.map(h => iconHtml(h)).join("")}${m.heroes.map(h => `<span class="chip">${escapeHtml(h)}</span>`).join("")}</div>
+            <div class="match-heroes">${m.heroes.map(h => iconHtml(h)).join("")}</div>
           </div>
         `).join("")}
       `;
@@ -1009,12 +1021,19 @@
       recomputeTimer = setTimeout(recompute, 180);
     }
 
+    function scheduleDraftSearchOnly() {
+      clearTimeout(draftSearchTimer);
+      draftSearchTimer = setTimeout(() => renderDraftSearch(currentHeroUniverse), 80);
+    }
+
     function recompute() {
       const built = buildDrafts();
       renderRegions(built.regions);
 
       const manual = splitList($("manualHeroes").value);
       const heroUniverse = [...new Set([...built.heroes, ...manual])].sort((a, b) => a.localeCompare(b));
+      currentHeroUniverse = heroUniverse;
+      currentAllDrafts = buildAllCompleteDrafts();
       const maps = buildCountMaps(built.drafts);
       renderDraftSearch(heroUniverse);
       const possibleSixes = nCk(heroUniverse.length, 6);
@@ -1102,13 +1121,16 @@
 
     function attachEvents() {
       $("loadBtn").addEventListener("click", () => loadSheet({ force: true }));
-      const ids = [
+      const leaderboardIds = [
         "region", "resultFilter", "topN", "minScore", "includeText", "excludeText", "manualHeroes",
-        "draftHero0", "draftHero1", "draftHero2", "draftHero3", "draftHero4", "draftHero5",
         "wHeroes", "wDuos", "wTrios", "wQuads", "wFives"
       ];
-      ids.forEach(id => $(id).addEventListener("input", scheduleRecompute));
-      ids.forEach(id => $(id).addEventListener("change", scheduleRecompute));
+      leaderboardIds.forEach(id => $(id).addEventListener("input", scheduleRecompute));
+      leaderboardIds.forEach(id => $(id).addEventListener("change", scheduleRecompute));
+
+      const draftSearchIds = ["draftHero0", "draftHero1", "draftHero2", "draftHero3", "draftHero4", "draftHero5"];
+      draftSearchIds.forEach(id => $(id).addEventListener("input", scheduleDraftSearchOnly));
+      draftSearchIds.forEach(id => $(id).addEventListener("change", scheduleDraftSearchOnly));
       $("clearSearchBtn").addEventListener("click", () => {
         for (let i = 0; i < 6; i++) $(`draftHero${i}`).value = "";
         scheduleRecompute();
