@@ -366,7 +366,7 @@
         <div class="toolbar">
           <div>
             <h2 class="section-title" style="margin-bottom: 4px;">Draft search</h2>
-            <div class="status">Enter six heroes to check whether that exact team draft has appeared.</div>
+            <div class="status">Enter 1–6 heroes to show drafts containing all selected heroes. Six heroes becomes an exact draft search.</div>
           </div>
           <button id="clearSearchBtn" type="button">Clear search</button>
         </div>
@@ -406,7 +406,7 @@
           </label>
         </div>
 
-        <div id="draftSearchSummary" class="status" style="margin-top: 12px;">Choose six heroes.</div>
+        <div id="draftSearchSummary" class="status" style="margin-top: 12px;">Choose one or more heroes.</div>
         <div id="draftSearchResults" class="search-results hidden"></div>
       </div>
     </section>
@@ -432,7 +432,7 @@
 
           <label>
             <div class="label">Top results</div>
-            <input id="topN" type="number" min="10" max="500" value="50" />
+            <input id="topN" type="number" min="1" max="50" value="5" />
           </label>
 
           <label>
@@ -589,24 +589,57 @@
       return [...items].sort((a, b) => a.localeCompare(b)).join("|");
     }
 
+    const HERO_ICON_FILES = {
+      "abrams": "abrams.png",
+      "apollo": "apollo.png",
+      "bebop": "bebop.png",
+      "billy": "billy.png",
+      "calico": "calico.png",
+      "celeste": "celeste.png",
+      "doorman": "doorman.png",
+      "drifter": "drifter.png",
+      "dynamo": "dynamo.png",
+      "graves": "graves.png",
+      "grey talon": "grey talon.png",
+      "gray talon": "grey talon.png",
+      "haze": "haze.png",
+      "holliday": "holliday.png",
+      "infernus": "infernus.png",
+      "ivy": "ivy.png",
+      "kelvin": "kelvin.png",
+      "lady geist": "lady geist.png",
+      "lash": "lash.png",
+      "mcginnis": "mcginnis.png",
+      "mcginnis'": "mcginnis.png",
+      "mcginnis’s": "mcginnis.png",
+      "mina": "mina.png",
+      "mirage": "mirage.png",
+      "mo & krill": "mo+krill.png",
+      "mo and krill": "mo+krill.png",
+      "mo+krill": "mo+krill.png",
+      "mo krill": "mo+krill.png",
+      "paige": "paige.png",
+      "paradox": "paradox.png",
+      "pocket": "pocket.png",
+      "rem": "rem.png",
+      "seven": "seven.png",
+      "shiv": "shiv.png",
+      "silver": "silver.png",
+      "sinclair": "sinclair.png",
+      "venator": "venator.png",
+      "victor": "victor.png",
+      "vindicta": "vindicta.png",
+      "viscous": "viscous.png",
+      "vyper": "vyper.png",
+      "warden": "warden.png",
+      "wraith": "wraith.png",
+      "yamato": "yamato.png"
+    };
+
     function iconCandidates(hero) {
-      const raw = String(hero || "").trim();
-      if (!raw) return [];
-      const safeRaw = encodeURIComponent(raw);
-      const lower = raw.toLowerCase();
-      const dash = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      const underscore = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
-      const compact = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "");
-      return [
-        `images/deadlock/icons/${safeRaw}.png`,
-        `images/deadlock/icons/${dash}.png`,
-        `images/deadlock/icons/${underscore}.png`,
-        `images/deadlock/icons/${compact}.png`,
-        `images/deadlock/icons/${safeRaw}.webp`,
-        `images/deadlock/icons/${dash}.webp`,
-        `images/deadlock/icons/${underscore}.webp`,
-        `images/deadlock/icons/${compact}.webp`
-      ];
+      const key = String(hero || "").trim().toLowerCase();
+      const filename = HERO_ICON_FILES[key];
+      return filename ? [`images/deadlock/icons/${filename}`] : [];
     }
 
     function attachIconFallback(img, hero) {
@@ -872,29 +905,30 @@
       results.innerHTML = "";
 
       if (entered.length === 0) {
-        summary.textContent = "Choose six heroes.";
-        return;
-      }
-      if (entered.length < 6) {
-        summary.textContent = `Choose ${6 - entered.length} more hero${6 - entered.length === 1 ? "" : "es"}.`;
+        summary.textContent = "Choose one or more heroes.";
         return;
       }
 
       const unique = [...new Set(entered)];
-      if (unique.length < 6) {
-        summary.textContent = "Each hero slot needs to be unique.";
+      if (unique.length < entered.length) {
+        summary.textContent = "Each selected hero needs to be unique.";
         return;
       }
 
-      const searchKey = keyOf(unique);
-      const matches = buildAllCompleteDrafts().filter(d => d.draftKey === searchKey);
+      const allDrafts = buildAllCompleteDrafts();
+      const matches = allDrafts.filter(d => unique.every(h => d.heroes.includes(h)));
+      const isExactSearch = unique.length === 6;
 
       if (!matches.length) {
-        summary.textContent = "No exact match found for that six-hero draft.";
+        summary.textContent = isExactSearch
+          ? "No exact match found for that six-hero draft."
+          : `No drafts found containing ${unique.join(" / ")}.`;
         return;
       }
 
-      summary.textContent = `Found ${matches.length} exact match${matches.length === 1 ? "" : "es"}.`;
+      summary.textContent = isExactSearch
+        ? `Found ${matches.length} exact match${matches.length === 1 ? "" : "es"}.`
+        : `Found ${matches.length} draft${matches.length === 1 ? "" : "s"} containing ${unique.join(" / ")}.`;
       results.classList.remove("hidden");
       results.innerHTML = `
         <div class="match-head">
