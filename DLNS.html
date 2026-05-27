@@ -1,589 +1,720 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { Search, RefreshCw, SlidersHorizontal, Trophy, AlertCircle, Filter, BarChart3 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Likely Unseen Drafts</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #0d1b2e;
+      --panel2: #091525;
+      --border: #20314a;
+      --text: #e7eef9;
+      --muted: #9fb0c8;
+      --muted2: #6f819c;
+      --accent: #7dd3fc;
+      --good: #86efac;
+      --bad: #fca5a5;
+      --chip: #17263c;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    }
 
-const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
-const DEFAULT_GID = "1738458418";
-const DEFAULT_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${DEFAULT_GID}`;
+    * { box-sizing: border-box; }
 
-const DEFAULT_WEIGHTS = {
-  heroes: 0.35,
-  duos: 1,
-  trios: 2,
-  quads: 4,
-  fives: 8,
-};
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.14), transparent 34rem),
+        radial-gradient(circle at 80% 20%, rgba(134, 239, 172, 0.08), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
 
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let cell = "";
-  let inQuotes = false;
+    a { color: var(--accent); }
 
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    const n = text[i + 1];
+    .wrap {
+      width: min(1500px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 36px 0 60px;
+    }
 
-    if (c === '"') {
-      if (inQuotes && n === '"') {
-        cell += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: rgba(13, 27, 46, 0.76);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+    }
+
+    .lede {
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 17px;
+      margin: 16px 0 28px;
+    }
+
+    .grid { display: grid; gap: 16px; }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .layout { grid-template-columns: 330px minmax(0, 1fr); align-items: start; }
+
+    .card {
+      background: rgba(13, 27, 46, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-inner { padding: 18px; }
+
+    .stat .label { color: var(--muted2); font-size: 13px; }
+    .stat .value { font-weight: 800; font-size: 26px; letter-spacing: -0.03em; margin-top: 2px; }
+
+    label { display: block; }
+    .label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    textarea { resize: vertical; min-height: 74px; }
+
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+
+    button {
+      border: 0;
+      color: #04111f;
+      background: var(--accent);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease;
+    }
+
+    button:hover { opacity: 0.92; }
+    button:active { transform: translateY(1px); }
+
+    .row { display: flex; gap: 10px; align-items: end; }
+    .row > *:first-child { flex: 1; }
+
+    .stack { display: grid; gap: 14px; }
+    .section-title { font-weight: 850; font-size: 18px; margin: 0 0 12px; }
+    .small { color: var(--muted2); font-size: 12px; margin-top: 6px; }
+    .status { color: var(--muted); font-size: 14px; }
+    .error { color: var(--bad); background: rgba(127, 29, 29, 0.28); border: 1px solid rgba(252, 165, 165, 0.26); padding: 12px; border-radius: 16px; }
+
+    .weights { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .weight-box {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+    }
+    .weight-box input { border: 0; padding: 0; background: transparent; font-size: 20px; font-weight: 850; }
+
+    .table {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .thead, .draft-row {
+      display: grid;
+      grid-template-columns: 70px minmax(280px, 1.25fr) 110px minmax(320px, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .thead {
+      background: rgba(9, 21, 37, 0.94);
+      color: var(--muted2);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 13px 16px;
+    }
+
+    .draft-row {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(13, 27, 46, 0.58);
+    }
+
+    .rank { color: var(--muted); font-weight: 850; }
+    .score { font-weight: 900; font-size: 28px; letter-spacing: -0.04em; }
+
+    .heroes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.055);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .mini-scores { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+    .mini {
+      background: var(--panel2);
+      border-radius: 11px;
+      padding: 5px 7px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .mini b { display: block; color: var(--text); font-size: 13px; }
+
+    .why { color: var(--muted); font-size: 13px; }
+    .why b { color: var(--text); }
+    .why-line { margin-bottom: 7px; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 13px;
+    }
+
+    .mono { font-variant-numeric: tabular-nums; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1050px) {
+      .layout { grid-template-columns: 1fr; }
+      .grid-4, .grid-5, .weights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .thead { display: none; }
+      .draft-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: min(100vw - 20px, 1500px); padding-top: 22px; }
+      .grid-4, .grid-5, .weights { grid-template-columns: 1fr; }
+      .row { display: grid; }
+      .mini-scores { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">🏆 Deadlock draft coverage</div>
+    <h1>Likely Unseen Drafts</h1>
+    <p class="lede">
+      This page pulls your public Google Sheet, reconstructs six-pick team drafts, removes drafts that have already happened, then ranks unseen drafts by how frequently their smaller pieces have appeared.
+    </p>
+
+    <section class="grid" style="grid-template-columns: minmax(0, 1fr) 220px; margin-bottom: 16px;" id="topLoadGrid">
+      <div class="card">
+        <div class="card-inner">
+          <div class="row">
+            <label>
+              <div class="label">Google Sheet CSV URL</div>
+              <input id="csvUrl" />
+            </label>
+            <button id="loadBtn">Reload</button>
+          </div>
+          <div id="error" class="error hidden" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+      <div class="card stat">
+        <div class="card-inner">
+          <div class="label">Status</div>
+          <div class="value" id="status">idle</div>
+          <div class="status"><span id="rawRows">0</span> raw rows</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-5" style="margin-bottom: 18px;">
+      <div class="card stat"><div class="card-inner"><div class="label">Team drafts</div><div class="value mono" id="teamDrafts">0</div></div></div>
+      <div class="card stat"><div class="card-inner"><div class="label">Hero universe</div><div class="value mono" id="heroUniverse">0</div></div></div>
+      <div class="card stat"><div class="card-inner"><div class="label">Seen 6-drafts</div><div class="value mono" id="seenSixes">0</div></div></div>
+      <div class="card stat"><div class="card-inner"><div class="label">Possible 6-drafts</div><div class="value mono" id="possibleSixes">0</div></div></div>
+      <div class="card stat"><div class="card-inner"><div class="label">Coverage</div><div class="value mono" id="coverage">0%</div></div></div>
+    </section>
+
+    <section class="grid layout">
+      <aside class="card">
+        <div class="card-inner stack">
+          <h2 class="section-title">Controls</h2>
+
+          <label>
+            <div class="label">Region</div>
+            <select id="region"><option>All</option></select>
+          </label>
+
+          <label>
+            <div class="label">Match result basis</div>
+            <select id="resultFilter">
+              <option>All</option>
+              <option>Win</option>
+              <option>Loss</option>
+            </select>
+          </label>
+
+          <label>
+            <div class="label">Top results</div>
+            <input id="topN" type="number" min="10" max="500" value="50" />
+          </label>
+
+          <label>
+            <div class="label">Minimum score</div>
+            <input id="minScore" type="number" min="0" step="0.1" value="0" />
+          </label>
+
+          <label>
+            <div class="label">Must include heroes</div>
+            <textarea id="includeText" placeholder="Haze, Dynamo"></textarea>
+          </label>
+
+          <label>
+            <div class="label">Exclude heroes</div>
+            <textarea id="excludeText" placeholder="Disabled heroes, non-counting, etc."></textarea>
+          </label>
+
+          <label>
+            <div class="label">Add missing heroes to universe</div>
+            <textarea id="manualHeroes" placeholder="One per line or comma-separated"></textarea>
+            <div class="small">Use this if the sheet has not observed every currently legal hero yet.</div>
+          </label>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="card-inner">
+          <div class="toolbar">
+            <div>
+              <h2 class="section-title" style="margin-bottom: 4px;">Most likely unseen drafts</h2>
+              <div class="status">Higher score = unseen despite having frequently-seen pieces.</div>
+            </div>
+            <div class="pill"><span id="shownCount">0</span> shown</div>
+          </div>
+
+          <div class="grid weights" style="margin-bottom: 14px;">
+            <label class="weight-box"><div class="label">Heroes weight</div><input id="wHeroes" type="number" min="0" step="0.25" value="0.35"></label>
+            <label class="weight-box"><div class="label">Duos weight</div><input id="wDuos" type="number" min="0" step="0.25" value="1"></label>
+            <label class="weight-box"><div class="label">Trios weight</div><input id="wTrios" type="number" min="0" step="0.25" value="2"></label>
+            <label class="weight-box"><div class="label">Quads weight</div><input id="wQuads" type="number" min="0" step="0.25" value="4"></label>
+            <label class="weight-box"><div class="label">Fives weight</div><input id="wFives" type="number" min="0" step="0.25" value="8"></label>
+          </div>
+
+          <div class="table">
+            <div class="thead">
+              <div>Rank</div>
+              <div>Draft</div>
+              <div>Score</div>
+              <div>Why it ranks</div>
+            </div>
+            <div id="results"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card" style="margin-top: 18px;">
+      <div class="card-inner">
+        <h2 class="section-title">Coverage counts used in scoring</h2>
+        <div class="grid grid-5">
+          <div class="stat"><div class="label">Unique heroes</div><div class="value mono" id="uniqueHeroes">0</div></div>
+          <div class="stat"><div class="label">Unique duos</div><div class="value mono" id="uniqueDuos">0</div></div>
+          <div class="stat"><div class="label">Unique trios</div><div class="value mono" id="uniqueTrios">0</div></div>
+          <div class="stat"><div class="label">Unique quads</div><div class="value mono" id="uniqueQuads">0</div></div>
+          <div class="stat"><div class="label">Unique 5-cores</div><div class="value mono" id="uniqueFives">0</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SHEET_ID = "1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4";
+    const DEFAULT_GID = "1738458418";
+    const DEFAULT_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${DEFAULT_GID}`;
+
+    let records = [];
+    let lastRegions = [];
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n, d = 2) => Number.isFinite(n) ? n.toFixed(d) : "0.00";
+    const intFmt = (n) => (n || 0).toLocaleString();
+    const splitList = (text) => text.split(/[,\n]/).map(x => x.trim()).filter(Boolean);
+
+    function setStatus(s) { $("status").textContent = s; }
+
+    function parseCsv(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        const n = text[i + 1];
+
+        if (c === '"') {
+          if (inQuotes && n === '"') {
+            cell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (c === "," && !inQuotes) {
+          row.push(cell);
+          cell = "";
+        } else if ((c === "\n" || c === "\r") && !inQuotes) {
+          if (c === "\r" && n === "\n") i++;
+          row.push(cell);
+          if (row.some(v => v.trim() !== "")) rows.push(row);
+          row = [];
+          cell = "";
+        } else {
+          cell += c;
+        }
       }
-    } else if (c === "," && !inQuotes) {
+
       row.push(cell);
-      cell = "";
-    } else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (c === "\r" && n === "\n") i++;
-      row.push(cell);
-      if (row.some((v) => v.trim() !== "")) rows.push(row);
-      row = [];
-      cell = "";
-    } else {
-      cell += c;
+      if (row.some(v => v.trim() !== "")) rows.push(row);
+      return rows;
     }
-  }
 
-  row.push(cell);
-  if (row.some((v) => v.trim() !== "")) rows.push(row);
-  return rows;
-}
-
-function normalizeHeader(h) {
-  return h.trim().toLowerCase().replace(/\s+/g, "");
-}
-
-function rowsToObjects(rows) {
-  if (!rows.length) return [];
-  const headers = rows[0].map(normalizeHeader);
-  return rows.slice(1).map((row) => {
-    const obj = {};
-    headers.forEach((h, i) => {
-      obj[h] = (row[i] ?? "").trim();
-    });
-    return obj;
-  });
-}
-
-function keyOf(items) {
-  return [...items].sort((a, b) => a.localeCompare(b)).join("|");
-}
-
-function combos(arr, k, cb) {
-  const combo = [];
-  const n = arr.length;
-  function rec(start) {
-    if (combo.length === k) {
-      cb(combo);
-      return;
+    function normalizeHeader(h) {
+      return h.trim().toLowerCase().replace(/\s+/g, "");
     }
-    const need = k - combo.length;
-    for (let i = start; i <= n - need; i++) {
-      combo.push(arr[i]);
-      rec(i + 1);
-      combo.pop();
-    }
-  }
-  rec(0);
-}
 
-function avgLogCount(combo, k, countMap) {
-  let sum = 0;
-  let n = 0;
-  combos(combo, k, (part) => {
-    sum += Math.log1p(countMap.get(keyOf(part)) || 0);
-    n++;
-  });
-  return n ? sum / n : 0;
-}
-
-function buildDrafts(records, regionFilter, resultFilter) {
-  const grouped = new Map();
-  const heroes = new Set();
-  const regions = new Set();
-  const rawPickRows = [];
-
-  for (const r of records) {
-    const type = (r.type || "").toLowerCase();
-    const hero = r.hero;
-    const region = r.region;
-    const team = r.team;
-    const matchID = r.matchid;
-    const result = r.matchresult || r["match result"] || "";
-
-    if (region) regions.add(region);
-    if (type !== "pick" || !hero || !team || !matchID) continue;
-    if (regionFilter !== "All" && region !== regionFilter) continue;
-    if (resultFilter !== "All" && result !== resultFilter) continue;
-
-    heroes.add(hero);
-    rawPickRows.push(r);
-    const groupKey = `${matchID}||${team}`;
-    if (!grouped.has(groupKey)) {
-      grouped.set(groupKey, {
-        matchID,
-        region,
-        team,
-        result,
-        round: r.round || "",
-        game: r.game || "",
-        heroes: [],
+    function rowsToObjects(rows) {
+      if (!rows.length) return [];
+      const headers = rows[0].map(normalizeHeader);
+      return rows.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = (row[i] ?? "").trim());
+        return obj;
       });
     }
-    grouped.get(groupKey).heroes.push(hero);
-  }
 
-  const drafts = [];
-  for (const draft of grouped.values()) {
-    const unique = [...new Set(draft.heroes)].sort((a, b) => a.localeCompare(b));
-    if (unique.length === 6) {
-      drafts.push({ ...draft, heroes: unique, draftKey: keyOf(unique) });
+    function keyOf(items) {
+      return [...items].sort((a, b) => a.localeCompare(b)).join("|");
     }
-  }
 
-  return {
-    drafts,
-    heroes: [...heroes].sort((a, b) => a.localeCompare(b)),
-    regions: [...regions].sort((a, b) => a.localeCompare(b)),
-    rawPickRows,
-  };
-}
-
-function buildCountMaps(drafts) {
-  const maps = {
-    heroes: new Map(),
-    duos: new Map(),
-    trios: new Map(),
-    quads: new Map(),
-    fives: new Map(),
-    sixes: new Map(),
-  };
-
-  const add = (map, k) => map.set(k, (map.get(k) || 0) + 1);
-
-  for (const draft of drafts) {
-    for (const h of draft.heroes) add(maps.heroes, h);
-    for (let size = 2; size <= 6; size++) {
-      const map = size === 2 ? maps.duos : size === 3 ? maps.trios : size === 4 ? maps.quads : size === 5 ? maps.fives : maps.sixes;
-      combos(draft.heroes, size, (part) => add(map, keyOf(part)));
+    function combos(arr, k, cb) {
+      const combo = [];
+      const n = arr.length;
+      function rec(start) {
+        if (combo.length === k) {
+          cb(combo);
+          return;
+        }
+        const need = k - combo.length;
+        for (let i = start; i <= n - need; i++) {
+          combo.push(arr[i]);
+          rec(i + 1);
+          combo.pop();
+        }
+      }
+      rec(0);
     }
-  }
 
-  return maps;
-}
-
-function calcScore(combo, maps, weights) {
-  const heroAvg = combo.reduce((s, h) => s + Math.log1p(maps.heroes.get(h) || 0), 0) / combo.length;
-  const duoAvg = avgLogCount(combo, 2, maps.duos);
-  const trioAvg = avgLogCount(combo, 3, maps.trios);
-  const quadAvg = avgLogCount(combo, 4, maps.quads);
-  const fiveAvg = avgLogCount(combo, 5, maps.fives);
-
-  const total =
-    weights.heroes * heroAvg +
-    weights.duos * duoAvg +
-    weights.trios * trioAvg +
-    weights.quads * quadAvg +
-    weights.fives * fiveAvg;
-
-  return {
-    total,
-    heroAvg,
-    duoAvg,
-    trioAvg,
-    quadAvg,
-    fiveAvg,
-  };
-}
-
-function topSeenSubsets(combo, k, map, limit = 5) {
-  const found = [];
-  combos(combo, k, (part) => {
-    const key = keyOf(part);
-    const count = map.get(key) || 0;
-    if (count > 0) found.push({ key, count });
-  });
-  return found.sort((a, b) => b.count - a.count || a.key.localeCompare(b.key)).slice(0, limit);
-}
-
-function generateLikelyUnseen({ heroes, maps, weights, topN, requiredHeroes, bannedHeroes, minScore }) {
-  const seenSixes = maps.sixes;
-  const candidates = [];
-  const heroPool = heroes.filter((h) => !bannedHeroes.includes(h));
-  const required = requiredHeroes.filter(Boolean);
-
-  if (required.some((h) => !heroPool.includes(h))) return [];
-  if (required.length > 6) return [];
-
-  const remaining = heroPool.filter((h) => !required.includes(h));
-  const needed = 6 - required.length;
-
-  combos(remaining, needed, (part) => {
-    const combo = [...required, ...part].sort((a, b) => a.localeCompare(b));
-    const draftKey = keyOf(combo);
-    if (seenSixes.has(draftKey)) return;
-
-    const score = calcScore(combo, maps, weights);
-    if (score.total < minScore) return;
-
-    const item = {
-      heroes: combo,
-      draftKey,
-      ...score,
-      topFives: topSeenSubsets(combo, 5, maps.fives, 3),
-      topQuads: topSeenSubsets(combo, 4, maps.quads, 3),
-      topTrios: topSeenSubsets(combo, 3, maps.trios, 3),
-    };
-
-    if (candidates.length < topN) {
-      candidates.push(item);
-      candidates.sort((a, b) => a.total - b.total);
-    } else if (item.total > candidates[0].total) {
-      candidates[0] = item;
-      candidates.sort((a, b) => a.total - b.total);
+    function nCk(n, k) {
+      if (k < 0 || k > n) return 0;
+      let result = 1;
+      for (let i = 1; i <= k; i++) result = (result * (n - k + i)) / i;
+      return Math.round(result);
     }
-  });
 
-  return candidates.sort((a, b) => b.total - a.total);
-}
-
-function fmt(n, digits = 2) {
-  return Number.isFinite(n) ? n.toFixed(digits) : "0.00";
-}
-
-function pct(seen, possible) {
-  if (!possible) return "0.00%";
-  return `${((seen / possible) * 100).toFixed(3)}%`;
-}
-
-function nCk(n, k) {
-  if (k < 0 || k > n) return 0;
-  let result = 1;
-  for (let i = 1; i <= k; i++) result = (result * (n - k + i)) / i;
-  return Math.round(result);
-}
-
-export default function LikelyUnseenDraftsPage() {
-  const [csvUrl, setCsvUrl] = useState(DEFAULT_CSV_URL);
-  const [records, setRecords] = useState([]);
-  const [status, setStatus] = useState("idle");
-  const [error, setError] = useState("");
-  const [region, setRegion] = useState("All");
-  const [resultFilter, setResultFilter] = useState("All");
-  const [topN, setTopN] = useState(50);
-  const [minScore, setMinScore] = useState(0);
-  const [includeText, setIncludeText] = useState("");
-  const [excludeText, setExcludeText] = useState("");
-  const [weights, setWeights] = useState(DEFAULT_WEIGHTS);
-  const [manualHeroes, setManualHeroes] = useState("");
-
-  async function loadSheet() {
-    setStatus("loading");
-    setError("");
-    try {
-      const res = await fetch(csvUrl, { cache: "no-store" });
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      const text = await res.text();
-      const parsed = rowsToObjects(parseCsv(text));
-      if (!parsed.length) throw new Error("No rows found in CSV.");
-      setRecords(parsed);
-      setStatus("loaded");
-    } catch (e) {
-      setStatus("error");
-      setError(e.message || String(e));
+    function pct(seen, possible) {
+      if (!possible) return "0.000%";
+      return `${((seen / possible) * 100).toFixed(3)}%`;
     }
-  }
 
-  useEffect(() => {
-    loadSheet();
-  }, []);
+    function buildDrafts() {
+      const regionFilter = $("region").value;
+      const resultFilter = $("resultFilter").value;
+      const grouped = new Map();
+      const heroes = new Set();
+      const regions = new Set();
 
-  const base = useMemo(() => buildDrafts(records, region, resultFilter), [records, region, resultFilter]);
+      for (const r of records) {
+        const type = (r.type || "").toLowerCase();
+        const hero = r.hero;
+        const region = r.region;
+        const team = r.team;
+        const matchID = r.matchid;
+        const result = r.matchresult || r["matchresult"] || "";
 
-  const heroUniverse = useMemo(() => {
-    const detected = base.heroes;
-    const manual = manualHeroes
-      .split(/[\n,]/)
-      .map((h) => h.trim())
-      .filter(Boolean);
-    return [...new Set([...detected, ...manual])].sort((a, b) => a.localeCompare(b));
-  }, [base.heroes, manualHeroes]);
+        if (region) regions.add(region);
+        if (type !== "pick" || !hero || !team || !matchID) continue;
+        if (regionFilter !== "All" && region !== regionFilter) continue;
+        if (resultFilter !== "All" && result !== resultFilter) continue;
 
-  const maps = useMemo(() => buildCountMaps(base.drafts), [base.drafts]);
+        heroes.add(hero);
+        const groupKey = `${matchID}||${team}`;
+        if (!grouped.has(groupKey)) {
+          grouped.set(groupKey, { matchID, region, team, result, heroes: [] });
+        }
+        grouped.get(groupKey).heroes.push(hero);
+      }
 
-  const requiredHeroes = useMemo(
-    () => includeText.split(/[,\n]/).map((h) => h.trim()).filter(Boolean),
-    [includeText]
-  );
+      const drafts = [];
+      for (const d of grouped.values()) {
+        const unique = [...new Set(d.heroes)].sort((a, b) => a.localeCompare(b));
+        if (unique.length === 6) drafts.push({ ...d, heroes: unique, draftKey: keyOf(unique) });
+      }
 
-  const bannedHeroes = useMemo(
-    () => excludeText.split(/[,\n]/).map((h) => h.trim()).filter(Boolean),
-    [excludeText]
-  );
+      return {
+        drafts,
+        heroes: [...heroes].sort((a, b) => a.localeCompare(b)),
+        regions: [...regions].sort((a, b) => a.localeCompare(b))
+      };
+    }
 
-  const likelyUnseen = useMemo(() => {
-    if (heroUniverse.length < 6 || !base.drafts.length) return [];
-    return generateLikelyUnseen({
-      heroes: heroUniverse,
-      maps,
-      weights,
-      topN,
-      requiredHeroes,
-      bannedHeroes,
-      minScore,
-    });
-  }, [heroUniverse, maps, weights, topN, requiredHeroes, bannedHeroes, minScore, base.drafts.length]);
+    function buildCountMaps(drafts) {
+      const maps = {
+        heroes: new Map(),
+        duos: new Map(),
+        trios: new Map(),
+        quads: new Map(),
+        fives: new Map(),
+        sixes: new Map(),
+      };
+      const add = (map, key) => map.set(key, (map.get(key) || 0) + 1);
 
-  const possibleSixes = nCk(heroUniverse.length, 6);
-  const seenSixes = maps.sixes.size;
+      for (const draft of drafts) {
+        for (const h of draft.heroes) add(maps.heroes, h);
+        for (let size = 2; size <= 6; size++) {
+          const map = size === 2 ? maps.duos : size === 3 ? maps.trios : size === 4 ? maps.quads : size === 5 ? maps.fives : maps.sixes;
+          combos(draft.heroes, size, part => add(map, keyOf(part)));
+        }
+      }
+      return maps;
+    }
 
-  const updateWeight = (key, value) => {
-    setWeights((w) => ({ ...w, [key]: Number(value) }));
-  };
+    function avgLogCount(combo, k, countMap) {
+      let sum = 0, n = 0;
+      combos(combo, k, part => {
+        sum += Math.log1p(countMap.get(keyOf(part)) || 0);
+        n++;
+      });
+      return n ? sum / n : 0;
+    }
 
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-sm text-slate-300">
-            <Trophy className="h-4 w-4" /> Deadlock draft coverage
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">Likely Unseen Drafts</h1>
-          <p className="mt-3 max-w-3xl text-slate-300">
-            Finds six-hero team drafts that have never appeared, then ranks them by how often their internal heroes, duos, trios, quads, and five-hero cores have appeared.
-          </p>
-        </motion.div>
+    function calcScore(combo, maps, weights) {
+      const heroAvg = combo.reduce((s, h) => s + Math.log1p(maps.heroes.get(h) || 0), 0) / combo.length;
+      const duoAvg = avgLogCount(combo, 2, maps.duos);
+      const trioAvg = avgLogCount(combo, 3, maps.trios);
+      const quadAvg = avgLogCount(combo, 4, maps.quads);
+      const fiveAvg = avgLogCount(combo, 5, maps.fives);
+      const total =
+        weights.heroes * heroAvg +
+        weights.duos * duoAvg +
+        weights.trios * trioAvg +
+        weights.quads * quadAvg +
+        weights.fives * fiveAvg;
+      return { total, heroAvg, duoAvg, trioAvg, quadAvg, fiveAvg };
+    }
 
-        <div className="grid gap-4 lg:grid-cols-4">
-          <Card className="border-slate-800 bg-slate-900/80 lg:col-span-3">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                <label className="flex-1">
-                  <div className="mb-1 text-sm font-medium text-slate-300">Google Sheet CSV URL</div>
-                  <input
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none focus:border-slate-400"
-                    value={csvUrl}
-                    onChange={(e) => setCsvUrl(e.target.value)}
-                  />
-                </label>
-                <Button onClick={loadSheet} className="rounded-xl">
-                  <RefreshCw className="mr-2 h-4 w-4" /> Reload
-                </Button>
-              </div>
-              {status === "error" && (
-                <div className="mt-4 flex items-start gap-2 rounded-xl border border-red-900 bg-red-950/40 p-3 text-sm text-red-200">
-                  <AlertCircle className="mt-0.5 h-4 w-4" />
-                  <div>
-                    <div className="font-semibold">Could not load the sheet.</div>
-                    <div>{error}</div>
-                    <div className="mt-1 text-red-100/80">Make sure the sheet is public, or publish/export the tab as CSV and paste that URL here.</div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+    function topSeenSubsets(combo, k, map, limit = 3) {
+      const found = [];
+      combos(combo, k, part => {
+        const key = keyOf(part);
+        const count = map.get(key) || 0;
+        if (count > 0) found.push({ key, count });
+      });
+      return found.sort((a, b) => b.count - a.count || a.key.localeCompare(b.key)).slice(0, limit);
+    }
 
-          <Card className="border-slate-800 bg-slate-900/80">
-            <CardContent className="p-4 sm:p-6">
-              <div className="text-sm text-slate-400">Status</div>
-              <div className="mt-1 text-2xl font-bold capitalize">{status}</div>
-              <div className="mt-2 text-sm text-slate-400">{records.length.toLocaleString()} raw rows loaded</div>
-            </CardContent>
-          </Card>
-        </div>
+    function generateLikelyUnseen(heroUniverse, maps, weights) {
+      const topN = Number($("topN").value) || 50;
+      const minScore = Number($("minScore").value) || 0;
+      const required = splitList($("includeText").value);
+      const banned = splitList($("excludeText").value);
+      const heroPool = heroUniverse.filter(h => !banned.includes(h));
+      const candidates = [];
 
-        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          <Stat label="Team drafts" value={base.drafts.length.toLocaleString()} />
-          <Stat label="Hero universe" value={heroUniverse.length.toLocaleString()} />
-          <Stat label="Seen 6-drafts" value={seenSixes.toLocaleString()} />
-          <Stat label="Possible 6-drafts" value={possibleSixes.toLocaleString()} />
-          <Stat label="Coverage" value={pct(seenSixes, possibleSixes)} />
-        </div>
+      if (required.some(h => !heroPool.includes(h))) return [];
+      if (required.length > 6) return [];
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-12">
-          <Card className="border-slate-800 bg-slate-900/80 lg:col-span-3">
-            <CardContent className="space-y-5 p-4 sm:p-6">
-              <div className="flex items-center gap-2 text-lg font-semibold">
-                <SlidersHorizontal className="h-5 w-5" /> Controls
-              </div>
+      const remaining = heroPool.filter(h => !required.includes(h));
+      const needed = 6 - required.length;
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Region</div>
-                <select className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2" value={region} onChange={(e) => setRegion(e.target.value)}>
-                  <option>All</option>
-                  {base.regions.map((r) => <option key={r}>{r}</option>)}
-                </select>
-              </label>
+      combos(remaining, needed, part => {
+        const combo = [...required, ...part].sort((a, b) => a.localeCompare(b));
+        const draftKey = keyOf(combo);
+        if (maps.sixes.has(draftKey)) return;
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Match result basis</div>
-                <select className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2" value={resultFilter} onChange={(e) => setResultFilter(e.target.value)}>
-                  <option>All</option>
-                  <option>Win</option>
-                  <option>Loss</option>
-                </select>
-              </label>
+        const score = calcScore(combo, maps, weights);
+        if (score.total < minScore) return;
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Top results</div>
-                <input type="number" min="10" max="250" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2" value={topN} onChange={(e) => setTopN(Number(e.target.value))} />
-              </label>
+        const item = {
+          heroes: combo,
+          draftKey,
+          ...score,
+          topFives: topSeenSubsets(combo, 5, maps.fives, 3),
+          topQuads: topSeenSubsets(combo, 4, maps.quads, 3),
+          topTrios: topSeenSubsets(combo, 3, maps.trios, 3),
+        };
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Minimum score</div>
-                <input type="number" min="0" step="0.1" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2" value={minScore} onChange={(e) => setMinScore(Number(e.target.value))} />
-              </label>
+        if (candidates.length < topN) {
+          candidates.push(item);
+          candidates.sort((a, b) => a.total - b.total);
+        } else if (item.total > candidates[0].total) {
+          candidates[0] = item;
+          candidates.sort((a, b) => a.total - b.total);
+        }
+      });
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Must include heroes</div>
-                <textarea className="h-20 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" placeholder="Haze, Dynamo" value={includeText} onChange={(e) => setIncludeText(e.target.value)} />
-              </label>
+      return candidates.sort((a, b) => b.total - a.total);
+    }
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Exclude heroes</div>
-                <textarea className="h-20 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" placeholder="Street Brawl-only, disabled, etc." value={excludeText} onChange={(e) => setExcludeText(e.target.value)} />
-              </label>
+    function renderRegions(regions) {
+      const select = $("region");
+      const current = select.value || "All";
+      const sig = regions.join("|");
+      if (sig === lastRegions.join("|")) return;
+      lastRegions = regions;
+      select.innerHTML = `<option>All</option>` + regions.map(r => `<option>${escapeHtml(r)}</option>`).join("");
+      select.value = regions.includes(current) ? current : "All";
+    }
 
-              <label className="block">
-                <div className="mb-1 text-sm text-slate-300">Add missing heroes to universe</div>
-                <textarea className="h-24 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm" placeholder="One per line or comma-separated" value={manualHeroes} onChange={(e) => setManualHeroes(e.target.value)} />
-                <div className="mt-1 text-xs text-slate-500">Useful if the sheet has not yet observed every legal hero.</div>
-              </label>
-            </CardContent>
-          </Card>
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+    }
 
-          <div className="lg:col-span-9">
-            <Card className="border-slate-800 bg-slate-900/80">
-              <CardContent className="p-4 sm:p-6">
-                <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-lg font-semibold">
-                      <Search className="h-5 w-5" /> Most likely unseen drafts
-                    </div>
-                    <p className="mt-1 text-sm text-slate-400">Higher score means the six-hero draft is unseen despite having frequently-seen pieces.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-300">
-                    {likelyUnseen.length.toLocaleString()} shown
-                  </div>
-                </div>
+    function renderSubset(title, items) {
+      if (!items.length) return "";
+      const body = items.map(x => `<span><b>${escapeHtml(x.key.replaceAll("|", " / "))}</b> ×${x.count}</span>`).join("; ");
+      return `<div class="why-line"><span>${title}: </span>${body}</div>`;
+    }
 
-                <div className="mb-4 grid gap-3 md:grid-cols-5">
-                  <WeightInput label="Heroes" value={weights.heroes} onChange={(v) => updateWeight("heroes", v)} />
-                  <WeightInput label="Duos" value={weights.duos} onChange={(v) => updateWeight("duos", v)} />
-                  <WeightInput label="Trios" value={weights.trios} onChange={(v) => updateWeight("trios", v)} />
-                  <WeightInput label="Quads" value={weights.quads} onChange={(v) => updateWeight("quads", v)} />
-                  <WeightInput label="Fives" value={weights.fives} onChange={(v) => updateWeight("fives", v)} />
-                </div>
-
-                <div className="overflow-hidden rounded-2xl border border-slate-800">
-                  <div className="hidden grid-cols-[64px_1.3fr_100px_1fr] gap-3 border-b border-slate-800 bg-slate-950 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-400 md:grid">
-                    <div>Rank</div>
-                    <div>Draft</div>
-                    <div>Score</div>
-                    <div>Why it ranks</div>
-                  </div>
-
-                  {likelyUnseen.length === 0 ? (
-                    <div className="p-6 text-slate-400">No candidates yet. Load the sheet, loosen filters, or add heroes to the universe.</div>
-                  ) : (
-                    likelyUnseen.map((item, idx) => (
-                      <motion.div
-                        key={item.draftKey}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: Math.min(idx * 0.01, 0.25) }}
-                        className="grid gap-3 border-b border-slate-800 px-4 py-4 last:border-b-0 md:grid-cols-[64px_1.3fr_100px_1fr]"
-                      >
-                        <div className="text-sm font-bold text-slate-400">#{idx + 1}</div>
-                        <div>
-                          <div className="flex flex-wrap gap-2">
-                            {item.heroes.map((h) => (
-                              <span key={h} className="rounded-full bg-slate-800 px-2.5 py-1 text-sm text-slate-100">{h}</span>
-                            ))}
-                          </div>
-                          <div className="mt-2 grid grid-cols-5 gap-2 text-xs text-slate-400">
-                            <MiniScore label="H" value={item.heroAvg} />
-                            <MiniScore label="2" value={item.duoAvg} />
-                            <MiniScore label="3" value={item.trioAvg} />
-                            <MiniScore label="4" value={item.quadAvg} />
-                            <MiniScore label="5" value={item.fiveAvg} />
-                          </div>
-                        </div>
-                        <div className="text-2xl font-bold tabular-nums">{fmt(item.total)}</div>
-                        <div className="space-y-2 text-sm text-slate-300">
-                          <SubsetList title="5-hero cores" items={item.topFives} />
-                          <SubsetList title="Quads" items={item.topQuads} />
-                          <SubsetList title="Trios" items={item.topTrios} />
-                        </div>
-                      </motion.div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <Card className="mt-6 border-slate-800 bg-slate-900/80">
-          <CardContent className="p-4 sm:p-6">
-            <div className="mb-3 flex items-center gap-2 text-lg font-semibold"><BarChart3 className="h-5 w-5" /> Coverage counts used in scoring</div>
-            <div className="grid gap-3 md:grid-cols-5">
-              <Stat label="Unique heroes" value={maps.heroes.size.toLocaleString()} />
-              <Stat label="Unique duos" value={maps.duos.size.toLocaleString()} />
-              <Stat label="Unique trios" value={maps.trios.size.toLocaleString()} />
-              <Stat label="Unique quads" value={maps.quads.size.toLocaleString()} />
-              <Stat label="Unique 5-cores" value={maps.fives.size.toLocaleString()} />
+    function renderResults(items) {
+      $("shownCount").textContent = intFmt(items.length);
+      const root = $("results");
+      if (!items.length) {
+        root.innerHTML = `<div class="draft-row"><div class="status">No candidates yet. Load the sheet, loosen filters, or add heroes to the universe.</div></div>`;
+        return;
+      }
+      root.innerHTML = items.map((item, idx) => `
+        <div class="draft-row">
+          <div class="rank">#${idx + 1}</div>
+          <div>
+            <div class="heroes">${item.heroes.map(h => `<span class="chip">${escapeHtml(h)}</span>`).join("")}</div>
+            <div class="mini-scores">
+              <div class="mini">Heroes<b>${fmt(item.heroAvg, 1)}</b></div>
+              <div class="mini">Duos<b>${fmt(item.duoAvg, 1)}</b></div>
+              <div class="mini">Trios<b>${fmt(item.trioAvg, 1)}</b></div>
+              <div class="mini">Quads<b>${fmt(item.quadAvg, 1)}</b></div>
+              <div class="mini">Fives<b>${fmt(item.fiveAvg, 1)}</b></div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
+          </div>
+          <div class="score mono">${fmt(item.total)}</div>
+          <div class="why">
+            ${renderSubset("5-hero cores", item.topFives)}
+            ${renderSubset("Quads", item.topQuads)}
+            ${renderSubset("Trios", item.topTrios)}
+          </div>
+        </div>
+      `).join("");
+    }
 
-function Stat({ label, value }) {
-  return (
-    <Card className="border-slate-800 bg-slate-900/80">
-      <CardContent className="p-4">
-        <div className="text-sm text-slate-400">{label}</div>
-        <div className="mt-1 text-2xl font-bold tabular-nums">{value}</div>
-      </CardContent>
-    </Card>
-  );
-}
+    function recompute() {
+      const built = buildDrafts();
+      renderRegions(built.regions);
 
-function WeightInput({ label, value, onChange }) {
-  return (
-    <label className="block rounded-xl border border-slate-800 bg-slate-950 p-3">
-      <div className="mb-1 text-xs text-slate-400">{label} weight</div>
-      <input type="number" min="0" step="0.25" className="w-full bg-transparent text-lg font-semibold outline-none" value={value} onChange={(e) => onChange(e.target.value)} />
-    </label>
-  );
-}
+      const manual = splitList($("manualHeroes").value);
+      const heroUniverse = [...new Set([...built.heroes, ...manual])].sort((a, b) => a.localeCompare(b));
+      const maps = buildCountMaps(built.drafts);
+      const possibleSixes = nCk(heroUniverse.length, 6);
+      const weights = {
+        heroes: Number($("wHeroes").value) || 0,
+        duos: Number($("wDuos").value) || 0,
+        trios: Number($("wTrios").value) || 0,
+        quads: Number($("wQuads").value) || 0,
+        fives: Number($("wFives").value) || 0,
+      };
 
-function MiniScore({ label, value }) {
-  return (
-    <div className="rounded-lg bg-slate-950 px-2 py-1 text-center">
-      <div className="text-[10px] text-slate-500">{label}</div>
-      <div className="tabular-nums">{fmt(value, 1)}</div>
-    </div>
-  );
-}
+      $("rawRows").textContent = intFmt(records.length);
+      $("teamDrafts").textContent = intFmt(built.drafts.length);
+      $("heroUniverse").textContent = intFmt(heroUniverse.length);
+      $("seenSixes").textContent = intFmt(maps.sixes.size);
+      $("possibleSixes").textContent = intFmt(possibleSixes);
+      $("coverage").textContent = pct(maps.sixes.size, possibleSixes);
+      $("uniqueHeroes").textContent = intFmt(maps.heroes.size);
+      $("uniqueDuos").textContent = intFmt(maps.duos.size);
+      $("uniqueTrios").textContent = intFmt(maps.trios.size);
+      $("uniqueQuads").textContent = intFmt(maps.quads.size);
+      $("uniqueFives").textContent = intFmt(maps.fives.size);
 
-function SubsetList({ title, items }) {
-  if (!items.length) return null;
-  return (
-    <div>
-      <span className="text-slate-500">{title}: </span>
-      {items.map((x, i) => (
-        <span key={x.key} className="mr-1">
-          <span className="text-slate-200">{x.key.replaceAll("|", " / ")}</span>
-          <span className="text-slate-500"> ×{x.count}</span>{i < items.length - 1 ? "; " : ""}
-        </span>
-      ))}
-    </div>
-  );
-}
+      if (heroUniverse.length < 6 || !built.drafts.length) {
+        renderResults([]);
+        return;
+      }
+      renderResults(generateLikelyUnseen(heroUniverse, maps, weights));
+    }
+
+    async function loadSheet() {
+      setStatus("loading");
+      $("error").classList.add("hidden");
+      try {
+        const res = await fetch($("csvUrl").value, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+        const text = await res.text();
+        records = rowsToObjects(parseCsv(text));
+        if (!records.length) throw new Error("No rows found in CSV.");
+        setStatus("loaded");
+        recompute();
+      } catch (err) {
+        setStatus("error");
+        $("error").textContent = `${err.message || err}. Make sure the sheet is public, or publish/export the tab as CSV and paste that URL here.`;
+        $("error").classList.remove("hidden");
+      }
+    }
+
+    function attachEvents() {
+      $("loadBtn").addEventListener("click", loadSheet);
+      const ids = [
+        "region", "resultFilter", "topN", "minScore", "includeText", "excludeText", "manualHeroes",
+        "wHeroes", "wDuos", "wTrios", "wQuads", "wFives"
+      ];
+      ids.forEach(id => $(id).addEventListener("input", recompute));
+      ids.forEach(id => $(id).addEventListener("change", recompute));
+    }
+
+    $("csvUrl").value = DEFAULT_CSV_URL;
+    attachEvents();
+    loadSheet();
+  </script>
+</body>
+</html>
