@@ -243,11 +243,11 @@
       <div class="card">
         <div class="card-inner">
           <div class="row">
-            <label>
-              <div class="label">Google Sheet CSV URL</div>
-              <input id="csvUrl" />
-            </label>
-            <button id="loadBtn">Reload</button>
+            <div>
+              <div class="label">Draft source</div>
+              <div class="status">Using the public draft sheet.</div>
+            </div>
+            <button id="loadBtn">Reload data</button>
           </div>
           <div id="error" class="error hidden" style="margin-top: 12px;"></div>
         </div>
@@ -688,7 +688,7 @@
       setStatus("loading");
       $("error").classList.add("hidden");
       try {
-        const res = await fetch($("csvUrl").value, { cache: "no-store" });
+        const res = await fetch(DEFAULT_CSV_URL, { cache: "no-store" });
         if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
         const text = await res.text();
         records = rowsToObjects(parseCsv(text));
@@ -712,7 +712,6 @@
       ids.forEach(id => $(id).addEventListener("change", recompute));
     }
 
-    $("csvUrl").value = DEFAULT_CSV_URL;
     attachEvents();
     loadSheet();
   </script>
