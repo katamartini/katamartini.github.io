@@ -245,7 +245,7 @@
           <div class="row">
             <div>
               <div class="label">Draft source</div>
-              <div class="status">Using the public draft sheet.</div>
+              <div class="status" id="sourceNote">Using the public draft sheet.</div>
             </div>
             <button id="loadBtn">Reload data</button>
           </div>
@@ -368,6 +368,11 @@
 
     let records = [];
     let lastRegions = [];
+    let recomputeTimer = null;
+
+    const CACHE_KEY = "likelyUnseenDrafts.csv.v1";
+    const CACHE_TIME_KEY = "likelyUnseenDrafts.csvTime.v1";
+    const CACHE_MAX_AGE_MS = 1000 * 60 * 60 * 12;
 
     const $ = (id) => document.getElementById(id);
     const fmt = (n, d = 2) => Number.isFinite(n) ? n.toFixed(d) : "0.00";
@@ -375,6 +380,11 @@
     const splitList = (text) => text.split(/[,\n]/).map(x => x.trim()).filter(Boolean);
 
     function setStatus(s) { $("status").textContent = s; }
+
+    function setSourceNote(text) {
+      const el = document.getElementById("sourceNote");
+      if (el) el.textContent = text;
+    }
 
     function parseCsv(text) {
       const rows = [];
@@ -649,6 +659,11 @@
       `).join("");
     }
 
+    function scheduleRecompute() {
+      clearTimeout(recomputeTimer);
+      recomputeTimer = setTimeout(recompute, 180);
+    }
+
     function recompute() {
       const built = buildDrafts();
       renderRegions(built.regions);
@@ -684,32 +699,69 @@
       renderResults(generateLikelyUnseen(heroUniverse, maps, weights));
     }
 
-    async function loadSheet() {
+    function useCachedSheetIfAvailable() {
+      try {
+        const cachedText = localStorage.getItem(CACHE_KEY);
+        const cachedAt = Number(localStorage.getItem(CACHE_TIME_KEY) || 0);
+        if (!cachedText || !cachedAt) return false;
+
+        records = rowsToObjects(parseCsv(cachedText));
+        if (!records.length) return false;
+
+        const ageMinutes = Math.round((Date.now() - cachedAt) / 60000);
+        setStatus("cached");
+        setSourceNote(`Using cached draft sheet from ${ageMinutes} minute${ageMinutes === 1 ? "" : "s"} ago. Reload data to refresh.`);
+        recompute();
+        return Date.now() - cachedAt < CACHE_MAX_AGE_MS;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    async function loadSheet(options = {}) {
+      const force = !!options.force;
+      if (!force && useCachedSheetIfAvailable()) return;
+
       setStatus("loading");
+      setSourceNote("Loading public draft sheet...");
       $("error").classList.add("hidden");
       try {
-        const res = await fetch(DEFAULT_CSV_URL, { cache: "no-store" });
+        const res = await fetch(DEFAULT_CSV_URL, { cache: force ? "reload" : "default" });
         if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
         const text = await res.text();
         records = rowsToObjects(parseCsv(text));
         if (!records.length) throw new Error("No rows found in CSV.");
+
+        try {
+          localStorage.setItem(CACHE_KEY, text);
+          localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+        } catch (cacheErr) {
+          // Local storage can fail in private browsing or quota-limited contexts. The page still works without it.
+        }
+
         setStatus("loaded");
+        setSourceNote("Using freshly loaded public draft sheet.");
         recompute();
       } catch (err) {
-        setStatus("error");
-        $("error").textContent = `${err.message || err}. Make sure the sheet is public, or publish/export the tab as CSV and paste that URL here.`;
-        $("error").classList.remove("hidden");
+        if (!records.length) {
+          setStatus("error");
+          $("error").textContent = `${err.message || err}. Make sure the sheet is public, or publish/export the tab as CSV and paste that URL here.`;
+          $("error").classList.remove("hidden");
+        } else {
+          setStatus("cached");
+          setSourceNote("Could not refresh, so the cached draft sheet is still being used.");
+        }
       }
     }
 
     function attachEvents() {
-      $("loadBtn").addEventListener("click", loadSheet);
+      $("loadBtn").addEventListener("click", () => loadSheet({ force: true }));
       const ids = [
         "region", "resultFilter", "topN", "minScore", "includeText", "excludeText", "manualHeroes",
         "wHeroes", "wDuos", "wTrios", "wQuads", "wFives"
       ];
-      ids.forEach(id => $(id).addEventListener("input", recompute));
-      ids.forEach(id => $(id).addEventListener("change", recompute));
+      ids.forEach(id => $(id).addEventListener("input", scheduleRecompute));
+      ids.forEach(id => $(id).addEventListener("change", scheduleRecompute));
     }
 
     attachEvents();
