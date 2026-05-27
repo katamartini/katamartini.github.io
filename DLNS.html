@@ -195,6 +195,94 @@
     .why b { color: var(--text); }
     .why-line { margin-bottom: 7px; }
 
+    .draft-search-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .hero-slot {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+    }
+
+    .hero-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .hero-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-icon-placeholder {
+      color: var(--muted2);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .search-results {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .match-row, .match-head {
+      display: grid;
+      grid-template-columns: 150px 80px minmax(160px, 1fr) 90px 140px minmax(260px, 1.4fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+    }
+
+    .match-head {
+      background: var(--panel2);
+      color: var(--muted2);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .match-row {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .match-row b { color: var(--text); }
+
+    .match-heroes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .match-hero-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -221,6 +309,9 @@
       .grid-4, .grid-5, .weights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .thead { display: none; }
       .draft-row { grid-template-columns: 1fr; }
+      .draft-search-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .match-head { display: none; }
+      .match-row { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
@@ -228,6 +319,7 @@
       .grid-4, .grid-5, .weights { grid-template-columns: 1fr; }
       .row { display: grid; }
       .mini-scores { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .draft-search-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -267,6 +359,56 @@
       <div class="card stat"><div class="card-inner"><div class="label">Seen 6-drafts</div><div class="value mono" id="seenSixes">0</div></div></div>
       <div class="card stat"><div class="card-inner"><div class="label">Possible 6-drafts</div><div class="value mono" id="possibleSixes">0</div></div></div>
       <div class="card stat"><div class="card-inner"><div class="label">Coverage</div><div class="value mono" id="coverage">0%</div></div></div>
+    </section>
+
+    <section class="card" style="margin-bottom: 18px;">
+      <div class="card-inner">
+        <div class="toolbar">
+          <div>
+            <h2 class="section-title" style="margin-bottom: 4px;">Draft search</h2>
+            <div class="status">Enter six heroes to check whether that exact team draft has appeared.</div>
+          </div>
+          <button id="clearSearchBtn" type="button">Clear search</button>
+        </div>
+
+        <datalist id="heroOptions"></datalist>
+
+        <div class="draft-search-grid">
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap0"><span class="hero-icon-placeholder">1</span></div>
+            <div class="label">Hero 1</div>
+            <input class="draftHeroInput" id="draftHero0" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap1"><span class="hero-icon-placeholder">2</span></div>
+            <div class="label">Hero 2</div>
+            <input class="draftHeroInput" id="draftHero1" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap2"><span class="hero-icon-placeholder">3</span></div>
+            <div class="label">Hero 3</div>
+            <input class="draftHeroInput" id="draftHero2" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap3"><span class="hero-icon-placeholder">4</span></div>
+            <div class="label">Hero 4</div>
+            <input class="draftHeroInput" id="draftHero3" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap4"><span class="hero-icon-placeholder">5</span></div>
+            <div class="label">Hero 5</div>
+            <input class="draftHeroInput" id="draftHero4" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+          <label class="hero-slot">
+            <div class="hero-icon-wrap" id="searchIconWrap5"><span class="hero-icon-placeholder">6</span></div>
+            <div class="label">Hero 6</div>
+            <input class="draftHeroInput" id="draftHero5" list="heroOptions" autocomplete="off" placeholder="Hero" />
+          </label>
+        </div>
+
+        <div id="draftSearchSummary" class="status" style="margin-top: 12px;">Choose six heroes.</div>
+        <div id="draftSearchResults" class="search-results hidden"></div>
+      </div>
     </section>
 
     <section class="grid layout">
@@ -436,8 +578,59 @@
       });
     }
 
+    function canonicalHeroName(hero, heroUniverse = []) {
+      const input = String(hero || "").trim();
+      if (!input) return "";
+      const lower = input.toLowerCase();
+      return heroUniverse.find(h => h.toLowerCase() === lower) || input;
+    }
+
     function keyOf(items) {
       return [...items].sort((a, b) => a.localeCompare(b)).join("|");
+    }
+
+    function iconCandidates(hero) {
+      const raw = String(hero || "").trim();
+      if (!raw) return [];
+      const safeRaw = encodeURIComponent(raw);
+      const lower = raw.toLowerCase();
+      const dash = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const underscore = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+      const compact = lower.replace(/&/g, "and").replace(/[^a-z0-9]+/g, "");
+      return [
+        `images/deadlock/icons/${safeRaw}.png`,
+        `images/deadlock/icons/${dash}.png`,
+        `images/deadlock/icons/${underscore}.png`,
+        `images/deadlock/icons/${compact}.png`,
+        `images/deadlock/icons/${safeRaw}.webp`,
+        `images/deadlock/icons/${dash}.webp`,
+        `images/deadlock/icons/${underscore}.webp`,
+        `images/deadlock/icons/${compact}.webp`
+      ];
+    }
+
+    function attachIconFallback(img, hero) {
+      const tries = iconCandidates(hero);
+      img.dataset.tries = JSON.stringify(tries);
+      img.dataset.tryIndex = "0";
+      img.onerror = () => {
+        const list = JSON.parse(img.dataset.tries || "[]");
+        const next = Number(img.dataset.tryIndex || 0) + 1;
+        if (next < list.length) {
+          img.dataset.tryIndex = String(next);
+          img.src = list[next];
+        } else {
+          img.remove();
+        }
+      };
+      img.src = tries[0] || "";
+    }
+
+    function iconHtml(hero, className = "match-hero-icon") {
+      const tries = iconCandidates(hero);
+      if (!tries.length) return "";
+      const escapedHero = escapeHtml(hero);
+      return `<img class="${className}" alt="${escapedHero}" title="${escapedHero}" src="${escapeHtml(tries[0])}" data-hero-icon="${escapedHero}" />`;
     }
 
     function combos(arr, k, cb) {
@@ -609,6 +802,124 @@
       return candidates.sort((a, b) => b.total - a.total);
     }
 
+    function buildAllCompleteDrafts() {
+      const grouped = new Map();
+      for (const r of records) {
+        const type = (r.type || "").toLowerCase();
+        const hero = r.hero;
+        const team = r.team;
+        const matchID = r.matchid;
+        if (type !== "pick" || !hero || !team || !matchID) continue;
+
+        const groupKey = `${matchID}||${team}`;
+        if (!grouped.has(groupKey)) {
+          grouped.set(groupKey, {
+            matchID,
+            region: r.region || "",
+            week: r.week || "",
+            round: r.round || "",
+            game: r.game || "",
+            team,
+            result: r.matchresult || "",
+            heroes: []
+          });
+        }
+        grouped.get(groupKey).heroes.push(hero);
+      }
+
+      const drafts = [];
+      for (const d of grouped.values()) {
+        const unique = [...new Set(d.heroes)].sort((a, b) => a.localeCompare(b));
+        if (unique.length === 6) drafts.push({ ...d, heroes: unique, draftKey: keyOf(unique) });
+      }
+      return drafts;
+    }
+
+    function renderHeroOptions(heroUniverse) {
+      const datalist = $("heroOptions");
+      datalist.innerHTML = heroUniverse.map(h => `<option value="${escapeHtml(h)}"></option>`).join("");
+    }
+
+    function updateSearchIcons(heroUniverse) {
+      for (let i = 0; i < 6; i++) {
+        const input = $(`draftHero${i}`);
+        const wrap = $(`searchIconWrap${i}`);
+        const hero = canonicalHeroName(input.value, heroUniverse);
+        wrap.innerHTML = hero ? "" : `<span class="hero-icon-placeholder">${i + 1}</span>`;
+        if (hero) {
+          const img = document.createElement("img");
+          img.alt = hero;
+          img.title = hero;
+          attachIconFallback(img, hero);
+          wrap.appendChild(img);
+        }
+      }
+    }
+
+    function renderDraftSearch(heroUniverse) {
+      renderHeroOptions(heroUniverse);
+      updateSearchIcons(heroUniverse);
+
+      const entered = [];
+      for (let i = 0; i < 6; i++) {
+        const hero = canonicalHeroName($(`draftHero${i}`).value, heroUniverse);
+        if (hero) entered.push(hero);
+      }
+
+      const summary = $("draftSearchSummary");
+      const results = $("draftSearchResults");
+      results.classList.add("hidden");
+      results.innerHTML = "";
+
+      if (entered.length === 0) {
+        summary.textContent = "Choose six heroes.";
+        return;
+      }
+      if (entered.length < 6) {
+        summary.textContent = `Choose ${6 - entered.length} more hero${6 - entered.length === 1 ? "" : "es"}.`;
+        return;
+      }
+
+      const unique = [...new Set(entered)];
+      if (unique.length < 6) {
+        summary.textContent = "Each hero slot needs to be unique.";
+        return;
+      }
+
+      const searchKey = keyOf(unique);
+      const matches = buildAllCompleteDrafts().filter(d => d.draftKey === searchKey);
+
+      if (!matches.length) {
+        summary.textContent = "No exact match found for that six-hero draft.";
+        return;
+      }
+
+      summary.textContent = `Found ${matches.length} exact match${matches.length === 1 ? "" : "es"}.`;
+      results.classList.remove("hidden");
+      results.innerHTML = `
+        <div class="match-head">
+          <div>Match ID</div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div>Heroes</div>
+        </div>
+        ${matches.map(m => `
+          <div class="match-row">
+            <div><b>${escapeHtml(m.matchID)}</b></div>
+            <div>${escapeHtml(m.region)}</div>
+            <div><b>${escapeHtml(m.team)}</b></div>
+            <div>${escapeHtml(m.result)}</div>
+            <div>${escapeHtml([m.round, m.game ? `Game ${m.game}` : ""].filter(Boolean).join(" / "))}</div>
+            <div class="match-heroes">${m.heroes.map(h => iconHtml(h)).join("")}${m.heroes.map(h => `<span class="chip">${escapeHtml(h)}</span>`).join("")}</div>
+          </div>
+        `).join("")}
+      `;
+      activateRenderedIcons();
+    }
+
+    function activateRenderedIcons() {
+      document.querySelectorAll("img[data-hero-icon]").forEach(img => {
+        attachIconFallback(img, img.dataset.heroIcon);
+      });
+    }
+
     function renderRegions(regions) {
       const select = $("region");
       const current = select.value || "All";
@@ -671,6 +982,7 @@
       const manual = splitList($("manualHeroes").value);
       const heroUniverse = [...new Set([...built.heroes, ...manual])].sort((a, b) => a.localeCompare(b));
       const maps = buildCountMaps(built.drafts);
+      renderDraftSearch(heroUniverse);
       const possibleSixes = nCk(heroUniverse.length, 6);
       const weights = {
         heroes: Number($("wHeroes").value) || 0,
@@ -758,10 +1070,15 @@
       $("loadBtn").addEventListener("click", () => loadSheet({ force: true }));
       const ids = [
         "region", "resultFilter", "topN", "minScore", "includeText", "excludeText", "manualHeroes",
+        "draftHero0", "draftHero1", "draftHero2", "draftHero3", "draftHero4", "draftHero5",
         "wHeroes", "wDuos", "wTrios", "wQuads", "wFives"
       ];
       ids.forEach(id => $(id).addEventListener("input", scheduleRecompute));
       ids.forEach(id => $(id).addEventListener("change", scheduleRecompute));
+      $("clearSearchBtn").addEventListener("click", () => {
+        for (let i = 0; i < 6; i++) $(`draftHero${i}`).value = "";
+        scheduleRecompute();
+      });
     }
 
     attachEvents();
