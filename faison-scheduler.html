@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faison Scheduler</title>
+  <style>
+    :root {
+      --bg: #f2e7d5;
+      --panel: #f9f0dd;
+      --panel-soft: #f3e2c4;
+      --text: #30261e;
+      --muted: #6a5d50;
+      --border: #cfb99a;
+      --accent: #8b5a2b;
+      --header: #e9d3b3;
+      --shadow: rgba(57, 44, 31, 0.18);
+      --cell-bg: #f7ead2;
+      --cell-header: #f4dfc0;
+      --pill: #efe0c9;
+      --pill-text: #6f5a46;
+      --info-bg: #f4e7cf;
+      --info-border: #dbc39e;
+      --info-text: #5f4c39;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 10px;
+      color: var(--text);
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
+      background: radial-gradient(circle at 20% 8%, #f8ecd6 0%, var(--bg) 42%, #ead7b9 100%);
+    }
+
+    .app {
+      width: min(100%, calc(100vw - 20px));
+      margin: 0 auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .topbar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 14px 30px var(--shadow);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(290px, 1fr) minmax(300px, 1fr) minmax(640px, 2fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 12px 28px var(--shadow);
+    }
+
+    .panel-title {
+      margin: 0 0 12px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .grid.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    textarea,
+    input,
+    select,
+    button {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+      padding: 7px 8px;
+    }
+
+    textarea {
+      min-height: 132px;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.16);
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 11px;
+      margin: 3px 0 6px;
+    }
+
+    .student-name-grid {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      padding: 8px;
+      overflow: visible;
+    }
+
+    .student-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) auto auto;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 5px 2px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .student-row:last-child {
+      border-bottom: none;
+    }
+
+    .student-row input[type="text"] {
+      width: 100%;
+      margin: 0;
+    }
+
+    .student-time-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: var(--muted);
+      white-space: nowrap;
+      font-size: 11px;
+    }
+
+    .time-select-pair {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .student-row select,
+    .time-select-pair select {
+      width: 56px;
+      min-width: 56px;
+      margin: 0;
+      padding: 6px 7px;
+    }
+
+    .student-row input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .person-heading {
+      display: inline-block;
+      margin: 4px 0 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .student-row .dupe-label {
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      font-size: 11px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    button {
+      cursor: pointer;
+      background: #9f6f43;
+      border-color: #7a5233;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      background: #816247;
+      border-color: #6a513b;
+    }
+
+    button.warn {
+      background: #7a4f4f;
+      border-color: #6f3d3d;
+    }
+
+    button:hover {
+      filter: brightness(1.06);
+    }
+
+    .notice {
+      border: 1px solid var(--info-border);
+      background: var(--info-bg);
+      color: var(--info-text);
+      border-radius: 10px;
+      padding: 8px;
+      margin-top: 8px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .notice.is-visible {
+      display: block;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff7ea;
+      max-height: 62vh;
+      overflow: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 700px;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      padding: 5px 6px;
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--header);
+      text-align: left;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    th:first-child,
+    td:first-child {
+      width: 92px;
+      background: var(--cell-header);
+      text-align: center;
+    }
+
+    td {
+      background: var(--cell-bg);
+    }
+
+    td.staff-cell {
+      width: 118px;
+      font-weight: 600;
+    }
+
+    td.materials-cell {
+      background: #ececec;
+    }
+
+    .materials-label {
+      color: #6a6a6a;
+      font-style: italic;
+      display: block;
+      font-size: 12px;
+    }
+
+    .staff-label {
+      color: #4b3f33;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .time-pill {
+      display: block;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--pill);
+      color: var(--pill-text);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 1px 7px;
+      margin-bottom: 3px;
+      text-align: center;
+    }
+
+    .summary {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .pair-area {
+      margin-top: 10px;
+      border-top: 1px dashed var(--border);
+      padding-top: 12px;
+    }
+
+    .pair-output {
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff8ef;
+      color: #4b3f33;
+      padding: 8px;
+      min-height: 52px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .pair-output.drag-over {
+      background: #ffeec8;
+    }
+
+    .pair-buckets {
+      margin-top: 8px;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pair-bucket {
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 6px;
+      background: #fff3dc;
+    }
+
+    .pair-bucket h3 {
+      margin: 0 0 6px 0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #5f4a36;
+    }
+
+    .pair-bucket-inner {
+      min-height: 58px;
+      background: #fffefa;
+      border: 1px dashed #d9c6aa;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 6px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .pair-bucket-inner.drag-over {
+      background: #ffeec8;
+      border-color: #b68f60;
+    }
+
+    .pair-item {
+      display: inline-block;
+      margin: 0 6px 4px 0;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid #d7c2a5;
+      background: #f4e7d2;
+      font-size: 11px;
+      font-weight: 700;
+      color: #5f4a36;
+      white-space: nowrap;
+      cursor: grab;
+    }
+
+    .pair-item.is-dragging {
+      opacity: 0.5;
+    }
+
+    .pair-empty {
+      color: #866c53;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .summary-item {
+      border: 1px solid var(--border);
+      background: #f8f0de;
+      padding: 7px 8px;
+      border-radius: 9px;
+      display: block;
+      text-align: left;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+
+    .summary-detail-lines {
+      display: inline-block;
+      margin-left: 0.35rem;
+    }
+
+    .summary-item strong {
+      color: #3b3229;
+    }
+
+    .slot-warning td {
+      background: #f4d8bf;
+    }
+
+    @media (max-width: 1200px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      th,
+      td {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="topbar">
+      <h1>Faison Scheduler</h1>
+      <div class="sub">
+        Staff assignment mode: assign students to staff with a balanced algorithm.
+      </div>
+    </section>
+
+    <section class="layout">
+      <section class="panel">
+        <h2 class="panel-title">Inputs</h2>
+
+        <div style="margin-top: 12px;">
+          <label>Staff (name + in/out)</label>
+          <div id="staffEntries" class="student-name-grid">
+            <div class="student-row">
+              <input id="staffName-0" type="text" placeholder="Staff 1">
+              <label class="student-time-wrap" for="staffIn-0">In time <input id="staffIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-0">Out time <input id="staffOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-1" type="text" placeholder="Staff 2">
+              <label class="student-time-wrap" for="staffIn-1">In time <input id="staffIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-1">Out time <input id="staffOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-2" type="text" placeholder="Staff 3">
+              <label class="student-time-wrap" for="staffIn-2">In time <input id="staffIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-2">Out time <input id="staffOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-3" type="text" placeholder="Staff 4">
+              <label class="student-time-wrap" for="staffIn-3">In time <input id="staffIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-3">Out time <input id="staffOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-4" type="text" placeholder="Staff 5">
+              <label class="student-time-wrap" for="staffIn-4">In time <input id="staffIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-4">Out time <input id="staffOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-5" type="text" placeholder="Staff 6">
+              <label class="student-time-wrap" for="staffIn-5">In time <input id="staffIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-5">Out time <input id="staffOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-6" type="text" placeholder="Staff 7">
+              <label class="student-time-wrap" for="staffIn-6">In time <input id="staffIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-6">Out time <input id="staffOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+            <div class="student-row">
+              <input id="staffName-7" type="text" placeholder="Staff 8">
+              <label class="student-time-wrap" for="staffIn-7">In time <input id="staffIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffOut-7">Out time <input id="staffOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+            </div>
+          </div>
+          <div class="help">Usually 6-9 staff members. Blank names are ignored.</div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <label>Students (8 entries)</label>
+          <div id="studentEntries" class="student-name-grid">
+            <div class="student-row">
+              <input id="studentName-0" type="text" placeholder="Student 1">
+              <label class="student-time-wrap" for="studentIn-0">In time <input id="studentIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-0">Out time <input id="studentOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-0"><input id="studentDupe-0" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-1" type="text" placeholder="Student 2">
+              <label class="student-time-wrap" for="studentIn-1">In time <input id="studentIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-1">Out time <input id="studentOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-1"><input id="studentDupe-1" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-2" type="text" placeholder="Student 3">
+              <label class="student-time-wrap" for="studentIn-2">In time <input id="studentIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-2">Out time <input id="studentOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-2"><input id="studentDupe-2" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-3" type="text" placeholder="Student 4">
+              <label class="student-time-wrap" for="studentIn-3">In time <input id="studentIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-3">Out time <input id="studentOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-3"><input id="studentDupe-3" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-4" type="text" placeholder="Student 5">
+              <label class="student-time-wrap" for="studentIn-4">In time <input id="studentIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-4">Out time <input id="studentOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-4"><input id="studentDupe-4" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-5" type="text" placeholder="Student 6">
+              <label class="student-time-wrap" for="studentIn-5">In time <input id="studentIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-5">Out time <input id="studentOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-5"><input id="studentDupe-5" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-6" type="text" placeholder="Student 7">
+              <label class="student-time-wrap" for="studentIn-6">In time <input id="studentIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-6">Out time <input id="studentOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-6"><input id="studentDupe-6" type="checkbox" checked>Can double</label>
+            </div>
+            <div class="student-row">
+              <input id="studentName-7" type="text" placeholder="Student 8">
+              <label class="student-time-wrap" for="studentIn-7">In time <input id="studentIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-7">Out time <input id="studentOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="dupe-label" for="studentDupe-7"><input id="studentDupe-7" type="checkbox" checked>Can double</label>
+            </div>
+          </div>
+          <div class="help">Use the checkboxes to mark students that can be assigned to multiple staff members in the same time row.</div>
+        </div>
+
+        <div class="actions">
+          <button id="resetBtn" class="warn" type="button">Clear saved data</button>
+        </div>
+        <div id="notice" class="notice" role="status"></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Pairing</h2>
+        <section class="pair-area">
+          <h2>Possible pairs</h2>
+          <p class="help">Pairs are generated automatically from students that can double.</p>
+          <div id="pairOutput" class="pair-output" aria-live="polite">No pairs generated yet.</div>
+          <div class="pair-buckets">
+            <section class="pair-bucket">
+              <h3>Approved</h3>
+              <div id="approvedPairs" class="pair-bucket-inner" data-bucket="approved" aria-label="Approved pair bucket"></div>
+            </section>
+            <section class="pair-bucket">
+              <h3>Backups</h3>
+              <div id="backupPairs" class="pair-bucket-inner" data-bucket="backups" aria-label="Backups pair bucket"></div>
+            </section>
+          </div>
+          <div class="actions">
+            <button id="buildBtn" type="button">Generate schedule</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">Outputs</h2>
+        <div class="table-wrap">
+          <table>
+            <thead id="scheduleHead"></thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+        </div>
+        <div class="summary" id="summary"></div>
+      </section>
+    </section>
+  </main>
+
+    <script>
+    (() => {
+      const settings = {
+        staffInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`staffName-${i}`)
+        ),
+        staffInInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`staffIn-${i}`)
+        ),
+        staffOutInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`staffOut-${i}`)
+        ),
+        studentInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`studentName-${i}`)
+        ),
+        studentDuplicates: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`studentDupe-${i}`)
+        ),
+        studentInInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`studentIn-${i}`)
+        ),
+        studentOutInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`studentOut-${i}`)
+        ),
+        pairOutput: document.getElementById("pairOutput"),
+        pairApprovedBucket: document.getElementById("approvedPairs"),
+        pairBackupBucket: document.getElementById("backupPairs"),
+        buildBtn: document.getElementById("buildBtn"),
+        resetBtn: document.getElementById("resetBtn"),
+        notice: document.getElementById("notice"),
+        scheduleHead: document.getElementById("scheduleHead"),
+        scheduleBody: document.getElementById("scheduleBody"),
+        summary: document.getElementById("summary")
+      };
+
+      const STORAGE_KEY = "faison-scheduler.assigner.v1";
+      let restoredPairBuckets = null;
+      let restoredSchedulePayload = null;
+
+      const defaultStaff = [
+        { name: "Staff A", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff B", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff C", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff D", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff E", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff F", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff G", inTime: "08:30", outTime: "14:00" },
+        { name: "Staff H", inTime: "08:30", outTime: "14:00" }
+      ];
+
+      const defaultStudents = [
+        "Alex",
+        "Jordan",
+        "Morgan",
+        "Taylor",
+        "Riley",
+        "Casey",
+        "Avery",
+        "Sam"
+      ].map((name) => ({
+        name,
+        inTime: "08:30",
+        outTime: "14:00"
+      }));
+
+      const defaultBlocks = [
+        { time: "08:30", start: 510, end: 540 },
+        { time: "09:00", start: 540, end: 570 },
+        { time: "10:00", start: 600, end: 630 },
+        { time: "11:00", start: 660, end: 690 },
+        { time: "11:30", start: 690, end: 720 },
+        { time: "12:00", start: 720, end: 750 },
+        { time: "13:00", start: 780, end: 810 },
+        { time: "14:00", start: 840, end: 840 }
+      ];
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function parsePeople(raw, defaultPriority = 1) {
+        const lines = String(raw || "")
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        const nameCounts = new Map();
+        const out = [];
+
+        lines.forEach((line, lineIndex) => {
+          const parts = line.split(",").map((value) => value.trim());
+          const name = String(parts[0] || "").trim();
+          if (!name) return;
+
+          let priority = defaultPriority;
+          let canDuplicate = true;
+
+          if (parts.length > 1) {
+            const maybePriority = Number(parts[1]);
+            if (Number.isFinite(maybePriority) && maybePriority > 0) {
+              priority = maybePriority;
+            }
+          }
+
+          const seen = nameCounts.get(name) || 0;
+          nameCounts.set(name, seen + 1);
+          const uniqueName = seen > 0 ? `${name} (${seen + 1})` : name;
+          out.push({
+            name: uniqueName,
+            priority,
+            canDuplicate,
+            sourceIndex: lineIndex
+          });
+        });
+
+        return out;
+      }
+
+      const parseTimeToMinutes = (value, fallback) => {
+        const normalized = String(value || "").trim();
+        if (!normalized) return fallback;
+
+        const match = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(normalized);
+        if (!match) return fallback;
+
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        return hours * 60 + minutes;
+      };
+
+      const scheduleDayStart = defaultBlocks[0].start;
+      const scheduleDayEnd = defaultBlocks[defaultBlocks.length - 1].start;
+      const clampToScheduleTime = (rawMinutes, fallback = scheduleDayStart) => {
+        const safeFallback = Number.isFinite(fallback) ? fallback : scheduleDayStart;
+        const safe = Number.isFinite(rawMinutes) ? rawMinutes : safeFallback;
+        const bounded = Math.min(Math.max(safe, scheduleDayStart), scheduleDayEnd);
+        return Math.round(bounded / 15) * 15;
+      };
+
+      const formatMinutesToTime = (value) => {
+        const minutes = clampToScheduleTime(value, scheduleDayStart);
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+      };
+
+      const timeHourOptions = ["08", "09", "10", "11", "12", "13", "14"];
+      const minuteOptionsByHour = {
+        all: ["00", "15", "30", "45"],
+        last: ["00"]
+      };
+
+      const getMinuteOptionsForHour = (hourText) => {
+        return hourText === "14" ? minuteOptionsByHour.last : minuteOptionsByHour.all;
+      };
+
+      const makeHourSelect = () => {
+        const select = document.createElement("select");
+        select.className = "time-select-hour";
+        select.innerHTML = timeHourOptions
+          .map((hour) => `<option value="${hour}">${hour}</option>`)
+          .join("");
+        return select;
+      };
+
+      const makeMinuteSelect = () => {
+        const select = document.createElement("select");
+        select.className = "time-select-minute";
+        return select;
+      };
+
+      const applyMinuteOptions = (timeInput, hourText) => {
+        if (!timeInput?.minute) return;
+        const selectedMinute = timeInput.minute.value || "00";
+        const options = getMinuteOptionsForHour(hourText);
+        timeInput.minute.innerHTML = options
+          .map((minute) => `<option value="${minute}">${minute}</option>`)
+          .join("");
+
+        timeInput.minute.value = options.includes(selectedMinute) ? selectedMinute : options[0];
+      };
+
+      const setTimeInputValue = (timeInput, minutes, fallback = scheduleDayStart) => {
+        if (!timeInput || !timeInput.hour || !timeInput.minute) return;
+
+        const safeMinutes = clampToScheduleTime(minutes, fallback);
+        const hourText = formatMinutesToTime(safeMinutes).slice(0, 2);
+        const minuteText = formatMinutesToTime(safeMinutes).slice(3);
+
+        timeInput.hour.value = hourText;
+        applyMinuteOptions(timeInput, hourText);
+
+        if (timeInput.minute.querySelector(`option[value=\"${minuteText}\"]`)) {
+          timeInput.minute.value = minuteText;
+        } else {
+          timeInput.minute.value = timeInput.minute.options[0]?.value || minuteOptionsByHour.last[0];
+        }
+      };
+
+      const getMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
+        if (!timeInput || !timeInput.hour || !timeInput.minute) return fallback;
+        const hourText = String(timeInput.hour.value || "").trim();
+        const minuteText = String(timeInput.minute.value || "").trim();
+        const candidate = parseTimeToMinutes(`${hourText}:${minuteText}`, fallback);
+        return clampToScheduleTime(candidate, fallback);
+      };
+
+      const getTimeInputValue = (timeInput, fallback = scheduleDayStart) => {
+        const minutes = getMinutesFromTimeInput(timeInput, fallback);
+        return formatMinutesToTime(minutes);
+      };
+
+      const replaceTimeInputsWithSelects = () => {
+        const replaceOne = (input) => {
+          if (!input || input.tagName !== "INPUT") return input;
+
+          const currentMinutes = parseTimeToMinutes(input.value, scheduleDayStart);
+          const hourSelect = makeHourSelect();
+          const minuteSelect = makeMinuteSelect();
+          const wrapper = document.createElement("span");
+          wrapper.className = "time-select-pair";
+
+          wrapper.appendChild(hourSelect);
+          wrapper.appendChild(document.createTextNode(":"));
+          wrapper.appendChild(minuteSelect);
+
+          input.replaceWith(wrapper);
+
+          const timeInput = { hour: hourSelect, minute: minuteSelect };
+          setTimeInputValue(timeInput, currentMinutes);
+          return timeInput;
+        };
+
+        settings.staffInInputs = settings.staffInInputs.map(replaceOne);
+        settings.staffOutInputs = settings.staffOutInputs.map(replaceOne);
+        settings.studentInInputs = settings.studentInInputs.map(replaceOne);
+        settings.studentOutInputs = settings.studentOutInputs.map(replaceOne);
+      };
+
+      const normalizeTimeBounds = (inMinutes, outMinutes) => {
+        const safeIn = clampToScheduleTime(inMinutes, scheduleDayStart);
+        const safeOut = clampToScheduleTime(outMinutes, scheduleDayEnd);
+        if (safeOut >= safeIn) {
+          return { inMinutes: safeIn, outMinutes: safeOut };
+        }
+
+        return {
+          inMinutes: safeOut,
+          outMinutes: safeIn
+        };
+      };
+
+      const isWithinTimeWindow = (slot, person) => {
+        return slot.start >= person.inMinutes && slot.end <= person.outMinutes;
+      };
+
+      function safeStorageGet(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function safeStorageSet(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (error) {
+          return;
+        }
+      }
+
+      function safeStorageRemove(key) {
+        try {
+          localStorage.removeItem(key);
+        } catch (error) {
+          return;
+        }
+      }
+
+      const getPairStateFromPayload = (value) => {
+        if (!value || typeof value !== "object") return [];
+        if (Array.isArray(value)) return value;
+        return [];
+      };
+
+      const getPairBucketsState = () => ({
+        approved: Array.from(settings.pairApprovedBucket.querySelectorAll(".pair-item")).map((item) => item.dataset.pair || ""),
+        backups: Array.from(settings.pairBackupBucket.querySelectorAll(".pair-item")).map((item) => item.dataset.pair || "")
+      });
+
+      const getScheduleStateForStorage = (assignmentResult) => {
+        if (!assignmentResult) return null;
+        const counts = assignmentResult.counts instanceof Map
+          ? Array.from(assignmentResult.counts.entries())
+          : Array.isArray(assignmentResult.counts)
+            ? assignmentResult.counts
+            : [];
+        return {
+          assignments: assignmentResult.assignments,
+          counts,
+          unassignedBySlot: assignmentResult.unassignedBySlot || [],
+          staff: assignmentResult.staff || []
+        };
+      };
+
+      const getScheduleStateFromStorage = (payload) => {
+        if (!payload || !Array.isArray(payload.assignments)) {
+          return null;
+        }
+
+        return {
+          assignments: payload.assignments,
+          counts: payload.counts instanceof Map
+            ? payload.counts
+            : new Map(Array.isArray(payload.counts) ? payload.counts : []),
+          unassignedBySlot: Array.isArray(payload.unassignedBySlot) ? payload.unassignedBySlot : [],
+          staff: Array.isArray(payload.staff) ? payload.staff : []
+        };
+      };
+
+      function setStaffRowsFromState(storedState) {
+        const savedStaff = storedState?.staffEntries || [];
+        const names = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.name || "");
+        const inTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.inTime || defaultStaff[index]?.inTime || "08:30");
+        const outTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.outTime || defaultStaff[index]?.outTime || "14:00");
+
+        settings.staffInputs.forEach((input, index) => {
+          input.value = names[index] || "";
+        });
+        settings.staffInInputs.forEach((input, index) => {
+          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart);
+        });
+        settings.staffOutInputs.forEach((input, index) => {
+          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd);
+        });
+      }
+
+      function setStudentRowsFromState(storedState) {
+        const savedStudents = storedState?.studentEntries || storedState?.students || [];
+        const names = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.name || "");
+        const duplicates = Array.from({ length: 8 }, (_, index) => {
+          if (savedStudents?.[index] && savedStudents[index].canDuplicate !== undefined) {
+            return !!savedStudents[index].canDuplicate;
+          }
+          return true;
+        });
+        const inTimes = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.inTime || "08:30");
+        const outTimes = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.outTime || "14:00");
+
+        settings.studentInputs.forEach((input, index) => {
+          input.value = names[index] || "";
+        });
+        settings.studentInInputs.forEach((input, index) => {
+          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart);
+        });
+        settings.studentOutInputs.forEach((input, index) => {
+          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd);
+        });
+
+        settings.studentDuplicates.forEach((checkbox, index) => {
+          checkbox.checked = duplicates[index];
+        });
+      }
+
+      function parseStaffFromInputs() {
+        const staff = [];
+        const dayStart = scheduleDayStart;
+        const dayEnd = scheduleDayEnd;
+
+        for (let index = 0; index < settings.staffInputs.length; index += 1) {
+          const rawName = String(settings.staffInputs[index].value || "").trim();
+          if (!rawName) continue;
+
+          const parsedIn = getMinutesFromTimeInput(settings.staffInInputs[index], dayStart);
+          const parsedOut = getMinutesFromTimeInput(settings.staffOutInputs[index], dayEnd);
+          const { inMinutes, outMinutes } = normalizeTimeBounds(parsedIn, parsedOut);
+
+          staff.push({
+            name: rawName,
+            inMinutes,
+            outMinutes,
+            sourceIndex: index
+          });
+        }
+
+        return staff;
+      }
+
+      function parseStudentsFromInputs() {
+        const students = [];
+        const nameCounts = new Map();
+        const dayStart = scheduleDayStart;
+        const dayEnd = scheduleDayEnd;
+
+        for (let index = 0; index < settings.studentInputs.length; index += 1) {
+          const rawName = String(settings.studentInputs[index].value || "").trim();
+          if (!rawName) continue;
+
+          const seen = nameCounts.get(rawName) || 0;
+          nameCounts.set(rawName, seen + 1);
+          const uniqueName = seen > 0 ? `${rawName} (${seen + 1})` : rawName;
+          const canDuplicate = settings.studentDuplicates[index].checked;
+          const parsedIn = getMinutesFromTimeInput(settings.studentInInputs[index], dayStart);
+          const parsedOut = getMinutesFromTimeInput(settings.studentOutInputs[index], dayEnd);
+          const { inMinutes, outMinutes } = normalizeTimeBounds(parsedIn, parsedOut);
+
+          students.push({
+            name: uniqueName,
+            priority: 1,
+            canDuplicate,
+            inMinutes,
+            outMinutes,
+            sourceIndex: index
+          });
+        }
+
+        return students;
+      }
+
+      const pairPriorityKey = (left, right) => {
+        const ordered = [left, right].sort((a, b) => a.localeCompare(b));
+        return `${ordered[0]}||${ordered[1]}`;
+      };
+
+      const getPairPriorityMap = () => {
+        const out = new Map();
+        const addBucketPairs = (container, priority) => {
+          if (!container) return;
+
+          container.querySelectorAll(".pair-item").forEach((pill) => {
+            const raw = String(pill.dataset.pair || "").trim();
+            const [left, right] = raw.split(" + ");
+            if (!left || !right) return;
+            out.set(pairPriorityKey(left.trim(), right.trim()), priority);
+          });
+        };
+
+        addBucketPairs(settings.pairApprovedBucket, 0);
+        addBucketPairs(settings.pairBackupBucket, 1);
+        return out;
+      };
+
+      let draggingPairItem = null;
+
+      const pairDropZones = () => [
+        settings.pairOutput,
+        settings.pairApprovedBucket,
+        settings.pairBackupBucket
+      ];
+
+      const clearPairList = (element, showEmptyMessage = false, message = "") => {
+        element.innerHTML = "";
+        if (showEmptyMessage) {
+          const note = document.createElement("span");
+          note.className = "pair-empty";
+          note.textContent = message;
+          element.appendChild(note);
+        }
+      };
+
+      const createPairPill = (pair) => {
+        const pill = document.createElement("span");
+        pill.className = "pair-item";
+        pill.textContent = pair;
+        pill.draggable = true;
+        pill.dataset.pair = pair;
+        pill.addEventListener("dragstart", onPairDragStart);
+        pill.addEventListener("dragend", onPairDragEnd);
+        return pill;
+      };
+
+      function onPairDragStart(event) {
+        draggingPairItem = event.currentTarget;
+        draggingPairItem.classList.add("is-dragging");
+        event.dataTransfer.setData("text/plain", event.currentTarget.dataset.pair || "");
+        event.dataTransfer.effectAllowed = "move";
+      }
+
+      function onPairDragEnd() {
+        if (draggingPairItem) {
+          draggingPairItem.classList.remove("is-dragging");
+        }
+
+        draggingPairItem = null;
+        pairDropZones().forEach((zone) => zone.classList.remove("drag-over"));
+      }
+
+      function onPairDragOver(event) {
+        event.preventDefault();
+        event.currentTarget.classList.add("drag-over");
+        event.dataTransfer.dropEffect = "move";
+      }
+
+      function onPairDragLeave(event) {
+        event.currentTarget.classList.remove("drag-over");
+      }
+
+      function onPairDrop(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove("drag-over");
+        if (!draggingPairItem) return;
+        event.currentTarget.appendChild(draggingPairItem);
+        saveState();
+      }
+
+      const bindPairDropZones = () => {
+        pairDropZones().forEach((zone) => {
+          zone.addEventListener("dragover", onPairDragOver);
+          zone.addEventListener("dragleave", onPairDragLeave);
+          zone.addEventListener("drop", onPairDrop);
+        });
+      };
+
+      function generatePossiblePairsFromInputs(preservedBuckets) {
+        const students = parseStudentsFromInputs();
+        const doubleStudents = students.filter((student) => student.canDuplicate);
+        const hasBucketShape = preservedBuckets
+          && Array.isArray(preservedBuckets.approved)
+          && Array.isArray(preservedBuckets.backups);
+        const bucketData = hasBucketShape ? preservedBuckets : getPairBucketsState();
+        const approvedPairList = getPairStateFromPayload(bucketData.approved).map((pair) => String(pair));
+        const backupPairList = getPairStateFromPayload(bucketData.backups).map((pair) => String(pair));
+        const approvedPairs = new Set(approvedPairList);
+        const backupPairs = new Set(backupPairList);
+
+        clearPairList(settings.pairOutput, false);
+        clearPairList(settings.pairApprovedBucket, false);
+        clearPairList(settings.pairBackupBucket, false);
+
+        if (!doubleStudents.length) {
+          clearPairList(settings.pairOutput, true, "No students are marked as Can double.");
+          return;
+        }
+
+        const names = doubleStudents.map((student) => student.name);
+        const pairs = [];
+
+        for (let i = 0; i < names.length; i += 1) {
+          for (let j = i + 1; j < names.length; j += 1) {
+            pairs.push(`${names[i]} + ${names[j]}`);
+          }
+        }
+
+        if (!pairs.length) {
+          clearPairList(settings.pairOutput, true, "Need at least two students that can double.");
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        pairs.forEach((pair) => {
+          fragment.appendChild(createPairPill(pair));
+        });
+        settings.pairOutput.appendChild(fragment);
+
+        const allPills = Array.from(settings.pairOutput.querySelectorAll(".pair-item"));
+        const pillByPair = new Map(
+          allPills.map((pill) => [String(pill.dataset.pair || ""), pill])
+        );
+        const placed = new Set();
+
+        const placeOrdered = (pairsToPlace, target) => {
+          pairsToPlace.forEach((pair) => {
+            const pill = pillByPair.get(pair);
+            if (!pill || placed.has(pill)) return;
+            target.appendChild(pill);
+            placed.add(pill);
+          });
+        };
+
+        placeOrdered(approvedPairList, settings.pairApprovedBucket);
+        placeOrdered(backupPairList, settings.pairBackupBucket);
+
+        allPills.forEach((pill) => {
+          if (!placed.has(pill)) {
+            settings.pairOutput.appendChild(pill);
+          }
+        });
+      }
+
+      function getBlocks() {
+        return defaultBlocks.slice();
+      }
+
+      function buildAssignments(staff, students, slots, pairPriorityByKey = new Map()) {
+        const assignments = [];
+        const staffNames = staff.map((person) => person.name);
+        const counts = new Map(students.map((student) => [student.name, 0]));
+        const lastByStaffStudent = staff.map(() => null);
+        const lastByStaffCell = staff.map(() => []);
+        const canDoubleByName = new Map(students.map((student) => [student.name, !!student.canDuplicate]));
+        const allowedPairPriority = new Map(pairPriorityByKey);
+        const unassignedBySlot = [];
+        let consecutiveDoubleSlots = 0;
+
+        const isStaffCellAvailableForStudent = (cell, student) => {
+          if (!cell.length) return true;
+          if (!student.canDuplicate) return false;
+          if (cell.length >= 2) return false;
+          if (cell.some((name) => !canDoubleByName.get(name))) return false;
+
+          return cell.every((name) => {
+            const pairKey = pairPriorityKey(name, student.name);
+            return allowedPairPriority.has(pairKey);
+          });
+        };
+
+        const getCellPairPriority = (cell, student) => {
+          if (!cell.length) return 2;
+          if (!student.canDuplicate || cell.length >= 2) return Infinity;
+          let priority = 0;
+          for (const name of cell) {
+            const key = pairPriorityKey(name, student.name);
+            const thisPriority = allowedPairPriority.get(key);
+            if (thisPriority === undefined) return Infinity;
+            if (thisPriority > priority) {
+              priority = thisPriority;
+            }
+          }
+          return priority;
+        };
+
+        const shuffle = (values) => {
+          const out = values.slice();
+          for (let i = out.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [out[i], out[j]] = [out[j], out[i]];
+          }
+          return out;
+        };
+
+        const scorePlan = (plan) => {
+          const loadValues = plan.loads || [];
+          const maxLoad = loadValues.length ? Math.max(...loadValues) : 0;
+          const minLoad = loadValues.length ? Math.min(...loadValues) : 0;
+          const loadSpread = maxLoad - minLoad;
+          return {
+            unassignedCount: plan.unassignedStudents.length,
+            hasConsecutiveDouble: !!plan.requiredConsecutiveDouble,
+            pairPenalty: plan.pairPenalty,
+            loadSpread
+          };
+        };
+
+        const betterPlan = (left, right) => {
+          if (!right) return true;
+
+          const leftScore = scorePlan(left);
+          const rightScore = scorePlan(right);
+          if (!leftScore || !rightScore) return !right;
+
+          if (leftScore.unassignedCount !== rightScore.unassignedCount) {
+            return leftScore.unassignedCount < rightScore.unassignedCount;
+          }
+
+          if (leftScore.hasConsecutiveDouble !== rightScore.hasConsecutiveDouble) {
+            return !leftScore.hasConsecutiveDouble && rightScore.hasConsecutiveDouble;
+          }
+
+          if (leftScore.pairPenalty !== rightScore.pairPenalty) {
+            return leftScore.pairPenalty < rightScore.pairPenalty;
+          }
+
+          if (leftScore.loadSpread !== rightScore.loadSpread) {
+            return leftScore.loadSpread < rightScore.loadSpread;
+          }
+
+          return Math.random() < 0.5;
+        };
+
+        const getOrderedStudentsByScore = (baseCounts, studentPool) => {
+          return studentPool
+            .map((student, index) => {
+              const assigned = baseCounts.get(student.name) || 0;
+              return {
+                ...student,
+                assigned,
+                orderKey: student.sourceIndex ?? index
+              };
+            })
+            .sort((a, b) => {
+              const byAssigned = a.assigned - b.assigned;
+              if (byAssigned !== 0) return byAssigned;
+              return a.orderKey - b.orderKey;
+            });
+        };
+
+        const rotate = (values, start) => {
+          if (!values.length) return values;
+          const shift = start % values.length;
+          return values.slice(shift).concat(values.slice(0, shift));
+        };
+
+        for (const slot of slots) {
+          const slotBaseCounts = new Map(counts);
+          const activeStudents = students.filter((student) => isWithinTimeWindow(slot, student));
+          const activeStaff = staff.filter((person) => isWithinTimeWindow(slot, person));
+          const activeStaffIndexSet = new Set();
+          staff.forEach((person, index) => {
+            if (isWithinTimeWindow(slot, person)) {
+              activeStaffIndexSet.add(index);
+            }
+          });
+          const activeStaffCount = activeStaff.length;
+
+          const baseStudentOrder = getOrderedStudentsByScore(slotBaseCounts, activeStudents);
+          const studentOrderings = [
+            baseStudentOrder,
+            [...baseStudentOrder].reverse(),
+            rotate(baseStudentOrder, 1),
+            rotate(baseStudentOrder, 2),
+            rotate(baseStudentOrder, Math.max(1, Math.floor(baseStudentOrder.length / 2))),
+            shuffle(baseStudentOrder),
+            shuffle([...baseStudentOrder])
+          ];
+          const randomizedOrderings = shuffle(studentOrderings).map((ordering) => ordering.slice());
+
+          const attemptSlot = (studentOrder, enforceNoConsecutiveDouble = false) => {
+            const row = { time: slot.time, byStaff: staff.map(() => []) };
+            const loads = staff.map(() => 0);
+            const assignedThisSlot = new Set();
+            const localCounts = new Map(slotBaseCounts);
+            let requiredConsecutiveDouble = false;
+            let pairPenalty = 0;
+
+            const pickStaffIndex = (student) => {
+              let bestIndex = -1;
+              let bestLoad = Infinity;
+              let bestPairPriority = Infinity;
+              let bestStaffIndex = Infinity;
+              let bestTieRand = -1;
+              const candidates = [];
+
+              for (let i = 0; i < staff.length; i++) {
+                if (!activeStaffIndexSet.has(i)) {
+                  continue;
+                }
+                if (!isStaffCellAvailableForStudent(row.byStaff[i], student)) {
+                  continue;
+                }
+
+                const load = loads[i];
+                const repeatsSequentially = lastByStaffStudent[i] === student.name;
+                const projectedCellSize = row.byStaff[i].length + 1;
+                const pairPriority = getCellPairPriority(row.byStaff[i], student);
+                const repeatsDoubledTime =
+                  lastByStaffCell[i].length === 2 && projectedCellSize === 2;
+
+                if (enforceNoConsecutiveDouble && repeatsDoubledTime) {
+                  continue;
+                }
+
+                if (!Number.isFinite(pairPriority)) {
+                  continue;
+                }
+
+                candidates.push({
+                  index: i,
+                  load,
+                  pairPriority,
+                  repeatsSequentially,
+                  repeatsDoubledTime,
+                  staffIndex: i,
+                  tieRand: Math.random()
+                });
+              }
+
+              if (!candidates.length) {
+                return {
+                  bestIndex: -1,
+                  repeatsDoubledTime: false
+                };
+              }
+
+              const nonSequential = candidates.filter((candidate) => !candidate.repeatsSequentially);
+              const sequentialPool = nonSequential.length ? nonSequential : candidates;
+              const nonDoubledTime = sequentialPool.filter((candidate) => !candidate.repeatsDoubledTime);
+              const pool = nonDoubledTime.length ? nonDoubledTime : sequentialPool;
+
+              for (const candidate of pool) {
+                const { index, load, pairPriority, tieRand } = candidate;
+
+                if (
+                  bestIndex === -1 ||
+                  pairPriority < bestPairPriority ||
+                  (pairPriority === bestPairPriority && load < bestLoad) ||
+                  (pairPriority === bestPairPriority && load === bestLoad && candidate.staffIndex < bestStaffIndex) ||
+                  (pairPriority === bestPairPriority &&
+                    load === bestLoad &&
+                    candidate.staffIndex === bestStaffIndex &&
+                    tieRand > bestTieRand)
+                ) {
+                  bestLoad = load;
+                  bestPairPriority = pairPriority;
+                  bestStaffIndex = candidate.staffIndex;
+                  bestTieRand = tieRand;
+                  bestIndex = index;
+                }
+              }
+
+              return {
+                bestIndex,
+                repeatsDoubledTime: pool.length
+                  ? pool.some((candidate) => candidate.index === bestIndex && candidate.repeatsDoubledTime)
+                  : false
+              };
+            };
+
+            const assignStudent = (student) => {
+              if (assignedThisSlot.has(student.name)) {
+                return false;
+              }
+
+              const pick = pickStaffIndex(student);
+              if (pick.bestIndex < 0) {
+                return false;
+              }
+
+              const staffIndex = pick.bestIndex;
+              row.byStaff[staffIndex].push(student.name);
+              loads[staffIndex] += 1;
+              localCounts.set(student.name, (localCounts.get(student.name) || 0) + 1);
+              assignedThisSlot.add(student.name);
+              if (row.byStaff[staffIndex].length > 1) {
+                const singlePenalty = getCellPairPriority(row.byStaff[staffIndex], student);
+                if (singlePenalty < Infinity && student.canDuplicate) {
+                  pairPenalty += singlePenalty === 1 ? 1 : 0;
+                }
+              }
+
+              if (pick.repeatsDoubledTime && !enforceNoConsecutiveDouble) {
+                requiredConsecutiveDouble = true;
+              }
+              return true;
+            };
+
+            for (const student of studentOrder) {
+              assignStudent(student);
+            }
+
+            const unassignedStudents = activeStudents
+              .filter((student) => !assignedThisSlot.has(student.name))
+              .map((student) => student.name);
+            if (unassignedStudents.length) {
+              row.unassigned = unassignedStudents;
+            }
+
+            if (activeStaffCount > activeStudents.length) {
+              for (let i = 0; i < staff.length; i++) {
+                if (activeStaffIndexSet.has(i) && !row.byStaff[i].length) {
+                  row.byStaff[i] = ["Materials"];
+                }
+              }
+            }
+
+            return {
+              row,
+              counts: localCounts,
+              unassignedStudents,
+              requiredConsecutiveDouble,
+              pairPenalty,
+              loads
+            };
+          };
+
+          let slotPlan = null;
+          for (const enforceNoConsecutiveDouble of [true, false]) {
+            const attemptOrders = randomizedOrderings;
+            for (const studentOrder of attemptOrders) {
+              const candidate = attemptSlot(studentOrder, enforceNoConsecutiveDouble);
+              if (betterPlan(candidate, slotPlan)) {
+                slotPlan = candidate;
+              }
+            }
+          }
+
+          if (slotPlan.row.unassigned?.length) {
+            unassignedBySlot.push({
+              time: slotPlan.row.time,
+              names: slotPlan.unassignedStudents
+            });
+          }
+
+          if (slotPlan.requiredConsecutiveDouble) {
+            consecutiveDoubleSlots += 1;
+          }
+
+          slotPlan.counts.forEach((count, studentName) => {
+            counts.set(studentName, count);
+          });
+
+          for (let i = 0; i < staff.length; i++) {
+            if (!activeStaffIndexSet.has(i)) {
+              lastByStaffStudent[i] = null;
+              lastByStaffCell[i] = [];
+              continue;
+            }
+
+            const nextCell = slotPlan.row.byStaff[i].filter((name) => name !== "Materials");
+            lastByStaffStudent[i] = nextCell.length ? nextCell[nextCell.length - 1] : null;
+            lastByStaffCell[i] = nextCell.slice();
+          }
+
+          assignments.push(slotPlan.row);
+        }
+
+        return {
+          assignments,
+          counts,
+          unassignedBySlot,
+          staff: staffNames,
+          consecutiveDoubleSlots
+        };
+      }
+
+      function renderSchedule(staff, assignmentResult) {
+        const {
+          assignments = [],
+          counts: rawCounts = [],
+          unassignedBySlot = []
+        } = assignmentResult || {};
+        const counts = rawCounts instanceof Map
+          ? rawCounts
+          : new Map(Array.isArray(rawCounts) ? rawCounts : []);
+
+        if (!staff.length || !assignments.length) {
+          settings.scheduleHead.innerHTML = "";
+          settings.scheduleBody.innerHTML = "<tr><td>No schedule to show.</td></tr>";
+          settings.summary.innerHTML = "";
+          return;
+        }
+
+        settings.scheduleHead.innerHTML = `<tr>${["Time", ...staff].map((col) => `<th>${escapeHtml(col)}</th>`).join("")}</tr>`;
+
+        settings.scheduleBody.innerHTML = assignments
+          .map((row) => {
+            const cells = [`<td><span class="time-pill">${escapeHtml(row.time)}</span></td>`];
+
+            const rowClasses = row.unassigned?.length ? "slot-warning" : "";
+
+            for (const staffCell of row.byStaff) {
+              const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
+
+              if (!staffCell.length) {
+                cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
+                continue;
+              }
+
+              if (isMaterials) {
+                cells.push(`<td class="staff-cell materials-cell"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
+                continue;
+              }
+
+              cells.push(`<td class="staff-cell"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
+            }
+
+            while (cells.length - 1 < staff.length) {
+              cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
+            }
+
+            return `<tr class="${rowClasses}">${cells.join("")}</tr>`;
+          })
+          .join("");
+
+        const totalAssignments = assignments.reduce((sum, row) => {
+          return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + staffCell.length, 0);
+        }, 0);
+
+        const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
+        const missingCount = assignments.reduce((sum, row) => sum + (row.unassigned?.length || 0), 0);
+        const missingSummary = unassignedBySlot.length
+          ? unassignedBySlot.map(({ time, names }) => `${escapeHtml(time)} &rarr; ${escapeHtml(names.join(", "))}`).join("<br>")
+          : "None";
+        settings.summary.innerHTML = [
+          `<div class="summary-item"><strong>Rows:</strong> ${assignments.length}</div>`,
+          `<div class="summary-item"><strong>Staff:</strong> ${staff.length}</div>`,
+          `<div class="summary-item"><strong>Total cells:</strong> ${totalAssignments}</div>`,
+          `<div class="summary-item"><strong>Assigned spread:</strong> ${top.map(([name, count]) => `${name}: ${count}`).join(" | ")}</div>`,
+          `<div class="summary-item"><strong>Missing students in slots:</strong> ${missingCount}</div>`,
+          `<div class="summary-item"><strong>Missing detail:</strong> <span class="summary-detail-lines">${missingSummary}</span></div>`
+        ].join("");
+      }
+
+      function showNotice(message) {
+        settings.notice.textContent = message || "";
+        settings.notice.classList.toggle("is-visible", !!message);
+      }
+
+      function clearNotice() {
+        settings.notice.textContent = "";
+        settings.notice.classList.remove("is-visible");
+      }
+
+      function saveState() {
+        const staff = settings.staffInputs.map((input, index) => ({
+          name: input.value,
+          inTime: getTimeInputValue(settings.staffInInputs[index], scheduleDayStart),
+          outTime: getTimeInputValue(settings.staffOutInputs[index], scheduleDayEnd)
+        }));
+        const students = settings.studentInputs.map((input, index) => ({
+          name: input.value,
+          canDuplicate: settings.studentDuplicates[index].checked,
+          inTime: getTimeInputValue(settings.studentInInputs[index], scheduleDayStart),
+          outTime: getTimeInputValue(settings.studentOutInputs[index], scheduleDayEnd)
+        }));
+        const scheduleState = getScheduleStateForStorage(restoredSchedulePayload);
+
+        const payload = {
+          staffEntries: staff,
+          studentEntries: students,
+          staffNames: staff.map((staffMember) => staffMember.name).join("\n"),
+          pairBuckets: getPairBucketsState(),
+          lastSchedule: scheduleState
+        };
+        safeStorageSet(STORAGE_KEY, JSON.stringify(payload));
+      }
+
+      function loadState() {
+        const raw = safeStorageGet(STORAGE_KEY);
+        if (!raw) {
+          restoredPairBuckets = null;
+          restoredSchedulePayload = null;
+          applyDefaults();
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed.staffEntries && Array.isArray(parsed.staffEntries) && parsed.staffEntries.length) {
+            setStaffRowsFromState(parsed);
+          } else if (typeof parsed.staffNames === "string" && parsed.staffNames.trim()) {
+            const legacyStaff = parsePeople(parsed.staffNames).map((person) => ({
+              name: person.name,
+              inTime: "08:30",
+              outTime: "14:00"
+            }));
+            setStaffRowsFromState({ staffEntries: legacyStaff });
+          } else {
+            setStaffRowsFromState({
+              staffEntries: defaultStaff
+            });
+          }
+          restoredPairBuckets = {
+            approved: getPairStateFromPayload(parsed?.pairBuckets?.approved),
+            backups: getPairStateFromPayload(parsed?.pairBuckets?.backups)
+          };
+          restoredSchedulePayload = getScheduleStateFromStorage(parsed?.lastSchedule || null);
+
+          if (parsed.studentEntries && Array.isArray(parsed.studentEntries) && parsed.studentEntries.length) {
+            setStudentRowsFromState(parsed);
+          } else if (typeof parsed.studentNames === "string" && parsed.studentNames.trim()) {
+            const legacyStudents = parsePeople(parsed.studentNames, 1).map((student) => ({
+              name: student.name,
+              canDuplicate: student.canDuplicate,
+              inTime: "08:30",
+              outTime: "14:00"
+            }));
+            setStudentRowsFromState({ students: legacyStudents });
+          } else {
+            setStudentRowsFromState({
+              students: defaultStudents
+            });
+          }
+        } catch (error) {
+          setStaffRowsFromState({
+            staffEntries: defaultStaff
+          });
+          restoredPairBuckets = null;
+          restoredSchedulePayload = null;
+          setStudentRowsFromState({
+            students: defaultStudents
+          });
+        }
+      }
+
+      function applyDefaults() {
+        setStaffRowsFromState({
+          staffEntries: defaultStaff
+        });
+        setStudentRowsFromState({
+          students: defaultStudents
+        });
+      }
+
+      function generate() {
+        clearNotice();
+
+        const staff = parseStaffFromInputs();
+        const students = parseStudentsFromInputs();
+        const slots = getBlocks();
+
+        if (!staff.length || !students.length) {
+          showNotice("Please add at least one staff member and one student.");
+          renderSchedule([], { assignments: [], counts: new Map() });
+          return;
+        }
+
+        if (!slots.length) {
+          showNotice("No time rows are available.");
+          renderSchedule(staff, { assignments: [], counts: new Map(students.map((student) => [student.name, 0])) });
+          return;
+        }
+
+        const pairPriorityByKey = getPairPriorityMap();
+        const result = buildAssignments(staff, students, slots, pairPriorityByKey);
+        const unassignedTotal = result.unassignedBySlot.reduce((sum, row) => sum + row.names.length, 0);
+        const consecutiveDoubleSlots = result.consecutiveDoubleSlots || 0;
+        const staffFromResult = result.staff || staff;
+
+        if (unassignedTotal) {
+          const missingCount = result.unassignedBySlot.length;
+          const preview = result.unassignedBySlot
+            .slice(0, 3)
+            .map(({ time, names }) => `${time}: ${names.join(", ")}`)
+            .join(" | ");
+          const hidden = missingCount > 3 ? ` (and ${missingCount - 3} more)` : "";
+          showNotice(`Schedule incomplete: ${result.unassignedBySlot.length} time block(s) still have unassigned students: ${preview}${hidden}`);
+        } else if (consecutiveDoubleSlots) {
+          showNotice(`Warning: ${consecutiveDoubleSlots} time block(s) required consecutive doubled staff slots because of staffing constraints.`);
+        } else if (students.length <= staff.length) {
+          showNotice("All students are accounted for in every time block. Surplus staff are shown as Materials.");
+        } else {
+          showNotice("Each slot assigns one student per staff with doubling as needed to keep staffing balanced.");
+        }
+
+        restoredSchedulePayload = getScheduleStateForStorage({
+          assignments: result.assignments,
+          counts: result.counts,
+          unassignedBySlot: result.unassignedBySlot,
+          staff: staffFromResult
+        });
+        saveState();
+        renderSchedule(staffFromResult, result);
+      }
+
+      const clampTimeInputField = (input, isOut = false) => {
+        const fallback = isOut ? scheduleDayEnd : scheduleDayStart;
+        const parsed = getMinutesFromTimeInput(input, fallback);
+        setTimeInputValue(input, parsed, fallback);
+      };
+
+      settings.buildBtn.addEventListener("click", generate);
+        settings.resetBtn.addEventListener("click", () => {
+          safeStorageRemove(STORAGE_KEY);
+          applyDefaults();
+          restoredPairBuckets = null;
+          restoredSchedulePayload = null;
+          clearNotice();
+          clearPairList(settings.pairOutput, true, "No pairs generated yet.");
+          clearPairList(settings.pairApprovedBucket, false);
+          clearPairList(settings.pairBackupBucket, false);
+          renderSchedule([], { assignments: [], counts: new Map() });
+        });
+
+      settings.staffInputs.forEach((input) => {
+        input.addEventListener("input", saveState);
+      });
+      replaceTimeInputsWithSelects();
+      settings.staffInInputs.forEach((input) => {
+        input.hour?.addEventListener("change", () => {
+          clampTimeInputField(input, false);
+          saveState();
+        });
+        input.minute?.addEventListener("change", () => {
+          clampTimeInputField(input, false);
+          saveState();
+        });
+      });
+      settings.staffOutInputs.forEach((input) => {
+        input.hour?.addEventListener("change", () => {
+          clampTimeInputField(input, true);
+          saveState();
+        });
+        input.minute?.addEventListener("change", () => {
+          clampTimeInputField(input, true);
+          saveState();
+        });
+      });
+
+      settings.studentInputs.forEach((input) => {
+        input.addEventListener("input", saveState);
+        input.addEventListener("input", () => generatePossiblePairsFromInputs());
+      });
+      settings.studentInInputs.forEach((input) => {
+        input.hour?.addEventListener("change", () => {
+          clampTimeInputField(input, false);
+          saveState();
+        });
+        input.minute?.addEventListener("change", () => {
+          clampTimeInputField(input, false);
+          saveState();
+        });
+      });
+      settings.studentOutInputs.forEach((input) => {
+        input.hour?.addEventListener("change", () => {
+          clampTimeInputField(input, true);
+          saveState();
+        });
+        input.minute?.addEventListener("change", () => {
+          clampTimeInputField(input, true);
+          saveState();
+        });
+      });
+      settings.studentDuplicates.forEach((checkbox) => {
+        checkbox.addEventListener("change", saveState);
+        checkbox.addEventListener("change", () => generatePossiblePairsFromInputs());
+      });
+
+        bindPairDropZones();
+        clearPairList(settings.pairOutput, true, "No pairs generated yet.");
+
+      loadState();
+      generatePossiblePairsFromInputs(restoredPairBuckets);
+
+      if (restoredSchedulePayload && restoredSchedulePayload.assignments?.length) {
+        const scheduleStaff = restoredSchedulePayload.staff?.length
+          ? restoredSchedulePayload.staff
+          : parseStaffFromInputs().map((person) => person.name);
+        renderSchedule(scheduleStaff, restoredSchedulePayload);
+      } else {
+        renderSchedule([], { assignments: [], counts: new Map() });
+      }
+    })();
+  </script>
+</body>
+</html>
+
