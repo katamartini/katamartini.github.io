@@ -1518,7 +1518,8 @@ function simUniqueBadge(side){
 const pct=simUniqueChance(side);
 if(pct===null)return'';
 const full=pct>=100;
-return '<span class="simUnique '+(full?'simUniqueFull':'')+'" title="'+pct.toFixed(1)+'% calculated unique chance">'+(full?'100%':'99.9%')+' Unique</span>'}
+const shown=full?'100':Math.min(99.9,pct).toFixed(1);
+return '<span class="simUnique '+(full?'simUniqueFull':'')+'" title="'+pct.toFixed(1)+'% calculated unique chance">'+shown+'% Unique</span>'}
 function simPastHeroes(side,d){
 const order=(d.orderedHeroes&&d.orderedHeroes.length?d.orderedHeroes:d.heroes).slice();
 const slots=Array(6).fill('');
