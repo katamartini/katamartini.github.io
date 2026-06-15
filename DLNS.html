@@ -1531,8 +1531,8 @@ if(!slots[i])slots[i]=rest.shift()||''});return slots}
 function simPastDraftsHTML(side){
 const picked=sim.slots[side].picks.filter(Boolean);
 if(!picked.length)return'';
-const items=simPossiblePastDrafts(side).slice(0,5);
-return '<div class="simPast"><div class="simPastTitle">Possible past matches</div>'+(items.map(d=>'<div class="simPastDraft"><div><b>'+esc(d.matchID)+'</b><div class="small">'+esc(d.team)+'</div></div><div class="heroes">'+simPastHeroes(side,d).map(h=>h?ih(h,'dIcon'):'<span class="simPastEmpty"></span>').join('')+'</div></div>').join('')||'<div class="muted">No past draft can still match this side.</div>')+'</div>'}
+const possible=simPossiblePastDrafts(side),items=possible.slice(0,5);
+return '<div class="simPast"><div class="simPastTitle">Possible past matches - '+possible.length+'</div>'+(items.map(d=>'<div class="simPastDraft"><div><b>'+esc(d.matchID)+'</b><div class="small">'+esc(d.team)+'</div></div><div class="heroes">'+simPastHeroes(side,d).map(h=>h?ih(h,'dIcon'):'<span class="simPastEmpty"></span>').join('')+'</div></div>').join('')||'<div class="muted">No past draft can still match this side.</div>')+'</div>'}
 function simComboHero(h,picked){
 return'<span class="'+(picked?'simPicked':'')+'">'+ih(h,'dIcon')+'</span>'}
 function simComboBox(kind,side){
