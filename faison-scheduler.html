@@ -882,11 +882,21 @@
       };
 
       const getTimeOptions = () => {
-        const options = [];
-        for (let value = scheduleDayStart; value <= scheduleDayEnd; value += 15) {
-          options.push(formatClockMinutes(value));
-        }
+        const options = activeBlocks.map((block) => block.time || formatClockMinutes(block.start));
         return options.length ? options : [formatClockMinutes(scheduleDayStart)];
+      };
+
+      const getClosestTimeOption = (minutes, fallback = scheduleDayStart) => {
+        const safeMinutes = Number.isFinite(minutes) ? minutes : fallback;
+        const options = activeBlocks.length ? activeBlocks : defaultBlocks;
+        const closest = options.reduce((best, block) => {
+          if (!best) return block;
+          const bestDistance = Math.abs(best.start - safeMinutes);
+          const thisDistance = Math.abs(block.start - safeMinutes);
+          return thisDistance < bestDistance ? block : best;
+        }, null);
+
+        return closest?.time || formatClockMinutes(fallback);
       };
 
       const refreshTimeSelectOptions = (select) => {
@@ -909,7 +919,7 @@
 
         const safeMinutes = clampToScheduleTime(minutes, fallback);
         refreshTimeSelectOptions(timeInput);
-        timeInput.value = formatMinutesToTime(safeMinutes);
+        timeInput.value = getClosestTimeOption(safeMinutes, fallback);
       };
 
       const getMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
