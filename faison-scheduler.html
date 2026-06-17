@@ -6,22 +6,22 @@
   <title>Faison Scheduler</title>
   <style>
     :root {
-      --bg: #f2e7d5;
-      --panel: #f9f0dd;
-      --panel-soft: #f3e2c4;
-      --text: #30261e;
-      --muted: #6a5d50;
-      --border: #cfb99a;
-      --accent: #8b5a2b;
-      --header: #e9d3b3;
-      --shadow: rgba(57, 44, 31, 0.18);
-      --cell-bg: #f7ead2;
-      --cell-header: #f4dfc0;
-      --pill: #efe0c9;
-      --pill-text: #6f5a46;
-      --info-bg: #f4e7cf;
-      --info-border: #dbc39e;
-      --info-text: #5f4c39;
+      --bg: #eaf6ff;
+      --panel: #f7fbff;
+      --panel-soft: #e3f2ff;
+      --text: #17324d;
+      --muted: #5c7185;
+      --border: #a8c8e8;
+      --accent: #2576b8;
+      --header: #cfe6fb;
+      --shadow: rgba(25, 88, 140, 0.16);
+      --cell-bg: #edf7ff;
+      --cell-header: #d9ecfb;
+      --pill: #d8edff;
+      --pill-text: #1f5f91;
+      --info-bg: #e7f4ff;
+      --info-border: #a9cce8;
+      --info-text: #23557a;
     }
 
     * {
@@ -35,7 +35,7 @@
       color: var(--text);
       font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
       font-size: 14px;
-      background: radial-gradient(circle at 20% 8%, #f8ecd6 0%, var(--bg) 42%, #ead7b9 100%);
+      background: radial-gradient(circle at 20% 8%, #f7fbff 0%, var(--bg) 42%, #d9edfb 100%);
     }
 
     .app {
@@ -135,7 +135,7 @@
     input:focus,
     select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.16);
+      box-shadow: 0 0 0 3px rgba(37, 118, 184, 0.16);
     }
 
     .help {
@@ -147,14 +147,14 @@
     .setup-panel {
       border: 1px dashed var(--border);
       border-radius: 10px;
-      background: #fff4e3;
+      background: #edf7ff;
       padding: 8px;
       margin-top: 12px;
     }
 
     .setup-panel summary {
       cursor: pointer;
-      color: #4b3f33;
+      color: #21476a;
       font-size: 12px;
       font-weight: 700;
       list-style-position: inside;
@@ -255,20 +255,20 @@
 
     button {
       cursor: pointer;
-      background: #9f6f43;
-      border-color: #7a5233;
+      background: #2f80c1;
+      border-color: #1d5f96;
       color: #fff;
       font-weight: 700;
     }
 
     button.secondary {
-      background: #816247;
-      border-color: #6a513b;
+      background: #587f9f;
+      border-color: #42657f;
     }
 
     button.warn {
-      background: #7a4f4f;
-      border-color: #6f3d3d;
+      background: #8a5870;
+      border-color: #704457;
     }
 
     button:hover {
@@ -294,7 +294,7 @@
       overflow: auto;
       border: 1px solid var(--border);
       border-radius: 10px;
-      background: #fff7ea;
+      background: #f8fcff;
       max-height: 62vh;
       overflow: auto;
     }
@@ -343,18 +343,18 @@
     }
 
     td.materials-cell {
-      background: #ececec;
+      background: #eef3f7;
     }
 
     .materials-label {
-      color: #6a6a6a;
+      color: #63788a;
       font-style: italic;
       display: block;
       font-size: 12px;
     }
 
     .staff-label {
-      color: #4b3f33;
+      color: #1e3f5e;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -390,8 +390,8 @@
       margin-top: 8px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      background: #fff8ef;
-      color: #4b3f33;
+      background: #f4fbff;
+      color: #1e3f5e;
       padding: 8px;
       min-height: 52px;
       font-size: 12px;
@@ -403,7 +403,7 @@
     }
 
     .pair-output.drag-over {
-      background: #ffeec8;
+      background: #d7ecff;
     }
 
     .pair-buckets {
@@ -417,7 +417,7 @@
       border: 1px dashed var(--border);
       border-radius: 8px;
       padding: 6px;
-      background: #fff3dc;
+      background: #eaf6ff;
     }
 
     .pair-bucket h3 {
@@ -425,13 +425,13 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: #5f4a36;
+      color: #315c7f;
     }
 
     .pair-bucket-inner {
       min-height: 58px;
-      background: #fffefa;
-      border: 1px dashed #d9c6aa;
+      background: #f8fcff;
+      border: 1px dashed #b4d0ea;
       border-radius: 6px;
       padding: 6px;
       display: flex;
@@ -442,8 +442,8 @@
     }
 
     .pair-bucket-inner.drag-over {
-      background: #ffeec8;
-      border-color: #b68f60;
+      background: #d7ecff;
+      border-color: #5f9ccc;
     }
 
     .pair-item {
@@ -451,11 +451,11 @@
       margin: 0 6px 4px 0;
       padding: 3px 7px;
       border-radius: 999px;
-      border: 1px solid #d7c2a5;
-      background: #f4e7d2;
+      border: 1px solid #aacbe8;
+      background: #e4f3ff;
       font-size: 11px;
       font-weight: 700;
-      color: #5f4a36;
+      color: #28577d;
       white-space: nowrap;
       cursor: grab;
     }
@@ -465,14 +465,14 @@
     }
 
     .pair-empty {
-      color: #866c53;
+      color: #5c7185;
       font-size: 12px;
       font-style: italic;
     }
 
     .summary-item {
       border: 1px solid var(--border);
-      background: #f8f0de;
+      background: #f4fbff;
       padding: 7px 8px;
       border-radius: 9px;
       display: block;
@@ -488,11 +488,11 @@
     }
 
     .summary-item strong {
-      color: #3b3229;
+      color: #17324d;
     }
 
     .slot-warning td {
-      background: #f4d8bf;
+      background: #dcefff;
     }
 
     @media (max-width: 1200px) {
