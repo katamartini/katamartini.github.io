@@ -1139,7 +1139,9 @@
           assignments: assignmentResult.assignments,
           counts,
           unassignedBySlot: assignmentResult.unassignedBySlot || [],
-          staff: assignmentResult.staff || []
+          staff: assignmentResult.staff || [],
+          relationshipRepeatCount: assignmentResult.relationshipRepeatCount || 0,
+          unmetRelationshipCount: assignmentResult.unmetRelationshipCount || 0
         };
       };
 
@@ -1154,7 +1156,9 @@
             ? payload.counts
             : new Map(Array.isArray(payload.counts) ? payload.counts : []),
           unassignedBySlot: Array.isArray(payload.unassignedBySlot) ? payload.unassignedBySlot : [],
-          staff: Array.isArray(payload.staff) ? payload.staff : []
+          staff: Array.isArray(payload.staff) ? payload.staff : [],
+          relationshipRepeatCount: Number(payload.relationshipRepeatCount) || 0,
+          unmetRelationshipCount: Number(payload.unmetRelationshipCount) || 0
         };
       };
 
@@ -1438,8 +1442,10 @@
         const lastByStaffCell = staff.map(() => []);
         const canDoubleByName = new Map(students.map((student) => [student.name, !!student.canDuplicate]));
         const allowedPairPriority = new Map(pairPriorityByKey);
+        const staffStudentCounts = staff.map(() => new Map());
         const unassignedBySlot = [];
         let consecutiveDoubleSlots = 0;
+        let relationshipRepeatCount = 0;
 
         const isStaffCellAvailableForStudent = (cell, student) => {
           if (!cell.length) return true;
@@ -1485,6 +1491,8 @@
           return {
             unassignedCount: plan.unassignedStudents.length,
             hasConsecutiveDouble: !!plan.requiredConsecutiveDouble,
+            relationshipRepeatCount: plan.relationshipRepeatCount || 0,
+            newRelationshipCount: plan.newRelationshipCount || 0,
             pairPenalty: plan.pairPenalty,
             loadSpread
           };
@@ -1503,6 +1511,14 @@
 
           if (leftScore.hasConsecutiveDouble !== rightScore.hasConsecutiveDouble) {
             return !leftScore.hasConsecutiveDouble && rightScore.hasConsecutiveDouble;
+          }
+
+          if (leftScore.relationshipRepeatCount !== rightScore.relationshipRepeatCount) {
+            return leftScore.relationshipRepeatCount < rightScore.relationshipRepeatCount;
+          }
+
+          if (leftScore.newRelationshipCount !== rightScore.newRelationshipCount) {
+            return leftScore.newRelationshipCount > rightScore.newRelationshipCount;
           }
 
           if (leftScore.pairPenalty !== rightScore.pairPenalty) {
@@ -1570,9 +1586,12 @@
             const localCounts = new Map(slotBaseCounts);
             let requiredConsecutiveDouble = false;
             let pairPenalty = 0;
+            let slotRelationshipRepeatCount = 0;
+            let newRelationshipCount = 0;
 
             const pickStaffIndex = (student) => {
               let bestIndex = -1;
+              let bestRelationshipCount = Infinity;
               let bestLoad = Infinity;
               let bestPairPriority = Infinity;
               let bestStaffIndex = Infinity;
@@ -1589,6 +1608,7 @@
 
                 const load = loads[i];
                 const repeatsSequentially = lastByStaffStudent[i] === student.name;
+                const relationshipCount = staffStudentCounts[i].get(student.name) || 0;
                 const projectedCellSize = row.byStaff[i].length + 1;
                 const pairPriority = getCellPairPriority(row.byStaff[i], student);
                 const repeatsDoubledTime =
@@ -1605,6 +1625,7 @@
                 candidates.push({
                   index: i,
                   load,
+                  relationshipCount,
                   pairPriority,
                   repeatsSequentially,
                   repeatsDoubledTime,
@@ -1626,18 +1647,21 @@
               const pool = nonDoubledTime.length ? nonDoubledTime : sequentialPool;
 
               for (const candidate of pool) {
-                const { index, load, pairPriority, tieRand } = candidate;
+                const { index, load, relationshipCount, pairPriority, tieRand } = candidate;
 
                 if (
                   bestIndex === -1 ||
-                  pairPriority < bestPairPriority ||
-                  (pairPriority === bestPairPriority && load < bestLoad) ||
-                  (pairPriority === bestPairPriority && load === bestLoad && candidate.staffIndex < bestStaffIndex) ||
-                  (pairPriority === bestPairPriority &&
+                  relationshipCount < bestRelationshipCount ||
+                  (relationshipCount === bestRelationshipCount && pairPriority < bestPairPriority) ||
+                  (relationshipCount === bestRelationshipCount && pairPriority === bestPairPriority && load < bestLoad) ||
+                  (relationshipCount === bestRelationshipCount && pairPriority === bestPairPriority && load === bestLoad && candidate.staffIndex < bestStaffIndex) ||
+                  (relationshipCount === bestRelationshipCount &&
+                    pairPriority === bestPairPriority &&
                     load === bestLoad &&
                     candidate.staffIndex === bestStaffIndex &&
                     tieRand > bestTieRand)
                 ) {
+                  bestRelationshipCount = relationshipCount;
                   bestLoad = load;
                   bestPairPriority = pairPriority;
                   bestStaffIndex = candidate.staffIndex;
@@ -1648,6 +1672,7 @@
 
               return {
                 bestIndex,
+                relationshipCount: bestRelationshipCount,
                 repeatsDoubledTime: pool.length
                   ? pool.some((candidate) => candidate.index === bestIndex && candidate.repeatsDoubledTime)
                   : false
@@ -1669,6 +1694,11 @@
               loads[staffIndex] += 1;
               localCounts.set(student.name, (localCounts.get(student.name) || 0) + 1);
               assignedThisSlot.add(student.name);
+              if (pick.relationshipCount > 0) {
+                slotRelationshipRepeatCount += 1;
+              } else {
+                newRelationshipCount += 1;
+              }
               if (row.byStaff[staffIndex].length > 1) {
                 const singlePenalty = getCellPairPriority(row.byStaff[staffIndex], student);
                 if (singlePenalty < Infinity && student.canDuplicate) {
@@ -1706,6 +1736,8 @@
               counts: localCounts,
               unassignedStudents,
               requiredConsecutiveDouble,
+              relationshipRepeatCount: slotRelationshipRepeatCount,
+              newRelationshipCount,
               pairPenalty,
               loads
             };
@@ -1733,8 +1765,19 @@
             consecutiveDoubleSlots += 1;
           }
 
+          relationshipRepeatCount += slotPlan.relationshipRepeatCount || 0;
+
           slotPlan.counts.forEach((count, studentName) => {
             counts.set(studentName, count);
+          });
+
+          slotPlan.row.byStaff.forEach((cell, staffIndex) => {
+            cell
+              .filter((name) => name !== "Materials")
+              .forEach((studentName) => {
+                const current = staffStudentCounts[staffIndex].get(studentName) || 0;
+                staffStudentCounts[staffIndex].set(studentName, current + 1);
+              });
           });
 
           for (let i = 0; i < staff.length; i++) {
@@ -1752,12 +1795,26 @@
           assignments.push(slotPlan.row);
         }
 
+        let unmetRelationshipCount = 0;
+        staff.forEach((staffMember, staffIndex) => {
+          students.forEach((student) => {
+            const hadPossibleOverlap = slots.some((slot) =>
+              isWithinTimeWindow(slot, staffMember) && isWithinTimeWindow(slot, student)
+            );
+            if (hadPossibleOverlap && !(staffStudentCounts[staffIndex].get(student.name) > 0)) {
+              unmetRelationshipCount += 1;
+            }
+          });
+        });
+
         return {
           assignments,
           counts,
           unassignedBySlot,
           staff: staffNames,
-          consecutiveDoubleSlots
+          consecutiveDoubleSlots,
+          relationshipRepeatCount,
+          unmetRelationshipCount
         };
       }
 
@@ -1765,7 +1822,9 @@
         const {
           assignments = [],
           counts: rawCounts = [],
-          unassignedBySlot = []
+          unassignedBySlot = [],
+          relationshipRepeatCount = 0,
+          unmetRelationshipCount = 0
         } = assignmentResult || {};
         const counts = rawCounts instanceof Map
           ? rawCounts
@@ -1843,6 +1902,8 @@
           `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
           `<div class="summary-item"><strong>Total cells:</strong> ${totalAssignments}</div>`,
           `<div class="summary-item"><strong>Assigned spread:</strong> ${top.map(([name, count]) => `${name}: ${count}`).join(" | ")}</div>`,
+          `<div class="summary-item"><strong>Repeated staff/student slots:</strong> ${relationshipRepeatCount}</div>`,
+          `<div class="summary-item"><strong>Unmet staff/student pairings:</strong> ${unmetRelationshipCount}</div>`,
           `<div class="summary-item"><strong>Missing students in slots:</strong> ${missingCount}</div>`,
           `<div class="summary-item"><strong>Missing detail:</strong> <span class="summary-detail-lines">${missingSummary}</span></div>`
         ].join("");
@@ -2002,6 +2063,8 @@
         const result = buildAssignments(staff, students, slots, pairPriorityByKey);
         const unassignedTotal = result.unassignedBySlot.reduce((sum, row) => sum + row.names.length, 0);
         const consecutiveDoubleSlots = result.consecutiveDoubleSlots || 0;
+        const relationshipRepeatCount = result.relationshipRepeatCount || 0;
+        const unmetRelationshipCount = result.unmetRelationshipCount || 0;
         const staffFromResult = result.staff || staff;
 
         if (unassignedTotal) {
@@ -2014,6 +2077,8 @@
           showNotice(`Schedule incomplete: ${result.unassignedBySlot.length} time block(s) still have unassigned students: ${preview}${hidden}`);
         } else if (consecutiveDoubleSlots) {
           showNotice(`Warning: ${consecutiveDoubleSlots} time block(s) required consecutive doubled staff slots because of staffing constraints.`);
+        } else if (relationshipRepeatCount || unmetRelationshipCount) {
+          showNotice(`Schedule complete, but relationship coverage was constrained: ${relationshipRepeatCount} repeated staff/student slot(s), ${unmetRelationshipCount} unmet staff/student pairing(s).`);
         } else if (students.length <= staff.length) {
           showNotice("All students are accounted for in every time block. Surplus staff are shown as Materials.");
         } else {
@@ -2024,7 +2089,9 @@
           assignments: result.assignments,
           counts: result.counts,
           unassignedBySlot: result.unassignedBySlot,
-          staff: staffFromResult
+          staff: staffFromResult,
+          relationshipRepeatCount: result.relationshipRepeatCount,
+          unmetRelationshipCount: result.unmetRelationshipCount
         });
         saveState();
         renderSchedule(staffFromResult, result);
