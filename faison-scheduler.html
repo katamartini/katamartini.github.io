@@ -191,7 +191,7 @@
 
     .student-row {
       display: grid;
-      grid-template-columns: minmax(0, 2fr) auto auto;
+      grid-template-columns: minmax(0, 2fr) auto auto auto;
       align-items: center;
       gap: 8px;
       color: var(--text);
@@ -218,16 +218,10 @@
       font-size: 11px;
     }
 
-    .time-select-pair {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-    }
-
     .student-row select,
-    .time-select-pair select {
-      width: 56px;
-      min-width: 56px;
+    .time-select {
+      width: 76px;
+      min-width: 76px;
       margin: 0;
       padding: 6px 7px;
     }
@@ -538,47 +532,55 @@
         </details>
 
         <div style="margin-top: 12px;">
-          <label>Staff (name + in/out)</label>
+          <label>Staff (name + entry/lunch/exit)</label>
           <div id="staffEntries" class="student-name-grid">
             <div class="student-row">
               <input id="staffName-0" type="text" placeholder="Staff 1">
-              <label class="student-time-wrap" for="staffIn-0">In time <input id="staffIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-0">Out time <input id="staffOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-0">Entry <input id="staffIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-0">Lunch <select id="staffLunch-0"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-0">Exit <input id="staffOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-1" type="text" placeholder="Staff 2">
-              <label class="student-time-wrap" for="staffIn-1">In time <input id="staffIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-1">Out time <input id="staffOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-1">Entry <input id="staffIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-1">Lunch <select id="staffLunch-1"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-1">Exit <input id="staffOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-2" type="text" placeholder="Staff 3">
-              <label class="student-time-wrap" for="staffIn-2">In time <input id="staffIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-2">Out time <input id="staffOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-2">Entry <input id="staffIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-2">Lunch <select id="staffLunch-2"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-2">Exit <input id="staffOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-3" type="text" placeholder="Staff 4">
-              <label class="student-time-wrap" for="staffIn-3">In time <input id="staffIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-3">Out time <input id="staffOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-3">Entry <input id="staffIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-3">Lunch <select id="staffLunch-3"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-3">Exit <input id="staffOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-4" type="text" placeholder="Staff 5">
-              <label class="student-time-wrap" for="staffIn-4">In time <input id="staffIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-4">Out time <input id="staffOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-4">Entry <input id="staffIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-4">Lunch <select id="staffLunch-4"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-4">Exit <input id="staffOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-5" type="text" placeholder="Staff 6">
-              <label class="student-time-wrap" for="staffIn-5">In time <input id="staffIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-5">Out time <input id="staffOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-5">Entry <input id="staffIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-5">Lunch <select id="staffLunch-5"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-5">Exit <input id="staffOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-6" type="text" placeholder="Staff 7">
-              <label class="student-time-wrap" for="staffIn-6">In time <input id="staffIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-6">Out time <input id="staffOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-6">Entry <input id="staffIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-6">Lunch <select id="staffLunch-6"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-6">Exit <input id="staffOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
             <div class="student-row">
               <input id="staffName-7" type="text" placeholder="Staff 8">
-              <label class="student-time-wrap" for="staffIn-7">In time <input id="staffIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="staffOut-7">Out time <input id="staffOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffIn-7">Entry <input id="staffIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="staffLunch-7">Lunch <select id="staffLunch-7"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+              <label class="student-time-wrap" for="staffOut-7">Exit <input id="staffOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
           </div>
           <div class="help">Usually 6-9 staff members. Blank names are ignored.</div>
@@ -589,50 +591,50 @@
           <div id="studentEntries" class="student-name-grid">
             <div class="student-row">
               <input id="studentName-0" type="text" placeholder="Student 1">
-              <label class="student-time-wrap" for="studentIn-0">In time <input id="studentIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-0">Out time <input id="studentOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-0">Entry <input id="studentIn-0" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-0">Exit <input id="studentOut-0" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-0"><input id="studentDupe-0" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-1" type="text" placeholder="Student 2">
-              <label class="student-time-wrap" for="studentIn-1">In time <input id="studentIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-1">Out time <input id="studentOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-1">Entry <input id="studentIn-1" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-1">Exit <input id="studentOut-1" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-1"><input id="studentDupe-1" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-2" type="text" placeholder="Student 3">
-              <label class="student-time-wrap" for="studentIn-2">In time <input id="studentIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-2">Out time <input id="studentOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-2">Entry <input id="studentIn-2" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-2">Exit <input id="studentOut-2" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-2"><input id="studentDupe-2" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-3" type="text" placeholder="Student 4">
-              <label class="student-time-wrap" for="studentIn-3">In time <input id="studentIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-3">Out time <input id="studentOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-3">Entry <input id="studentIn-3" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-3">Exit <input id="studentOut-3" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-3"><input id="studentDupe-3" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-4" type="text" placeholder="Student 5">
-              <label class="student-time-wrap" for="studentIn-4">In time <input id="studentIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-4">Out time <input id="studentOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-4">Entry <input id="studentIn-4" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-4">Exit <input id="studentOut-4" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-4"><input id="studentDupe-4" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-5" type="text" placeholder="Student 6">
-              <label class="student-time-wrap" for="studentIn-5">In time <input id="studentIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-5">Out time <input id="studentOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-5">Entry <input id="studentIn-5" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-5">Exit <input id="studentOut-5" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-5"><input id="studentDupe-5" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-6" type="text" placeholder="Student 7">
-              <label class="student-time-wrap" for="studentIn-6">In time <input id="studentIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-6">Out time <input id="studentOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-6">Entry <input id="studentIn-6" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-6">Exit <input id="studentOut-6" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-6"><input id="studentDupe-6" type="checkbox" checked>Can double</label>
             </div>
             <div class="student-row">
               <input id="studentName-7" type="text" placeholder="Student 8">
-              <label class="student-time-wrap" for="studentIn-7">In time <input id="studentIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
-              <label class="student-time-wrap" for="studentOut-7">Out time <input id="studentOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentIn-7">Entry <input id="studentIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+              <label class="student-time-wrap" for="studentOut-7">Exit <input id="studentOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-7"><input id="studentDupe-7" type="checkbox" checked>Can double</label>
             </div>
           </div>
@@ -689,6 +691,9 @@
         staffInInputs: Array.from({ length: 8 }, (_, i) =>
           document.getElementById(`staffIn-${i}`)
         ),
+        staffLunchInputs: Array.from({ length: 8 }, (_, i) =>
+          document.getElementById(`staffLunch-${i}`)
+        ),
         staffOutInputs: Array.from({ length: 8 }, (_, i) =>
           document.getElementById(`staffOut-${i}`)
         ),
@@ -724,14 +729,14 @@
       let restoredSchedulePayload = null;
 
       const defaultStaff = [
-        { name: "Staff A", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff B", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff C", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff D", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff E", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff F", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff G", inTime: "08:30", outTime: "14:00" },
-        { name: "Staff H", inTime: "08:30", outTime: "14:00" }
+        { name: "Staff A", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff B", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff C", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff D", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff E", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff F", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff G", inTime: "08:30", lunchTime: "", outTime: "14:00" },
+        { name: "Staff H", inTime: "08:30", lunchTime: "", outTime: "14:00" }
       ];
 
       const defaultStudents = [
@@ -876,84 +881,46 @@
         return formatClockMinutes(minutes);
       };
 
-      const minuteOptions = ["00", "15", "30", "45"];
-      const getTimeHourOptions = () => {
-        const startHour = Math.floor(scheduleDayStart / 60);
-        const endHour = Math.floor(scheduleDayEnd / 60);
-        return Array.from({ length: endHour - startHour + 1 }, (_, index) =>
-          String(startHour + index).padStart(2, "0")
-        );
+      const getTimeOptions = () => {
+        const options = [];
+        for (let value = scheduleDayStart; value <= scheduleDayEnd; value += 15) {
+          options.push(formatClockMinutes(value));
+        }
+        return options.length ? options : [formatClockMinutes(scheduleDayStart)];
       };
 
-      const getMinuteOptionsForHour = (hourText) => {
-        const hour = Number(hourText);
-        if (!Number.isFinite(hour)) return minuteOptions;
-        const options = minuteOptions.filter((minute) => {
-          const value = hour * 60 + Number(minute);
-          return value >= scheduleDayStart && value <= scheduleDayEnd;
-        });
-        return options.length ? options : ["00"];
-      };
-
-      const makeHourSelect = () => {
-        const select = document.createElement("select");
-        select.className = "time-select-hour";
-        select.innerHTML = getTimeHourOptions()
-          .map((hour) => `<option value="${hour}">${hour}</option>`)
+      const refreshTimeSelectOptions = (select) => {
+        if (!select) return;
+        const current = select.value;
+        const options = getTimeOptions();
+        select.innerHTML = options
+          .map((time) => `<option value="${time}">${time}</option>`)
           .join("");
-        return select;
+        select.value = options.includes(current) ? current : options[0];
       };
 
-      const makeMinuteSelect = () => {
-        const select = document.createElement("select");
-        select.className = "time-select-minute";
-        return select;
-      };
-
-      const applyMinuteOptions = (timeInput, hourText) => {
-        if (!timeInput?.minute) return;
-        const selectedMinute = timeInput.minute.value || "00";
-        const options = getMinuteOptionsForHour(hourText);
-        timeInput.minute.innerHTML = options
-          .map((minute) => `<option value="${minute}">${minute}</option>`)
-          .join("");
-
-        timeInput.minute.value = options.includes(selectedMinute) ? selectedMinute : options[0];
+      const setLunchInputValue = (input, value) => {
+        if (!input) return;
+        input.value = value === "11:00" || value === "11:30" ? value : "";
       };
 
       const setTimeInputValue = (timeInput, minutes, fallback = scheduleDayStart) => {
-        if (!timeInput || !timeInput.hour || !timeInput.minute) return;
+        if (!timeInput) return;
 
         const safeMinutes = clampToScheduleTime(minutes, fallback);
-        const hourText = formatMinutesToTime(safeMinutes).slice(0, 2);
-        const minuteText = formatMinutesToTime(safeMinutes).slice(3);
-
-        timeInput.hour.innerHTML = getTimeHourOptions()
-          .map((hour) => `<option value="${hour}">${hour}</option>`)
-          .join("");
-        timeInput.hour.value = hourText;
-        applyMinuteOptions(timeInput, hourText);
-
-        if (timeInput.minute.querySelector(`option[value=\"${minuteText}\"]`)) {
-          timeInput.minute.value = minuteText;
-        } else {
-          timeInput.minute.value = timeInput.minute.options[0]?.value || "00";
-        }
+        refreshTimeSelectOptions(timeInput);
+        timeInput.value = formatMinutesToTime(safeMinutes);
       };
 
       const getMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
-        if (!timeInput || !timeInput.hour || !timeInput.minute) return fallback;
-        const hourText = String(timeInput.hour.value || "").trim();
-        const minuteText = String(timeInput.minute.value || "").trim();
-        const candidate = parseTimeToMinutes(`${hourText}:${minuteText}`, fallback);
+        if (!timeInput) return fallback;
+        const candidate = parseTimeToMinutes(timeInput.value, fallback);
         return clampToScheduleTime(candidate, fallback);
       };
 
       const getRawMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
-        if (!timeInput || !timeInput.hour || !timeInput.minute) return fallback;
-        const hourText = String(timeInput.hour.value || "").trim();
-        const minuteText = String(timeInput.minute.value || "").trim();
-        return parseTimeToMinutes(`${hourText}:${minuteText}`, fallback);
+        if (!timeInput) return fallback;
+        return parseTimeToMinutes(timeInput.value, fallback);
       };
 
       const getTimeInputValue = (timeInput, fallback = scheduleDayStart) => {
@@ -966,20 +933,11 @@
           if (!input || input.tagName !== "INPUT") return input;
 
           const currentMinutes = parseTimeToMinutes(input.value, scheduleDayStart);
-          const hourSelect = makeHourSelect();
-          const minuteSelect = makeMinuteSelect();
-          const wrapper = document.createElement("span");
-          wrapper.className = "time-select-pair";
-
-          wrapper.appendChild(hourSelect);
-          wrapper.appendChild(document.createTextNode(":"));
-          wrapper.appendChild(minuteSelect);
-
-          input.replaceWith(wrapper);
-
-          const timeInput = { hour: hourSelect, minute: minuteSelect };
-          setTimeInputValue(timeInput, currentMinutes);
-          return timeInput;
+          const select = document.createElement("select");
+          select.className = "time-select";
+          input.replaceWith(select);
+          setTimeInputValue(select, currentMinutes);
+          return select;
         };
 
         settings.staffInInputs = settings.staffInInputs.map(replaceOne);
@@ -1022,7 +980,20 @@
       };
 
       const isWithinTimeWindow = (slot, person) => {
-        return slot.start >= person.inMinutes && slot.end <= person.outMinutes;
+        if (slot.start < person.inMinutes || slot.end > person.outMinutes) {
+          return false;
+        }
+
+        if (
+          Number.isFinite(person.lunchStart) &&
+          Number.isFinite(person.lunchEnd) &&
+          slot.start < person.lunchEnd &&
+          slot.end > person.lunchStart
+        ) {
+          return false;
+        }
+
+        return true;
       };
 
       function safeStorageGet(key) {
@@ -1094,6 +1065,7 @@
         const savedStaff = storedState?.staffEntries || [];
         const names = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.name || "");
         const inTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.inTime || defaultStaff[index]?.inTime || "08:30");
+        const lunchTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.lunchTime || defaultStaff[index]?.lunchTime || "");
         const outTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.outTime || defaultStaff[index]?.outTime || "14:00");
 
         settings.staffInputs.forEach((input, index) => {
@@ -1101,6 +1073,9 @@
         });
         settings.staffInInputs.forEach((input, index) => {
           setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart);
+        });
+        settings.staffLunchInputs.forEach((input, index) => {
+          setLunchInputValue(input, lunchTimes[index]);
         });
         settings.staffOutInputs.forEach((input, index) => {
           setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd);
@@ -1146,11 +1121,16 @@
           const parsedIn = getMinutesFromTimeInput(settings.staffInInputs[index], dayStart);
           const parsedOut = getMinutesFromTimeInput(settings.staffOutInputs[index], dayEnd);
           const { inMinutes, outMinutes } = normalizeTimeBounds(parsedIn, parsedOut);
+          const lunchTime = settings.staffLunchInputs[index]?.value || "";
+          const lunchStart = parseTimeToMinutes(lunchTime, NaN);
 
           staff.push({
             name: rawName,
             inMinutes,
             outMinutes,
+            lunchTime,
+            lunchStart: Number.isFinite(lunchStart) ? lunchStart : null,
+            lunchEnd: Number.isFinite(lunchStart) ? lunchStart + 30 : null,
             sourceIndex: index
           });
         }
@@ -1805,6 +1785,7 @@
         const staff = settings.staffInputs.map((input, index) => ({
           name: input.value,
           inTime: getTimeInputValue(settings.staffInInputs[index], scheduleDayStart),
+          lunchTime: settings.staffLunchInputs[index]?.value || "",
           outTime: getTimeInputValue(settings.staffOutInputs[index], scheduleDayEnd)
         }));
         const students = settings.studentInputs.map((input, index) => ({
@@ -1848,6 +1829,7 @@
             const legacyStaff = parsePeople(parsed.staffNames).map((person) => ({
               name: person.name,
               inTime: "08:30",
+              lunchTime: "",
               outTime: "14:00"
             }));
             setStaffRowsFromState({ staffEntries: legacyStaff });
@@ -1988,21 +1970,16 @@
       setActiveBlocks(defaultBlocks);
       replaceTimeInputsWithSelects();
       settings.staffInInputs.forEach((input) => {
-        input.hour?.addEventListener("change", () => {
-          clampTimeInputField(input, false);
-          saveState();
-        });
-        input.minute?.addEventListener("change", () => {
+        input.addEventListener("change", () => {
           clampTimeInputField(input, false);
           saveState();
         });
       });
+      settings.staffLunchInputs.forEach((input) => {
+        input.addEventListener("change", saveState);
+      });
       settings.staffOutInputs.forEach((input) => {
-        input.hour?.addEventListener("change", () => {
-          clampTimeInputField(input, true);
-          saveState();
-        });
-        input.minute?.addEventListener("change", () => {
+        input.addEventListener("change", () => {
           clampTimeInputField(input, true);
           saveState();
         });
@@ -2013,21 +1990,13 @@
         input.addEventListener("input", () => generatePossiblePairsFromInputs());
       });
       settings.studentInInputs.forEach((input) => {
-        input.hour?.addEventListener("change", () => {
-          clampTimeInputField(input, false);
-          saveState();
-        });
-        input.minute?.addEventListener("change", () => {
+        input.addEventListener("change", () => {
           clampTimeInputField(input, false);
           saveState();
         });
       });
       settings.studentOutInputs.forEach((input) => {
-        input.hour?.addEventListener("change", () => {
-          clampTimeInputField(input, true);
-          saveState();
-        });
-        input.minute?.addEventListener("change", () => {
+        input.addEventListener("change", () => {
           clampTimeInputField(input, true);
           saveState();
         });
