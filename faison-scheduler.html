@@ -144,6 +144,43 @@
       margin: 3px 0 6px;
     }
 
+    .setup-panel {
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      background: #fff4e3;
+      padding: 8px;
+      margin-top: 12px;
+    }
+
+    .setup-panel summary {
+      cursor: pointer;
+      color: #4b3f33;
+      font-size: 12px;
+      font-weight: 700;
+      list-style-position: inside;
+    }
+
+    .setup-panel[open] summary {
+      margin-bottom: 8px;
+    }
+
+    .setup-summary {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    .block-input {
+      min-height: 118px;
+      font-family: inherit;
+      line-height: 1.35;
+    }
+
+    .setup-panel .actions {
+      margin-top: 8px;
+    }
+
     .student-name-grid {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -489,6 +526,17 @@
       <section class="panel">
         <h2 class="panel-title">Inputs</h2>
 
+        <details class="setup-panel" id="blockSetup">
+          <summary>Class time blocks <span id="blockSummary" class="setup-summary"></span></summary>
+          <label for="blockInput">Schedule rows</label>
+          <textarea id="blockInput" class="block-input" spellcheck="false"></textarea>
+          <div class="help">Enter one start time per line, such as 08:30, 09:00, 10:00.</div>
+          <div class="actions">
+            <button id="applyBlocksBtn" type="button">Apply time blocks</button>
+            <button id="resetBlocksBtn" class="secondary" type="button">Restore defaults</button>
+          </div>
+        </details>
+
         <div style="margin-top: 12px;">
           <label>Staff (name + in/out)</label>
           <div id="staffEntries" class="student-name-grid">
@@ -656,6 +704,10 @@
         studentOutInputs: Array.from({ length: 8 }, (_, i) =>
           document.getElementById(`studentOut-${i}`)
         ),
+        blockInput: document.getElementById("blockInput"),
+        blockSummary: document.getElementById("blockSummary"),
+        applyBlocksBtn: document.getElementById("applyBlocksBtn"),
+        resetBlocksBtn: document.getElementById("resetBlocksBtn"),
         pairOutput: document.getElementById("pairOutput"),
         pairApprovedBucket: document.getElementById("approvedPairs"),
         pairBackupBucket: document.getElementById("backupPairs"),
@@ -767,8 +819,51 @@
         return hours * 60 + minutes;
       };
 
-      const scheduleDayStart = defaultBlocks[0].start;
-      const scheduleDayEnd = defaultBlocks[defaultBlocks.length - 1].start;
+      let activeBlocks = defaultBlocks.slice();
+      let scheduleDayStart = activeBlocks[0].start;
+      let scheduleDayEnd = activeBlocks[activeBlocks.length - 1].start;
+
+      const formatClockMinutes = (value) => {
+        const minutes = Number.isFinite(value) ? value : scheduleDayStart;
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+      };
+
+      const blockTextFromBlocks = (blocks) => {
+        return (Array.isArray(blocks) && blocks.length ? blocks : defaultBlocks)
+          .map((block) => block.time || formatClockMinutes(block.start))
+          .join("\n");
+      };
+
+      const buildBlocksFromMinutes = (minutes) => {
+        const unique = Array.from(new Set(minutes))
+          .filter(Number.isFinite)
+          .sort((a, b) => a - b);
+
+        return unique.map((start, index) => ({
+          time: formatClockMinutes(start),
+          start,
+          end: unique[index + 1] ?? start
+        }));
+      };
+
+      const parseBlocksFromText = (raw) => {
+        const matches = String(raw || "").match(/\b(?:[01]?\d|2[0-3]):[0-5]\d\b/g) || [];
+        const minutes = matches.map((value) => parseTimeToMinutes(value, NaN));
+        return buildBlocksFromMinutes(minutes);
+      };
+
+      const getBlocksStateForStorage = () => activeBlocks.map((block) => block.time);
+
+      const setActiveBlocks = (blocks) => {
+        activeBlocks = Array.isArray(blocks) && blocks.length ? blocks.slice() : defaultBlocks.slice();
+        scheduleDayStart = activeBlocks[0].start;
+        scheduleDayEnd = activeBlocks[activeBlocks.length - 1].start;
+        settings.blockInput.value = blockTextFromBlocks(activeBlocks);
+        settings.blockSummary.textContent = `${activeBlocks.length} row${activeBlocks.length === 1 ? "" : "s"} (${activeBlocks[0].time}-${activeBlocks[activeBlocks.length - 1].time})`;
+      };
+
       const clampToScheduleTime = (rawMinutes, fallback = scheduleDayStart) => {
         const safeFallback = Number.isFinite(fallback) ? fallback : scheduleDayStart;
         const safe = Number.isFinite(rawMinutes) ? rawMinutes : safeFallback;
@@ -778,25 +873,32 @@
 
       const formatMinutesToTime = (value) => {
         const minutes = clampToScheduleTime(value, scheduleDayStart);
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+        return formatClockMinutes(minutes);
       };
 
-      const timeHourOptions = ["08", "09", "10", "11", "12", "13", "14"];
-      const minuteOptionsByHour = {
-        all: ["00", "15", "30", "45"],
-        last: ["00"]
+      const minuteOptions = ["00", "15", "30", "45"];
+      const getTimeHourOptions = () => {
+        const startHour = Math.floor(scheduleDayStart / 60);
+        const endHour = Math.floor(scheduleDayEnd / 60);
+        return Array.from({ length: endHour - startHour + 1 }, (_, index) =>
+          String(startHour + index).padStart(2, "0")
+        );
       };
 
       const getMinuteOptionsForHour = (hourText) => {
-        return hourText === "14" ? minuteOptionsByHour.last : minuteOptionsByHour.all;
+        const hour = Number(hourText);
+        if (!Number.isFinite(hour)) return minuteOptions;
+        const options = minuteOptions.filter((minute) => {
+          const value = hour * 60 + Number(minute);
+          return value >= scheduleDayStart && value <= scheduleDayEnd;
+        });
+        return options.length ? options : ["00"];
       };
 
       const makeHourSelect = () => {
         const select = document.createElement("select");
         select.className = "time-select-hour";
-        select.innerHTML = timeHourOptions
+        select.innerHTML = getTimeHourOptions()
           .map((hour) => `<option value="${hour}">${hour}</option>`)
           .join("");
         return select;
@@ -826,13 +928,16 @@
         const hourText = formatMinutesToTime(safeMinutes).slice(0, 2);
         const minuteText = formatMinutesToTime(safeMinutes).slice(3);
 
+        timeInput.hour.innerHTML = getTimeHourOptions()
+          .map((hour) => `<option value="${hour}">${hour}</option>`)
+          .join("");
         timeInput.hour.value = hourText;
         applyMinuteOptions(timeInput, hourText);
 
         if (timeInput.minute.querySelector(`option[value=\"${minuteText}\"]`)) {
           timeInput.minute.value = minuteText;
         } else {
-          timeInput.minute.value = timeInput.minute.options[0]?.value || minuteOptionsByHour.last[0];
+          timeInput.minute.value = timeInput.minute.options[0]?.value || "00";
         }
       };
 
@@ -842,6 +947,13 @@
         const minuteText = String(timeInput.minute.value || "").trim();
         const candidate = parseTimeToMinutes(`${hourText}:${minuteText}`, fallback);
         return clampToScheduleTime(candidate, fallback);
+      };
+
+      const getRawMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
+        if (!timeInput || !timeInput.hour || !timeInput.minute) return fallback;
+        const hourText = String(timeInput.hour.value || "").trim();
+        const minuteText = String(timeInput.minute.value || "").trim();
+        return parseTimeToMinutes(`${hourText}:${minuteText}`, fallback);
       };
 
       const getTimeInputValue = (timeInput, fallback = scheduleDayStart) => {
@@ -874,6 +986,26 @@
         settings.staffOutInputs = settings.staffOutInputs.map(replaceOne);
         settings.studentInInputs = settings.studentInInputs.map(replaceOne);
         settings.studentOutInputs = settings.studentOutInputs.map(replaceOne);
+      };
+
+      const refreshTimeInputsForBlocks = (previousStart = scheduleDayStart, previousEnd = scheduleDayEnd) => {
+        [
+          ...settings.staffInInputs,
+          ...settings.studentInInputs
+        ].forEach((input) => {
+          const current = getRawMinutesFromTimeInput(input, previousStart);
+          const next = current === previousStart ? scheduleDayStart : current;
+          setTimeInputValue(input, next, scheduleDayStart);
+        });
+
+        [
+          ...settings.staffOutInputs,
+          ...settings.studentOutInputs
+        ].forEach((input) => {
+          const current = getRawMinutesFromTimeInput(input, previousEnd);
+          const next = current === previousEnd ? scheduleDayEnd : current;
+          setTimeInputValue(input, next, scheduleDayEnd);
+        });
       };
 
       const normalizeTimeBounds = (inMinutes, outMinutes) => {
@@ -1218,7 +1350,7 @@
       }
 
       function getBlocks() {
-        return defaultBlocks.slice();
+        return activeBlocks.slice();
       }
 
       function buildAssignments(staff, students, slots, pairPriorityByKey = new Map()) {
@@ -1630,6 +1762,26 @@
         settings.notice.classList.remove("is-visible");
       }
 
+      function clearRenderedSchedule() {
+        restoredSchedulePayload = null;
+        renderSchedule([], { assignments: [], counts: new Map() });
+      }
+
+      function applyBlockSetup(blocks, message) {
+        if (!blocks.length) {
+          showNotice("Add at least one valid time block in HH:MM format.");
+          return;
+        }
+
+        const previousStart = scheduleDayStart;
+        const previousEnd = scheduleDayEnd;
+        setActiveBlocks(blocks);
+        refreshTimeInputsForBlocks(previousStart, previousEnd);
+        clearRenderedSchedule();
+        saveState();
+        showNotice(message);
+      }
+
       function saveState() {
         const staff = settings.staffInputs.map((input, index) => ({
           name: input.value,
@@ -1645,6 +1797,7 @@
         const scheduleState = getScheduleStateForStorage(restoredSchedulePayload);
 
         const payload = {
+          blocks: getBlocksStateForStorage(),
           staffEntries: staff,
           studentEntries: students,
           staffNames: staff.map((staffMember) => staffMember.name).join("\n"),
@@ -1665,6 +1818,11 @@
 
         try {
           const parsed = JSON.parse(raw);
+          const savedBlocks = Array.isArray(parsed.blocks)
+            ? parseBlocksFromText(parsed.blocks.join("\n"))
+            : parseBlocksFromText(parsed.blockText || "");
+          setActiveBlocks(savedBlocks.length ? savedBlocks : defaultBlocks);
+
           if (parsed.staffEntries && Array.isArray(parsed.staffEntries) && parsed.staffEntries.length) {
             setStaffRowsFromState(parsed);
           } else if (typeof parsed.staffNames === "string" && parsed.staffNames.trim()) {
@@ -1701,6 +1859,7 @@
             });
           }
         } catch (error) {
+          setActiveBlocks(defaultBlocks);
           setStaffRowsFromState({
             staffEntries: defaultStaff
           });
@@ -1713,6 +1872,7 @@
       }
 
       function applyDefaults() {
+        setActiveBlocks(defaultBlocks);
         setStaffRowsFromState({
           staffEntries: defaultStaff
         });
@@ -1779,21 +1939,34 @@
       };
 
       settings.buildBtn.addEventListener("click", generate);
-        settings.resetBtn.addEventListener("click", () => {
-          safeStorageRemove(STORAGE_KEY);
-          applyDefaults();
-          restoredPairBuckets = null;
-          restoredSchedulePayload = null;
-          clearNotice();
-          clearPairList(settings.pairOutput, true, "No pairs generated yet.");
-          clearPairList(settings.pairApprovedBucket, false);
-          clearPairList(settings.pairBackupBucket, false);
-          renderSchedule([], { assignments: [], counts: new Map() });
-        });
+      settings.applyBlocksBtn.addEventListener("click", () => {
+        applyBlockSetup(
+          parseBlocksFromText(settings.blockInput.value),
+          "Time blocks saved. Generate a new schedule when the rest of the setup is ready."
+        );
+      });
+      settings.resetBlocksBtn.addEventListener("click", () => {
+        applyBlockSetup(
+          defaultBlocks,
+          "Default time blocks restored. Generate a new schedule when the rest of the setup is ready."
+        );
+      });
+      settings.resetBtn.addEventListener("click", () => {
+        safeStorageRemove(STORAGE_KEY);
+        applyDefaults();
+        restoredPairBuckets = null;
+        restoredSchedulePayload = null;
+        clearNotice();
+        clearPairList(settings.pairOutput, true, "No pairs generated yet.");
+        clearPairList(settings.pairApprovedBucket, false);
+        clearPairList(settings.pairBackupBucket, false);
+        renderSchedule([], { assignments: [], counts: new Map() });
+      });
 
       settings.staffInputs.forEach((input) => {
         input.addEventListener("input", saveState);
       });
+      setActiveBlocks(defaultBlocks);
       replaceTimeInputsWithSelects();
       settings.staffInInputs.forEach((input) => {
         input.hour?.addEventListener("change", () => {
