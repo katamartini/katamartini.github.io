@@ -881,14 +881,20 @@
         return formatClockMinutes(minutes);
       };
 
-      const getTimeOptions = () => {
-        const options = activeBlocks.map((block) => block.time || formatClockMinutes(block.start));
+      const getTimeOptionBlocks = (isOut = false) => {
+        const blocks = activeBlocks.length ? activeBlocks : defaultBlocks;
+        if (blocks.length <= 1) return blocks;
+        return isOut ? blocks.slice(1) : blocks.slice(0, -1);
+      };
+
+      const getTimeOptions = (isOut = false) => {
+        const options = getTimeOptionBlocks(isOut).map((block) => block.time || formatClockMinutes(block.start));
         return options.length ? options : [formatClockMinutes(scheduleDayStart)];
       };
 
-      const getClosestTimeOption = (minutes, fallback = scheduleDayStart) => {
+      const getClosestTimeOption = (minutes, fallback = scheduleDayStart, isOut = false) => {
         const safeMinutes = Number.isFinite(minutes) ? minutes : fallback;
-        const options = activeBlocks.length ? activeBlocks : defaultBlocks;
+        const options = getTimeOptionBlocks(isOut);
         const closest = options.reduce((best, block) => {
           if (!best) return block;
           const bestDistance = Math.abs(best.start - safeMinutes);
@@ -899,10 +905,10 @@
         return closest?.time || formatClockMinutes(fallback);
       };
 
-      const refreshTimeSelectOptions = (select) => {
+      const refreshTimeSelectOptions = (select, isOut = false) => {
         if (!select) return;
         const current = select.value;
-        const options = getTimeOptions();
+        const options = getTimeOptions(isOut);
         select.innerHTML = options
           .map((time) => `<option value="${time}">${time}</option>`)
           .join("");
@@ -914,12 +920,12 @@
         input.value = value === "11:00" || value === "11:30" ? value : "";
       };
 
-      const setTimeInputValue = (timeInput, minutes, fallback = scheduleDayStart) => {
+      const setTimeInputValue = (timeInput, minutes, fallback = scheduleDayStart, isOut = false) => {
         if (!timeInput) return;
 
         const safeMinutes = clampToScheduleTime(minutes, fallback);
-        refreshTimeSelectOptions(timeInput);
-        timeInput.value = getClosestTimeOption(safeMinutes, fallback);
+        refreshTimeSelectOptions(timeInput, isOut);
+        timeInput.value = getClosestTimeOption(safeMinutes, fallback, isOut);
       };
 
       const getMinutesFromTimeInput = (timeInput, fallback = scheduleDayStart) => {
@@ -939,21 +945,21 @@
       };
 
       const replaceTimeInputsWithSelects = () => {
-        const replaceOne = (input) => {
+        const replaceOne = (input, isOut = false) => {
           if (!input || input.tagName !== "INPUT") return input;
 
           const currentMinutes = parseTimeToMinutes(input.value, scheduleDayStart);
           const select = document.createElement("select");
           select.className = "time-select";
           input.replaceWith(select);
-          setTimeInputValue(select, currentMinutes);
+          setTimeInputValue(select, currentMinutes, isOut ? scheduleDayEnd : scheduleDayStart, isOut);
           return select;
         };
 
-        settings.staffInInputs = settings.staffInInputs.map(replaceOne);
-        settings.staffOutInputs = settings.staffOutInputs.map(replaceOne);
-        settings.studentInInputs = settings.studentInInputs.map(replaceOne);
-        settings.studentOutInputs = settings.studentOutInputs.map(replaceOne);
+        settings.staffInInputs = settings.staffInInputs.map((input) => replaceOne(input, false));
+        settings.staffOutInputs = settings.staffOutInputs.map((input) => replaceOne(input, true));
+        settings.studentInInputs = settings.studentInInputs.map((input) => replaceOne(input, false));
+        settings.studentOutInputs = settings.studentOutInputs.map((input) => replaceOne(input, true));
       };
 
       const refreshTimeInputsForBlocks = (previousStart = scheduleDayStart, previousEnd = scheduleDayEnd) => {
@@ -963,7 +969,7 @@
         ].forEach((input) => {
           const current = getRawMinutesFromTimeInput(input, previousStart);
           const next = current === previousStart ? scheduleDayStart : current;
-          setTimeInputValue(input, next, scheduleDayStart);
+          setTimeInputValue(input, next, scheduleDayStart, false);
         });
 
         [
@@ -972,7 +978,7 @@
         ].forEach((input) => {
           const current = getRawMinutesFromTimeInput(input, previousEnd);
           const next = current === previousEnd ? scheduleDayEnd : current;
-          setTimeInputValue(input, next, scheduleDayEnd);
+          setTimeInputValue(input, next, scheduleDayEnd, true);
         });
       };
 
@@ -1082,13 +1088,13 @@
           input.value = names[index] || "";
         });
         settings.staffInInputs.forEach((input, index) => {
-          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart);
+          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart, false);
         });
         settings.staffLunchInputs.forEach((input, index) => {
           setLunchInputValue(input, lunchTimes[index]);
         });
         settings.staffOutInputs.forEach((input, index) => {
-          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd);
+          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd, true);
         });
       }
 
@@ -1108,10 +1114,10 @@
           input.value = names[index] || "";
         });
         settings.studentInInputs.forEach((input, index) => {
-          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart);
+          setTimeInputValue(input, parseTimeToMinutes(inTimes[index], scheduleDayStart), scheduleDayStart, false);
         });
         settings.studentOutInputs.forEach((input, index) => {
-          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd);
+          setTimeInputValue(input, parseTimeToMinutes(outTimes[index], scheduleDayEnd), scheduleDayEnd, true);
         });
 
         settings.studentDuplicates.forEach((checkbox, index) => {
@@ -1946,7 +1952,7 @@
       const clampTimeInputField = (input, isOut = false) => {
         const fallback = isOut ? scheduleDayEnd : scheduleDayStart;
         const parsed = getMinutesFromTimeInput(input, fallback);
-        setTimeInputValue(input, parsed, fallback);
+        setTimeInputValue(input, parsed, fallback, isOut);
       };
 
       settings.buildBtn.addEventListener("click", generate);
