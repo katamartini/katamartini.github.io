@@ -1693,17 +1693,27 @@
         const counts = rawCounts instanceof Map
           ? rawCounts
           : new Map(Array.isArray(rawCounts) ? rawCounts : []);
+        const hasGeneratedAssignments = assignments.length > 0;
+        const displayStaff = Array.isArray(staff) && staff.length
+          ? staff
+          : parseStaffFromInputs().map((person) => person.name);
+        const displayAssignments = hasGeneratedAssignments
+          ? assignments
+          : getBlocks().map((block) => ({
+            time: block.time,
+            byStaff: displayStaff.map(() => [])
+          }));
 
-        if (!staff.length || !assignments.length) {
+        if (!displayAssignments.length) {
           settings.scheduleHead.innerHTML = "";
-          settings.scheduleBody.innerHTML = "<tr><td>No schedule to show.</td></tr>";
+          settings.scheduleBody.innerHTML = "<tr><td>No time blocks configured.</td></tr>";
           settings.summary.innerHTML = "";
           return;
         }
 
-        settings.scheduleHead.innerHTML = `<tr>${["Time", ...staff].map((col) => `<th>${escapeHtml(col)}</th>`).join("")}</tr>`;
+        settings.scheduleHead.innerHTML = `<tr>${["Time", ...displayStaff].map((col) => `<th>${escapeHtml(col)}</th>`).join("")}</tr>`;
 
-        settings.scheduleBody.innerHTML = assignments
+        settings.scheduleBody.innerHTML = displayAssignments
           .map((row) => {
             const cells = [`<td><span class="time-pill">${escapeHtml(row.time)}</span></td>`];
 
@@ -1725,7 +1735,7 @@
               cells.push(`<td class="staff-cell"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
             }
 
-            while (cells.length - 1 < staff.length) {
+            while (cells.length - 1 < displayStaff.length) {
               cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
             }
 
@@ -1733,18 +1743,27 @@
           })
           .join("");
 
-        const totalAssignments = assignments.reduce((sum, row) => {
+        const totalAssignments = displayAssignments.reduce((sum, row) => {
           return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + staffCell.length, 0);
         }, 0);
 
+        if (!hasGeneratedAssignments) {
+          settings.summary.innerHTML = [
+            `<div class="summary-item"><strong>Rows:</strong> ${displayAssignments.length}</div>`,
+            `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
+            `<div class="summary-item"><strong>Status:</strong> Timetable ready. Generate a schedule to fill assignments.</div>`
+          ].join("");
+          return;
+        }
+
         const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
-        const missingCount = assignments.reduce((sum, row) => sum + (row.unassigned?.length || 0), 0);
+        const missingCount = displayAssignments.reduce((sum, row) => sum + (row.unassigned?.length || 0), 0);
         const missingSummary = unassignedBySlot.length
           ? unassignedBySlot.map(({ time, names }) => `${escapeHtml(time)} &rarr; ${escapeHtml(names.join(", "))}`).join("<br>")
           : "None";
         settings.summary.innerHTML = [
-          `<div class="summary-item"><strong>Rows:</strong> ${assignments.length}</div>`,
-          `<div class="summary-item"><strong>Staff:</strong> ${staff.length}</div>`,
+          `<div class="summary-item"><strong>Rows:</strong> ${displayAssignments.length}</div>`,
+          `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
           `<div class="summary-item"><strong>Total cells:</strong> ${totalAssignments}</div>`,
           `<div class="summary-item"><strong>Assigned spread:</strong> ${top.map(([name, count]) => `${name}: ${count}`).join(" | ")}</div>`,
           `<div class="summary-item"><strong>Missing students in slots:</strong> ${missingCount}</div>`,
