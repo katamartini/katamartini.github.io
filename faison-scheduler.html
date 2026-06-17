@@ -440,6 +440,16 @@
       background: #eaf6ff;
     }
 
+    .pair-bucket.is-approved {
+      border-color: #97cfa1;
+      background: #eaf8ed;
+    }
+
+    .pair-bucket.is-backup {
+      border-color: #e0cf7a;
+      background: #fff8d7;
+    }
+
     .pair-bucket h3 {
       margin: 0 0 6px 0;
       font-size: 13px;
@@ -473,6 +483,30 @@
     .pair-bucket-inner.drag-over {
       background: #d7ecff;
       border-color: #5f9ccc;
+    }
+
+    .pair-bucket.is-approved .pair-bucket-inner,
+    .pair-bucket.is-approved .pair-item {
+      border-color: #8fc99b;
+      background: #dff3e3;
+      color: #246339;
+    }
+
+    .pair-bucket.is-approved .pair-bucket-inner.drag-over {
+      background: #d0ecd6;
+      border-color: #66ad75;
+    }
+
+    .pair-bucket.is-backup .pair-bucket-inner,
+    .pair-bucket.is-backup .pair-item {
+      border-color: #decf75;
+      background: #fff2ad;
+      color: #735c13;
+    }
+
+    .pair-bucket.is-backup .pair-bucket-inner.drag-over {
+      background: #ffeca0;
+      border-color: #c4a92f;
     }
 
     .pair-item {
@@ -701,11 +735,11 @@
               <h3>Available <span>Drag from here</span></h3>
               <div id="pairOutput" class="pair-output" aria-live="polite">No pairs generated yet.</div>
             </section>
-            <section class="pair-bucket">
+            <section class="pair-bucket is-approved">
               <h3>Approved <span>Prefer these</span></h3>
               <div id="approvedPairs" class="pair-bucket-inner" data-bucket="approved" aria-label="Approved pair bucket"></div>
             </section>
-            <section class="pair-bucket">
+            <section class="pair-bucket is-backup">
               <h3>Backups <span>Use if needed</span></h3>
               <div id="backupPairs" class="pair-bucket-inner" data-bucket="backups" aria-label="Backups pair bucket"></div>
             </section>
