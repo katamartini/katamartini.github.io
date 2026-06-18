@@ -1512,18 +1512,21 @@ const mine=sim.slots[side].picks.filter(Boolean),mineSet=new Set(mine),blocked=n
 function simPossiblePastDrafts(side){
 const picked=sim.slots[side].picks.filter(Boolean);if(!picked.length)return[];const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean));return currentAllDrafts.filter(d=>picked.every(h=>d.heroes.includes(h))&&d.heroes.every(h=>!blocked.has(h))).sort((a,b)=>mo(b.matchID,b.week)-mo(a.matchID,a.week))}
 function simUniqueChance(side){
-const picked=sim.slots[side].picks.filter(Boolean);const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean)),pickSet=new Set(picked),seenKeys=new Set();for(const d of currentAllDrafts){
+const picked=sim.slots[side].picks.filter(Boolean),blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean)),pickSet=new Set(picked),maps=countMaps(currentAllDrafts),weight=h=>(maps.heroes.get(h)||0)+1,heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,pool=heroes.filter(h=>!pickSet.has(h)&&!blocked.has(h)),remaining=6-picked.length,dp=Array(remaining+1).fill(0);dp[0]=1;pool.forEach(h=>{
+const w=weight(h);for(let i=remaining;i>=1;i--)dp[i]+=dp[i-1]*w});
+const total=dp[remaining];if(!total)return 0;let seen=0;const seenKeys=new Set();for(const d of currentAllDrafts){
 if(d.heroes.some(h=>blocked.has(h)&&!pickSet.has(h)))continue;let ok=true;for(const h of pickSet){
 if(!d.heroes.includes(h)){
 ok=false;break}}
-if(ok)seenKeys.add(d.draftKey||keyOf(d.heroes))}
-const heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,pool=heroes.filter(h=>!pickSet.has(h)&&!blocked.has(h)),remaining=6-picked.length,total=nCk(pool.length,remaining),seen=Math.min(total,seenKeys.size),unseen=Math.max(0,total-seen);return total?unseen/total*100:0}
+const key=d.draftKey||keyOf(d.heroes);if(ok&&!seenKeys.has(key)){
+seenKeys.add(key);seen+=d.heroes.filter(h=>!pickSet.has(h)).reduce((p,h)=>p*weight(h),1)}}
+const unseen=Math.max(0,total-seen);return unseen/total*100}
 function simUniqueBadge(side){
 const pct=simUniqueChance(side);
 if(pct===null)return'';
 const full=pct>=100;
 const shown=full?'100':Math.min(99.9,pct).toFixed(1);
-return '<span class="simUnique '+(full?'simUniqueFull':'')+'" title="'+pct.toFixed(1)+'% calculated unique chance">'+shown+'% Unique</span>'}
+return '<span class="simUnique '+(full?'simUniqueFull':'')+'" title="'+pct.toFixed(1)+'% unique chance weighted by historical hero pick rate">'+shown+'% Unique</span>'}
 function simPastHeroes(side,d){
 const order=(d.orderedHeroes&&d.orderedHeroes.length?d.orderedHeroes:d.heroes).slice();
 const slots=Array(6).fill('');
