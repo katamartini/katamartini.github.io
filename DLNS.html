@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -1508,7 +1508,7 @@ const mine=sim.slots[side].picks.filter(Boolean),mineSet=new Set(mine),blocked=n
 function simPossiblePastDrafts(side){
 const picked=sim.slots[side].picks.filter(Boolean);if(!picked.length)return[];const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean));return currentAllDrafts.filter(d=>picked.every(h=>d.heroes.includes(h))&&d.heroes.every(h=>!blocked.has(h))).sort((a,b)=>mo(b.matchID,b.week)-mo(a.matchID,a.week))}
 function simUniqueChance(side){
-const picked=sim.slots[side].picks.filter(Boolean);if(!picked.length)return null;const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean)),pickSet=new Set(picked),seenKeys=new Set();for(const d of currentAllDrafts){
+const picked=sim.slots[side].picks.filter(Boolean);const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean)),pickSet=new Set(picked),seenKeys=new Set();for(const d of currentAllDrafts){
 if(d.heroes.some(h=>blocked.has(h)&&!pickSet.has(h)))continue;let ok=true;for(const h of pickSet){
 if(!d.heroes.includes(h)){
 ok=false;break}}
@@ -1572,3 +1572,4 @@ oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)}
 </script>
 </body>
 </html>
+
