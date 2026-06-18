@@ -156,10 +156,10 @@ grid-template-columns:130px 65px 1fr 70px 115px 1.4fr}
 .draft{
 grid-template-columns:70px minmax(280px,1.25fr) 110px 1fr;
 align-items:start}
-.duo,.trio{
+.duo,.trio,.quint{
 grid-template-columns:80px minmax(240px,1.25fr) minmax(220px,1fr) repeat(3,minmax(115px,.6fr));
 min-width:900px}
-.duo>div:nth-child(2),.trio>div:nth-child(2){
+.duo>div:nth-child(2),.trio>div:nth-child(2),.quint>div:nth-child(2){
 justify-self:center;
 text-align:center}
 .seen{
@@ -393,9 +393,9 @@ border-radius:12px}
 grid-template-columns:1fr}
 .g5{
 grid-template-columns:repeat(2,1fr)}
-.head:not(.duo):not(.trio):not(.playerStat):not(.heroStat){
+.head:not(.duo):not(.trio):not(.quint):not(.playerStat):not(.heroStat){
 display:none}
-.r:not(.duo):not(.trio):not(.playerStat):not(.heroStat){
+.r:not(.duo):not(.trio):not(.quint):not(.playerStat):not(.heroStat){
 grid-template-columns:1fr!important}
 .slots{
 grid-template-columns:repeat(3,1fr)}
@@ -443,13 +443,14 @@ grid-template-columns:1fr}
 </main><script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
 let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
-const SHEET_ID='1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4',GID='1738458418',CSV_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+GID,CACHE='likelyUnseenDrafts.csv.v1',CACHE_T='likelyUnseenDrafts.csvTime.v1',MAX_AGE=43200000,LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
+const SHEET_ID='1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4',GID='1738458418',CSV_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+GID,CACHE='likelyUnseenDrafts.csv.v1',CACHE_T='likelyUnseenDrafts.csvTime.v1',MAX_AGE=43200000,LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
 let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],sorts={
 hero:{
 key:'picks',dir:'desc'},player:{
 key:'picks',dir:'desc'},duo:{
 key:'rank',dir:'asc'},trio:{
-key:'rank',dir:'asc'}},rt=null,dt=null;
+key:'rank',dir:'asc'},quint:{
+key:'count',dir:'desc'}},rt=null,dt=null;
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'),fmt=(n,d=2)=>Number.isFinite(n)?n.toFixed(d):'0.00',num=n=>(n||0).toLocaleString(),lst=t=>String(t||'').replaceAll(LF,',').replaceAll(CR,',').split(',').map(x=>x.trim()).filter(Boolean),wv=w=>{
 const n=Number(w);
 return Number.isFinite(n)?n:-Infinity},mv=m=>{
@@ -512,22 +513,25 @@ return Math.round(r)}
 function draftSimTab(){
 return'<section id="tab-draftsim" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="draftsimRoot"></div></div></section></section>'}
 function makeUI(){
-const tabs=[['search','Draft Search'],['unseen','Likely Unseen'],['duos','Duos'],['trios','Trios'],['herostats','Hero Stats'],['rostermoves','Roster Moves'],['rosternarrative','Roster Narrative'],['draftsim','Draft Simulator'],['validation','Validation'],['players','Players']];
+const tabs=[['search','Draft Search'],['unseen','Likely Unseen'],['duos','Duos'],['trios','Trios'],['quints','Quints'],['herostats','Hero Stats'],['rostermoves','Roster Moves'],['rosternarrative','Roster Narrative'],['draftsim','Draft Simulator'],['validation','Validation'],['players','Players']];
 $('tabs').innerHTML=tabs.map(([id,t])=>'<button class="tab" id="tabBtn-'+id+'">'+t+'</button>').join('');
 $('topStats').innerHTML=[['teamDrafts','Team drafts'],['heroUniverse','Hero universe'],['seenSixes','Seen 6-drafts'],['possibleSixes','Possible 6-drafts'],['coverage','Coverage']].map(statCard).join('');
-$('panels').innerHTML=searchTab()+comboTab('duo','Duos','2-hero','Duo','Duo count')+comboTab('trio','Trios','3-hero','Trio','Duo freq')+heroTab()+playersTab()+rosterTab()+narrativeTab()+draftSimTab()+validationTab()+unseenTab();
+$('panels').innerHTML=searchTab()+comboTab('duo','Duos','2-hero','Duo','Duo count')+comboTab('trio','Trios','3-hero','Trio','Duo freq')+quintTab()+heroTab()+playersTab()+rosterTab()+narrativeTab()+draftSimTab()+validationTab()+unseenTab();
 renderSlots();
 tabs.forEach(([id])=>$('tabBtn-'+id).onclick=()=>setTab(id));
 bindSort('hero',()=>renderHeroStats(currentAllDrafts));
 bindSort('player',()=>renderPlayerStats(currentAllDrafts));
 bindSort('duo',()=>renderDuos(currentHeroUniverse,countMaps(groupDrafts(true).drafts)));
-bindSort('trio',()=>renderTrios(currentHeroUniverse,countMaps(groupDrafts(true).drafts)))}
+bindSort('trio',()=>renderTrios(currentHeroUniverse,countMaps(groupDrafts(true).drafts)));
+bindSort('quint',()=>{const d=groupDrafts(true).drafts;renderQuints(d,countMaps(d))})}
 function statCard([id,l]){
 return'<div class="card"><div class="in"><div class="label">'+l+'</div><div class="value mono" id="'+id+'">0</div></div></div>'}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
 function comboTab(k,title,noun,label,last){
 return'<section id="tab-'+k+'s" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Unseen '+title.toLowerCase()+'</div><div class="muted">Every unseen '+noun+' combination, ranked by likely appearance.</div></div>'+bigStats(k)+'</div><div style="display:grid;grid-template-columns:minmax(220px,520px) max-content;gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="'+k+'FilterText"></textarea></label><label class="chip"><input id="showSeen'+title+'" type="checkbox" style="width:auto"> Show seen '+title.toLowerCase()+'</label></div><div class="table"><div class="head '+k+'"><div><button class="sort '+k+'Sort" data-sort="rank">Rank</button></div><div>'+label+'</div><div><button class="sort '+k+'Sort" data-sort="firstSeen">First seen</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'duoCount':'total')+'">'+last+'</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'total':'heroAvg')+'">'+(k==='duo'?'Score':'Hero freq')+'</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'heroAvg':'duoAvg')+'">'+(k==='duo'?'Hero freq':'Duo freq')+'</button></div></div><div id="'+k+'Results"></div></div></div></section></section>'}
+function quintTab(){
+return'<section id="tab-quints" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Repeated quints</div><div class="muted">Five-hero combinations that have appeared multiple times.</div></div><div class="pill"><span id="quintShownCount">0</span> shown</div></div><div style="display:grid;grid-template-columns:minmax(220px,520px);gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="quintFilterText"></textarea></label></div><div class="table"><div class="head quint"><div><button class="sort quintSort" data-sort="rank">Rank</button></div><div>Quint</div><div><button class="sort quintSort" data-sort="count">Occurrences</button></div><div><button class="sort quintSort" data-sort="firstSeen">First seen</button></div><div><button class="sort quintSort" data-sort="latestSeen">Latest seen</button></div><div><button class="sort quintSort" data-sort="heroAvg">Hero freq</button></div></div><div id="quintResults"></div></div></div></section></section>'}
 function searchTab(){
 return'<section id="tab-search" class="tab-panel"><section class="searchLayout"><aside class="card"><div class="in"><div class="bar"><div><div class="title">Draft filters</div><div class="muted">Choose heroes to filter drafts.</div></div><button id="clearSearchBtn">Clear</button></div><datalist id="heroOptions"></datalist><div class="slots" id="draftSlots"></div></div></aside><section class="card"><div class="in"><div class="title">Drafts</div><div id="draftSearchSummary" class="muted">Showing all drafts.</div><div id="draftSearchResults" class="table"></div></div></section></section></section>'}
 function head(labels,keys,cls,type){
@@ -676,6 +680,26 @@ function renderDuos(h,m){
 renderCombo('duo',h,m)}
 function renderTrios(h,m){
 renderCombo('trio',h,m)}
+function renderQuints(drafts,m){
+const req=lst($('quintFilterText')?.value).map(h=>canon(h,currentHeroUniverse)).filter(Boolean),first=new Map(),latest=new Map();
+for(const d of drafts)combos(d.heroes,5,t=>{
+const k=keyOf(t),val=mo(d.matchID,d.week),entry={
+val,matchID:d.matchID,team:d.team};
+if(!first.has(k)||val<first.get(k).val)first.set(k,entry);
+if(!latest.has(k)||val>latest.get(k).val)latest.set(k,entry)});
+let rows=[...m.fives.entries()].filter(([,count])=>count>1).map(([k,count])=>{
+const heroes=k.split('|'),heroAvg=heroes.reduce((s,h)=>s+Math.log1p(m.heroes.get(h)||0),0)/heroes.length;
+return{
+heroes,count,heroAvg,first:first.get(k),latest:latest.get(k),firstSeen:first.get(k)?.val??Infinity,latestSeen:latest.get(k)?.val??-Infinity}}).sort((a,b)=>b.count-a.count||b.heroAvg-a.heroAvg);
+rows.forEach((x,i)=>x.rank=i+1);
+rows=rows.filter(x=>req.every(h=>x.heroes.includes(h)));
+const s=sorts.quint,dir=s.dir==='asc'?1:-1;
+rows.sort((a,b)=>dir*((a[s.key]>b[s.key])-(a[s.key]<b[s.key]))||a.rank-b.rank);
+markSort('quint');
+$('quintShownCount').textContent=num(rows.length);
+$('quintResults').innerHTML=rows.map(x=>{
+const first=x.first?'<b>'+esc(x.first.matchID)+'</b><div class="small">'+esc(x.first.team)+'</div>':'-',latest=x.latest?'<b>'+esc(x.latest.matchID)+'</b><div class="small">'+esc(x.latest.team)+'</div>':'-';
+return'<div class="r quint"><div>#'+x.rank+'</div><div class="heroes">'+x.heroes.map(h=>ih(h,'dIcon')).join('')+'</div><div class="score mono">'+x.count+'</div><div>'+first+'</div><div>'+latest+'</div><div>'+fmt(x.heroAvg,1)+'</div></div>'}).join('')||'<div class="r"><div class="muted">No repeated quints match this filter.</div></div>'}
 function rosterChanges(drafts){
 const sorted=[...drafts].sort((a,b)=>wv(a.week)-wv(b.week)||mv(a.matchID)-mv(b.matchID)),last=new Map(),changes=[];
 for(const d of sorted){
@@ -882,6 +906,7 @@ renderValidation(currentAllDrafts);
 renderDraftSearch(heroes);
 renderDuos(heroes,maps);
 renderTrios(heroes,maps);
+renderQuints(built.drafts,maps);
 Object.entries({
 rawRows:records.length,teamDrafts:built.drafts.length,heroUniverse:heroes.length,seenSixes:maps.sixes.size,possibleSixes:possible,uniqueHeroes:maps.heroes.size,uniqueDuos:maps.duos.size,uniqueTrios:maps.trios.size,uniqueQuads:maps.quads.size,uniqueFives:maps.fives.size}).forEach(([id,v])=>$(id).textContent=num(v));
 $('coverage').textContent=possible?(maps.sixes.size/possible*100).toFixed(3)+'%':'0.000%';
@@ -967,7 +992,7 @@ $('loadBtn').onclick=()=>loadSheet(true);
 $('clearSearchBtn').onclick=()=>{
 for(let i=0;i<6;i++)$('draftHero'+i).value='';
 schedDraft()};
-['region','resultFilter','topN','minScore','includeText','excludeText','manualHeroes','duoFilterText','showSeenDuos','trioFilterText','showSeenTrios','wHeroes','wDuos','wTrios','wQuads','wFives'].forEach(id=>{
+['region','resultFilter','topN','minScore','includeText','excludeText','manualHeroes','duoFilterText','showSeenDuos','trioFilterText','showSeenTrios','quintFilterText','wHeroes','wDuos','wTrios','wQuads','wFives'].forEach(id=>{
 $(id).oninput=sched;$(id).onchange=sched});
 for(let i=0;i<6;i++){
 $('draftHero'+i).oninput=schedDraft;
