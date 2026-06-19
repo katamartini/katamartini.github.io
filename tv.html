@@ -79,7 +79,7 @@
       margin: 0 auto;
       padding: 16px 0 14px;
       display: flex;
-      align-items: end;
+      align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
@@ -125,25 +125,15 @@
       margin: 0 auto;
       padding: 12px 0;
       display: grid;
-      grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
       gap: 12px;
       align-items: start;
     }
 
-    .rail,
     .detail {
       min-width: 0;
       background: var(--panel);
       border: 1px solid var(--line);
       box-shadow: 0 12px 30px var(--shadow);
-    }
-
-    .rail {
-      display: grid;
-      grid-template-rows: auto auto minmax(260px, 1fr) auto;
-      max-height: calc(100vh - 100px);
-      position: sticky;
-      top: 12px;
     }
 
     .section {
@@ -165,7 +155,7 @@
 
     .search-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 76px;
+      grid-template-columns: minmax(220px, 1fr) 76px;
       gap: 8px;
     }
 
@@ -181,7 +171,7 @@
     .search-results {
       display: grid;
       gap: 8px;
-      max-height: 420px;
+      max-height: 320px;
       overflow: auto;
     }
 
@@ -257,6 +247,54 @@
     .check-row input {
       width: 16px;
       height: 16px;
+    }
+
+    .settings-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 30px var(--shadow);
+    }
+
+    .settings-panel summary {
+      min-height: 44px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .settings-panel summary::marker,
+    .settings-panel summary::-webkit-details-marker {
+      content: "";
+      display: none;
+    }
+
+    .settings-panel summary::after {
+      content: "+";
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .settings-panel[open] summary::after {
+      content: "-";
+    }
+
+    .settings-content {
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(280px, 1.4fr) minmax(240px, 0.9fr) minmax(280px, 1fr);
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .settings-group {
+      min-width: 0;
+      display: grid;
+      align-content: start;
+      gap: 8px;
     }
 
     .segmented {
@@ -509,8 +547,8 @@
     }
 
     .view-tabs {
-      width: min(260px, 100%);
-      grid-template-columns: repeat(2, 1fr);
+      width: min(300px, 100%);
+      grid-template-columns: repeat(3, 1fr);
     }
 
     .status-row {
@@ -704,10 +742,10 @@
 
     .show-row {
       display: grid;
-      grid-template-columns: 54px minmax(160px, 1fr) minmax(120px, 0.6fr) minmax(150px, 0.8fr) auto;
-      gap: 10px;
-      align-items: center;
-      padding: 9px;
+      grid-template-columns: 54px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
+      gap: 12px;
+      align-items: start;
+      padding: 10px;
       border: 1px solid var(--line);
       background: #ffffff;
     }
@@ -723,6 +761,40 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       font-weight: 800;
+    }
+
+    .show-row-main {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .show-row-mainline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .inline-episodes {
+      min-width: 0;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .inline-episodes .episode {
+      flex: 0 0 220px;
+      min-height: 70px;
+      grid-template-columns: 36px minmax(0, 1fr);
+      padding: 8px;
+    }
+
+    .inline-episodes .episode-num {
+      width: 36px;
+      height: 36px;
     }
 
     .show-row-actions {
@@ -774,20 +846,15 @@
       }
 
       .workspace {
-        grid-template-columns: 1fr;
-      }
-
-      .rail {
-        position: static;
-        max-height: none;
-      }
-
-      .show-list {
-        max-height: 420px;
+        width: min(100vw - 16px, 1500px);
       }
 
       .detail {
         min-height: 0;
+      }
+
+      .settings-content {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -871,6 +938,17 @@
         align-items: start;
       }
 
+      .inline-episodes {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow-x: visible;
+      }
+
+      .inline-episodes .episode {
+        flex-basis: auto;
+      }
+
       .show-row-actions {
         grid-column: 1 / -1;
         justify-content: start;
@@ -893,25 +971,21 @@
     </header>
 
     <main class="workspace">
-      <aside class="rail" aria-label="Shows">
-        <section class="section">
+      <details class="settings-panel">
+        <summary>Settings</summary>
+        <div class="settings-content">
+          <section class="settings-group">
           <h2 class="section-title">Find a Show</h2>
           <form class="search-row" id="searchForm">
             <label class="sr-only" for="searchInput">Show name</label>
             <input class="field" id="searchInput" type="search" placeholder="Search TVmaze" autocomplete="off" />
             <button class="primary" type="submit">Search</button>
           </form>
-        </section>
-
-        <section class="section" id="searchArea" hidden>
-          <h2 class="section-title">Results</h2>
           <div class="search-results" id="searchResults"></div>
-        </section>
+          </section>
 
-        <section class="show-list" id="showList" aria-label="Tracked shows"></section>
-
-        <section class="section">
-          <h2 class="section-title">Library</h2>
+          <section class="settings-group">
+            <h2 class="section-title">Library</h2>
           <div class="library-tools">
             <div class="segmented" role="group" aria-label="Show filter">
               <button type="button" data-library-filter="all" class="active">All</button>
@@ -925,7 +999,10 @@
               <button type="button" id="saveFileButton">Save File</button>
             </div>
             <div class="file-status" id="fileStatus"></div>
-            <div class="sync-panel">
+          </div>
+          </section>
+
+          <section class="settings-group">
               <h3 class="section-title">Repo Sync</h3>
               <label class="sr-only" for="githubToken">GitHub token</label>
               <input class="field" id="githubToken" type="password" placeholder="GitHub token" autocomplete="off" />
@@ -938,11 +1015,10 @@
                 <span>Auto-save to repo</span>
               </label>
               <div class="file-status" id="repoStatus"></div>
-            </div>
             <input class="sr-only" id="importFile" type="file" accept="application/json" />
-          </div>
-        </section>
-      </aside>
+          </section>
+        </div>
+      </details>
 
       <section class="detail" id="detail" aria-live="polite"></section>
     </main>
@@ -981,7 +1057,7 @@
       libraryFilter: "all",
       episodeFilter: "all",
       selectedSeason: "all",
-      viewMode: "show",
+      viewMode: "list",
       isSearching: false,
     };
 
@@ -989,9 +1065,7 @@
       summaryStrip: document.querySelector("#summaryStrip"),
       searchForm: document.querySelector("#searchForm"),
       searchInput: document.querySelector("#searchInput"),
-      searchArea: document.querySelector("#searchArea"),
       searchResults: document.querySelector("#searchResults"),
-      showList: document.querySelector("#showList"),
       detail: document.querySelector("#detail"),
       exportButton: document.querySelector("#exportButton"),
       importButton: document.querySelector("#importButton"),
@@ -1016,7 +1090,7 @@
         state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
-        state.viewMode = VIEW_MODES.includes(parsed.viewMode) ? parsed.viewMode : "show";
+        state.viewMode = "list";
       } catch {
         showToast("Saved tracker data could not be read.");
       }
@@ -1061,7 +1135,7 @@
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
-      state.viewMode = VIEW_MODES.includes(parsed.viewMode) ? parsed.viewMode : "show";
+      state.viewMode = "list";
       state.selectedSeason = "all";
       state.episodeFilter = "all";
       state.searchQuery = "";
@@ -1199,7 +1273,6 @@
     function render(options = {}) {
       renderSummary();
       renderLibraryFilter();
-      renderShowList();
       renderSearchResults();
       renderDetail();
       renderFileStatus();
@@ -1295,38 +1368,8 @@
       return state.shows;
     }
 
-    function renderShowList() {
-      const shows = libraryShows();
-      if (!shows.length) {
-        nodes.showList.innerHTML = `<div class="empty">Search for a show to start tracking episodes.</div>`;
-        return;
-      }
-
-      nodes.showList.innerHTML = shows.map((show) => {
-        const next = nextEpisode(show);
-        const isSelected = show.id === state.selectedId;
-        const count = watchedCount(show);
-        const total = airedEpisodes(show).length;
-        return `
-          <article class="show-card ${isSelected ? "active" : ""}" data-select-show="${show.id}" tabindex="0">
-            ${imageMarkup(show.image, "thumb")}
-            <div class="show-card-main">
-              <div class="show-line">
-                <strong class="show-name">${escapeAttr(show.name)}</strong>
-                <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
-              </div>
-              <div class="meta">${escapeAttr(showMeta(show))}</div>
-              <div class="meta">${count}/${total} aired watched</div>
-              <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
-              <div class="meta">${next ? `Next: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "No aired episodes left"}</div>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
     function renderSearchResults() {
-      nodes.searchArea.hidden = !state.searchQuery && !state.isSearching && state.searchResults.length === 0;
+      nodes.searchResults.hidden = !state.searchQuery && !state.isSearching && state.searchResults.length === 0;
 
       if (state.isSearching) {
         nodes.searchResults.innerHTML = `<div class="empty">Searching...</div>`;
@@ -1447,8 +1490,8 @@
       return `
         <div class="modebar">
           <div class="segmented view-tabs" role="group" aria-label="Detail view">
-            <button type="button" data-view-mode="show" class="${state.viewMode === "show" ? "active" : ""}">Show</button>
             <button type="button" data-view-mode="list" class="${state.viewMode === "list" ? "active" : ""}">Shows</button>
+            <button type="button" data-view-mode="show" class="${state.viewMode === "show" ? "active" : ""}">Show</button>
             <button type="button" data-view-mode="queue" class="${state.viewMode === "queue" ? "active" : ""}">Queue</button>
           </div>
           <div class="meta">${unwatchedTotal} unwatched aired episode${unwatchedTotal === 1 ? "" : "s"}</div>
@@ -1457,14 +1500,13 @@
     }
 
     function renderAllShowsView() {
-      const shows = [...state.shows].sort((a, b) => a.name.localeCompare(b.name));
+      const shows = [...libraryShows()].sort((a, b) => a.name.localeCompare(b.name));
       nodes.detail.innerHTML = `
-        ${renderModebar()}
         <section class="all-shows">
           <div class="all-shows-head">
             <div>
               <h2>All Shows</h2>
-              <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"}</div>
+              <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / click an episode to mark it watched</div>
             </div>
           </div>
           <div class="show-table">
@@ -1477,20 +1519,22 @@
     function renderShowRow(show) {
       const watched = watchedCount(show);
       const aired = airedEpisodes(show).length;
-      const next = nextEpisode(show);
+      const unwatched = unwatchedAiredEpisodes(show);
       return `
         <article class="show-row">
           ${imageMarkup(show.image, "thumb")}
-          <div>
-            <span class="show-row-title">${escapeAttr(show.name)}</span>
+          <div class="show-row-main">
+            <div class="show-row-mainline">
+              <span class="show-row-title">${escapeAttr(show.name)}</span>
+              <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
+            </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
+            <div class="meta">${watched}/${aired} aired watched</div>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
           </div>
-          <div>
-            <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
-            <div class="meta">${watched}/${aired} aired watched</div>
+          <div class="inline-episodes">
+            ${unwatched.length ? unwatched.map((episode) => renderEpisodeButton(show, episode)).join("") : `<div class="empty">Caught up</div>`}
           </div>
-          <div class="meta">${next ? `Next: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "No aired episodes left"}</div>
           <div class="show-row-actions">
             <button type="button" data-open-show="${show.id}">Open</button>
             <button type="button" data-refresh-show="${show.id}">Refresh</button>
@@ -1680,7 +1724,7 @@
         const show = await fetchShow(id);
         state.shows.unshift(show);
         state.selectedId = show.id;
-        state.viewMode = "show";
+        state.viewMode = "list";
         state.selectedSeason = "all";
         state.episodeFilter = "all";
         showToast(`Added ${show.name}.`);
