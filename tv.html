@@ -1079,6 +1079,8 @@
     let searchDebounceId = null;
     let searchRequestId = 0;
     let searchBlurTimer = null;
+    let searchWasClicked = false;
+    let handledAddPointer = false;
     let dataFileHandle = null;
     let fileSaveTimer = null;
     let isSavingFile = false;
@@ -1186,6 +1188,7 @@
       state.searchResults = [];
       state.searchHasSearched = false;
       state.searchActive = false;
+      searchWasClicked = false;
     }
 
     function normalizeShow(show) {
@@ -1726,7 +1729,7 @@
       window.clearTimeout(searchDebounceId);
       const trimmed = query.trim();
       searchRequestId += 1;
-      state.searchActive = true;
+      state.searchActive = searchWasClicked;
       state.searchQuery = trimmed;
       state.searchResults = [];
       state.searchHasSearched = false;
@@ -1761,7 +1764,7 @@
       const requestId = searchRequestId + 1;
       searchRequestId = requestId;
       state.searchQuery = trimmed;
-      state.searchActive = true;
+      state.searchActive = searchWasClicked;
       state.isSearching = true;
       render();
       try {
@@ -1829,6 +1832,7 @@
         state.selectedSeason = "all";
         state.episodeFilter = "all";
         state.searchActive = false;
+        searchWasClicked = false;
         showToast(`Added ${show.name}.`);
         render({ persistFile: true });
       } catch {
@@ -2146,6 +2150,8 @@
 
     nodes.searchForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      searchWasClicked = true;
+      state.searchActive = true;
       const query = nodes.searchInput.value.trim();
       if (query) searchShows(query);
       if (!query) queueSearch("");
@@ -2156,14 +2162,17 @@
     });
 
     nodes.searchInput.addEventListener("pointerdown", () => {
+      searchWasClicked = true;
       state.searchActive = true;
       renderSearchResults();
     });
 
     nodes.searchInput.closest(".search-panel").addEventListener("focusin", () => {
       window.clearTimeout(searchBlurTimer);
-      state.searchActive = true;
-      renderSearchResults();
+      if (searchWasClicked) {
+        state.searchActive = true;
+        renderSearchResults();
+      }
     });
 
     nodes.searchInput.closest(".search-panel").addEventListener("focusout", (event) => {
@@ -2179,24 +2188,37 @@
     nodes.searchInput.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         state.searchActive = false;
+        searchWasClicked = false;
         nodes.searchInput.blur();
         renderSearchResults();
       }
     });
 
     document.addEventListener("pointerdown", (event) => {
-      const panel = nodes.searchInput.closest(".search-panel");
+      const addButton = event.target.closest("[data-add-show]");
+      if (addButton && !addButton.disabled) {
+        handledAddPointer = true;
+        event.preventDefault();
+        addShow(Number(addButton.dataset.addShow));
+        return;
+      }
+
       const keepsSearchOpen = event.target.closest("#searchInput")
         || event.target.closest("#searchForm button")
-        || event.target.closest("[data-add-show]");
+        || addButton;
       if (keepsSearchOpen) return;
       state.searchActive = false;
+      searchWasClicked = false;
       renderSearchResults();
     });
 
     document.addEventListener("click", (event) => {
       const addButton = event.target.closest("[data-add-show]");
       if (addButton) {
+        if (handledAddPointer) {
+          handledAddPointer = false;
+          return;
+        }
         addShow(Number(addButton.dataset.addShow));
         return;
       }
