@@ -1828,6 +1828,7 @@
         state.viewMode = "list";
         state.selectedSeason = "all";
         state.episodeFilter = "all";
+        state.searchActive = false;
         showToast(`Added ${show.name}.`);
         render({ persistFile: true });
       } catch {
@@ -2185,7 +2186,10 @@
 
     document.addEventListener("pointerdown", (event) => {
       const panel = nodes.searchInput.closest(".search-panel");
-      if (panel.contains(event.target)) return;
+      const keepsSearchOpen = event.target.closest("#searchInput")
+        || event.target.closest("#searchForm button")
+        || event.target.closest("[data-add-show]");
+      if (keepsSearchOpen) return;
       state.searchActive = false;
       renderSearchResults();
     });
