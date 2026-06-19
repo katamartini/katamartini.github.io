@@ -239,6 +239,26 @@
       line-height: 1.3;
     }
 
+    .sync-panel {
+      display: grid;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .check-row input {
+      width: 16px;
+      height: 16px;
+    }
+
     .segmented {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -832,6 +852,20 @@
               <button type="button" id="saveFileButton">Save File</button>
             </div>
             <div class="file-status" id="fileStatus"></div>
+            <div class="sync-panel">
+              <h3 class="section-title">Repo Sync</h3>
+              <label class="sr-only" for="githubToken">GitHub token</label>
+              <input class="field" id="githubToken" type="password" placeholder="GitHub token" autocomplete="off" />
+              <div class="tool-grid">
+                <button type="button" id="repoLoadButton">Load Repo</button>
+                <button type="button" id="repoSaveButton">Save Repo</button>
+              </div>
+              <label class="check-row">
+                <input id="repoAutoSync" type="checkbox" />
+                <span>Auto-save to repo</span>
+              </label>
+              <div class="file-status" id="repoStatus"></div>
+            </div>
             <input class="sr-only" id="importFile" type="file" accept="application/json" />
           </div>
         </section>
@@ -846,6 +880,11 @@
   <script>
     const API_ROOT = "https://api.tvmaze.com";
     const STORAGE_KEY = "kata-tv-tracker-v1";
+    const GITHUB_SYNC_KEY = "kata-tv-tracker-github-sync-v1";
+    const GITHUB_OWNER = "katamartini";
+    const GITHUB_REPO = "katamartini.github.io";
+    const GITHUB_BRANCH = "main";
+    const GITHUB_DATA_PATH = "tv-data.json";
     const STATUSES = ["watching", "paused", "finished"];
     const SEARCH_DEBOUNCE_MS = 300;
     const SEARCH_MIN_LENGTH = 2;
@@ -855,6 +894,9 @@
     let dataFileHandle = null;
     let fileSaveTimer = null;
     let isSavingFile = false;
+    let repoFileSha = null;
+    let repoSaveTimer = null;
+    let isRepoSaving = false;
 
     const state = {
       shows: [],
@@ -882,6 +924,11 @@
       openFileButton: document.querySelector("#openFileButton"),
       saveFileButton: document.querySelector("#saveFileButton"),
       fileStatus: document.querySelector("#fileStatus"),
+      githubToken: document.querySelector("#githubToken"),
+      repoLoadButton: document.querySelector("#repoLoadButton"),
+      repoSaveButton: document.querySelector("#repoSaveButton"),
+      repoAutoSync: document.querySelector("#repoAutoSync"),
+      repoStatus: document.querySelector("#repoStatus"),
       importFile: document.querySelector("#importFile"),
       toast: document.querySelector("#toast"),
     };
@@ -903,6 +950,25 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerPayload()));
+    }
+
+    function loadRepoSyncSettings() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(GITHUB_SYNC_KEY) || "{}");
+        nodes.githubToken.value = parsed.token || "";
+        nodes.repoAutoSync.checked = !!parsed.autoSync;
+      } catch {
+        nodes.githubToken.value = "";
+        nodes.repoAutoSync.checked = false;
+      }
+    }
+
+    function saveRepoSyncSettings() {
+      localStorage.setItem(GITHUB_SYNC_KEY, JSON.stringify({
+        token: nodes.githubToken.value.trim(),
+        autoSync: nodes.repoAutoSync.checked,
+      }));
+      renderRepoStatus();
     }
 
     function trackerPayload() {
@@ -1036,9 +1102,11 @@
       renderSearchResults();
       renderDetail();
       renderFileStatus();
+      renderRepoStatus();
       saveState();
       if (options.persistFile) {
         scheduleDataFileSave();
+        scheduleRepoSave();
       }
     }
 
@@ -1066,6 +1134,34 @@
       fileSaveTimer = window.setTimeout(() => {
         saveDataFile(false);
       }, 400);
+    }
+
+    function renderRepoStatus(text) {
+      const hasToken = Boolean(nodes.githubToken.value.trim());
+      nodes.repoSaveButton.disabled = !hasToken || isRepoSaving;
+      nodes.repoAutoSync.disabled = !hasToken || isRepoSaving;
+
+      if (text) {
+        nodes.repoStatus.textContent = text;
+        return;
+      }
+
+      if (!hasToken) {
+        nodes.repoStatus.textContent = `Syncs ${GITHUB_DATA_PATH} after you add a token.`;
+        return;
+      }
+
+      nodes.repoStatus.textContent = nodes.repoAutoSync.checked
+        ? `Auto-saving ${GITHUB_DATA_PATH}.`
+        : `Ready to sync ${GITHUB_DATA_PATH}.`;
+    }
+
+    function scheduleRepoSave() {
+      if (!nodes.repoAutoSync.checked || !nodes.githubToken.value.trim()) return;
+      window.clearTimeout(repoSaveTimer);
+      repoSaveTimer = window.setTimeout(() => {
+        saveRepoData(false);
+      }, 900);
     }
 
     function renderSummary() {
@@ -1602,6 +1698,125 @@
       }
     }
 
+    function githubApiHeaders(token) {
+      const headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      };
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+      return headers;
+    }
+
+    function githubContentsUrl() {
+      const path = encodeURIComponent(GITHUB_DATA_PATH).replace(/%2F/g, "/");
+      return `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+    }
+
+    function encodeBase64(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = "";
+      bytes.forEach((byte) => {
+        binary += String.fromCharCode(byte);
+      });
+      return btoa(binary);
+    }
+
+    function decodeBase64(value) {
+      const binary = atob(value.replace(/\s/g, ""));
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function fetchRepoData(token = nodes.githubToken.value.trim()) {
+      const url = `${githubContentsUrl()}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+      const response = await fetch(url, {
+        headers: githubApiHeaders(token),
+      });
+
+      if (response.status === 404) {
+        repoFileSha = null;
+        return null;
+      }
+
+      if (!response.ok) {
+        throw new Error(`GitHub load failed: ${response.status}`);
+      }
+
+      const payload = await response.json();
+      repoFileSha = payload.sha || null;
+      return JSON.parse(decodeBase64(payload.content || ""));
+    }
+
+    async function loadRepoData() {
+      try {
+        renderRepoStatus("Loading repo data...");
+        const parsed = await fetchRepoData();
+        if (!parsed) {
+          renderRepoStatus(`${GITHUB_DATA_PATH} does not exist yet.`);
+          showToast("No repo data file yet. Save Repo will create one.");
+          return;
+        }
+
+        applyTrackerPayload(parsed);
+        render();
+        showToast(`Loaded ${GITHUB_DATA_PATH}.`);
+      } catch {
+        renderRepoStatus();
+        showToast("Could not load repo data.");
+      }
+    }
+
+    async function saveRepoData(chooseFreshSha = true) {
+      const token = nodes.githubToken.value.trim();
+      if (!token) {
+        renderRepoStatus();
+        showToast("Add a GitHub token first.");
+        return;
+      }
+
+      try {
+        isRepoSaving = true;
+        renderRepoStatus("Saving repo data...");
+        if (chooseFreshSha || !repoFileSha) {
+          await fetchRepoData(token);
+        }
+
+        const body = {
+          message: "Update TV tracker data",
+          content: encodeBase64(JSON.stringify(trackerPayload(), null, 2)),
+          branch: GITHUB_BRANCH,
+        };
+        if (repoFileSha) {
+          body.sha = repoFileSha;
+        }
+
+        const response = await fetch(githubContentsUrl(), {
+          method: "PUT",
+          headers: {
+            ...githubApiHeaders(token),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        if (!response.ok) {
+          throw new Error(`GitHub save failed: ${response.status}`);
+        }
+
+        const result = await response.json();
+        repoFileSha = result.content?.sha || repoFileSha;
+        isRepoSaving = false;
+        renderRepoStatus(`Saved ${GITHUB_DATA_PATH}.`);
+        showToast(`Saved ${GITHUB_DATA_PATH}.`);
+      } catch {
+        isRepoSaving = false;
+        renderRepoStatus();
+        showToast("Could not save repo data.");
+      }
+    }
+
     function showToast(message) {
       nodes.toast.textContent = message;
       nodes.toast.classList.add("visible");
@@ -1730,12 +1945,17 @@
     nodes.importButton.addEventListener("click", () => nodes.importFile.click());
     nodes.openFileButton.addEventListener("click", openDataFile);
     nodes.saveFileButton.addEventListener("click", () => saveDataFile(true));
+    nodes.repoLoadButton.addEventListener("click", loadRepoData);
+    nodes.repoSaveButton.addEventListener("click", () => saveRepoData(true));
+    nodes.githubToken.addEventListener("input", saveRepoSyncSettings);
+    nodes.repoAutoSync.addEventListener("change", saveRepoSyncSettings);
     nodes.importFile.addEventListener("change", () => {
       const file = nodes.importFile.files[0];
       if (file) importData(file);
       nodes.importFile.value = "";
     });
 
+    loadRepoSyncSettings();
     loadState();
     render();
   </script>
