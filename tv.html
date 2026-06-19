@@ -1798,6 +1798,25 @@
       }
     }
 
+    async function autoLoadRepoDataIfEmpty() {
+      if (state.shows.length > 0) return;
+
+      try {
+        renderRepoStatus("Checking repo data...");
+        const parsed = await fetchRepoData("");
+        if (!parsed || !Array.isArray(parsed.shows) || parsed.shows.length === 0) {
+          renderRepoStatus();
+          return;
+        }
+
+        applyTrackerPayload(parsed);
+        render();
+        showToast(`Loaded ${GITHUB_DATA_PATH}.`);
+      } catch {
+        renderRepoStatus();
+      }
+    }
+
     async function saveRepoData(chooseFreshSha = true) {
       const token = nodes.githubToken.value.trim();
       if (!token) {
@@ -1991,6 +2010,7 @@
     loadState();
     syncAutoCompletion();
     render();
+    autoLoadRepoDataIfEmpty();
   </script>
 </body>
 </html>
