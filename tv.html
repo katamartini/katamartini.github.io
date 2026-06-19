@@ -173,9 +173,20 @@
       gap: 8px;
       max-height: 320px;
       overflow: auto;
+      position: absolute;
+      z-index: 20;
+      top: calc(100% - 1px);
+      left: 12px;
+      right: 12px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      box-shadow: 0 18px 34px rgba(33, 38, 48, 0.18);
     }
 
     .search-panel {
+      position: relative;
+      z-index: 10;
       background: var(--panel);
       border: 1px solid var(--line);
       box-shadow: 0 12px 30px var(--shadow);
@@ -1067,6 +1078,7 @@
 
     let searchDebounceId = null;
     let searchRequestId = 0;
+    let searchBlurTimer = null;
     let dataFileHandle = null;
     let fileSaveTimer = null;
     let isSavingFile = false;
@@ -1081,6 +1093,7 @@
       searchQuery: "",
       searchResults: [],
       searchHasSearched: false,
+      searchActive: false,
       libraryFilter: "all",
       sortMode: "title-asc",
       episodeFilter: "all",
@@ -1172,6 +1185,7 @@
       state.searchQuery = "";
       state.searchResults = [];
       state.searchHasSearched = false;
+      state.searchActive = false;
     }
 
     function normalizeShow(show) {
@@ -1442,7 +1456,7 @@
     }
 
     function renderSearchResults() {
-      nodes.searchResults.hidden = !state.searchQuery && !state.isSearching && state.searchResults.length === 0;
+      nodes.searchResults.hidden = !state.searchActive || (!state.searchQuery && !state.isSearching && state.searchResults.length === 0);
 
       if (state.isSearching) {
         nodes.searchResults.innerHTML = `<div class="empty">Searching...</div>`;
@@ -1712,6 +1726,7 @@
       window.clearTimeout(searchDebounceId);
       const trimmed = query.trim();
       searchRequestId += 1;
+      state.searchActive = true;
       state.searchQuery = trimmed;
       state.searchResults = [];
       state.searchHasSearched = false;
@@ -1746,6 +1761,7 @@
       const requestId = searchRequestId + 1;
       searchRequestId = requestId;
       state.searchQuery = trimmed;
+      state.searchActive = true;
       state.isSearching = true;
       render();
       try {
@@ -2136,6 +2152,42 @@
 
     nodes.searchInput.addEventListener("input", () => {
       queueSearch(nodes.searchInput.value);
+    });
+
+    nodes.searchInput.addEventListener("pointerdown", () => {
+      state.searchActive = true;
+      renderSearchResults();
+    });
+
+    nodes.searchInput.closest(".search-panel").addEventListener("focusin", () => {
+      window.clearTimeout(searchBlurTimer);
+      state.searchActive = true;
+      renderSearchResults();
+    });
+
+    nodes.searchInput.closest(".search-panel").addEventListener("focusout", (event) => {
+      window.clearTimeout(searchBlurTimer);
+      searchBlurTimer = window.setTimeout(() => {
+        const panel = nodes.searchInput.closest(".search-panel");
+        if (panel.contains(document.activeElement)) return;
+        state.searchActive = false;
+        renderSearchResults();
+      }, 120);
+    });
+
+    nodes.searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        state.searchActive = false;
+        nodes.searchInput.blur();
+        renderSearchResults();
+      }
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      const panel = nodes.searchInput.closest(".search-panel");
+      if (panel.contains(event.target)) return;
+      state.searchActive = false;
+      renderSearchResults();
     });
 
     document.addEventListener("click", (event) => {
