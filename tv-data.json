@@ -1,7 +1,130 @@
 {
   "version": 1,
-  "savedAt": "2026-06-19T19:37:19.641Z",
+  "savedAt": "2026-06-19T19:37:25.020Z",
   "shows": [
+    {
+      "id": 67316,
+      "tvmazeUrl": "https://www.tvmaze.com/shows/67316/dexter-original-sin",
+      "name": "Dexter: Original Sin",
+      "status": "finished",
+      "network": "Paramount+",
+      "premiere": "2024-12-13",
+      "ended": "2025-02-14",
+      "image": "https://static.tvmaze.com/uploads/images/original_untouched/548/1372007.jpg",
+      "genres": [
+        "Drama",
+        "Crime",
+        "Mystery"
+      ],
+      "summary": "Set in 1991 Miami, Dexter: Original Sin follows Dexter as he transitions from student to avenging serial killer. When his bloodthirsty urges can't be ignored any longer, Dexter must learn to channel his inner darkness. With the guidance of his father, Harry, he adopts a Code designed to help him find and kill people who deserve to be eliminated from society without getting on law enforcements' radar. This is a particular challenge for young Dexter as he begins a forensics internship at the Miami Metro Police Department.",
+      "episodes": [
+        {
+          "id": 3003167,
+          "season": 1,
+          "number": 1,
+          "name": "And in the beginning...",
+          "airdate": "2024-12-13",
+          "runtime": 49,
+          "summary": "Young Dexter Morgan struggles to keep his urges in check while navigating life with his father, Harry, and sister, high-school senior Deb. After Harry has a health scare, Dexter realizes it may finally be time to fulfill his destiny."
+        },
+        {
+          "id": 3038050,
+          "season": 1,
+          "number": 2,
+          "name": "Kid in a Candy Store",
+          "airdate": "2024-12-20",
+          "runtime": 46,
+          "summary": "Dexter adjusts to his new job as a forensics intern at Miami Metro, as Harry returns to work after his medical leave. Deb lashes out at her dad by engaging in petty criminal behavior."
+        },
+        {
+          "id": 3038058,
+          "season": 1,
+          "number": 3,
+          "name": "Miami Vice",
+          "airdate": "2024-12-20",
+          "runtime": 58,
+          "summary": "Dexter goes after a loan shark with ties to Batista, as Harry is told to keep an eye on Maria Laguerta, Miami Metro's newest homicide detective. Deb throws a party to win the favor of her volleyball teammates."
+        },
+        {
+          "id": 3038059,
+          "season": 1,
+          "number": 4,
+          "name": "Fender Bender",
+          "airdate": "2024-12-27",
+          "runtime": 49,
+          "summary": "Dexter targets a retired mob hitman as Harry works a gruesome murder case of a ten-year-old boy. Deb sneaks into a nightclub with Sofia and meets an exciting new friend."
+        },
+        {
+          "id": 3061640,
+          "season": 1,
+          "number": 5,
+          "name": "F is for Fuck Up",
+          "airdate": "2025-01-03",
+          "runtime": 51,
+          "summary": "After a kill goes wrong, Dexter is grounded by Harry. Deb deepens her relationship with Gio, and bonds with her brother on the anniversary of their mother's death."
+        },
+        {
+          "id": 3061641,
+          "season": 1,
+          "number": 6,
+          "name": "The Joy of Killing",
+          "airdate": "2025-01-10",
+          "runtime": 49,
+          "summary": "Miami Metro is shaken by a kidnapping that hits close to home, as Dexter sets his sights on a killer that slipped through the cracks of the justice system. But first, Dexter must survive a double date with Deb and her new boyfriend."
+        },
+        {
+          "id": 3061642,
+          "season": 1,
+          "number": 7,
+          "name": "The Big Bad Body Problem",
+          "airdate": "2025-01-24",
+          "runtime": 48,
+          "summary": "Dexter needs to find a new hiding place after his most recent dumping ground is blown. Harry and LaGuerta pitch a controversial theory to Spencer, as the hunt for a missing child continues. Deb gets in trouble for an outburst in volleyball practice."
+        },
+        {
+          "id": 3061643,
+          "season": 1,
+          "number": 8,
+          "name": "Business and Pleasure",
+          "airdate": "2025-01-31",
+          "runtime": 52,
+          "summary": "Deb sneaks away for a trip with her mysterious boyfriend. Dexter is tasked with finding her. Harry and LaGuerta travel to Tampa to look into a potential serial killer on the loose, while Miami Metro closes in on suspects in the child kidnapping."
+        },
+        {
+          "id": 3061644,
+          "season": 1,
+          "number": 9,
+          "name": "Blood Drive",
+          "airdate": "2025-02-07",
+          "runtime": 51,
+          "summary": "In the fallout of a SWAT raid gone wrong, Dexter closes in on the child kidnapper. Meanwhile, Deb goes to work with her Dad and sees Miami Metro in a new light. Harry digs deeper into the serial killer case but keeps his theory from LaGuerta."
+        },
+        {
+          "id": 3061645,
+          "season": 1,
+          "number": 10,
+          "name": "Code Blues",
+          "airdate": "2025-02-14",
+          "runtime": 50,
+          "summary": "Dexter races to find the missing kidnapped child before it's too late. Deb visits her godfather in the hospital and rethinks her future. Harry comes face-to-face with a serial killer... leading to a shocking result."
+        }
+      ],
+      "watched": {
+        "3003167": true,
+        "3038050": true,
+        "3038058": true,
+        "3038059": true,
+        "3061640": true,
+        "3061641": true,
+        "3061642": true,
+        "3061643": true,
+        "3061644": true,
+        "3061645": true
+      },
+      "autoFinished": true,
+      "addedAt": "2026-06-19T19:37:24.105Z",
+      "updatedAt": "2026-06-19T19:37:24.105Z"
+    },
     {
       "id": 78665,
       "tvmazeUrl": "https://www.tvmaze.com/shows/78665/dexter-resurrection",
@@ -13034,7 +13157,7 @@
       "updatedAt": "2026-06-19T18:40:15.427Z"
     }
   ],
-  "selectedId": 78665,
+  "selectedId": 67316,
   "libraryFilter": "all",
   "sortMode": "least-progress",
   "viewMode": "list"
