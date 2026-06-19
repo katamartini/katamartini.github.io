@@ -728,6 +728,20 @@
       padding-bottom: 12px;
     }
 
+    .sort-control {
+      display: grid;
+      grid-template-columns: auto minmax(190px, 240px);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .sort-control label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
     .all-shows-head h2 {
       margin: 0;
       font-size: clamp(24px, 3vw, 34px);
@@ -933,6 +947,10 @@
         display: grid;
       }
 
+      .sort-control {
+        grid-template-columns: 1fr;
+      }
+
       .show-row {
         grid-template-columns: 54px minmax(0, 1fr);
         align-items: start;
@@ -1055,6 +1073,7 @@
       searchResults: [],
       searchHasSearched: false,
       libraryFilter: "all",
+      sortMode: "title-asc",
       episodeFilter: "all",
       selectedSeason: "all",
       viewMode: "list",
@@ -1090,6 +1109,7 @@
         state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
+        state.sortMode = parsed.sortMode || "title-asc";
         state.viewMode = "list";
       } catch {
         showToast("Saved tracker data could not be read.");
@@ -1126,6 +1146,7 @@
         shows: state.shows,
         selectedId: state.selectedId,
         libraryFilter: state.libraryFilter,
+        sortMode: state.sortMode,
         viewMode: state.viewMode,
       };
     }
@@ -1135,6 +1156,7 @@
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
+      state.sortMode = parsed.sortMode || "title-asc";
       state.viewMode = "list";
       state.selectedSeason = "all";
       state.episodeFilter = "all";
@@ -1249,6 +1271,48 @@
 
     function unwatchedAiredEpisodes(show) {
       return airedEpisodes(show).filter((episode) => !show.watched[episodeKey(episode)]);
+    }
+
+    function nextEpisodeSortValue(show) {
+      const episode = nextEpisode(show);
+      if (!episode) return "9999-99-99-999-999";
+      const airdate = episode.airdate || "0000-00-00";
+      return `${airdate}-${String(episode.season).padStart(3, "0")}-${String(episode.number || 0).padStart(3, "0")}`;
+    }
+
+    function statusSortValue(show) {
+      return {
+        watching: 0,
+        paused: 1,
+        finished: 2,
+      }[show.status] ?? 3;
+    }
+
+    function sortedShows(shows) {
+      const list = [...shows];
+      const byTitle = (a, b) => a.name.localeCompare(b.name);
+
+      list.sort((a, b) => {
+        if (state.sortMode === "title-desc") return b.name.localeCompare(a.name);
+        if (state.sortMode === "most-unwatched") {
+          return unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length || byTitle(a, b);
+        }
+        if (state.sortMode === "least-progress") {
+          return progress(a) - progress(b) || byTitle(a, b);
+        }
+        if (state.sortMode === "next-episode") {
+          return nextEpisodeSortValue(a).localeCompare(nextEpisodeSortValue(b)) || byTitle(a, b);
+        }
+        if (state.sortMode === "status") {
+          return statusSortValue(a) - statusSortValue(b) || byTitle(a, b);
+        }
+        if (state.sortMode === "recently-updated") {
+          return Date.parse(b.updatedAt || b.addedAt || 0) - Date.parse(a.updatedAt || a.addedAt || 0) || byTitle(a, b);
+        }
+        return byTitle(a, b);
+      });
+
+      return list;
     }
 
     function seasonsFor(show) {
@@ -1500,13 +1564,25 @@
     }
 
     function renderAllShowsView() {
-      const shows = [...libraryShows()].sort((a, b) => a.name.localeCompare(b.name));
+      const shows = sortedShows(libraryShows());
       nodes.detail.innerHTML = `
         <section class="all-shows">
           <div class="all-shows-head">
             <div>
               <h2>All Shows</h2>
               <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / click an episode to mark it watched</div>
+            </div>
+            <div class="sort-control">
+              <label for="showSort">Sort</label>
+              <select class="field" id="showSort" data-show-sort>
+                <option value="title-asc" ${state.sortMode === "title-asc" ? "selected" : ""}>Title A-Z</option>
+                <option value="title-desc" ${state.sortMode === "title-desc" ? "selected" : ""}>Title Z-A</option>
+                <option value="most-unwatched" ${state.sortMode === "most-unwatched" ? "selected" : ""}>Most unwatched</option>
+                <option value="least-progress" ${state.sortMode === "least-progress" ? "selected" : ""}>Least progress</option>
+                <option value="next-episode" ${state.sortMode === "next-episode" ? "selected" : ""}>Next episode date</option>
+                <option value="status" ${state.sortMode === "status" ? "selected" : ""}>Status</option>
+                <option value="recently-updated" ${state.sortMode === "recently-updated" ? "selected" : ""}>Recently updated</option>
+              </select>
             </div>
           </div>
           <div class="show-table">
@@ -2147,6 +2223,13 @@
     });
 
     nodes.detail.addEventListener("change", (event) => {
+      const showSort = event.target.closest("[data-show-sort]");
+      if (showSort) {
+        state.sortMode = showSort.value;
+        render();
+        return;
+      }
+
       const status = event.target.closest("[data-status-show]");
       if (!status) return;
 
