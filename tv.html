@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Tracker</title>
+  <style>
+    :root {
+      --ink: #181b22;
+      --muted: #667085;
+      --line: #d7dce5;
+      --paper: #fbfcfe;
+      --wash: #eef2f7;
+      --panel: #ffffff;
+      --charcoal: #252a33;
+      --green: #2f7d58;
+      --gold: #b67812;
+      --red: #b84d4d;
+      --blue: #286ea8;
+      --focus: rgba(40, 110, 168, 0.22);
+      --shadow: rgba(33, 38, 48, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: #aab4c3;
+      background: #f6f8fb;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .topbar {
+      background: var(--charcoal);
+      color: #ffffff;
+      border-bottom: 4px solid var(--green);
+    }
+
+    .topbar-inner {
+      width: min(1500px, calc(100vw - 24px));
+      margin: 0 auto;
+      padding: 16px 0 14px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .summary-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .stat {
+      min-width: 92px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.08);
+      text-align: right;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 3px;
+      color: #cbd5e1;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .workspace {
+      width: min(1500px, calc(100vw - 24px));
+      margin: 0 auto;
+      padding: 12px 0;
+      display: grid;
+      grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .rail,
+    .detail {
+      min-width: 0;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 30px var(--shadow);
+    }
+
+    .rail {
+      display: grid;
+      grid-template-rows: auto auto minmax(260px, 1fr) auto;
+      max-height: calc(100vh - 100px);
+      position: sticky;
+      top: 12px;
+    }
+
+    .section {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section:last-child {
+      border-bottom: 0;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 76px;
+      gap: 8px;
+    }
+
+    .field {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--ink);
+      padding: 8px 10px;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 8px;
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .result {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .thumb,
+    .poster,
+    .image-placeholder {
+      background: var(--wash);
+      object-fit: cover;
+    }
+
+    .thumb {
+      width: 44px;
+      height: 62px;
+    }
+
+    .result-name,
+    .show-name,
+    .episode-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .library-tools {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+    }
+
+    .segmented button {
+      border: 0;
+      border-right: 1px solid var(--line);
+      min-width: 0;
+      padding: 0 6px;
+      white-space: nowrap;
+    }
+
+    .segmented button:last-child {
+      border-right: 0;
+    }
+
+    .segmented .active,
+    .season-tab.active {
+      background: var(--charcoal);
+      color: #ffffff;
+      border-color: var(--charcoal);
+    }
+
+    .show-list {
+      min-height: 0;
+      overflow: auto;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      padding: 12px;
+      background: var(--wash);
+    }
+
+    .show-card {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      cursor: pointer;
+    }
+
+    .show-card.active {
+      border-color: var(--green);
+      box-shadow: inset 4px 0 0 var(--green);
+    }
+
+    .show-card:hover {
+      border-color: #aab4c3;
+    }
+
+    .show-card .thumb {
+      width: 58px;
+      height: 82px;
+    }
+
+    .progress-bar {
+      height: 7px;
+      margin-top: 7px;
+      overflow: hidden;
+      background: #dfe5ec;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--green);
+    }
+
+    .show-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      padding: 2px 6px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .badge.watching {
+      color: var(--green);
+      border-color: rgba(47, 125, 88, 0.45);
+    }
+
+    .badge.paused {
+      color: var(--gold);
+      border-color: rgba(182, 120, 18, 0.45);
+    }
+
+    .badge.finished {
+      color: var(--blue);
+      border-color: rgba(40, 110, 168, 0.45);
+    }
+
+    .empty {
+      padding: 22px 14px;
+      border: 1px dashed #b8c0cc;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.65);
+      text-align: center;
+    }
+
+    .detail {
+      display: grid;
+      min-height: calc(100vh - 100px);
+      align-content: start;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+      background: linear-gradient(90deg, #ffffff 0%, #f5f7fa 58%, #edf4f0 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .poster {
+      width: 170px;
+      aspect-ratio: 2 / 3;
+      border: 1px solid var(--line);
+    }
+
+    .image-placeholder {
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .image-placeholder.thumb {
+      object-fit: initial;
+    }
+
+    .hero-main {
+      min-width: 0;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .hero-head {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: start;
+      min-width: 0;
+    }
+
+    .hero-title {
+      margin: 0 0 5px;
+      font-size: clamp(24px, 3.3vw, 38px);
+      line-height: 1.05;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .danger {
+      border-color: rgba(184, 77, 77, 0.45);
+      color: var(--red);
+    }
+
+    .primary {
+      background: var(--green);
+      border-color: var(--green);
+      color: #ffffff;
+    }
+
+    .primary:hover {
+      background: #286c4c;
+      border-color: #286c4c;
+    }
+
+    .overview {
+      max-width: 900px;
+      margin: 0;
+      color: #394150;
+      line-height: 1.5;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      padding: 10px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+    }
+
+    .metric b {
+      display: block;
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .detail-tools {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      background: #ffffff;
+    }
+
+    .modebar {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+
+    .view-tabs {
+      width: min(260px, 100%);
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .status-row {
+      display: grid;
+      grid-template-columns: 80px minmax(130px, 180px);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .status-row label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .season-tabs {
+      padding: 12px 16px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      background: #ffffff;
+    }
+
+    .season-tab {
+      min-width: 46px;
+      padding: 0 10px;
+    }
+
+    .episode-grid {
+      padding: 12px 16px 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+      background: #ffffff;
+    }
+
+    .episode {
+      min-height: 88px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+      text-align: left;
+    }
+
+    .episode:hover {
+      border-color: #9facbd;
+    }
+
+    .episode.watched {
+      background: #eef8f2;
+      border-color: rgba(47, 125, 88, 0.38);
+    }
+
+    .episode.future {
+      color: #697386;
+      background: #f8fafc;
+    }
+
+    .episode-num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: var(--wash);
+      font-weight: 800;
+    }
+
+    .episode.watched .episode-num {
+      background: var(--green);
+      border-color: var(--green);
+      color: #ffffff;
+    }
+
+    .episode-detail {
+      min-width: 0;
+    }
+
+    .episode-name {
+      display: block;
+      font-weight: 700;
+    }
+
+    .episode-date {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .episode-summary {
+      margin-top: 7px;
+      color: #485263;
+      font-size: 12px;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .queue {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .queue-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .queue-head h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .queue-show {
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .queue-show-head {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      background: #f8fafc;
+    }
+
+    .queue-show-title {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    .queue-episodes {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+
+    .queue-episodes .episode {
+      min-height: 76px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      max-width: min(520px, calc(100vw - 24px));
+      padding: 10px 14px;
+      background: var(--charcoal);
+      color: #ffffff;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease;
+    }
+
+    .toast.visible {
+      opacity: 1;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .topbar-inner {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .summary-strip {
+        justify-content: flex-start;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .rail {
+        position: static;
+        max-height: none;
+      }
+
+      .show-list {
+        max-height: 420px;
+      }
+
+      .detail {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topbar-inner,
+      .workspace {
+        width: min(100vw - 16px, 1500px);
+      }
+
+      .topbar-inner {
+        padding: 12px 0;
+      }
+
+      .hero {
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .poster {
+        width: 96px;
+      }
+
+      .hero-head {
+        display: grid;
+      }
+
+      .hero-actions {
+        justify-content: start;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .detail-tools {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+
+      .modebar,
+      .queue {
+        padding: 12px;
+      }
+
+      .queue-head,
+      .queue-show-head {
+        align-items: start;
+        grid-template-columns: 44px minmax(0, 1fr);
+      }
+
+      .queue-head {
+        display: grid;
+      }
+
+      .queue-show-head button {
+        grid-column: 1 / -1;
+      }
+
+      .season-tabs,
+      .episode-grid {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .episode-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .queue-episodes {
+        grid-template-columns: 1fr;
+      }
+
+      .search-row,
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <h1>TV Tracker</h1>
+        <div class="summary-strip" id="summaryStrip"></div>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="rail" aria-label="Shows">
+        <section class="section">
+          <h2 class="section-title">Find a Show</h2>
+          <form class="search-row" id="searchForm">
+            <label class="sr-only" for="searchInput">Show name</label>
+            <input class="field" id="searchInput" type="search" placeholder="Search TVmaze" autocomplete="off" />
+            <button class="primary" type="submit">Search</button>
+          </form>
+        </section>
+
+        <section class="section" id="searchArea" hidden>
+          <h2 class="section-title">Results</h2>
+          <div class="search-results" id="searchResults"></div>
+        </section>
+
+        <section class="show-list" id="showList" aria-label="Tracked shows"></section>
+
+        <section class="section">
+          <h2 class="section-title">Library</h2>
+          <div class="library-tools">
+            <div class="segmented" role="group" aria-label="Show filter">
+              <button type="button" data-library-filter="all" class="active">All</button>
+              <button type="button" data-library-filter="active">Active</button>
+              <button type="button" data-library-filter="done">Done</button>
+            </div>
+            <div class="tool-grid">
+              <button type="button" id="exportButton">Export</button>
+              <button type="button" id="importButton">Import</button>
+            </div>
+            <input class="sr-only" id="importFile" type="file" accept="application/json" />
+          </div>
+        </section>
+      </aside>
+
+      <section class="detail" id="detail" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const API_ROOT = "https://api.tvmaze.com";
+    const STORAGE_KEY = "kata-tv-tracker-v1";
+    const STATUSES = ["watching", "paused", "finished"];
+    const SEARCH_DEBOUNCE_MS = 300;
+    const SEARCH_MIN_LENGTH = 2;
+
+    let searchDebounceId = null;
+    let searchRequestId = 0;
+
+    const state = {
+      shows: [],
+      selectedId: null,
+      searchQuery: "",
+      searchResults: [],
+      searchHasSearched: false,
+      libraryFilter: "all",
+      episodeFilter: "all",
+      selectedSeason: "all",
+      viewMode: "show",
+      isSearching: false,
+    };
+
+    const nodes = {
+      summaryStrip: document.querySelector("#summaryStrip"),
+      searchForm: document.querySelector("#searchForm"),
+      searchInput: document.querySelector("#searchInput"),
+      searchArea: document.querySelector("#searchArea"),
+      searchResults: document.querySelector("#searchResults"),
+      showList: document.querySelector("#showList"),
+      detail: document.querySelector("#detail"),
+      exportButton: document.querySelector("#exportButton"),
+      importButton: document.querySelector("#importButton"),
+      importFile: document.querySelector("#importFile"),
+      toast: document.querySelector("#toast"),
+    };
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+
+      try {
+        const parsed = JSON.parse(raw);
+        state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
+        state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
+        state.libraryFilter = parsed.libraryFilter || "all";
+        state.viewMode = parsed.viewMode === "queue" ? "queue" : "show";
+      } catch {
+        showToast("Saved tracker data could not be read.");
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        shows: state.shows,
+        selectedId: state.selectedId,
+        libraryFilter: state.libraryFilter,
+        viewMode: state.viewMode,
+      }));
+    }
+
+    function normalizeShow(show) {
+      return {
+        id: Number(show.id),
+        tvmazeUrl: show.tvmazeUrl || "",
+        name: show.name || "Untitled show",
+        status: STATUSES.includes(show.status) ? show.status : "watching",
+        network: show.network || "",
+        premiere: show.premiere || "",
+        ended: show.ended || "",
+        image: show.image || "",
+        genres: Array.isArray(show.genres) ? show.genres : [],
+        summary: show.summary || "",
+        episodes: Array.isArray(show.episodes) ? show.episodes.map(normalizeEpisode) : [],
+        watched: show.watched && typeof show.watched === "object" ? show.watched : {},
+        addedAt: show.addedAt || new Date().toISOString(),
+        updatedAt: show.updatedAt || new Date().toISOString(),
+      };
+    }
+
+    function normalizeEpisode(episode) {
+      return {
+        id: Number(episode.id),
+        season: Number(episode.season || 0),
+        number: Number(episode.number || 0),
+        name: episode.name || "Untitled episode",
+        airdate: episode.airdate || "",
+        runtime: episode.runtime || null,
+        summary: episode.summary || "",
+      };
+    }
+
+    function stripHtml(value) {
+      const div = document.createElement("div");
+      div.innerHTML = value || "";
+      return div.textContent || div.innerText || "";
+    }
+
+    function formatYear(show) {
+      const start = show.premiere ? show.premiere.slice(0, 4) : "";
+      const end = show.ended ? show.ended.slice(0, 4) : "";
+      if (start && end && start !== end) return `${start}-${end}`;
+      return start || end || "Unknown year";
+    }
+
+    function showMeta(show) {
+      const bits = [formatYear(show), show.network, show.genres.slice(0, 2).join(", ")].filter(Boolean);
+      return bits.join(" / ");
+    }
+
+    function imageMarkup(src, className) {
+      if (src) {
+        return `<img class="${className}" src="${escapeAttr(src)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'), { className: '${className} image-placeholder', textContent: 'No image' }))" />`;
+      }
+      return `<span class="${className} image-placeholder">No image</span>`;
+    }
+
+    function episodeKey(episode) {
+      return String(episode.id);
+    }
+
+    function airedEpisodes(show) {
+      const today = new Date().toISOString().slice(0, 10);
+      return show.episodes.filter((episode) => !episode.airdate || episode.airdate <= today);
+    }
+
+    function watchedCount(show) {
+      return Object.values(show.watched).filter(Boolean).length;
+    }
+
+    function progress(show) {
+      const total = airedEpisodes(show).length;
+      return total ? Math.round((watchedCount(show) / total) * 100) : 0;
+    }
+
+    function nextEpisode(show) {
+      return airedEpisodes(show).find((episode) => !show.watched[episodeKey(episode)]) || null;
+    }
+
+    function unwatchedAiredEpisodes(show) {
+      return airedEpisodes(show).filter((episode) => !show.watched[episodeKey(episode)]);
+    }
+
+    function seasonsFor(show) {
+      const seasons = new Set(show.episodes.map((episode) => episode.season).filter(Boolean));
+      return [...seasons].sort((a, b) => a - b);
+    }
+
+    function selectedShow() {
+      return state.shows.find((show) => show.id === state.selectedId) || null;
+    }
+
+    function escapeAttr(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[char]));
+    }
+
+    function render() {
+      renderSummary();
+      renderLibraryFilter();
+      renderShowList();
+      renderSearchResults();
+      renderDetail();
+      saveState();
+    }
+
+    function renderSummary() {
+      const shows = state.shows.length;
+      const totalAired = state.shows.reduce((sum, show) => sum + airedEpisodes(show).length, 0);
+      const totalWatched = state.shows.reduce((sum, show) => sum + watchedCount(show), 0);
+      const caughtUp = state.shows.filter((show) => airedEpisodes(show).length > 0 && watchedCount(show) >= airedEpisodes(show).length).length;
+
+      nodes.summaryStrip.innerHTML = `
+        <div class="stat"><b>${shows}</b><span>Shows</span></div>
+        <div class="stat"><b>${totalWatched}</b><span>Watched</span></div>
+        <div class="stat"><b>${Math.max(totalAired - totalWatched, 0)}</b><span>Left</span></div>
+        <div class="stat"><b>${caughtUp}</b><span>Caught up</span></div>
+      `;
+    }
+
+    function renderLibraryFilter() {
+      document.querySelectorAll("[data-library-filter]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.libraryFilter === state.libraryFilter);
+      });
+    }
+
+    function libraryShows() {
+      if (state.libraryFilter === "active") {
+        return state.shows.filter((show) => show.status !== "finished");
+      }
+      if (state.libraryFilter === "done") {
+        return state.shows.filter((show) => show.status === "finished" || progress(show) === 100);
+      }
+      return state.shows;
+    }
+
+    function renderShowList() {
+      const shows = libraryShows();
+      if (!shows.length) {
+        nodes.showList.innerHTML = `<div class="empty">Search for a show to start tracking episodes.</div>`;
+        return;
+      }
+
+      nodes.showList.innerHTML = shows.map((show) => {
+        const next = nextEpisode(show);
+        const isSelected = show.id === state.selectedId;
+        const count = watchedCount(show);
+        const total = airedEpisodes(show).length;
+        return `
+          <article class="show-card ${isSelected ? "active" : ""}" data-select-show="${show.id}" tabindex="0">
+            ${imageMarkup(show.image, "thumb")}
+            <div class="show-card-main">
+              <div class="show-line">
+                <strong class="show-name">${escapeAttr(show.name)}</strong>
+                <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
+              </div>
+              <div class="meta">${escapeAttr(showMeta(show))}</div>
+              <div class="meta">${count}/${total} aired watched</div>
+              <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
+              <div class="meta">${next ? `Next: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "No aired episodes left"}</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderSearchResults() {
+      nodes.searchArea.hidden = !state.searchQuery && !state.isSearching && state.searchResults.length === 0;
+
+      if (state.isSearching) {
+        nodes.searchResults.innerHTML = `<div class="empty">Searching...</div>`;
+        return;
+      }
+
+      if (state.searchQuery && state.searchQuery.length < SEARCH_MIN_LENGTH) {
+        nodes.searchResults.innerHTML = `<div class="empty">Type at least ${SEARCH_MIN_LENGTH} characters.</div>`;
+        return;
+      }
+
+      if (!state.searchResults.length) {
+        nodes.searchResults.innerHTML = `<div class="empty">${state.searchHasSearched ? "No matching shows found." : "No search results yet."}</div>`;
+        return;
+      }
+
+      nodes.searchResults.innerHTML = state.searchResults.map((item) => {
+        const show = item.show;
+        const image = show.image?.medium || show.image?.original || "";
+        const network = show.network?.name || show.webChannel?.name || "";
+        const alreadyAdded = state.shows.some((existing) => existing.id === show.id);
+        return `
+          <article class="result">
+            ${imageMarkup(image, "thumb")}
+            <div>
+              <div class="result-name"><strong>${escapeAttr(show.name)}</strong></div>
+              <div class="meta">${escapeAttr([formatYear({ premiere: show.premiered, ended: show.ended }), network, (show.genres || []).slice(0, 2).join(", ")].filter(Boolean).join(" / "))}</div>
+            </div>
+            <button type="button" data-add-show="${show.id}" ${alreadyAdded ? "disabled" : ""}>${alreadyAdded ? "Added" : "Add"}</button>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderDetail() {
+      if (state.viewMode === "queue") {
+        renderQueueView();
+        return;
+      }
+
+      const show = selectedShow();
+      if (!show) {
+        nodes.detail.innerHTML = `
+          ${renderModebar()}
+          <div class="empty" style="margin:16px;">
+            Your tracker is ready. Add a show from search and episodes will appear here.
+          </div>
+        `;
+        return;
+      }
+
+      const aired = airedEpisodes(show);
+      const next = nextEpisode(show);
+      const seasons = seasonsFor(show);
+      if (state.selectedSeason !== "all" && !seasons.includes(Number(state.selectedSeason))) {
+        state.selectedSeason = "all";
+      }
+
+      nodes.detail.innerHTML = `
+        ${renderModebar()}
+        <header class="hero">
+          ${imageMarkup(show.image, "poster")}
+          <div class="hero-main">
+            <div class="hero-head">
+              <div>
+                <h2 class="hero-title">${escapeAttr(show.name)}</h2>
+                <div class="meta">${escapeAttr(showMeta(show))}</div>
+              </div>
+              <div class="hero-actions">
+                <button type="button" data-refresh-show="${show.id}">Refresh</button>
+                <button type="button" class="danger" data-remove-show="${show.id}">Remove</button>
+              </div>
+            </div>
+            <p class="overview">${escapeAttr(show.summary || "No summary available.")}</p>
+            <div class="metrics">
+              <div class="metric"><b>${watchedCount(show)}</b><span>Watched</span></div>
+              <div class="metric"><b>${aired.length}</b><span>Aired</span></div>
+              <div class="metric"><b>${show.episodes.length}</b><span>Total</span></div>
+              <div class="metric"><b>${progress(show)}%</b><span>Progress</span></div>
+            </div>
+            <div class="meta">${next ? `Next up: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "Caught up on every aired episode."}</div>
+          </div>
+        </header>
+
+        <div class="detail-tools">
+          <div class="status-row">
+            <label for="statusSelect">Status</label>
+            <select class="field" id="statusSelect" data-status-show="${show.id}">
+              ${STATUSES.map((status) => `<option value="${status}" ${show.status === status ? "selected" : ""}>${status}</option>`).join("")}
+            </select>
+          </div>
+          <div class="segmented" role="group" aria-label="Episode filter">
+            <button type="button" data-episode-filter="all" class="${state.episodeFilter === "all" ? "active" : ""}">All</button>
+            <button type="button" data-episode-filter="unwatched" class="${state.episodeFilter === "unwatched" ? "active" : ""}">Unwatched</button>
+            <button type="button" data-episode-filter="watched" class="${state.episodeFilter === "watched" ? "active" : ""}">Watched</button>
+          </div>
+          <button type="button" data-mark-season="${show.id}">Mark Season</button>
+        </div>
+
+        <nav class="season-tabs" aria-label="Seasons">
+          <button type="button" class="season-tab ${state.selectedSeason === "all" ? "active" : ""}" data-season="all">All</button>
+          ${seasons.map((season) => `<button type="button" class="season-tab ${Number(state.selectedSeason) === season ? "active" : ""}" data-season="${season}">S${season}</button>`).join("")}
+        </nav>
+
+        <div class="episode-grid">
+          ${renderEpisodes(show)}
+        </div>
+      `;
+    }
+
+    function renderModebar() {
+      const unwatchedTotal = state.shows.reduce((sum, show) => sum + unwatchedAiredEpisodes(show).length, 0);
+      return `
+        <div class="modebar">
+          <div class="segmented view-tabs" role="group" aria-label="Detail view">
+            <button type="button" data-view-mode="show" class="${state.viewMode === "show" ? "active" : ""}">Show</button>
+            <button type="button" data-view-mode="queue" class="${state.viewMode === "queue" ? "active" : ""}">Queue</button>
+          </div>
+          <div class="meta">${unwatchedTotal} unwatched aired episode${unwatchedTotal === 1 ? "" : "s"}</div>
+        </div>
+      `;
+    }
+
+    function renderQueueView() {
+      const grouped = state.shows
+        .map((show) => ({ show, episodes: unwatchedAiredEpisodes(show) }))
+        .filter((group) => group.episodes.length > 0)
+        .sort((a, b) => a.show.name.localeCompare(b.show.name));
+      const total = grouped.reduce((sum, group) => sum + group.episodes.length, 0);
+
+      nodes.detail.innerHTML = `
+        ${renderModebar()}
+        <section class="queue">
+          <div class="queue-head">
+            <div>
+              <h2>Unwatched Queue</h2>
+              <div class="meta">${total} aired episode${total === 1 ? "" : "s"} across ${grouped.length} show${grouped.length === 1 ? "" : "s"}</div>
+            </div>
+          </div>
+          ${grouped.length ? grouped.map(renderQueueShow).join("") : `<div class="empty">No unwatched aired episodes. You are caught up.</div>`}
+        </section>
+      `;
+    }
+
+    function renderQueueShow(group) {
+      const { show, episodes } = group;
+      return `
+        <article class="queue-show">
+          <header class="queue-show-head">
+            ${imageMarkup(show.image, "thumb")}
+            <div>
+              <span class="queue-show-title">${escapeAttr(show.name)}</span>
+              <div class="meta">${episodes.length} unwatched / ${airedEpisodes(show).length} aired</div>
+            </div>
+            <button type="button" data-open-show="${show.id}">Open Show</button>
+          </header>
+          <div class="queue-episodes">
+            ${episodes.map((episode) => renderEpisodeButton(show, episode)).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderEpisodes(show) {
+      const today = new Date().toISOString().slice(0, 10);
+      let episodes = [...show.episodes];
+
+      if (state.selectedSeason !== "all") {
+        episodes = episodes.filter((episode) => episode.season === Number(state.selectedSeason));
+      }
+
+      if (state.episodeFilter === "watched") {
+        episodes = episodes.filter((episode) => show.watched[episodeKey(episode)]);
+      } else if (state.episodeFilter === "unwatched") {
+        episodes = episodes.filter((episode) => !show.watched[episodeKey(episode)]);
+      }
+
+      if (!episodes.length) {
+        return `<div class="empty">No episodes match this view.</div>`;
+      }
+
+      return episodes.map((episode) => {
+        return renderEpisodeButton(show, episode);
+      }).join("");
+    }
+
+    function renderEpisodeButton(show, episode) {
+      const today = new Date().toISOString().slice(0, 10);
+      const watched = !!show.watched[episodeKey(episode)];
+      const future = episode.airdate && episode.airdate > today;
+      const label = `S${episode.season}E${episode.number || "?"}`;
+      return `
+        <button type="button" class="episode ${watched ? "watched" : ""} ${future ? "future" : ""}" data-toggle-episode="${show.id}:${episode.id}">
+          <span class="episode-num">${episode.number || "?"}</span>
+          <span class="episode-detail">
+            <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
+            <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
+            <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
+          </span>
+        </button>
+      `;
+    }
+
+    function queueSearch(query) {
+      window.clearTimeout(searchDebounceId);
+      const trimmed = query.trim();
+      searchRequestId += 1;
+      state.searchQuery = trimmed;
+      state.searchResults = [];
+      state.searchHasSearched = false;
+
+      if (!trimmed) {
+        state.isSearching = false;
+        render();
+        return;
+      }
+
+      if (trimmed.length < SEARCH_MIN_LENGTH) {
+        state.isSearching = false;
+        render();
+        return;
+      }
+
+      state.isSearching = true;
+      render();
+      searchDebounceId = window.setTimeout(() => {
+        searchShows(trimmed);
+      }, SEARCH_DEBOUNCE_MS);
+    }
+
+    async function searchShows(query) {
+      const trimmed = query.trim();
+      if (!trimmed || trimmed.length < SEARCH_MIN_LENGTH) {
+        queueSearch(trimmed);
+        return;
+      }
+
+      window.clearTimeout(searchDebounceId);
+      const requestId = searchRequestId + 1;
+      searchRequestId = requestId;
+      state.searchQuery = trimmed;
+      state.isSearching = true;
+      render();
+      try {
+        const response = await fetch(`${API_ROOT}/search/shows?q=${encodeURIComponent(trimmed)}`);
+        if (!response.ok) throw new Error("Search failed");
+        const results = await response.json();
+        if (requestId !== searchRequestId) return;
+        state.searchResults = results;
+        state.searchHasSearched = true;
+      } catch {
+        if (requestId !== searchRequestId) return;
+        state.searchResults = [];
+        state.searchHasSearched = true;
+        showToast("Search failed. TVmaze may be unavailable.");
+      } finally {
+        if (requestId !== searchRequestId) return;
+        state.isSearching = false;
+        render();
+      }
+    }
+
+    async function fetchShow(id) {
+      const response = await fetch(`${API_ROOT}/shows/${id}?embed=episodes`);
+      if (!response.ok) throw new Error("Show fetch failed");
+      const show = await response.json();
+      const episodes = (show._embedded?.episodes || [])
+        .filter((episode) => episode.type !== "significant_special" && episode.type !== "insignificant_special")
+        .map((episode) => normalizeEpisode({
+          id: episode.id,
+          season: episode.season,
+          number: episode.number,
+          name: episode.name,
+          airdate: episode.airdate,
+          runtime: episode.runtime,
+          summary: stripHtml(episode.summary),
+        }));
+
+      return normalizeShow({
+        id: show.id,
+        tvmazeUrl: show.url,
+        name: show.name,
+        status: "watching",
+        network: show.network?.name || show.webChannel?.name || "",
+        premiere: show.premiered || "",
+        ended: show.ended || "",
+        image: show.image?.original || show.image?.medium || "",
+        genres: show.genres || [],
+        summary: stripHtml(show.summary),
+        episodes,
+        watched: {},
+        addedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+    async function addShow(id) {
+      if (state.shows.some((show) => show.id === id)) return;
+
+      showToast("Adding show...");
+      try {
+        const show = await fetchShow(id);
+        state.shows.unshift(show);
+        state.selectedId = show.id;
+        state.viewMode = "show";
+        state.selectedSeason = "all";
+        state.episodeFilter = "all";
+        showToast(`Added ${show.name}.`);
+        render();
+      } catch {
+        showToast("Could not add that show.");
+      }
+    }
+
+    async function refreshShow(id) {
+      const existing = state.shows.find((show) => show.id === id);
+      if (!existing) return;
+
+      showToast("Refreshing episode list...");
+      try {
+        const fresh = await fetchShow(id);
+        fresh.status = existing.status;
+        fresh.watched = existing.watched;
+        fresh.addedAt = existing.addedAt;
+        fresh.updatedAt = new Date().toISOString();
+        state.shows = state.shows.map((show) => show.id === id ? fresh : show);
+        showToast(`Refreshed ${fresh.name}.`);
+        render();
+      } catch {
+        showToast("Refresh failed.");
+      }
+    }
+
+    function toggleEpisode(showId, episodeId) {
+      const show = state.shows.find((item) => item.id === showId);
+      if (!show) return;
+
+      const episode = show.episodes.find((item) => item.id === episodeId);
+      if (!episode) return;
+
+      const key = episodeKey(episode);
+      if (show.watched[key]) {
+        delete show.watched[key];
+      } else {
+        show.watched[key] = true;
+      }
+      show.updatedAt = new Date().toISOString();
+      render();
+    }
+
+    function markVisibleSeason(showId) {
+      const show = state.shows.find((item) => item.id === showId);
+      if (!show) return;
+
+      const visible = show.episodes.filter((episode) => (
+        state.selectedSeason === "all" || episode.season === Number(state.selectedSeason)
+      ));
+      const allWatched = visible.length > 0 && visible.every((episode) => show.watched[episodeKey(episode)]);
+
+      visible.forEach((episode) => {
+        const key = episodeKey(episode);
+        if (allWatched) {
+          delete show.watched[key];
+        } else {
+          show.watched[key] = true;
+        }
+      });
+      show.updatedAt = new Date().toISOString();
+      render();
+    }
+
+    function removeShow(id) {
+      const show = state.shows.find((item) => item.id === id);
+      if (!show) return;
+      if (!confirm(`Remove ${show.name} from your tracker?`)) return;
+
+      state.shows = state.shows.filter((item) => item.id !== id);
+      state.selectedId = state.shows[0]?.id || null;
+      render();
+      showToast("Show removed.");
+    }
+
+    function exportData() {
+      const payload = JSON.stringify({
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        shows: state.shows,
+        selectedId: state.selectedId,
+      }, null, 2);
+      const blob = new Blob([payload], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `tv-tracker-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showToast("Export downloaded.");
+    }
+
+    function importData(file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const imported = Array.isArray(parsed.shows) ? parsed.shows : [];
+          state.shows = imported.map(normalizeShow);
+          state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
+          state.selectedSeason = "all";
+          state.episodeFilter = "all";
+          render();
+          showToast("Import complete.");
+        } catch {
+          showToast("That import file could not be read.");
+        }
+      });
+      reader.readAsText(file);
+    }
+
+    function showToast(message) {
+      nodes.toast.textContent = message;
+      nodes.toast.classList.add("visible");
+      window.clearTimeout(showToast.timeout);
+      showToast.timeout = window.setTimeout(() => {
+        nodes.toast.classList.remove("visible");
+      }, 2200);
+    }
+
+    nodes.searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const query = nodes.searchInput.value.trim();
+      if (query) searchShows(query);
+      if (!query) queueSearch("");
+    });
+
+    nodes.searchInput.addEventListener("input", () => {
+      queueSearch(nodes.searchInput.value);
+    });
+
+    document.addEventListener("click", (event) => {
+      const addButton = event.target.closest("[data-add-show]");
+      if (addButton) {
+        addShow(Number(addButton.dataset.addShow));
+        return;
+      }
+
+      const selectShow = event.target.closest("[data-select-show]");
+      if (selectShow) {
+        state.selectedId = Number(selectShow.dataset.selectShow);
+        state.viewMode = "show";
+        state.selectedSeason = "all";
+        state.episodeFilter = "all";
+        render();
+        return;
+      }
+
+      const viewMode = event.target.closest("[data-view-mode]");
+      if (viewMode) {
+        state.viewMode = viewMode.dataset.viewMode;
+        render();
+        return;
+      }
+
+      const openShow = event.target.closest("[data-open-show]");
+      if (openShow) {
+        state.selectedId = Number(openShow.dataset.openShow);
+        state.viewMode = "show";
+        state.selectedSeason = "all";
+        state.episodeFilter = "unwatched";
+        render();
+        return;
+      }
+
+      const libraryFilter = event.target.closest("[data-library-filter]");
+      if (libraryFilter) {
+        state.libraryFilter = libraryFilter.dataset.libraryFilter;
+        render();
+        return;
+      }
+
+      const episodeFilter = event.target.closest("[data-episode-filter]");
+      if (episodeFilter) {
+        state.episodeFilter = episodeFilter.dataset.episodeFilter;
+        render();
+        return;
+      }
+
+      const season = event.target.closest("[data-season]");
+      if (season) {
+        state.selectedSeason = season.dataset.season;
+        render();
+        return;
+      }
+
+      const toggle = event.target.closest("[data-toggle-episode]");
+      if (toggle) {
+        const [showId, episodeId] = toggle.dataset.toggleEpisode.split(":").map(Number);
+        toggleEpisode(showId, episodeId);
+        return;
+      }
+
+      const refresh = event.target.closest("[data-refresh-show]");
+      if (refresh) {
+        refreshShow(Number(refresh.dataset.refreshShow));
+        return;
+      }
+
+      const remove = event.target.closest("[data-remove-show]");
+      if (remove) {
+        removeShow(Number(remove.dataset.removeShow));
+        return;
+      }
+
+      const markSeason = event.target.closest("[data-mark-season]");
+      if (markSeason) {
+        markVisibleSeason(Number(markSeason.dataset.markSeason));
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const card = event.target.closest("[data-select-show]");
+      if (!card) return;
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        state.selectedId = Number(card.dataset.selectShow);
+        state.viewMode = "show";
+        state.selectedSeason = "all";
+        state.episodeFilter = "all";
+        render();
+      }
+    });
+
+    nodes.detail.addEventListener("change", (event) => {
+      const status = event.target.closest("[data-status-show]");
+      if (!status) return;
+
+      const show = state.shows.find((item) => item.id === Number(status.dataset.statusShow));
+      if (!show) return;
+      show.status = status.value;
+      show.updatedAt = new Date().toISOString();
+      render();
+    });
+
+    nodes.exportButton.addEventListener("click", exportData);
+    nodes.importButton.addEventListener("click", () => nodes.importFile.click());
+    nodes.importFile.addEventListener("change", () => {
+      const file = nodes.importFile.files[0];
+      if (file) importData(file);
+      nodes.importFile.value = "";
+    });
+
+    loadState();
+    render();
+  </script>
+</body>
+</html>
