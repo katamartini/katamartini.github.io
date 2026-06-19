@@ -184,6 +184,10 @@
       box-shadow: 0 18px 34px rgba(33, 38, 48, 0.18);
     }
 
+    .search-results[hidden] {
+      display: none;
+    }
+
     .search-panel {
       position: relative;
       z-index: 10;
@@ -1016,7 +1020,7 @@
           <input class="field" id="searchInput" type="search" placeholder="Search TVmaze" autocomplete="off" />
           <button class="primary" type="submit">Search</button>
         </form>
-        <div class="search-results" id="searchResults"></div>
+        <div class="search-results" id="searchResults" hidden></div>
       </section>
 
       <details class="settings-panel">
@@ -1078,7 +1082,6 @@
 
     let searchDebounceId = null;
     let searchRequestId = 0;
-    let searchBlurTimer = null;
     let searchWasClicked = false;
     let handledAddPointer = false;
     let dataFileHandle = null;
@@ -1831,8 +1834,7 @@
         state.viewMode = "list";
         state.selectedSeason = "all";
         state.episodeFilter = "all";
-        state.searchActive = false;
-        searchWasClicked = false;
+        closeSearchOverlay();
         showToast(`Added ${show.name}.`);
         render({ persistFile: true });
       } catch {
@@ -2148,6 +2150,12 @@
       }, 2200);
     }
 
+    function closeSearchOverlay() {
+      state.searchActive = false;
+      searchWasClicked = false;
+      renderSearchResults();
+    }
+
     nodes.searchForm.addEventListener("submit", (event) => {
       event.preventDefault();
       searchWasClicked = true;
@@ -2167,30 +2175,10 @@
       renderSearchResults();
     });
 
-    nodes.searchInput.closest(".search-panel").addEventListener("focusin", () => {
-      window.clearTimeout(searchBlurTimer);
-      if (searchWasClicked) {
-        state.searchActive = true;
-        renderSearchResults();
-      }
-    });
-
-    nodes.searchInput.closest(".search-panel").addEventListener("focusout", (event) => {
-      window.clearTimeout(searchBlurTimer);
-      searchBlurTimer = window.setTimeout(() => {
-        const panel = nodes.searchInput.closest(".search-panel");
-        if (panel.contains(document.activeElement)) return;
-        state.searchActive = false;
-        renderSearchResults();
-      }, 120);
-    });
-
     nodes.searchInput.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
-        state.searchActive = false;
-        searchWasClicked = false;
+        closeSearchOverlay();
         nodes.searchInput.blur();
-        renderSearchResults();
       }
     });
 
@@ -2204,13 +2192,10 @@
       }
 
       const keepsSearchOpen = event.target.closest("#searchInput")
-        || event.target.closest("#searchForm button")
-        || addButton;
+        || event.target.closest("#searchForm button");
       if (keepsSearchOpen) return;
-      state.searchActive = false;
-      searchWasClicked = false;
-      renderSearchResults();
-    });
+      closeSearchOverlay();
+    }, true);
 
     document.addEventListener("click", (event) => {
       const addButton = event.target.closest("[data-add-show]");
