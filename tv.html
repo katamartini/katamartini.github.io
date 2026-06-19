@@ -209,6 +209,13 @@
       background: #ffffff;
     }
 
+    .result-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: end;
+    }
+
     .thumb,
     .poster,
     .image-placeholder {
@@ -1302,6 +1309,14 @@
       return airedEpisodes(show).filter((episode) => !show.watched[episodeKey(episode)]);
     }
 
+    function markAllEpisodesWatched(show) {
+      show.episodes.forEach((episode) => {
+        show.watched[episodeKey(episode)] = true;
+      });
+      show.updatedAt = new Date().toISOString();
+      syncAutoCompletion(show);
+    }
+
     function nextEpisodeSortValue(show) {
       const episode = nextEpisode(show);
       if (!episode) return "9999-99-99-999-999";
@@ -1491,7 +1506,10 @@
               <div class="result-name"><strong>${escapeAttr(show.name)}</strong></div>
               <div class="meta">${escapeAttr([formatYear({ premiere: show.premiered, ended: show.ended }), network, (show.genres || []).slice(0, 2).join(", ")].filter(Boolean).join(" / "))}</div>
             </div>
-            <button type="button" data-add-show="${show.id}" ${alreadyAdded ? "disabled" : ""}>${alreadyAdded ? "Added" : "Add"}</button>
+            <div class="result-actions">
+              <button type="button" data-add-show="${show.id}" ${alreadyAdded ? "disabled" : ""}>${alreadyAdded ? "Added" : "Add"}</button>
+              <button type="button" data-add-watched-show="${show.id}" ${alreadyAdded ? "disabled" : ""}>Watched</button>
+            </div>
           </article>
         `;
       }).join("");
@@ -1823,19 +1841,22 @@
       });
     }
 
-    async function addShow(id) {
+    async function addShow(id, options = {}) {
       if (state.shows.some((show) => show.id === id)) return;
 
-      showToast("Adding show...");
+      showToast(options.markWatched ? "Adding watched show..." : "Adding show...");
       try {
         const show = await fetchShow(id);
+        if (options.markWatched) {
+          markAllEpisodesWatched(show);
+        }
         state.shows.unshift(show);
         state.selectedId = show.id;
         state.viewMode = "list";
         state.selectedSeason = "all";
         state.episodeFilter = "all";
         closeSearchOverlay();
-        showToast(`Added ${show.name}.`);
+        showToast(options.markWatched ? `Added ${show.name} as watched.` : `Added ${show.name}.`);
         render({ persistFile: true });
       } catch {
         showToast("Could not add that show.");
@@ -2191,6 +2212,14 @@
         return;
       }
 
+      const watchedButton = event.target.closest("[data-add-watched-show]");
+      if (watchedButton && !watchedButton.disabled) {
+        handledAddPointer = true;
+        event.preventDefault();
+        addShow(Number(watchedButton.dataset.addWatchedShow), { markWatched: true });
+        return;
+      }
+
       const keepsSearchOpen = event.target.closest("#searchInput")
         || event.target.closest("#searchForm button");
       if (keepsSearchOpen) return;
@@ -2205,6 +2234,16 @@
           return;
         }
         addShow(Number(addButton.dataset.addShow));
+        return;
+      }
+
+      const watchedButton = event.target.closest("[data-add-watched-show]");
+      if (watchedButton) {
+        if (handledAddPointer) {
+          handledAddPointer = false;
+          return;
+        }
+        addShow(Number(watchedButton.dataset.addWatchedShow), { markWatched: true });
         return;
       }
 
