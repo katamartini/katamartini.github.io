@@ -1,7 +1,848 @@
 {
   "version": 1,
-  "savedAt": "2026-06-19T19:14:31.231Z",
+  "savedAt": "2026-06-19T19:28:11.237Z",
   "shows": [
+    {
+      "id": 170,
+      "tvmazeUrl": "https://www.tvmaze.com/shows/170/orange-is-the-new-black",
+      "name": "Orange Is the New Black",
+      "status": "watching",
+      "network": "Netflix",
+      "premiere": "2013-07-11",
+      "ended": "2019-07-26",
+      "image": "https://static.tvmaze.com/uploads/images/original_untouched/203/508250.jpg",
+      "genres": [
+        "Drama",
+        "Comedy",
+        "Crime"
+      ],
+      "summary": "Orange Is the New Black is the story of Piper Chapman, a woman in her thirties who is sentenced to fifteen months in prison after being convicted of a decade-old crime of transporting money for her drug-dealing girlfriend.",
+      "episodes": [
+        {
+          "id": 12259,
+          "season": 1,
+          "number": 1,
+          "name": "I Wasn't Ready",
+          "airdate": "2013-07-11",
+          "runtime": 53,
+          "summary": "Sentenced to 15 months for a crime committed in her youth, Piper Chapman leaves her supportive fiancé Larry for her new home: a women's prison."
+        },
+        {
+          "id": 12260,
+          "season": 1,
+          "number": 2,
+          "name": "Tit Punch",
+          "airdate": "2013-07-11",
+          "runtime": 53,
+          "summary": "After insulting the food in front of the prison chef, Piper is starved out by the kitchen staff and struggles to offer up an acceptable apology."
+        },
+        {
+          "id": 12261,
+          "season": 1,
+          "number": 3,
+          "name": "Lesbian Request Denied",
+          "airdate": "2013-07-11",
+          "runtime": 58,
+          "summary": "Targeted for romance by a fellow prisoner, Piper finds that subtlety is an ineffective approach to letting her suitor down."
+        },
+        {
+          "id": 12262,
+          "season": 1,
+          "number": 4,
+          "name": "Imaginary Enemies",
+          "airdate": "2013-07-11",
+          "runtime": 56,
+          "summary": "Piper gets to know her stern new roommate; the prisoners prepare a farewell party for one of their own; a misplaced screwdriver has dire consequences."
+        },
+        {
+          "id": 12263,
+          "season": 1,
+          "number": 5,
+          "name": "The Chickening",
+          "airdate": "2013-07-11",
+          "runtime": 56,
+          "summary": "When her sighting of a legendary feral chicken polarizes the inmates, Larry wonders if Piper is getting too absorbed in the \"fishbowl\" of prison life."
+        },
+        {
+          "id": 12264,
+          "season": 1,
+          "number": 6,
+          "name": "WAC Pack",
+          "airdate": "2013-07-11",
+          "runtime": 58,
+          "summary": "The inmates campaign along racial lines for positions on a prisoners council, but Piper tries to stay above the increasingly raucous competition."
+        },
+        {
+          "id": 12265,
+          "season": 1,
+          "number": 7,
+          "name": "Blood Donut",
+          "airdate": "2013-07-11",
+          "runtime": 58,
+          "summary": "Piper wants the prison's outdoor running track reopened, but in order to get it, she'll have to give her corrections officer something he wants."
+        },
+        {
+          "id": 12266,
+          "season": 1,
+          "number": 8,
+          "name": "Moscow Mule",
+          "airdate": "2013-07-11",
+          "runtime": 60,
+          "summary": "Red gets pressured to smuggle drugs through her kitchen; Larry publishes an article about Piper in the New York Times; two babies come into the world."
+        },
+        {
+          "id": 12267,
+          "season": 1,
+          "number": 9,
+          "name": "Fucksgiving",
+          "airdate": "2013-07-11",
+          "runtime": 60,
+          "summary": "Thanksgiving arrives with the promise of a visit by Larry, but Piper's raunchy dance moves land her in solitary with a holiday feast of moldy bologna."
+        },
+        {
+          "id": 12268,
+          "season": 1,
+          "number": 10,
+          "name": "Bora Bora Bora",
+          "airdate": "2013-07-11",
+          "runtime": 55,
+          "summary": "Pennsatucky discovers a new skill; the inmates try to scare delinquent teenagers straight; Pornstache's side business suffers a tragic setback."
+        },
+        {
+          "id": 12269,
+          "season": 1,
+          "number": 11,
+          "name": "Tall Men with Feelings",
+          "airdate": "2013-07-11",
+          "runtime": 60,
+          "summary": "The prisoners mourn one of their own and even a drunken Pornstache reveals surprising emotions; Larry gives a revealing radio interview."
+        },
+        {
+          "id": 12270,
+          "season": 1,
+          "number": 12,
+          "name": "Fool Me Once",
+          "airdate": "2013-07-11",
+          "runtime": 61,
+          "summary": "Painful truths reorient several relationships and careers; Pennsatucky feels disrespected by Piper, which is not good; Larry delivers an ultimatum."
+        },
+        {
+          "id": 12271,
+          "season": 1,
+          "number": 13,
+          "name": "Can't Fix Crazy",
+          "airdate": "2013-07-11",
+          "runtime": 62,
+          "summary": "Red's scheme to reclaim her kitchen backfires; the inmates stage a Christmas pageant; Piper's plans unravel even as she realizes her life is in jeopardy."
+        },
+        {
+          "id": 12272,
+          "season": 2,
+          "number": 1,
+          "name": "Thirsty Bird",
+          "airdate": "2014-06-06",
+          "runtime": 57,
+          "summary": "Piper is forced to face the consequences of her actions in the Season 2 premiere."
+        },
+        {
+          "id": 12273,
+          "season": 2,
+          "number": 2,
+          "name": "Looks Blue, Tastes Red",
+          "airdate": "2014-06-06",
+          "runtime": 57,
+          "summary": "Taystee shows off her business skills. Meanwhile, Red feels isolated."
+        },
+        {
+          "id": 12274,
+          "season": 2,
+          "number": 3,
+          "name": "Hugs Can Be Deceiving",
+          "airdate": "2014-06-06",
+          "runtime": 61,
+          "summary": "Morello gets her heart broken. Later, someone from Taystee's past shows up."
+        },
+        {
+          "id": 12275,
+          "season": 2,
+          "number": 4,
+          "name": "A Whole Other Hole",
+          "airdate": "2014-06-06",
+          "runtime": 61,
+          "summary": "Sophia gives the women a lesson in female anatomy. Meanwhile, Larry makes changes to his life. Lorna takes a risk away from the prison when she finds out her Christopher is getting married."
+        },
+        {
+          "id": 12276,
+          "season": 2,
+          "number": 5,
+          "name": "Low Self Esteem City",
+          "airdate": "2014-06-06",
+          "runtime": 53,
+          "summary": "Gloria and Vee face off. Later, Piper receives devastating news about a family member."
+        },
+        {
+          "id": 12277,
+          "season": 2,
+          "number": 6,
+          "name": "You Also Have a Pizza",
+          "airdate": "2014-06-06",
+          "runtime": 61,
+          "summary": "The inmates prepare for a Valentine's Day party. Later, Red makes an interesting discovery."
+        },
+        {
+          "id": 12278,
+          "season": 2,
+          "number": 7,
+          "name": "Comic Sans",
+          "airdate": "2014-06-06",
+          "runtime": 54,
+          "summary": "Piper starts a prison newsletter. Meanwhile, Vee launches an entrepreneurial venture."
+        },
+        {
+          "id": 12279,
+          "season": 2,
+          "number": 8,
+          "name": "Appropriately Sized Pots",
+          "airdate": "2014-06-06",
+          "runtime": 59,
+          "summary": "Piper faces backlash over special privileges. Meanwhile, Caputo feels pressure to toughen up."
+        },
+        {
+          "id": 12280,
+          "season": 2,
+          "number": 9,
+          "name": "40 Oz. of Furlough",
+          "airdate": "2014-06-06",
+          "runtime": 61,
+          "summary": "Piper's relationship with Larry is tested. Meanwhile, Red attempts to redeem herself.While Red receives recognition for her strives towards redemption, Piper's and Larry's relationship is tested. Meanwhile, Litchfield welcomes back a familiar face."
+        },
+        {
+          "id": 12281,
+          "season": 2,
+          "number": 10,
+          "name": "Little Mustachioed Shit",
+          "airdate": "2014-06-06",
+          "runtime": 62,
+          "summary": "The guards crack down on prison contraband. Later, a secret is revealed. The prison guards finally crack down on the inmates to stop the smuggling issue. After Bennett framed Pornstache, problems arise. And a big secret between Piper and Polly is revealed."
+        },
+        {
+          "id": 12282,
+          "season": 2,
+          "number": 11,
+          "name": "Take a Break from Your Values",
+          "airdate": "2014-06-06",
+          "runtime": 59,
+          "summary": "Piper is shocked at an unexpected change in her status; Soso's hunger strike attracts new support that takes on a religious fervour."
+        },
+        {
+          "id": 12283,
+          "season": 2,
+          "number": 12,
+          "name": "It Was the Change",
+          "airdate": "2014-06-06",
+          "runtime": 61,
+          "summary": "Tensions run high as a prison power outage forces several issues to come to light; Piper finds herself compromised and is forced to think on her feet."
+        },
+        {
+          "id": 12284,
+          "season": 2,
+          "number": 13,
+          "name": "We Have Manners. We're Polite.",
+          "airdate": "2014-06-06",
+          "runtime": 94,
+          "summary": "In the Season 2 finale, Several futures hang in the balance as the inmates face and confront their worst nightmares; Life will never be the same again."
+        },
+        {
+          "id": 142995,
+          "season": 3,
+          "number": 1,
+          "name": "Mother's Day",
+          "airdate": "2015-06-12",
+          "runtime": 54,
+          "summary": "Caputo's kinder, gentler new regime includes organizing a Mother's Day fair for the inmates that brings up a LOT of mixed feelings about family."
+        },
+        {
+          "id": 142996,
+          "season": 3,
+          "number": 2,
+          "name": "Bed Bugs and Beyond",
+          "airdate": "2015-06-12",
+          "runtime": 56,
+          "summary": "Tempers flare when bed bugs invade, as Alex cracks, Red lashes out at Piper, Aleida interferes with Daya and Bennett, and Caputo gets bad news."
+        },
+        {
+          "id": 142997,
+          "season": 3,
+          "number": 3,
+          "name": "Empathy is a Boner Killer",
+          "airdate": "2015-06-12",
+          "runtime": 57,
+          "summary": "Nicky's stash situation gets complicated. Alex and Crazy Eyes try a new drama class. Red assists Healy with a personal matter."
+        },
+        {
+          "id": 142998,
+          "season": 3,
+          "number": 4,
+          "name": "Finger in the Dyke",
+          "airdate": "2015-06-12",
+          "runtime": 60,
+          "summary": "Big Boo comes up with a scheme to make money. Daya, Taystee and Crazy Eyes confront reality. Caputo tries to make a good impression on some visitors."
+        },
+        {
+          "id": 142999,
+          "season": 3,
+          "number": 5,
+          "name": "Fake It Till You Fake It Some More",
+          "airdate": "2015-06-12",
+          "runtime": 60,
+          "summary": "Rumors fly among the inmates about a new, higher-paying job assignment, especially when they have to take a test for it."
+        },
+        {
+          "id": 143000,
+          "season": 3,
+          "number": 6,
+          "name": "Ching Chong Chang",
+          "airdate": "2015-06-12",
+          "runtime": 55,
+          "summary": "Regime change isn't going over well with the staff, but Red makes it work for her. Lorna finds a way to meet men. Chang shows her private side."
+        },
+        {
+          "id": 143001,
+          "season": 3,
+          "number": 7,
+          "name": "Tongue-Tied",
+          "airdate": "2015-06-12",
+          "runtime": 61,
+          "summary": "Norma's healing powers draw more believers. Piper creates a new business venture. Caputo breaks in the new hires."
+        },
+        {
+          "id": 143002,
+          "season": 3,
+          "number": 8,
+          "name": "Fear, and Other Smells",
+          "airdate": "2015-06-12",
+          "runtime": 61,
+          "summary": "Piper gets creative in order to grow her business. Crazy Eyes's sci-fi sex story for drama class is a hit. Alex doesn't trust new inmate Lolly."
+        },
+        {
+          "id": 143003,
+          "season": 3,
+          "number": 9,
+          "name": "Where My Dreidel At",
+          "airdate": "2015-06-12",
+          "runtime": 55,
+          "summary": "Too many inmates seem to be getting religion, so a rabbi comes to visit and Leanne tries to organize Norma's followers."
+        },
+        {
+          "id": 143004,
+          "season": 3,
+          "number": 10,
+          "name": "A Tittin' and a Hairin'",
+          "airdate": "2015-06-12",
+          "runtime": 61,
+          "summary": "Pennsatucky, Piper, Crazy Eyes and Lorna get closer with their new admirers. Tensions between Sophia and Gloria, and Alex and Lolly escalate."
+        },
+        {
+          "id": 143005,
+          "season": 3,
+          "number": 11,
+          "name": "We Can Be Heroes",
+          "airdate": "2015-06-12",
+          "runtime": 61,
+          "summary": "Caputo and Piper confront labor issues. A miracle occurs in Norma's group. Crazy Eyes's erotica winds up in the hands of the staff."
+        },
+        {
+          "id": 143006,
+          "season": 3,
+          "number": 12,
+          "name": "Don't Make Me Come Back There",
+          "airdate": "2015-06-12",
+          "runtime": 61,
+          "summary": "Daya goes into labor. Sophia suffers a hate crime. Stella helps Piper with a business snag. Taystee takes on a new role."
+        },
+        {
+          "id": 143007,
+          "season": 3,
+          "number": 13,
+          "name": "Trust No Bitch",
+          "airdate": "2015-06-12",
+          "runtime": 91,
+          "summary": "Miracles and conversions occur, but Piper and Caputo know that some situations can't be dealt with through spiritual means."
+        },
+        {
+          "id": 574624,
+          "season": 4,
+          "number": 1,
+          "name": "Work That Body for Me",
+          "airdate": "2016-06-17",
+          "runtime": 55,
+          "summary": "With a major security breach and a lot of new inmates, Caputo has to call in the big guns. Things get a little too real for Crazy Eyes and Lolly."
+        },
+        {
+          "id": 665260,
+          "season": 4,
+          "number": 2,
+          "name": "Power Suit",
+          "airdate": "2016-06-17",
+          "runtime": 61,
+          "summary": "the newcomers stir up ethnic and domestic problems, but Maria sees an opportunity. Judy's special treatment raises eyebrowes."
+        },
+        {
+          "id": 665263,
+          "season": 4,
+          "number": 3,
+          "name": "(Don't) Say Anything",
+          "airdate": "2016-06-17",
+          "runtime": 58,
+          "summary": "A new job puts Taystee close to Caputo. Lorna has to get creative in her marriage. Soso and Poussey deal with some awkward truths."
+        },
+        {
+          "id": 665265,
+          "season": 4,
+          "number": 4,
+          "name": "Doctor Psycho",
+          "airdate": "2016-06-17",
+          "runtime": 61,
+          "summary": "Nothing stays hidden for long when emotions run high, but Red, Healy and Caputo try to keep the peace. Piper has a business competitor."
+        },
+        {
+          "id": 665268,
+          "season": 4,
+          "number": 5,
+          "name": "We'll Always Have Baltimore",
+          "airdate": "2016-06-17",
+          "runtime": 59,
+          "summary": "Company policies lead to a shortage of critical supplies and an eventful trip to a prison convention. Piscatella starts a new anti-gang initiative."
+        },
+        {
+          "id": 665271,
+          "season": 4,
+          "number": 6,
+          "name": "Piece of Shit",
+          "airdate": "2016-06-17",
+          "runtime": 60,
+          "summary": "Piper's plan to edge out the competition could backfire badly. Cindy finds a way to make Taystee's job pay off. Luschek gets some interesting mail."
+        },
+        {
+          "id": 665275,
+          "season": 4,
+          "number": 7,
+          "name": "It Sounded Nicer in My Head",
+          "airdate": "2016-06-17",
+          "runtime": 59,
+          "summary": "Paranoia strikes deep for Lolly and Judy, aggravating an already tense situation. Red sticks to a Russian tradition for an important occasion."
+        },
+        {
+          "id": 665277,
+          "season": 4,
+          "number": 8,
+          "name": "Friends in Low Places",
+          "airdate": "2016-06-17",
+          "runtime": 60,
+          "summary": "A new work detail doesn't go over well with the inmates. Judy seeks help from Poussey. Maria finds a place she can conduct business."
+        },
+        {
+          "id": 665279,
+          "season": 4,
+          "number": 9,
+          "name": "Turn Table Turn",
+          "airdate": "2016-06-17",
+          "runtime": 58,
+          "summary": "Ramos and Flores figure out ways to rebel against authority. A news item has an unexpected effect. Red and Lorna face personal disappointment."
+        },
+        {
+          "id": 665282,
+          "season": 4,
+          "number": 10,
+          "name": "Bunny, Skull, Bunny, Skull",
+          "airdate": "2016-06-17",
+          "runtime": 61,
+          "summary": "The movie night selection becomes controversial. Aleida makes an adjustment. Piper worries the prison punishments are getting too medieval."
+        },
+        {
+          "id": 665284,
+          "season": 4,
+          "number": 11,
+          "name": "People Persons",
+          "airdate": "2016-06-17",
+          "runtime": 61,
+          "summary": "Caputo's leadership is challenged and the inmates are in for a long night of lockdown after workers make an unsettling discovery."
+        },
+        {
+          "id": 665286,
+          "season": 4,
+          "number": 12,
+          "name": "The Animals",
+          "airdate": "2016-06-17",
+          "runtime": 62,
+          "summary": "Alliances shift among the prison \"families\" as Piscatella and his guards crack down. Poussey, Judy and Alex prefer to look ahead to the future."
+        },
+        {
+          "id": 665288,
+          "season": 4,
+          "number": 13,
+          "name": "Toast Can't Never Be Bread Again",
+          "airdate": "2016-06-17",
+          "runtime": 78,
+          "summary": "Corporate bureaucracy and simmering anger work against Caputo's efforts to keep a sensitive situation under control."
+        },
+        {
+          "id": 1066679,
+          "season": 5,
+          "number": 1,
+          "name": "Riot FOMO",
+          "airdate": "2017-06-09",
+          "runtime": 53,
+          "summary": "As the standoff at the prison spirals into a full-blown riot, enterprising inmates take advantage of the confusion. Taystee confronts Caputo."
+        },
+        {
+          "id": 1067307,
+          "season": 5,
+          "number": 2,
+          "name": "Fuck, Marry, Frieda",
+          "airdate": "2017-06-09",
+          "runtime": 52,
+          "summary": "Maria convenes a special assembly in the chapel as the inmates plot their next move. Frieda makes use of the survival skills she learned as a kid."
+        },
+        {
+          "id": 1067308,
+          "season": 5,
+          "number": 3,
+          "name": "Pissters!",
+          "airdate": "2017-06-09",
+          "runtime": 58,
+          "summary": "Linda begins to see the prison in a new light, while Judy grows desperate to escape. With darkness falling, the inmates compile a list of demands."
+        },
+        {
+          "id": 1067309,
+          "season": 5,
+          "number": 4,
+          "name": "Litchfield's Got Talent",
+          "airdate": "2017-06-09",
+          "runtime": 61,
+          "summary": "Red and Blanca dig for dirt on Piscatella. Suzanne conducts a séance. The guards show off their talents for \"Litchfield Idol\" judges Leanne and Angie."
+        },
+        {
+          "id": 1067310,
+          "season": 5,
+          "number": 5,
+          "name": "Sing It, White Effie",
+          "airdate": "2017-06-09",
+          "runtime": 60,
+          "summary": "When the inmates' antics make the morning news, Flaca and Maritza soak up the spotlight. Brandy and her crew auction off Judy to the highest bidder."
+        },
+        {
+          "id": 1067311,
+          "season": 5,
+          "number": 6,
+          "name": "Flaming Hot Cheetos, Literally",
+          "airdate": "2017-06-09",
+          "runtime": 57,
+          "summary": "Boo defends Doggett, Janae consoles Soso, and Lorna comes on to Nicky. While Alex lays low in the yard, Piper decides to take a stand."
+        },
+        {
+          "id": 1067312,
+          "season": 5,
+          "number": 7,
+          "name": "Full Bush, Half Snickers",
+          "airdate": "2017-06-09",
+          "runtime": 58,
+          "summary": "Black Cindy concocts a scheme to distract Suzanne when she spirals out of control. Taystee and Piper search for ways to honor Poussey's memory."
+        },
+        {
+          "id": 1067313,
+          "season": 5,
+          "number": 8,
+          "name": "Tied to the Tracks",
+          "airdate": "2017-06-09",
+          "runtime": 57,
+          "summary": "While Taystee sits down with a negotiator, Red and Blanca put their own plan into action. Gloria counsels Daya and asks Caputo for a favor."
+        },
+        {
+          "id": 1067315,
+          "season": 5,
+          "number": 9,
+          "name": "The Tightening",
+          "airdate": "2017-06-09",
+          "runtime": 54,
+          "summary": "Red senses trouble, but the others are convinced she's just paranoid. Taystee and Black Cindy enlist an unlikely ally, and two old friends clash."
+        },
+        {
+          "id": 1067316,
+          "season": 5,
+          "number": 10,
+          "name": "The Reverse Midas Touch",
+          "airdate": "2017-06-09",
+          "runtime": 58,
+          "summary": "Taystee tries to keep the negotiations on track. Angie comes up with an idea for fixing Leanne's finger. Piscatella's past is revealed."
+        },
+        {
+          "id": 1067317,
+          "season": 5,
+          "number": 11,
+          "name": "Breaking the Fiberboard Ceiling",
+          "airdate": "2017-06-09",
+          "runtime": 55,
+          "summary": "Red and the others weigh their options. Gloria wrestles with her conscience as she moves forward with a plan. Lorna takes over the pharmacy."
+        },
+        {
+          "id": 1067318,
+          "season": 5,
+          "number": 12,
+          "name": "Tattoo You",
+          "airdate": "2017-06-09",
+          "runtime": 60,
+          "summary": "Boo dabbles in blackmail; Nicky promises to help Lorna, Doggett makes a discovery, and Piper comes to a realization about Alex."
+        },
+        {
+          "id": 1067319,
+          "season": 5,
+          "number": 13,
+          "name": "Storm-y Weather",
+          "airdate": "2017-06-09",
+          "runtime": 54,
+          "summary": "As chaos descends on Litchfield three days into the riot, the inmates wonder what the future holds and seek solace in loved ones."
+        },
+        {
+          "id": 1476626,
+          "season": 6,
+          "number": 1,
+          "name": "Who Knows Better Than I",
+          "airdate": "2018-07-27",
+          "runtime": 55,
+          "summary": "The COs at Litchfield's maximum security unit size up the new arrivals. Off her medication, Suzanne hallucinates."
+        },
+        {
+          "id": 1502008,
+          "season": 6,
+          "number": 2,
+          "name": "Shitstorm Coming",
+          "airdate": "2018-07-27",
+          "runtime": 57,
+          "summary": "Ordered to hand out harsh sentences, the feds search for scapegoats. Languishing on paid suspension, Caputo tries to break out of a rut."
+        },
+        {
+          "id": 1502009,
+          "season": 6,
+          "number": 3,
+          "name": "Look Out for Number One",
+          "airdate": "2018-07-27",
+          "runtime": 51,
+          "summary": "Linda makes a power play, Piper digs for information about Alex, and the women get their first taste of a decades-old feud between cellblocks."
+        },
+        {
+          "id": 1502010,
+          "season": 6,
+          "number": 4,
+          "name": "I'm the Talking Ass",
+          "airdate": "2018-07-27",
+          "runtime": 57,
+          "summary": "Aleida struggles to find work on the outside. Backed into a corner, Nicky pleads her case to Red. Taystee reaches out to Caputo for help."
+        },
+        {
+          "id": 1502011,
+          "season": 6,
+          "number": 5,
+          "name": "Mischief Mischief",
+          "airdate": "2018-07-27",
+          "runtime": 61,
+          "summary": "Pranksters wreak havoc on Halloween. Luschek earns points with the other guards. As Linda faces a crisis, Donuts and Pennsatucky have a change of plans."
+        },
+        {
+          "id": 1502012,
+          "season": 6,
+          "number": 6,
+          "name": "State of the Uterus",
+          "airdate": "2018-07-27",
+          "runtime": 59,
+          "summary": "While Daddy deals with backlash, Badison plots revenge. Flaca finds a co-host for her radio show. Lorna discovers that pregnancy has its perks."
+        },
+        {
+          "id": 1502013,
+          "season": 6,
+          "number": 7,
+          "name": "Changing Winds",
+          "airdate": "2018-07-27",
+          "runtime": 58,
+          "summary": "Badison hustles to get back in Carol's good graces. Blanca longs to get pregnant -- and Nicky has a plan. Caputo and Figueroa's relationship evolves."
+        },
+        {
+          "id": 1502014,
+          "season": 6,
+          "number": 8,
+          "name": "Gordons",
+          "airdate": "2018-07-27",
+          "runtime": 59,
+          "summary": "Taystee gets fan mail -- and an assist from an old friend. Piper lobbies Luschek to bring back kickball. Aleida tries out a new sales tactic."
+        },
+        {
+          "id": 1502015,
+          "season": 6,
+          "number": 9,
+          "name": "Break the String",
+          "airdate": "2018-07-27",
+          "runtime": 61,
+          "summary": "While Daddy buys time with Barb, Daya looks for new ways to bring in oxy. Black Cindy's guilt takes a toll on her body. Red acquires a powerful ally."
+        },
+        {
+          "id": 1502016,
+          "season": 6,
+          "number": 10,
+          "name": "Chocolate Chip Nookie",
+          "airdate": "2018-07-27",
+          "runtime": 61,
+          "summary": "Aleida seizes a business opportunity. An anonymous tip sends Caputo on a stakeout. Luschek tries to help Gloria, who worries she's in danger."
+        },
+        {
+          "id": 1502017,
+          "season": 6,
+          "number": 11,
+          "name": "Well This Took a Dark Turn",
+          "airdate": "2018-07-27",
+          "runtime": 61,
+          "summary": "While Red and Carol scheme against Frieda, Suzanne watches Frieda's back. Lorna swears her allegiance to Barb as Nicky works to thwart another plot."
+        },
+        {
+          "id": 1502018,
+          "season": 6,
+          "number": 12,
+          "name": "Double Trouble",
+          "airdate": "2018-07-27",
+          "runtime": 60,
+          "summary": "Carol and Barb prepare for war. Linda auditions inmates for a prison PR video. Alex makes a deal with Badison to keep Piper out of trouble."
+        },
+        {
+          "id": 1502019,
+          "season": 6,
+          "number": 13,
+          "name": "Be Free",
+          "airdate": "2018-07-27",
+          "runtime": 85,
+          "summary": "Piper gets surprising news and a boost from her friends. The jury returns with a verdict, and the big kickball game is on."
+        },
+        {
+          "id": 1659932,
+          "season": 7,
+          "number": 1,
+          "name": "Beginning of the End",
+          "airdate": "2019-07-26",
+          "runtime": 56,
+          "summary": "Piper struggles to adapt to life after Litchfield. Alex promises to keep her nose clean. Daddy's infidelity angers Daya."
+        },
+        {
+          "id": 1661785,
+          "season": 7,
+          "number": 2,
+          "name": "Just Desserts",
+          "airdate": "2019-07-26",
+          "runtime": 57,
+          "summary": "Piper earns her keep by babysitting. Aleida pressures Hopper to go for a promotion. Random drug searches put the heat on Alex. Daya gets an offer."
+        },
+        {
+          "id": 1661786,
+          "season": 7,
+          "number": 3,
+          "name": "And Brown is the New Orange",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "A new warden ushers in big changes. Blanca reunites with an old friend. Suzanne tries to mend Taystee and Black Cindy's relationship."
+        },
+        {
+          "id": 1661787,
+          "season": 7,
+          "number": 4,
+          "name": "How to Do Life",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Piper goes to work for her dad. Vinnie visits Lorna with news. A desperate Taystee asks Daya for a favor. Caputo leads a restorative justice class."
+        },
+        {
+          "id": 1661788,
+          "season": 7,
+          "number": 5,
+          "name": "Minority Deport",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Aleida tries to keep her teen daughter out of trouble. Piper and Cal shed their responsibilities for a day. Blanca navigates the legal system."
+        },
+        {
+          "id": 1661789,
+          "season": 7,
+          "number": 6,
+          "name": "Trapped in an Elevator",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Taystee takes advantage of her new position. Linda teaches Tamika how to pivot. Black Cindy and Maria make amends to people they've hurt."
+        },
+        {
+          "id": 1661790,
+          "season": 7,
+          "number": 7,
+          "name": "Me as Well",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Piper plays the field. Caputo tries to get ahead of a scandal. Daya sends Taystee on a mission. Nicky finds romance."
+        },
+        {
+          "id": 1661791,
+          "season": 7,
+          "number": 8,
+          "name": "Baker's Dozen",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Neri takes Piper on a wilderness retreat. Taystee tutors Pennsatucky. Suzanne tends to the chicken coop. Nicky has a difficult conversation with Red."
+        },
+        {
+          "id": 1661792,
+          "season": 7,
+          "number": 9,
+          "name": "The Hidey Hole",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Competition forces Daya to find a new mule. Piper decides to come out as a felon. Karla asks to leave for a custody hearing. Shani confides in Nicky."
+        },
+        {
+          "id": 1661793,
+          "season": 7,
+          "number": 10,
+          "name": "The Thirteenth",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "While Piper reconnects with faces from her past, Alex revisits her own romantic history. Linda puts Tamika on notice. Caputo owns up to his misdeeds."
+        },
+        {
+          "id": 1661794,
+          "season": 7,
+          "number": 11,
+          "name": "God Bless America",
+          "airdate": "2019-07-26",
+          "runtime": 61,
+          "summary": "Maria tries to make peace with Gloria. Karla and Blanca plead their cases. Figueroa stands up to Litvack. Piper attends a posh fundraiser with Zelda."
+        },
+        {
+          "id": 1661795,
+          "season": 7,
+          "number": 12,
+          "name": "The Big House",
+          "airdate": "2019-07-26",
+          "runtime": 76,
+          "summary": "Taystee meets with a lawyer. As the GED exam looms, Suzanne gives Pennsatucky a pep talk. Gloria faces a dilemma. Alex confronts Piper."
+        },
+        {
+          "id": 1661796,
+          "season": 7,
+          "number": 13,
+          "name": "Here's Where We Get Off",
+          "airdate": "2019-07-26",
+          "runtime": 90,
+          "summary": "Tearful farewells, emotional tributes, new beginnings. Say goodbye to the women of Litchfield in the series finale."
+        }
+      ],
+      "watched": {},
+      "autoFinished": false,
+      "addedAt": "2026-06-19T19:28:10.055Z",
+      "updatedAt": "2026-06-19T19:28:10.055Z"
+    },
     {
       "id": 692,
       "tvmazeUrl": "https://www.tvmaze.com/shows/692/everybody-hates-chris",
@@ -8247,8 +9088,8 @@
       "updatedAt": "2026-06-19T18:40:15.427Z"
     }
   ],
-  "selectedId": 692,
+  "selectedId": 170,
   "libraryFilter": "all",
   "sortMode": "least-progress",
-  "viewMode": "show"
+  "viewMode": "list"
 }
