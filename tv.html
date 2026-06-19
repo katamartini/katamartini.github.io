@@ -984,6 +984,7 @@
 
     function applyTrackerPayload(parsed) {
       state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
+      syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
       state.viewMode = parsed.viewMode === "queue" ? "queue" : "show";
@@ -1008,6 +1009,7 @@
         summary: show.summary || "",
         episodes: Array.isArray(show.episodes) ? show.episodes.map(normalizeEpisode) : [],
         watched: show.watched && typeof show.watched === "object" ? show.watched : {},
+        autoFinished: !!show.autoFinished,
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
       };
@@ -1061,6 +1063,31 @@
 
     function watchedCount(show) {
       return Object.values(show.watched).filter(Boolean).length;
+    }
+
+    function isEndedComplete(show) {
+      return Boolean(show.ended)
+        && show.episodes.length > 0
+        && show.episodes.every((episode) => show.watched[episodeKey(episode)]);
+    }
+
+    function syncAutoCompletion(show) {
+      if (show) {
+        const complete = isEndedComplete(show);
+        if (complete && show.status !== "finished") {
+          show.status = "finished";
+          show.autoFinished = true;
+          return true;
+        }
+        if (!complete && show.autoFinished) {
+          show.status = "watching";
+          show.autoFinished = false;
+          return true;
+        }
+        return false;
+      }
+
+      return state.shows.reduce((changed, item) => syncAutoCompletion(item) || changed, false);
     }
 
     function progress(show) {
@@ -1551,6 +1578,7 @@
         fresh.watched = existing.watched;
         fresh.addedAt = existing.addedAt;
         fresh.updatedAt = new Date().toISOString();
+        syncAutoCompletion(fresh);
         state.shows = state.shows.map((show) => show.id === id ? fresh : show);
         showToast(`Refreshed ${fresh.name}.`);
         render({ persistFile: true });
@@ -1573,6 +1601,7 @@
         show.watched[key] = true;
       }
       show.updatedAt = new Date().toISOString();
+      syncAutoCompletion(show);
       render({ persistFile: true });
     }
 
@@ -1594,6 +1623,7 @@
         }
       });
       show.updatedAt = new Date().toISOString();
+      syncAutoCompletion(show);
       render({ persistFile: true });
     }
 
@@ -1937,7 +1967,9 @@
       const show = state.shows.find((item) => item.id === Number(status.dataset.statusShow));
       if (!show) return;
       show.status = status.value;
+      show.autoFinished = false;
       show.updatedAt = new Date().toISOString();
+      syncAutoCompletion(show);
       render({ persistFile: true });
     });
 
@@ -1957,6 +1989,7 @@
 
     loadRepoSyncSettings();
     loadState();
+    syncAutoCompletion();
     render();
   </script>
 </body>
