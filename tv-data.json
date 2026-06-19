@@ -1,7 +1,130 @@
 {
   "version": 1,
-  "savedAt": "2026-06-19T19:37:15.045Z",
+  "savedAt": "2026-06-19T19:37:19.641Z",
   "shows": [
+    {
+      "id": 78665,
+      "tvmazeUrl": "https://www.tvmaze.com/shows/78665/dexter-resurrection",
+      "name": "Dexter: Resurrection",
+      "status": "watching",
+      "network": "Paramount+",
+      "premiere": "2025-07-11",
+      "ended": "",
+      "image": "https://static.tvmaze.com/uploads/images/original_untouched/577/1443218.jpg",
+      "genres": [
+        "Drama",
+        "Crime",
+        "Mystery"
+      ],
+      "summary": "Dexter Morgan awakens from a coma and sets out for New York City, determined to find Harrison and make things right. But when Miami Metro's Angel Batista arrives with questions, Dexter realizes his past is catching up to him fast.",
+      "episodes": [
+        {
+          "id": 3219795,
+          "season": 1,
+          "number": 1,
+          "name": "A Beating Heart…",
+          "airdate": "2025-07-11",
+          "runtime": 51,
+          "summary": "Dexter Morgan awakens from a ten-week coma. As he begins a painful recovery and learns Harrison has fled to NYC, both father and son are drawn closer to confronting the darkness they've tried to escape."
+        },
+        {
+          "id": 3221095,
+          "season": 1,
+          "number": 2,
+          "name": "Camera Shy",
+          "airdate": "2025-07-11",
+          "runtime": 47,
+          "summary": "Dexter embeds himself in New York's ride-share community to track down a serial killer. Meanwhile, Harrison spirals from the guilt of a violent outburst."
+        },
+        {
+          "id": 3221120,
+          "season": 1,
+          "number": 3,
+          "name": "Backseat Driver",
+          "airdate": "2025-07-18",
+          "runtime": 52,
+          "summary": "As Dexter sets his sights on tracking down a serial killer, he must carefully balance Blessing Kamara's attempts to help get him acclimated to the ride-share driver lifestyle. Meanwhile, Harrison is drawn deeper into the police investigation."
+        },
+        {
+          "id": 3221121,
+          "season": 1,
+          "number": 4,
+          "name": "Call Me Red",
+          "airdate": "2025-07-25",
+          "runtime": 66,
+          "summary": "Dexter attends a mysterious gathering, hosted by a highly influential figure with macabre ambitions. Harrison continues to struggle with mounting guilt and pressure at work, just as Angel Batista arrives in New York City."
+        },
+        {
+          "id": 3221122,
+          "season": 1,
+          "number": 5,
+          "name": "Murder Horny",
+          "airdate": "2025-08-01",
+          "runtime": 49,
+          "summary": "An encounter pushes Harrison further into his own darkness, escalating his fear of arrest. Meanwhile, as Batista closes in, Dexter pursues a dangerous connection with a seductive killer, believing they operate under a similar code."
+        },
+        {
+          "id": 3221123,
+          "season": 1,
+          "number": 6,
+          "name": "Cats & Mouse",
+          "airdate": "2025-08-08",
+          "runtime": 56,
+          "summary": "As Dexter closes in on a murderer, Harrison faces a crisis of identity."
+        },
+        {
+          "id": 3221124,
+          "season": 1,
+          "number": 7,
+          "name": "Course Correction",
+          "airdate": "2025-08-15",
+          "runtime": 53,
+          "summary": "Dexter, at a remote retreat, discovers unsettling information about Gareth. Meanwhile, Harrison contemplates his future."
+        },
+        {
+          "id": 3221125,
+          "season": 1,
+          "number": 8,
+          "name": "The Kill Room Where It Happens",
+          "airdate": "2025-08-22",
+          "runtime": 45,
+          "summary": "Dexter redirects his attention as a way to step up as a father."
+        },
+        {
+          "id": 3221126,
+          "season": 1,
+          "number": 9,
+          "name": "Touched By An Ángel",
+          "airdate": "2025-08-29",
+          "runtime": 47,
+          "summary": "Prater and Charley's revelation forces Dexter to go to extreme lengths."
+        },
+        {
+          "id": 3221127,
+          "season": 1,
+          "number": 10,
+          "name": "And Justice For All...",
+          "airdate": "2025-09-05",
+          "runtime": 46,
+          "summary": "Dexter and Harrison face the consequences of their darkness. Season finale."
+        }
+      ],
+      "watched": {
+        "3219795": true,
+        "3221095": true,
+        "3221120": true,
+        "3221121": true,
+        "3221122": true,
+        "3221123": true,
+        "3221124": true,
+        "3221125": true,
+        "3221126": true,
+        "3221127": true
+      },
+      "autoFinished": false,
+      "addedAt": "2026-06-19T19:37:18.728Z",
+      "updatedAt": "2026-06-19T19:37:18.728Z"
+    },
     {
       "id": 161,
       "tvmazeUrl": "https://www.tvmaze.com/shows/161/dexter",
@@ -12911,7 +13034,7 @@
       "updatedAt": "2026-06-19T18:40:15.427Z"
     }
   ],
-  "selectedId": 161,
+  "selectedId": 78665,
   "libraryFilter": "all",
   "sortMode": "least-progress",
   "viewMode": "list"
