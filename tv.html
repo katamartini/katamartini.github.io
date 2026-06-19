@@ -674,6 +674,64 @@
       min-height: 76px;
     }
 
+    .all-shows {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .all-shows-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .all-shows-head h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .show-table {
+      display: grid;
+      gap: 8px;
+    }
+
+    .show-row {
+      display: grid;
+      grid-template-columns: 54px minmax(160px, 1fr) minmax(120px, 0.6fr) minmax(150px, 0.8fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 9px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .show-row .thumb {
+      width: 54px;
+      height: 76px;
+    }
+
+    .show-row-title {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    .show-row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -771,7 +829,8 @@
       }
 
       .modebar,
-      .queue {
+      .queue,
+      .all-shows {
         padding: 12px;
       }
 
@@ -801,6 +860,20 @@
 
       .queue-episodes {
         grid-template-columns: 1fr;
+      }
+
+      .all-shows-head {
+        display: grid;
+      }
+
+      .show-row {
+        grid-template-columns: 54px minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .show-row-actions {
+        grid-column: 1 / -1;
+        justify-content: start;
       }
 
       .search-row,
@@ -897,6 +970,7 @@
     let repoFileSha = null;
     let repoSaveTimer = null;
     let isRepoSaving = false;
+    const VIEW_MODES = ["show", "list", "queue"];
 
     const state = {
       shows: [],
@@ -942,7 +1016,7 @@
         state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
-        state.viewMode = parsed.viewMode === "queue" ? "queue" : "show";
+        state.viewMode = VIEW_MODES.includes(parsed.viewMode) ? parsed.viewMode : "show";
       } catch {
         showToast("Saved tracker data could not be read.");
       }
@@ -987,7 +1061,7 @@
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
-      state.viewMode = parsed.viewMode === "queue" ? "queue" : "show";
+      state.viewMode = VIEW_MODES.includes(parsed.viewMode) ? parsed.viewMode : "show";
       state.selectedSeason = "all";
       state.episodeFilter = "all";
       state.searchQuery = "";
@@ -1288,6 +1362,11 @@
     }
 
     function renderDetail() {
+      if (state.viewMode === "list") {
+        renderAllShowsView();
+        return;
+      }
+
       if (state.viewMode === "queue") {
         renderQueueView();
         return;
@@ -1369,10 +1448,54 @@
         <div class="modebar">
           <div class="segmented view-tabs" role="group" aria-label="Detail view">
             <button type="button" data-view-mode="show" class="${state.viewMode === "show" ? "active" : ""}">Show</button>
+            <button type="button" data-view-mode="list" class="${state.viewMode === "list" ? "active" : ""}">Shows</button>
             <button type="button" data-view-mode="queue" class="${state.viewMode === "queue" ? "active" : ""}">Queue</button>
           </div>
           <div class="meta">${unwatchedTotal} unwatched aired episode${unwatchedTotal === 1 ? "" : "s"}</div>
         </div>
+      `;
+    }
+
+    function renderAllShowsView() {
+      const shows = [...state.shows].sort((a, b) => a.name.localeCompare(b.name));
+      nodes.detail.innerHTML = `
+        ${renderModebar()}
+        <section class="all-shows">
+          <div class="all-shows-head">
+            <div>
+              <h2>All Shows</h2>
+              <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"}</div>
+            </div>
+          </div>
+          <div class="show-table">
+            ${shows.length ? shows.map(renderShowRow).join("") : `<div class="empty">No shows tracked yet.</div>`}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderShowRow(show) {
+      const watched = watchedCount(show);
+      const aired = airedEpisodes(show).length;
+      const next = nextEpisode(show);
+      return `
+        <article class="show-row">
+          ${imageMarkup(show.image, "thumb")}
+          <div>
+            <span class="show-row-title">${escapeAttr(show.name)}</span>
+            <div class="meta">${escapeAttr(showMeta(show))}</div>
+            <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
+          </div>
+          <div>
+            <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
+            <div class="meta">${watched}/${aired} aired watched</div>
+          </div>
+          <div class="meta">${next ? `Next: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "No aired episodes left"}</div>
+          <div class="show-row-actions">
+            <button type="button" data-open-show="${show.id}">Open</button>
+            <button type="button" data-refresh-show="${show.id}">Refresh</button>
+          </div>
+        </article>
       `;
     }
 
