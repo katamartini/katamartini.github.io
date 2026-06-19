@@ -232,6 +232,13 @@
       gap: 8px;
     }
 
+    .file-status {
+      min-height: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
     .segmented {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -821,7 +828,10 @@
             <div class="tool-grid">
               <button type="button" id="exportButton">Export</button>
               <button type="button" id="importButton">Import</button>
+              <button type="button" id="openFileButton">Open File</button>
+              <button type="button" id="saveFileButton">Save File</button>
             </div>
+            <div class="file-status" id="fileStatus"></div>
             <input class="sr-only" id="importFile" type="file" accept="application/json" />
           </div>
         </section>
@@ -842,6 +852,9 @@
 
     let searchDebounceId = null;
     let searchRequestId = 0;
+    let dataFileHandle = null;
+    let fileSaveTimer = null;
+    let isSavingFile = false;
 
     const state = {
       shows: [],
@@ -866,6 +879,9 @@
       detail: document.querySelector("#detail"),
       exportButton: document.querySelector("#exportButton"),
       importButton: document.querySelector("#importButton"),
+      openFileButton: document.querySelector("#openFileButton"),
+      saveFileButton: document.querySelector("#saveFileButton"),
+      fileStatus: document.querySelector("#fileStatus"),
       importFile: document.querySelector("#importFile"),
       toast: document.querySelector("#toast"),
     };
@@ -886,12 +902,30 @@
     }
 
     function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerPayload()));
+    }
+
+    function trackerPayload() {
+      return {
+        version: 1,
+        savedAt: new Date().toISOString(),
         shows: state.shows,
         selectedId: state.selectedId,
         libraryFilter: state.libraryFilter,
         viewMode: state.viewMode,
-      }));
+      };
+    }
+
+    function applyTrackerPayload(parsed) {
+      state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
+      state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
+      state.libraryFilter = parsed.libraryFilter || "all";
+      state.viewMode = parsed.viewMode === "queue" ? "queue" : "show";
+      state.selectedSeason = "all";
+      state.episodeFilter = "all";
+      state.searchQuery = "";
+      state.searchResults = [];
+      state.searchHasSearched = false;
     }
 
     function normalizeShow(show) {
@@ -995,13 +1029,43 @@
       }[char]));
     }
 
-    function render() {
+    function render(options = {}) {
       renderSummary();
       renderLibraryFilter();
       renderShowList();
       renderSearchResults();
       renderDetail();
+      renderFileStatus();
       saveState();
+      if (options.persistFile) {
+        scheduleDataFileSave();
+      }
+    }
+
+    function renderFileStatus(text) {
+      const supportsFiles = Boolean(window.showOpenFilePicker && window.showSaveFilePicker);
+      nodes.openFileButton.disabled = !supportsFiles;
+      nodes.saveFileButton.disabled = !supportsFiles || isSavingFile;
+
+      if (text) {
+        nodes.fileStatus.textContent = text;
+        return;
+      }
+
+      if (!supportsFiles) {
+        nodes.fileStatus.textContent = "File save unavailable in this browser.";
+        return;
+      }
+
+      nodes.fileStatus.textContent = dataFileHandle ? `Linked: ${dataFileHandle.name}` : "No data file linked.";
+    }
+
+    function scheduleDataFileSave() {
+      if (!dataFileHandle) return;
+      window.clearTimeout(fileSaveTimer);
+      fileSaveTimer = window.setTimeout(() => {
+        saveDataFile(false);
+      }, 400);
     }
 
     function renderSummary() {
@@ -1374,7 +1438,7 @@
         state.selectedSeason = "all";
         state.episodeFilter = "all";
         showToast(`Added ${show.name}.`);
-        render();
+        render({ persistFile: true });
       } catch {
         showToast("Could not add that show.");
       }
@@ -1393,7 +1457,7 @@
         fresh.updatedAt = new Date().toISOString();
         state.shows = state.shows.map((show) => show.id === id ? fresh : show);
         showToast(`Refreshed ${fresh.name}.`);
-        render();
+        render({ persistFile: true });
       } catch {
         showToast("Refresh failed.");
       }
@@ -1413,7 +1477,7 @@
         show.watched[key] = true;
       }
       show.updatedAt = new Date().toISOString();
-      render();
+      render({ persistFile: true });
     }
 
     function markVisibleSeason(showId) {
@@ -1434,7 +1498,7 @@
         }
       });
       show.updatedAt = new Date().toISOString();
-      render();
+      render({ persistFile: true });
     }
 
     function removeShow(id) {
@@ -1444,17 +1508,12 @@
 
       state.shows = state.shows.filter((item) => item.id !== id);
       state.selectedId = state.shows[0]?.id || null;
-      render();
+      render({ persistFile: true });
       showToast("Show removed.");
     }
 
     function exportData() {
-      const payload = JSON.stringify({
-        version: 1,
-        exportedAt: new Date().toISOString(),
-        shows: state.shows,
-        selectedId: state.selectedId,
-      }, null, 2);
+      const payload = JSON.stringify(trackerPayload(), null, 2);
       const blob = new Blob([payload], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -1472,18 +1531,75 @@
       reader.addEventListener("load", () => {
         try {
           const parsed = JSON.parse(reader.result);
-          const imported = Array.isArray(parsed.shows) ? parsed.shows : [];
-          state.shows = imported.map(normalizeShow);
-          state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
-          state.selectedSeason = "all";
-          state.episodeFilter = "all";
-          render();
+          applyTrackerPayload(parsed);
+          render({ persistFile: true });
           showToast("Import complete.");
         } catch {
           showToast("That import file could not be read.");
         }
       });
       reader.readAsText(file);
+    }
+
+    async function openDataFile() {
+      if (!window.showOpenFilePicker) {
+        showToast("File save is unavailable in this browser.");
+        return;
+      }
+
+      try {
+        const [handle] = await window.showOpenFilePicker({
+          multiple: false,
+          types: [{
+            description: "TV tracker data",
+            accept: { "application/json": [".json"] },
+          }],
+        });
+        const file = await handle.getFile();
+        const parsed = JSON.parse(await file.text());
+        applyTrackerPayload(parsed);
+        dataFileHandle = handle;
+        render();
+        showToast(`Opened ${handle.name}.`);
+      } catch (error) {
+        if (error?.name !== "AbortError") {
+          showToast("Could not open that data file.");
+        }
+      }
+    }
+
+    async function saveDataFile(chooseFile = true) {
+      if (!window.showSaveFilePicker) {
+        showToast("File save is unavailable in this browser.");
+        return;
+      }
+
+      try {
+        if (chooseFile || !dataFileHandle) {
+          dataFileHandle = await window.showSaveFilePicker({
+            suggestedName: "tv-tracker-data.json",
+            types: [{
+              description: "TV tracker data",
+              accept: { "application/json": [".json"] },
+            }],
+          });
+        }
+
+        isSavingFile = true;
+        renderFileStatus("Saving data file...");
+        const writable = await dataFileHandle.createWritable();
+        await writable.write(JSON.stringify(trackerPayload(), null, 2));
+        await writable.close();
+        isSavingFile = false;
+        renderFileStatus(`Saved: ${dataFileHandle.name}`);
+        showToast(`Saved ${dataFileHandle.name}.`);
+      } catch (error) {
+        isSavingFile = false;
+        renderFileStatus();
+        if (error?.name !== "AbortError") {
+          showToast("Could not save the data file.");
+        }
+      }
     }
 
     function showToast(message) {
@@ -1607,11 +1723,13 @@
       if (!show) return;
       show.status = status.value;
       show.updatedAt = new Date().toISOString();
-      render();
+      render({ persistFile: true });
     });
 
     nodes.exportButton.addEventListener("click", exportData);
     nodes.importButton.addEventListener("click", () => nodes.importFile.click());
+    nodes.openFileButton.addEventListener("click", openDataFile);
+    nodes.saveFileButton.addEventListener("click", () => saveDataFile(true));
     nodes.importFile.addEventListener("change", () => {
       const file = nodes.importFile.files[0];
       if (file) importData(file);
