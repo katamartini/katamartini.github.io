@@ -1473,6 +1473,18 @@ opacity:.35;
 cursor:not-allowed}
 .simHeroBtn:not(.used):hover{
 border-color:rgba(125,211,252,.55)}
+.simTypeFilter{
+border:1px solid var(--b);
+background:var(--p2);
+color:var(--a);
+border-radius:999px;
+padding:5px 9px;
+font-size:12px;
+font-weight:850}
+.simPoolEmpty{
+grid-column:1/-1;
+color:var(--m);
+padding:8px 0}
 @media(max-width:1050px){
 .simControls,.simBoard{
 grid-template-columns:1fr}
@@ -1505,7 +1517,15 @@ try{
 localStorage.setItem(SIM_STORE,JSON.stringify(sim))}
 catch{
 }}
-let sim=loadSim();function team(s){
+let sim=loadSim(),simHeroFilter='',simHeroFilterTimer=null;function simTabActive(){
+const t=$('tab-'+ID);return t&&!t.classList.contains('hidden')}
+function simFilteredHeroes(){
+const q=simHeroFilter.trim().toLowerCase();return q?HEROES.filter(h=>h.toLowerCase().includes(q)):HEROES}
+function setSimHeroFilter(v){
+simHeroFilter=v;if(simHeroFilterTimer)clearTimeout(simHeroFilterTimer);if(simHeroFilter)simHeroFilterTimer=setTimeout(()=>{simHeroFilter='';renderSim()},2400);renderSim()}
+document.addEventListener('keydown',e=>{
+if(!simTabActive())return;const tag=(e.target&&e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea'||tag==='select'||e.target?.isContentEditable)return;if(e.ctrlKey||e.metaKey||e.altKey)return;if(e.key==='Escape'&&simHeroFilter){e.preventDefault();setSimHeroFilter('');return}if(e.key==='Backspace'&&simHeroFilter){e.preventDefault();setSimHeroFilter(simHeroFilter.slice(0,-1));return}if(e.key.length===1&&/[a-z0-9 .&'+-]/i.test(e.key)){e.preventDefault();setSimHeroFilter((simHeroFilter+e.key).slice(-24))}});
+function team(s){
 return sim[s]||s}
 function other(s){
 return s==='left'?'right':'left'}
@@ -1608,7 +1628,7 @@ return '<section class="simSide '+side+'">'+
 simPastDraftsHTML(side)+
 '</section>'}
 function renderSim(){
-const root=$(ID+'Root');if(!root)return;saveSim();const c=current(),u=used();updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="title" style="margin-bottom:8px">Heroes</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
+const root=$(ID+'Root');if(!root)return;saveSim();const c=current(),u=used(),shownHeroes=simFilteredHeroes(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+(shownHeroes.length?shownHeroes.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join(''):'<div class="simPoolEmpty">No heroes match &quot;'+esc(simHeroFilter)+'&quot;.</div>')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
 sim.left=e.target.value;saveSim()};$('simLeftTeam').onchange=e=>{
 sim.left=e.target.value;saveSim();renderSim()};$('simRightTeam').oninput=e=>{
 sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
