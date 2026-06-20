@@ -1420,7 +1420,7 @@ font-size:18px;
 font-weight:900}
 .simPool{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(70px,1fr));
 gap:8px;
 margin-bottom:14px}
 .simExport{
@@ -1456,18 +1456,22 @@ outline-offset:2px}
 .simHeroBtn{
 display:flex;
 align-items:center;
+justify-content:center;
 gap:8px;
-padding:7px 8px;
+padding:8px;
 border:1px solid var(--b);
 background:var(--p2);
 color:var(--t);
 border-radius:9px;
 font-size:12px;
-text-align:left}
+text-align:center;
+min-height:76px}
 .simHeroBtn .mIcon{
-width:28px;
-height:28px;
+width:58px;
+height:58px;
 flex:none}
+.simHeroBtn span{
+display:none}
 .simHeroBtn.used{
 opacity:.35;
 cursor:not-allowed}
