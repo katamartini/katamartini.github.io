@@ -162,6 +162,19 @@ min-width:900px}
 .duo>div:nth-child(2),.trio>div:nth-child(2),.quint>div:nth-child(2){
 justify-self:center;
 text-align:center}
+.quintDrafts{
+display:grid;
+gap:6px}
+.quintDraft{
+display:grid;
+grid-template-columns:90px 1fr;
+gap:8px;
+align-items:center}
+.quintDraft .heroes{
+display:grid;
+grid-template-columns:repeat(6,38px);
+justify-content:flex-start;
+gap:7px}
 .seen{
 background:rgba(125,211,252,.08);
 color:#c7d9f2}
@@ -531,7 +544,7 @@ return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownC
 function comboTab(k,title,noun,label,last){
 return'<section id="tab-'+k+'s" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Unseen '+title.toLowerCase()+'</div><div class="muted">Every unseen '+noun+' combination, ranked by likely appearance.</div></div>'+bigStats(k)+'</div><div style="display:grid;grid-template-columns:minmax(220px,520px) max-content;gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="'+k+'FilterText"></textarea></label><label class="chip"><input id="showSeen'+title+'" type="checkbox" style="width:auto"> Show seen '+title.toLowerCase()+'</label></div><div class="table"><div class="head '+k+'"><div><button class="sort '+k+'Sort" data-sort="rank">Rank</button></div><div>'+label+'</div><div><button class="sort '+k+'Sort" data-sort="firstSeen">First seen</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'duoCount':'total')+'">'+last+'</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'total':'heroAvg')+'">'+(k==='duo'?'Score':'Hero freq')+'</button></div><div><button class="sort '+k+'Sort" data-sort="'+(k==='duo'?'heroAvg':'duoAvg')+'">'+(k==='duo'?'Hero freq':'Duo freq')+'</button></div></div><div id="'+k+'Results"></div></div></div></section></section>'}
 function quintTab(){
-return'<section id="tab-quints" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Repeated quints</div><div class="muted">Five-hero combinations that have appeared multiple times.</div></div><div class="pill"><span id="quintShownCount">0</span> shown</div></div><div style="display:grid;grid-template-columns:minmax(220px,520px);gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="quintFilterText"></textarea></label></div><div class="table"><div class="head quint"><div><button class="sort quintSort" data-sort="rank">Rank</button></div><div>Quint</div><div><button class="sort quintSort" data-sort="count">Occurrences</button></div><div><button class="sort quintSort" data-sort="firstSeen">First seen</button></div><div><button class="sort quintSort" data-sort="latestSeen">Latest seen</button></div><div><button class="sort quintSort" data-sort="heroAvg">Hero freq</button></div></div><div id="quintResults"></div></div></div></section></section>'}
+return'<section id="tab-quints" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Repeated quints</div><div class="muted">Five-hero combinations that have appeared multiple times.</div></div><div class="pill"><span id="quintShownCount">0</span> shown</div></div><div style="display:grid;grid-template-columns:minmax(220px,520px);gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="quintFilterText"></textarea></label></div><div class="table"><div class="head quint"><div><button class="sort quintSort" data-sort="rank">Rank</button></div><div>Common 5</div><div><button class="sort quintSort" data-sort="count">Occurrences</button></div><div>Containing drafts</div><div><button class="sort quintSort" data-sort="firstSeen">First seen</button></div><div><button class="sort quintSort" data-sort="latestSeen">Latest seen</button></div></div><div id="quintResults"></div></div></div></section></section>'}
 function searchTab(){
 return'<section id="tab-search" class="tab-panel"><section class="searchLayout"><aside class="card"><div class="in"><div class="bar"><div><div class="title">Draft filters</div><div class="muted">Choose heroes to filter drafts.</div></div><button id="clearSearchBtn">Clear</button></div><datalist id="heroOptions"></datalist><div class="slots" id="draftSlots"></div></div></aside><section class="card"><div class="in"><div class="title">Drafts</div><div id="draftSearchSummary" class="muted">Showing all drafts.</div><div id="draftSearchResults" class="table"></div></div></section></section></section>'}
 function head(labels,keys,cls,type){
@@ -681,16 +694,18 @@ renderCombo('duo',h,m)}
 function renderTrios(h,m){
 renderCombo('trio',h,m)}
 function renderQuints(drafts,m){
-const req=lst($('quintFilterText')?.value).map(h=>canon(h,currentHeroUniverse)).filter(Boolean),first=new Map(),latest=new Map();
+const req=lst($('quintFilterText')?.value).map(h=>canon(h,currentHeroUniverse)).filter(Boolean),first=new Map(),latest=new Map(),byQuint=new Map();
 for(const d of drafts)combos(d.heroes,5,t=>{
 const k=keyOf(t),val=mo(d.matchID,d.week),entry={
-val,matchID:d.matchID,team:d.team};
+val,matchID:d.matchID,team:d.team,heroes:[...t,d.heroes.find(h=>!t.includes(h))||'']};
 if(!first.has(k)||val<first.get(k).val)first.set(k,entry);
-if(!latest.has(k)||val>latest.get(k).val)latest.set(k,entry)});
+if(!latest.has(k)||val>latest.get(k).val)latest.set(k,entry);
+if(!byQuint.has(k))byQuint.set(k,[]);
+byQuint.get(k).push(entry)});
 let rows=[...m.fives.entries()].filter(([,count])=>count>1).map(([k,count])=>{
 const heroes=k.split('|'),heroAvg=heroes.reduce((s,h)=>s+Math.log1p(m.heroes.get(h)||0),0)/heroes.length;
 return{
-heroes,count,heroAvg,first:first.get(k),latest:latest.get(k),firstSeen:first.get(k)?.val??Infinity,latestSeen:latest.get(k)?.val??-Infinity}}).sort((a,b)=>b.count-a.count||b.heroAvg-a.heroAvg);
+heroes,count,heroAvg,first:first.get(k),latest:latest.get(k),drafts:(byQuint.get(k)||[]).sort((a,b)=>a.val-b.val),firstSeen:first.get(k)?.val??Infinity,latestSeen:latest.get(k)?.val??-Infinity}}).sort((a,b)=>b.count-a.count||b.heroAvg-a.heroAvg);
 rows.forEach((x,i)=>x.rank=i+1);
 rows=rows.filter(x=>req.every(h=>x.heroes.includes(h)));
 const s=sorts.quint,dir=s.dir==='asc'?1:-1;
@@ -699,7 +714,8 @@ markSort('quint');
 $('quintShownCount').textContent=num(rows.length);
 $('quintResults').innerHTML=rows.map(x=>{
 const first=x.first?'<b>'+esc(x.first.matchID)+'</b><div class="small">'+esc(x.first.team)+'</div>':'-',latest=x.latest?'<b>'+esc(x.latest.matchID)+'</b><div class="small">'+esc(x.latest.team)+'</div>':'-';
-return'<div class="r quint"><div>#'+x.rank+'</div><div class="heroes">'+x.heroes.map(h=>ih(h,'dIcon')).join('')+'</div><div class="score mono">'+x.count+'</div><div>'+first+'</div><div>'+latest+'</div><div>'+fmt(x.heroAvg,1)+'</div></div>'}).join('')||'<div class="r"><div class="muted">No repeated quints match this filter.</div></div>'}
+const draftList='<div class="quintDrafts">'+x.drafts.map(d=>'<div class="quintDraft"><div><b>'+esc(d.matchID)+'</b><div class="small">'+esc(d.team)+'</div></div><div class="heroes">'+d.heroes.map(h=>h?ih(h,'dIcon'):'').join('')+'</div></div>').join('')+'</div>';
+return'<div class="r quint"><div>#'+x.rank+'</div><div class="heroes">'+x.heroes.map(h=>ih(h,'dIcon')).join('')+'</div><div class="score mono">'+x.count+'</div><div>'+draftList+'</div><div>'+first+'</div><div>'+latest+'</div></div>'}).join('')||'<div class="r"><div class="muted">No repeated quints match this filter.</div></div>'}
 function rosterChanges(drafts){
 const sorted=[...drafts].sort((a,b)=>wv(a.week)-wv(b.week)||mv(a.matchID)-mv(b.matchID)),last=new Map(),changes=[];
 for(const d of sorted){
