@@ -849,6 +849,16 @@
       justify-content: flex-end;
     }
 
+    .pin-badge {
+      border: 1px solid #c8a24d;
+      background: #fff7df;
+      color: #7a5200;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -1216,6 +1226,7 @@
         episodes: Array.isArray(show.episodes) ? show.episodes.map(normalizeEpisode) : [],
         watched: show.watched && typeof show.watched === "object" ? show.watched : {},
         autoFinished: !!show.autoFinished,
+        pinned: !!show.pinned,
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
       };
@@ -1337,6 +1348,7 @@
       const byTitle = (a, b) => a.name.localeCompare(b.name);
 
       list.sort((a, b) => {
+        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
         if (state.sortMode === "title-desc") return b.name.localeCompare(a.name);
         if (state.sortMode === "most-unwatched") {
           return unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length || byTitle(a, b);
@@ -1555,6 +1567,7 @@
                 <div class="meta">${escapeAttr(showMeta(show))}</div>
               </div>
               <div class="hero-actions">
+                <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
                 <button type="button" data-refresh-show="${show.id}">Refresh</button>
                 <button type="button" class="danger" data-remove-show="${show.id}">Remove</button>
               </div>
@@ -1649,6 +1662,7 @@
           <div class="show-row-main">
             <div class="show-row-mainline">
               <span class="show-row-title">${escapeAttr(show.name)}</span>
+              ${show.pinned ? `<span class="pin-badge">Pinned</span>` : ""}
               <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
@@ -1659,6 +1673,7 @@
             ${unwatched.length ? unwatched.map((episode) => renderEpisodeButton(show, episode)).join("") : `<div class="empty">Caught up</div>`}
           </div>
           <div class="show-row-actions">
+            <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
             <button type="button" data-open-show="${show.id}">Open</button>
             <button type="button" data-refresh-show="${show.id}">Refresh</button>
           </div>
@@ -1921,6 +1936,16 @@
       show.updatedAt = new Date().toISOString();
       syncAutoCompletion(show);
       render({ persistFile: true });
+    }
+
+    function togglePin(showId) {
+      const show = state.shows.find((item) => item.id === showId);
+      if (!show) return;
+
+      show.pinned = !show.pinned;
+      show.updatedAt = new Date().toISOString();
+      render({ persistFile: true });
+      showToast(`${show.pinned ? "Pinned" : "Unpinned"} ${show.name}.`);
     }
 
     function removeShow(id) {
@@ -2305,6 +2330,12 @@
       const refresh = event.target.closest("[data-refresh-show]");
       if (refresh) {
         refreshShow(Number(refresh.dataset.refreshShow));
+        return;
+      }
+
+      const pin = event.target.closest("[data-toggle-pin]");
+      if (pin) {
+        togglePin(Number(pin.dataset.togglePin));
         return;
       }
 
