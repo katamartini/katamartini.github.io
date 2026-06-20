@@ -787,12 +787,17 @@
 
     .show-row {
       display: grid;
-      grid-template-columns: 54px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
+      grid-template-columns: auto 54px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
       gap: 12px;
       align-items: start;
       padding: 10px;
       border: 1px solid var(--line);
       background: #ffffff;
+    }
+
+    .show-row-pin {
+      display: flex;
+      align-items: start;
     }
 
     .show-row .thumb {
@@ -993,7 +998,7 @@
       }
 
       .show-row {
-        grid-template-columns: 54px minmax(0, 1fr);
+        grid-template-columns: auto 54px minmax(0, 1fr);
         align-items: start;
       }
 
@@ -1658,6 +1663,9 @@
       const unwatched = unwatchedAiredEpisodes(show);
       return `
         <article class="show-row">
+          <div class="show-row-pin">
+            <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
+          </div>
           ${imageMarkup(show.image, "thumb")}
           <div class="show-row-main">
             <div class="show-row-mainline">
@@ -1673,7 +1681,6 @@
             ${unwatched.length ? unwatched.map((episode) => renderEpisodeButton(show, episode)).join("") : `<div class="empty">Caught up</div>`}
           </div>
           <div class="show-row-actions">
-            <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
             <button type="button" data-open-show="${show.id}">Open</button>
             <button type="button" data-refresh-show="${show.id}">Refresh</button>
           </div>
