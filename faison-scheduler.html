@@ -1325,9 +1325,9 @@
         };
       };
 
-      const renderStudentOptions = (students, selected, placeholder) => {
+      const renderStudentOptions = (students, selected) => {
         return [
-          `<option value="">${escapeHtml(placeholder)}</option>`,
+          `<option value=""></option>`,
           ...students.map((student) => {
             const selectedAttr = student.name === selected ? " selected" : "";
             return `<option value="${escapeHtml(student.name)}"${selectedAttr}>${escapeHtml(student.name)}</option>`;
@@ -1338,13 +1338,16 @@
       const renderFixedCellEditor = (row, staffName, staffCell, students) => {
         const selectedPrimary = staffCell[0] || "";
         const selectedPair = staffCell[1] || "";
+        const pairOptions = students.filter((student) =>
+          student.canDuplicate && student.name !== selectedPrimary
+        );
         return `
           <div class="fixed-cell-editor" data-time="${escapeHtml(row.time)}" data-staff="${escapeHtml(staffName)}">
             <select class="fixed-cell-student" aria-label="${escapeHtml(row.time)} ${escapeHtml(staffName)} student">
-              ${renderStudentOptions(students, selectedPrimary, "Student")}
+              ${renderStudentOptions(students, selectedPrimary)}
             </select>
             <select class="fixed-cell-pair" aria-label="${escapeHtml(row.time)} ${escapeHtml(staffName)} pair">
-              ${renderStudentOptions(students, selectedPair, "Pair")}
+              ${renderStudentOptions(pairOptions, selectedPair)}
             </select>
           </div>
         `;
