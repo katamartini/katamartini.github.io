@@ -546,13 +546,6 @@
       padding-top: 12px;
     }
 
-    .fixed-controls {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-      align-items: end;
-    }
-
     .fixed-list {
       display: grid;
       gap: 6px;
@@ -585,6 +578,28 @@
 
     .staff-cell.is-fixed.unavailable-cell {
       background: #4b5563;
+    }
+
+    td.editable-fixed-cell {
+      padding: 5px;
+    }
+
+    .fixed-cell-editor {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .fixed-cell-editor select {
+      width: 100%;
+      min-width: 0;
+      border-radius: 7px;
+      border: 1px solid #a7c9df;
+      background: #ffffff;
+      color: #16334c;
+      font-size: 11px;
+      font-weight: 650;
+      padding: 4px 6px;
     }
 
     .pair-empty {
@@ -624,10 +639,6 @@
       }
 
       .pair-columns {
-        grid-template-columns: 1fr;
-      }
-
-      .fixed-controls {
         grid-template-columns: 1fr;
       }
 
@@ -809,15 +820,7 @@
             </section>
           </div>
           <section class="fixed-area">
-            <h3>Fixed assignments</h3>
-            <p class="help">Pre-place a student or pair in a specific time and staff cell before generating.</p>
-            <div class="fixed-controls">
-              <label for="fixedTime">Time <select id="fixedTime"></select></label>
-              <label for="fixedStaff">Staff <select id="fixedStaff"></select></label>
-              <label for="fixedStudentA">Student <select id="fixedStudentA"></select></label>
-              <label for="fixedStudentB">Pair with <select id="fixedStudentB"></select></label>
-              <button id="addFixedBtn" type="button">Add fixed slot</button>
-            </div>
+            <h3>Fixed slots</h3>
             <div id="fixedList" class="fixed-list" aria-live="polite"></div>
           </section>
           <div class="actions">
@@ -873,11 +876,6 @@
         pairOutput: document.getElementById("pairOutput"),
         pairApprovedBucket: document.getElementById("approvedPairs"),
         pairBackupBucket: document.getElementById("backupPairs"),
-        fixedTime: document.getElementById("fixedTime"),
-        fixedStaff: document.getElementById("fixedStaff"),
-        fixedStudentA: document.getElementById("fixedStudentA"),
-        fixedStudentB: document.getElementById("fixedStudentB"),
-        addFixedBtn: document.getElementById("addFixedBtn"),
         fixedList: document.getElementById("fixedList"),
         buildBtn: document.getElementById("buildBtn"),
         resetBtn: document.getElementById("resetBtn"),
@@ -1230,21 +1228,6 @@
         .map(normalizeFixedAssignment)
         .filter(Boolean);
 
-      const setSelectOptions = (select, options, placeholder = "") => {
-        if (!select) return;
-        const current = select.value;
-        const optionHtml = [
-          placeholder ? `<option value="">${escapeHtml(placeholder)}</option>` : "",
-          ...options.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
-        ].join("");
-        select.innerHTML = optionHtml;
-        if (options.includes(current)) {
-          select.value = current;
-        } else {
-          select.value = placeholder ? "" : (options[0] || "");
-        }
-      };
-
       const renderFixedAssignments = () => {
         const normalized = getFixedAssignmentsState();
         fixedAssignments = normalized;
@@ -1279,36 +1262,32 @@
         });
       };
 
-      const refreshFixedAssignmentControls = () => {
-        const staff = parseStaffFromInputs();
-        const students = parseStudentsFromInputs();
-        setSelectOptions(settings.fixedTime, getBlocks().map((block) => block.time));
-        setSelectOptions(settings.fixedStaff, staff.map((person) => person.name));
-        setSelectOptions(settings.fixedStudentA, students.map((student) => student.name));
-        setSelectOptions(settings.fixedStudentB, students.map((student) => student.name), "None");
+      const refreshFixedAssignmentControls = (repaintSchedule = true) => {
         renderFixedAssignments();
+        if (repaintSchedule) {
+          renderFixedSchedulePreview();
+        }
       };
 
-      const addFixedAssignmentFromInputs = () => {
+      const setFixedAssignmentForCell = (time, staffName, students) => {
+        fixedAssignments = fixedAssignments.filter((item) =>
+          !(item.time === time && item.staffName === staffName)
+        );
+
         const assignment = normalizeFixedAssignment({
-          time: settings.fixedTime?.value,
-          staffName: settings.fixedStaff?.value,
-          students: [settings.fixedStudentA?.value, settings.fixedStudentB?.value]
+          time,
+          staffName,
+          students
         });
 
-        if (!assignment) {
-          showNotice("Choose a time, staff member, and at least one student for the fixed assignment.");
-          return;
+        if (assignment) {
+          fixedAssignments.push(assignment);
         }
 
-        fixedAssignments = fixedAssignments.filter((item) =>
-          !(item.time === assignment.time && item.staffName === assignment.staffName)
-        );
-        fixedAssignments.push(assignment);
         renderFixedAssignments();
         renderFixedSchedulePreview();
         saveState();
-        showNotice("Fixed slot added. Choose another fixed slot or generate the schedule.");
+        showNotice(assignment ? "Fixed slot updated." : "Fixed slot cleared.");
       };
 
       const buildFixedSchedulePreview = () => {
@@ -1340,6 +1319,43 @@
           isPreview: true,
           fixedAssignmentCount: getFixedAssignmentsState().length
         };
+      };
+
+      const renderStudentOptions = (students, selected, placeholder) => {
+        return [
+          `<option value="">${escapeHtml(placeholder)}</option>`,
+          ...students.map((student) => {
+            const selectedAttr = student.name === selected ? " selected" : "";
+            return `<option value="${escapeHtml(student.name)}"${selectedAttr}>${escapeHtml(student.name)}</option>`;
+          })
+        ].join("");
+      };
+
+      const renderFixedCellEditor = (row, staffName, staffCell, students) => {
+        const selectedPrimary = staffCell[0] || "";
+        const selectedPair = staffCell[1] || "";
+        return `
+          <div class="fixed-cell-editor" data-time="${escapeHtml(row.time)}" data-staff="${escapeHtml(staffName)}">
+            <select class="fixed-cell-student" aria-label="${escapeHtml(row.time)} ${escapeHtml(staffName)} student">
+              ${renderStudentOptions(students, selectedPrimary, "Student")}
+            </select>
+            <select class="fixed-cell-pair" aria-label="${escapeHtml(row.time)} ${escapeHtml(staffName)} pair">
+              ${renderStudentOptions(students, selectedPair, "Pair")}
+            </select>
+          </div>
+        `;
+      };
+
+      const bindFixedCellEditors = () => {
+        settings.scheduleBody.querySelectorAll(".fixed-cell-editor select").forEach((select) => {
+          select.addEventListener("change", () => {
+            const editor = select.closest(".fixed-cell-editor");
+            if (!editor) return;
+            const primary = editor.querySelector(".fixed-cell-student")?.value || "";
+            const pair = editor.querySelector(".fixed-cell-pair")?.value || "";
+            setFixedAssignmentForCell(editor.dataset.time, editor.dataset.staff, [primary, pair]);
+          });
+        });
       };
 
       const getScheduleStateForStorage = (assignmentResult) => {
@@ -2143,6 +2159,7 @@
           ? staff
           : parseStaffFromInputs().map((person) => person.name);
         const staffForAvailability = parseStaffFromInputs();
+        const studentsForFixedEditors = parseStudentsFromInputs();
         const displayAssignments = hasVisibleAssignments
           ? assignments
           : getBlocks().map((block) => ({
@@ -2177,6 +2194,15 @@
                 (rowBlock && staffForAvailability[staffIndex] && !isWithinTimeWindow(rowBlock, staffForAvailability[staffIndex]));
               const unavailableClass = isUnavailable ? " unavailable-cell" : "";
 
+              if (isPreview && !isUnavailable) {
+                cells.push(
+                  `<td class="staff-cell editable-fixed-cell${fixedClass}">` +
+                  renderFixedCellEditor(row, displayStaff[staffIndex], staffCell, studentsForFixedEditors) +
+                  `</td>`
+                );
+                return;
+              }
+
               if (!staffCell.length) {
                 cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="staff-label">-</span></td>`);
                 return;
@@ -2197,6 +2223,10 @@
             return `<tr class="${rowClasses}">${cells.join("")}</tr>`;
           })
           .join("");
+
+        if (isPreview) {
+          bindFixedCellEditors();
+        }
 
         const totalAssignments = displayAssignments.reduce((sum, row) => {
           return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + staffCell.length, 0);
@@ -2255,11 +2285,7 @@
       function renderFixedSchedulePreview() {
         restoredSchedulePayload = null;
         const preview = buildFixedSchedulePreview();
-        if (preview.fixedAssignmentCount) {
-          renderSchedule(preview.staff, preview);
-        } else {
-          renderSchedule(preview.staff, { assignments: [], counts: new Map() });
-        }
+        renderSchedule(preview.staff, preview);
       }
 
       function clearRenderedSchedule() {
@@ -2481,7 +2507,6 @@
         clearPairList(settings.pairApprovedBucket, false);
         clearPairList(settings.pairBackupBucket, false);
         refreshFixedAssignmentControls();
-        renderSchedule([], { assignments: [], counts: new Map() });
       });
 
       settings.staffInputs.forEach((input) => {
@@ -2531,7 +2556,6 @@
           saveState();
         });
       });
-      settings.addFixedBtn.addEventListener("click", addFixedAssignmentFromInputs);
       settings.studentDuplicates.forEach((checkbox) => {
         checkbox.addEventListener("change", saveState);
         checkbox.addEventListener("change", () => generatePossiblePairsFromInputs());
@@ -2541,7 +2565,7 @@
         clearPairList(settings.pairOutput, true, "No pairs generated yet.");
 
       loadState();
-      refreshFixedAssignmentControls();
+      refreshFixedAssignmentControls(false);
       generatePossiblePairsFromInputs(restoredPairBuckets);
 
       if (restoredSchedulePayload && restoredSchedulePayload.assignments?.length) {
