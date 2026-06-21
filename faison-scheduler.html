@@ -796,6 +796,7 @@
         </div>
 
         <div class="actions">
+          <button id="clearScheduleBtn" class="secondary" type="button">Clear schedule table</button>
           <button id="resetBtn" class="warn" type="button">Clear saved data</button>
         </div>
         <div id="notice" class="notice" role="status"></div>
@@ -878,6 +879,7 @@
         pairBackupBucket: document.getElementById("backupPairs"),
         fixedList: document.getElementById("fixedList"),
         buildBtn: document.getElementById("buildBtn"),
+        clearScheduleBtn: document.getElementById("clearScheduleBtn"),
         resetBtn: document.getElementById("resetBtn"),
         notice: document.getElementById("notice"),
         scheduleHead: document.getElementById("scheduleHead"),
@@ -2292,6 +2294,15 @@
         renderFixedSchedulePreview();
       }
 
+      function clearScheduleTable() {
+        restoredSchedulePayload = null;
+        fixedAssignments = [];
+        renderFixedAssignments();
+        renderFixedSchedulePreview();
+        saveState();
+        showNotice("Schedule table cleared. Staff, students, blocks, and pair preferences were kept.");
+      }
+
       function applyBlockSetup(blocks, message) {
         if (!blocks.length) {
           showNotice("Add at least one valid time block in HH:MM format.");
@@ -2497,6 +2508,7 @@
           "Default time blocks restored. Generate a new schedule when the rest of the setup is ready."
         );
       });
+      settings.clearScheduleBtn.addEventListener("click", clearScheduleTable);
       settings.resetBtn.addEventListener("click", () => {
         safeStorageRemove(STORAGE_KEY);
         applyDefaults();
