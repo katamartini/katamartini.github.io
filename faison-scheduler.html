@@ -398,6 +398,11 @@
       display: block;
     }
 
+    .staff-label.is-generated {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
     .time-pill {
       display: block;
       border-radius: 999px;
@@ -796,10 +801,6 @@
           <div class="help">Use the checkboxes to mark students that can be assigned to multiple staff members in the same time row.</div>
         </div>
 
-        <div class="actions">
-          <button id="clearScheduleBtn" class="secondary" type="button">Clear schedule table</button>
-          <button id="resetBtn" class="warn" type="button">Clear saved data</button>
-        </div>
         <div id="notice" class="notice" role="status"></div>
       </section>
 
@@ -827,6 +828,7 @@
           </section>
           <div class="actions">
             <button id="buildBtn" type="button">Generate schedule</button>
+            <button id="clearScheduleBtn" class="secondary" type="button">Clear schedule table</button>
           </div>
         </section>
       </section>
@@ -881,7 +883,6 @@
         fixedList: document.getElementById("fixedList"),
         buildBtn: document.getElementById("buildBtn"),
         clearScheduleBtn: document.getElementById("clearScheduleBtn"),
-        resetBtn: document.getElementById("resetBtn"),
         notice: document.getElementById("notice"),
         scheduleHead: document.getElementById("scheduleHead"),
         scheduleBody: document.getElementById("scheduleBody"),
@@ -2188,6 +2189,7 @@
             const cells = [`<td><span class="time-pill">${escapeHtml(row.time)}</span></td>`];
 
             const rowClasses = row.unassigned?.length ? "slot-warning" : "";
+            const labelClass = hasGeneratedAssignments ? "staff-label is-generated" : "staff-label";
 
             row.byStaff.forEach((staffCell, staffIndex) => {
               const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
@@ -2207,7 +2209,7 @@
               }
 
               if (!staffCell.length) {
-                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="staff-label">-</span></td>`);
+                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span></td>`);
                 return;
               }
 
@@ -2216,11 +2218,11 @@
                 return;
               }
 
-              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
+              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
             });
 
             while (cells.length - 1 < displayStaff.length) {
-              cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
+              cells.push(`<td class="staff-cell"><span class="${labelClass}">-</span></td>`);
             }
 
             return `<tr class="${rowClasses}">${cells.join("")}</tr>`;
@@ -2510,17 +2512,6 @@
         );
       });
       settings.clearScheduleBtn.addEventListener("click", clearScheduleTable);
-      settings.resetBtn.addEventListener("click", () => {
-        safeStorageRemove(STORAGE_KEY);
-        applyDefaults();
-        restoredPairBuckets = null;
-        restoredSchedulePayload = null;
-        clearNotice();
-        clearPairList(settings.pairOutput, true, "No pairs generated yet.");
-        clearPairList(settings.pairApprovedBucket, false);
-        clearPairList(settings.pairBackupBucket, false);
-        refreshFixedAssignmentControls();
-      });
 
       settings.staffInputs.forEach((input) => {
         input.addEventListener("input", () => {
