@@ -565,6 +565,11 @@
       font-size: 12px;
     }
 
+    .staff-cell.is-fixed {
+      background: #e9f8ff;
+      box-shadow: inset 0 0 0 2px #7dc8ed;
+    }
+
     .pair-empty {
       color: #5c7185;
       font-size: 12px;
@@ -794,7 +799,7 @@
               <label for="fixedStaff">Staff <select id="fixedStaff"></select></label>
               <label for="fixedStudentA">Student <select id="fixedStudentA"></select></label>
               <label for="fixedStudentB">Pair with <select id="fixedStudentB"></select></label>
-              <button id="addFixedBtn" type="button">Add fixed</button>
+              <button id="addFixedBtn" type="button">Add fixed slot</button>
             </div>
             <div id="fixedList" class="fixed-list" aria-live="polite"></div>
           </section>
@@ -1251,8 +1256,8 @@
             if (!Number.isFinite(index)) return;
             fixedAssignments.splice(index, 1);
             renderFixedAssignments();
+            renderFixedSchedulePreview();
             saveState();
-            clearRenderedSchedule();
           });
         });
       };
@@ -1284,9 +1289,37 @@
         );
         fixedAssignments.push(assignment);
         renderFixedAssignments();
+        renderFixedSchedulePreview();
         saveState();
-        clearRenderedSchedule();
-        showNotice("Fixed assignment saved. Generate a schedule to apply it.");
+        showNotice("Fixed slot added. Choose another fixed slot or generate the schedule.");
+      };
+
+      const buildFixedSchedulePreview = () => {
+        const staff = parseStaffFromInputs();
+        const staffNames = staff.map((person) => person.name);
+        const staffIndexByName = new Map(staffNames.map((name, index) => [name, index]));
+        const assignments = getBlocks().map((block) => ({
+          time: block.time,
+          byStaff: staffNames.map(() => []),
+          fixedStaffIndexes: []
+        }));
+        const rowByTime = new Map(assignments.map((row) => [row.time, row]));
+
+        getFixedAssignmentsState().forEach((assignment) => {
+          const row = rowByTime.get(assignment.time);
+          const staffIndex = staffIndexByName.get(assignment.staffName);
+          if (!row || staffIndex === undefined) return;
+          row.byStaff[staffIndex] = assignment.students.slice();
+          row.fixedStaffIndexes.push(staffIndex);
+        });
+
+        return {
+          staff: staffNames,
+          assignments,
+          counts: new Map(),
+          isPreview: true,
+          fixedAssignmentCount: getFixedAssignmentsState().length
+        };
       };
 
       const getScheduleStateForStorage = (assignmentResult) => {
@@ -1811,7 +1844,7 @@
           const randomizedOrderings = shuffle(studentOrderings).map((ordering) => ordering.slice());
 
           const attemptSlot = (studentOrder, enforceNoConsecutiveDouble = false) => {
-            const row = { time: slot.time, byStaff: staff.map(() => []) };
+            const row = { time: slot.time, byStaff: staff.map(() => []), fixedStaffIndexes: [] };
             const loads = staff.map(() => 0);
             const assignedThisSlot = new Set();
             const localCounts = new Map(slotBaseCounts);
@@ -1823,6 +1856,7 @@
 
             (fixedBySlotTime.get(slot.time) || []).forEach((fixed) => {
               lockedStaffIndexes.add(fixed.staffIndex);
+              row.fixedStaffIndexes.push(fixed.staffIndex);
               row.byStaff[fixed.staffIndex] = fixed.students.map((student) => student.name);
               loads[fixed.staffIndex] = fixed.students.length;
               fixed.students.forEach((student) => {
@@ -2076,16 +2110,19 @@
           unassignedBySlot = [],
           relationshipRepeatCount = 0,
           unmetRelationshipCount = 0,
-          fixedAssignmentIssues = []
+          fixedAssignmentIssues = [],
+          isPreview = false,
+          fixedAssignmentCount = 0
         } = assignmentResult || {};
         const counts = rawCounts instanceof Map
           ? rawCounts
           : new Map(Array.isArray(rawCounts) ? rawCounts : []);
-        const hasGeneratedAssignments = assignments.length > 0;
+        const hasVisibleAssignments = assignments.length > 0;
+        const hasGeneratedAssignments = hasVisibleAssignments && !isPreview;
         const displayStaff = Array.isArray(staff) && staff.length
           ? staff
           : parseStaffFromInputs().map((person) => person.name);
-        const displayAssignments = hasGeneratedAssignments
+        const displayAssignments = hasVisibleAssignments
           ? assignments
           : getBlocks().map((block) => ({
             time: block.time,
@@ -2107,21 +2144,22 @@
 
             const rowClasses = row.unassigned?.length ? "slot-warning" : "";
 
-            for (const staffCell of row.byStaff) {
+            row.byStaff.forEach((staffCell, staffIndex) => {
               const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
+              const fixedClass = row.fixedStaffIndexes?.includes(staffIndex) ? " is-fixed" : "";
 
               if (!staffCell.length) {
-                cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
-                continue;
+                cells.push(`<td class="staff-cell${fixedClass}"><span class="staff-label">-</span></td>`);
+                return;
               }
 
               if (isMaterials) {
-                cells.push(`<td class="staff-cell materials-cell"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
-                continue;
+                cells.push(`<td class="staff-cell materials-cell${fixedClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
+                return;
               }
 
-              cells.push(`<td class="staff-cell"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
-            }
+              cells.push(`<td class="staff-cell${fixedClass}"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
+            });
 
             while (cells.length - 1 < displayStaff.length) {
               cells.push(`<td class="staff-cell"><span class="staff-label">-</span></td>`);
@@ -2134,6 +2172,16 @@
         const totalAssignments = displayAssignments.reduce((sum, row) => {
           return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + staffCell.length, 0);
         }, 0);
+
+        if (isPreview) {
+          settings.summary.innerHTML = [
+            `<div class="summary-item"><strong>Rows:</strong> ${displayAssignments.length}</div>`,
+            `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
+            `<div class="summary-item"><strong>Fixed slots:</strong> ${fixedAssignmentCount}</div>`,
+            `<div class="summary-item"><strong>Status:</strong> Fixed slots preview. Generate a schedule to fill the remaining cells.</div>`
+          ].join("");
+          return;
+        }
 
         if (!hasGeneratedAssignments) {
           settings.summary.innerHTML = [
@@ -2175,9 +2223,18 @@
         settings.notice.classList.remove("is-visible");
       }
 
-      function clearRenderedSchedule() {
+      function renderFixedSchedulePreview() {
         restoredSchedulePayload = null;
-        renderSchedule([], { assignments: [], counts: new Map() });
+        const preview = buildFixedSchedulePreview();
+        if (preview.fixedAssignmentCount) {
+          renderSchedule(preview.staff, preview);
+        } else {
+          renderSchedule(preview.staff, { assignments: [], counts: new Map() });
+        }
+      }
+
+      function clearRenderedSchedule() {
+        renderFixedSchedulePreview();
       }
 
       function applyBlockSetup(blocks, message) {
@@ -2464,7 +2521,7 @@
           : parseStaffFromInputs().map((person) => person.name);
         renderSchedule(scheduleStaff, restoredSchedulePayload);
       } else {
-        renderSchedule([], { assignments: [], counts: new Map() });
+        renderFixedSchedulePreview();
       }
     })();
   </script>
