@@ -369,6 +369,19 @@
       background: #eef3f7;
     }
 
+    td.unavailable-cell {
+      background: #4b5563;
+      color: #e5edf5;
+    }
+
+    td.unavailable-cell .staff-label {
+      color: #e5edf5;
+    }
+
+    td.unavailable-cell .materials-label {
+      color: #e5edf5;
+    }
+
     .materials-label {
       color: #63788a;
       font-style: italic;
@@ -568,6 +581,10 @@
     .staff-cell.is-fixed {
       background: #e9f8ff;
       box-shadow: inset 0 0 0 2px #7dc8ed;
+    }
+
+    .staff-cell.is-fixed.unavailable-cell {
+      background: #4b5563;
     }
 
     .pair-empty {
@@ -1301,7 +1318,10 @@
         const assignments = getBlocks().map((block) => ({
           time: block.time,
           byStaff: staffNames.map(() => []),
-          fixedStaffIndexes: []
+          fixedStaffIndexes: [],
+          unavailableStaffIndexes: staff
+            .map((person, index) => isWithinTimeWindow(block, person) ? -1 : index)
+            .filter((index) => index >= 0)
         }));
         const rowByTime = new Map(assignments.map((row) => [row.time, row]));
 
@@ -2122,12 +2142,17 @@
         const displayStaff = Array.isArray(staff) && staff.length
           ? staff
           : parseStaffFromInputs().map((person) => person.name);
+        const staffForAvailability = parseStaffFromInputs();
         const displayAssignments = hasVisibleAssignments
           ? assignments
           : getBlocks().map((block) => ({
             time: block.time,
-            byStaff: displayStaff.map(() => [])
+            byStaff: displayStaff.map(() => []),
+            unavailableStaffIndexes: staffForAvailability
+              .map((person, index) => isWithinTimeWindow(block, person) ? -1 : index)
+              .filter((index) => index >= 0)
           }));
+        const blocksByTime = new Map(getBlocks().map((block) => [block.time, block]));
 
         if (!displayAssignments.length) {
           settings.scheduleHead.innerHTML = "";
@@ -2147,18 +2172,22 @@
             row.byStaff.forEach((staffCell, staffIndex) => {
               const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
               const fixedClass = row.fixedStaffIndexes?.includes(staffIndex) ? " is-fixed" : "";
+              const rowBlock = blocksByTime.get(row.time);
+              const isUnavailable = row.unavailableStaffIndexes?.includes(staffIndex) ||
+                (rowBlock && staffForAvailability[staffIndex] && !isWithinTimeWindow(rowBlock, staffForAvailability[staffIndex]));
+              const unavailableClass = isUnavailable ? " unavailable-cell" : "";
 
               if (!staffCell.length) {
-                cells.push(`<td class="staff-cell${fixedClass}"><span class="staff-label">-</span></td>`);
+                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="staff-label">-</span></td>`);
                 return;
               }
 
               if (isMaterials) {
-                cells.push(`<td class="staff-cell materials-cell${fixedClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
+                cells.push(`<td class="staff-cell materials-cell${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
                 return;
               }
 
-              cells.push(`<td class="staff-cell${fixedClass}"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
+              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="staff-label">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
             });
 
             while (cells.length - 1 < displayStaff.length) {
