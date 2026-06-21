@@ -527,6 +527,44 @@
       opacity: 0.5;
     }
 
+    .fixed-area {
+      border-top: 1px dashed var(--border);
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    .fixed-controls {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      align-items: end;
+    }
+
+    .fixed-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .fixed-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f4fbff;
+      padding: 6px 8px;
+      font-size: 12px;
+    }
+
+    .fixed-row button {
+      width: auto;
+      min-width: 78px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+
     .pair-empty {
       color: #5c7185;
       font-size: 12px;
@@ -564,6 +602,10 @@
       }
 
       .pair-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .fixed-controls {
         grid-template-columns: 1fr;
       }
 
@@ -744,6 +786,18 @@
               <div id="backupPairs" class="pair-bucket-inner" data-bucket="backups" aria-label="Backups pair bucket"></div>
             </section>
           </div>
+          <section class="fixed-area">
+            <h3>Fixed assignments</h3>
+            <p class="help">Pre-place a student or pair in a specific time and staff cell before generating.</p>
+            <div class="fixed-controls">
+              <label for="fixedTime">Time <select id="fixedTime"></select></label>
+              <label for="fixedStaff">Staff <select id="fixedStaff"></select></label>
+              <label for="fixedStudentA">Student <select id="fixedStudentA"></select></label>
+              <label for="fixedStudentB">Pair with <select id="fixedStudentB"></select></label>
+              <button id="addFixedBtn" type="button">Add fixed</button>
+            </div>
+            <div id="fixedList" class="fixed-list" aria-live="polite"></div>
+          </section>
           <div class="actions">
             <button id="buildBtn" type="button">Generate schedule</button>
           </div>
@@ -797,6 +851,12 @@
         pairOutput: document.getElementById("pairOutput"),
         pairApprovedBucket: document.getElementById("approvedPairs"),
         pairBackupBucket: document.getElementById("backupPairs"),
+        fixedTime: document.getElementById("fixedTime"),
+        fixedStaff: document.getElementById("fixedStaff"),
+        fixedStudentA: document.getElementById("fixedStudentA"),
+        fixedStudentB: document.getElementById("fixedStudentB"),
+        addFixedBtn: document.getElementById("addFixedBtn"),
+        fixedList: document.getElementById("fixedList"),
         buildBtn: document.getElementById("buildBtn"),
         resetBtn: document.getElementById("resetBtn"),
         notice: document.getElementById("notice"),
@@ -808,6 +868,7 @@
       const STORAGE_KEY = "faison-scheduler.assigner.v1";
       let restoredPairBuckets = null;
       let restoredSchedulePayload = null;
+      let fixedAssignments = [];
 
       const defaultStaff = [
         { name: "Staff A", inTime: "08:30", lunchTime: "", outTime: "14:00" },
@@ -1128,6 +1189,106 @@
         backups: Array.from(settings.pairBackupBucket.querySelectorAll(".pair-item")).map((item) => item.dataset.pair || "")
       });
 
+      const normalizeFixedAssignment = (assignment) => {
+        const time = String(assignment?.time || "").trim();
+        const staffName = String(assignment?.staffName || "").trim();
+        const students = Array.isArray(assignment?.students)
+          ? assignment.students.map((name) => String(name || "").trim()).filter(Boolean)
+          : [];
+        const uniqueStudents = Array.from(new Set(students)).slice(0, 2);
+        if (!time || !staffName || !uniqueStudents.length) return null;
+        return {
+          time,
+          staffName,
+          students: uniqueStudents
+        };
+      };
+
+      const getFixedAssignmentsState = () => fixedAssignments
+        .map(normalizeFixedAssignment)
+        .filter(Boolean);
+
+      const setSelectOptions = (select, options, placeholder = "") => {
+        if (!select) return;
+        const current = select.value;
+        const optionHtml = [
+          placeholder ? `<option value="">${escapeHtml(placeholder)}</option>` : "",
+          ...options.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+        ].join("");
+        select.innerHTML = optionHtml;
+        if (options.includes(current)) {
+          select.value = current;
+        } else {
+          select.value = placeholder ? "" : (options[0] || "");
+        }
+      };
+
+      const renderFixedAssignments = () => {
+        const normalized = getFixedAssignmentsState();
+        fixedAssignments = normalized;
+        if (!settings.fixedList) return;
+
+        if (!fixedAssignments.length) {
+          settings.fixedList.innerHTML = `<div class="pair-empty">No fixed assignments yet.</div>`;
+          return;
+        }
+
+        settings.fixedList.innerHTML = fixedAssignments
+          .map((assignment, index) => {
+            const studentText = assignment.students.join(" + ");
+            return `
+              <div class="fixed-row">
+                <span><strong>${escapeHtml(assignment.time)}</strong> &middot; ${escapeHtml(assignment.staffName)} &rarr; ${escapeHtml(studentText)}</span>
+                <button class="secondary fixed-remove" type="button" data-index="${index}">Remove</button>
+              </div>
+            `;
+          })
+          .join("");
+
+        settings.fixedList.querySelectorAll(".fixed-remove").forEach((button) => {
+          button.addEventListener("click", () => {
+            const index = Number(button.dataset.index);
+            if (!Number.isFinite(index)) return;
+            fixedAssignments.splice(index, 1);
+            renderFixedAssignments();
+            saveState();
+            clearRenderedSchedule();
+          });
+        });
+      };
+
+      const refreshFixedAssignmentControls = () => {
+        const staff = parseStaffFromInputs();
+        const students = parseStudentsFromInputs();
+        setSelectOptions(settings.fixedTime, getBlocks().map((block) => block.time));
+        setSelectOptions(settings.fixedStaff, staff.map((person) => person.name));
+        setSelectOptions(settings.fixedStudentA, students.map((student) => student.name));
+        setSelectOptions(settings.fixedStudentB, students.map((student) => student.name), "None");
+        renderFixedAssignments();
+      };
+
+      const addFixedAssignmentFromInputs = () => {
+        const assignment = normalizeFixedAssignment({
+          time: settings.fixedTime?.value,
+          staffName: settings.fixedStaff?.value,
+          students: [settings.fixedStudentA?.value, settings.fixedStudentB?.value]
+        });
+
+        if (!assignment) {
+          showNotice("Choose a time, staff member, and at least one student for the fixed assignment.");
+          return;
+        }
+
+        fixedAssignments = fixedAssignments.filter((item) =>
+          !(item.time === assignment.time && item.staffName === assignment.staffName)
+        );
+        fixedAssignments.push(assignment);
+        renderFixedAssignments();
+        saveState();
+        clearRenderedSchedule();
+        showNotice("Fixed assignment saved. Generate a schedule to apply it.");
+      };
+
       const getScheduleStateForStorage = (assignmentResult) => {
         if (!assignmentResult) return null;
         const counts = assignmentResult.counts instanceof Map
@@ -1141,7 +1302,10 @@
           unassignedBySlot: assignmentResult.unassignedBySlot || [],
           staff: assignmentResult.staff || [],
           relationshipRepeatCount: assignmentResult.relationshipRepeatCount || 0,
-          unmetRelationshipCount: assignmentResult.unmetRelationshipCount || 0
+          unmetRelationshipCount: assignmentResult.unmetRelationshipCount || 0,
+          fixedAssignmentIssues: Array.isArray(assignmentResult.fixedAssignmentIssues)
+            ? assignmentResult.fixedAssignmentIssues
+            : []
         };
       };
 
@@ -1158,7 +1322,8 @@
           unassignedBySlot: Array.isArray(payload.unassignedBySlot) ? payload.unassignedBySlot : [],
           staff: Array.isArray(payload.staff) ? payload.staff : [],
           relationshipRepeatCount: Number(payload.relationshipRepeatCount) || 0,
-          unmetRelationshipCount: Number(payload.unmetRelationshipCount) || 0
+          unmetRelationshipCount: Number(payload.unmetRelationshipCount) || 0,
+          fixedAssignmentIssues: Array.isArray(payload.fixedAssignmentIssues) ? payload.fixedAssignmentIssues : []
         };
       };
 
@@ -1434,7 +1599,7 @@
         return activeBlocks.slice();
       }
 
-      function buildAssignments(staff, students, slots, pairPriorityByKey = new Map()) {
+      function buildAssignments(staff, students, slots, pairPriorityByKey = new Map(), fixedAssignmentInput = []) {
         const assignments = [];
         const staffNames = staff.map((person) => person.name);
         const counts = new Map(students.map((student) => [student.name, 0]));
@@ -1444,6 +1609,7 @@
         const allowedPairPriority = new Map(pairPriorityByKey);
         const staffStudentCounts = staff.map(() => new Map());
         const unassignedBySlot = [];
+        const fixedAssignmentIssues = [];
         let consecutiveDoubleSlots = 0;
         let relationshipRepeatCount = 0;
 
@@ -1473,6 +1639,71 @@
           }
           return priority;
         };
+
+        const staffIndexByName = new Map(staff.map((person, index) => [person.name, index]));
+        const studentByName = new Map(students.map((student) => [student.name, student]));
+        const slotByTime = new Map(slots.map((slot) => [slot.time, slot]));
+        const fixedBySlotTime = new Map();
+        const fixedCellKeys = new Set();
+        const fixedStudentBySlot = new Map();
+
+        getPairStateFromPayload(fixedAssignmentInput).forEach((rawAssignment) => {
+          const assignment = normalizeFixedAssignment(rawAssignment);
+          if (!assignment) return;
+
+          const slot = slotByTime.get(assignment.time);
+          const staffIndex = staffIndexByName.get(assignment.staffName);
+          const fixedStudents = assignment.students
+            .map((studentName) => studentByName.get(studentName))
+            .filter(Boolean);
+          const issuePrefix = `${assignment.time} / ${assignment.staffName} / ${assignment.students.join(" + ")}`;
+
+          if (!slot) {
+            fixedAssignmentIssues.push(`${issuePrefix}: time block is not available.`);
+            return;
+          }
+          if (staffIndex === undefined) {
+            fixedAssignmentIssues.push(`${issuePrefix}: staff member is not available.`);
+            return;
+          }
+          if (fixedStudents.length !== assignment.students.length) {
+            fixedAssignmentIssues.push(`${issuePrefix}: student is not available.`);
+            return;
+          }
+          if (!isWithinTimeWindow(slot, staff[staffIndex])) {
+            fixedAssignmentIssues.push(`${issuePrefix}: staff member is unavailable at that time.`);
+            return;
+          }
+          const unavailableStudent = fixedStudents.find((student) => !isWithinTimeWindow(slot, student));
+          if (unavailableStudent) {
+            fixedAssignmentIssues.push(`${issuePrefix}: ${unavailableStudent.name} is unavailable at that time.`);
+            return;
+          }
+
+          const cellKey = `${assignment.time}||${staffIndex}`;
+          if (fixedCellKeys.has(cellKey)) {
+            fixedAssignmentIssues.push(`${issuePrefix}: another fixed assignment already uses that staff/time cell.`);
+            return;
+          }
+
+          const slotStudentSet = fixedStudentBySlot.get(assignment.time) || new Set();
+          const duplicateStudent = fixedStudents.find((student) => slotStudentSet.has(student.name));
+          if (duplicateStudent) {
+            fixedAssignmentIssues.push(`${issuePrefix}: ${duplicateStudent.name} is already fixed in that time block.`);
+            return;
+          }
+
+          fixedCellKeys.add(cellKey);
+          fixedStudents.forEach((student) => slotStudentSet.add(student.name));
+          fixedStudentBySlot.set(assignment.time, slotStudentSet);
+
+          const existing = fixedBySlotTime.get(assignment.time) || [];
+          existing.push({
+            staffIndex,
+            students: fixedStudents
+          });
+          fixedBySlotTime.set(assignment.time, existing);
+        });
 
         const shuffle = (values) => {
           const out = values.slice();
@@ -1588,6 +1819,22 @@
             let pairPenalty = 0;
             let slotRelationshipRepeatCount = 0;
             let newRelationshipCount = 0;
+            const lockedStaffIndexes = new Set();
+
+            (fixedBySlotTime.get(slot.time) || []).forEach((fixed) => {
+              lockedStaffIndexes.add(fixed.staffIndex);
+              row.byStaff[fixed.staffIndex] = fixed.students.map((student) => student.name);
+              loads[fixed.staffIndex] = fixed.students.length;
+              fixed.students.forEach((student) => {
+                assignedThisSlot.add(student.name);
+                localCounts.set(student.name, (localCounts.get(student.name) || 0) + 1);
+                if ((staffStudentCounts[fixed.staffIndex].get(student.name) || 0) > 0) {
+                  slotRelationshipRepeatCount += 1;
+                } else {
+                  newRelationshipCount += 1;
+                }
+              });
+            });
 
             const pickStaffIndex = (student) => {
               let bestIndex = -1;
@@ -1600,6 +1847,9 @@
 
               for (let i = 0; i < staff.length; i++) {
                 if (!activeStaffIndexSet.has(i)) {
+                  continue;
+                }
+                if (lockedStaffIndexes.has(i)) {
                   continue;
                 }
                 if (!isStaffCellAvailableForStudent(row.byStaff[i], student)) {
@@ -1814,7 +2064,8 @@
           staff: staffNames,
           consecutiveDoubleSlots,
           relationshipRepeatCount,
-          unmetRelationshipCount
+          unmetRelationshipCount,
+          fixedAssignmentIssues
         };
       }
 
@@ -1824,7 +2075,8 @@
           counts: rawCounts = [],
           unassignedBySlot = [],
           relationshipRepeatCount = 0,
-          unmetRelationshipCount = 0
+          unmetRelationshipCount = 0,
+          fixedAssignmentIssues = []
         } = assignmentResult || {};
         const counts = rawCounts instanceof Map
           ? rawCounts
@@ -1897,6 +2149,9 @@
         const missingSummary = unassignedBySlot.length
           ? unassignedBySlot.map(({ time, names }) => `${escapeHtml(time)} &rarr; ${escapeHtml(names.join(", "))}`).join("<br>")
           : "None";
+        const fixedIssueSummary = fixedAssignmentIssues.length
+          ? fixedAssignmentIssues.map(escapeHtml).join("<br>")
+          : "None";
         settings.summary.innerHTML = [
           `<div class="summary-item"><strong>Rows:</strong> ${displayAssignments.length}</div>`,
           `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
@@ -1904,6 +2159,7 @@
           `<div class="summary-item"><strong>Assigned spread:</strong> ${top.map(([name, count]) => `${name}: ${count}`).join(" | ")}</div>`,
           `<div class="summary-item"><strong>Repeated staff/student slots:</strong> ${relationshipRepeatCount}</div>`,
           `<div class="summary-item"><strong>Unmet staff/student pairings:</strong> ${unmetRelationshipCount}</div>`,
+          `<div class="summary-item"><strong>Fixed assignment issues:</strong> <span class="summary-detail-lines">${fixedIssueSummary}</span></div>`,
           `<div class="summary-item"><strong>Missing students in slots:</strong> ${missingCount}</div>`,
           `<div class="summary-item"><strong>Missing detail:</strong> <span class="summary-detail-lines">${missingSummary}</span></div>`
         ].join("");
@@ -1934,6 +2190,7 @@
         const previousEnd = scheduleDayEnd;
         setActiveBlocks(blocks);
         refreshTimeInputsForBlocks(previousStart, previousEnd);
+        refreshFixedAssignmentControls();
         clearRenderedSchedule();
         saveState();
         showNotice(message);
@@ -1960,6 +2217,7 @@
           studentEntries: students,
           staffNames: staff.map((staffMember) => staffMember.name).join("\n"),
           pairBuckets: getPairBucketsState(),
+          fixedAssignments: getFixedAssignmentsState(),
           lastSchedule: scheduleState
         };
         safeStorageSet(STORAGE_KEY, JSON.stringify(payload));
@@ -1970,6 +2228,7 @@
         if (!raw) {
           restoredPairBuckets = null;
           restoredSchedulePayload = null;
+          fixedAssignments = [];
           applyDefaults();
           return;
         }
@@ -2000,6 +2259,9 @@
             approved: getPairStateFromPayload(parsed?.pairBuckets?.approved),
             backups: getPairStateFromPayload(parsed?.pairBuckets?.backups)
           };
+          fixedAssignments = Array.isArray(parsed?.fixedAssignments)
+            ? parsed.fixedAssignments.map(normalizeFixedAssignment).filter(Boolean)
+            : [];
           restoredSchedulePayload = getScheduleStateFromStorage(parsed?.lastSchedule || null);
 
           if (parsed.studentEntries && Array.isArray(parsed.studentEntries) && parsed.studentEntries.length) {
@@ -2024,6 +2286,7 @@
           });
           restoredPairBuckets = null;
           restoredSchedulePayload = null;
+          fixedAssignments = [];
           setStudentRowsFromState({
             students: defaultStudents
           });
@@ -2032,6 +2295,7 @@
 
       function applyDefaults() {
         setActiveBlocks(defaultBlocks);
+        fixedAssignments = [];
         setStaffRowsFromState({
           staffEntries: defaultStaff
         });
@@ -2060,11 +2324,12 @@
         }
 
         const pairPriorityByKey = getPairPriorityMap();
-        const result = buildAssignments(staff, students, slots, pairPriorityByKey);
+        const result = buildAssignments(staff, students, slots, pairPriorityByKey, getFixedAssignmentsState());
         const unassignedTotal = result.unassignedBySlot.reduce((sum, row) => sum + row.names.length, 0);
         const consecutiveDoubleSlots = result.consecutiveDoubleSlots || 0;
         const relationshipRepeatCount = result.relationshipRepeatCount || 0;
         const unmetRelationshipCount = result.unmetRelationshipCount || 0;
+        const fixedIssueCount = result.fixedAssignmentIssues?.length || 0;
         const staffFromResult = result.staff || staff;
 
         if (unassignedTotal) {
@@ -2074,7 +2339,10 @@
             .map(({ time, names }) => `${time}: ${names.join(", ")}`)
             .join(" | ");
           const hidden = missingCount > 3 ? ` (and ${missingCount - 3} more)` : "";
-          showNotice(`Schedule incomplete: ${result.unassignedBySlot.length} time block(s) still have unassigned students: ${preview}${hidden}`);
+          const fixedSuffix = fixedIssueCount ? ` ${fixedIssueCount} fixed assignment(s) could not be applied.` : "";
+          showNotice(`Schedule incomplete: ${result.unassignedBySlot.length} time block(s) still have unassigned students: ${preview}${hidden}.${fixedSuffix}`);
+        } else if (fixedIssueCount) {
+          showNotice(`Schedule generated, but ${fixedIssueCount} fixed assignment(s) could not be applied. See summary for details.`);
         } else if (consecutiveDoubleSlots) {
           showNotice(`Warning: ${consecutiveDoubleSlots} time block(s) required consecutive doubled staff slots because of staffing constraints.`);
         } else if (relationshipRepeatCount || unmetRelationshipCount) {
@@ -2091,7 +2359,8 @@
           unassignedBySlot: result.unassignedBySlot,
           staff: staffFromResult,
           relationshipRepeatCount: result.relationshipRepeatCount,
-          unmetRelationshipCount: result.unmetRelationshipCount
+          unmetRelationshipCount: result.unmetRelationshipCount,
+          fixedAssignmentIssues: result.fixedAssignmentIssues
         });
         saveState();
         renderSchedule(staffFromResult, result);
@@ -2125,17 +2394,22 @@
         clearPairList(settings.pairOutput, true, "No pairs generated yet.");
         clearPairList(settings.pairApprovedBucket, false);
         clearPairList(settings.pairBackupBucket, false);
+        refreshFixedAssignmentControls();
         renderSchedule([], { assignments: [], counts: new Map() });
       });
 
       settings.staffInputs.forEach((input) => {
-        input.addEventListener("input", saveState);
+        input.addEventListener("input", () => {
+          refreshFixedAssignmentControls();
+          saveState();
+        });
       });
       setActiveBlocks(defaultBlocks);
       replaceTimeInputsWithSelects();
       settings.staffInInputs.forEach((input) => {
         input.addEventListener("change", () => {
           clampTimeInputField(input, false);
+          refreshFixedAssignmentControls();
           saveState();
         });
       });
@@ -2145,26 +2419,33 @@
       settings.staffOutInputs.forEach((input) => {
         input.addEventListener("change", () => {
           clampTimeInputField(input, true);
+          refreshFixedAssignmentControls();
           saveState();
         });
       });
 
       settings.studentInputs.forEach((input) => {
-        input.addEventListener("input", saveState);
+        input.addEventListener("input", () => {
+          refreshFixedAssignmentControls();
+          saveState();
+        });
         input.addEventListener("input", () => generatePossiblePairsFromInputs());
       });
       settings.studentInInputs.forEach((input) => {
         input.addEventListener("change", () => {
           clampTimeInputField(input, false);
+          refreshFixedAssignmentControls();
           saveState();
         });
       });
       settings.studentOutInputs.forEach((input) => {
         input.addEventListener("change", () => {
           clampTimeInputField(input, true);
+          refreshFixedAssignmentControls();
           saveState();
         });
       });
+      settings.addFixedBtn.addEventListener("click", addFixedAssignmentFromInputs);
       settings.studentDuplicates.forEach((checkbox) => {
         checkbox.addEventListener("change", saveState);
         checkbox.addEventListener("change", () => generatePossiblePairsFromInputs());
@@ -2174,6 +2455,7 @@
         clearPairList(settings.pairOutput, true, "No pairs generated yet.");
 
       loadState();
+      refreshFixedAssignmentControls();
       generatePossiblePairsFromInputs(restoredPairBuckets);
 
       if (restoredSchedulePayload && restoredSchedulePayload.assignments?.length) {
