@@ -624,7 +624,7 @@
       border: 1px solid var(--line);
       background: #ffffff;
       display: grid;
-      grid-template-columns: 42px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 8px;
       align-items: start;
       text-align: left;
@@ -652,6 +652,48 @@
       border: 1px solid var(--line);
       background: var(--wash);
       font-weight: 800;
+    }
+
+    .episode-main {
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+      text-align: left;
+    }
+
+    .episode-main:hover {
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .episode-watch-link {
+      width: 36px;
+      min-height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .episode-watch-link:hover {
+      border-color: #9facbd;
+      background: #f6f8fb;
+    }
+
+    .episode-watch-link.disabled {
+      color: #98a2b3;
+      background: #f3f5f8;
+      cursor: not-allowed;
     }
 
     .episode.watched .episode-num {
@@ -814,6 +856,8 @@
 
     .show-row-pin {
       display: flex;
+      flex-direction: column;
+      gap: 7px;
       align-items: start;
     }
 
@@ -898,6 +942,42 @@
 
     .toast.visible {
       opacity: 1;
+    }
+
+    .watch-url-modal[hidden] {
+      display: none;
+    }
+
+    .watch-url-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: rgba(24, 27, 34, 0.45);
+    }
+
+    .watch-url-panel {
+      width: min(520px, 100%);
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      box-shadow: 0 18px 34px rgba(33, 38, 48, 0.24);
+    }
+
+    .watch-url-panel h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .watch-url-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: end;
     }
 
     .sr-only {
@@ -1110,6 +1190,19 @@
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+  <div class="watch-url-modal" id="watchUrlModal" role="dialog" aria-modal="true" aria-labelledby="watchUrlTitle" hidden>
+    <form class="watch-url-panel" id="watchUrlForm">
+      <h2 id="watchUrlTitle">Watch URL</h2>
+      <input type="hidden" id="watchUrlShowId" />
+      <label for="watchUrlInput">Base URL</label>
+      <input class="field" id="watchUrlInput" type="url" placeholder="https://kmartini.com/series/show-name-12345" />
+      <div class="meta">Episode links append /season-episode/ to this URL.</div>
+      <div class="watch-url-actions">
+        <button type="button" id="watchUrlCancel">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </div>
 
   <script>
     const API_ROOT = "https://api.tvmaze.com";
@@ -1169,6 +1262,12 @@
       repoStatus: document.querySelector("#repoStatus"),
       importFile: document.querySelector("#importFile"),
       toast: document.querySelector("#toast"),
+      watchUrlModal: document.querySelector("#watchUrlModal"),
+      watchUrlForm: document.querySelector("#watchUrlForm"),
+      watchUrlInput: document.querySelector("#watchUrlInput"),
+      watchUrlTitle: document.querySelector("#watchUrlTitle"),
+      watchUrlShowId: document.querySelector("#watchUrlShowId"),
+      watchUrlCancel: document.querySelector("#watchUrlCancel"),
     };
 
     function loadState() {
@@ -1257,6 +1356,7 @@
         watched: show.watched && typeof show.watched === "object" ? show.watched : {},
         autoFinished: !!show.autoFinished,
         pinned: !!show.pinned,
+        watchBaseUrl: show.watchBaseUrl ? String(show.watchBaseUrl) : "",
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
       };
@@ -1290,6 +1390,15 @@
     function showMeta(show) {
       const bits = [formatYear(show), show.network, show.genres.slice(0, 2).join(", ")].filter(Boolean);
       return bits.join(" / ");
+    }
+
+    function normalizeWatchBaseUrl(value) {
+      return value.trim().replace(/\/+$/g, "");
+    }
+
+    function episodeWatchUrl(show, episode) {
+      if (!show.watchBaseUrl || !episode.season || !episode.number) return "";
+      return `${show.watchBaseUrl}/${episode.season}-${episode.number}/`;
     }
 
     function imageMarkup(src, className) {
@@ -1705,6 +1814,7 @@
         <article class="show-row">
           <div class="show-row-pin">
             <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
+            <button type="button" data-edit-watch-url="${show.id}" title="${show.watchBaseUrl ? `Saved URL: ${escapeAttr(show.watchBaseUrl)}` : "Add watch URL"}">#</button>
           </div>
           ${imageMarkup(show.image, "thumb")}
           <div class="show-row-main">
@@ -1796,15 +1906,19 @@
       const watched = !!show.watched[episodeKey(episode)];
       const future = episode.airdate && episode.airdate > today;
       const label = `S${episode.season}E${episode.number || "?"}`;
+      const watchUrl = episodeWatchUrl(show, episode);
       return `
-        <button type="button" class="episode ${watched ? "watched" : ""} ${future ? "future" : ""}" data-toggle-episode="${show.id}:${episode.id}">
-          <span class="episode-num">${episode.number || "?"}</span>
-          <span class="episode-detail">
-            <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
-            <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
-            <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
-          </span>
-        </button>
+        <article class="episode ${watched ? "watched" : ""} ${future ? "future" : ""}">
+          <button type="button" class="episode-main" data-toggle-episode="${show.id}:${episode.id}">
+            <span class="episode-num">${episode.number || "?"}</span>
+            <span class="episode-detail">
+              <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
+              <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
+              <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
+            </span>
+          </button>
+          ${watchUrl ? `<a class="episode-watch-link" href="${escapeAttr(watchUrl)}" target="_blank" rel="noopener" aria-label="Open ${escapeAttr(label)} watch page">TV</a>` : `<span class="episode-watch-link disabled" title="Add a watch URL for this show">TV</span>`}
+        </article>
       `;
     }
 
@@ -1934,6 +2048,7 @@
         const fresh = await fetchShow(id);
         fresh.status = existing.status;
         fresh.watched = existing.watched;
+        fresh.watchBaseUrl = existing.watchBaseUrl;
         fresh.addedAt = existing.addedAt;
         fresh.updatedAt = new Date().toISOString();
         syncAutoCompletion(fresh);
@@ -1993,6 +2108,49 @@
       show.updatedAt = new Date().toISOString();
       render({ persistFile: true });
       showToast(`${show.pinned ? "Pinned" : "Unpinned"} ${show.name}.`);
+    }
+
+    function openWatchUrlEditor(showId) {
+      const show = state.shows.find((item) => item.id === showId);
+      if (!show) return;
+
+      nodes.watchUrlShowId.value = String(show.id);
+      nodes.watchUrlTitle.textContent = `Watch URL for ${show.name}`;
+      nodes.watchUrlInput.value = show.watchBaseUrl || "";
+      nodes.watchUrlModal.hidden = false;
+      nodes.watchUrlInput.focus();
+      nodes.watchUrlInput.select();
+    }
+
+    function closeWatchUrlEditor() {
+      nodes.watchUrlModal.hidden = true;
+      nodes.watchUrlShowId.value = "";
+      nodes.watchUrlInput.value = "";
+    }
+
+    function saveWatchUrl() {
+      const show = state.shows.find((item) => item.id === Number(nodes.watchUrlShowId.value));
+      if (!show) return;
+
+      const value = nodes.watchUrlInput.value;
+      const trimmed = normalizeWatchBaseUrl(value);
+      if (trimmed) {
+        try {
+          const parsed = new URL(trimmed);
+          if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+            throw new Error("Unsupported protocol");
+          }
+        } catch {
+          showToast("Enter a valid URL.");
+          return;
+        }
+      }
+
+      show.watchBaseUrl = trimmed;
+      show.updatedAt = new Date().toISOString();
+      closeWatchUrlEditor();
+      render({ persistFile: true });
+      showToast(trimmed ? `Saved watch URL for ${show.name}.` : `Cleared watch URL for ${show.name}.`);
     }
 
     function removeShow(id) {
@@ -2386,6 +2544,12 @@
         return;
       }
 
+      const watchUrl = event.target.closest("[data-edit-watch-url]");
+      if (watchUrl) {
+        openWatchUrlEditor(Number(watchUrl.dataset.editWatchUrl));
+        return;
+      }
+
       const remove = event.target.closest("[data-remove-show]");
       if (remove) {
         removeShow(Number(remove.dataset.removeShow));
@@ -2446,6 +2610,21 @@
     nodes.repoSaveButton.addEventListener("click", () => saveRepoData(true));
     nodes.githubToken.addEventListener("input", saveRepoSyncSettings);
     nodes.repoAutoSync.addEventListener("change", saveRepoSyncSettings);
+    nodes.watchUrlForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveWatchUrl();
+    });
+    nodes.watchUrlCancel.addEventListener("click", closeWatchUrlEditor);
+    nodes.watchUrlModal.addEventListener("click", (event) => {
+      if (event.target === nodes.watchUrlModal) {
+        closeWatchUrlEditor();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !nodes.watchUrlModal.hidden) {
+        closeWatchUrlEditor();
+      }
+    });
     nodes.importFile.addEventListener("change", () => {
       const file = nodes.importFile.files[0];
       if (file) importData(file);
