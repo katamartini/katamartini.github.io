@@ -704,6 +704,12 @@
       cursor: not-allowed;
     }
 
+    .episode-actions {
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+    }
+
     .episode.watched .episode-num {
       background: var(--green);
       border-color: var(--green);
@@ -727,11 +733,45 @@
     }
 
     .episode-rating {
-      display: inline-block;
-      margin-top: 6px;
-      color: #31445f;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(24, 27, 34, 0.14);
+      color: #ffffff;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .episode-rating.absolute-cinema {
+      background: #2da8f7;
+    }
+
+    .episode-rating.awesome {
+      background: #17784f;
+    }
+
+    .episode-rating.great {
+      background: #35c777;
+    }
+
+    .episode-rating.good {
+      background: #f5d44f;
+      color: #181b22;
+    }
+
+    .episode-rating.regular {
+      background: #f3a533;
+      color: #181b22;
+    }
+
+    .episode-rating.bad {
+      background: #f2524b;
+    }
+
+    .episode-rating.garbage {
+      background: #70479d;
     }
 
     .episode-summary {
@@ -1425,6 +1465,16 @@
       return Number.isFinite(rating) && rating > 0 ? rating : null;
     }
 
+    function episodeRatingClass(rating) {
+      if (rating >= 9.6) return "absolute-cinema";
+      if (rating >= 9) return "awesome";
+      if (rating >= 8) return "great";
+      if (rating >= 7) return "good";
+      if (rating >= 6) return "regular";
+      if (rating >= 5) return "bad";
+      return "garbage";
+    }
+
     function needsEpisodeRatingBackfill(show) {
       if (!show.episodes.length) return false;
       if (!show.episodes.some((episode) => !normalizeEpisodeRating(episode.rating))) return false;
@@ -1968,19 +2018,24 @@
       const watchUrl = episodeWatchUrl(show, episode);
       const rating = normalizeEpisodeRating(episode.rating);
       const ratingLabel = rating ? rating.toFixed(1) : "";
+      const ratingBadge = ratingLabel
+        ? `<span class="episode-rating ${episodeRatingClass(rating)}" title="Rating ${escapeAttr(ratingLabel)}">${escapeAttr(ratingLabel)}</span>`
+        : "";
       const episodeContent = `
         <span class="episode-num">${episode.number || "?"}</span>
         <span class="episode-detail">
           <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
           <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
-          ${ratingLabel ? `<span class="episode-rating">Rating ${escapeAttr(ratingLabel)}</span>` : ""}
           <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
         </span>
       `;
       return `
         <article class="episode ${watched ? "watched" : ""} ${future ? "future" : ""}">
           ${watchUrl ? `<a class="episode-main" href="${escapeAttr(watchUrl)}" target="_blank" rel="noopener" aria-label="Open ${escapeAttr(label)} watch page">${episodeContent}</a>` : `<span class="episode-main disabled" title="Add a watch URL for this show">${episodeContent}</span>`}
-          <button type="button" class="episode-watch-link" data-toggle-episode="${show.id}:${episode.id}" aria-label="${watched ? `Mark ${escapeAttr(label)} unwatched` : `Mark ${escapeAttr(label)} watched`}">${watched ? "Undo" : "Seen"}</button>
+          <span class="episode-actions">
+            <button type="button" class="episode-watch-link" data-toggle-episode="${show.id}:${episode.id}" aria-label="${watched ? `Mark ${escapeAttr(label)} unwatched` : `Mark ${escapeAttr(label)} watched`}">${watched ? "Undo" : "Seen"}</button>
+            ${ratingBadge}
+          </span>
         </article>
       `;
     }
