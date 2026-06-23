@@ -726,6 +726,14 @@
       font-size: 12px;
     }
 
+    .episode-rating {
+      display: inline-block;
+      margin-top: 6px;
+      color: #31445f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .episode-summary {
       margin-top: 7px;
       color: #485263;
@@ -1382,6 +1390,7 @@
         name: episode.name || "Untitled episode",
         airdate: episode.airdate || "",
         runtime: episode.runtime || null,
+        rating: normalizeEpisodeRating(episode.rating),
         summary: episode.summary || "",
       };
     }
@@ -1406,6 +1415,12 @@
 
     function normalizeWatchBaseUrl(value) {
       return value.trim().replace(/\/+$/g, "");
+    }
+
+    function normalizeEpisodeRating(value) {
+      if (value === null || value === undefined || value === "") return null;
+      const rating = Number(value);
+      return Number.isFinite(rating) && rating > 0 ? rating : null;
     }
 
     function episodeWatchUrl(show, episode) {
@@ -1919,11 +1934,14 @@
       const future = episode.airdate && episode.airdate > today;
       const label = `S${episode.season}E${episode.number || "?"}`;
       const watchUrl = episodeWatchUrl(show, episode);
+      const rating = normalizeEpisodeRating(episode.rating);
+      const ratingLabel = rating ? rating.toFixed(1) : "";
       const episodeContent = `
         <span class="episode-num">${episode.number || "?"}</span>
         <span class="episode-detail">
           <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
           <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
+          ${ratingLabel ? `<span class="episode-rating">Rating ${escapeAttr(ratingLabel)}</span>` : ""}
           <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
         </span>
       `;
@@ -2009,6 +2027,7 @@
           name: episode.name,
           airdate: episode.airdate,
           runtime: episode.runtime,
+          rating: episode.rating?.average,
           summary: stripHtml(episode.summary),
         }));
 
