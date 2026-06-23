@@ -665,11 +665,16 @@
       gap: 8px;
       align-items: start;
       text-align: left;
+      text-decoration: none;
     }
 
     .episode-main:hover {
       border-color: transparent;
       background: transparent;
+    }
+
+    .episode-main.disabled {
+      cursor: default;
     }
 
     .episode-watch-link {
@@ -683,6 +688,9 @@
       text-decoration: none;
       font-size: 11px;
       font-weight: 800;
+      font-family: inherit;
+      padding: 0;
+      cursor: pointer;
     }
 
     .episode-watch-link:hover {
@@ -1781,7 +1789,7 @@
           <div class="all-shows-head">
             <div>
               <h2>All Shows</h2>
-              <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / click an episode to mark it watched</div>
+              <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / episode cards open watch links</div>
             </div>
             <div class="list-controls">
               <div class="sort-control">
@@ -1911,17 +1919,18 @@
       const future = episode.airdate && episode.airdate > today;
       const label = `S${episode.season}E${episode.number || "?"}`;
       const watchUrl = episodeWatchUrl(show, episode);
+      const episodeContent = `
+        <span class="episode-num">${episode.number || "?"}</span>
+        <span class="episode-detail">
+          <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
+          <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
+          <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
+        </span>
+      `;
       return `
         <article class="episode ${watched ? "watched" : ""} ${future ? "future" : ""}">
-          <button type="button" class="episode-main" data-toggle-episode="${show.id}:${episode.id}">
-            <span class="episode-num">${episode.number || "?"}</span>
-            <span class="episode-detail">
-              <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
-              <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
-              <span class="episode-summary">${escapeAttr(episode.summary || "")}</span>
-            </span>
-          </button>
-          ${watchUrl ? `<a class="episode-watch-link" href="${escapeAttr(watchUrl)}" target="_blank" rel="noopener" aria-label="Open ${escapeAttr(label)} watch page">TV</a>` : `<span class="episode-watch-link disabled" title="Add a watch URL for this show">TV</span>`}
+          ${watchUrl ? `<a class="episode-main" href="${escapeAttr(watchUrl)}" target="_blank" rel="noopener" aria-label="Open ${escapeAttr(label)} watch page">${episodeContent}</a>` : `<span class="episode-main disabled" title="Add a watch URL for this show">${episodeContent}</span>`}
+          <button type="button" class="episode-watch-link" data-toggle-episode="${show.id}:${episode.id}" aria-label="${watched ? `Mark ${escapeAttr(label)} unwatched` : `Mark ${escapeAttr(label)} watched`}">${watched ? "Undo" : "Seen"}</button>
         </article>
       `;
     }
