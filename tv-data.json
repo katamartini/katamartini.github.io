@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "savedAt": "2026-06-23T02:20:06.418Z",
+  "savedAt": "2026-06-23T02:20:12.518Z",
   "shows": [
     {
       "id": 2790,
@@ -2142,12 +2142,14 @@
         }
       ],
       "watched": {
-        "35185": true
+        "35185": true,
+        "35186": true,
+        "35187": true
       },
       "autoFinished": false,
       "pinned": false,
       "addedAt": "2026-06-20T18:58:07.617Z",
-      "updatedAt": "2026-06-23T02:19:52.431Z"
+      "updatedAt": "2026-06-23T02:20:11.591Z"
     },
     {
       "id": 143,
@@ -21134,5 +21136,5 @@
   "libraryFilter": "all",
   "sortMode": "least-progress",
   "hideCompleted": false,
-  "viewMode": "show"
+  "viewMode": "list"
 }
