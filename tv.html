@@ -899,8 +899,12 @@
     .inline-episodes .episode {
       flex: 0 0 220px;
       min-height: 70px;
-      grid-template-columns: 36px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) auto;
       padding: 8px;
+    }
+
+    .inline-episodes .episode-main {
+      grid-template-columns: 36px minmax(0, 1fr);
     }
 
     .inline-episodes .episode-num {
