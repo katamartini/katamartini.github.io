@@ -76,7 +76,7 @@
     }
 
     .topbar-inner {
-      width: min(1500px, calc(100vw - 24px));
+      width: min(1880px, calc(100vw - 24px));
       margin: 0 auto;
       padding: 16px 0 14px;
       display: flex;
@@ -122,7 +122,7 @@
     }
 
     .workspace {
-      width: min(1500px, calc(100vw - 24px));
+      width: min(1880px, calc(100vw - 24px));
       margin: 0 auto;
       padding: 12px 0;
       display: grid;
@@ -1023,7 +1023,7 @@
       }
 
       .workspace {
-        width: min(100vw - 16px, 1500px);
+        width: min(100vw - 16px, 1880px);
       }
 
       .detail {
@@ -1038,7 +1038,7 @@
     @media (max-width: 680px) {
       .topbar-inner,
       .workspace {
-        width: min(100vw - 16px, 1500px);
+        width: min(100vw - 16px, 1880px);
       }
 
       .topbar-inner {
@@ -1246,6 +1246,7 @@
     let repoFileSha = null;
     let repoSaveTimer = null;
     let isRepoSaving = false;
+    let isBackfillingRatings = false;
     const VIEW_MODES = ["show", "list", "queue"];
 
     const state = {
@@ -1377,6 +1378,7 @@
         autoFinished: !!show.autoFinished,
         pinned: !!show.pinned,
         watchBaseUrl: show.watchBaseUrl ? String(show.watchBaseUrl) : "",
+        ratingBackfilledAt: show.ratingBackfilledAt || "",
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
       };
@@ -1421,6 +1423,36 @@
       if (value === null || value === undefined || value === "") return null;
       const rating = Number(value);
       return Number.isFinite(rating) && rating > 0 ? rating : null;
+    }
+
+    function needsEpisodeRatingBackfill(show) {
+      if (!show.episodes.length) return false;
+      if (!show.episodes.some((episode) => !normalizeEpisodeRating(episode.rating))) return false;
+
+      if (!show.ratingBackfilledAt) return true;
+      const checkedAt = Date.parse(show.ratingBackfilledAt);
+      if (!Number.isFinite(checkedAt)) return true;
+
+      const sevenDays = 7 * 24 * 60 * 60 * 1000;
+      return Date.now() - checkedAt > sevenDays;
+    }
+
+    function mergeEpisodeRatings(show, fresh) {
+      const byId = new Map(fresh.episodes.map((episode) => [episode.id, episode]));
+      const byNumber = new Map(fresh.episodes.map((episode) => [`${episode.season}:${episode.number}`, episode]));
+      let changed = false;
+
+      show.episodes = show.episodes.map((episode) => {
+        const freshEpisode = byId.get(episode.id) || byNumber.get(`${episode.season}:${episode.number}`);
+        const rating = normalizeEpisodeRating(freshEpisode?.rating);
+        if (!rating || normalizeEpisodeRating(episode.rating) === rating) return episode;
+        changed = true;
+        return { ...episode, rating };
+      });
+
+      const previousBackfill = show.ratingBackfilledAt;
+      show.ratingBackfilledAt = new Date().toISOString();
+      return changed || show.ratingBackfilledAt !== previousBackfill;
     }
 
     function episodeWatchUrl(show, episode) {
@@ -2044,9 +2076,36 @@
         summary: stripHtml(show.summary),
         episodes,
         watched: {},
+        ratingBackfilledAt: new Date().toISOString(),
         addedAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
+    }
+
+    async function backfillMissingEpisodeRatings() {
+      if (isBackfillingRatings) return;
+      const showsNeedingRatings = state.shows.filter(needsEpisodeRatingBackfill);
+      if (!showsNeedingRatings.length) return;
+
+      isBackfillingRatings = true;
+      let changed = false;
+
+      try {
+        for (const show of showsNeedingRatings) {
+          try {
+            const fresh = await fetchShow(show.id);
+            changed = mergeEpisodeRatings(show, fresh) || changed;
+          } catch {
+            // Leave the timestamp unchanged so a temporary network failure can retry next visit.
+          }
+        }
+      } finally {
+        isBackfillingRatings = false;
+      }
+
+      if (changed) {
+        render({ persistFile: true });
+      }
     }
 
     async function addShow(id, options = {}) {
@@ -2217,6 +2276,7 @@
           const parsed = JSON.parse(reader.result);
           applyTrackerPayload(parsed);
           render({ persistFile: true });
+          backfillMissingEpisodeRatings();
           showToast("Import complete.");
         } catch {
           showToast("That import file could not be read.");
@@ -2244,6 +2304,7 @@
         applyTrackerPayload(parsed);
         dataFileHandle = handle;
         render();
+        backfillMissingEpisodeRatings();
         showToast(`Opened ${handle.name}.`);
       } catch (error) {
         if (error?.name !== "AbortError") {
@@ -2349,6 +2410,7 @@
 
         applyTrackerPayload(parsed);
         render();
+        backfillMissingEpisodeRatings();
         showToast(`Loaded ${GITHUB_DATA_PATH}.`);
       } catch {
         renderRepoStatus();
@@ -2369,6 +2431,7 @@
 
         applyTrackerPayload(parsed);
         render();
+        backfillMissingEpisodeRatings();
         showToast(`Loaded ${GITHUB_DATA_PATH}.`);
       } catch {
         renderRepoStatus();
@@ -2667,6 +2730,7 @@
     loadState();
     syncAutoCompletion();
     render();
+    backfillMissingEpisodeRatings();
     autoLoadRepoDataIfEmpty();
   </script>
 </body>
