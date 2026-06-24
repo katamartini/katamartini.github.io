@@ -608,11 +608,21 @@
       padding: 4px 6px;
     }
 
+    td.has-cell-actions {
+      position: relative;
+      padding-right: 54px;
+    }
+
     .cell-actions {
       display: flex;
+      flex-direction: column;
       gap: 4px;
       justify-content: center;
-      margin-top: 6px;
+      margin-top: 0;
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .cell-action {
@@ -2339,6 +2349,7 @@
               const cellActions = hasGeneratedAssignments && !isUnavailable
                 ? renderCellActions(row.time, staffName, staffCell, isFixed, isEditing)
                 : "";
+              const actionClass = cellActions ? " has-cell-actions" : "";
 
               if (isPreview && !isUnavailable) {
                 cells.push(
@@ -2351,7 +2362,7 @@
 
               if (hasGeneratedAssignments && !isUnavailable && isEditing) {
                 cells.push(
-                  `<td class="staff-cell editable-fixed-cell${fixedClass}">` +
+                  `<td class="staff-cell editable-fixed-cell${actionClass}${fixedClass}">` +
                   renderFixedCellEditor(row, staffName, staffCell, studentsForFixedEditors, "current") +
                   cellActions +
                   `</td>`
@@ -2360,16 +2371,16 @@
               }
 
               if (!staffCell.length) {
-                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span>${cellActions}</td>`);
+                cells.push(`<td class="staff-cell${actionClass}${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span>${cellActions}</td>`);
                 return;
               }
 
               if (isMaterials) {
-                cells.push(`<td class="staff-cell materials-cell${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span>${cellActions}</td>`);
+                cells.push(`<td class="staff-cell materials-cell${actionClass}${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span>${cellActions}</td>`);
                 return;
               }
 
-              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span>${cellActions}</td>`);
+              cells.push(`<td class="staff-cell${actionClass}${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span>${cellActions}</td>`);
             });
 
             while (cells.length - 1 < displayStaff.length) {
