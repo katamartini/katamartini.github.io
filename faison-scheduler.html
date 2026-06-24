@@ -608,6 +608,28 @@
       padding: 4px 6px;
     }
 
+    .cell-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .cell-action {
+      width: auto;
+      min-width: 42px;
+      padding: 3px 5px;
+      border-radius: 6px;
+      font-size: 10px;
+      line-height: 1.1;
+    }
+
+    .cell-action.is-locked {
+      background: #f4e8ff;
+      border-color: #c084fc;
+      color: #5b2388;
+    }
+
     .pair-empty {
       color: #5c7185;
       font-size: 12px;
@@ -893,6 +915,7 @@
       let restoredPairBuckets = null;
       let restoredSchedulePayload = null;
       let fixedAssignments = [];
+      let editingCells = new Set();
 
       const defaultStaff = [
         { name: "Staff A", inTime: "08:30", lunchTime: "", outTime: "14:00" },
@@ -1273,7 +1296,52 @@
         }
       };
 
-      const setFixedAssignmentForCell = (time, staffName, students) => {
+      const getCellKey = (time, staffName) => `${time}||${staffName}`;
+
+      const getCurrentScheduleStaff = () => {
+        return restoredSchedulePayload?.staff?.length
+          ? restoredSchedulePayload.staff
+          : parseStaffFromInputs().map((person) => person.name);
+      };
+
+      const getCurrentScheduleCellStudents = (time, staffName) => {
+        const staffNames = getCurrentScheduleStaff();
+        const staffIndex = staffNames.indexOf(staffName);
+        const row = restoredSchedulePayload?.assignments?.find((assignmentRow) => assignmentRow.time === time);
+        if (!row || staffIndex < 0) return [];
+        return (row.byStaff[staffIndex] || []).filter((name) => name !== "Materials");
+      };
+
+      const syncRestoredScheduleCell = (time, staffName, assignment, preserveCellContent = false) => {
+        if (!restoredSchedulePayload?.assignments?.length) return;
+        const staffNames = getCurrentScheduleStaff();
+        const staffIndex = staffNames.indexOf(staffName);
+        const row = restoredSchedulePayload.assignments.find((assignmentRow) => assignmentRow.time === time);
+        if (!row || staffIndex < 0) return;
+
+        row.fixedStaffIndexes = Array.from(new Set(row.fixedStaffIndexes || []));
+        if (assignment) {
+          row.byStaff[staffIndex] = assignment.students.slice();
+          if (!row.fixedStaffIndexes.includes(staffIndex)) {
+            row.fixedStaffIndexes.push(staffIndex);
+          }
+        } else {
+          row.fixedStaffIndexes = row.fixedStaffIndexes.filter((index) => index !== staffIndex);
+          if (!preserveCellContent) {
+            row.byStaff[staffIndex] = [];
+          }
+        }
+      };
+
+      const renderCurrentSchedule = () => {
+        if (!restoredSchedulePayload?.assignments?.length) {
+          renderFixedSchedulePreview();
+          return;
+        }
+        renderSchedule(getCurrentScheduleStaff(), restoredSchedulePayload);
+      };
+
+      const setFixedAssignmentForCell = (time, staffName, students, options = {}) => {
         fixedAssignments = fixedAssignments.filter((item) =>
           !(item.time === time && item.staffName === staffName)
         );
@@ -1288,10 +1356,36 @@
           fixedAssignments.push(assignment);
         }
 
+        editingCells.delete(getCellKey(time, staffName));
         renderFixedAssignments();
-        renderFixedSchedulePreview();
+        if (options.keepCurrentSchedule) {
+          syncRestoredScheduleCell(time, staffName, assignment);
+          renderCurrentSchedule();
+        } else {
+          renderFixedSchedulePreview();
+        }
         saveState();
         showNotice(assignment ? "Fixed slot updated." : "Fixed slot cleared.");
+      };
+
+      const toggleCellLock = (time, staffName, shouldLock) => {
+        const students = getCurrentScheduleCellStudents(time, staffName);
+        fixedAssignments = fixedAssignments.filter((item) =>
+          !(item.time === time && item.staffName === staffName)
+        );
+
+        const assignment = shouldLock
+          ? normalizeFixedAssignment({ time, staffName, students })
+          : null;
+        if (assignment) {
+          fixedAssignments.push(assignment);
+        }
+
+        syncRestoredScheduleCell(time, staffName, assignment, !shouldLock);
+        renderFixedAssignments();
+        renderCurrentSchedule();
+        saveState();
+        showNotice(assignment ? "Cell locked for future fills." : "Cell unlocked for future fills.");
       };
 
       const buildFixedSchedulePreview = () => {
@@ -1335,14 +1429,14 @@
         ].join("");
       };
 
-      const renderFixedCellEditor = (row, staffName, staffCell, students) => {
+      const renderFixedCellEditor = (row, staffName, staffCell, students, mode = "preview") => {
         const selectedPrimary = staffCell[0] || "";
         const selectedPair = staffCell[1] || "";
         const pairOptions = students.filter((student) =>
           student.canDuplicate && student.name !== selectedPrimary
         );
         return `
-          <div class="fixed-cell-editor" data-time="${escapeHtml(row.time)}" data-staff="${escapeHtml(staffName)}">
+          <div class="fixed-cell-editor" data-time="${escapeHtml(row.time)}" data-staff="${escapeHtml(staffName)}" data-mode="${escapeHtml(mode)}">
             <select class="fixed-cell-student" aria-label="${escapeHtml(row.time)} ${escapeHtml(staffName)} student">
               ${renderStudentOptions(students, selectedPrimary)}
             </select>
@@ -1360,7 +1454,45 @@
             if (!editor) return;
             const primary = editor.querySelector(".fixed-cell-student")?.value || "";
             const pair = editor.querySelector(".fixed-cell-pair")?.value || "";
-            setFixedAssignmentForCell(editor.dataset.time, editor.dataset.staff, [primary, pair]);
+            setFixedAssignmentForCell(
+              editor.dataset.time,
+              editor.dataset.staff,
+              [primary, pair],
+              { keepCurrentSchedule: editor.dataset.mode === "current" }
+            );
+          });
+        });
+      };
+
+      const renderCellActions = (time, staffName, staffCell, isFixed, isEditing) => {
+        const hasStudents = staffCell.some((name) => name !== "Materials");
+        const lockedClass = isFixed ? " is-locked" : "";
+        const lockDisabled = !hasStudents && !isFixed ? " disabled" : "";
+        return `
+          <div class="cell-actions">
+            <button class="secondary cell-action cell-edit-btn" type="button" data-time="${escapeHtml(time)}" data-staff="${escapeHtml(staffName)}">${isEditing ? "Done" : "Edit"}</button>
+            <button class="secondary cell-action cell-lock-btn${lockedClass}" type="button" data-time="${escapeHtml(time)}" data-staff="${escapeHtml(staffName)}" data-locked="${isFixed ? "true" : "false"}"${lockDisabled}>${isFixed ? "Unlock" : "Lock"}</button>
+          </div>
+        `;
+      };
+
+      const bindCellActionButtons = () => {
+        settings.scheduleBody.querySelectorAll(".cell-edit-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            const key = getCellKey(button.dataset.time, button.dataset.staff);
+            if (editingCells.has(key)) {
+              editingCells.delete(key);
+            } else {
+              editingCells.add(key);
+            }
+            renderCurrentSchedule();
+          });
+        });
+
+        settings.scheduleBody.querySelectorAll(".cell-lock-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            if (button.disabled) return;
+            toggleCellLock(button.dataset.time, button.dataset.staff, button.dataset.locked !== "true");
           });
         });
       };
@@ -2196,32 +2328,48 @@
 
             row.byStaff.forEach((staffCell, staffIndex) => {
               const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
-              const fixedClass = row.fixedStaffIndexes?.includes(staffIndex) ? " is-fixed" : "";
+              const isFixed = row.fixedStaffIndexes?.includes(staffIndex);
+              const fixedClass = isFixed ? " is-fixed" : "";
               const rowBlock = blocksByTime.get(row.time);
               const isUnavailable = row.unavailableStaffIndexes?.includes(staffIndex) ||
                 (rowBlock && staffForAvailability[staffIndex] && !isWithinTimeWindow(rowBlock, staffForAvailability[staffIndex]));
               const unavailableClass = isUnavailable ? " unavailable-cell" : "";
+              const staffName = displayStaff[staffIndex];
+              const isEditing = editingCells.has(getCellKey(row.time, staffName));
+              const cellActions = hasGeneratedAssignments && !isUnavailable
+                ? renderCellActions(row.time, staffName, staffCell, isFixed, isEditing)
+                : "";
 
               if (isPreview && !isUnavailable) {
                 cells.push(
                   `<td class="staff-cell editable-fixed-cell${fixedClass}">` +
-                  renderFixedCellEditor(row, displayStaff[staffIndex], staffCell, studentsForFixedEditors) +
+                  renderFixedCellEditor(row, staffName, staffCell, studentsForFixedEditors) +
+                  `</td>`
+                );
+                return;
+              }
+
+              if (hasGeneratedAssignments && !isUnavailable && isEditing) {
+                cells.push(
+                  `<td class="staff-cell editable-fixed-cell${fixedClass}">` +
+                  renderFixedCellEditor(row, staffName, staffCell, studentsForFixedEditors, "current") +
+                  cellActions +
                   `</td>`
                 );
                 return;
               }
 
               if (!staffCell.length) {
-                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span></td>`);
+                cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span>${cellActions}</td>`);
                 return;
               }
 
               if (isMaterials) {
-                cells.push(`<td class="staff-cell materials-cell${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span></td>`);
+                cells.push(`<td class="staff-cell materials-cell${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span>${cellActions}</td>`);
                 return;
               }
 
-              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span></td>`);
+              cells.push(`<td class="staff-cell${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span>${cellActions}</td>`);
             });
 
             while (cells.length - 1 < displayStaff.length) {
@@ -2232,8 +2380,11 @@
           })
           .join("");
 
-        if (isPreview) {
+        if (isPreview || hasGeneratedAssignments) {
           bindFixedCellEditors();
+        }
+        if (hasGeneratedAssignments) {
+          bindCellActionButtons();
         }
 
         const totalAssignments = displayAssignments.reduce((sum, row) => {
@@ -2292,6 +2443,7 @@
 
       function renderFixedSchedulePreview() {
         restoredSchedulePayload = null;
+        editingCells = new Set();
         const preview = buildFixedSchedulePreview();
         renderSchedule(preview.staff, preview);
       }
@@ -2303,6 +2455,7 @@
       function clearScheduleTable() {
         restoredSchedulePayload = null;
         fixedAssignments = [];
+        editingCells = new Set();
         renderFixedAssignments();
         renderFixedSchedulePreview();
         saveState();
@@ -2425,6 +2578,7 @@
       function applyDefaults() {
         setActiveBlocks(defaultBlocks);
         fixedAssignments = [];
+        editingCells = new Set();
         setStaffRowsFromState({
           staffEntries: defaultStaff
         });
@@ -2435,6 +2589,7 @@
 
       function generate() {
         clearNotice();
+        editingCells = new Set();
 
         const staff = parseStaffFromInputs();
         const students = parseStudentsFromInputs();
