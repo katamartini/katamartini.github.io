@@ -1582,8 +1582,8 @@ function updateSimRanks(){
 simRankCache={
 duo:simRankedCombos('duo'),trio:simRankedCombos('trio')}}
 function possibleCombos(kind,side){
-const mine=sim.slots[side].picks.filter(Boolean),mineSet=new Set(mine),blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean));if(!mine.length)return[];return simRankCache[kind].filter(x=>x.heroes.some(h=>mineSet.has(h))&&x.heroes.every(h=>mineSet.has(h)||!blocked.has(h))).map(x=>({
-...x,complete:x.heroes.every(h=>mineSet.has(h))})).sort((a,b)=>(b.complete-a.complete)||a.rank-b.rank).slice(0,12)}
+const mine=sim.slots[side].picks.filter(Boolean),mineSet=new Set(mine),blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean)),limit=kind==='trio'?20:12;if(!mine.length)return[];return simRankCache[kind].filter(x=>x.heroes.some(h=>mineSet.has(h))&&x.heroes.every(h=>mineSet.has(h)||!blocked.has(h))).map(x=>({
+...x,complete:x.heroes.every(h=>mineSet.has(h))})).sort((a,b)=>(b.complete-a.complete)||a.rank-b.rank).slice(0,limit)}
 function simPossiblePastDrafts(side){
 const picked=sim.slots[side].picks.filter(Boolean);if(!picked.length)return[];const blocked=new Set([...sim.slots.left.bans,...sim.slots.right.bans,...sim.slots[other(side)].picks].filter(Boolean));return currentAllDrafts.filter(d=>picked.every(h=>d.heroes.includes(h))&&d.heroes.every(h=>!blocked.has(h))).sort((a,b)=>mo(b.matchID,b.week)-mo(a.matchID,a.week))}
 function simUniqueChance(side){
