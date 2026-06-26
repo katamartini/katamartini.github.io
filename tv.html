@@ -2433,6 +2433,32 @@
       return new TextDecoder().decode(bytes);
     }
 
+    async function readJsonResponse(response, fallback, options = {}) {
+      const text = await response.text();
+      if (!text.trim()) {
+        if (options.allowEmpty) return null;
+        throw new Error(`${fallback}: empty response`);
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error(`${fallback}: invalid JSON response`);
+      }
+    }
+
+    function parseTrackerJson(text, source) {
+      if (!text.trim()) {
+        throw new Error(`${source} is empty.`);
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error(`${source} is not valid JSON.`);
+      }
+    }
+
     async function fetchRepoData(token = nodes.githubToken.value.trim()) {
       const url = `${githubContentsUrl()}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
       const response = await fetch(url, {
@@ -2448,15 +2474,15 @@
         throw new Error(`GitHub load failed: ${response.status}`);
       }
 
-      const payload = await response.json();
+      const payload = await readJsonResponse(response, `GitHub load failed (${response.status})`);
       repoFileSha = payload.sha || null;
-      return JSON.parse(decodeBase64(payload.content || ""));
+      return parseTrackerJson(decodeBase64(payload.content || ""), GITHUB_DATA_PATH);
     }
 
     async function parseGithubError(response, fallback) {
       try {
-        const details = await response.json();
-        return details.message ? `${fallback}: ${details.message}` : fallback;
+        const details = await readJsonResponse(response, fallback, { allowEmpty: true });
+        return details?.message ? `${fallback}: ${details.message}` : fallback;
       } catch {
         return fallback;
       }
@@ -2476,9 +2502,10 @@
         render();
         backfillMissingEpisodeRatings();
         showToast(`Loaded ${GITHUB_DATA_PATH}.`);
-      } catch {
-        renderRepoStatus();
-        showToast("Could not load repo data.");
+      } catch (error) {
+        const message = error?.message || "Could not load repo data.";
+        renderRepoStatus(message);
+        showToast(message);
       }
     }
 
@@ -2525,8 +2552,8 @@
 
         if (!response.ok) throw new Error(await parseGithubError(response, `GitHub save failed (${response.status})`));
 
-        const result = await response.json();
-        repoFileSha = result.content?.sha || repoFileSha;
+        const result = await readJsonResponse(response, `GitHub save failed (${response.status})`, { allowEmpty: true });
+        repoFileSha = result?.content?.sha || repoFileSha;
         isRepoSaving = false;
         renderRepoStatus(`Saved ${GITHUB_DATA_PATH}.`);
         showToast(`Saved ${GITHUB_DATA_PATH}.`);
