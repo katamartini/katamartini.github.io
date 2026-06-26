@@ -2453,6 +2453,15 @@
       return JSON.parse(decodeBase64(payload.content || ""));
     }
 
+    async function parseGithubError(response, fallback) {
+      try {
+        const details = await response.json();
+        return details.message ? `${fallback}: ${details.message}` : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
     async function loadRepoData() {
       try {
         renderRepoStatus("Loading repo data...");
@@ -2508,38 +2517,45 @@
           await fetchRepoData(token);
         }
 
-        const body = {
-          message: "Update TV tracker data",
-          content: encodeBase64(JSON.stringify(trackerPayload(), null, 2)),
-          branch: GITHUB_BRANCH,
-        };
-        if (repoFileSha) {
-          body.sha = repoFileSha;
+        let response = await putRepoData(token);
+        if (response.status === 409) {
+          await fetchRepoData(token);
+          response = await putRepoData(token);
         }
 
-        const response = await fetch(githubContentsUrl(), {
-          method: "PUT",
-          headers: {
-            ...githubApiHeaders(token),
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-
-        if (!response.ok) {
-          throw new Error(`GitHub save failed: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(await parseGithubError(response, `GitHub save failed (${response.status})`));
 
         const result = await response.json();
         repoFileSha = result.content?.sha || repoFileSha;
         isRepoSaving = false;
         renderRepoStatus(`Saved ${GITHUB_DATA_PATH}.`);
         showToast(`Saved ${GITHUB_DATA_PATH}.`);
-      } catch {
+      } catch (error) {
         isRepoSaving = false;
-        renderRepoStatus();
-        showToast("Could not save repo data.");
+        const message = error?.message || "Could not save repo data.";
+        renderRepoStatus(message);
+        showToast(message);
       }
+    }
+
+    function putRepoData(token) {
+      const body = {
+        message: "Update TV tracker data",
+        content: encodeBase64(JSON.stringify(trackerPayload(), null, 2)),
+        branch: GITHUB_BRANCH,
+      };
+      if (repoFileSha) {
+        body.sha = repoFileSha;
+      }
+
+      return fetch(githubContentsUrl(), {
+        method: "PUT",
+        headers: {
+          ...githubApiHeaders(token),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
     }
 
     function showToast(message) {
