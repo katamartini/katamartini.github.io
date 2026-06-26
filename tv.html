@@ -2459,7 +2459,7 @@
       }
     }
 
-    async function fetchTrackerTextFromDownloadUrl(url, token) {
+    async function fetchTrackerTextFromBlobUrl(url, token) {
       if (!url) {
         throw new Error(`${GITHUB_DATA_PATH} content is unavailable.`);
       }
@@ -2467,6 +2467,20 @@
       const response = await fetch(url, {
         headers: githubApiHeaders(token),
       });
+      if (!response.ok) {
+        throw new Error(`GitHub blob load failed: ${response.status}`);
+      }
+
+      const payload = await readJsonResponse(response, `GitHub blob load failed (${response.status})`);
+      return decodeBase64(payload.content || "");
+    }
+
+    async function fetchTrackerTextFromDownloadUrl(url) {
+      if (!url) {
+        throw new Error(`${GITHUB_DATA_PATH} content is unavailable.`);
+      }
+
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`GitHub raw load failed: ${response.status}`);
       }
@@ -2493,7 +2507,9 @@
       repoFileSha = payload.sha || null;
       const text = payload.content
         ? decodeBase64(payload.content)
-        : await fetchTrackerTextFromDownloadUrl(payload.download_url, token);
+        : payload.git_url
+          ? await fetchTrackerTextFromBlobUrl(payload.git_url, token)
+          : await fetchTrackerTextFromDownloadUrl(payload.download_url);
       return parseTrackerJson(text, GITHUB_DATA_PATH);
     }
 
