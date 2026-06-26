@@ -2459,6 +2459,21 @@
       }
     }
 
+    async function fetchTrackerTextFromDownloadUrl(url, token) {
+      if (!url) {
+        throw new Error(`${GITHUB_DATA_PATH} content is unavailable.`);
+      }
+
+      const response = await fetch(url, {
+        headers: githubApiHeaders(token),
+      });
+      if (!response.ok) {
+        throw new Error(`GitHub raw load failed: ${response.status}`);
+      }
+
+      return response.text();
+    }
+
     async function fetchRepoData(token = nodes.githubToken.value.trim()) {
       const url = `${githubContentsUrl()}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
       const response = await fetch(url, {
@@ -2476,7 +2491,10 @@
 
       const payload = await readJsonResponse(response, `GitHub load failed (${response.status})`);
       repoFileSha = payload.sha || null;
-      return parseTrackerJson(decodeBase64(payload.content || ""), GITHUB_DATA_PATH);
+      const text = payload.content
+        ? decodeBase64(payload.content)
+        : await fetchTrackerTextFromDownloadUrl(payload.download_url, token);
+      return parseTrackerJson(text, GITHUB_DATA_PATH);
     }
 
     async function parseGithubError(response, fallback) {
