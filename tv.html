@@ -902,10 +902,11 @@
 
     .show-row {
       display: grid;
-      grid-template-columns: auto 54px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
-      gap: 12px;
+      grid-template-columns: auto 64px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
+      gap: 14px;
       align-items: start;
-      padding: 10px;
+      min-height: 124px;
+      padding: 14px;
       border: 1px solid var(--line);
       background: #ffffff;
     }
@@ -918,8 +919,8 @@
     }
 
     .show-row .thumb {
-      width: 54px;
-      height: 76px;
+      width: 64px;
+      height: 96px;
     }
 
     .show-row-title {
@@ -953,10 +954,10 @@
     }
 
     .inline-episodes .episode {
-      flex: 0 0 220px;
-      min-height: 70px;
+      flex: 0 0 240px;
+      min-height: 90px;
       grid-template-columns: minmax(0, 1fr) auto;
-      padding: 8px;
+      padding: 10px;
     }
 
     .inline-episodes .episode-main {
@@ -1159,7 +1160,7 @@
       }
 
       .show-row {
-        grid-template-columns: auto 54px minmax(0, 1fr);
+        grid-template-columns: auto 64px minmax(0, 1fr);
         align-items: start;
       }
 
