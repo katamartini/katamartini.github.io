@@ -76,7 +76,7 @@
     }
 
     .topbar-inner {
-      width: min(1880px, calc(100vw - 24px));
+      width: min(2200px, calc(100vw - 24px));
       margin: 0 auto;
       padding: 16px 0 14px;
       display: flex;
@@ -122,7 +122,7 @@
     }
 
     .workspace {
-      width: min(1880px, calc(100vw - 24px));
+      width: min(2200px, calc(100vw - 24px));
       margin: 0 auto;
       padding: 12px 0;
       display: grid;
@@ -897,16 +897,16 @@
 
     .show-table {
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
 
     .show-row {
       display: grid;
-      grid-template-columns: auto 64px minmax(220px, 0.7fr) minmax(320px, 1.3fr) auto;
-      gap: 14px;
+      grid-template-columns: auto 76px minmax(260px, 0.65fr) minmax(420px, 1.6fr) auto;
+      gap: 18px;
       align-items: start;
-      min-height: 124px;
-      padding: 14px;
+      min-height: 154px;
+      padding: 18px;
       border: 1px solid var(--line);
       background: #ffffff;
     }
@@ -919,8 +919,8 @@
     }
 
     .show-row .thumb {
-      width: 64px;
-      height: 96px;
+      width: 76px;
+      height: 114px;
     }
 
     .show-row-title {
@@ -948,25 +948,25 @@
     .inline-episodes {
       min-width: 0;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       overflow-x: auto;
       padding-bottom: 2px;
     }
 
     .inline-episodes .episode {
-      flex: 0 0 240px;
-      min-height: 90px;
+      flex: 0 0 280px;
+      min-height: 112px;
       grid-template-columns: minmax(0, 1fr) auto;
-      padding: 10px;
+      padding: 12px;
     }
 
     .inline-episodes .episode-main {
-      grid-template-columns: 36px minmax(0, 1fr);
+      grid-template-columns: 40px minmax(0, 1fr);
     }
 
     .inline-episodes .episode-num {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
     }
 
     .show-row-actions {
@@ -1064,7 +1064,7 @@
       }
 
       .workspace {
-        width: min(100vw - 16px, 1880px);
+        width: min(100vw - 16px, 2200px);
       }
 
       .detail {
@@ -1079,7 +1079,7 @@
     @media (max-width: 680px) {
       .topbar-inner,
       .workspace {
-        width: min(100vw - 16px, 1880px);
+        width: min(100vw - 16px, 2200px);
       }
 
       .topbar-inner {
@@ -1160,7 +1160,7 @@
       }
 
       .show-row {
-        grid-template-columns: auto 64px minmax(0, 1fr);
+        grid-template-columns: auto 76px minmax(0, 1fr);
         align-items: start;
       }
 
