@@ -918,6 +918,21 @@
       align-items: start;
     }
 
+    .pin-toggle {
+      min-width: 38px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .pin-toggle:not(.pinned) {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
     .show-row .thumb {
       width: 76px;
       height: 114px;
@@ -1823,7 +1838,7 @@
                 <div class="meta">${escapeAttr(showMeta(show))}</div>
               </div>
               <div class="hero-actions">
-                <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
+                ${renderPinButton(show)}
                 <button type="button" data-refresh-show="${show.id}">Refresh</button>
                 <button type="button" class="danger" data-remove-show="${show.id}">Remove</button>
               </div>
@@ -1923,7 +1938,7 @@
       return `
         <article class="show-row">
           <div class="show-row-pin">
-            <button type="button" data-toggle-pin="${show.id}">${show.pinned ? "Unpin" : "Pin"}</button>
+            ${renderPinButton(show)}
             <button type="button" data-edit-watch-url="${show.id}" title="${show.watchBaseUrl ? `Saved URL: ${escapeAttr(show.watchBaseUrl)}` : "Add watch URL"}">#</button>
           </div>
           ${imageMarkup(show.image, "thumb")}
@@ -1946,6 +1961,11 @@
           </div>
         </article>
       `;
+    }
+
+    function renderPinButton(show) {
+      const label = show.pinned ? `Unpin ${show.name}` : `Pin ${show.name}`;
+      return `<button type="button" class="pin-toggle ${show.pinned ? "pinned" : ""}" data-toggle-pin="${show.id}" title="${escapeAttr(label)}" aria-label="${escapeAttr(label)}">📌</button>`;
     }
 
     function renderQueueView() {
