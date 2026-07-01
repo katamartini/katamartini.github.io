@@ -1288,6 +1288,7 @@
     const GITHUB_REPO = "katamartini.github.io";
     const GITHUB_BRANCH = "main";
     const GITHUB_DATA_PATH = "tv-data.json";
+    const IMDB_RATINGS_PATH = "tv-ratings.json";
     const STATUSES = ["watching", "paused", "finished"];
     const SEARCH_DEBOUNCE_MS = 300;
     const SEARCH_MIN_LENGTH = 2;
@@ -1319,6 +1320,7 @@
       selectedSeason: "all",
       viewMode: "list",
       isSearching: false,
+      imdbRatings: { shows: {} },
     };
 
     const nodes = {
@@ -1434,6 +1436,7 @@
         autoFinished: !!show.autoFinished,
         pinned: !!show.pinned,
         watchBaseUrl: show.watchBaseUrl ? String(show.watchBaseUrl) : "",
+        imdbId: show.imdbId || "",
         ratingBackfilledAt: show.ratingBackfilledAt || "",
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
@@ -1489,6 +1492,39 @@
       if (rating >= 6) return "regular";
       if (rating >= 5) return "bad";
       return "garbage";
+    }
+
+    function imdbEpisodeRating(show, episode) {
+      const showRatings = state.imdbRatings?.shows?.[String(show.id)];
+      if (!showRatings || !episode.season || !episode.number) return null;
+      return showRatings.episodes?.[`${episode.season}:${episode.number}`] || null;
+    }
+
+    function displayEpisodeRating(show, episode) {
+      const imdb = imdbEpisodeRating(show, episode);
+      const imdbRating = normalizeEpisodeRating(imdb?.rating);
+      if (imdbRating) {
+        return {
+          rating: imdbRating,
+          source: "IMDb",
+          votes: Number.isFinite(Number(imdb.votes)) ? Number(imdb.votes) : null,
+        };
+      }
+
+      const tvmazeRating = normalizeEpisodeRating(episode.rating);
+      return tvmazeRating ? { rating: tvmazeRating, source: "TVMaze", votes: null } : null;
+    }
+
+    async function loadImdbRatings() {
+      try {
+        const response = await fetch(`${IMDB_RATINGS_PATH}?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) return;
+        const parsed = await response.json();
+        state.imdbRatings = parsed && typeof parsed === "object" ? parsed : { shows: {} };
+        render();
+      } catch {
+        state.imdbRatings = { shows: {} };
+      }
     }
 
     function needsEpisodeRatingBackfill(show) {
@@ -2037,10 +2073,13 @@
       const future = episode.airdate && episode.airdate > today;
       const label = `S${episode.season}E${episode.number || "?"}`;
       const watchUrl = episodeWatchUrl(show, episode);
-      const rating = normalizeEpisodeRating(episode.rating);
-      const ratingLabel = rating ? rating.toFixed(1) : "";
-      const ratingBadge = ratingLabel
-        ? `<span class="episode-rating ${episodeRatingClass(rating)}" title="Rating ${escapeAttr(ratingLabel)}">${escapeAttr(ratingLabel)}</span>`
+      const rating = displayEpisodeRating(show, episode);
+      const ratingLabel = rating ? rating.rating.toFixed(1) : "";
+      const ratingTitle = rating
+        ? `${rating.source} rating ${ratingLabel}${rating.votes ? ` from ${rating.votes.toLocaleString()} votes` : ""}`
+        : "";
+      const ratingBadge = rating
+        ? `<span class="episode-rating ${episodeRatingClass(rating.rating)}" title="${escapeAttr(ratingTitle)}">${escapeAttr(ratingLabel)}</span>`
         : "";
       const episodeContent = `
         <span class="episode-num">${episode.number || "?"}</span>
@@ -2145,6 +2184,7 @@
         name: show.name,
         status: "watching",
         network: show.network?.name || show.webChannel?.name || "",
+        imdbId: show.externals?.imdb || "",
         premiere: show.premiered || "",
         ended: show.ended || "",
         image: show.image?.original || show.image?.medium || "",
@@ -2883,6 +2923,7 @@
     loadState();
     syncAutoCompletion();
     render();
+    loadImdbRatings();
     backfillMissingEpisodeRatings();
     autoLoadRepoDataIfEmpty();
   </script>
