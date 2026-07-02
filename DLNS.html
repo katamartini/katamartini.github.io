@@ -466,7 +466,8 @@ key:'picks',dir:'desc'},player:{
 key:'picks',dir:'desc'},duo:{
 key:'rank',dir:'asc'},trio:{
 key:'rank',dir:'asc'},quint:{
-key:'count',dir:'desc'}},rt=null,dt=null;
+key:'count',dir:'desc'},search:{
+key:'matchID',dir:'desc'}},rt=null,dt=null;
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'),fmt=(n,d=2)=>Number.isFinite(n)?n.toFixed(d):'0.00',num=n=>(n||0).toLocaleString(),lst=t=>String(t||'').replaceAll(LF,',').replaceAll(CR,',').split(',').map(x=>x.trim()).filter(Boolean),wv=w=>{
 const n=Number(w);
 return Number.isFinite(n)?n:-Infinity},mv=m=>{
@@ -573,7 +574,7 @@ document.querySelectorAll('.'+type+'Sort').forEach(b=>b.onclick=()=>{
 const k=b.dataset.sort,s=sorts[type];sorts[type]=s.key===k?{
 key:k,dir:s.dir==='asc'?'desc':'asc'}
 :{
-key:k,dir:k==='firstSeen'||k==='player'||k==='hero'?'asc':'desc'};render()})}
+key:k,dir:k==='firstSeen'||k==='player'||k==='hero'||k==='heroes'?'asc':'desc'};render()})}
 function markSort(type){
 const s=sorts[type];
 document.querySelectorAll('.'+type+'Sort').forEach(b=>{
@@ -666,10 +667,16 @@ function renderDraftSearch(u){
 $('heroOptions').innerHTML=u.map(h=>'<option value="'+esc(h)+'"></option>').join('');
 updateSearchIcons(u);
 const entered=Array.from({
-length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new Set(entered)],all=currentAllDrafts,matches=all.filter(d=>unique.every(h=>d.heroes.includes(h))).sort((a,b)=>String(b.matchID).localeCompare(String(a.matchID),undefined,{
-numeric:true}));
+length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new Set(entered)],all=currentAllDrafts,matches=all.filter(d=>unique.every(h=>d.heroes.includes(h))),matchSort=(a,b)=>String(b.matchID).localeCompare(String(a.matchID),undefined,{
+numeric:true}),heroSort=(a,b)=>{
+for(let i=0;i<Math.max(a.heroes.length,b.heroes.length);i++){
+const c=String(a.heroes[i]||'').localeCompare(String(b.heroes[i]||''));if(c)return c}
+return 0},s=sorts.search,dir=s.dir==='asc'?1:-1;
+matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||matchSort(a,b):matchSort(a,b));
 $('draftSearchSummary').textContent=unique.length<entered.length?'Each selected hero needs to be unique.':unique.length?'Showing '+matches.length+' of '+all.length+' drafts containing '+unique.join(' / ')+'.':'Showing all '+matches.length+' drafts.';
-$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div>Match ID</div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div>Heroes</div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div></div>').join('')}
+$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div>Match ID</div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div></div>').join('');
+bindSort('search',()=>renderDraftSearch(currentHeroUniverse));
+markSort('search')}
 function renderCombo(kind,heroes,m){
 const size=kind==='duo'?2:3,show=!!($('showSeen'+(kind==='duo'?'Duos':'Trios'))?.checked),req=lst($(kind+'FilterText')?.value).map(h=>canon(h,heroes)).filter(Boolean),first=new Map(),all=[];
 for(const d of currentAllDrafts)combos(d.heroes,size,t=>{
