@@ -669,6 +669,15 @@
       color: #17324d;
     }
 
+    .summary-item ol {
+      margin: 6px 0 0 18px;
+      padding: 0;
+    }
+
+    .summary-item li {
+      margin-bottom: 3px;
+    }
+
     .slot-warning td {
       background: #dcefff;
     }
@@ -2112,8 +2121,10 @@
                 };
               }
 
-              const nonSequential = candidates.filter((candidate) => !candidate.repeatsSequentially);
-              const sequentialPool = nonSequential.length ? nonSequential : candidates;
+              const emptyStaffPool = candidates.filter((candidate) => row.byStaff[candidate.index].length === 0);
+              const fillFirstPool = emptyStaffPool.length ? emptyStaffPool : candidates;
+              const nonSequential = fillFirstPool.filter((candidate) => !candidate.repeatsSequentially);
+              const sequentialPool = nonSequential.length ? nonSequential : fillFirstPool;
               const nonDoubledTime = sequentialPool.filter((candidate) => !candidate.repeatsDoubledTime);
               const pool = nonDoubledTime.length ? nonDoubledTime : sequentialPool;
 
@@ -2431,6 +2442,20 @@
         const fixedIssueSummary = fixedAssignmentIssues.length
           ? fixedAssignmentIssues.map(escapeHtml).join("<br>")
           : "None";
+        const schedulerRules = [
+          "Respect fixed/locked slots; invalid fixed slots are reported and skipped.",
+          "Only schedule staff and students inside their entry/exit windows; staff lunch blocks are unavailable.",
+          "Assign a student at most once in the same time block.",
+          "Fill every available staff cell before placing a second student with any staff.",
+          "Double only when the added student can double, the existing student can double, the cell has fewer than two students, and the pair is approved or a backup.",
+          "Minimize missing active students in each time block.",
+          "Avoid consecutive doubled slots for the same staff member when possible.",
+          "Avoid the same staff/student pairing more than once in a day when possible.",
+          "Give every student at least one slot with each available staff member when possible.",
+          "Prefer approved pairs over backup pairs when doubling.",
+          "Keep staff loads as balanced as possible."
+        ];
+        const rulesSummary = `<ol>${schedulerRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ol>`;
         settings.summary.innerHTML = [
           `<div class="summary-item"><strong>Rows:</strong> ${displayAssignments.length}</div>`,
           `<div class="summary-item"><strong>Staff:</strong> ${displayStaff.length}</div>`,
@@ -2440,7 +2465,8 @@
           `<div class="summary-item"><strong>Unmet staff/student pairings:</strong> ${unmetRelationshipCount}</div>`,
           `<div class="summary-item"><strong>Fixed assignment issues:</strong> <span class="summary-detail-lines">${fixedIssueSummary}</span></div>`,
           `<div class="summary-item"><strong>Missing students in slots:</strong> ${missingCount}</div>`,
-          `<div class="summary-item"><strong>Missing detail:</strong> <span class="summary-detail-lines">${missingSummary}</span></div>`
+          `<div class="summary-item"><strong>Missing detail:</strong> <span class="summary-detail-lines">${missingSummary}</span></div>`,
+          `<div class="summary-item"><strong>Rules, in priority order:</strong>${rulesSummary}</div>`
         ].join("");
       }
 
