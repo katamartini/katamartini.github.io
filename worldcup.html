@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>World Cup Ledger</title>
+<style>
+:root{
+--bg:#111315;
+--panel:#191c20;
+--panel2:#22262b;
+--panel3:#101214;
+--border:#343a42;
+--text:#f0f3f6;
+--muted:#a8b0ba;
+--muted2:#79838f;
+--green:#3fb950;
+--gold:#f2cc60;
+--silver:#c9d1d9;
+--bronze:#d29922;
+--blue:#58a6ff;
+--red:#ff7b72;
+--ink:#0c0e10;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Inter,system-ui,"Segoe UI",Arial,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.wrap{
+width:min(1480px,calc(100vw - 28px));
+margin:0 auto;
+padding:22px 0 42px;
+}
+.masthead{
+display:grid;
+grid-template-columns:auto 1fr auto;
+gap:16px;
+align-items:center;
+margin-bottom:14px;
+}
+.mark{
+width:58px;
+height:58px;
+display:grid;
+place-items:center;
+border:1px solid var(--border);
+border-radius:8px;
+background:
+linear-gradient(90deg,transparent 48%,rgba(255,255,255,.12) 49%,rgba(255,255,255,.12) 51%,transparent 52%),
+linear-gradient(0deg,transparent 48%,rgba(255,255,255,.12) 49%,rgba(255,255,255,.12) 51%,transparent 52%),
+var(--panel2);
+color:var(--green);
+font-weight:900;
+letter-spacing:0;
+}
+h1{
+margin:0;
+font-size:38px;
+line-height:1.05;
+letter-spacing:0;
+}
+.subtitle,.muted,.small{
+color:var(--muted);
+font-size:13px;
+}
+.sourceLinks{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+a{color:var(--blue)}
+.tabs{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin:0 0 14px;
+padding:4px;
+border:1px solid var(--border);
+border-radius:8px;
+background:var(--panel3);
+width:max-content;
+max-width:100%;
+}
+.tab{
+border:0;
+border-radius:6px;
+padding:8px 12px;
+background:transparent;
+color:var(--muted);
+font-weight:800;
+}
+.tab.active{
+background:var(--green);
+color:#07120a;
+}
+.hidden{display:none!important}
+.grid{display:grid;gap:12px}
+.summaryGrid{
+grid-template-columns:1.2fr repeat(3,minmax(130px,.7fr));
+margin-bottom:12px;
+}
+.statCard,.card,.scoreCard,.tourneyCard{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:8px;
+}
+.statCard{padding:12px}
+.label{
+color:var(--muted2);
+font-size:11px;
+font-weight:800;
+letter-spacing:0;
+text-transform:uppercase;
+}
+.value{
+font-size:25px;
+font-weight:900;
+line-height:1.1;
+margin-top:4px;
+}
+.heroStat{
+display:grid;
+grid-template-columns:1fr 280px;
+gap:14px;
+align-items:center;
+}
+.podium{
+height:86px;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:8px;
+align-items:end;
+}
+.podiumBar{
+min-width:0;
+border:1px solid var(--border);
+border-bottom:0;
+border-radius:7px 7px 0 0;
+background:var(--panel2);
+padding:7px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+overflow:hidden;
+}
+.podiumBar:first-child{background:rgba(242,204,96,.16)}
+.podiumBar:nth-child(2){background:rgba(201,209,217,.12)}
+.podiumBar:nth-child(3){background:rgba(210,153,34,.12)}
+.podiumName{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+font-weight:900;
+font-size:12px;
+}
+.podiumScore{
+color:var(--muted);
+font-size:11px;
+font-variant-numeric:tabular-nums;
+}
+.toolbar{
+display:grid;
+grid-template-columns:minmax(220px,1.3fr) minmax(180px,.7fr) minmax(180px,.7fr);
+gap:10px;
+align-items:end;
+margin:0 0 12px;
+}
+.field{display:grid;gap:5px}
+input,select{
+width:100%;
+min-width:0;
+border:1px solid var(--border);
+border-radius:8px;
+background:var(--panel3);
+color:var(--text);
+padding:8px 10px;
+outline:none;
+}
+input:focus,select:focus{
+border-color:var(--green);
+box-shadow:0 0 0 2px rgba(63,185,80,.2);
+}
+.card .in{padding:12px}
+.bar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:10px;
+}
+.title{font-size:16px;font-weight:900}
+.pill{
+display:inline-flex;
+align-items:center;
+gap:5px;
+border:1px solid var(--border);
+border-radius:999px;
+background:var(--panel3);
+color:var(--muted);
+font-size:12px;
+font-weight:700;
+padding:5px 8px;
+white-space:nowrap;
+}
+.table{
+border:1px solid var(--border);
+border-radius:8px;
+overflow:auto;
+}
+.head,.row{
+display:grid;
+grid-template-columns:62px minmax(220px,1.25fr) 96px 120px repeat(5,70px) 92px 154px;
+gap:9px;
+align-items:center;
+min-width:1120px;
+padding:8px 10px;
+}
+.head{
+position:sticky;
+top:0;
+z-index:1;
+background:var(--panel3);
+color:var(--muted2);
+font-size:11px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:0;
+}
+.head button{
+border:0;
+padding:0;
+background:transparent;
+color:inherit;
+font:inherit;
+font-weight:900;
+text-align:left;
+text-transform:uppercase;
+}
+.row{
+border-top:1px solid var(--border);
+color:var(--muted);
+font-size:13px;
+}
+.row:nth-child(odd){background:rgba(255,255,255,.018)}
+.row.alive2026{
+background:rgba(88,166,255,.14);
+box-shadow:inset 4px 0 0 var(--blue);
+color:#c8ddf4;
+}
+.row.alive2026:nth-child(odd){background:rgba(88,166,255,.18)}
+.row.alive2026 .teamName{color:#d9ecff}
+.row.alive2026 .rank{color:#9bd1ff}
+.row b{color:var(--text)}
+.num{
+font-variant-numeric:tabular-nums;
+text-align:center;
+}
+.rank{
+font-weight:900;
+color:var(--gold);
+text-align:center;
+}
+.head>div:first-child,
+.head>div:nth-child(3),
+.head>div:nth-child(n+5):nth-child(-n+10){
+text-align:center;
+}
+.head>div:first-child button,
+.head>div:nth-child(3) button,
+.head>div:nth-child(n+5):nth-child(-n+10) button{
+width:100%;
+text-align:center;
+}
+.teamCell{
+display:grid;
+grid-template-columns:42px 1fr;
+gap:9px;
+align-items:center;
+min-width:0;
+}
+.badge{
+width:42px;
+height:30px;
+border-radius:6px;
+display:grid;
+place-items:center;
+background:var(--panel2);
+border:1px solid var(--border);
+color:var(--text);
+overflow:hidden;
+position:relative;
+}
+.badge img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+.badge img.broken{
+display:none;
+}
+.flagFallback{
+display:none;
+font-size:11px;
+font-weight:900;
+letter-spacing:0;
+}
+.badge img.broken+.flagFallback{
+display:block;
+}
+.teamText{min-width:0}
+.teamName{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+font-weight:900;
+color:var(--text);
+}
+.aliases{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+color:var(--muted2);
+font-size:11px;
+}
+.score{
+font-size:20px;
+font-weight:950;
+color:var(--green);
+font-variant-numeric:tabular-nums;
+}
+.bestYears{
+display:block;
+color:var(--muted2);
+font-size:11px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+.spark{
+height:34px;
+display:grid;
+grid-auto-flow:column;
+grid-auto-columns:1fr;
+gap:2px;
+align-items:end;
+}
+.spark span{
+display:block;
+min-width:3px;
+border-radius:2px 2px 0 0;
+background:rgba(121,131,143,.28);
+}
+.spark span.hit{background:var(--green)}
+.spark span.medal{background:var(--gold)}
+.spark span.final{background:var(--blue)}
+.empty{
+padding:18px;
+color:var(--muted);
+text-align:center;
+}
+.tourneyGrid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+}
+.tourneyCard{padding:12px}
+.tourneyTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:9px;
+}
+.year{
+font-size:22px;
+font-weight:950;
+font-variant-numeric:tabular-nums;
+}
+.stageList{display:grid;gap:8px}
+.stageRow{
+display:grid;
+grid-template-columns:120px 1fr;
+gap:8px;
+align-items:start;
+}
+.stageLabel{
+color:var(--muted2);
+font-size:11px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:0;
+padding-top:5px;
+}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+border:1px solid var(--border);
+border-radius:999px;
+background:var(--panel3);
+color:var(--muted);
+padding:4px 7px;
+font-size:12px;
+font-weight:700;
+}
+.chip.champion{border-color:rgba(242,204,96,.55);color:var(--gold)}
+.chip.runnerUp{border-color:rgba(88,166,255,.55);color:#b6d8ff}
+.chip.third,.chip.fourth{border-color:rgba(210,153,34,.55);color:#f0c36b}
+.chip.quarter{border-color:rgba(63,185,80,.45);color:#9be9a8}
+.chip.r16{border-color:rgba(88,166,255,.35)}
+.scoreGrid{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px;
+}
+.scoreCard{padding:12px}
+.scoreCard input{
+margin-top:7px;
+font-size:20px;
+font-weight:900;
+font-variant-numeric:tabular-nums;
+}
+.resetBtn{
+border:0;
+border-radius:8px;
+background:var(--green);
+color:#07120a;
+font-weight:900;
+padding:8px 12px;
+}
+.miniTable{
+display:grid;
+gap:7px;
+margin-top:12px;
+}
+.miniRow{
+display:grid;
+grid-template-columns:36px 1fr 72px;
+gap:8px;
+align-items:center;
+font-size:13px;
+color:var(--muted);
+}
+.miniRow b{color:var(--text)}
+.footerNote{
+margin-top:14px;
+color:var(--muted2);
+font-size:12px;
+}
+@media (max-width:900px){
+.masthead{grid-template-columns:auto 1fr}
+.sourceLinks{grid-column:1/-1;justify-content:flex-start}
+h1{font-size:30px}
+.summaryGrid,.toolbar,.heroStat,.tourneyGrid,.scoreGrid{grid-template-columns:1fr}
+.podium{height:96px}
+.stageRow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="masthead">
+<div class="mark">WC</div>
+<div>
+<h1>World Cup Ledger</h1>
+<div class="subtitle">Men's FIFA World Cup, completed tournaments 1930-2022</div>
+</div>
+<div class="sourceLinks">
+<a href="https://en.wikipedia.org/wiki/FIFA_World_Cup" target="_blank" rel="noreferrer">World Cup</a>
+<a href="https://en.wikipedia.org/wiki/2022_FIFA_World_Cup" target="_blank" rel="noreferrer">2022 table</a>
+</div>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<section id="panels"></section>
+</main>
+<script>
+const TOURNAMENTS=[
+{"year":1930,"Champions":["Uruguay"],"Runners-up":["Argentina"],"Third place":["United States"],"Fourth place":["Yugoslavia"],"Group stage":["Belgium","Bolivia","Brazil","Chile","France","Mexico","Paraguay","Peru","Romania"]},
+{"year":1934,"Champions":["Italy"],"Runners-up":["Czechoslovakia"],"Third place":["Germany"],"Fourth place":["Austria"],"Quarter-finals":["Hungary","Spain","Sweden","Switzerland"],"First round":["Argentina","Belgium","Brazil","Egypt","France","Netherlands","Romania","United States"]},
+{"year":1938,"Champions":["Italy"],"Runners-up":["Hungary"],"Third place":["Brazil"],"Fourth place":["Sweden"],"Quarter-finals":["Cuba","Czechoslovakia","France","Switzerland"],"First round":["Belgium","Dutch East Indies","Germany","Netherlands","Norway","Poland","Romania"]},
+{"year":1950,"Champions":["Uruguay"],"Runners-up":["Brazil"],"Third place":["Sweden"],"Fourth place":["Spain"],"Group stage":["Bolivia","Chile","England","Italy","Mexico","Paraguay","Switzerland","United States","Yugoslavia"]},
+{"year":1954,"Champions":["West Germany"],"Runners-up":["Hungary"],"Third place":["Austria"],"Fourth place":["Uruguay"],"Quarterfinals":["Brazil","England","Switzerland","Yugoslavia"],"Group stage":["Belgium","Czechoslovakia","France","Italy","Mexico","Scotland","South Korea","Turkey"]},
+{"year":1958,"Champions":["Brazil"],"Runners-up":["Sweden"],"Third place":["France"],"Fourth place":["West Germany"],"Quarterfinals":["Northern Ireland","Soviet Union","Wales","Yugoslavia"],"Group stage":["Argentina","Austria","Czechoslovakia","England","Hungary","Mexico","Paraguay","Scotland"]},
+{"year":1962,"Champions":["Brazil"],"Runners-up":["Czechoslovakia"],"Third place":["Chile"],"Fourth place":["Yugoslavia"],"Quarter-finals":["England","Hungary","Soviet Union","West Germany"],"Group stage":["Argentina","Bulgaria","Colombia","Italy","Mexico","Spain","Switzerland","Uruguay"]},
+{"year":1966,"Champions":["England"],"Runners-up":["West Germany"],"Third place":["Portugal"],"Fourth place":["Soviet Union"],"Quarter-finals":["Argentina","Hungary","North Korea","Uruguay"],"Group stage":["Brazil","Bulgaria","Chile","France","Italy","Mexico","Spain","Switzerland"]},
+{"year":1970,"Champions":["Brazil"],"Runners-up":["Italy"],"Third place":["West Germany"],"Fourth place":["Uruguay"],"Quarter-finals":["England","Mexico","Peru","Soviet Union"],"Group stage":["Belgium","Bulgaria","Czechoslovakia","El Salvador","Israel","Morocco","Romania","Sweden"]},
+{"year":1974,"Champions":["West Germany"],"Runners-up":["Netherlands"],"Third place":["Poland"],"Fourth place":["Brazil"],"Second group stage":["Argentina","East Germany","Sweden","Yugoslavia"],"First group stage":["Australia","Bulgaria","Chile","Haiti","Italy","Scotland","Uruguay","Zaire"]},
+{"year":1978,"Champions":["Argentina"],"Runners-up":["Netherlands"],"Third place":["Brazil"],"Fourth place":["Italy"],"Second group stage":["Austria","Peru","Poland","West Germany"],"First group stage":["France","Hungary","Iran","Mexico","Scotland","Spain","Sweden","Tunisia"]},
+{"year":1982,"Champions":["Italy"],"Runners-up":["West Germany"],"Third place":["Poland"],"Fourth place":["France"],"Second group stage":["Argentina","Austria","Belgium","Brazil","England","Northern Ireland","Soviet Union","Spain"],"First group stage":["Algeria","Cameroon","Chile","Czechoslovakia","El Salvador","Honduras","Hungary","Kuwait","New Zealand","Peru","Scotland","Yugoslavia"]},
+{"year":1986,"Champions":["Argentina"],"Runners-up":["West Germany"],"Third place":["France"],"Fourth place":["Belgium"],"Quarter-finals":["Brazil","England","Mexico","Spain"],"Round of 16":["Bulgaria","Denmark","Italy","Morocco","Paraguay","Poland","Soviet Union","Uruguay"],"Group stage":["Algeria","Canada","Hungary","Iraq","Northern Ireland","Portugal","Scotland","South Korea"]},
+{"year":1990,"Champions":["West Germany"],"Runners-up":["Argentina"],"Third place":["Italy"],"Fourth place":["England"],"Quarter-finals":["Cameroon","Czechoslovakia","Republic of Ireland","Yugoslavia"],"Round of 16":["Belgium","Brazil","Colombia","Costa Rica","Netherlands","Romania","Spain","Uruguay"],"Group stage":["Austria","Egypt","Scotland","South Korea","Soviet Union","Sweden","United Arab Emirates","United States"]},
+{"year":1994,"Champions":["Brazil"],"Runners-up":["Italy"],"Third place":["Sweden"],"Fourth place":["Bulgaria"],"Quarter-finals":["Germany","Netherlands","Romania","Spain"],"Round of 16":["Argentina","Belgium","Mexico","Nigeria","Republic of Ireland","Saudi Arabia","Switzerland","United States"],"Group stage":["Bolivia","Cameroon","Colombia","Greece","Morocco","Norway","Russia","South Korea"]},
+{"year":1998,"Champions":["France"],"Runners-up":["Brazil"],"Third place":["Croatia"],"Fourth place":["Netherlands"],"Quarter-finals":["Argentina","Denmark","Germany","Italy"],"Round of 16":["Chile","England","Mexico","Nigeria","Norway","Paraguay","Romania","FR Yugoslavia"],"Group stage":["Austria","Belgium","Bulgaria","Cameroon","Colombia","Iran","Jamaica","Japan","Morocco","Saudi Arabia","Scotland","South Africa","South Korea","Spain","Tunisia","United States"]},
+{"year":2002,"Champions":["Brazil"],"Runners-up":["Germany"],"Third place":["Turkey"],"Fourth place":["South Korea"],"Quarter-finals":["England","Senegal","Spain","United States"],"Round of 16":["Belgium","Denmark","Italy","Japan","Mexico","Paraguay","Republic of Ireland","Sweden"],"Group stage":["Argentina","Cameroon","China","Costa Rica","Croatia","Ecuador","France","Nigeria","Poland","Portugal","Russia","Saudi Arabia","Slovenia","South Africa","Tunisia","Uruguay"]},
+{"year":2006,"Champions":["Italy"],"Runners-up":["France"],"Third place":["Germany"],"Fourth place":["Portugal"],"Quarter-finals":["Argentina","Brazil","England","Ukraine"],"Round of 16":["Australia","Ecuador","Ghana","Mexico","Netherlands","Spain","Sweden","Switzerland"],"Group stage":["Angola","Costa Rica","Croatia","Czech Republic","Iran","Ivory Coast","Japan","Paraguay","Poland","Saudi Arabia","Serbia and Montenegro","South Korea","Togo","Trinidad and Tobago","Tunisia","United States"]},
+{"year":2010,"Champions":["Spain"],"Runners-up":["Netherlands"],"Third place":["Germany"],"Fourth place":["Uruguay"],"Quarter-finals":["Argentina","Brazil","Ghana","Paraguay"],"Round of 16":["Chile","England","Japan","Mexico","Portugal","Slovakia","South Korea","United States"],"Group stage":["Algeria","Australia","Cameroon","Denmark","France","Greece","Honduras","Italy","Ivory Coast","New Zealand","Nigeria","North Korea","Serbia","Slovenia","South Africa","Switzerland"]},
+{"year":2014,"Champions":["Germany"],"Runners-up":["Argentina"],"Third place":["Netherlands"],"Fourth place":["Brazil"],"Quarter-finals":["Belgium","Colombia","Costa Rica","France"],"Round of 16":["Algeria","Chile","Greece","Mexico","Nigeria","Switzerland","United States","Uruguay"],"Group stage":["Australia","Bosnia and Herzegovina","Cameroon","Croatia","Ecuador","England","Ghana","Honduras","Iran","Italy","Ivory Coast","Japan","Portugal","Russia","South Korea","Spain"]},
+{"year":2018,"Champions":["France"],"Runners-up":["Croatia"],"Third place":["Belgium"],"Fourth place":["England"],"Quarter-finals":["Brazil","Russia","Sweden","Uruguay"],"Round of 16":["Argentina","Colombia","Denmark","Japan","Mexico","Portugal","Spain","Switzerland"],"Group stage":["Australia","Costa Rica","Egypt","Germany","Iceland","Iran","Morocco","Nigeria","Panama","Peru","Poland","Saudi Arabia","Senegal","Serbia","South Korea","Tunisia"]},
+{"year":2022,"Champions":["Argentina"],"Runners-up":["France"],"Third place":["Croatia"],"Fourth place":["Morocco"],"Quarter-finals":["Brazil","England","Netherlands","Portugal"],"Round of 16":["Australia","Japan","Poland","Senegal","South Korea","Spain","Switzerland","United States"],"Group stage":["Belgium","Cameroon","Canada","Costa Rica","Denmark","Ecuador","Germany","Ghana","Iran","Mexico","Qatar","Saudi Arabia","Serbia","Tunisia","Uruguay","Wales"]}
+];
+
+const TABS=[["leaderboard","Leaderboard"],["tournaments","Tournaments"],["scoring","Scoring"]];
+const DEFAULT_WEIGHTS={champion:100,runnerUp:76,third:62,fourth:50,quarter:30,r16:16,group:5};
+const WEIGHT_FIELDS=[
+["champion","Champion"],["runnerUp","Runner-up"],["third","Third place"],["fourth","Fourth place"],
+["quarter","Quarter-final / second group"],["r16","Round of 16 / first round"],["group","Group stage"]
+];
+const STAGE_META={
+"Champions":{key:"champion",label:"Champion",rank:1},
+"Runners-up":{key:"runnerUp",label:"Runner-up",rank:2},
+"Third place":{key:"third",label:"Third place",rank:3},
+"Fourth place":{key:"fourth",label:"Fourth place",rank:4},
+"Quarter-finals":{key:"quarter",label:"Quarter-final",rank:5},
+"Quarterfinals":{key:"quarter",label:"Quarter-final",rank:5},
+"Second group stage":{key:"quarter",label:"Second group stage",rank:5},
+"Round of 16":{key:"r16",label:"Round of 16",rank:6},
+"First round":{key:"r16",label:"First round",rank:6},
+"Group stage":{key:"group",label:"Group stage",rank:7},
+"First group stage":{key:"group",label:"First group stage",rank:7}
+};
+const ROLLUPS={
+"West Germany":"Germany",
+"Soviet Union":"Russia",
+"Czechoslovakia":"Czech Republic",
+"Yugoslavia":"Serbia",
+"FR Yugoslavia":"Serbia",
+"Serbia and Montenegro":"Serbia",
+"Zaire":"DR Congo",
+"Dutch East Indies":"Indonesia"
+};
+const ALIVE_2026_TEAMS=new Set([
+"Argentina","Belgium","Colombia","Egypt","England","France","Morocco","Norway","Spain","Switzerland"
+]);
+const FLAG_CODES={
+"Algeria":"DZ","Angola":"AO","Argentina":"AR","Australia":"AU","Austria":"AT","Belgium":"BE","Bolivia":"BO",
+"Bosnia and Herzegovina":"BA","Brazil":"BR","Bulgaria":"BG","Cameroon":"CM","Canada":"CA","Chile":"CL","China":"CN",
+"Colombia":"CO","Costa Rica":"CR","Croatia":"HR","Cuba":"CU","Czech Republic":"CZ","Czechoslovakia":"CZ","Denmark":"DK",
+"DR Congo":"CD","Dutch East Indies":"ID","East Germany":"DE","Ecuador":"EC","Egypt":"EG","El Salvador":"SV","France":"FR",
+"FR Yugoslavia":"RS","Germany":"DE","Ghana":"GH","Greece":"GR","Haiti":"HT","Honduras":"HN","Hungary":"HU","Iceland":"IS",
+"Indonesia":"ID","Iran":"IR","Iraq":"IQ","Israel":"IL","Italy":"IT","Ivory Coast":"CI","Jamaica":"JM","Japan":"JP",
+"Kuwait":"KW","Mexico":"MX","Morocco":"MA","Netherlands":"NL","New Zealand":"NZ","Nigeria":"NG","North Korea":"KP",
+"Northern Ireland":"GB","Norway":"NO","Panama":"PA","Paraguay":"PY","Peru":"PE","Poland":"PL","Portugal":"PT","Qatar":"QA",
+"Republic of Ireland":"IE","Romania":"RO","Russia":"RU","Saudi Arabia":"SA","Senegal":"SN","Serbia":"RS",
+"Serbia and Montenegro":"RS","Slovakia":"SK","Slovenia":"SI","South Africa":"ZA","South Korea":"KR","Soviet Union":"RU",
+"Spain":"ES","Sweden":"SE","Switzerland":"CH","Togo":"TG","Trinidad and Tobago":"TT","Tunisia":"TN","Turkey":"TR",
+"Ukraine":"UA","United Arab Emirates":"AE","United States":"US","Uruguay":"UY","West Germany":"DE","Yugoslavia":"RS","Zaire":"CD"
+};
+const SUBDIVISION_FLAGS={
+"England":"gb-eng",
+"Scotland":"gb-sct",
+"Wales":"gb-wls"
+};
+const state={
+tab:"leaderboard",
+query:"",
+era:"all",
+nameMode:"modern",
+sortKey:"score",
+sortDir:"desc",
+weights:{...DEFAULT_WEIGHTS}
+};
+
+function $(id){return document.getElementById(id)}
+function esc(value){
+return String(value).replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+}
+function canonical(name){
+return state.nameMode==="modern" ? (ROLLUPS[name] || name) : name;
+}
+function flagCodeFor(name){
+return SUBDIVISION_FLAGS[name] || (FLAG_CODES[name] ? FLAG_CODES[name].toLowerCase() : "");
+}
+function flagFallbackFor(name){
+const sub=SUBDIVISION_FLAGS[name];
+if(sub) return sub.split("-").pop().toUpperCase();
+return FLAG_CODES[name] || name.slice(0,2).toUpperCase();
+}
+function flagImgFor(name){
+const code=flagCodeFor(name);
+if(!code) return `<span class="flagFallback" style="display:block">${esc(flagFallbackFor(name))}</span>`;
+const src=`https://flagcdn.com/w40/${code}.png`;
+const srcset=`https://flagcdn.com/w80/${code}.png 2x`;
+return `<img src="${src}" srcset="${srcset}" alt="" loading="lazy" onerror="this.classList.add('broken')"><span class="flagFallback">${esc(flagFallbackFor(name))}</span>`;
+}
+function activeTournaments(){
+if(state.era==="pre70") return TOURNAMENTS.filter(t=>t.year<=1970);
+if(state.era==="mid") return TOURNAMENTS.filter(t=>t.year>=1974 && t.year<=1994);
+if(state.era==="modern") return TOURNAMENTS.filter(t=>t.year>=1998);
+return TOURNAMENTS;
+}
+function stageClass(key){
+if(key==="champion") return "champion";
+if(key==="runnerUp") return "runnerUp";
+if(key==="third" || key==="fourth") return key;
+return key;
+}
+function ensureRow(map,name){
+if(!map.has(name)){
+map.set(name,{
+name,aliases:new Set(),score:0,apps:0,titles:0,finals:0,top4:0,quarter:0,r16:0,group:0,
+first:null,last:null,bestRank:99,bestLabel:"",bestYears:[],appearances:[]
+});
+}
+return map.get(name);
+}
+function buildRows(){
+const rows=new Map();
+activeTournaments().forEach(tournament=>{
+Object.entries(tournament).forEach(([stage,teams])=>{
+if(stage==="year") return;
+const meta=STAGE_META[stage];
+const points=state.weights[meta.key] || 0;
+teams.forEach(sourceName=>{
+const name=canonical(sourceName);
+const row=ensureRow(rows,name);
+row.aliases.add(sourceName);
+row.score+=points;
+row.apps+=1;
+row.first=row.first===null ? tournament.year : Math.min(row.first,tournament.year);
+row.last=row.last===null ? tournament.year : Math.max(row.last,tournament.year);
+row.appearances.push({year:tournament.year,stage:meta.label,key:meta.key,points,sourceName});
+if(meta.key==="champion") row.titles+=1;
+if(meta.key==="champion" || meta.key==="runnerUp") row.finals+=1;
+if(["champion","runnerUp","third","fourth"].includes(meta.key)) row.top4+=1;
+if(meta.key==="quarter") row.quarter+=1;
+if(meta.key==="r16") row.r16+=1;
+if(meta.key==="group") row.group+=1;
+if(meta.rank<row.bestRank){
+row.bestRank=meta.rank;
+row.bestLabel=meta.label;
+row.bestYears=[tournament.year];
+}else if(meta.rank===row.bestRank){
+row.bestYears.push(tournament.year);
+}
+});
+});
+});
+const ranked=[...rows.values()].sort(rankCompare);
+ranked.forEach((row,index)=>{row.rank=index+1});
+return ranked;
+}
+function rankCompare(a,b){
+return b.score-a.score || b.titles-a.titles || b.finals-a.finals || b.top4-a.top4 || b.quarter-a.quarter || b.r16-a.r16 || b.apps-a.apps || a.name.localeCompare(b.name);
+}
+function sortValue(row,key){
+if(key==="name") return row.name;
+if(key==="last") return row.last || 0;
+return row[key] || 0;
+}
+function sortedVisibleRows(){
+const query=state.query.trim().toLowerCase();
+const rows=buildRows().filter(row=>{
+if(!query) return true;
+return row.name.toLowerCase().includes(query) || [...row.aliases].some(alias=>alias.toLowerCase().includes(query));
+});
+rows.sort((a,b)=>{
+let av=sortValue(a,state.sortKey);
+let bv=sortValue(b,state.sortKey);
+if(typeof av==="string") return state.sortDir==="asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+return state.sortDir==="asc" ? av-bv : bv-av;
+});
+return rows;
+}
+function isAlive2026(row){
+return ALIVE_2026_TEAMS.has(row.name) || [...row.aliases].some(alias=>ALIVE_2026_TEAMS.has(alias));
+}
+function renderTabs(){
+$("tabs").innerHTML=TABS.map(([id,label])=>`<button class="tab ${id===state.tab?"active":""}" data-tab="${id}">${label}</button>`).join("");
+document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{state.tab=btn.dataset.tab;render()});
+}
+function summaryStats(rows){
+const ranked=buildRows();
+const leader=ranked[0];
+const top3=ranked.slice(0,3);
+const tournaments=activeTournaments();
+const apps=ranked.reduce((sum,row)=>sum+row.apps,0);
+return `
+<section class="summaryGrid grid">
+<div class="statCard heroStat">
+<div><div class="label">Weighted leader</div><div class="value">${leader ? esc(leader.name) : "None"}</div><div class="muted">${leader ? `${leader.score} points, ${leader.apps} appearances` : ""}</div></div>
+<div class="podium">${top3.map((row,index)=>`<div class="podiumBar" style="height:${88-index*16}%"><div class="podiumName">${index+1}. ${esc(row.name)}</div><div class="podiumScore">${row.score}</div></div>`).join("")}</div>
+</div>
+<div class="statCard"><div class="label">Nations</div><div class="value">${ranked.length}</div><div class="muted">${state.nameMode==="modern" ? "modern rollups" : "historical names"}</div></div>
+<div class="statCard"><div class="label">Tournaments</div><div class="value">${tournaments.length}</div><div class="muted">${tournaments[0].year}-${tournaments[tournaments.length-1].year}</div></div>
+<div class="statCard"><div class="label">Entries</div><div class="value">${apps}</div><div class="muted">${rows.length} shown</div></div>
+</section>`;
+}
+function controls(){
+return `
+<section class="toolbar">
+<label class="field"><span class="label">Search</span><input id="searchBox" value="${esc(state.query)}" placeholder="Nation"></label>
+<label class="field"><span class="label">Era</span><select id="eraSelect">
+${[["all","All completed"],["pre70","1930-1970"],["mid","1974-1994"],["modern","1998-2022"]].map(([id,label])=>`<option value="${id}" ${state.era===id?"selected":""}>${label}</option>`).join("")}
+</select></label>
+<label class="field"><span class="label">Names</span><select id="nameModeSelect">
+<option value="modern" ${state.nameMode==="modern"?"selected":""}>Modern rollups</option>
+<option value="historical" ${state.nameMode==="historical"?"selected":""}>Historical teams</option>
+</select></label>
+</section>`;
+}
+function sortHeader(label,key){
+const mark=state.sortKey===key ? (state.sortDir==="asc" ? " ▲" : " ▼") : "";
+return `<button data-sort="${key}">${label}${mark}</button>`;
+}
+function trend(row){
+const byYear=new Map(row.appearances.map(a=>[a.year,a]));
+const max=Math.max(...Object.values(state.weights));
+return `<div class="spark">${activeTournaments().map(t=>{
+const app=byYear.get(t.year);
+if(!app) return `<span title="${t.year}"></span>`;
+const h=Math.max(14,Math.round((app.points/max)*100));
+const cls=app.key==="champion" ? "hit medal" : app.key==="runnerUp" ? "hit final" : "hit";
+return `<span class="${cls}" style="height:${h}%" title="${t.year}: ${esc(app.stage)}, ${app.points}"></span>`;
+}).join("")}</div>`;
+}
+function rowHtml(row){
+const aliasList=[...row.aliases].filter(alias=>alias!==row.name);
+const bestYears=row.bestYears.join(", ");
+return `<div class="row ${isAlive2026(row) ? "alive2026" : ""}">
+<div class="rank">#${row.rank}</div>
+<div class="teamCell"><div class="badge" role="img" aria-label="${esc(row.name)} flag" title="${esc(row.name)}">${flagImgFor(row.name)}</div><div class="teamText"><div class="teamName">${esc(row.name)}</div><div class="aliases">${aliasList.length ? esc(aliasList.join(", ")) : "&nbsp;"}</div></div></div>
+<div class="score num">${row.score}</div>
+<div><b>${esc(row.bestLabel)}</b><span class="bestYears">${esc(bestYears)}</span></div>
+<div class="num">${row.titles}</div>
+<div class="num">${row.finals}</div>
+<div class="num">${row.top4}</div>
+<div class="num">${row.quarter}</div>
+<div class="num">${row.r16}</div>
+<div class="num">${row.apps}</div>
+${trend(row)}
+</div>`;
+}
+function renderLeaderboard(){
+const rows=sortedVisibleRows();
+return `${controls()}${summaryStats(rows)}
+<section class="card"><div class="in">
+<div class="bar"><div class="title">Leaderboard</div><div class="pill">${rows.length} shown</div></div>
+<div class="table">
+<div class="head">
+<div>${sortHeader("Rank","rank")}</div>
+<div>${sortHeader("Nation","name")}</div>
+<div>${sortHeader("Score","score")}</div>
+<div>Best</div>
+<div>${sortHeader("Titles","titles")}</div>
+<div>${sortHeader("Finals","finals")}</div>
+<div>${sortHeader("Top 4","top4")}</div>
+<div>${sortHeader("QF+","quarter")}</div>
+<div>${sortHeader("R16","r16")}</div>
+<div>${sortHeader("Apps","apps")}</div>
+<div>${sortHeader("Trend","last")}</div>
+</div>
+${rows.length ? rows.map(rowHtml).join("") : `<div class="empty">No matching nations.</div>`}
+</div>
+</div></section>
+<div class="footerNote">Data is grouped from completed tournament stage results through Qatar 2022. Austria's withdrawn 1938 entry is excluded; 1966 stage groups are patched from the tournament bracket because that page lacks the same finalists navbox.</div>`;
+}
+function renderTournaments(){
+return `${controls()}<section class="tourneyGrid">${activeTournaments().map(t=>{
+const entries=Object.entries(t).filter(([stage])=>stage!=="year");
+const count=entries.reduce((sum,[,teams])=>sum+teams.length,0);
+return `<article class="tourneyCard">
+<div class="tourneyTop"><div class="year">${t.year}</div><div class="pill">${count} teams</div></div>
+<div class="stageList">${entries.map(([stage,teams])=>{
+const meta=STAGE_META[stage];
+return `<div class="stageRow"><div class="stageLabel">${esc(meta.label)}</div><div class="chips">${teams.map(team=>`<span class="chip ${stageClass(meta.key)}">${esc(team)}</span>`).join("")}</div></div>`;
+}).join("")}</div>
+</article>`;
+}).join("")}</section>`;
+}
+function renderScoring(){
+const rows=buildRows().slice(0,10);
+return `<section class="scoreGrid">
+${WEIGHT_FIELDS.map(([key,label])=>`<label class="scoreCard"><div class="label">${esc(label)}</div><input type="number" min="0" step="1" data-weight="${key}" value="${state.weights[key]}"></label>`).join("")}
+<section class="scoreCard"><div class="bar"><div><div class="label">Model</div><div class="title">Weighted finish</div></div><button class="resetBtn" id="resetWeights">Reset</button></div>
+<div class="miniTable">${rows.map(row=>`<div class="miniRow"><span>#${row.rank}</span><b>${esc(row.name)}</b><span class="num">${row.score}</span></div>`).join("")}</div></section>
+</section>`;
+}
+function bindCommonControls(){
+const search=$("searchBox");
+if(search) search.oninput=()=>{
+const cursor=search.selectionStart;
+state.query=search.value;
+render();
+const next=$("searchBox");
+if(next && typeof next.focus==="function"){
+next.focus();
+if(typeof next.setSelectionRange==="function") next.setSelectionRange(cursor,cursor);
+}
+};
+const era=$("eraSelect");
+if(era) era.onchange=()=>{state.era=era.value;render()};
+const names=$("nameModeSelect");
+if(names) names.onchange=()=>{state.nameMode=names.value;render()};
+document.querySelectorAll("[data-sort]").forEach(btn=>{
+btn.onclick=()=>{
+const key=btn.dataset.sort;
+if(state.sortKey===key) state.sortDir=state.sortDir==="asc" ? "desc" : "asc";
+else{state.sortKey=key;state.sortDir=(key==="name" || key==="rank") ? "asc" : "desc";}
+render();
+};
+});
+document.querySelectorAll("[data-weight]").forEach(input=>{
+input.onchange=()=>{
+state.weights[input.dataset.weight]=Math.max(0,Number(input.value)||0);
+render();
+};
+});
+const reset=$("resetWeights");
+if(reset) reset.onclick=()=>{state.weights={...DEFAULT_WEIGHTS};render()};
+}
+function render(){
+renderTabs();
+const html=state.tab==="leaderboard" ? renderLeaderboard() : state.tab==="tournaments" ? renderTournaments() : renderScoring();
+$("panels").innerHTML=html;
+bindCommonControls();
+}
+render();
+</script>
+</body>
+</html>
