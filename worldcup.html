@@ -296,13 +296,13 @@ color:var(--text);
 overflow:hidden;
 position:relative;
 }
-.badge img{
+.badge img,.clubFlag img{
 width:100%;
 height:100%;
 object-fit:cover;
 display:block;
 }
-.badge img.broken{
+.badge img.broken,.clubFlag img.broken{
 display:none;
 }
 .flagFallback{
@@ -311,7 +311,8 @@ font-size:11px;
 font-weight:900;
 letter-spacing:0;
 }
-.badge img.broken+.flagFallback{
+.badge img.broken+.flagFallback,
+.clubFlag img.broken+.flagFallback{
 display:block;
 }
 .teamText{min-width:0}
@@ -413,6 +414,61 @@ font-weight:700;
 .chip.third,.chip.fourth{border-color:rgba(210,153,34,.55);color:#f0c36b}
 .chip.quarter{border-color:rgba(63,185,80,.45);color:#9be9a8}
 .chip.r16{border-color:rgba(88,166,255,.35)}
+.clubGrid{
+display:grid;
+gap:12px;
+}
+.clubCard{padding:12px}
+.clubTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:10px;
+}
+.clubMembers{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+gap:8px;
+}
+.clubMember{
+display:grid;
+grid-template-columns:34px minmax(0,1fr) 52px;
+gap:8px;
+align-items:center;
+border:1px solid var(--border);
+border-radius:8px;
+background:var(--panel3);
+padding:7px;
+min-width:0;
+}
+.clubMember.alive2026{
+background:rgba(88,166,255,.14);
+border-color:rgba(88,166,255,.45);
+}
+.clubFlag{
+width:34px;
+height:24px;
+border:1px solid var(--border);
+border-radius:5px;
+background:var(--panel2);
+display:grid;
+place-items:center;
+overflow:hidden;
+}
+.clubName{
+color:var(--text);
+font-weight:900;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+.clubYear{
+color:var(--gold);
+font-weight:950;
+font-variant-numeric:tabular-nums;
+text-align:center;
+}
 .scoreGrid{
 display:grid;
 grid-template-columns:repeat(4,minmax(0,1fr));
@@ -504,7 +560,7 @@ const TOURNAMENTS=[
 {"year":2022,"Champions":["Argentina"],"Runners-up":["France"],"Third place":["Croatia"],"Fourth place":["Morocco"],"Quarter-finals":["Brazil","England","Netherlands","Portugal"],"Round of 16":["Australia","Japan","Poland","Senegal","South Korea","Spain","Switzerland","United States"],"Group stage":["Belgium","Cameroon","Canada","Costa Rica","Denmark","Ecuador","Germany","Ghana","Iran","Mexico","Qatar","Saudi Arabia","Serbia","Tunisia","Uruguay","Wales"]}
 ];
 
-const TABS=[["leaderboard","Leaderboard"],["tournaments","Tournaments"],["scoring","Scoring"]];
+const TABS=[["leaderboard","Leaderboard"],["clubs","Clubs"],["tournaments","Tournaments"],["scoring","Scoring"]];
 const DEFAULT_WEIGHTS={champion:100,runnerUp:76,third:62,fourth:50,quarter:30,r16:16,group:5};
 const WEIGHT_FIELDS=[
 ["champion","Champion"],["runnerUp","Runner-up"],["third","Third place"],["fourth","Fourth place"],
@@ -523,6 +579,15 @@ const STAGE_META={
 "Group stage":{key:"group",label:"Group stage",rank:7},
 "First group stage":{key:"group",label:"First group stage",rank:7}
 };
+const CLUBS=[
+{title:"Champions",keys:["champion"]},
+{title:"Finalists",keys:["champion","runnerUp"]},
+{title:"Top Three",keys:["champion","runnerUp","third"]},
+{title:"Top Four",keys:["champion","runnerUp","third","fourth"]},
+{title:"Quarter-final",keys:["champion","runnerUp","third","fourth","quarter"]},
+{title:"Round of 16",keys:["champion","runnerUp","third","fourth","quarter","r16"]},
+{title:"World Cup appearance",keys:["champion","runnerUp","third","fourth","quarter","r16","group"]}
+];
 const ROLLUPS={
 "West Germany":"Germany",
 "Soviet Union":"Russia",
@@ -666,8 +731,37 @@ return state.sortDir==="asc" ? av-bv : bv-av;
 });
 return rows;
 }
+function matchesQuery(name,aliases){
+const query=state.query.trim().toLowerCase();
+if(!query) return true;
+return name.toLowerCase().includes(query) || [...aliases].some(alias=>alias.toLowerCase().includes(query));
+}
+function buildClubMembers(club){
+const members=new Map();
+activeTournaments().forEach(tournament=>{
+Object.entries(tournament).forEach(([stage,teams])=>{
+if(stage==="year") return;
+const meta=STAGE_META[stage];
+if(!club.keys.includes(meta.key)) return;
+teams.forEach(sourceName=>{
+const name=canonical(sourceName);
+if(!members.has(name)){
+members.set(name,{name,year:tournament.year,aliases:new Set([sourceName])});
+}else{
+members.get(name).aliases.add(sourceName);
+}
+});
+});
+});
+return [...members.values()]
+.filter(member=>matchesQuery(member.name,member.aliases))
+.sort((a,b)=>a.year-b.year || a.name.localeCompare(b.name));
+}
 function isAlive2026(row){
 return ALIVE_2026_TEAMS.has(row.name) || [...row.aliases].some(alias=>ALIVE_2026_TEAMS.has(alias));
+}
+function memberAlive2026(member){
+return ALIVE_2026_TEAMS.has(member.name) || [...member.aliases].some(alias=>ALIVE_2026_TEAMS.has(alias));
 }
 function renderTabs(){
 $("tabs").innerHTML=TABS.map(([id,label])=>`<button class="tab ${id===state.tab?"active":""}" data-tab="${id}">${label}</button>`).join("");
@@ -772,6 +866,23 @@ return `<div class="stageRow"><div class="stageLabel">${esc(meta.label)}</div><d
 </article>`;
 }).join("")}</section>`;
 }
+function clubMemberHtml(member){
+const aliasList=[...member.aliases].filter(alias=>alias!==member.name);
+return `<div class="clubMember ${memberAlive2026(member) ? "alive2026" : ""}">
+<div class="clubFlag" role="img" aria-label="${esc(member.name)} flag" title="${esc(member.name)}">${flagImgFor(member.name)}</div>
+<div><div class="clubName">${esc(member.name)}</div><div class="aliases">${aliasList.length ? esc(aliasList.join(", ")) : "&nbsp;"}</div></div>
+<div class="clubYear">${member.year}</div>
+</div>`;
+}
+function renderClubs(){
+return `${controls()}<section class="clubGrid">${CLUBS.map(club=>{
+const members=buildClubMembers(club);
+return `<article class="clubCard card">
+<div class="clubTop"><div class="title">${esc(club.title)}</div><div class="pill">${members.length} teams</div></div>
+<div class="clubMembers">${members.length ? members.map(clubMemberHtml).join("") : `<div class="empty">No matching nations.</div>`}</div>
+</article>`;
+}).join("")}</section>`;
+}
 function renderScoring(){
 const rows=buildRows().slice(0,10);
 return `<section class="scoreGrid">
@@ -815,7 +926,7 @@ if(reset) reset.onclick=()=>{state.weights={...DEFAULT_WEIGHTS};render()};
 }
 function render(){
 renderTabs();
-const html=state.tab==="leaderboard" ? renderLeaderboard() : state.tab==="tournaments" ? renderTournaments() : renderScoring();
+const html=state.tab==="leaderboard" ? renderLeaderboard() : state.tab==="clubs" ? renderClubs() : state.tab==="tournaments" ? renderTournaments() : renderScoring();
 $("panels").innerHTML=html;
 bindCommonControls();
 }
