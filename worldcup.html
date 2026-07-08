@@ -331,10 +331,19 @@ color:var(--muted2);
 font-size:11px;
 }
 .score{
+display:flex;
+justify-content:center;
+align-items:baseline;
+gap:6px;
 font-size:20px;
 font-weight:950;
 color:var(--green);
 font-variant-numeric:tabular-nums;
+}
+.scoreDelta{
+color:var(--blue);
+font-size:12px;
+font-weight:950;
 }
 .bestYears{
 display:block;
@@ -442,9 +451,10 @@ background:var(--panel3);
 padding:7px;
 min-width:0;
 }
-.clubMember.alive2026{
+.clubMember.new2026{
 background:rgba(88,166,255,.14);
 border-color:rgba(88,166,255,.45);
+box-shadow:inset 4px 0 0 var(--blue);
 }
 .clubFlag{
 width:34px;
@@ -598,22 +608,42 @@ const ROLLUPS={
 "Zaire":"DR Congo",
 "Dutch East Indies":"Indonesia"
 };
-const ALIVE_2026_TEAMS=new Set([
-"Argentina","Belgium","Colombia","Egypt","England","France","Morocco","Norway","Spain","Switzerland"
-]);
+const QUARTER_FINAL_2026_TEAMS=[
+"Argentina","Belgium","England","France","Morocco","Norway","Spain","Switzerland"
+];
+const ROUND_OF_16_ELIMINATED_2026_TEAMS=[
+"Brazil","Canada","Colombia","Egypt","Mexico","Paraguay","Portugal","United States"
+];
+const WORLD_CUP_2026_TEAMS=[
+"Algeria","Argentina","Australia","Austria","Belgium","Bosnia and Herzegovina","Brazil","Canada",
+"Cape Verde","Colombia","Croatia","Curacao","Czech Republic","DR Congo","Ecuador","Egypt","England",
+"France","Germany","Ghana","Haiti","Iran","Iraq","Ivory Coast","Japan","Jordan","Mexico","Morocco",
+"Netherlands","New Zealand","Norway","Panama","Paraguay","Portugal","Qatar","Saudi Arabia","Scotland",
+"Senegal","South Africa","South Korea","Spain","Sweden","Switzerland","Tunisia","Turkey","United States",
+"Uruguay","Uzbekistan"
+];
+const ALIVE_2026_TEAMS=new Set(QUARTER_FINAL_2026_TEAMS);
+const QUARTER_FINAL_2026_SET=new Set(QUARTER_FINAL_2026_TEAMS);
+const ROUND_OF_16_2026_SET=new Set([...QUARTER_FINAL_2026_TEAMS,...ROUND_OF_16_ELIMINATED_2026_TEAMS]);
+const WORLD_CUP_2026_SET=new Set(WORLD_CUP_2026_TEAMS);
+const CLUB_MEMBERS_2026={
+"Quarter-final":["Norway"],
+"Round of 16":["Canada"],
+"World Cup appearance":["Cape Verde","Curacao","Jordan","Uzbekistan"]
+};
 const FLAG_CODES={
 "Algeria":"DZ","Angola":"AO","Argentina":"AR","Australia":"AU","Austria":"AT","Belgium":"BE","Bolivia":"BO",
-"Bosnia and Herzegovina":"BA","Brazil":"BR","Bulgaria":"BG","Cameroon":"CM","Canada":"CA","Chile":"CL","China":"CN",
+"Bosnia and Herzegovina":"BA","Brazil":"BR","Bulgaria":"BG","Cameroon":"CM","Canada":"CA","Cape Verde":"CV","Chile":"CL","China":"CN",
 "Colombia":"CO","Costa Rica":"CR","Croatia":"HR","Cuba":"CU","Czech Republic":"CZ","Czechoslovakia":"CZ","Denmark":"DK",
-"DR Congo":"CD","Dutch East Indies":"ID","East Germany":"DE","Ecuador":"EC","Egypt":"EG","El Salvador":"SV","France":"FR",
+"Curacao":"CW","DR Congo":"CD","Dutch East Indies":"ID","East Germany":"DE","Ecuador":"EC","Egypt":"EG","El Salvador":"SV","France":"FR",
 "FR Yugoslavia":"RS","Germany":"DE","Ghana":"GH","Greece":"GR","Haiti":"HT","Honduras":"HN","Hungary":"HU","Iceland":"IS",
 "Indonesia":"ID","Iran":"IR","Iraq":"IQ","Israel":"IL","Italy":"IT","Ivory Coast":"CI","Jamaica":"JM","Japan":"JP",
-"Kuwait":"KW","Mexico":"MX","Morocco":"MA","Netherlands":"NL","New Zealand":"NZ","Nigeria":"NG","North Korea":"KP",
+"Jordan":"JO","Kuwait":"KW","Mexico":"MX","Morocco":"MA","Netherlands":"NL","New Zealand":"NZ","Nigeria":"NG","North Korea":"KP",
 "Northern Ireland":"GB","Norway":"NO","Panama":"PA","Paraguay":"PY","Peru":"PE","Poland":"PL","Portugal":"PT","Qatar":"QA",
 "Republic of Ireland":"IE","Romania":"RO","Russia":"RU","Saudi Arabia":"SA","Senegal":"SN","Serbia":"RS",
 "Serbia and Montenegro":"RS","Slovakia":"SK","Slovenia":"SI","South Africa":"ZA","South Korea":"KR","Soviet Union":"RU",
 "Spain":"ES","Sweden":"SE","Switzerland":"CH","Togo":"TG","Trinidad and Tobago":"TT","Tunisia":"TN","Turkey":"TR",
-"Ukraine":"UA","United Arab Emirates":"AE","United States":"US","Uruguay":"UY","West Germany":"DE","Yugoslavia":"RS","Zaire":"CD"
+"Ukraine":"UA","United Arab Emirates":"AE","United States":"US","Uruguay":"UY","Uzbekistan":"UZ","West Germany":"DE","Yugoslavia":"RS","Zaire":"CD"
 };
 const SUBDIVISION_FLAGS={
 "England":"gb-eng",
@@ -621,7 +651,7 @@ const SUBDIVISION_FLAGS={
 "Wales":"gb-wls"
 };
 const state={
-tab:"leaderboard",
+tab:tabFromHash(),
 query:"",
 era:"all",
 nameMode:"modern",
@@ -631,6 +661,16 @@ weights:{...DEFAULT_WEIGHTS}
 };
 
 function $(id){return document.getElementById(id)}
+function tabFromHash(){
+if(typeof location==="undefined") return "leaderboard";
+const id=location.hash.replace(/^#/,"").toLowerCase();
+return TABS.some(([tab])=>tab===id) ? id : "leaderboard";
+}
+function updateHashForTab(id){
+if(typeof history==="undefined" || typeof location==="undefined") return;
+const hash="#"+id;
+if(location.hash!==hash) history.pushState(null,"",hash);
+}
 function esc(value){
 return String(value).replace(/[&<>"']/g, ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
 }
@@ -668,10 +708,23 @@ function ensureRow(map,name){
 if(!map.has(name)){
 map.set(name,{
 name,aliases:new Set(),score:0,apps:0,titles:0,finals:0,top4:0,quarter:0,r16:0,group:0,
-first:null,last:null,bestRank:99,bestLabel:"",bestYears:[],appearances:[]
+first:null,last:null,bestRank:99,bestLabel:"",bestYears:[],appearances:[],currentPoints:0
 });
 }
 return map.get(name);
+}
+function show2026Points(){
+return state.era==="all" || state.era==="modern";
+}
+function anyNameInSet(name,aliases,set){
+return set.has(name) || [...aliases].some(alias=>set.has(alias));
+}
+function points2026For(row){
+if(!show2026Points()) return 0;
+if(anyNameInSet(row.name,row.aliases,QUARTER_FINAL_2026_SET)) return state.weights.quarter || 0;
+if(anyNameInSet(row.name,row.aliases,ROUND_OF_16_2026_SET)) return state.weights.r16 || 0;
+if(anyNameInSet(row.name,row.aliases,WORLD_CUP_2026_SET)) return state.weights.group || 0;
+return 0;
 }
 function buildRows(){
 const rows=new Map();
@@ -705,6 +758,14 @@ row.bestYears.push(tournament.year);
 });
 });
 });
+if(show2026Points()){
+WORLD_CUP_2026_TEAMS.forEach(sourceName=>{
+const name=canonical(sourceName);
+const row=ensureRow(rows,name);
+row.aliases.add(sourceName);
+});
+}
+rows.forEach(row=>{row.currentPoints=points2026For(row)});
 const ranked=[...rows.values()].sort(rankCompare);
 ranked.forEach((row,index)=>{row.rank=index+1});
 return ranked;
@@ -746,26 +807,33 @@ if(!club.keys.includes(meta.key)) return;
 teams.forEach(sourceName=>{
 const name=canonical(sourceName);
 if(!members.has(name)){
-members.set(name,{name,year:tournament.year,aliases:new Set([sourceName])});
+members.set(name,{name,year:tournament.year,aliases:new Set([sourceName]),new2026:false});
 }else{
 members.get(name).aliases.add(sourceName);
 }
 });
 });
 });
+if(state.era==="all" || state.era==="modern"){
+(CLUB_MEMBERS_2026[club.title] || []).forEach(sourceName=>{
+const name=canonical(sourceName);
+if(!members.has(name)){
+members.set(name,{name,year:2026,aliases:new Set([sourceName]),new2026:true});
+}else{
+members.get(name).aliases.add(sourceName);
+}
+});
+}
 return [...members.values()]
 .filter(member=>matchesQuery(member.name,member.aliases))
 .sort((a,b)=>a.year-b.year || a.name.localeCompare(b.name));
 }
 function isAlive2026(row){
-return ALIVE_2026_TEAMS.has(row.name) || [...row.aliases].some(alias=>ALIVE_2026_TEAMS.has(alias));
-}
-function memberAlive2026(member){
-return ALIVE_2026_TEAMS.has(member.name) || [...member.aliases].some(alias=>ALIVE_2026_TEAMS.has(alias));
+return anyNameInSet(row.name,row.aliases,ALIVE_2026_TEAMS);
 }
 function renderTabs(){
 $("tabs").innerHTML=TABS.map(([id,label])=>`<button class="tab ${id===state.tab?"active":""}" data-tab="${id}">${label}</button>`).join("");
-document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{state.tab=btn.dataset.tab;render()});
+document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{state.tab=btn.dataset.tab;updateHashForTab(state.tab);render()});
 }
 function summaryStats(rows){
 const ranked=buildRows();
@@ -814,12 +882,14 @@ return `<span class="${cls}" style="height:${h}%" title="${t.year}: ${esc(app.st
 }
 function rowHtml(row){
 const aliasList=[...row.aliases].filter(alias=>alias!==row.name);
-const bestYears=row.bestYears.join(", ");
+const bestLabel=row.bestLabel || (row.currentPoints ? "2026" : "");
+const bestYears=row.bestYears.length ? row.bestYears.join(", ") : (row.currentPoints ? "In progress" : "");
+const currentScore=row.currentPoints ? `<span class="scoreDelta">+${row.currentPoints}</span>` : "";
 return `<div class="row ${isAlive2026(row) ? "alive2026" : ""}">
 <div class="rank">#${row.rank}</div>
 <div class="teamCell"><div class="badge" role="img" aria-label="${esc(row.name)} flag" title="${esc(row.name)}">${flagImgFor(row.name)}</div><div class="teamText"><div class="teamName">${esc(row.name)}</div><div class="aliases">${aliasList.length ? esc(aliasList.join(", ")) : "&nbsp;"}</div></div></div>
-<div class="score num">${row.score}</div>
-<div><b>${esc(row.bestLabel)}</b><span class="bestYears">${esc(bestYears)}</span></div>
+<div class="score num"><span>${row.score}</span>${currentScore}</div>
+<div><b>${esc(bestLabel)}</b><span class="bestYears">${esc(bestYears)}</span></div>
 <div class="num">${row.titles}</div>
 <div class="num">${row.finals}</div>
 <div class="num">${row.top4}</div>
@@ -868,7 +938,7 @@ return `<div class="stageRow"><div class="stageLabel">${esc(meta.label)}</div><d
 }
 function clubMemberHtml(member){
 const aliasList=[...member.aliases].filter(alias=>alias!==member.name);
-return `<div class="clubMember ${memberAlive2026(member) ? "alive2026" : ""}">
+return `<div class="clubMember ${member.new2026 ? "new2026" : ""}">
 <div class="clubFlag" role="img" aria-label="${esc(member.name)} flag" title="${esc(member.name)}">${flagImgFor(member.name)}</div>
 <div><div class="clubName">${esc(member.name)}</div><div class="aliases">${aliasList.length ? esc(aliasList.join(", ")) : "&nbsp;"}</div></div>
 <div class="clubYear">${member.year}</div>
@@ -931,6 +1001,15 @@ $("panels").innerHTML=html;
 bindCommonControls();
 }
 render();
+if(typeof addEventListener==="function"){
+addEventListener("hashchange",()=>{
+const next=tabFromHash();
+if(state.tab!==next){
+state.tab=next;
+render();
+}
+});
+}
 </script>
 </body>
 </html>
