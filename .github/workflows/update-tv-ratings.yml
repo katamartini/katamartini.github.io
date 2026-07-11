@@ -15,6 +15,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-tv-imdb-ratings-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-ratings:
     runs-on: ubuntu-latest
@@ -37,4 +41,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tv-ratings.json
           git commit -m "Update TV IMDb ratings"
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+
+            echo "Push failed; rebasing on latest main and regenerating ratings (attempt ${attempt})."
+            git fetch origin main
+            git rebase origin/main
+            node scripts/update-imdb-ratings.mjs
+            git add tv-ratings.json
+            git commit --amend --no-edit
+          done
+
           git push
