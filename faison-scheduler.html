@@ -1058,9 +1058,9 @@
         "Respect fixed, manually locked, and previously completed frozen slots; invalid fixed slots are reported and skipped.",
         "Only schedule staff and students inside their entry/exit windows; staff lunch blocks are unavailable.",
         "Assign a student at most once in the same time block.",
-        "Fill every available staff cell before placing a second student with any staff.",
-        "Double only when the added student can double, the existing student can double, the cell has fewer than two students, and the pair is approved or a backup.",
-        "Minimize missing active students in each time block.",
+        "Account for every active student in each time block whenever available staff capacity permits; coverage takes priority over lower rules.",
+        "Fill every available staff cell before placing a second student with any staff when possible.",
+        "Prefer doubles where both students can double and the pair is approved or a backup; relax those preferences when needed for coverage.",
         "Avoid consecutive doubled slots for the same staff member when possible.",
         "Avoid the same staff/student pairing more than once in a day when possible.",
         "Give every student at least one slot with each available staff member when possible.",
@@ -2104,6 +2104,7 @@
           const loadSpread = maxLoad - minLoad;
           return {
             unassignedCount: plan.unassignedStudents.length,
+            coverageFallbackCount: plan.coverageFallbackCount || 0,
             hasConsecutiveDouble: !!plan.requiredConsecutiveDouble,
             relationshipRepeatCount: plan.relationshipRepeatCount || 0,
             newRelationshipCount: plan.newRelationshipCount || 0,
@@ -2121,6 +2122,10 @@
 
           if (leftScore.unassignedCount !== rightScore.unassignedCount) {
             return leftScore.unassignedCount < rightScore.unassignedCount;
+          }
+
+          if (leftScore.coverageFallbackCount !== rightScore.coverageFallbackCount) {
+            return leftScore.coverageFallbackCount < rightScore.coverageFallbackCount;
           }
 
           if (leftScore.hasConsecutiveDouble !== rightScore.hasConsecutiveDouble) {
@@ -2207,6 +2212,7 @@
             let pairPenalty = 0;
             let slotRelationshipRepeatCount = 0;
             let newRelationshipCount = 0;
+            let coverageFallbackCount = 0;
             const lockedStaffIndexes = new Set();
 
             const applyLockedCell = (lockedCell, isFrozen = false) => {
@@ -2368,9 +2374,79 @@
               return true;
             };
 
+            const pickCoverageFallbackStaffIndex = (student) => {
+              let bestIndex = -1;
+              let bestCellSize = Infinity;
+              let bestRelationshipCount = Infinity;
+              let bestLoad = Infinity;
+
+              for (let i = 0; i < staff.length; i += 1) {
+                if (!activeStaffIndexSet.has(i) || lockedStaffIndexes.has(i) || row.byStaff[i].length >= 2) {
+                  continue;
+                }
+
+                const cellSize = row.byStaff[i].length;
+                const relationshipCount = staffStudentCounts[i].get(student.name) || 0;
+                const load = loads[i];
+                if (
+                  cellSize < bestCellSize ||
+                  (cellSize === bestCellSize && relationshipCount < bestRelationshipCount) ||
+                  (cellSize === bestCellSize && relationshipCount === bestRelationshipCount && load < bestLoad) ||
+                  (cellSize === bestCellSize && relationshipCount === bestRelationshipCount && load === bestLoad && i < bestIndex)
+                ) {
+                  bestIndex = i;
+                  bestCellSize = cellSize;
+                  bestRelationshipCount = relationshipCount;
+                  bestLoad = load;
+                }
+              }
+
+              return bestIndex;
+            };
+
+            const assignCoverageFallback = (student) => {
+              if (assignedThisSlot.has(student.name)) {
+                return false;
+              }
+
+              const staffIndex = pickCoverageFallbackStaffIndex(student);
+              if (staffIndex < 0) {
+                return false;
+              }
+
+              const cell = row.byStaff[staffIndex];
+              const previousCellSize = cell.length;
+              const pairPriority = previousCellSize ? getCellPairPriority(cell, student) : 2;
+              const relationshipCount = staffStudentCounts[staffIndex].get(student.name) || 0;
+              cell.push(student.name);
+              loads[staffIndex] += 1;
+              localCounts.set(student.name, (localCounts.get(student.name) || 0) + 1);
+              assignedThisSlot.add(student.name);
+              coverageFallbackCount += 1;
+
+              if (relationshipCount > 0) {
+                slotRelationshipRepeatCount += 1;
+              } else {
+                newRelationshipCount += 1;
+              }
+              if (Number.isFinite(pairPriority)) {
+                pairPenalty += pairPriority === 1 ? 1 : 0;
+              } else if (previousCellSize) {
+                pairPenalty += 2;
+              }
+              if (previousCellSize === 1 && lastByStaffCell[staffIndex].length === 2) {
+                requiredConsecutiveDouble = true;
+              }
+              return true;
+            };
+
             for (const student of studentOrder) {
               assignStudent(student);
             }
+
+            activeStudents
+              .filter((student) => !assignedThisSlot.has(student.name))
+              .forEach(assignCoverageFallback);
 
             const unassignedStudents = activeStudents
               .filter((student) => !assignedThisSlot.has(student.name))
@@ -2395,6 +2471,7 @@
               relationshipRepeatCount: slotRelationshipRepeatCount,
               newRelationshipCount,
               pairPenalty,
+              coverageFallbackCount,
               loads
             };
           };
