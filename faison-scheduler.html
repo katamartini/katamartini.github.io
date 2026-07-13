@@ -301,6 +301,11 @@
       margin-top: 6px;
     }
 
+    .entry-add-btn {
+      width: auto;
+      margin-top: 6px;
+    }
+
     button {
       cursor: pointer;
       background: #2f80c1;
@@ -752,7 +757,7 @@
         </details>
 
         <div style="margin-top: 12px;">
-          <label>Staff (name + entry/lunch/exit)</label>
+          <label id="staffEntriesLabel">Staff (name + entry/lunch/exit)</label>
           <div id="staffEntries" class="student-name-grid">
             <div class="person-grid-head" aria-hidden="true">
               <span>Name</span>
@@ -809,11 +814,12 @@
               <label class="student-time-wrap" for="staffOut-7">Exit <input id="staffOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
             </div>
           </div>
+          <button id="addStaffBtn" class="secondary entry-add-btn" type="button">+ Add staff row</button>
           <div class="help">Usually 6-9 staff members. Blank names are ignored.</div>
         </div>
 
         <div style="margin-top: 12px;">
-          <label>Students (8 entries)</label>
+          <label id="studentEntriesLabel">Students (8 entries)</label>
           <div id="studentEntries" class="student-name-grid">
             <div class="person-grid-head" aria-hidden="true">
               <span>Name</span>
@@ -868,8 +874,9 @@
               <label class="student-time-wrap" for="studentIn-7">Entry <input id="studentIn-7" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
               <label class="student-time-wrap" for="studentOut-7">Exit <input id="studentOut-7" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
               <label class="dupe-label" for="studentDupe-7"><input id="studentDupe-7" type="checkbox" checked>Can double</label>
-            </div>
           </div>
+          <button id="addStudentBtn" class="secondary entry-add-btn" type="button">+ Add student row</button>
+        </div>
           <div class="help">Use the checkboxes to mark students that can be assigned to multiple staff members in the same time row.</div>
         </div>
 
@@ -938,6 +945,8 @@
     <script>
     (() => {
       const settings = {
+        staffEntries: document.getElementById("staffEntries"),
+        studentEntries: document.getElementById("studentEntries"),
         staffInputs: Array.from({ length: 8 }, (_, i) =>
           document.getElementById(`staffName-${i}`)
         ),
@@ -970,6 +979,10 @@
         pairApprovedBucket: document.getElementById("approvedPairs"),
         pairBackupBucket: document.getElementById("backupPairs"),
         fixedList: document.getElementById("fixedList"),
+        staffEntriesLabel: document.getElementById("staffEntriesLabel"),
+        studentEntriesLabel: document.getElementById("studentEntriesLabel"),
+        addStaffBtn: document.getElementById("addStaffBtn"),
+        addStudentBtn: document.getElementById("addStudentBtn"),
         buildBtn: document.getElementById("buildBtn"),
         clearScheduleBtn: document.getElementById("clearScheduleBtn"),
         adaptFromInput: document.getElementById("adaptFromInput"),
@@ -1681,10 +1694,11 @@
 
       function setStaffRowsFromState(storedState) {
         const savedStaff = storedState?.staffEntries || [];
-        const names = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.name || "");
-        const inTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.inTime || defaultStaff[index]?.inTime || "08:30");
-        const lunchTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.lunchTime || defaultStaff[index]?.lunchTime || "");
-        const outTimes = Array.from({ length: 8 }, (_, index) => savedStaff?.[index]?.outTime || defaultStaff[index]?.outTime || "14:00");
+        const rowCount = settings.staffInputs.length;
+        const names = Array.from({ length: rowCount }, (_, index) => savedStaff?.[index]?.name || "");
+        const inTimes = Array.from({ length: rowCount }, (_, index) => savedStaff?.[index]?.inTime || defaultStaff[index]?.inTime || "08:30");
+        const lunchTimes = Array.from({ length: rowCount }, (_, index) => savedStaff?.[index]?.lunchTime || defaultStaff[index]?.lunchTime || "");
+        const outTimes = Array.from({ length: rowCount }, (_, index) => savedStaff?.[index]?.outTime || defaultStaff[index]?.outTime || "14:00");
 
         settings.staffInputs.forEach((input, index) => {
           input.value = names[index] || "";
@@ -1702,15 +1716,16 @@
 
       function setStudentRowsFromState(storedState) {
         const savedStudents = storedState?.studentEntries || storedState?.students || [];
-        const names = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.name || "");
-        const duplicates = Array.from({ length: 8 }, (_, index) => {
+        const rowCount = settings.studentInputs.length;
+        const names = Array.from({ length: rowCount }, (_, index) => savedStudents?.[index]?.name || "");
+        const duplicates = Array.from({ length: rowCount }, (_, index) => {
           if (savedStudents?.[index] && savedStudents[index].canDuplicate !== undefined) {
             return !!savedStudents[index].canDuplicate;
           }
           return true;
         });
-        const inTimes = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.inTime || "08:30");
-        const outTimes = Array.from({ length: 8 }, (_, index) => savedStudents?.[index]?.outTime || "14:00");
+        const inTimes = Array.from({ length: rowCount }, (_, index) => savedStudents?.[index]?.inTime || "08:30");
+        const outTimes = Array.from({ length: rowCount }, (_, index) => savedStudents?.[index]?.outTime || "14:00");
 
         settings.studentInputs.forEach((input, index) => {
           input.value = names[index] || "";
@@ -2856,6 +2871,7 @@
           setActiveBlocks(savedBlocks.length ? savedBlocks : defaultBlocks);
 
           if (parsed.staffEntries && Array.isArray(parsed.staffEntries) && parsed.staffEntries.length) {
+            ensureStaffRowCount(Math.max(8, parsed.staffEntries.length));
             setStaffRowsFromState(parsed);
           } else if (typeof parsed.staffNames === "string" && parsed.staffNames.trim()) {
             const legacyStaff = parsePeople(parsed.staffNames).map((person) => ({
@@ -2864,6 +2880,7 @@
               lunchTime: "",
               outTime: "14:00"
             }));
+            ensureStaffRowCount(Math.max(8, legacyStaff.length));
             setStaffRowsFromState({ staffEntries: legacyStaff });
           } else {
             setStaffRowsFromState({
@@ -2881,6 +2898,7 @@
           frozenScheduleCells = restoredSchedulePayload?.frozenCells || [];
 
           if (parsed.studentEntries && Array.isArray(parsed.studentEntries) && parsed.studentEntries.length) {
+            ensureStudentRowCount(Math.max(8, parsed.studentEntries.length));
             setStudentRowsFromState(parsed);
           } else if (typeof parsed.studentNames === "string" && parsed.studentNames.trim()) {
             const legacyStudents = parsePeople(parsed.studentNames, 1).map((student) => ({
@@ -2889,6 +2907,7 @@
               inTime: "08:30",
               outTime: "14:00"
             }));
+            ensureStudentRowCount(Math.max(8, legacyStudents.length));
             setStudentRowsFromState({ students: legacyStudents });
           } else {
             setStudentRowsFromState({
@@ -3006,6 +3025,136 @@
         setTimeInputValue(input, parsed, fallback, isOut);
       };
 
+      const refreshEntryLabels = () => {
+        if (settings.staffEntriesLabel) {
+          settings.staffEntriesLabel.textContent = `Staff (${settings.staffInputs.length} entries)`;
+        }
+        if (settings.studentEntriesLabel) {
+          settings.studentEntriesLabel.textContent = `Students (${settings.studentInputs.length} entries)`;
+        }
+      };
+
+      function bindStaffRowListeners(index) {
+        const nameInput = settings.staffInputs[index];
+        const inInput = settings.staffInInputs[index];
+        const lunchInput = settings.staffLunchInputs[index];
+        const outInput = settings.staffOutInputs[index];
+
+        nameInput?.addEventListener("input", () => {
+          refreshFixedAssignmentControls();
+          saveState();
+        });
+        inInput?.addEventListener("change", () => {
+          clampTimeInputField(inInput, false);
+          refreshFixedAssignmentControls();
+          saveState();
+        });
+        lunchInput?.addEventListener("change", saveState);
+        outInput?.addEventListener("change", () => {
+          clampTimeInputField(outInput, true);
+          refreshFixedAssignmentControls();
+          saveState();
+        });
+      }
+
+      function bindStudentRowListeners(index) {
+        const nameInput = settings.studentInputs[index];
+        const inInput = settings.studentInInputs[index];
+        const outInput = settings.studentOutInputs[index];
+        const duplicateInput = settings.studentDuplicates[index];
+
+        nameInput?.addEventListener("input", () => {
+          refreshFixedAssignmentControls();
+          saveState();
+          generatePossiblePairsFromInputs();
+        });
+        inInput?.addEventListener("change", () => {
+          clampTimeInputField(inInput, false);
+          refreshFixedAssignmentControls();
+          saveState();
+        });
+        outInput?.addEventListener("change", () => {
+          clampTimeInputField(outInput, true);
+          refreshFixedAssignmentControls();
+          saveState();
+        });
+        duplicateInput?.addEventListener("change", () => {
+          saveState();
+          generatePossiblePairsFromInputs();
+        });
+      }
+
+      const createStaffEntryRow = (index) => {
+        const row = document.createElement("div");
+        row.className = "student-row";
+        row.innerHTML = `
+          <input id="staffName-${index}" type="text" placeholder="Staff ${index + 1}">
+          <label class="student-time-wrap" for="staffIn-${index}">Entry <input id="staffIn-${index}" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+          <label class="student-time-wrap" for="staffLunch-${index}">Lunch <select id="staffLunch-${index}"><option value="">None</option><option value="11:00">11:00</option><option value="11:30">11:30</option></select></label>
+          <label class="student-time-wrap" for="staffOut-${index}">Exit <input id="staffOut-${index}" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+        `;
+        return row;
+      };
+
+      const createStudentEntryRow = (index) => {
+        const row = document.createElement("div");
+        row.className = "student-row";
+        row.innerHTML = `
+          <input id="studentName-${index}" type="text" placeholder="Student ${index + 1}">
+          <label class="student-time-wrap" for="studentIn-${index}">Entry <input id="studentIn-${index}" type="time" value="08:30" min="08:00" max="14:00" step="900"></label>
+          <label class="student-time-wrap" for="studentOut-${index}">Exit <input id="studentOut-${index}" type="time" value="14:00" min="08:00" max="14:00" step="900"></label>
+          <label class="dupe-label" for="studentDupe-${index}"><input id="studentDupe-${index}" type="checkbox" checked>Can double</label>
+        `;
+        return row;
+      };
+
+      const addStaffRow = (persist = true) => {
+        const index = settings.staffInputs.length;
+        const row = createStaffEntryRow(index);
+        settings.staffEntries.appendChild(row);
+        settings.staffInputs.push(row.querySelector(`#staffName-${index}`));
+        settings.staffInInputs.push(row.querySelector(`#staffIn-${index}`));
+        settings.staffLunchInputs.push(row.querySelector(`#staffLunch-${index}`));
+        settings.staffOutInputs.push(row.querySelector(`#staffOut-${index}`));
+        replaceTimeInputsWithSelects();
+        bindStaffRowListeners(index);
+        refreshEntryLabels();
+        if (persist) {
+          refreshFixedAssignmentControls();
+          saveState();
+        }
+      };
+
+      const addStudentRow = (persist = true) => {
+        const index = settings.studentInputs.length;
+        const row = createStudentEntryRow(index);
+        settings.studentEntries.appendChild(row);
+        settings.studentInputs.push(row.querySelector(`#studentName-${index}`));
+        settings.studentDuplicates.push(row.querySelector(`#studentDupe-${index}`));
+        settings.studentInInputs.push(row.querySelector(`#studentIn-${index}`));
+        settings.studentOutInputs.push(row.querySelector(`#studentOut-${index}`));
+        replaceTimeInputsWithSelects();
+        bindStudentRowListeners(index);
+        refreshEntryLabels();
+        if (persist) {
+          refreshFixedAssignmentControls();
+          generatePossiblePairsFromInputs();
+          saveState();
+        }
+      };
+
+      const ensureStaffRowCount = (count) => {
+        while (settings.staffInputs.length < count) {
+          addStaffRow(false);
+        }
+      };
+
+      const ensureStudentRowCount = (count) => {
+        while (settings.studentInputs.length < count) {
+          addStudentRow(false);
+        }
+      };
+
       settings.buildBtn.addEventListener("click", generate);
       settings.adaptBtn.addEventListener("click", adaptSchedule);
       settings.applyBlocksBtn.addEventListener("click", () => {
@@ -3021,58 +3170,13 @@
         );
       });
       settings.clearScheduleBtn.addEventListener("click", clearScheduleTable);
-
-      settings.staffInputs.forEach((input) => {
-        input.addEventListener("input", () => {
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-      });
       setActiveBlocks(defaultBlocks);
       replaceTimeInputsWithSelects();
-      settings.staffInInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-          clampTimeInputField(input, false);
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-      });
-      settings.staffLunchInputs.forEach((input) => {
-        input.addEventListener("change", saveState);
-      });
-      settings.staffOutInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-          clampTimeInputField(input, true);
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-      });
-
-      settings.studentInputs.forEach((input) => {
-        input.addEventListener("input", () => {
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-        input.addEventListener("input", () => generatePossiblePairsFromInputs());
-      });
-      settings.studentInInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-          clampTimeInputField(input, false);
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-      });
-      settings.studentOutInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-          clampTimeInputField(input, true);
-          refreshFixedAssignmentControls();
-          saveState();
-        });
-      });
-      settings.studentDuplicates.forEach((checkbox) => {
-        checkbox.addEventListener("change", saveState);
-        checkbox.addEventListener("change", () => generatePossiblePairsFromInputs());
-      });
+      settings.staffInputs.forEach((input, index) => bindStaffRowListeners(index));
+      settings.studentInputs.forEach((input, index) => bindStudentRowListeners(index));
+      settings.addStaffBtn.addEventListener("click", () => addStaffRow());
+      settings.addStudentBtn.addEventListener("click", () => addStudentRow());
+      refreshEntryLabels();
 
         bindPairDropZones();
         clearPairList(settings.pairOutput, true, "No pairs generated yet.");
