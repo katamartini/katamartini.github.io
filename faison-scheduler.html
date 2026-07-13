@@ -1030,6 +1030,26 @@
           .replaceAll("'", "&#39;");
       }
 
+      const normalizeStudentName = (value) => {
+        if (typeof value === "string") return value.trim();
+        if (!value || typeof value !== "object") return "";
+        const candidate = value.name ?? value.studentName ?? value.value ?? value.label;
+        return typeof candidate === "string" ? candidate.trim() : "";
+      };
+
+      const normalizeStudentList = (values, limit = Infinity) => Array.isArray(values)
+        ? values.map(normalizeStudentName).filter(Boolean).slice(0, limit)
+        : [];
+
+      const normalizeScheduleAssignments = (assignments) => Array.isArray(assignments)
+        ? assignments.map((row) => ({
+          ...row,
+          byStaff: Array.isArray(row?.byStaff)
+            ? row.byStaff.map((staffCell) => normalizeStudentList(staffCell))
+            : []
+        }))
+        : [];
+
       const schedulerRules = [
         "Respect fixed, manually locked, and previously completed frozen slots; invalid fixed slots are reported and skipped.",
         "Only schedule staff and students inside their entry/exit windows; staff lunch blocks are unavailable.",
@@ -1339,9 +1359,7 @@
       const normalizeFixedAssignment = (assignment) => {
         const time = String(assignment?.time || "").trim();
         const staffName = String(assignment?.staffName || "").trim();
-        const students = Array.isArray(assignment?.students)
-          ? assignment.students.map((name) => String(name || "").trim()).filter(Boolean)
-          : [];
+        const students = normalizeStudentList(assignment?.students);
         const uniqueStudents = Array.from(new Set(students)).slice(0, 2);
         if (!time || !staffName || !uniqueStudents.length) return null;
         return {
@@ -1358,9 +1376,7 @@
       const normalizeFrozenScheduleCell = (cell) => {
         const time = String(cell?.time || "").trim();
         const staffName = String(cell?.staffName || "").trim();
-        const students = Array.isArray(cell?.students)
-          ? cell.students.map((name) => String(name || "").trim()).filter(Boolean).slice(0, 2)
-          : [];
+        const students = normalizeStudentList(cell?.students, 2);
         if (!time || !staffName) return null;
         return {
           time,
@@ -1427,7 +1443,7 @@
         const staffIndex = staffNames.indexOf(staffName);
         const row = restoredSchedulePayload?.assignments?.find((assignmentRow) => assignmentRow.time === time);
         if (!row || staffIndex < 0) return [];
-        return (row.byStaff[staffIndex] || []).filter((name) => name !== "Materials");
+        return normalizeStudentList(row.byStaff[staffIndex]).filter((name) => name !== "Materials");
       };
 
       const syncRestoredScheduleCell = (time, staffName, assignment, preserveCellContent = false) => {
@@ -1548,8 +1564,8 @@
       };
 
       const renderFixedCellEditor = (row, staffName, staffCell, students, mode = "preview") => {
-        const selectedPrimary = staffCell[0] || "";
-        const selectedPair = staffCell[1] || "";
+        const selectedPrimary = normalizeStudentName(staffCell[0]);
+        const selectedPair = normalizeStudentName(staffCell[1]);
         const pairOptions = students.filter((student) =>
           student.canDuplicate && student.name !== selectedPrimary
         );
@@ -1583,7 +1599,7 @@
       };
 
       const renderCellActions = (time, staffName, staffCell, isFixed, isEditing) => {
-        const hasStudents = staffCell.some((name) => name !== "Materials");
+        const hasStudents = normalizeStudentList(staffCell).some((name) => name !== "Materials");
         const lockedClass = isFixed ? " is-locked" : "";
         const lockDisabled = !hasStudents && !isFixed ? " disabled" : "";
         return `
@@ -1623,7 +1639,7 @@
             ? assignmentResult.counts
             : [];
         return {
-          assignments: assignmentResult.assignments,
+          assignments: normalizeScheduleAssignments(assignmentResult.assignments),
           counts,
           unassignedBySlot: assignmentResult.unassignedBySlot || [],
           staff: assignmentResult.staff || [],
@@ -1644,7 +1660,7 @@
         }
 
         return {
-          assignments: payload.assignments,
+          assignments: normalizeScheduleAssignments(payload.assignments),
           counts: payload.counts instanceof Map
             ? payload.counts
             : new Map(Array.isArray(payload.counts) ? payload.counts : []),
@@ -2508,7 +2524,8 @@
             const labelClass = hasGeneratedAssignments ? "staff-label is-generated" : "staff-label";
 
             row.byStaff.forEach((staffCell, staffIndex) => {
-              const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
+              const cellStudents = normalizeStudentList(staffCell);
+              const isMaterials = cellStudents.length === 1 && cellStudents[0] === "Materials";
               const isFixed = row.fixedStaffIndexes?.includes(staffIndex);
               const isFrozen = row.frozenStaffIndexes?.includes(staffIndex);
               const fixedClass = isFixed || isFrozen ? " is-fixed" : "";
@@ -2519,14 +2536,14 @@
               const staffName = displayStaff[staffIndex];
               const isEditing = editingCells.has(getCellKey(row.time, staffName));
               const cellActions = hasGeneratedAssignments && !isUnavailable && !isFrozen
-                ? renderCellActions(row.time, staffName, staffCell, isFixed, isEditing)
+                ? renderCellActions(row.time, staffName, cellStudents, isFixed, isEditing)
                 : "";
               const actionClass = cellActions ? " has-cell-actions" : "";
 
               if (isPreview && !isUnavailable) {
                 cells.push(
                   `<td class="staff-cell editable-fixed-cell${fixedClass}">` +
-                  renderFixedCellEditor(row, staffName, staffCell, studentsForFixedEditors) +
+                  renderFixedCellEditor(row, staffName, cellStudents, studentsForFixedEditors) +
                   `</td>`
                 );
                 return;
@@ -2535,24 +2552,24 @@
               if (hasGeneratedAssignments && !isUnavailable && isEditing) {
                 cells.push(
                   `<td class="staff-cell editable-fixed-cell${actionClass}${fixedClass}">` +
-                  renderFixedCellEditor(row, staffName, staffCell, studentsForFixedEditors, "current") +
+                  renderFixedCellEditor(row, staffName, cellStudents, studentsForFixedEditors, "current") +
                   cellActions +
                   `</td>`
                 );
                 return;
               }
 
-              if (!staffCell.length) {
+              if (!cellStudents.length) {
                 cells.push(`<td class="staff-cell${actionClass}${fixedClass}${unavailableClass}"><span class="${labelClass}">-</span>${cellActions}</td>`);
                 return;
               }
 
               if (isMaterials) {
-                cells.push(`<td class="staff-cell materials-cell${actionClass}${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(staffCell[0])}</span>${cellActions}</td>`);
+                cells.push(`<td class="staff-cell materials-cell${actionClass}${fixedClass}${unavailableClass}"><span class="materials-label">${escapeHtml(cellStudents[0])}</span>${cellActions}</td>`);
                 return;
               }
 
-              cells.push(`<td class="staff-cell${actionClass}${fixedClass}${unavailableClass}"><span class="${labelClass}">${staffCell.map(escapeHtml).join("<br>")}</span>${cellActions}</td>`);
+              cells.push(`<td class="staff-cell${actionClass}${fixedClass}${unavailableClass}"><span class="${labelClass}">${cellStudents.map(escapeHtml).join("<br>")}</span>${cellActions}</td>`);
             });
 
             while (cells.length - 1 < displayStaff.length) {
@@ -2571,7 +2588,7 @@
         }
 
         const totalAssignments = displayAssignments.reduce((sum, row) => {
-          return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + staffCell.length, 0);
+          return sum + row.byStaff.reduce((lineSum, staffCell) => lineSum + normalizeStudentList(staffCell).length, 0);
         }, 0);
 
         if (isPreview) {
@@ -2681,9 +2698,7 @@
             const storedIndex = storedStaffIndexByName.has(person.name)
               ? storedStaffIndexByName.get(person.name)
               : currentIndex;
-            const students = Array.isArray(row.byStaff?.[storedIndex])
-              ? row.byStaff[storedIndex].filter(Boolean).slice(0, 2)
-              : [];
+            const students = normalizeStudentList(row.byStaff?.[storedIndex], 2);
             const cell = normalizeFrozenScheduleCell({
               time: slot.time,
               staffName: person.name,
