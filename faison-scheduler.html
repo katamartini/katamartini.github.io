@@ -181,6 +181,24 @@
       margin-top: 8px;
     }
 
+    .adapt-area {
+      border-top: 1px dashed var(--border);
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    .adapt-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .adapt-controls button {
+      width: auto;
+      white-space: nowrap;
+    }
+
     .student-name-grid {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -869,11 +887,19 @@
             <h3>Fixed slots</h3>
             <div id="fixedList" class="fixed-list" aria-live="polite"></div>
           </section>
-          <div class="actions">
-            <button id="clearScheduleBtn" class="secondary" type="button">Clear schedule table</button>
-            <button id="buildBtn" type="button">Fill schedule</button>
+        <div class="actions">
+          <button id="clearScheduleBtn" class="secondary" type="button">Clear schedule table</button>
+          <button id="buildBtn" type="button">Fill schedule</button>
+        </div>
+        <section class="adapt-area">
+          <label for="adaptFromInput">Regenerate from</label>
+          <div class="adapt-controls">
+            <select id="adaptFromInput" aria-label="Regenerate schedule from time"></select>
+            <button id="adaptBtn" class="secondary" type="button">Adapt schedule</button>
           </div>
+          <div class="help">Everything before this time stays locked. Only this block and later blocks are regenerated.</div>
         </section>
+      </section>
       </section>
 
       <section class="panel">
@@ -926,6 +952,8 @@
         fixedList: document.getElementById("fixedList"),
         buildBtn: document.getElementById("buildBtn"),
         clearScheduleBtn: document.getElementById("clearScheduleBtn"),
+        adaptFromInput: document.getElementById("adaptFromInput"),
+        adaptBtn: document.getElementById("adaptBtn"),
         notice: document.getElementById("notice"),
         scheduleHead: document.getElementById("scheduleHead"),
         scheduleBody: document.getElementById("scheduleBody"),
@@ -936,6 +964,7 @@
       let restoredPairBuckets = null;
       let restoredSchedulePayload = null;
       let fixedAssignments = [];
+      let frozenScheduleCells = [];
       let editingCells = new Set();
 
       const defaultStaff = [
@@ -1071,12 +1100,25 @@
 
       const getBlocksStateForStorage = () => activeBlocks.map((block) => block.time);
 
+      const refreshAdaptFromOptions = () => {
+        if (!settings.adaptFromInput) return;
+        const current = settings.adaptFromInput.value;
+        const options = activeBlocks.map((block) => block.time || formatClockMinutes(block.start));
+        settings.adaptFromInput.innerHTML = options
+          .map((time) => `<option value="${escapeHtml(time)}">${escapeHtml(time)}</option>`)
+          .join("");
+        if (options.includes(current)) {
+          settings.adaptFromInput.value = current;
+        }
+      };
+
       const setActiveBlocks = (blocks) => {
         activeBlocks = Array.isArray(blocks) && blocks.length ? blocks.slice() : defaultBlocks.slice();
         scheduleDayStart = activeBlocks[0].start;
         scheduleDayEnd = activeBlocks[activeBlocks.length - 1].start;
         settings.blockInput.value = blockTextFromBlocks(activeBlocks);
         settings.blockSummary.textContent = `${activeBlocks.length} row${activeBlocks.length === 1 ? "" : "s"} (${activeBlocks[0].time}-${activeBlocks[activeBlocks.length - 1].time})`;
+        refreshAdaptFromOptions();
       };
 
       const clampToScheduleTime = (rawMinutes, fallback = scheduleDayStart) => {
@@ -1274,6 +1316,24 @@
 
       const getFixedAssignmentsState = () => fixedAssignments
         .map(normalizeFixedAssignment)
+        .filter(Boolean);
+
+      const normalizeFrozenScheduleCell = (cell) => {
+        const time = String(cell?.time || "").trim();
+        const staffName = String(cell?.staffName || "").trim();
+        const students = Array.isArray(cell?.students)
+          ? cell.students.map((name) => String(name || "").trim()).filter(Boolean).slice(0, 2)
+          : [];
+        if (!time || !staffName) return null;
+        return {
+          time,
+          staffName,
+          students
+        };
+      };
+
+      const getFrozenScheduleCellsState = () => frozenScheduleCells
+        .map(normalizeFrozenScheduleCell)
         .filter(Boolean);
 
       const renderFixedAssignments = () => {
@@ -1530,6 +1590,9 @@
           counts,
           unassignedBySlot: assignmentResult.unassignedBySlot || [],
           staff: assignmentResult.staff || [],
+          frozenCells: Array.isArray(assignmentResult.frozenCells)
+            ? assignmentResult.frozenCells.map(normalizeFrozenScheduleCell).filter(Boolean)
+            : getFrozenScheduleCellsState(),
           relationshipRepeatCount: assignmentResult.relationshipRepeatCount || 0,
           unmetRelationshipCount: assignmentResult.unmetRelationshipCount || 0,
           fixedAssignmentIssues: Array.isArray(assignmentResult.fixedAssignmentIssues)
@@ -1550,6 +1613,9 @@
             : new Map(Array.isArray(payload.counts) ? payload.counts : []),
           unassignedBySlot: Array.isArray(payload.unassignedBySlot) ? payload.unassignedBySlot : [],
           staff: Array.isArray(payload.staff) ? payload.staff : [],
+          frozenCells: Array.isArray(payload.frozenCells)
+            ? payload.frozenCells.map(normalizeFrozenScheduleCell).filter(Boolean)
+            : [],
           relationshipRepeatCount: Number(payload.relationshipRepeatCount) || 0,
           unmetRelationshipCount: Number(payload.unmetRelationshipCount) || 0,
           fixedAssignmentIssues: Array.isArray(payload.fixedAssignmentIssues) ? payload.fixedAssignmentIssues : []
@@ -1828,7 +1894,14 @@
         return activeBlocks.slice();
       }
 
-      function buildAssignments(staff, students, slots, pairPriorityByKey = new Map(), fixedAssignmentInput = []) {
+      function buildAssignments(
+        staff,
+        students,
+        slots,
+        pairPriorityByKey = new Map(),
+        fixedAssignmentInput = [],
+        frozenCellInput = []
+      ) {
         const assignments = [];
         const staffNames = staff.map((person) => person.name);
         const counts = new Map(students.map((student) => [student.name, 0]));
@@ -1875,6 +1948,27 @@
         const fixedBySlotTime = new Map();
         const fixedCellKeys = new Set();
         const fixedStudentBySlot = new Map();
+        const frozenBySlotTime = new Map();
+        const frozenCellKeys = new Set();
+
+        getPairStateFromPayload(frozenCellInput).forEach((rawCell) => {
+          const cell = normalizeFrozenScheduleCell(rawCell);
+          if (!cell || !slotByTime.has(cell.time) || !staffIndexByName.has(cell.staffName)) {
+            return;
+          }
+
+          const staffIndex = staffIndexByName.get(cell.staffName);
+          const cellKey = `${cell.time}||${staffIndex}`;
+          if (frozenCellKeys.has(cellKey)) return;
+
+          frozenCellKeys.add(cellKey);
+          const existing = frozenBySlotTime.get(cell.time) || [];
+          existing.push({
+            staffIndex,
+            students: cell.students.slice()
+          });
+          frozenBySlotTime.set(cell.time, existing);
+        });
 
         getPairStateFromPayload(fixedAssignmentInput).forEach((rawAssignment) => {
           const assignment = normalizeFixedAssignment(rawAssignment);
@@ -1910,6 +2004,9 @@
           }
 
           const cellKey = `${assignment.time}||${staffIndex}`;
+          if (frozenCellKeys.has(cellKey)) {
+            return;
+          }
           if (fixedCellKeys.has(cellKey)) {
             fixedAssignmentIssues.push(`${issuePrefix}: another fixed assignment already uses that staff/time cell.`);
             return;
@@ -2040,7 +2137,12 @@
           const randomizedOrderings = shuffle(studentOrderings).map((ordering) => ordering.slice());
 
           const attemptSlot = (studentOrder, enforceNoConsecutiveDouble = false) => {
-            const row = { time: slot.time, byStaff: staff.map(() => []), fixedStaffIndexes: [] };
+            const row = {
+              time: slot.time,
+              byStaff: staff.map(() => []),
+              fixedStaffIndexes: [],
+              frozenStaffIndexes: []
+            };
             const loads = staff.map(() => 0);
             const assignedThisSlot = new Set();
             const localCounts = new Map(slotBaseCounts);
@@ -2050,20 +2152,35 @@
             let newRelationshipCount = 0;
             const lockedStaffIndexes = new Set();
 
+            const applyLockedCell = (lockedCell, isFrozen = false) => {
+              lockedStaffIndexes.add(lockedCell.staffIndex);
+              if (isFrozen) {
+                row.frozenStaffIndexes.push(lockedCell.staffIndex);
+              } else {
+                row.fixedStaffIndexes.push(lockedCell.staffIndex);
+              }
+              row.byStaff[lockedCell.staffIndex] = lockedCell.students.slice();
+              loads[lockedCell.staffIndex] = lockedCell.students.filter((studentName) => studentName !== "Materials").length;
+              lockedCell.students
+                .filter((studentName) => studentName !== "Materials")
+                .forEach((studentName) => {
+                  assignedThisSlot.add(studentName);
+                  localCounts.set(studentName, (localCounts.get(studentName) || 0) + 1);
+                  if ((staffStudentCounts[lockedCell.staffIndex].get(studentName) || 0) > 0) {
+                    slotRelationshipRepeatCount += 1;
+                  } else {
+                    newRelationshipCount += 1;
+                  }
+                });
+            };
+
+            (frozenBySlotTime.get(slot.time) || []).forEach((frozen) => {
+              applyLockedCell(frozen, true);
+            });
+
             (fixedBySlotTime.get(slot.time) || []).forEach((fixed) => {
-              lockedStaffIndexes.add(fixed.staffIndex);
-              row.fixedStaffIndexes.push(fixed.staffIndex);
-              row.byStaff[fixed.staffIndex] = fixed.students.map((student) => student.name);
-              loads[fixed.staffIndex] = fixed.students.length;
-              fixed.students.forEach((student) => {
-                assignedThisSlot.add(student.name);
-                localCounts.set(student.name, (localCounts.get(student.name) || 0) + 1);
-                if ((staffStudentCounts[fixed.staffIndex].get(student.name) || 0) > 0) {
-                  slotRelationshipRepeatCount += 1;
-                } else {
-                  newRelationshipCount += 1;
-                }
-              });
+              if (frozenCellKeys.has(`${slot.time}||${fixed.staffIndex}`)) return;
+              applyLockedCell(fixed);
             });
 
             const pickStaffIndex = (student) => {
@@ -2294,6 +2411,7 @@
           counts,
           unassignedBySlot,
           staff: staffNames,
+          frozenCells: getFrozenScheduleCellsState(),
           consecutiveDoubleSlots,
           relationshipRepeatCount,
           unmetRelationshipCount,
@@ -2317,6 +2435,9 @@
           : new Map(Array.isArray(rawCounts) ? rawCounts : []);
         const hasVisibleAssignments = assignments.length > 0;
         const hasGeneratedAssignments = hasVisibleAssignments && !isPreview;
+        if (settings.adaptBtn) {
+          settings.adaptBtn.disabled = !hasGeneratedAssignments;
+        }
         const displayStaff = Array.isArray(staff) && staff.length
           ? staff
           : parseStaffFromInputs().map((person) => person.name);
@@ -2352,14 +2473,15 @@
             row.byStaff.forEach((staffCell, staffIndex) => {
               const isMaterials = staffCell.length === 1 && staffCell[0] === "Materials";
               const isFixed = row.fixedStaffIndexes?.includes(staffIndex);
-              const fixedClass = isFixed ? " is-fixed" : "";
+              const isFrozen = row.frozenStaffIndexes?.includes(staffIndex);
+              const fixedClass = isFixed || isFrozen ? " is-fixed" : "";
               const rowBlock = blocksByTime.get(row.time);
-              const isUnavailable = row.unavailableStaffIndexes?.includes(staffIndex) ||
-                (rowBlock && staffForAvailability[staffIndex] && !isWithinTimeWindow(rowBlock, staffForAvailability[staffIndex]));
+              const isUnavailable = !isFrozen && (row.unavailableStaffIndexes?.includes(staffIndex) ||
+                (rowBlock && staffForAvailability[staffIndex] && !isWithinTimeWindow(rowBlock, staffForAvailability[staffIndex])));
               const unavailableClass = isUnavailable ? " unavailable-cell" : "";
               const staffName = displayStaff[staffIndex];
               const isEditing = editingCells.has(getCellKey(row.time, staffName));
-              const cellActions = hasGeneratedAssignments && !isUnavailable
+              const cellActions = hasGeneratedAssignments && !isUnavailable && !isFrozen
                 ? renderCellActions(row.time, staffName, staffCell, isFixed, isEditing)
                 : "";
               const actionClass = cellActions ? " has-cell-actions" : "";
@@ -2443,7 +2565,7 @@
           ? fixedAssignmentIssues.map(escapeHtml).join("<br>")
           : "None";
         const schedulerRules = [
-          "Respect fixed/locked slots; invalid fixed slots are reported and skipped.",
+          "Respect fixed, manually locked, and previously completed frozen slots; invalid fixed slots are reported and skipped.",
           "Only schedule staff and students inside their entry/exit windows; staff lunch blocks are unavailable.",
           "Assign a student at most once in the same time block.",
           "Fill every available staff cell before placing a second student with any staff.",
@@ -2482,6 +2604,7 @@
 
       function renderFixedSchedulePreview() {
         restoredSchedulePayload = null;
+        frozenScheduleCells = [];
         editingCells = new Set();
         const preview = buildFixedSchedulePreview();
         renderSchedule(preview.staff, preview);
@@ -2494,11 +2617,64 @@
       function clearScheduleTable() {
         restoredSchedulePayload = null;
         fixedAssignments = [];
+        frozenScheduleCells = [];
         editingCells = new Set();
         renderFixedAssignments();
         renderFixedSchedulePreview();
         saveState();
         showNotice("Schedule table cleared. Staff, students, blocks, and pair preferences were kept.");
+      }
+
+      function adaptSchedule() {
+        clearNotice();
+
+        if (!restoredSchedulePayload?.assignments?.length) {
+          showNotice("Generate a schedule before adapting it.");
+          return;
+        }
+
+        const slots = getBlocks();
+        const startTime = settings.adaptFromInput?.value || slots[0]?.time;
+        const startIndex = slots.findIndex((slot) => slot.time === startTime);
+        if (startIndex < 0) {
+          showNotice("Choose a valid time block to regenerate from.");
+          return;
+        }
+
+        const currentStaff = parseStaffFromInputs();
+        const storedStaff = Array.isArray(restoredSchedulePayload.staff)
+          ? restoredSchedulePayload.staff
+          : [];
+        const storedStaffIndexByName = new Map(storedStaff.map((name, index) => [name, index]));
+        const rowsByTime = new Map(restoredSchedulePayload.assignments.map((row) => [row.time, row]));
+        const frozenByKey = new Map(
+          getFrozenScheduleCellsState().map((cell) => [getCellKey(cell.time, cell.staffName), cell])
+        );
+
+        slots.slice(0, startIndex).forEach((slot) => {
+          const row = rowsByTime.get(slot.time);
+          if (!row) return;
+
+          currentStaff.forEach((person, currentIndex) => {
+            const storedIndex = storedStaffIndexByName.has(person.name)
+              ? storedStaffIndexByName.get(person.name)
+              : currentIndex;
+            const students = Array.isArray(row.byStaff?.[storedIndex])
+              ? row.byStaff[storedIndex].filter(Boolean).slice(0, 2)
+              : [];
+            const cell = normalizeFrozenScheduleCell({
+              time: slot.time,
+              staffName: person.name,
+              students
+            });
+            if (cell) {
+              frozenByKey.set(getCellKey(cell.time, cell.staffName), cell);
+            }
+          });
+        });
+
+        frozenScheduleCells = Array.from(frozenByKey.values());
+        generate({ adaptedFrom: startTime });
       }
 
       function applyBlockSetup(blocks, message) {
@@ -2584,6 +2760,7 @@
             ? parsed.fixedAssignments.map(normalizeFixedAssignment).filter(Boolean)
             : [];
           restoredSchedulePayload = getScheduleStateFromStorage(parsed?.lastSchedule || null);
+          frozenScheduleCells = restoredSchedulePayload?.frozenCells || [];
 
           if (parsed.studentEntries && Array.isArray(parsed.studentEntries) && parsed.studentEntries.length) {
             setStudentRowsFromState(parsed);
@@ -2608,6 +2785,7 @@
           restoredPairBuckets = null;
           restoredSchedulePayload = null;
           fixedAssignments = [];
+          frozenScheduleCells = [];
           setStudentRowsFromState({
             students: defaultStudents
           });
@@ -2617,6 +2795,7 @@
       function applyDefaults() {
         setActiveBlocks(defaultBlocks);
         fixedAssignments = [];
+        frozenScheduleCells = [];
         editingCells = new Set();
         setStaffRowsFromState({
           staffEntries: defaultStaff
@@ -2626,7 +2805,7 @@
         });
       }
 
-      function generate() {
+      function generate(options = {}) {
         clearNotice();
         editingCells = new Set();
 
@@ -2647,7 +2826,14 @@
         }
 
         const pairPriorityByKey = getPairPriorityMap();
-        const result = buildAssignments(staff, students, slots, pairPriorityByKey, getFixedAssignmentsState());
+        const result = buildAssignments(
+          staff,
+          students,
+          slots,
+          pairPriorityByKey,
+          getFixedAssignmentsState(),
+          getFrozenScheduleCellsState()
+        );
         const unassignedTotal = result.unassignedBySlot.reduce((sum, row) => sum + row.names.length, 0);
         const consecutiveDoubleSlots = result.consecutiveDoubleSlots || 0;
         const relationshipRepeatCount = result.relationshipRepeatCount || 0;
@@ -2676,11 +2862,18 @@
           showNotice("Each slot assigns one student per staff with doubling as needed to keep staffing balanced.");
         }
 
+        if (options.adaptedFrom) {
+          const generationNotice = settings.notice?.textContent?.trim();
+          const suffix = generationNotice ? ` ${generationNotice}` : "";
+          showNotice(`Schedule adapted from ${options.adaptedFrom}. Earlier time blocks are locked.${suffix}`);
+        }
+
         restoredSchedulePayload = getScheduleStateForStorage({
           assignments: result.assignments,
           counts: result.counts,
           unassignedBySlot: result.unassignedBySlot,
           staff: staffFromResult,
+          frozenCells: result.frozenCells,
           relationshipRepeatCount: result.relationshipRepeatCount,
           unmetRelationshipCount: result.unmetRelationshipCount,
           fixedAssignmentIssues: result.fixedAssignmentIssues
@@ -2696,6 +2889,7 @@
       };
 
       settings.buildBtn.addEventListener("click", generate);
+      settings.adaptBtn.addEventListener("click", adaptSchedule);
       settings.applyBlocksBtn.addEventListener("click", () => {
         applyBlockSetup(
           parseBlocksFromText(settings.blockInput.value),
