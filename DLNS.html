@@ -398,6 +398,21 @@ color:var(--m2);
 text-transform:uppercase;
 letter-spacing:.08em;
 margin-top:4px}
+.coverageStats{
+margin:-4px 0 14px}
+.coverageCard .value{
+font-size:18px}
+.coveragePct{
+color:var(--a);
+font-weight:900;
+margin-top:2px}
+.coverageSim{
+margin-top:7px;
+font-size:11px;
+line-height:1.35;
+color:var(--m)}
+.coverageSim b{
+color:var(--t)}
 .error{
 color:var(--bad);
 background:rgba(127,29,29,.28);
@@ -452,6 +467,8 @@ grid-template-columns:1fr}
 </section>
 <section class="grid g5" id="topStats">
 </section>
+<section class="grid g5 coverageStats" id="coverageStats">
+</section>
 <nav class="tabs" id="tabs">
 </nav>
 <section id="panels">
@@ -460,7 +477,7 @@ grid-template-columns:1fr}
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
 let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
 const SHEET_ID='1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4',GID='1738458418',CSV_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+GID,CACHE='likelyUnseenDrafts.csv.v1',CACHE_T='likelyUnseenDrafts.csvTime.v1',MAX_AGE=43200000,LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
-let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],sorts={
+let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,sorts={
 hero:{
 key:'picks',dir:'desc'},player:{
 key:'picks',dir:'desc'},duo:{
@@ -543,6 +560,40 @@ bindSort('trio',()=>renderTrios(currentHeroUniverse,countMaps(groupDrafts(true).
 bindSort('quint',()=>{const d=groupDrafts(true).drafts;renderQuints(d,countMaps(d))})}
 function statCard([id,l]){
 return'<div class="card"><div class="in"><div class="label">'+l+'</div><div class="value mono" id="'+id+'">0</div></div></div>'}
+function coverageCard(id,label){
+return'<div class="card coverageCard"><div class="in"><div class="label">'+label+'</div><div class="value mono" id="'+id+'Base">0 / 0</div><div class="coveragePct mono" id="'+id+'Pct">0.000%</div><div class="coverageSim mono" id="'+id+'Sim"></div></div></div>'}
+function coveragePct(seen,total){
+return total?(seen/total*100).toFixed(total>100000?3:1)+'%':'0.000%'}
+function possibleSeenForSide(kind,size,side,state,maps,heroes){
+const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),otherSide=side==='left'?'right':'left',blocked=new Set([...(state?.slots?.left?.bans||[]),...(state?.slots?.right?.bans||[]),...(state?.slots?.[otherSide]?.picks||[])].filter(Boolean)),mineSet=new Set(mine),avail=heroes.filter(h=>!blocked.has(h)&&!mineSet.has(h));
+let total=0,seen=0;
+if(size===6){
+total=nCk(avail.length,6-mine.length);
+maps.sixes.forEach((count,k)=>{
+const hs=k.split('|');
+if(mine.every(h=>hs.includes(h))&&hs.every(h=>!blocked.has(h)))seen++});
+return{
+seen,total}}
+const minMine=Math.max(0,size-(6-mine.length)),maxMine=Math.min(size,mine.length);
+for(let j=minMine;j<=maxMine;j++)total+=nCk(mine.length,j)*nCk(avail.length,size-j);
+maps[kind].forEach((count,k)=>{
+const hs=k.split('|');
+if(hs.every(h=>!blocked.has(h))&&new Set([...hs,...mine]).size<=6)seen++});
+return{
+seen,total}}
+function renderCoverageStats(state=window.draftSimState){
+const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
+if(!root||!heroes.length||!maps)return;
+const defs=[['duos','duo',2,'Seen duos'],['trios','trio',3,'Seen trios'],['quads','quad',4,'Seen quads'],['fives','quint',5,'Seen quints'],['sixes','draft',6,'Seen drafts']];
+if(!root.children.length)root.innerHTML=defs.map(([id,,,label])=>coverageCard(id,label)).join('');
+defs.forEach(([id,kind,size])=>{
+const seen=maps[id].size,total=nCk(heroes.length,size);
+$(id+'Base').textContent=num(seen)+' / '+num(total);
+$(id+'Pct').textContent=coveragePct(seen,total);
+if(state?.slots){
+const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
+$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(left.seen)+' / '+num(left.total)+' ('+coveragePct(left.seen,left.total)+')<br><b>'+esc(state.right||'Team 2')+':</b> '+num(right.seen)+' / '+num(right.total)+' ('+coveragePct(right.seen,right.total)+')'}
+else $(id+'Sim').textContent=''})}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
 function comboTab(k,title,noun,label,last){
@@ -921,6 +972,7 @@ currentHeroUniverse=heroes;
 currentAllDrafts=groupDrafts(false).drafts;
 const maps=countMaps(built.drafts),possible=nCk(heroes.length,6),w={
 heroes:+$('wHeroes').value||0,duos:+$('wDuos').value||0,trios:+$('wTrios').value||0,quads:+$('wQuads').value||0,fives:+$('wFives').value||0};
+currentCoverageMaps=maps;
 renderHeroStats(currentAllDrafts);
 renderPlayerStats(currentAllDrafts);
 renderRosterMoves(currentAllDrafts);
@@ -933,6 +985,7 @@ renderQuints(built.drafts,maps);
 Object.entries({
 rawRows:records.length,teamDrafts:built.drafts.length,heroUniverse:heroes.length,seenSixes:maps.sixes.size,possibleSixes:possible,uniqueHeroes:maps.heroes.size,uniqueDuos:maps.duos.size,uniqueTrios:maps.trios.size,uniqueQuads:maps.quads.size,uniqueFives:maps.fives.size}).forEach(([id,v])=>$(id).textContent=num(v));
 $('coverage').textContent=possible?(maps.sixes.size/possible*100).toFixed(3)+'%':'0.000%';
+renderCoverageStats();
 renderResults(heroes.length<6?[]:likelyUnseen(heroes,maps,w))}
 function sched(){
 clearTimeout(rt);
@@ -1655,7 +1708,7 @@ return '<section class="simSide '+side+'">'+
 simPastDraftsHTML(side)+
 '</section>'}
 function renderSim(){
-const root=$(ID+'Root');if(!root)return;saveSim();const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
+const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
 sim.left=e.target.value;saveSim()};$('simLeftTeam').onchange=e=>{
 sim.left=e.target.value;saveSim();renderSim()};$('simRightTeam').oninput=e=>{
 sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
