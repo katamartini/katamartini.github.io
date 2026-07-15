@@ -562,8 +562,8 @@ function statCard([id,l]){
 return'<div class="card"><div class="in"><div class="label">'+l+'</div><div class="value mono" id="'+id+'">0</div></div></div>'}
 function coverageCard(id,label){
 return'<div class="card coverageCard"><div class="in"><div class="label">'+label+'</div><div class="value mono" id="'+id+'Base">0 / 0</div><div class="coveragePct mono" id="'+id+'Pct">0.000%</div><div class="coverageSim mono" id="'+id+'Sim"></div></div></div>'}
-function coveragePct(seen,total){
-return total?(seen/total*100).toFixed(total>100000?3:1)+'%':'0.000%'}
+function coveragePct(count,total){
+return total?(count/total*100).toFixed(total>100000?3:1)+'%':'0.000%'}
 function possibleSeenForSide(kind,size,side,state,maps,heroes){
 const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),otherSide=side==='left'?'right':'left',blocked=new Set([...(state?.slots?.left?.bans||[]),...(state?.slots?.right?.bans||[]),...(state?.slots?.[otherSide]?.picks||[])].filter(Boolean)),mineSet=new Set(mine),avail=heroes.filter(h=>!blocked.has(h)&&!mineSet.has(h));
 let total=0,seen=0;
@@ -584,15 +584,16 @@ seen,total}}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
-const defs=[['duos','duo',2,'Seen duos'],['trios','trio',3,'Seen trios'],['quads','quad',4,'Seen quads'],['fives','quint',5,'Seen quints'],['sixes','draft',6,'Seen drafts']];
+const defs=[['duos','duo',2,'Unseen duos'],['trios','trio',3,'Unseen trios'],['quads','quad',4,'Unseen quads'],['fives','quint',5,'Unseen quints'],['sixes','draft',6,'Unseen drafts']];
 if(!root.children.length)root.innerHTML=defs.map(([id,,,label])=>coverageCard(id,label)).join('');
 defs.forEach(([id,kind,size])=>{
-const seen=maps[id].size,total=nCk(heroes.length,size);
-$(id+'Base').textContent=num(seen)+' / '+num(total);
-$(id+'Pct').textContent=coveragePct(seen,total);
+const seen=maps[id].size,total=nCk(heroes.length,size),unseen=Math.max(0,total-seen);
+$(id+'Base').textContent=num(unseen)+' / '+num(total);
+$(id+'Pct').textContent=coveragePct(unseen,total);
 if(state?.slots){
 const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
-$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(left.seen)+' / '+num(left.total)+' ('+coveragePct(left.seen,left.total)+')<br><b>'+esc(state.right||'Team 2')+':</b> '+num(right.seen)+' / '+num(right.total)+' ('+coveragePct(right.seen,right.total)+')'}
+const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
+$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+')<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+')'}
 else $(id+'Sim').textContent=''})}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
