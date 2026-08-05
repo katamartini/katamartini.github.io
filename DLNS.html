@@ -620,7 +620,7 @@ const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleS
 const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
 const leftNew=newPickedCombosForSide(id,size,'left',state,maps),rightNew=newPickedCombosForSide(id,size,'right',state,maps);
 const newKeys=new Set([...leftNew.items,...rightNew.items].map(keyOf)),projectedUnseen=Math.max(0,unseen-newKeys.size);
-const leftNewText=size===6?'':' · New '+num(leftNew.items.length)+' / '+num(left.total)+coverageComboIcons(leftNew.items),rightNewText=size===6?'':' · New '+num(rightNew.items.length)+' / '+num(right.total)+coverageComboIcons(rightNew.items);
+const leftNewText=size===6?coverageComboIcons(leftNew.items):' · New '+num(leftNew.items.length)+' / '+num(left.total)+coverageComboIcons(leftNew.items),rightNewText=size===6?coverageComboIcons(rightNew.items):' · New '+num(rightNew.items.length)+' / '+num(right.total)+coverageComboIcons(rightNew.items);
 $(id+'Pct').textContent=coveragePct(unseen,total)+' -> '+coveragePct(projectedUnseen,total);
 $(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+')'+leftNewText+'<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+')'+rightNewText}
 else{
