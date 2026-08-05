@@ -615,13 +615,16 @@ if(!root.children.length)root.innerHTML=defs.map(([id,,,label])=>coverageCard(id
 defs.forEach(([id,kind,size])=>{
 const seen=maps[id].size,total=nCk(heroes.length,size),unseen=Math.max(0,total-seen);
 $(id+'Base').textContent=num(unseen)+' / '+num(total);
-$(id+'Pct').textContent=coveragePct(unseen,total);
 if(state?.slots){
 const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
 const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
 const leftNew=newPickedCombosForSide(id,size,'left',state,maps),rightNew=newPickedCombosForSide(id,size,'right',state,maps);
+const newKeys=new Set([...leftNew.items,...rightNew.items].map(keyOf)),projectedUnseen=Math.max(0,unseen-newKeys.size);
+$(id+'Pct').textContent=coveragePct(unseen,total)+' -> '+coveragePct(projectedUnseen,total);
 $(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+') · New '+num(leftNew.items.length)+' / '+num(leftNew.total)+coverageComboIcons(leftNew.items)+'<b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+') · New '+num(rightNew.items.length)+' / '+num(rightNew.total)+coverageComboIcons(rightNew.items)}
-else $(id+'Sim').textContent=''})}
+else{
+$(id+'Pct').textContent=coveragePct(unseen,total);
+$(id+'Sim').textContent=''}})}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
 function comboTab(k,title,noun,label,last){
