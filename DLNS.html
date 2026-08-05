@@ -581,6 +581,13 @@ const hs=k.split('|');
 if(hs.every(h=>!blocked.has(h))&&new Set([...hs,...mine]).size<=6)seen++});
 return{
 seen,total}}
+function newPickedCombosForSide(kind,size,side,state,maps){
+const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),total=nCk(mine.length,size);
+let unseen=0;
+combos(mine,size,p=>{
+if(!maps[kind].has(keyOf(p)))unseen++});
+return{
+unseen,total}}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
@@ -593,7 +600,8 @@ $(id+'Pct').textContent=coveragePct(unseen,total);
 if(state?.slots){
 const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
 const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
-$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+')<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+')'}
+const leftNew=newPickedCombosForSide(id,size,'left',state,maps),rightNew=newPickedCombosForSide(id,size,'right',state,maps);
+$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+') · New '+num(leftNew.unseen)+' / '+num(leftNew.total)+'<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+') · New '+num(rightNew.unseen)+' / '+num(rightNew.total)}
 else $(id+'Sim').textContent=''})}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
