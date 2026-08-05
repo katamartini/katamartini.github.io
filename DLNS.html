@@ -413,6 +413,23 @@ line-height:1.35;
 color:var(--m)}
 .coverageSim b{
 color:var(--t)}
+.coverageNewCombos{
+display:flex;
+flex-wrap:wrap;
+gap:4px;
+margin:3px 0 6px}
+.coverageCombo{
+display:inline-flex;
+gap:2px;
+align-items:center;
+padding:2px;
+border:1px solid rgba(125,211,252,.22);
+border-radius:7px;
+background:rgba(125,211,252,.07)}
+.coverageCombo .sIcon{
+width:16px;
+height:16px;
+border-radius:5px}
 .error{
 color:var(--bad);
 background:rgba(127,29,29,.28);
@@ -583,11 +600,13 @@ return{
 seen,total}}
 function newPickedCombosForSide(kind,size,side,state,maps){
 const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),total=nCk(mine.length,size);
-let unseen=0;
+const items=[];
 combos(mine,size,p=>{
-if(!maps[kind].has(keyOf(p)))unseen++});
+if(!maps[kind].has(keyOf(p)))items.push(p)});
 return{
-unseen,total}}
+items,total}}
+function coverageComboIcons(items){
+return items.length?'<div class="coverageNewCombos">'+items.map(combo=>'<span class="coverageCombo" title="'+esc(combo.join(' + '))+'">'+combo.map(h=>ih(h,'sIcon')).join('')+'</span>').join('')+'</div>':''}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
@@ -601,7 +620,7 @@ if(state?.slots){
 const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
 const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
 const leftNew=newPickedCombosForSide(id,size,'left',state,maps),rightNew=newPickedCombosForSide(id,size,'right',state,maps);
-$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+') · New '+num(leftNew.unseen)+' / '+num(leftNew.total)+'<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+') · New '+num(rightNew.unseen)+' / '+num(rightNew.total)}
+$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+') · New '+num(leftNew.items.length)+' / '+num(leftNew.total)+coverageComboIcons(leftNew.items)+'<b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+') · New '+num(rightNew.items.length)+' / '+num(rightNew.total)+coverageComboIcons(rightNew.items)}
 else $(id+'Sim').textContent=''})}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
