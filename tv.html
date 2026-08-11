@@ -1438,6 +1438,7 @@
         watchBaseUrl: show.watchBaseUrl ? String(show.watchBaseUrl) : "",
         imdbId: show.imdbId || "",
         ratingBackfilledAt: show.ratingBackfilledAt || "",
+        lastWatchedAt: typeof show.lastWatchedAt === "string" ? show.lastWatchedAt : "",
         addedAt: show.addedAt || new Date().toISOString(),
         updatedAt: show.updatedAt || new Date().toISOString(),
       };
@@ -1467,6 +1468,23 @@
       const end = show.ended ? show.ended.slice(0, 4) : "";
       if (start && end && start !== end) return `${start}-${end}`;
       return start || end || "Unknown year";
+    }
+
+    function formatLastWatchedDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }).format(date);
+    }
+
+    function lastWatchedText(show) {
+      const date = formatLastWatchedDate(show.lastWatchedAt);
+      if (date) return `Last watched: ${date}`;
+      return watchedCount(show) ? "Last watched: Date not recorded" : "Nothing watched yet";
     }
 
     function showMeta(show) {
@@ -1625,10 +1643,15 @@
     }
 
     function markAllEpisodesWatched(show) {
+      let markedAny = false;
       show.episodes.forEach((episode) => {
-        show.watched[episodeKey(episode)] = true;
+        const key = episodeKey(episode);
+        if (!show.watched[key]) markedAny = true;
+        show.watched[key] = true;
       });
-      show.updatedAt = new Date().toISOString();
+      const now = new Date().toISOString();
+      if (markedAny) show.lastWatchedAt = now;
+      show.updatedAt = now;
       syncAutoCompletion(show);
     }
 
@@ -1887,6 +1910,7 @@
               <div class="metric"><b>${progress(show)}%</b><span>Progress</span></div>
             </div>
             <div class="meta">${next ? `Next up: S${next.season}E${next.number} ${escapeAttr(next.name)}` : "Caught up on every aired episode."}</div>
+            <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
           </div>
         </header>
 
@@ -1986,6 +2010,7 @@
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
             <div class="meta">${watched}/${aired} aired watched</div>
+            <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
           </div>
           <div class="inline-episodes">
@@ -2256,6 +2281,7 @@
         fresh.status = existing.status;
         fresh.watched = existing.watched;
         fresh.watchBaseUrl = existing.watchBaseUrl;
+        fresh.lastWatchedAt = existing.lastWatchedAt;
         fresh.addedAt = existing.addedAt;
         fresh.updatedAt = new Date().toISOString();
         syncAutoCompletion(fresh);
@@ -2275,12 +2301,14 @@
       if (!episode) return;
 
       const key = episodeKey(episode);
+      const now = new Date().toISOString();
       if (show.watched[key]) {
         delete show.watched[key];
       } else {
         show.watched[key] = true;
+        show.lastWatchedAt = now;
       }
-      show.updatedAt = new Date().toISOString();
+      show.updatedAt = now;
       syncAutoCompletion(show);
       render({ persistFile: true });
     }
@@ -2302,7 +2330,9 @@
           show.watched[key] = true;
         }
       });
-      show.updatedAt = new Date().toISOString();
+      const now = new Date().toISOString();
+      if (visible.length && !allWatched) show.lastWatchedAt = now;
+      show.updatedAt = now;
       syncAutoCompletion(show);
       render({ persistFile: true });
     }
