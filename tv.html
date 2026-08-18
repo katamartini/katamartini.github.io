@@ -1303,6 +1303,7 @@
     let repoFileSha = null;
     let repoSaveTimer = null;
     let isRepoSaving = false;
+    let repoSaveQueued = false;
     let isBackfillingRatings = false;
     const VIEW_MODES = ["show", "list", "queue"];
 
@@ -1321,6 +1322,7 @@
       viewMode: "list",
       isSearching: false,
       imdbRatings: { shows: {} },
+      dataUpdatedAt: "",
     };
 
     const nodes = {
@@ -1356,6 +1358,7 @@
       try {
         const parsed = JSON.parse(raw);
         state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
+        state.dataUpdatedAt = payloadDataUpdatedAt(parsed);
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
         state.sortMode = parsed.sortMode || "title-asc";
@@ -1387,12 +1390,16 @@
         autoSync: nodes.repoAutoSync.checked,
       }));
       renderRepoStatus();
+      if (nodes.repoAutoSync.checked && nodes.githubToken.value.trim()) {
+        scheduleRepoSave();
+      }
     }
 
     function trackerPayload() {
       return {
-        version: 1,
+        version: 2,
         savedAt: new Date().toISOString(),
+        dataUpdatedAt: state.dataUpdatedAt,
         shows: state.shows,
         selectedId: state.selectedId,
         libraryFilter: state.libraryFilter,
@@ -1402,8 +1409,33 @@
       };
     }
 
-    function applyTrackerPayload(parsed) {
+    function parseTimestamp(value) {
+      const timestamp = Date.parse(value || "");
+      return Number.isFinite(timestamp) ? timestamp : 0;
+    }
+
+    function payloadDataUpdatedAt(payload, trustSavedAt = false) {
+      const explicit = parseTimestamp(payload?.dataUpdatedAt);
+      if (explicit) return new Date(explicit).toISOString();
+
+      const savedAt = parseTimestamp(payload?.savedAt);
+      if (trustSavedAt && savedAt) return new Date(savedAt).toISOString();
+
+      const showUpdatedAt = (Array.isArray(payload?.shows) ? payload.shows : []).reduce((latest, show) => {
+        return Math.max(
+          latest,
+          parseTimestamp(show.updatedAt),
+          parseTimestamp(show.lastWatchedAt),
+          parseTimestamp(show.addedAt),
+        );
+      }, 0);
+      const timestamp = showUpdatedAt || savedAt;
+      return timestamp ? new Date(timestamp).toISOString() : "";
+    }
+
+    function applyTrackerPayload(parsed, options = {}) {
       state.shows = Array.isArray(parsed.shows) ? parsed.shows.map(normalizeShow) : [];
+      state.dataUpdatedAt = payloadDataUpdatedAt(parsed, !!options.trustSavedAt);
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
@@ -1721,6 +1753,9 @@
     }
 
     function render(options = {}) {
+      if (options.persistFile) {
+        state.dataUpdatedAt = new Date().toISOString();
+      }
       renderSummary();
       renderLibraryFilter();
       renderSearchResults();
@@ -2623,7 +2658,7 @@
           return;
         }
 
-        applyTrackerPayload(parsed);
+        applyTrackerPayload(parsed, { trustSavedAt: true });
         render();
         backfillMissingEpisodeRatings();
         showToast(`Loaded ${GITHUB_DATA_PATH}.`);
@@ -2634,9 +2669,7 @@
       }
     }
 
-    async function autoLoadRepoDataIfEmpty() {
-      if (state.shows.length > 0) return;
-
+    async function syncRepoDataOnStart() {
       try {
         renderRepoStatus("Checking repo data...");
         const parsed = await fetchRepoData("");
@@ -2645,10 +2678,19 @@
           return;
         }
 
-        applyTrackerPayload(parsed);
-        render();
-        backfillMissingEpisodeRatings();
-        showToast(`Loaded ${GITHUB_DATA_PATH}.`);
+        const localTimestamp = parseTimestamp(state.dataUpdatedAt);
+        const repoTimestamp = parseTimestamp(payloadDataUpdatedAt(parsed, true));
+        if (!state.shows.length || repoTimestamp > localTimestamp) {
+          applyTrackerPayload(parsed, { trustSavedAt: true });
+          render();
+          showToast(`Loaded newer ${GITHUB_DATA_PATH}.`);
+          return;
+        }
+
+        renderRepoStatus();
+        if (localTimestamp > repoTimestamp && nodes.repoAutoSync.checked && nodes.githubToken.value.trim()) {
+          scheduleRepoSave();
+        }
       } catch {
         renderRepoStatus();
       }
@@ -2659,6 +2701,10 @@
       if (!token) {
         renderRepoStatus();
         showToast("Add a GitHub token first.");
+        return;
+      }
+      if (isRepoSaving) {
+        repoSaveQueued = true;
         return;
       }
 
@@ -2687,6 +2733,11 @@
         const message = error?.message || "Could not save repo data.";
         renderRepoStatus(message);
         showToast(message);
+      } finally {
+        if (repoSaveQueued) {
+          repoSaveQueued = false;
+          scheduleRepoSave();
+        }
       }
     }
 
@@ -2949,13 +3000,17 @@
       nodes.importFile.value = "";
     });
 
-    loadRepoSyncSettings();
-    loadState();
-    syncAutoCompletion();
-    render();
-    loadImdbRatings();
-    backfillMissingEpisodeRatings();
-    autoLoadRepoDataIfEmpty();
+    async function initializeTracker() {
+      loadRepoSyncSettings();
+      loadState();
+      syncAutoCompletion();
+      render();
+      loadImdbRatings();
+      await syncRepoDataOnStart();
+      backfillMissingEpisodeRatings();
+    }
+
+    initializeTracker();
   </script>
 </body>
 </html>
