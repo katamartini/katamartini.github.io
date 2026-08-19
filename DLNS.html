@@ -154,7 +154,7 @@ font-size:13px}
 .r b{
 color:var(--t)}
 .match{
-grid-template-columns:130px 65px 1fr 70px 115px 1.4fr}
+grid-template-columns:130px 65px 1fr 70px 115px 1.4fr 110px}
 .draft{
 grid-template-columns:70px minmax(280px,1.25fr) 110px 1fr;
 align-items:start}
@@ -654,6 +654,12 @@ const [id,l,t]=x.split('|');if(t==='select')return'<label><div class="label">'+l
 function weights(){
 return ['wHeroes|Heroes|0.35','wDuos|Duos|1','wTrios|Trios|2','wQuads|Quads|4','wFives|Fives|8'].map(x=>{
 const[a,b,c]=x.split('|');return'<label class="card in"><div class="label">'+b+' weight</div><input id="'+a+'" type="number" value="'+c+'" min="0" step=".25"></label>'}).join('')}
+function currentLikelyWeights(){
+return{
+heroes:+($('wHeroes')?.value)||0.35,duos:+($('wDuos')?.value)||1,trios:+($('wTrios')?.value)||2,quads:+($('wQuads')?.value)||4,fives:+($('wFives')?.value)||8}}
+function suffix(n){
+const v=n%100;
+return v>=11&&v<=13?'th':n%10===1?'st':n%10===2?'nd':n%10===3?'rd':'th'}
 function bindSort(type,render){
 document.querySelectorAll('.'+type+'Sort').forEach(b=>b.onclick=()=>{
 const k=b.dataset.sort,s=sorts[type];sorts[type]=s.key===k?{
@@ -754,6 +760,7 @@ scores,total,signature};
 rarityBuildStatus=null;
 simRarityCache.clear();
 if($('draftsimRoot'))renderSim();
+if($('draftSearchResults'))renderDraftSearch(currentHeroUniverse);
 return}
 setTimeout(step,0)}
 setTimeout(step,0)}
@@ -764,6 +771,16 @@ const mid=(lo+hi)>>1;
 if(index.scores[mid]<=targetScore)lo=mid+1;
 else hi=mid}
 return index.total-lo+1}
+function draftRarityInfo(draftHeroes){
+const heroes=currentHeroUniverse,maps=currentCoverageMaps,w=currentLikelyWeights();
+if(!heroes.length||!maps)return null;
+const sig=raritySignature(heroes,maps,w);
+if(!currentRarityIndex||currentRarityIndex.signature!==sig){
+scheduleRarityIndex(heroes,maps,w);
+return null}
+const total=currentRarityIndex.total,rank=rarityRankFromIndex(score(draftHeroes,maps,w).total,currentRarityIndex);
+return{
+rank,total}}
 function topSub(c,k,m){
 const out=[];
 combos(c,k,p=>{
@@ -807,10 +824,10 @@ length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new
 numeric:true}),heroSort=(a,b)=>{
 for(let i=0;i<Math.max(a.heroes.length,b.heroes.length);i++){
 const c=String(a.heroes[i]||'').localeCompare(String(b.heroes[i]||''));if(c)return c}
-return 0},s=sorts.search,dir=s.dir==='asc'?1:-1;
-matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||-matchSort(a,b):dir*matchSort(a,b));
+return 0},rarityRank=m=>draftRarityInfo(m.heroes)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes);return r?num(r.rank)+suffix(r.rank):'calculating...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
+matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||-matchSort(a,b):s.key==='rarityRank'?dir*((rarityRank(a)>rarityRank(b))-(rarityRank(a)<rarityRank(b)))||-matchSort(a,b):dir*matchSort(a,b));
 $('draftSearchSummary').textContent=unique.length<entered.length?'Each selected hero needs to be unique.':unique.length?'Showing '+matches.length+' of '+all.length+' drafts containing '+unique.join(' / ')+'.':'Showing all '+matches.length+' drafts.';
-$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div></div>').join('');
+$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div><div><button class="sort searchSort" data-sort="rarityRank">Rarity Rank</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div><div class="mono">'+rarityText(m)+'</div></div>').join('');
 bindSort('search',()=>renderDraftSearch(currentHeroUniverse));
 markSort('search')}
 function renderCombo(kind,heroes,m){
@@ -1770,11 +1787,7 @@ simRankCache={
 duo:simRankedCombos('duo'),trio:simRankedCombos('trio')}}
 let simRarityCache=new Map();
 function simLikelyWeights(){
-return{
-heroes:+($('wHeroes')?.value)||0.35,duos:+($('wDuos')?.value)||1,trios:+($('wTrios')?.value)||2,quads:+($('wQuads')?.value)||4,fives:+($('wFives')?.value)||8}}
-function suffix(n){
-const v=n%100;
-return v>=11&&v<=13?'th':n%10===1?'st':n%10===2?'nd':n%10===3?'rd':'th'}
+return currentLikelyWeights()}
 function simDraftRarity(side){
 const picked=sim.slots[side].picks.filter(Boolean);
 if(picked.length!==6)return'';
