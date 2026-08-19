@@ -716,13 +716,17 @@ for(let s=2;s<=6;s++){
 const m=[null,null,maps.duos,maps.trios,maps.quads,maps.fives,maps.sixes][s];
 combos(d.heroes,s,p=>add(m,keyOf(p)))}}
 return maps}
-function avgLog(c,k,m){
+function avgLog(c,k,m,excludeSet){
 let s=0,n=0;
 combos(c,k,p=>{
-s+=Math.log1p(m.get(keyOf(p))||0);n++});
+s+=Math.log1p(adjustedCount(m,keyOf(p),p,excludeSet));n++});
 return n?s/n:0}
-function score(c,m,w){
-const heroAvg=c.reduce((s,h)=>s+Math.log1p(m.heroes.get(h)||0),0)/c.length,duoAvg=avgLog(c,2,m.duos),trioAvg=avgLog(c,3,m.trios),quadAvg=avgLog(c,4,m.quads),fiveAvg=avgLog(c,5,m.fives);
+function adjustedCount(m,k,p,excludeSet){
+const count=m.get(k)||0;
+return Math.max(0,count-(excludeSet&&p.every(h=>excludeSet.has(h))?1:0))}
+function score(c,m,w,excludeDraft){
+const excludeSet=excludeDraft?new Set(excludeDraft):null;
+const heroAvg=c.reduce((s,h)=>s+Math.log1p(adjustedCount(m.heroes,h,[h],excludeSet)),0)/c.length,duoAvg=avgLog(c,2,m.duos,excludeSet),trioAvg=avgLog(c,3,m.trios,excludeSet),quadAvg=avgLog(c,4,m.quads,excludeSet),fiveAvg=avgLog(c,5,m.fives,excludeSet);
 return{
 total:w.heroes*heroAvg+w.duos*duoAvg+w.trios*trioAvg+w.quads*quadAvg+w.fives*fiveAvg,heroAvg,duoAvg,trioAvg,quadAvg,fiveAvg}}
 function raritySignature(heroes,maps,w){
@@ -800,14 +804,14 @@ const mid=(lo+hi)>>1;
 if(index.scores[mid]<=targetScore)lo=mid+1;
 else hi=mid}
 return index.total-lo+1}
-function draftRarityInfo(draftHeroes){
+function draftRarityInfo(draftHeroes,excludeSelf){
 const heroes=currentHeroUniverse,maps=currentCoverageMaps,w=currentLikelyWeights();
 if(!heroes.length||!maps)return null;
 const sig=raritySignature(heroes,maps,w);
 if(!currentRarityIndex||currentRarityIndex.signature!==sig){
 scheduleRarityIndex(heroes,maps,w);
 return null}
-const total=currentRarityIndex.total,rank=rarityRankFromIndex(score(draftHeroes,maps,w).total,currentRarityIndex);
+const total=currentRarityIndex.total,rank=rarityRankFromIndex(score(draftHeroes,maps,w,excludeSelf?draftHeroes:null).total,currentRarityIndex);
 return{
 rank,total}}
 function topSub(c,k,m){
@@ -854,7 +858,7 @@ length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new
 numeric:true}),heroSort=(a,b)=>{
 for(let i=0;i<Math.max(a.heroes.length,b.heroes.length);i++){
 const c=String(a.heroes[i]||'').localeCompare(String(b.heroes[i]||''));if(c)return c}
-return 0},rarityRank=m=>draftRarityInfo(m.heroes)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes);return r?num(r.rank)+suffix(r.rank):'...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
+return 0},rarityRank=m=>draftRarityInfo(m.heroes,true)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes,true);return r?num(r.rank)+suffix(r.rank):'...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
 matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||-matchSort(a,b):s.key==='rarityRank'?dir*((rarityRank(a)>rarityRank(b))-(rarityRank(a)<rarityRank(b)))||-matchSort(a,b):dir*matchSort(a,b));
 $('draftSearchSummary').textContent=unique.length<entered.length?'Each selected hero needs to be unique.':unique.length?'Showing '+matches.length+' of '+all.length+' drafts containing '+unique.join(' / ')+'.':'Showing all '+matches.length+' drafts.';
 $('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div><div><button class="sort searchSort" data-sort="rarityRank">Likelihood Rank</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div><div class="mono">'+rarityText(m)+'</div></div>').join('');
