@@ -100,6 +100,12 @@ color:var(--m);
 border-radius:999px;
 padding:5px 8px;
 font-size:12px}
+.rarityProgress{
+white-space:nowrap}
+.rarityProgress.ready{
+border-color:rgba(134,239,172,.42);
+background:rgba(22,101,52,.22);
+color:var(--good)}
 .chip{
 border:1px solid var(--b);
 background:var(--p2);
@@ -635,7 +641,7 @@ return'<section id="tab-'+k+'s" class="tab-panel hidden"><section class="card"><
 function quintTab(){
 return'<section id="tab-quints" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div><div class="title">Repeated quints</div><div class="muted">Five-hero combinations that have appeared multiple times.</div></div><div class="pill"><span id="quintShownCount">0</span> shown</div></div><div style="display:grid;grid-template-columns:minmax(220px,520px);gap:12px;align-items:end;margin-bottom:10px"><label><div class="label">Filter heroes</div><textarea id="quintFilterText"></textarea></label></div><div class="table"><div class="head quint"><div><button class="sort quintSort" data-sort="rank">Rank</button></div><div>Common 5</div><div><button class="sort quintSort" data-sort="count">Occurrences</button></div><div>Containing drafts</div></div><div id="quintResults"></div></div></div></section></section>'}
 function searchTab(){
-return'<section id="tab-search" class="tab-panel"><section class="searchLayout"><aside class="card"><div class="in"><div class="bar"><div><div class="title">Draft filters</div><div class="muted">Choose heroes to filter drafts.</div></div><button id="clearSearchBtn">Clear</button></div><datalist id="heroOptions"></datalist><div class="slots" id="draftSlots"></div></div></aside><section class="card"><div class="in"><div class="title">Drafts</div><div id="draftSearchSummary" class="muted">Showing all drafts.</div><div id="draftSearchResults" class="table"></div></div></section></section></section>'}
+return'<section id="tab-search" class="tab-panel"><section class="searchLayout"><aside class="card"><div class="in"><div class="bar"><div><div class="title">Draft filters</div><div class="muted">Choose heroes to filter drafts.</div></div><button id="clearSearchBtn">Clear</button></div><datalist id="heroOptions"></datalist><div class="slots" id="draftSlots"></div></div></aside><section class="card"><div class="in"><div class="bar"><div><div class="title">Drafts</div><div id="draftSearchSummary" class="muted">Showing all drafts.</div></div><div id="rarityProgress" class="pill rarityProgress hidden"></div></div><div id="draftSearchResults" class="table"></div></div></section></section></section>'}
 function head(labels,keys,cls,type){
 return'<div class="head '+cls+'">'+labels.map((x,i)=>'<div>'+(keys[i]?'<button class="sort '+type+'Sort" data-sort="'+keys[i]+'">'+x+'</button>':x)+'</div>').join('')+'</div>'}
 function heroTab(){
@@ -730,6 +736,26 @@ scores.sort();
 return{
 scores,total,signature:raritySignature(heroes,maps,w)}}
 let rarityBuildToken=0,rarityBuildStatus=null;
+function renderRarityProgress(){
+const el=$('rarityProgress');
+if(!el)return;
+const heroes=currentHeroUniverse,maps=currentCoverageMaps,w=currentLikelyWeights();
+if(!heroes.length||!maps){
+el.classList.add('hidden');
+return}
+const signature=raritySignature(heroes,maps,w);
+if(currentRarityIndex&&currentRarityIndex.signature===signature){
+el.textContent='Rarity ranks ready';
+el.classList.remove('hidden');
+el.classList.add('ready');
+return}
+if(rarityBuildStatus&&rarityBuildStatus.signature===signature){
+const pct=rarityBuildStatus.total?Math.floor(rarityBuildStatus.done/rarityBuildStatus.total*100):0;
+el.textContent='Rarity ranks loading '+pct+'%';
+el.classList.remove('hidden');
+el.classList.remove('ready');
+return}
+el.classList.add('hidden')}
 function scheduleRarityIndex(heroes,maps,w){
 const signature=raritySignature(heroes,maps,w);
 if(currentRarityIndex&&currentRarityIndex.signature===signature)return;
@@ -739,6 +765,7 @@ let out=0,done=heroes.length<6;
 currentRarityIndex=null;
 rarityBuildStatus={
 signature,total,done:0};
+renderRarityProgress();
 function advance(){
 let p=5;
 while(p>=0&&idx[p]===heroes.length-6+p)p--;
@@ -753,13 +780,15 @@ scores[out++]=score(idx.map(i=>heroes[i]),maps,w).total;
 advance()}
 if(token!==rarityBuildToken)return;
 rarityBuildStatus.done=out;
+renderRarityProgress();
 if(done){
 scores.sort();
 currentRarityIndex={
 scores,total,signature};
 rarityBuildStatus=null;
-simRarityCache.clear();
-if($('draftsimRoot'))renderSim();
+if(window.clearDraftSimRarityCache)window.clearDraftSimRarityCache();
+if($('draftsimRoot')&&window.renderDraftSim)window.renderDraftSim();
+renderRarityProgress();
 if($('draftSearchResults'))renderDraftSearch(currentHeroUniverse);
 return}
 setTimeout(step,0)}
@@ -817,6 +846,7 @@ for(let i=0;i<6;i++){
 const input=$('draftHero'+i),wrap=$('searchIconWrap'+i),h=canon(input.value,u),p=ip(h);
 wrap.innerHTML=h&&p?'<img alt="'+esc(h)+'" title="'+esc(h)+'" src="'+esc(p)+'">':i+1}}
 function renderDraftSearch(u){
+renderRarityProgress();
 $('heroOptions').innerHTML=u.map(h=>'<option value="'+esc(h)+'"></option>').join('');
 updateSearchIcons(u);
 const entered=Array.from({
@@ -824,7 +854,7 @@ length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new
 numeric:true}),heroSort=(a,b)=>{
 for(let i=0;i<Math.max(a.heroes.length,b.heroes.length);i++){
 const c=String(a.heroes[i]||'').localeCompare(String(b.heroes[i]||''));if(c)return c}
-return 0},rarityRank=m=>draftRarityInfo(m.heroes)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes);return r?num(r.rank)+suffix(r.rank):'calculating...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
+return 0},rarityRank=m=>draftRarityInfo(m.heroes)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes);return r?num(r.rank)+suffix(r.rank):'...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
 matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||-matchSort(a,b):s.key==='rarityRank'?dir*((rarityRank(a)>rarityRank(b))-(rarityRank(a)<rarityRank(b)))||-matchSort(a,b):dir*matchSort(a,b));
 $('draftSearchSummary').textContent=unique.length<entered.length?'Each selected hero needs to be unique.':unique.length?'Showing '+matches.length+' of '+all.length+' drafts containing '+unique.join(' / ')+'.':'Showing all '+matches.length+' drafts.';
 $('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div><div><button class="sort searchSort" data-sort="rarityRank">Rarity Rank</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div><div class="mono">'+rarityText(m)+'</div></div>').join('');
@@ -1872,7 +1902,7 @@ sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
 sim.right=e.target.value;saveSim();renderSim()};$('simFirstPick').onchange=e=>setFirstPick(e.target.value)}
 function addSimUI(){
 if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf('validation')),0,ID);const btn=document.createElement('button');btn.className='tab';btn.id='tabBtn-'+ID;btn.textContent='Draft Simulator';btn.onclick=()=>setTab(ID);$('tabs').insertBefore(btn,$('tabBtn-validation')||null);$('panels').insertAdjacentHTML('beforeend','<section id="tab-'+ID+'" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="'+ID+'Root"></div></div></section></section>')}
-window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;addSimUI();const oldSimRecompute=recompute;recompute=function(){
+window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
 </body>
