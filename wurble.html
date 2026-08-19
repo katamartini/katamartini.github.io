@@ -343,7 +343,7 @@
   <div class="toolbar-wrap">
     <div class="toolbar shell">
       <div class="filters" role="group" aria-label="Filter patterns">
-        <button class="active" type="button" data-filter="all">All 243</button>
+        <button class="active" type="button" data-filter="all">All 238</button>
         <button id="unlocked-filter" type="button" data-filter="unlocked">Unlocked</button>
         <button id="locked-filter" type="button" data-filter="locked">Locked</button>
       </div>
@@ -366,6 +366,7 @@
   <script>
     const DATA_URL = 'wurble.csv';
     const STATE_LABELS = { X: 'gray', Y: 'yellow', G: 'green' };
+    const IMPOSSIBLE_PATTERNS = new Set(['YGGGG', 'GYGGG', 'GGYGG', 'GGGYG', 'GGGGY']);
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const search = document.querySelector('#search');
     const visibleCount = document.querySelector('#visible-count');
@@ -424,11 +425,12 @@
     }
 
     function validateRecords(records) {
-      if (records.length !== 243) throw new Error(`Expected 243 patterns, received ${records.length}`);
+      if (records.length !== 238) throw new Error(`Expected 238 patterns, received ${records.length}`);
       const patterns = new Set();
 
       for (const record of records) {
         if (!/^[XYG]{5}$/.test(record.pattern)) throw new Error(`Invalid pattern: ${record.pattern}`);
+        if (IMPOSSIBLE_PATTERNS.has(record.pattern)) throw new Error(`Impossible pattern: ${record.pattern}`);
         if (patterns.has(record.pattern)) throw new Error(`Duplicate pattern: ${record.pattern}`);
         if (record.status !== 'locked' && record.status !== 'unlocked') {
           throw new Error(`Invalid status for ${record.pattern}`);
