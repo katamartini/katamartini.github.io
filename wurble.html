@@ -191,7 +191,7 @@
 
     .gallery {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 245px);
       gap: 12px;
     }
 
@@ -315,7 +315,7 @@
       .toolbar { align-items: stretch; flex-direction: column; }
       .filters { display: grid; grid-template-columns: repeat(3, 1fr); }
       input { width: 100%; }
-      .gallery { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: minmax(0, 210px); }
     }
 
     @media (prefers-reduced-motion: reduce) {
