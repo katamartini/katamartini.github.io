@@ -114,7 +114,7 @@
 
     .progress span {
       display: block;
-      width: 16.049%;
+      width: 0;
       height: 100%;
       margin: 0;
       border-radius: inherit;
@@ -291,6 +291,15 @@
       text-align: center;
     }
 
+    .data-error {
+      margin: 0 0 20px;
+      padding: 14px 16px;
+      border: 1px solid #8f4747;
+      border-radius: 12px;
+      background: #2b1d1d;
+      color: #ffcaca;
+    }
+
     footer {
       padding: 24px 0 40px;
       border-top: 1px solid var(--border);
@@ -321,11 +330,11 @@
       <h1>Wordlegami Archive</h1>
       <p class="lede">Every possible five-tile Wordle row. Bright patterns have been seen in the wild; the rest are still out there waiting.</p>
       <div class="stats" aria-label="Collection progress">
-        <div class="stat"><strong>39</strong><span>Unlocked</span></div>
-        <div class="stat"><strong>204</strong><span>Still hidden</span></div>
+        <div class="stat"><strong id="unlocked-count">—</strong><span>Unlocked</span></div>
+        <div class="stat"><strong id="locked-count">—</strong><span>Still hidden</span></div>
         <div class="stat">
-          <strong>16.0%</strong><span>Complete</span>
-          <div class="progress" aria-label="16.0% complete"><span></span></div>
+          <strong id="completion-count">—</strong><span>Complete</span>
+          <div class="progress" id="completion-progress" aria-label="Loading completion"><span></span></div>
         </div>
       </div>
     </div>
@@ -335,1975 +344,161 @@
     <div class="toolbar shell">
       <div class="filters" role="group" aria-label="Filter patterns">
         <button class="active" type="button" data-filter="all">All 243</button>
-        <button type="button" data-filter="unlocked">Unlocked 39</button>
-        <button type="button" data-filter="locked">Locked 204</button>
+        <button id="unlocked-filter" type="button" data-filter="unlocked">Unlocked</button>
+        <button id="locked-filter" type="button" data-filter="locked">Locked</button>
       </div>
       <input id="search" type="search" placeholder="Search pattern, player, or Wordle #" aria-label="Search patterns">
     </div>
   </div>
 
   <main class="shell">
-    <p class="result-line" aria-live="polite"><span id="visible-count">243</span> patterns shown</p>
-    <section class="gallery" aria-label="All Wordlegami patterns">
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxxx tb 1880 unlocked">
-        <div class="card-topline">
-          <span>Pattern 001</span>
-          <code>XXXXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,880</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxxxy locked">
-        <div class="card-topline">
-          <span>Pattern 002</span>
-          <code>XXXXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxxg tb 1883 unlocked">
-        <div class="card-topline">
-          <span>Pattern 003</span>
-          <code>XXXXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,883</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxyx martini 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 004</span>
-          <code>XXXYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Martini</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxxyy locked">
-        <div class="card-topline">
-          <span>Pattern 005</span>
-          <code>XXXYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxyg martini 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 006</span>
-          <code>XXXYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Martini</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxgx tb 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 007</span>
-          <code>XXXGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxxgy locked">
-        <div class="card-topline">
-          <span>Pattern 008</span>
-          <code>XXXGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxxgg tb 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 009</span>
-          <code>XXXGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, gray, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxyxx tb 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 010</span>
-          <code>XXYXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxyxy locked">
-        <div class="card-topline">
-          <span>Pattern 011</span>
-          <code>XXYXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxyxg locked">
-        <div class="card-topline">
-          <span>Pattern 012</span>
-          <code>XXYXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxyyx locked">
-        <div class="card-topline">
-          <span>Pattern 013</span>
-          <code>XXYYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxyyy marty 1880 unlocked">
-        <div class="card-topline">
-          <span>Pattern 014</span>
-          <code>XXYYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,880</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxyyg locked">
-        <div class="card-topline">
-          <span>Pattern 015</span>
-          <code>XXYYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxygx locked">
-        <div class="card-topline">
-          <span>Pattern 016</span>
-          <code>XXYGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxygy locked">
-        <div class="card-topline">
-          <span>Pattern 017</span>
-          <code>XXYGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxygg locked">
-        <div class="card-topline">
-          <span>Pattern 018</span>
-          <code>XXYGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, yellow, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxgxx marty 1883 unlocked">
-        <div class="card-topline">
-          <span>Pattern 019</span>
-          <code>XXGXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,883</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxgxy locked">
-        <div class="card-topline">
-          <span>Pattern 020</span>
-          <code>XXGXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxgxg tb 1885 unlocked">
-        <div class="card-topline">
-          <span>Pattern 021</span>
-          <code>XXGXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,885</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxgyx locked">
-        <div class="card-topline">
-          <span>Pattern 022</span>
-          <code>XXGYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxgyy locked">
-        <div class="card-topline">
-          <span>Pattern 023</span>
-          <code>XXGYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxgyg tb 1883 unlocked">
-        <div class="card-topline">
-          <span>Pattern 024</span>
-          <code>XXGYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,883</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxggx locked">
-        <div class="card-topline">
-          <span>Pattern 025</span>
-          <code>XXGGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xxggy locked">
-        <div class="card-topline">
-          <span>Pattern 026</span>
-          <code>XXGGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xxggg martini 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 027</span>
-          <code>XXGGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, gray, green, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Martini</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xyxxx tb 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 028</span>
-          <code>XYXXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xyxxy tb 1882 unlocked">
-        <div class="card-topline">
-          <span>Pattern 029</span>
-          <code>XYXXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,882</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxxg locked">
-        <div class="card-topline">
-          <span>Pattern 030</span>
-          <code>XYXXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxyx locked">
-        <div class="card-topline">
-          <span>Pattern 031</span>
-          <code>XYXYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxyy locked">
-        <div class="card-topline">
-          <span>Pattern 032</span>
-          <code>XYXYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxyg locked">
-        <div class="card-topline">
-          <span>Pattern 033</span>
-          <code>XYXYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxgx locked">
-        <div class="card-topline">
-          <span>Pattern 034</span>
-          <code>XYXGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxgy locked">
-        <div class="card-topline">
-          <span>Pattern 035</span>
-          <code>XYXGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyxgg locked">
-        <div class="card-topline">
-          <span>Pattern 036</span>
-          <code>XYXGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, gray, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyxx locked">
-        <div class="card-topline">
-          <span>Pattern 037</span>
-          <code>XYYXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyxy locked">
-        <div class="card-topline">
-          <span>Pattern 038</span>
-          <code>XYYXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyxg locked">
-        <div class="card-topline">
-          <span>Pattern 039</span>
-          <code>XYYXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyyx locked">
-        <div class="card-topline">
-          <span>Pattern 040</span>
-          <code>XYYYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyyy locked">
-        <div class="card-topline">
-          <span>Pattern 041</span>
-          <code>XYYYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyyyg locked">
-        <div class="card-topline">
-          <span>Pattern 042</span>
-          <code>XYYYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyygx locked">
-        <div class="card-topline">
-          <span>Pattern 043</span>
-          <code>XYYGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyygy locked">
-        <div class="card-topline">
-          <span>Pattern 044</span>
-          <code>XYYGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyygg locked">
-        <div class="card-topline">
-          <span>Pattern 045</span>
-          <code>XYYGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, yellow, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xygxx tb 1887 unlocked">
-        <div class="card-topline">
-          <span>Pattern 046</span>
-          <code>XYGXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,887</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xygxy marty 1883 unlocked">
-        <div class="card-topline">
-          <span>Pattern 047</span>
-          <code>XYGXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,883</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xygxg tb 1883 unlocked">
-        <div class="card-topline">
-          <span>Pattern 048</span>
-          <code>XYGXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,883</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xygyx locked">
-        <div class="card-topline">
-          <span>Pattern 049</span>
-          <code>XYGYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xygyy locked">
-        <div class="card-topline">
-          <span>Pattern 050</span>
-          <code>XYGYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xygyg locked">
-        <div class="card-topline">
-          <span>Pattern 051</span>
-          <code>XYGYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyggx locked">
-        <div class="card-topline">
-          <span>Pattern 052</span>
-          <code>XYGGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyggy locked">
-        <div class="card-topline">
-          <span>Pattern 053</span>
-          <code>XYGGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xyggg locked">
-        <div class="card-topline">
-          <span>Pattern 054</span>
-          <code>XYGGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, yellow, green, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xgxxx marty 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 055</span>
-          <code>XGXXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxxy locked">
-        <div class="card-topline">
-          <span>Pattern 056</span>
-          <code>XGXXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xgxxg marty 1887 unlocked">
-        <div class="card-topline">
-          <span>Pattern 057</span>
-          <code>XGXXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,887</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxyx locked">
-        <div class="card-topline">
-          <span>Pattern 058</span>
-          <code>XGXYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxyy locked">
-        <div class="card-topline">
-          <span>Pattern 059</span>
-          <code>XGXYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxyg locked">
-        <div class="card-topline">
-          <span>Pattern 060</span>
-          <code>XGXYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxgx locked">
-        <div class="card-topline">
-          <span>Pattern 061</span>
-          <code>XGXGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxgy locked">
-        <div class="card-topline">
-          <span>Pattern 062</span>
-          <code>XGXGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgxgg locked">
-        <div class="card-topline">
-          <span>Pattern 063</span>
-          <code>XGXGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, gray, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyxx locked">
-        <div class="card-topline">
-          <span>Pattern 064</span>
-          <code>XGYXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyxy locked">
-        <div class="card-topline">
-          <span>Pattern 065</span>
-          <code>XGYXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyxg locked">
-        <div class="card-topline">
-          <span>Pattern 066</span>
-          <code>XGYXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyyx locked">
-        <div class="card-topline">
-          <span>Pattern 067</span>
-          <code>XGYYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyyy locked">
-        <div class="card-topline">
-          <span>Pattern 068</span>
-          <code>XGYYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgyyg locked">
-        <div class="card-topline">
-          <span>Pattern 069</span>
-          <code>XGYYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgygx locked">
-        <div class="card-topline">
-          <span>Pattern 070</span>
-          <code>XGYGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgygy locked">
-        <div class="card-topline">
-          <span>Pattern 071</span>
-          <code>XGYGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgygg locked">
-        <div class="card-topline">
-          <span>Pattern 072</span>
-          <code>XGYGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, yellow, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xggxx tb 1880 unlocked">
-        <div class="card-topline">
-          <span>Pattern 073</span>
-          <code>XGGXX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, gray, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,880</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xggxy locked">
-        <div class="card-topline">
-          <span>Pattern 074</span>
-          <code>XGGXY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, gray, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xggxg locked">
-        <div class="card-topline">
-          <span>Pattern 075</span>
-          <code>XGGXG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, gray, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xggyx locked">
-        <div class="card-topline">
-          <span>Pattern 076</span>
-          <code>XGGYX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, yellow, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xggyy locked">
-        <div class="card-topline">
-          <span>Pattern 077</span>
-          <code>XGGYY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, yellow, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xggyg tb 1885 unlocked">
-        <div class="card-topline">
-          <span>Pattern 078</span>
-          <code>XGGYG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, yellow, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,885</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgggx locked">
-        <div class="card-topline">
-          <span>Pattern 079</span>
-          <code>XGGGX</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, green, gray"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="xgggy locked">
-        <div class="card-topline">
-          <span>Pattern 080</span>
-          <code>XGGGY</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, green, yellow"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="xgggg tb 1880 unlocked">
-        <div class="card-topline">
-          <span>Pattern 081</span>
-          <code>XGGGG</code>
-        </div>
-        <div class="tiles" aria-label="gray, green, green, green, green"><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,880</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yxxxx tb 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 082</span>
-          <code>YXXXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxxy locked">
-        <div class="card-topline">
-          <span>Pattern 083</span>
-          <code>YXXXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxxg locked">
-        <div class="card-topline">
-          <span>Pattern 084</span>
-          <code>YXXXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yxxyx martini 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 085</span>
-          <code>YXXYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Martini</strong><span>Wordle #1,879</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxyy locked">
-        <div class="card-topline">
-          <span>Pattern 086</span>
-          <code>YXXYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxyg locked">
-        <div class="card-topline">
-          <span>Pattern 087</span>
-          <code>YXXYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxgx locked">
-        <div class="card-topline">
-          <span>Pattern 088</span>
-          <code>YXXGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxgy locked">
-        <div class="card-topline">
-          <span>Pattern 089</span>
-          <code>YXXGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxxgg locked">
-        <div class="card-topline">
-          <span>Pattern 090</span>
-          <code>YXXGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, gray, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxyxx locked">
-        <div class="card-topline">
-          <span>Pattern 091</span>
-          <code>YXYXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yxyxy marty 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 092</span>
-          <code>YXYXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxyxg locked">
-        <div class="card-topline">
-          <span>Pattern 093</span>
-          <code>YXYXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxyyx locked">
-        <div class="card-topline">
-          <span>Pattern 094</span>
-          <code>YXYYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxyyy locked">
-        <div class="card-topline">
-          <span>Pattern 095</span>
-          <code>YXYYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxyyg locked">
-        <div class="card-topline">
-          <span>Pattern 096</span>
-          <code>YXYYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxygx locked">
-        <div class="card-topline">
-          <span>Pattern 097</span>
-          <code>YXYGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxygy locked">
-        <div class="card-topline">
-          <span>Pattern 098</span>
-          <code>YXYGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxygg locked">
-        <div class="card-topline">
-          <span>Pattern 099</span>
-          <code>YXYGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, yellow, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgxx locked">
-        <div class="card-topline">
-          <span>Pattern 100</span>
-          <code>YXGXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgxy locked">
-        <div class="card-topline">
-          <span>Pattern 101</span>
-          <code>YXGXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgxg locked">
-        <div class="card-topline">
-          <span>Pattern 102</span>
-          <code>YXGXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgyx locked">
-        <div class="card-topline">
-          <span>Pattern 103</span>
-          <code>YXGYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgyy locked">
-        <div class="card-topline">
-          <span>Pattern 104</span>
-          <code>YXGYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxgyg locked">
-        <div class="card-topline">
-          <span>Pattern 105</span>
-          <code>YXGYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxggx locked">
-        <div class="card-topline">
-          <span>Pattern 106</span>
-          <code>YXGGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxggy locked">
-        <div class="card-topline">
-          <span>Pattern 107</span>
-          <code>YXGGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yxggg locked">
-        <div class="card-topline">
-          <span>Pattern 108</span>
-          <code>YXGGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, gray, green, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxxx locked">
-        <div class="card-topline">
-          <span>Pattern 109</span>
-          <code>YYXXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxxy locked">
-        <div class="card-topline">
-          <span>Pattern 110</span>
-          <code>YYXXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxxg locked">
-        <div class="card-topline">
-          <span>Pattern 111</span>
-          <code>YYXXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxyx locked">
-        <div class="card-topline">
-          <span>Pattern 112</span>
-          <code>YYXYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxyy locked">
-        <div class="card-topline">
-          <span>Pattern 113</span>
-          <code>YYXYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxyg locked">
-        <div class="card-topline">
-          <span>Pattern 114</span>
-          <code>YYXYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxgx locked">
-        <div class="card-topline">
-          <span>Pattern 115</span>
-          <code>YYXGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxgy locked">
-        <div class="card-topline">
-          <span>Pattern 116</span>
-          <code>YYXGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyxgg locked">
-        <div class="card-topline">
-          <span>Pattern 117</span>
-          <code>YYXGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, gray, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyyxx locked">
-        <div class="card-topline">
-          <span>Pattern 118</span>
-          <code>YYYXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yyyxy marty 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 119</span>
-          <code>YYYXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyyxg locked">
-        <div class="card-topline">
-          <span>Pattern 120</span>
-          <code>YYYXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yyyyx barney buttloaves 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 121</span>
-          <code>YYYYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>barney buttloaves</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="yyyyy marty 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 122</span>
-          <code>YYYYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyyyg locked">
-        <div class="card-topline">
-          <span>Pattern 123</span>
-          <code>YYYYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyygx locked">
-        <div class="card-topline">
-          <span>Pattern 124</span>
-          <code>YYYGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyygy locked">
-        <div class="card-topline">
-          <span>Pattern 125</span>
-          <code>YYYGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyygg locked">
-        <div class="card-topline">
-          <span>Pattern 126</span>
-          <code>YYYGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, yellow, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygxx locked">
-        <div class="card-topline">
-          <span>Pattern 127</span>
-          <code>YYGXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygxy locked">
-        <div class="card-topline">
-          <span>Pattern 128</span>
-          <code>YYGXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygxg locked">
-        <div class="card-topline">
-          <span>Pattern 129</span>
-          <code>YYGXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygyx locked">
-        <div class="card-topline">
-          <span>Pattern 130</span>
-          <code>YYGYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygyy locked">
-        <div class="card-topline">
-          <span>Pattern 131</span>
-          <code>YYGYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yygyg locked">
-        <div class="card-topline">
-          <span>Pattern 132</span>
-          <code>YYGYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyggx locked">
-        <div class="card-topline">
-          <span>Pattern 133</span>
-          <code>YYGGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyggy locked">
-        <div class="card-topline">
-          <span>Pattern 134</span>
-          <code>YYGGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yyggg locked">
-        <div class="card-topline">
-          <span>Pattern 135</span>
-          <code>YYGGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, yellow, green, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxxx locked">
-        <div class="card-topline">
-          <span>Pattern 136</span>
-          <code>YGXXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="ygxxy marty 1885 unlocked">
-        <div class="card-topline">
-          <span>Pattern 137</span>
-          <code>YGXXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,885</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxxg locked">
-        <div class="card-topline">
-          <span>Pattern 138</span>
-          <code>YGXXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxyx locked">
-        <div class="card-topline">
-          <span>Pattern 139</span>
-          <code>YGXYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxyy locked">
-        <div class="card-topline">
-          <span>Pattern 140</span>
-          <code>YGXYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxyg locked">
-        <div class="card-topline">
-          <span>Pattern 141</span>
-          <code>YGXYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxgx locked">
-        <div class="card-topline">
-          <span>Pattern 142</span>
-          <code>YGXGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxgy locked">
-        <div class="card-topline">
-          <span>Pattern 143</span>
-          <code>YGXGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygxgg locked">
-        <div class="card-topline">
-          <span>Pattern 144</span>
-          <code>YGXGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, gray, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyxx locked">
-        <div class="card-topline">
-          <span>Pattern 145</span>
-          <code>YGYXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyxy locked">
-        <div class="card-topline">
-          <span>Pattern 146</span>
-          <code>YGYXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyxg locked">
-        <div class="card-topline">
-          <span>Pattern 147</span>
-          <code>YGYXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyyx locked">
-        <div class="card-topline">
-          <span>Pattern 148</span>
-          <code>YGYYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyyy locked">
-        <div class="card-topline">
-          <span>Pattern 149</span>
-          <code>YGYYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygyyg locked">
-        <div class="card-topline">
-          <span>Pattern 150</span>
-          <code>YGYYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygygx locked">
-        <div class="card-topline">
-          <span>Pattern 151</span>
-          <code>YGYGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygygy locked">
-        <div class="card-topline">
-          <span>Pattern 152</span>
-          <code>YGYGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygygg locked">
-        <div class="card-topline">
-          <span>Pattern 153</span>
-          <code>YGYGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, yellow, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggxx locked">
-        <div class="card-topline">
-          <span>Pattern 154</span>
-          <code>YGGXX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, gray, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggxy locked">
-        <div class="card-topline">
-          <span>Pattern 155</span>
-          <code>YGGXY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, gray, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggxg locked">
-        <div class="card-topline">
-          <span>Pattern 156</span>
-          <code>YGGXG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, gray, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggyx locked">
-        <div class="card-topline">
-          <span>Pattern 157</span>
-          <code>YGGYX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, yellow, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggyy locked">
-        <div class="card-topline">
-          <span>Pattern 158</span>
-          <code>YGGYY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, yellow, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="yggyg locked">
-        <div class="card-topline">
-          <span>Pattern 159</span>
-          <code>YGGYG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, yellow, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygggx locked">
-        <div class="card-topline">
-          <span>Pattern 160</span>
-          <code>YGGGX</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, green, gray"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygggy locked">
-        <div class="card-topline">
-          <span>Pattern 161</span>
-          <code>YGGGY</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, green, yellow"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ygggg locked">
-        <div class="card-topline">
-          <span>Pattern 162</span>
-          <code>YGGGG</code>
-        </div>
-        <div class="tiles" aria-label="yellow, green, green, green, green"><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxxx locked">
-        <div class="card-topline">
-          <span>Pattern 163</span>
-          <code>GXXXX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxxy locked">
-        <div class="card-topline">
-          <span>Pattern 164</span>
-          <code>GXXXY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxxg locked">
-        <div class="card-topline">
-          <span>Pattern 165</span>
-          <code>GXXXG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxyx locked">
-        <div class="card-topline">
-          <span>Pattern 166</span>
-          <code>GXXYX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxyy locked">
-        <div class="card-topline">
-          <span>Pattern 167</span>
-          <code>GXXYY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxyg locked">
-        <div class="card-topline">
-          <span>Pattern 168</span>
-          <code>GXXYG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gxxgx tb 1884 unlocked">
-        <div class="card-topline">
-          <span>Pattern 169</span>
-          <code>GXXGX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,884</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxgy locked">
-        <div class="card-topline">
-          <span>Pattern 170</span>
-          <code>GXXGY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxxgg locked">
-        <div class="card-topline">
-          <span>Pattern 171</span>
-          <code>GXXGG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, gray, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyxx locked">
-        <div class="card-topline">
-          <span>Pattern 172</span>
-          <code>GXYXX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyxy locked">
-        <div class="card-topline">
-          <span>Pattern 173</span>
-          <code>GXYXY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyxg locked">
-        <div class="card-topline">
-          <span>Pattern 174</span>
-          <code>GXYXG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyyx locked">
-        <div class="card-topline">
-          <span>Pattern 175</span>
-          <code>GXYYX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyyy locked">
-        <div class="card-topline">
-          <span>Pattern 176</span>
-          <code>GXYYY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxyyg locked">
-        <div class="card-topline">
-          <span>Pattern 177</span>
-          <code>GXYYG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxygx locked">
-        <div class="card-topline">
-          <span>Pattern 178</span>
-          <code>GXYGX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxygy locked">
-        <div class="card-topline">
-          <span>Pattern 179</span>
-          <code>GXYGY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxygg locked">
-        <div class="card-topline">
-          <span>Pattern 180</span>
-          <code>GXYGG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, yellow, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgxx locked">
-        <div class="card-topline">
-          <span>Pattern 181</span>
-          <code>GXGXX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgxy locked">
-        <div class="card-topline">
-          <span>Pattern 182</span>
-          <code>GXGXY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgxg locked">
-        <div class="card-topline">
-          <span>Pattern 183</span>
-          <code>GXGXG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgyx locked">
-        <div class="card-topline">
-          <span>Pattern 184</span>
-          <code>GXGYX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgyy locked">
-        <div class="card-topline">
-          <span>Pattern 185</span>
-          <code>GXGYY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxgyg locked">
-        <div class="card-topline">
-          <span>Pattern 186</span>
-          <code>GXGYG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gxggx tb 1887 unlocked">
-        <div class="card-topline">
-          <span>Pattern 187</span>
-          <code>GXGGX</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,887</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gxggy locked">
-        <div class="card-topline">
-          <span>Pattern 188</span>
-          <code>GXGGY</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gxggg tb 1882 unlocked">
-        <div class="card-topline">
-          <span>Pattern 189</span>
-          <code>GXGGG</code>
-        </div>
-        <div class="tiles" aria-label="green, gray, green, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,882</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxxx locked">
-        <div class="card-topline">
-          <span>Pattern 190</span>
-          <code>GYXXX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxxy locked">
-        <div class="card-topline">
-          <span>Pattern 191</span>
-          <code>GYXXY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxxg locked">
-        <div class="card-topline">
-          <span>Pattern 192</span>
-          <code>GYXXG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxyx locked">
-        <div class="card-topline">
-          <span>Pattern 193</span>
-          <code>GYXYX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxyy locked">
-        <div class="card-topline">
-          <span>Pattern 194</span>
-          <code>GYXYY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxyg locked">
-        <div class="card-topline">
-          <span>Pattern 195</span>
-          <code>GYXYG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxgx locked">
-        <div class="card-topline">
-          <span>Pattern 196</span>
-          <code>GYXGX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxgy locked">
-        <div class="card-topline">
-          <span>Pattern 197</span>
-          <code>GYXGY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyxgg locked">
-        <div class="card-topline">
-          <span>Pattern 198</span>
-          <code>GYXGG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, gray, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyxx locked">
-        <div class="card-topline">
-          <span>Pattern 199</span>
-          <code>GYYXX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyxy locked">
-        <div class="card-topline">
-          <span>Pattern 200</span>
-          <code>GYYXY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyxg locked">
-        <div class="card-topline">
-          <span>Pattern 201</span>
-          <code>GYYXG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyyx locked">
-        <div class="card-topline">
-          <span>Pattern 202</span>
-          <code>GYYYX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyyy locked">
-        <div class="card-topline">
-          <span>Pattern 203</span>
-          <code>GYYYY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyyyg locked">
-        <div class="card-topline">
-          <span>Pattern 204</span>
-          <code>GYYYG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyygx locked">
-        <div class="card-topline">
-          <span>Pattern 205</span>
-          <code>GYYGX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyygy locked">
-        <div class="card-topline">
-          <span>Pattern 206</span>
-          <code>GYYGY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyygg locked">
-        <div class="card-topline">
-          <span>Pattern 207</span>
-          <code>GYYGG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, yellow, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygxx locked">
-        <div class="card-topline">
-          <span>Pattern 208</span>
-          <code>GYGXX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygxy locked">
-        <div class="card-topline">
-          <span>Pattern 209</span>
-          <code>GYGXY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygxg locked">
-        <div class="card-topline">
-          <span>Pattern 210</span>
-          <code>GYGXG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygyx locked">
-        <div class="card-topline">
-          <span>Pattern 211</span>
-          <code>GYGYX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygyy locked">
-        <div class="card-topline">
-          <span>Pattern 212</span>
-          <code>GYGYY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gygyg locked">
-        <div class="card-topline">
-          <span>Pattern 213</span>
-          <code>GYGYG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyggx locked">
-        <div class="card-topline">
-          <span>Pattern 214</span>
-          <code>GYGGX</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gyggy tb 1886 unlocked">
-        <div class="card-topline">
-          <span>Pattern 215</span>
-          <code>GYGGY</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,886</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gyggg locked">
-        <div class="card-topline">
-          <span>Pattern 216</span>
-          <code>GYGGG</code>
-        </div>
-        <div class="tiles" aria-label="green, yellow, green, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="ggxxx marty 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 217</span>
-          <code>GGXXX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxxy locked">
-        <div class="card-topline">
-          <span>Pattern 218</span>
-          <code>GGXXY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxxg locked">
-        <div class="card-topline">
-          <span>Pattern 219</span>
-          <code>GGXXG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="ggxyx marty 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 220</span>
-          <code>GGXYX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxyy locked">
-        <div class="card-topline">
-          <span>Pattern 221</span>
-          <code>GGXYY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxyg locked">
-        <div class="card-topline">
-          <span>Pattern 222</span>
-          <code>GGXYG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxgx locked">
-        <div class="card-topline">
-          <span>Pattern 223</span>
-          <code>GGXGX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxgy locked">
-        <div class="card-topline">
-          <span>Pattern 224</span>
-          <code>GGXGY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggxgg locked">
-        <div class="card-topline">
-          <span>Pattern 225</span>
-          <code>GGXGG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, gray, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyxx locked">
-        <div class="card-topline">
-          <span>Pattern 226</span>
-          <code>GGYXX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyxy locked">
-        <div class="card-topline">
-          <span>Pattern 227</span>
-          <code>GGYXY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyxg locked">
-        <div class="card-topline">
-          <span>Pattern 228</span>
-          <code>GGYXG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyyx locked">
-        <div class="card-topline">
-          <span>Pattern 229</span>
-          <code>GGYYX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyyy locked">
-        <div class="card-topline">
-          <span>Pattern 230</span>
-          <code>GGYYY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggyyg locked">
-        <div class="card-topline">
-          <span>Pattern 231</span>
-          <code>GGYYG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggygx locked">
-        <div class="card-topline">
-          <span>Pattern 232</span>
-          <code>GGYGX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggygy locked">
-        <div class="card-topline">
-          <span>Pattern 233</span>
-          <code>GGYGY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggygg locked">
-        <div class="card-topline">
-          <span>Pattern 234</span>
-          <code>GGYGG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, yellow, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gggxx marty 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 235</span>
-          <code>GGGXX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, gray, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gggxy locked">
-        <div class="card-topline">
-          <span>Pattern 236</span>
-          <code>GGGXY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, gray, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="gggxg tb 1885 unlocked">
-        <div class="card-topline">
-          <span>Pattern 237</span>
-          <code>GGGXG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, gray, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>tb</strong><span>Wordle #1,885</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gggyx locked">
-        <div class="card-topline">
-          <span>Pattern 238</span>
-          <code>GGGYX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, yellow, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gggyy locked">
-        <div class="card-topline">
-          <span>Pattern 239</span>
-          <code>GGGYY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, yellow, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="gggyg locked">
-        <div class="card-topline">
-          <span>Pattern 240</span>
-          <code>GGGYG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, yellow, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="ggggx marty 1881 unlocked">
-        <div class="card-topline">
-          <span>Pattern 241</span>
-          <code>GGGGX</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, green, gray"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-x" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Marty</strong><span>Wordle #1,881</span></p>
-      </article>
-      <article class="pattern-card locked" data-status="locked" data-search="ggggy locked">
-        <div class="card-topline">
-          <span>Pattern 242</span>
-          <code>GGGGY</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, green, yellow"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-y" aria-hidden="true"></span></div>
-        <p class="unlock-detail locked-detail">Still waiting<span>Not yet unlocked</span></p>
-      </article>
-      <article class="pattern-card unlocked" data-status="unlocked" data-search="ggggg martini 1879 unlocked">
-        <div class="card-topline">
-          <span>Pattern 243</span>
-          <code>GGGGG</code>
-        </div>
-        <div class="tiles" aria-label="green, green, green, green, green"><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span><span class="tile tile-g" aria-hidden="true"></span></div>
-        <p class="unlock-detail">Unlocked by <strong>Martini</strong><span>Wordle #1,879</span></p>
-      </article>
+    <p class="result-line" aria-live="polite"><span id="visible-count">—</span> patterns shown</p>
+    <p class="data-error" id="data-error" role="alert" hidden>Could not load the Wordlegami data. Try refreshing the page.</p>
+    <section class="gallery" id="gallery" aria-label="All Wordlegami patterns" aria-busy="true">
     </section>
     <p class="empty" id="empty">No patterns match that search.</p>
   </main>
 
   <footer>
-    <div class="shell">Generated from the bot's Wordle history · 2026-08-19 05:12 UTC</div>
+    <div class="shell">Live data from the bot's Wordle history · Presentation lives in this HTML file</div>
   </footer>
 
   <script>
-    const cards = Array.from(document.querySelectorAll('.pattern-card'));
+    const DATA_URL = 'wurble.csv';
+    const STATE_LABELS = { X: 'gray', Y: 'yellow', G: 'green' };
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const search = document.querySelector('#search');
     const visibleCount = document.querySelector('#visible-count');
     const empty = document.querySelector('#empty');
+    const gallery = document.querySelector('#gallery');
+    const dataError = document.querySelector('#data-error');
+    let cards = [];
     let activeFilter = 'all';
+
+    function parseCsv(source) {
+      const rows = [];
+      let row = [];
+      let field = '';
+      let quoted = false;
+
+      for (let index = 0; index < source.length; index += 1) {
+        const character = source[index];
+        if (character === '"') {
+          if (quoted && source[index + 1] === '"') {
+            field += '"';
+            index += 1;
+          } else {
+            quoted = !quoted;
+          }
+        } else if (!quoted && character === ',') {
+          row.push(field);
+          field = '';
+        } else if (!quoted && (character === '\n' || character === '\r')) {
+          if (character === '\r' && source[index + 1] === '\n') index += 1;
+          row.push(field);
+          rows.push(row);
+          row = [];
+          field = '';
+        } else {
+          field += character;
+        }
+      }
+
+      if (quoted) throw new Error('Unterminated quoted CSV field');
+      if (field || row.length) {
+        row.push(field);
+        rows.push(row);
+      }
+      if (!rows.length) throw new Error('The CSV is empty');
+
+      const headers = rows.shift();
+      headers[0] = headers[0].replace(/^\uFEFF/, '');
+      const expected = ['pattern', 'status', 'unlocked_by', 'wordle_number'];
+      if (headers.length !== expected.length || headers.some((value, index) => value !== expected[index])) {
+        throw new Error('Unexpected CSV columns');
+      }
+
+      return rows
+        .filter(values => values.some(value => value !== ''))
+        .map(values => Object.fromEntries(expected.map((header, index) => [header, values[index] || ''])));
+    }
+
+    function validateRecords(records) {
+      if (records.length !== 243) throw new Error(`Expected 243 patterns, received ${records.length}`);
+      const patterns = new Set();
+
+      for (const record of records) {
+        if (!/^[XYG]{5}$/.test(record.pattern)) throw new Error(`Invalid pattern: ${record.pattern}`);
+        if (patterns.has(record.pattern)) throw new Error(`Duplicate pattern: ${record.pattern}`);
+        if (record.status !== 'locked' && record.status !== 'unlocked') {
+          throw new Error(`Invalid status for ${record.pattern}`);
+        }
+        if (record.status === 'unlocked' && (!record.unlocked_by || !/^\d+$/.test(record.wordle_number))) {
+          throw new Error(`Incomplete unlock data for ${record.pattern}`);
+        }
+        patterns.add(record.pattern);
+      }
+    }
+
+    function makeElement(tagName, className, text) {
+      const node = document.createElement(tagName);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function makeCard(record, index) {
+      const card = makeElement('article', `pattern-card ${record.status}`);
+      card.dataset.status = record.status;
+      card.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${record.status}`.toLocaleLowerCase();
+
+      const topline = makeElement('div', 'card-topline');
+      topline.append(
+        makeElement('span', '', `Pattern ${String(index + 1).padStart(3, '0')}`),
+        makeElement('code', '', record.pattern),
+      );
+
+      const tiles = makeElement('div', 'tiles');
+      tiles.setAttribute('aria-label', [...record.pattern].map(state => STATE_LABELS[state]).join(', '));
+      for (const state of record.pattern) {
+        const tile = makeElement('span', `tile tile-${state.toLocaleLowerCase()}`);
+        tile.setAttribute('aria-hidden', 'true');
+        tiles.append(tile);
+      }
+
+      const detail = makeElement('p', `unlock-detail${record.status === 'locked' ? ' locked-detail' : ''}`);
+      if (record.status === 'unlocked') {
+        detail.append('Unlocked by ', makeElement('strong', '', record.unlocked_by));
+        detail.append(makeElement('span', '', `Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`));
+      } else {
+        detail.append('Still waiting', makeElement('span', '', 'Not yet unlocked'));
+      }
+
+      card.append(topline, tiles, detail);
+      return card;
+    }
+
+    function renderRecords(records) {
+      const fragment = document.createDocumentFragment();
+      records.forEach((record, index) => fragment.append(makeCard(record, index)));
+      gallery.replaceChildren(fragment);
+      gallery.setAttribute('aria-busy', 'false');
+      cards = Array.from(gallery.querySelectorAll('.pattern-card'));
+
+      const unlockedCount = records.filter(record => record.status === 'unlocked').length;
+      const lockedCount = records.length - unlockedCount;
+      const completion = unlockedCount / records.length * 100;
+      document.querySelector('#unlocked-count').textContent = String(unlockedCount);
+      document.querySelector('#locked-count').textContent = String(lockedCount);
+      document.querySelector('#completion-count').textContent = `${completion.toFixed(1)}%`;
+      document.querySelector('#unlocked-filter').textContent = `Unlocked ${unlockedCount}`;
+      document.querySelector('#locked-filter').textContent = `Locked ${lockedCount}`;
+
+      const progress = document.querySelector('#completion-progress');
+      progress.setAttribute('aria-label', `${completion.toFixed(1)}% complete`);
+      progress.querySelector('span').style.width = `${completion}%`;
+      updateGallery();
+    }
 
     function updateGallery() {
       const query = search.value.trim().toLocaleLowerCase();
@@ -2329,6 +524,24 @@
       });
     }
     search.addEventListener('input', updateGallery);
+
+    async function loadData() {
+      try {
+        const response = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`CSV request failed with status ${response.status}`);
+        const records = parseCsv(await response.text());
+        validateRecords(records);
+        renderRecords(records);
+      } catch (error) {
+        console.error('Could not load Wordlegami data', error);
+        gallery.replaceChildren();
+        gallery.setAttribute('aria-busy', 'false');
+        visibleCount.textContent = '0';
+        dataError.hidden = false;
+      }
+    }
+
+    loadData();
   </script>
 </body>
 </html>
