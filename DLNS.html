@@ -723,6 +723,40 @@ scores[i++]=score(c,maps,w).total});
 scores.sort();
 return{
 scores,total,signature:raritySignature(heroes,maps,w)}}
+let rarityBuildToken=0,rarityBuildStatus=null;
+function scheduleRarityIndex(heroes,maps,w){
+const signature=raritySignature(heroes,maps,w);
+if(currentRarityIndex&&currentRarityIndex.signature===signature)return;
+if(rarityBuildStatus&&rarityBuildStatus.signature===signature)return;
+const token=++rarityBuildToken,total=nCk(heroes.length,6),scores=new Float64Array(total),idx=[0,1,2,3,4,5];
+let out=0,done=heroes.length<6;
+currentRarityIndex=null;
+rarityBuildStatus={
+signature,total,done:0};
+function advance(){
+let p=5;
+while(p>=0&&idx[p]===heroes.length-6+p)p--;
+if(p<0){
+done=true;return}
+idx[p]++;
+for(let q=p+1;q<6;q++)idx[q]=idx[q-1]+1}
+function step(){
+const start=performance.now();
+while(!done&&performance.now()-start<12){
+scores[out++]=score(idx.map(i=>heroes[i]),maps,w).total;
+advance()}
+if(token!==rarityBuildToken)return;
+rarityBuildStatus.done=out;
+if(done){
+scores.sort();
+currentRarityIndex={
+scores,total,signature};
+rarityBuildStatus=null;
+simRarityCache.clear();
+if($('draftsimRoot'))renderSim();
+return}
+setTimeout(step,0)}
+setTimeout(step,0)}
 function rarityRankFromIndex(targetScore,index){
 let lo=0,hi=index.scores.length;
 while(lo<hi){
@@ -1025,7 +1059,7 @@ const maps=countMaps(built.drafts),possible=nCk(heroes.length,6),w={
 heroes:+$('wHeroes').value||0,duos:+$('wDuos').value||0,trios:+$('wTrios').value||0,quads:+$('wQuads').value||0,fives:+$('wFives').value||0};
 currentCoverageMaps=maps;
 const raritySig=raritySignature(heroes,maps,w);
-if(!currentRarityIndex||currentRarityIndex.signature!==raritySig)currentRarityIndex=buildRarityIndex(heroes,maps,w);
+if(currentRarityIndex?.signature!==raritySig)currentRarityIndex=null;
 renderHeroStats(currentAllDrafts);
 renderPlayerStats(currentAllDrafts);
 renderRosterMoves(currentAllDrafts);
@@ -1039,7 +1073,8 @@ Object.entries({
 rawRows:records.length,teamDrafts:built.drafts.length,heroUniverse:heroes.length,seenSixes:maps.sixes.size,possibleSixes:possible,uniqueHeroes:maps.heroes.size,uniqueDuos:maps.duos.size,uniqueTrios:maps.trios.size,uniqueQuads:maps.quads.size,uniqueFives:maps.fives.size}).forEach(([id,v])=>$(id).textContent=num(v));
 $('coverage').textContent=possible?(maps.sixes.size/possible*100).toFixed(3)+'%':'0.000%';
 renderCoverageStats();
-renderResults(heroes.length<6?[]:likelyUnseen(heroes,maps,w))}
+renderResults(heroes.length<6?[]:likelyUnseen(heroes,maps,w));
+scheduleRarityIndex(heroes,maps,w)}
 function sched(){
 clearTimeout(rt);
 rt=setTimeout(recompute,180)}
@@ -1746,7 +1781,11 @@ if(picked.length!==6)return'';
 const heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,maps=currentCoverageMaps||countMaps(groupDrafts(true).drafts),weights=simLikelyWeights(),targetKey=keyOf(picked),targetScore=score(picked,maps,weights).total;
 const cacheKey=targetKey+'||'+heroes.length+'||'+maps.sixes.size+'||'+Object.values(weights).join(',');
 if(simRarityCache.has(cacheKey))return simRarityCache.get(cacheKey);
-if(!currentRarityIndex||currentRarityIndex.signature!==raritySignature(heroes,maps,weights))currentRarityIndex=buildRarityIndex(heroes,maps,weights);
+const sig=raritySignature(heroes,maps,weights);
+if(!currentRarityIndex||currentRarityIndex.signature!==sig){
+scheduleRarityIndex(heroes,maps,weights);
+const progress=rarityBuildStatus?.signature===sig&&rarityBuildStatus.total?Math.floor(rarityBuildStatus.done/rarityBuildStatus.total*100):0;
+return '<span class="simRarity"><span>Rarity:</span><span class="simRank">calculating'+(progress?' '+progress+'%':'')+'...</span></span>'}
 const rank=rarityRankFromIndex(targetScore,currentRarityIndex),total=currentRarityIndex.total;
 const rarity=Math.max(0.5,Math.min(5,.5+4.5*((rank-1)/Math.max(1,total-1)))),pct=(rarity/5*100).toFixed(1);
 const html='<span class="simRarity" title="Based on the Likely Unseen scoring weights"><span>Rarity:</span><span class="simStars" aria-label="'+rarity.toFixed(1)+' out of 5 stars"><span class="simStarsBase">★★★★★</span><span class="simStarsFill" style="width:'+pct+'%">★★★★★</span></span><span class="simRank">('+num(rank)+suffix(rank)+' likeliest out of '+num(total)+' possible)</span></span>';
