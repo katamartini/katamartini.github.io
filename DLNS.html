@@ -494,7 +494,7 @@ grid-template-columns:1fr}
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
 let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
 const SHEET_ID='1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4',GID='1738458418',CSV_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+GID,CACHE='likelyUnseenDrafts.csv.v1',CACHE_T='likelyUnseenDrafts.csvTime.v1',MAX_AGE=43200000,LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
-let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,sorts={
+let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,currentRarityIndex=null,sorts={
 hero:{
 key:'picks',dir:'desc'},player:{
 key:'picks',dir:'desc'},duo:{
@@ -711,6 +711,23 @@ function score(c,m,w){
 const heroAvg=c.reduce((s,h)=>s+Math.log1p(m.heroes.get(h)||0),0)/c.length,duoAvg=avgLog(c,2,m.duos),trioAvg=avgLog(c,3,m.trios),quadAvg=avgLog(c,4,m.quads),fiveAvg=avgLog(c,5,m.fives);
 return{
 total:w.heroes*heroAvg+w.duos*duoAvg+w.trios*trioAvg+w.quads*quadAvg+w.fives*fiveAvg,heroAvg,duoAvg,trioAvg,quadAvg,fiveAvg}}
+function raritySignature(heroes,maps,w){
+return heroes.join('|')+'||'+maps.sixes.size+'||'+[w.heroes,w.duos,w.trios,w.quads,w.fives].join(',')}
+function buildRarityIndex(heroes,maps,w){
+const total=nCk(heroes.length,6),scores=new Float64Array(total);
+let i=0;
+combos(heroes,6,c=>{
+scores[i++]=score(c,maps,w).total});
+scores.sort();
+return{
+scores,total,signature:raritySignature(heroes,maps,w)}}
+function rarityRankFromIndex(targetScore,index){
+let lo=0,hi=index.scores.length;
+while(lo<hi){
+const mid=(lo+hi)>>1;
+if(index.scores[mid]<=targetScore)lo=mid+1;
+else hi=mid}
+return index.total-lo+1}
 function topSub(c,k,m){
 const out=[];
 combos(c,k,p=>{
@@ -1005,6 +1022,8 @@ currentAllDrafts=groupDrafts(false).drafts;
 const maps=countMaps(built.drafts),possible=nCk(heroes.length,6),w={
 heroes:+$('wHeroes').value||0,duos:+$('wDuos').value||0,trios:+$('wTrios').value||0,quads:+$('wQuads').value||0,fives:+$('wFives').value||0};
 currentCoverageMaps=maps;
+const raritySig=raritySignature(heroes,maps,w);
+if(!currentRarityIndex||currentRarityIndex.signature!==raritySig)currentRarityIndex=buildRarityIndex(heroes,maps,w);
 renderHeroStats(currentAllDrafts);
 renderPlayerStats(currentAllDrafts);
 renderRosterMoves(currentAllDrafts);
@@ -1725,11 +1744,8 @@ if(picked.length!==6)return'';
 const heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,maps=currentCoverageMaps||countMaps(groupDrafts(true).drafts),weights=simLikelyWeights(),targetKey=keyOf(picked),targetScore=score(picked,maps,weights).total;
 const cacheKey=targetKey+'||'+heroes.length+'||'+maps.sixes.size+'||'+Object.values(weights).join(',');
 if(simRarityCache.has(cacheKey))return simRarityCache.get(cacheKey);
-let rank=1,total=0;
-combos(heroes,6,c=>{
-total++;
-const s=score(c,maps,weights).total;
-if(s>targetScore||(s===targetScore&&keyOf(c).localeCompare(targetKey)<0))rank++});
+if(!currentRarityIndex||currentRarityIndex.signature!==raritySignature(heroes,maps,weights))currentRarityIndex=buildRarityIndex(heroes,maps,weights);
+const rank=rarityRankFromIndex(targetScore,currentRarityIndex),total=currentRarityIndex.total;
 const rarity=Math.max(0.5,Math.min(5,.5+4.5*((rank-1)/Math.max(1,total-1)))),pct=(rarity/5*100).toFixed(1);
 const html='<span class="simRarity" title="Based on the Likely Unseen scoring weights"><span>Rarity:</span><span class="simStars" aria-label="'+rarity.toFixed(1)+' out of 5 stars"><span class="simStarsBase">★★★★★</span><span class="simStarsFill" style="width:'+pct+'%">★★★★★</span></span><span class="simRank">('+num(rank)+suffix(rank)+' likeliest out of '+num(total)+' possible)</span></span>';
 simRarityCache.set(cacheKey,html);
