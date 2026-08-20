@@ -245,11 +245,18 @@
     }
 
     .map-cell {
+      display: grid;
+      place-items: center;
       min-width: 0;
       aspect-ratio: 1;
       padding: 0;
       border: 1px solid transparent;
       border-radius: 3px;
+      color: var(--text);
+      font-size: clamp(8px, 0.8vw, 11px);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      text-shadow: 0 1px 2px var(--page);
       box-shadow: none;
     }
 
@@ -259,7 +266,7 @@
       filter: brightness(1.16);
     }
 
-    .map-cell-locked { opacity: 0.25; }
+    .map-cell-locked { color: #858c89; }
 
     .map-cell-unlocked {
       border-color: rgba(184, 242, 169, 0.42);
@@ -273,6 +280,7 @@
       color: #6d7472;
       font-size: 11px;
       opacity: 0.8;
+      text-shadow: none;
     }
 
     .map-cell-selected {
@@ -544,7 +552,7 @@
       <div class="map-intro">
         <div>
           <h2 id="map-title">The Wordlegami map</h2>
-          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top, then select any square for its history.</p>
+          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. The number in each square is how many times that row has appeared.</p>
         </div>
         <strong class="map-count" id="map-count">Loading map…</strong>
       </div>
@@ -651,14 +659,27 @@
 
       const headers = rows.shift();
       headers[0] = headers[0].replace(/^\uFEFF/, '');
-      const expected = ['pattern', 'status', 'unlocked_by', 'wordle_number'];
-      if (headers.length !== expected.length || headers.some((value, index) => value !== expected[index])) {
+      const legacyColumns = ['pattern', 'status', 'unlocked_by', 'wordle_number'];
+      const expected = [...legacyColumns, 'seen_count'];
+      const hasSeenCounts = headers.length === expected.length
+        && headers.every((value, index) => value === expected[index]);
+      const isLegacyCsv = headers.length === legacyColumns.length
+        && headers.every((value, index) => value === legacyColumns[index]);
+      if (!hasSeenCounts && !isLegacyCsv) {
         throw new Error('Unexpected CSV columns');
       }
 
       return rows
         .filter(values => values.some(value => value !== ''))
-        .map(values => Object.fromEntries(expected.map((header, index) => [header, values[index] || ''])));
+        .map(values => {
+          const record = Object.fromEntries(
+            headers.map((header, index) => [header, values[index] || ''])
+          );
+          if (!hasSeenCounts) {
+            record.seen_count = record.status === 'unlocked' ? '1' : '0';
+          }
+          return record;
+        });
     }
 
     function validateRecords(records) {
@@ -672,8 +693,18 @@
         if (record.status !== 'locked' && record.status !== 'unlocked') {
           throw new Error(`Invalid status for ${record.pattern}`);
         }
-        if (record.status === 'unlocked' && (!record.unlocked_by || !/^\d+$/.test(record.wordle_number))) {
+        if (!/^\d+$/.test(record.seen_count)) {
+          throw new Error(`Invalid seen count for ${record.pattern}`);
+        }
+        const seenCount = Number(record.seen_count);
+        if (
+          record.status === 'unlocked'
+          && (!record.unlocked_by || !/^\d+$/.test(record.wordle_number) || seenCount < 1)
+        ) {
           throw new Error(`Incomplete unlock data for ${record.pattern}`);
+        }
+        if (record.status === 'locked' && seenCount !== 0) {
+          throw new Error(`Locked pattern has a seen count for ${record.pattern}`);
         }
         patterns.add(record.pattern);
       }
@@ -717,11 +748,13 @@
       return card;
     }
 
-    function patternBackground(pattern) {
+    function patternBackground(pattern, locked = false) {
       const stops = [...pattern].map((state, index) => {
         const start = index * 20;
         const end = start + 20;
-        const color = state === 'G' ? 'var(--green)' : state === 'Y' ? 'var(--yellow)' : 'var(--gray)';
+        const color = locked
+          ? state === 'G' ? 'var(--locked-green)' : state === 'Y' ? 'var(--locked-yellow)' : 'var(--locked-gray)'
+          : state === 'G' ? 'var(--green)' : state === 'Y' ? 'var(--yellow)' : 'var(--gray)';
         return `${color} ${start}% ${end}%`;
       });
       return `linear-gradient(90deg, ${stops.join(', ')})`;
@@ -749,9 +782,10 @@
       if (IMPOSSIBLE_PATTERNS.has(pattern)) {
         mapSelectedDetail.textContent = 'Impossible · four greens and one yellow cannot occur';
       } else if (record?.status === 'unlocked') {
-        mapSelectedDetail.textContent = `Unlocked by ${record.unlocked_by} · Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`;
+        const count = Number(record.seen_count);
+        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'} · first unlocked by ${record.unlocked_by} on Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`;
       } else {
-        mapSelectedDetail.textContent = 'Possible · not yet unlocked';
+        mapSelectedDetail.textContent = 'Seen 0 times · not yet unlocked';
       }
     }
 
@@ -796,10 +830,12 @@
               cell.textContent = '×';
               description = `${pattern}: impossible`;
             } else {
-              cell.style.background = patternBackground(pattern);
+              const seenCount = Number(record?.seen_count || 0);
+              cell.textContent = String(seenCount);
+              cell.style.background = patternBackground(pattern, status === 'locked');
               description = status === 'unlocked'
-                ? `${pattern}: unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}`
-                : `${pattern}: not yet unlocked`;
+                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}`
+                : `${pattern}: seen 0 times; not yet unlocked`;
             }
             cell.setAttribute('aria-label', description);
             cell.title = description;
