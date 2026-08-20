@@ -121,6 +121,195 @@
       background: linear-gradient(90deg, var(--yellow), var(--green));
     }
 
+    .map-section {
+      padding: 34px 0 38px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(12, 13, 13, 0.36);
+    }
+
+    .map-intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .map-intro h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      letter-spacing: -0.035em;
+    }
+
+    .map-intro p {
+      max-width: 680px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .map-count {
+      flex: 0 0 auto;
+      color: var(--bright);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .map-selection {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 72px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+    }
+
+    .map-selected-tiles {
+      display: grid;
+      grid-template-columns: repeat(5, 25px);
+      gap: 5px;
+    }
+
+    .map-selected-tiles .tile {
+      aspect-ratio: 1;
+      border-radius: 3px;
+    }
+
+    .map-selected-tiles .tile-x { background: var(--gray); }
+    .map-selected-tiles .tile-y { background: var(--yellow); }
+    .map-selected-tiles .tile-g { background: var(--green); }
+
+    .map-selection code {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .map-selection-detail {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .map-axis-label {
+      margin: 18px 0 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.04em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .map-panels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .map-panel { min-width: 0; }
+
+    .map-panel h3 {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .map-panel h3 code {
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .map-matrix {
+      display: grid;
+      grid-template-columns: 30px repeat(9, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 3px;
+    }
+
+    .map-matrix-label {
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      overflow: hidden;
+      color: #7e8583;
+      font-size: clamp(7px, 0.75vw, 10px);
+      text-overflow: clip;
+    }
+
+    .map-cell {
+      min-width: 0;
+      aspect-ratio: 1;
+      padding: 0;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      box-shadow: none;
+    }
+
+    .map-cell:hover {
+      border-color: var(--text);
+      color: inherit;
+      filter: brightness(1.16);
+    }
+
+    .map-cell-locked { opacity: 0.25; }
+
+    .map-cell-unlocked {
+      border-color: rgba(184, 242, 169, 0.42);
+      box-shadow: 0 0 8px rgba(184, 242, 169, 0.08);
+    }
+
+    .map-cell-impossible {
+      display: grid;
+      place-items: center;
+      background: repeating-linear-gradient(135deg, #242727 0 4px, #363a3a 4px 7px);
+      color: #6d7472;
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .map-cell-selected {
+      outline: 2px solid var(--text);
+      outline-offset: 1px;
+    }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .map-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .map-key {
+      display: inline-grid;
+      place-items: center;
+      width: 17px;
+      height: 17px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--gray) 0 33%, var(--yellow) 33% 66%, var(--green) 66%);
+      color: #6d7472;
+      font-style: normal;
+    }
+
+    .map-key-locked { opacity: 0.25; }
+    .map-key-impossible { background: repeating-linear-gradient(135deg, #242727 0 4px, #363a3a 4px 7px); }
+
     .toolbar-wrap {
       position: sticky;
       top: 0;
@@ -312,10 +501,20 @@
       header { padding-top: 36px; }
       .stats { grid-template-columns: 1fr; }
       .stat { min-height: auto; }
+      .map-intro { align-items: start; flex-direction: column; gap: 10px; }
+      .map-selection { align-items: start; flex-direction: column; }
+      .map-matrix { grid-template-columns: 24px repeat(9, minmax(0, 1fr)); gap: 2px; }
+      .map-matrix-label { font-size: 7px; }
       .toolbar { align-items: stretch; flex-direction: column; }
       .filters { display: grid; grid-template-columns: repeat(3, 1fr); }
       input { width: 100%; }
       .gallery { grid-template-columns: minmax(0, 210px); }
+    }
+
+    @media (max-width: 1000px) {
+      .map-panels { grid-template-columns: 1fr; }
+      .map-panel { width: min(100%, 600px); margin: 0 auto; }
+      .map-matrix-label { font-size: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -328,7 +527,7 @@
     <div class="shell">
       <p class="eyebrow">The complete collection</p>
       <h1>Wordlegami Archive</h1>
-      <p class="lede">Every possible five-tile Wordle row. Bright patterns have been seen in the wild; the rest are still out there waiting.</p>
+      <p class="lede">Every possible five-tile Wordle row, plus the five impossible shapes for context. Bright patterns have been seen in the wild; the rest are still out there waiting.</p>
       <div class="stats" aria-label="Collection progress">
         <div class="stat"><strong id="unlocked-count">—</strong><span>Unlocked</span></div>
         <div class="stat"><strong id="locked-count">—</strong><span>Still hidden</span></div>
@@ -339,6 +538,35 @@
       </div>
     </div>
   </header>
+
+  <section class="map-section" aria-labelledby="map-title">
+    <div class="shell">
+      <div class="map-intro">
+        <div>
+          <h2 id="map-title">The Wordlegami map</h2>
+          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top, then select any square for its history.</p>
+        </div>
+        <strong class="map-count" id="map-count">Loading map…</strong>
+      </div>
+
+      <div class="map-selection" aria-live="polite">
+        <div class="map-selected-tiles" id="map-selected-tiles" aria-hidden="true"></div>
+        <div>
+          <code id="map-selected-pattern">GGGGY</code>
+          <div class="map-selection-detail" id="map-selected-detail">Loading pattern history…</div>
+        </div>
+      </div>
+
+      <p class="map-axis-label">Columns: tiles 4–5 · Rows: tiles 1–2</p>
+      <div class="map-panels" id="map-panels" aria-label="Map of all 243 Wordlegami rows"></div>
+
+      <div class="map-legend" aria-label="Map legend">
+        <span><i class="map-key" aria-hidden="true"></i>Unlocked</span>
+        <span><i class="map-key map-key-locked" aria-hidden="true"></i>Not yet unlocked</span>
+        <span><i class="map-key map-key-impossible" aria-hidden="true">×</i>Impossible</span>
+      </div>
+    </div>
+  </section>
 
   <div class="toolbar-wrap">
     <div class="toolbar shell">
@@ -365,16 +593,25 @@
 
   <script>
     const DATA_URL = 'wurble.csv';
+    const STATES = ['X', 'Y', 'G'];
     const STATE_LABELS = { X: 'gray', Y: 'yellow', G: 'green' };
     const IMPOSSIBLE_PATTERNS = new Set(['YGGGG', 'GYGGG', 'GGYGG', 'GGGYG', 'GGGGY']);
+    const PAIRS = STATES.flatMap(first => STATES.map(second => first + second));
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const search = document.querySelector('#search');
     const visibleCount = document.querySelector('#visible-count');
     const empty = document.querySelector('#empty');
     const gallery = document.querySelector('#gallery');
     const dataError = document.querySelector('#data-error');
+    const mapPanels = document.querySelector('#map-panels');
+    const mapCount = document.querySelector('#map-count');
+    const mapSelectedTiles = document.querySelector('#map-selected-tiles');
+    const mapSelectedPattern = document.querySelector('#map-selected-pattern');
+    const mapSelectedDetail = document.querySelector('#map-selected-detail');
     let cards = [];
     let activeFilter = 'all';
+    let activeMapCell = null;
+    let recordsByPattern = new Map();
 
     function parseCsv(source) {
       const rows = [];
@@ -480,6 +717,106 @@
       return card;
     }
 
+    function patternBackground(pattern) {
+      const stops = [...pattern].map((state, index) => {
+        const start = index * 20;
+        const end = start + 20;
+        const color = state === 'G' ? 'var(--green)' : state === 'Y' ? 'var(--yellow)' : 'var(--gray)';
+        return `${color} ${start}% ${end}%`;
+      });
+      return `linear-gradient(90deg, ${stops.join(', ')})`;
+    }
+
+    function showMapPattern(pattern, cell) {
+      if (activeMapCell) {
+        activeMapCell.classList.remove('map-cell-selected');
+        activeMapCell.setAttribute('aria-pressed', 'false');
+      }
+      activeMapCell = cell || null;
+      if (activeMapCell) {
+        activeMapCell.classList.add('map-cell-selected');
+        activeMapCell.setAttribute('aria-pressed', 'true');
+      }
+
+      mapSelectedPattern.textContent = pattern;
+      mapSelectedTiles.replaceChildren();
+      mapSelectedTiles.setAttribute('aria-label', [...pattern].map(state => STATE_LABELS[state]).join(', '));
+      for (const state of pattern) {
+        mapSelectedTiles.append(makeElement('i', `tile tile-${state.toLocaleLowerCase()}`));
+      }
+
+      const record = recordsByPattern.get(pattern);
+      if (IMPOSSIBLE_PATTERNS.has(pattern)) {
+        mapSelectedDetail.textContent = 'Impossible · four greens and one yellow cannot occur';
+      } else if (record?.status === 'unlocked') {
+        mapSelectedDetail.textContent = `Unlocked by ${record.unlocked_by} · Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`;
+      } else {
+        mapSelectedDetail.textContent = 'Possible · not yet unlocked';
+      }
+    }
+
+    function renderMap(records) {
+      recordsByPattern = new Map(records.map(record => [record.pattern, record]));
+      const unlockedCount = records.filter(record => record.status === 'unlocked').length;
+      mapCount.textContent = `${unlockedCount} of ${records.length} unlocked`;
+
+      const fragment = document.createDocumentFragment();
+      let defaultCell = null;
+
+      for (const middle of STATES) {
+        const panel = makeElement('section', 'map-panel');
+        const heading = makeElement('h3');
+        heading.append('Tile 3: ', makeElement('code', '', middle));
+        panel.append(heading);
+
+        const matrix = makeElement('div', 'map-matrix');
+        matrix.setAttribute('role', 'grid');
+        matrix.setAttribute('aria-label', `Rows with tile 3 ${STATE_LABELS[middle]}`);
+        matrix.append(document.createElement('span'));
+
+        for (const suffix of PAIRS) {
+          matrix.append(makeElement('code', 'map-matrix-label', suffix));
+        }
+
+        for (const prefix of PAIRS) {
+          matrix.append(makeElement('code', 'map-matrix-label', prefix));
+          for (const suffix of PAIRS) {
+            const pattern = prefix + middle + suffix;
+            const record = recordsByPattern.get(pattern);
+            const status = IMPOSSIBLE_PATTERNS.has(pattern)
+              ? 'impossible'
+              : record?.status === 'unlocked' ? 'unlocked' : 'locked';
+            const cell = makeElement('button', `map-cell map-cell-${status}`);
+            cell.type = 'button';
+            cell.setAttribute('role', 'gridcell');
+            cell.setAttribute('aria-pressed', 'false');
+
+            let description;
+            if (status === 'impossible') {
+              cell.textContent = '×';
+              description = `${pattern}: impossible`;
+            } else {
+              cell.style.background = patternBackground(pattern);
+              description = status === 'unlocked'
+                ? `${pattern}: unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}`
+                : `${pattern}: not yet unlocked`;
+            }
+            cell.setAttribute('aria-label', description);
+            cell.title = description;
+            cell.addEventListener('click', () => showMapPattern(pattern, cell));
+            matrix.append(cell);
+            if (pattern === 'GGGGY') defaultCell = cell;
+          }
+        }
+
+        panel.append(matrix);
+        fragment.append(panel);
+      }
+
+      mapPanels.replaceChildren(fragment);
+      showMapPattern('GGGGY', defaultCell);
+    }
+
     function renderRecords(records) {
       const fragment = document.createDocumentFragment();
       records.forEach((record, index) => fragment.append(makeCard(record, index)));
@@ -499,6 +836,7 @@
       const progress = document.querySelector('#completion-progress');
       progress.setAttribute('aria-label', `${completion.toFixed(1)}% complete`);
       progress.querySelector('span').style.width = `${completion}%`;
+      renderMap(records);
       updateGallery();
     }
 
@@ -539,6 +877,9 @@
         gallery.replaceChildren();
         gallery.setAttribute('aria-busy', 'false');
         visibleCount.textContent = '0';
+        mapCount.textContent = 'Map unavailable';
+        mapPanels.replaceChildren();
+        mapSelectedDetail.textContent = 'Could not load the pattern history.';
         dataError.hidden = false;
       }
     }
