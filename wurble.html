@@ -374,6 +374,27 @@
 
     input:focus { border-color: var(--green); }
 
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .refresh-button {
+      flex: 0 0 auto;
+      background: var(--surface);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .refresh-button:hover { border-color: var(--green); }
+
+    .refresh-button:disabled {
+      color: var(--muted);
+      cursor: wait;
+      opacity: 0.7;
+    }
+
     main { padding-top: 28px; padding-bottom: 60px; }
 
     .result-line {
@@ -382,47 +403,66 @@
       font-size: 13px;
     }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: minmax(0, 245px);
-      gap: 12px;
-    }
-
-    .pattern-card {
-      position: relative;
-      min-width: 0;
+    .archive-table-wrap {
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 4px;
       background: var(--surface);
-      padding: 14px;
-      transition: border-color 120ms ease, background 120ms ease;
     }
 
-    .pattern-card.unlocked {
-      border-color: rgba(143, 196, 136, 0.68);
-      background: var(--surface);
+    .archive-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
     }
 
-    .pattern-card.unlocked:hover {
-      border-color: var(--bright);
-      background: #1d201d;
-    }
+    .archive-table th:nth-child(1),
+    .archive-table td:nth-child(1) { width: 34%; }
+    .archive-table th:nth-child(2),
+    .archive-table td:nth-child(2) { width: 28%; }
+    .archive-table th:nth-child(3),
+    .archive-table td:nth-child(3) { width: 18%; }
+    .archive-table th:nth-child(4),
+    .archive-table td:nth-child(4) { width: 20%; }
 
-    .card-topline {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-      color: #727978;
+    .archive-table th {
+      padding: 10px 12px;
+      background: var(--surface-raised);
+      color: var(--muted);
       font-size: 10px;
       font-weight: 800;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.08em;
+      text-align: left;
       text-transform: uppercase;
     }
 
-    .unlocked .card-topline { color: #a9b3ae; }
+    .archive-table td {
+      height: 44px;
+      padding: 7px 12px;
+      border-top: 1px solid var(--border);
+      color: #737a78;
+      font-size: 12px;
+      line-height: 1.25;
+      vertical-align: middle;
+    }
+
+    .archive-table tr.unlocked td {
+      background: rgba(143, 196, 136, 0.055);
+      color: var(--text);
+    }
+
+    .archive-table tr.unlocked td:first-child {
+      box-shadow: inset 3px 0 var(--green);
+    }
+
+    .archive-table tbody tr:hover td { background: var(--surface-raised); }
+
+    .table-pattern {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 10px;
+    }
 
     code {
       color: inherit;
@@ -430,10 +470,11 @@
       letter-spacing: 0.06em;
     }
 
-    .tiles {
+    .table-tiles {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 7px;
+      flex: 0 0 auto;
+      grid-template-columns: repeat(5, 22px);
+      gap: 4px;
     }
 
     .tile {
@@ -448,32 +489,20 @@
     .unlocked .tile-y { background: var(--yellow); }
     .unlocked .tile-g { background: var(--green); }
 
-    .unlock-detail {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 10px;
-      min-height: 41px;
-      margin: 16px 0 0;
-      color: #dfe6dc;
-      font-size: 13px;
-      line-height: 1.25;
-    }
-
-    .unlock-detail strong { color: var(--bright); }
-
-    .unlock-detail span {
-      flex: 0 0 auto;
+    .pattern-code {
+      overflow: hidden;
       color: var(--muted);
       font-size: 11px;
-      font-weight: 750;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      text-overflow: ellipsis;
     }
 
-    .locked-detail { color: #686e6d; }
+    .table-unlocker { overflow-wrap: anywhere; }
+    .unlocked .table-unlocker { color: var(--bright); }
 
-    .locked-detail span { color: #5f6564; }
+    .table-wordle,
+    .table-date { white-space: nowrap; }
+
+    .date-short { display: none; }
 
     .empty {
       display: none;
@@ -509,8 +538,15 @@
       .map-matrix-label { font-size: 7px; }
       .toolbar { align-items: stretch; flex-direction: column; }
       .filters { display: grid; grid-template-columns: repeat(3, 1fr); }
+      .toolbar-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
       input { width: 100%; }
-      .gallery { grid-template-columns: minmax(0, 210px); }
+      .archive-table th { padding: 8px 5px; font-size: 9px; }
+      .archive-table td { height: 36px; padding: 5px; font-size: 11px; }
+      .table-pattern { gap: 0; }
+      .table-tiles { grid-template-columns: repeat(5, 15px); gap: 3px; }
+      .pattern-code { display: none; }
+      .date-long { display: none; }
+      .date-short { display: inline; }
     }
 
     @media (max-width: 1000px) {
@@ -577,15 +613,29 @@
         <button id="unlocked-filter" type="button" data-filter="unlocked">Unlocked</button>
         <button id="locked-filter" type="button" data-filter="locked">Locked</button>
       </div>
-      <input id="search" type="search" placeholder="Search pattern, player, or Wordle #" aria-label="Search patterns">
+      <div class="toolbar-actions">
+        <input id="search" type="search" placeholder="Search pattern, player, or Wordle #" aria-label="Search patterns">
+        <button class="refresh-button" id="refresh-data" type="button">Refresh data</button>
+      </div>
     </div>
   </div>
 
   <main class="shell">
     <p class="result-line" aria-live="polite"><span id="visible-count">—</span> patterns shown</p>
     <p class="data-error" id="data-error" role="alert" hidden>Could not load the Wordlegami data. Try refreshing the page.</p>
-    <section class="gallery" id="gallery" aria-label="All Wordlegami patterns" aria-busy="true">
-    </section>
+    <div class="archive-table-wrap">
+      <table class="archive-table" aria-label="All Wordlegami patterns">
+        <thead>
+          <tr>
+            <th scope="col">Pattern</th>
+            <th scope="col">First unlocker</th>
+            <th scope="col">Wordle #</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody id="gallery" aria-busy="true"></tbody>
+      </table>
+    </div>
     <p class="empty" id="empty">No patterns match that search.</p>
   </main>
 
@@ -601,6 +651,7 @@
     const PAIRS = STATES.flatMap(first => STATES.map(second => first + second));
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const search = document.querySelector('#search');
+    const refreshButton = document.querySelector('#refresh-data');
     const visibleCount = document.querySelector('#visible-count');
     const empty = document.querySelector('#empty');
     const gallery = document.querySelector('#gallery');
@@ -610,7 +661,7 @@
     const mapSelectedTiles = document.querySelector('#map-selected-tiles');
     const mapSelectedPattern = document.querySelector('#map-selected-pattern');
     const mapSelectedDetail = document.querySelector('#map-selected-detail');
-    let cards = [];
+    let galleryRows = [];
     let activeFilter = 'all';
     let activeMapCell = null;
     let recordsByPattern = new Map();
@@ -654,12 +705,17 @@
       const headers = rows.shift();
       headers[0] = headers[0].replace(/^\uFEFF/, '');
       const legacyColumns = ['pattern', 'status', 'unlocked_by', 'wordle_number'];
-      const expected = [...legacyColumns, 'seen_count'];
-      const hasSeenCounts = headers.length === expected.length
+      const countColumns = [...legacyColumns, 'seen_count'];
+      const expected = [...countColumns, 'unlocked_at'];
+      const hasUnlockDates = headers.length === expected.length
         && headers.every((value, index) => value === expected[index]);
+      const hasSeenCounts = hasUnlockDates || (
+        headers.length === countColumns.length
+        && headers.every((value, index) => value === countColumns[index])
+      );
       const isLegacyCsv = headers.length === legacyColumns.length
         && headers.every((value, index) => value === legacyColumns[index]);
-      if (!hasSeenCounts && !isLegacyCsv) {
+      if (!hasUnlockDates && !hasSeenCounts && !isLegacyCsv) {
         throw new Error('Unexpected CSV columns');
       }
 
@@ -672,6 +728,7 @@
           if (!hasSeenCounts) {
             record.seen_count = record.status === 'unlocked' ? '1' : '0';
           }
+          if (!hasUnlockDates) record.unlocked_at = '';
           return record;
         });
     }
@@ -700,6 +757,9 @@
         if (record.status === 'locked' && seenCount !== 0) {
           throw new Error(`Locked pattern has a seen count for ${record.pattern}`);
         }
+        if (record.unlocked_at && Number.isNaN(Date.parse(record.unlocked_at))) {
+          throw new Error(`Invalid unlock date for ${record.pattern}`);
+        }
         patterns.add(record.pattern);
       }
     }
@@ -711,35 +771,57 @@
       return node;
     }
 
-    function makeCard(record, index) {
-      const card = makeElement('article', `pattern-card ${record.status}`);
-      card.dataset.status = record.status;
-      card.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${record.status}`.toLocaleLowerCase();
+    function makeGalleryRow(record) {
+      const row = makeElement('tr', `pattern-row ${record.status}`);
+      row.dataset.status = record.status;
+      row.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${record.unlocked_at} ${record.status}`.toLocaleLowerCase();
 
-      const topline = makeElement('div', 'card-topline');
-      topline.append(
-        makeElement('span', '', `Pattern ${String(index + 1).padStart(3, '0')}`),
-        makeElement('code', '', record.pattern),
-      );
-
-      const tiles = makeElement('div', 'tiles');
+      const patternCell = makeElement('td');
+      const pattern = makeElement('div', 'table-pattern');
+      const tiles = makeElement('div', 'table-tiles');
       tiles.setAttribute('aria-label', [...record.pattern].map(state => STATE_LABELS[state]).join(', '));
       for (const state of record.pattern) {
         const tile = makeElement('span', `tile tile-${state.toLocaleLowerCase()}`);
         tile.setAttribute('aria-hidden', 'true');
         tiles.append(tile);
       }
+      pattern.append(tiles, makeElement('code', 'pattern-code', record.pattern));
+      patternCell.append(pattern);
 
-      const detail = makeElement('p', `unlock-detail${record.status === 'locked' ? ' locked-detail' : ''}`);
+      const unlockerCell = makeElement('td', 'table-unlocker');
+      const wordleCell = makeElement('td', 'table-wordle');
+      const dateCell = makeElement('td', 'table-date');
       if (record.status === 'unlocked') {
-        detail.append('Unlocked by ', makeElement('strong', '', record.unlocked_by));
-        detail.append(makeElement('span', '', `Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`));
+        unlockerCell.textContent = record.unlocked_by;
+        wordleCell.textContent = `#${Number(record.wordle_number).toLocaleString('en-US')}`;
+        if (record.unlocked_at) {
+          const date = new Date(record.unlocked_at);
+          const time = makeElement('time');
+          time.dateTime = record.unlocked_at;
+          time.append(
+            makeElement('span', 'date-long', new Intl.DateTimeFormat(undefined, {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            }).format(date)),
+            makeElement('span', 'date-short', new Intl.DateTimeFormat(undefined, {
+              month: 'numeric',
+              day: 'numeric',
+              year: '2-digit',
+            }).format(date)),
+          );
+          dateCell.append(time);
+        } else {
+          dateCell.textContent = '—';
+        }
       } else {
-        detail.append('Still waiting', makeElement('span', '', 'Not yet unlocked'));
+        unlockerCell.textContent = '—';
+        wordleCell.textContent = '—';
+        dateCell.textContent = '—';
       }
 
-      card.append(topline, tiles, detail);
-      return card;
+      row.append(patternCell, unlockerCell, wordleCell, dateCell);
+      return row;
     }
 
     function patternBackground(pattern, locked = false) {
@@ -849,10 +931,10 @@
 
     function renderRecords(records) {
       const fragment = document.createDocumentFragment();
-      records.forEach((record, index) => fragment.append(makeCard(record, index)));
+      records.forEach(record => fragment.append(makeGalleryRow(record)));
       gallery.replaceChildren(fragment);
       gallery.setAttribute('aria-busy', 'false');
-      cards = Array.from(gallery.querySelectorAll('.pattern-card'));
+      galleryRows = Array.from(gallery.querySelectorAll('.pattern-row'));
 
       const unlockedCount = records.filter(record => record.status === 'unlocked').length;
       const lockedCount = records.length - unlockedCount;
@@ -873,11 +955,11 @@
     function updateGallery() {
       const query = search.value.trim().toLocaleLowerCase();
       let visible = 0;
-      for (const card of cards) {
-        const matchesFilter = activeFilter === 'all' || card.dataset.status === activeFilter;
-        const matchesSearch = !query || card.dataset.search.includes(query);
+      for (const row of galleryRows) {
+        const matchesFilter = activeFilter === 'all' || row.dataset.status === activeFilter;
+        const matchesSearch = !query || row.dataset.search.includes(query);
         const show = matchesFilter && matchesSearch;
-        card.hidden = !show;
+        row.hidden = !show;
         if (show) visible += 1;
       }
       visibleCount.textContent = String(visible);
@@ -895,13 +977,19 @@
     }
     search.addEventListener('input', updateGallery);
 
-    async function loadData() {
+    async function loadData({ manual = false } = {}) {
+      if (manual) {
+        refreshButton.disabled = true;
+        refreshButton.textContent = 'Refreshing…';
+      }
+      dataError.hidden = true;
       try {
         const response = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
         if (!response.ok) throw new Error(`CSV request failed with status ${response.status}`);
         const records = parseCsv(await response.text());
         validateRecords(records);
         renderRecords(records);
+        if (manual) refreshButton.textContent = 'Up to date';
       } catch (error) {
         console.error('Could not load Wordlegami data', error);
         gallery.replaceChildren();
@@ -911,9 +999,18 @@
         mapPanels.replaceChildren();
         mapSelectedDetail.textContent = 'Could not load the pattern history.';
         dataError.hidden = false;
+        if (manual) refreshButton.textContent = 'Try again';
+      } finally {
+        if (manual) {
+          window.setTimeout(() => {
+            refreshButton.disabled = false;
+            refreshButton.textContent = 'Refresh data';
+          }, 1800);
+        }
       }
     }
 
+    refreshButton.addEventListener('click', () => loadData({ manual: true }));
     loadData();
   </script>
 </body>
