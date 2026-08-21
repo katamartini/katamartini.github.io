@@ -645,6 +645,8 @@
 
   <script>
     const DATA_URL = 'wurble.csv';
+    const WORDLE_EPOCH_UTC = Date.UTC(2021, 5, 19);
+    const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
     const STATES = ['X', 'Y', 'G'];
     const STATE_LABELS = { X: 'gray', Y: 'yellow', G: 'green' };
     const IMPOSSIBLE_PATTERNS = new Set(['YGGGG', 'GYGGG', 'GGYGG', 'GGGYG', 'GGGGY']);
@@ -771,10 +773,20 @@
       return node;
     }
 
+    function dateForWordleNumber(wordleNumber) {
+      const puzzleNumber = Number(wordleNumber);
+      if (!Number.isInteger(puzzleNumber) || puzzleNumber < 0) return null;
+      return new Date(WORDLE_EPOCH_UTC + puzzleNumber * MILLISECONDS_PER_DAY);
+    }
+
     function makeGalleryRow(record) {
+      const unlockDate = record.status === 'unlocked'
+        ? dateForWordleNumber(record.wordle_number)
+        : null;
+      const unlockDateIso = unlockDate ? unlockDate.toISOString().slice(0, 10) : '';
       const row = makeElement('tr', `pattern-row ${record.status}`);
       row.dataset.status = record.status;
-      row.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${record.unlocked_at} ${record.status}`.toLocaleLowerCase();
+      row.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${unlockDateIso} ${record.status}`.toLocaleLowerCase();
 
       const patternCell = makeElement('td');
       const pattern = makeElement('div', 'table-pattern');
@@ -794,21 +806,22 @@
       if (record.status === 'unlocked') {
         unlockerCell.textContent = record.unlocked_by;
         wordleCell.textContent = `#${Number(record.wordle_number).toLocaleString('en-US')}`;
-        if (record.unlocked_at) {
-          const date = new Date(record.unlocked_at);
+        if (unlockDate) {
           const time = makeElement('time');
-          time.dateTime = record.unlocked_at;
+          time.dateTime = unlockDateIso;
           time.append(
             makeElement('span', 'date-long', new Intl.DateTimeFormat(undefined, {
               month: 'short',
               day: 'numeric',
               year: 'numeric',
-            }).format(date)),
+              timeZone: 'UTC',
+            }).format(unlockDate)),
             makeElement('span', 'date-short', new Intl.DateTimeFormat(undefined, {
               month: 'numeric',
               day: 'numeric',
               year: '2-digit',
-            }).format(date)),
+              timeZone: 'UTC',
+            }).format(unlockDate)),
           );
           dateCell.append(time);
         } else {
