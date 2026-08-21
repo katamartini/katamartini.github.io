@@ -1674,6 +1674,18 @@
       return airedEpisodes(show).filter((episode) => !show.watched[episodeKey(episode)]);
     }
 
+    function unwatchedRuntimeMinutes(episodes) {
+      return episodes.reduce((total, episode) => {
+        const runtime = Number(episode.runtime);
+        return total + (Number.isFinite(runtime) && runtime > 0 ? runtime : 0);
+      }, 0);
+    }
+
+    function formatRuntimeMinutes(totalMinutes) {
+      const minutes = Math.max(0, Math.round(totalMinutes));
+      return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+    }
+
     function markAllEpisodesWatched(show) {
       let markedAny = false;
       show.episodes.forEach((episode) => {
@@ -2045,6 +2057,7 @@
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
             <div class="meta">${watched}/${aired} aired watched</div>
+            <div class="meta">${formatRuntimeMinutes(unwatchedRuntimeMinutes(unwatched))} left</div>
             <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
           </div>
