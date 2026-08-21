@@ -1361,7 +1361,7 @@
         state.dataUpdatedAt = payloadDataUpdatedAt(parsed);
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
-        state.sortMode = parsed.sortMode || "title-asc";
+        state.sortMode = normalizeSortMode(parsed.sortMode);
         state.hideCompleted = !!parsed.hideCompleted;
         state.viewMode = "list";
       } catch {
@@ -1409,6 +1409,12 @@
       };
     }
 
+    function normalizeSortMode(value) {
+      if (value === "most-unwatched") return "remaining-episodes";
+      if (value === "least-progress") return "remaining-percent";
+      return value || "title-asc";
+    }
+
     function parseTimestamp(value) {
       const timestamp = Date.parse(value || "");
       return Number.isFinite(timestamp) ? timestamp : 0;
@@ -1439,7 +1445,7 @@
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
-      state.sortMode = parsed.sortMode || "title-asc";
+      state.sortMode = normalizeSortMode(parsed.sortMode);
       state.hideCompleted = !!parsed.hideCompleted;
       state.viewMode = "list";
       state.selectedSeason = "all";
@@ -1686,6 +1692,11 @@
       return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
     }
 
+    function remainingEpisodePercent(show) {
+      const aired = airedEpisodes(show).length;
+      return aired ? unwatchedAiredEpisodes(show).length / aired : 0;
+    }
+
     function markAllEpisodesWatched(show) {
       let markedAny = false;
       show.episodes.forEach((episode) => {
@@ -1721,11 +1732,18 @@
       list.sort((a, b) => {
         if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
         if (state.sortMode === "title-desc") return b.name.localeCompare(a.name);
-        if (state.sortMode === "most-unwatched") {
+        if (state.sortMode === "remaining-episodes") {
           return unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length || byTitle(a, b);
         }
-        if (state.sortMode === "least-progress") {
-          return progress(a) - progress(b) || byTitle(a, b);
+        if (state.sortMode === "remaining-percent") {
+          return remainingEpisodePercent(b) - remainingEpisodePercent(a)
+            || unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length
+            || byTitle(a, b);
+        }
+        if (state.sortMode === "remaining-runtime") {
+          return unwatchedRuntimeMinutes(unwatchedAiredEpisodes(b)) - unwatchedRuntimeMinutes(unwatchedAiredEpisodes(a))
+            || unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length
+            || byTitle(a, b);
         }
         if (state.sortMode === "most-progress") {
           return progress(b) - progress(a) || byTitle(a, b);
@@ -2004,12 +2022,16 @@
     function renderAllShowsView() {
       const library = libraryShows();
       const shows = sortedShows(state.hideCompleted ? library.filter((show) => !isCompletedShow(show)) : library);
+      const pinnedUnwatched = state.shows
+        .filter((show) => show.pinned)
+        .flatMap((show) => unwatchedAiredEpisodes(show));
       nodes.detail.innerHTML = `
         <section class="all-shows">
           <div class="all-shows-head">
             <div>
               <h2>All Shows</h2>
               <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / episode cards open watch links</div>
+              <div class="meta">Pinned remaining: ${pinnedUnwatched.length} episode${pinnedUnwatched.length === 1 ? "" : "s"} / ${formatRuntimeMinutes(unwatchedRuntimeMinutes(pinnedUnwatched))}</div>
             </div>
             <div class="list-controls">
               <div class="sort-control">
@@ -2017,8 +2039,9 @@
                 <select class="field" id="showSort" data-show-sort>
                   <option value="title-asc" ${state.sortMode === "title-asc" ? "selected" : ""}>Title A-Z</option>
                   <option value="title-desc" ${state.sortMode === "title-desc" ? "selected" : ""}>Title Z-A</option>
-                  <option value="most-unwatched" ${state.sortMode === "most-unwatched" ? "selected" : ""}>Most unwatched</option>
-                  <option value="least-progress" ${state.sortMode === "least-progress" ? "selected" : ""}>Least progress</option>
+                  <option value="remaining-episodes" ${state.sortMode === "remaining-episodes" ? "selected" : ""}>Most episodes left</option>
+                  <option value="remaining-percent" ${state.sortMode === "remaining-percent" ? "selected" : ""}>Highest % left</option>
+                  <option value="remaining-runtime" ${state.sortMode === "remaining-runtime" ? "selected" : ""}>Most runtime left</option>
                   <option value="most-progress" ${state.sortMode === "most-progress" ? "selected" : ""}>Most progress</option>
                   <option value="next-episode" ${state.sortMode === "next-episode" ? "selected" : ""}>Next episode date</option>
                   <option value="status" ${state.sortMode === "status" ? "selected" : ""}>Status</option>
