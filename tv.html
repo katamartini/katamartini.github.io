@@ -859,10 +859,11 @@
     }
 
     .sort-control {
-      display: grid;
-      grid-template-columns: auto minmax(190px, 240px);
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       align-items: center;
+      justify-content: flex-end;
     }
 
     .list-controls {
@@ -871,11 +872,40 @@
       justify-items: end;
     }
 
-    .sort-control label {
+    .sort-label {
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
+    }
+
+    .sort-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .sort-buttons button {
+      min-height: 34px;
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+
+    .sort-buttons button.active {
+      border-color: var(--charcoal);
+      background: var(--charcoal);
+      color: #ffffff;
+    }
+
+    .sort-buttons button.active:hover {
+      background: #343a46;
+    }
+
+    .sort-direction {
+      display: inline-block;
+      min-width: 10px;
+      margin-left: 3px;
     }
 
     .hide-completed-control {
@@ -1171,7 +1201,12 @@
       }
 
       .sort-control {
-        grid-template-columns: 1fr;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
+      .sort-buttons {
+        justify-content: flex-start;
       }
 
       .show-row {
@@ -1315,7 +1350,8 @@
       searchHasSearched: false,
       searchActive: false,
       libraryFilter: "all",
-      sortMode: "title-asc",
+      sortMode: "title",
+      sortDirection: "asc",
       hideCompleted: false,
       episodeFilter: "all",
       selectedSeason: "all",
@@ -1324,6 +1360,17 @@
       imdbRatings: { shows: {} },
       dataUpdatedAt: "",
     };
+
+    const SORT_OPTIONS = [
+      { mode: "title", label: "Title", defaultDirection: "asc" },
+      { mode: "remaining-episodes", label: "Episodes", defaultDirection: "desc" },
+      { mode: "remaining-percent", label: "% left", defaultDirection: "desc" },
+      { mode: "remaining-runtime", label: "Runtime", defaultDirection: "desc" },
+      { mode: "progress", label: "Progress", defaultDirection: "desc" },
+      { mode: "next-episode", label: "Next airdate", defaultDirection: "asc" },
+      { mode: "status", label: "Status", defaultDirection: "asc" },
+      { mode: "updated", label: "Updated", defaultDirection: "desc" },
+    ];
 
     const nodes = {
       summaryStrip: document.querySelector("#summaryStrip"),
@@ -1361,7 +1408,9 @@
         state.dataUpdatedAt = payloadDataUpdatedAt(parsed);
         state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
         state.libraryFilter = parsed.libraryFilter || "all";
-        state.sortMode = normalizeSortMode(parsed.sortMode);
+        const sortSettings = normalizeSortSettings(parsed.sortMode, parsed.sortDirection);
+        state.sortMode = sortSettings.mode;
+        state.sortDirection = sortSettings.direction;
         state.hideCompleted = !!parsed.hideCompleted;
         state.viewMode = "list";
       } catch {
@@ -1404,15 +1453,28 @@
         selectedId: state.selectedId,
         libraryFilter: state.libraryFilter,
         sortMode: state.sortMode,
+        sortDirection: state.sortDirection,
         hideCompleted: state.hideCompleted,
         viewMode: state.viewMode,
       };
     }
 
-    function normalizeSortMode(value) {
-      if (value === "most-unwatched") return "remaining-episodes";
-      if (value === "least-progress") return "remaining-percent";
-      return value || "title-asc";
+    function normalizeSortSettings(mode, direction) {
+      const legacyModes = {
+        "title-asc": { mode: "title", direction: "asc" },
+        "title-desc": { mode: "title", direction: "desc" },
+        "most-unwatched": { mode: "remaining-episodes", direction: "desc" },
+        "least-progress": { mode: "remaining-percent", direction: "desc" },
+        "most-progress": { mode: "progress", direction: "desc" },
+        "recently-updated": { mode: "updated", direction: "desc" },
+      };
+      const legacy = legacyModes[mode];
+      const normalizedMode = legacy?.mode || mode || "title";
+      const option = SORT_OPTIONS.find((item) => item.mode === normalizedMode) || SORT_OPTIONS[0];
+      const normalizedDirection = direction === "asc" || direction === "desc"
+        ? direction
+        : legacy?.direction || option.defaultDirection;
+      return { mode: option.mode, direction: normalizedDirection };
     }
 
     function parseTimestamp(value) {
@@ -1445,7 +1507,9 @@
       syncAutoCompletion();
       state.selectedId = parsed.selectedId || state.shows[0]?.id || null;
       state.libraryFilter = parsed.libraryFilter || "all";
-      state.sortMode = normalizeSortMode(parsed.sortMode);
+      const sortSettings = normalizeSortSettings(parsed.sortMode, parsed.sortDirection);
+      state.sortMode = sortSettings.mode;
+      state.sortDirection = sortSettings.direction;
       state.hideCompleted = !!parsed.hideCompleted;
       state.viewMode = "list";
       state.selectedSeason = "all";
@@ -1728,36 +1792,36 @@
     function sortedShows(shows) {
       const list = [...shows];
       const byTitle = (a, b) => a.name.localeCompare(b.name);
+      const direction = state.sortDirection === "desc" ? -1 : 1;
 
       list.sort((a, b) => {
         if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-        if (state.sortMode === "title-desc") return b.name.localeCompare(a.name);
+        if (state.sortMode === "title") return byTitle(a, b) * direction;
+        let comparison = 0;
         if (state.sortMode === "remaining-episodes") {
-          return unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length || byTitle(a, b);
+          comparison = unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
         if (state.sortMode === "remaining-percent") {
-          return remainingEpisodePercent(b) - remainingEpisodePercent(a)
-            || unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length
-            || byTitle(a, b);
+          comparison = remainingEpisodePercent(a) - remainingEpisodePercent(b)
+            || unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
         if (state.sortMode === "remaining-runtime") {
-          return unwatchedRuntimeMinutes(unwatchedAiredEpisodes(b)) - unwatchedRuntimeMinutes(unwatchedAiredEpisodes(a))
-            || unwatchedAiredEpisodes(b).length - unwatchedAiredEpisodes(a).length
-            || byTitle(a, b);
+          comparison = unwatchedRuntimeMinutes(unwatchedAiredEpisodes(a)) - unwatchedRuntimeMinutes(unwatchedAiredEpisodes(b))
+            || unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
-        if (state.sortMode === "most-progress") {
-          return progress(b) - progress(a) || byTitle(a, b);
+        if (state.sortMode === "progress") {
+          comparison = progress(a) - progress(b);
         }
         if (state.sortMode === "next-episode") {
-          return nextEpisodeSortValue(a).localeCompare(nextEpisodeSortValue(b)) || byTitle(a, b);
+          comparison = nextEpisodeSortValue(a).localeCompare(nextEpisodeSortValue(b));
         }
         if (state.sortMode === "status") {
-          return statusSortValue(a) - statusSortValue(b) || byTitle(a, b);
+          comparison = statusSortValue(a) - statusSortValue(b);
         }
-        if (state.sortMode === "recently-updated") {
-          return Date.parse(b.updatedAt || b.addedAt || 0) - Date.parse(a.updatedAt || a.addedAt || 0) || byTitle(a, b);
+        if (state.sortMode === "updated") {
+          comparison = parseTimestamp(a.updatedAt || a.addedAt) - parseTimestamp(b.updatedAt || b.addedAt);
         }
-        return byTitle(a, b);
+        return comparison * direction || byTitle(a, b);
       });
 
       return list;
@@ -2035,18 +2099,18 @@
             </div>
             <div class="list-controls">
               <div class="sort-control">
-                <label for="showSort">Sort</label>
-                <select class="field" id="showSort" data-show-sort>
-                  <option value="title-asc" ${state.sortMode === "title-asc" ? "selected" : ""}>Title A-Z</option>
-                  <option value="title-desc" ${state.sortMode === "title-desc" ? "selected" : ""}>Title Z-A</option>
-                  <option value="remaining-episodes" ${state.sortMode === "remaining-episodes" ? "selected" : ""}>Most episodes left</option>
-                  <option value="remaining-percent" ${state.sortMode === "remaining-percent" ? "selected" : ""}>Highest % left</option>
-                  <option value="remaining-runtime" ${state.sortMode === "remaining-runtime" ? "selected" : ""}>Most runtime left</option>
-                  <option value="most-progress" ${state.sortMode === "most-progress" ? "selected" : ""}>Most progress</option>
-                  <option value="next-episode" ${state.sortMode === "next-episode" ? "selected" : ""}>Next episode date</option>
-                  <option value="status" ${state.sortMode === "status" ? "selected" : ""}>Status</option>
-                  <option value="recently-updated" ${state.sortMode === "recently-updated" ? "selected" : ""}>Recently updated</option>
-                </select>
+                <span class="sort-label">Sort</span>
+                <div class="sort-buttons" role="group" aria-label="Sort shows">
+                  ${SORT_OPTIONS.map((option) => {
+                    const isActive = state.sortMode === option.mode;
+                    const directionText = state.sortDirection === "asc" ? "ascending" : "descending";
+                    const arrow = state.sortDirection === "asc" ? "&uarr;" : "&darr;";
+                    const label = isActive
+                      ? `Sort by ${option.label}, ${directionText}. Click to reverse.`
+                      : `Sort by ${option.label}`;
+                    return `<button type="button" class="${isActive ? "active" : ""}" data-show-sort="${option.mode}" aria-pressed="${isActive}" aria-label="${label}">${option.label}${isActive ? `<span class="sort-direction" aria-hidden="true">${arrow}</span>` : ""}</button>`;
+                  }).join("")}
+                </div>
               </div>
               <label class="hide-completed-control">
                 <input type="checkbox" data-hide-completed ${state.hideCompleted ? "checked" : ""} />
@@ -2899,6 +2963,20 @@
         return;
       }
 
+      const showSort = event.target.closest("[data-show-sort]");
+      if (showSort) {
+        const mode = showSort.dataset.showSort;
+        if (state.sortMode === mode) {
+          state.sortDirection = state.sortDirection === "asc" ? "desc" : "asc";
+        } else {
+          const option = SORT_OPTIONS.find((item) => item.mode === mode) || SORT_OPTIONS[0];
+          state.sortMode = option.mode;
+          state.sortDirection = option.defaultDirection;
+        }
+        render();
+        return;
+      }
+
       const openShow = event.target.closest("[data-open-show]");
       if (openShow) {
         state.selectedId = Number(openShow.dataset.openShow);
@@ -2981,13 +3059,6 @@
     });
 
     nodes.detail.addEventListener("change", (event) => {
-      const showSort = event.target.closest("[data-show-sort]");
-      if (showSort) {
-        state.sortMode = showSort.value;
-        render();
-        return;
-      }
-
       const hideCompleted = event.target.closest("[data-hide-completed]");
       if (hideCompleted) {
         state.hideCompleted = hideCompleted.checked;
