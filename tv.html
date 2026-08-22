@@ -1614,14 +1614,14 @@
       return "garbage";
     }
 
-    function imdbEpisodeRating(show, episode) {
+    function imdbEpisodeData(show, episode) {
       const showRatings = state.imdbRatings?.shows?.[String(show.id)];
       if (!showRatings || !episode.season || !episode.number) return null;
       return showRatings.episodes?.[`${episode.season}:${episode.number}`] || null;
     }
 
     function displayEpisodeRating(show, episode) {
-      const imdb = imdbEpisodeRating(show, episode);
+      const imdb = imdbEpisodeData(show, episode);
       const imdbRating = normalizeEpisodeRating(imdb?.rating);
       if (imdbRating) {
         return {
@@ -1633,6 +1633,13 @@
 
       const tvmazeRating = normalizeEpisodeRating(episode.rating);
       return tvmazeRating ? { rating: tvmazeRating, source: "TVMaze", votes: null } : null;
+    }
+
+    function episodeRuntime(show, episode) {
+      const imdbRuntime = Number(imdbEpisodeData(show, episode)?.runtime);
+      if (Number.isFinite(imdbRuntime) && imdbRuntime > 0) return imdbRuntime;
+      const tvmazeRuntime = Number(episode.runtime);
+      return Number.isFinite(tvmazeRuntime) && tvmazeRuntime > 0 ? tvmazeRuntime : 0;
     }
 
     async function loadImdbRatings() {
@@ -1744,11 +1751,8 @@
       return airedEpisodes(show).filter((episode) => !show.watched[episodeKey(episode)]);
     }
 
-    function unwatchedRuntimeMinutes(episodes) {
-      return episodes.reduce((total, episode) => {
-        const runtime = Number(episode.runtime);
-        return total + (Number.isFinite(runtime) && runtime > 0 ? runtime : 0);
-      }, 0);
+    function unwatchedRuntimeMinutes(show, episodes) {
+      return episodes.reduce((total, episode) => total + episodeRuntime(show, episode), 0);
     }
 
     function formatRuntimeMinutes(totalMinutes) {
@@ -1806,7 +1810,7 @@
             || unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
         if (state.sortMode === "remaining-runtime") {
-          comparison = unwatchedRuntimeMinutes(unwatchedAiredEpisodes(a)) - unwatchedRuntimeMinutes(unwatchedAiredEpisodes(b))
+          comparison = unwatchedRuntimeMinutes(a, unwatchedAiredEpisodes(a)) - unwatchedRuntimeMinutes(b, unwatchedAiredEpisodes(b))
             || unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
         if (state.sortMode === "progress") {
@@ -2086,16 +2090,21 @@
     function renderAllShowsView() {
       const library = libraryShows();
       const shows = sortedShows(state.hideCompleted ? library.filter((show) => !isCompletedShow(show)) : library);
-      const pinnedUnwatched = state.shows
+      const pinnedRemaining = state.shows
         .filter((show) => show.pinned)
-        .flatMap((show) => unwatchedAiredEpisodes(show));
+        .reduce((total, show) => {
+          const episodes = unwatchedAiredEpisodes(show);
+          total.episodes += episodes.length;
+          total.runtime += unwatchedRuntimeMinutes(show, episodes);
+          return total;
+        }, { episodes: 0, runtime: 0 });
       nodes.detail.innerHTML = `
         <section class="all-shows">
           <div class="all-shows-head">
             <div>
               <h2>All Shows</h2>
               <div class="meta">${shows.length} tracked show${shows.length === 1 ? "" : "s"} / episode cards open watch links</div>
-              <div class="meta">Pinned remaining: ${pinnedUnwatched.length} episode${pinnedUnwatched.length === 1 ? "" : "s"} / ${formatRuntimeMinutes(unwatchedRuntimeMinutes(pinnedUnwatched))}</div>
+              <div class="meta">Pinned remaining: ${pinnedRemaining.episodes} episode${pinnedRemaining.episodes === 1 ? "" : "s"} / ${formatRuntimeMinutes(pinnedRemaining.runtime)}</div>
             </div>
             <div class="list-controls">
               <div class="sort-control">
@@ -2144,7 +2153,7 @@
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
             <div class="meta">${watched}/${aired} aired watched</div>
-            <div class="meta">${formatRuntimeMinutes(unwatchedRuntimeMinutes(unwatched))} left</div>
+            <div class="meta">${formatRuntimeMinutes(unwatchedRuntimeMinutes(show, unwatched))} left</div>
             <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
           </div>

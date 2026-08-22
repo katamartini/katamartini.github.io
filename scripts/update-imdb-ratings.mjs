@@ -9,6 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_PATH = path.join(ROOT, "tv-data.json");
 const OUTPUT_PATH = path.join(ROOT, "tv-ratings.json");
 const CACHE_DIR = path.join(ROOT, ".cache", "imdb");
+const TITLE_BASICS_URL = "https://datasets.imdbws.com/title.basics.tsv.gz";
 const TITLE_EPISODE_URL = "https://datasets.imdbws.com/title.episode.tsv.gz";
 const TITLE_RATINGS_URL = "https://datasets.imdbws.com/title.ratings.tsv.gz";
 
@@ -121,10 +122,31 @@ async function readRatings(ratingsPath, episodeMap) {
   return ratings;
 }
 
-function buildOutput(shows, showsByImdbId, episodeMap, ratings) {
+async function readRuntimes(basicsPath, episodeMap) {
+  const runtimes = new Map();
+  const stream = fs.createReadStream(basicsPath).pipe(createGunzip());
+  const lines = readline.createInterface({ input: stream, crlfDelay: Infinity });
+
+  for await (const line of lines) {
+    if (line.startsWith("tconst")) continue;
+    const [tconst, , , , , , , runtimeMinutes] = line.split("\t");
+    const episode = episodeMap.get(tconst);
+    if (!episode || runtimeMinutes === "\\N") continue;
+    const runtime = Number(runtimeMinutes);
+    if (!Number.isFinite(runtime) || runtime <= 0) continue;
+    runtimes.set(episode.key, {
+      imdbId: tconst,
+      runtime,
+    });
+  }
+
+  return runtimes;
+}
+
+function buildOutput(shows, showsByImdbId, episodeMap, ratings, runtimes) {
   const imdbIdByTvmaze = new Map([...showsByImdbId.entries()].map(([imdbId, show]) => [show.id, imdbId]));
   const output = {
-    version: 1,
+    version: 2,
     generatedAt: new Date().toISOString(),
     source: "IMDb non-commercial datasets + TVMaze show IMDb IDs",
     shows: {},
@@ -136,9 +158,13 @@ function buildOutput(shows, showsByImdbId, episodeMap, ratings) {
     for (const episode of show.episodes) {
       const key = `${show.id}:${episode.season}:${episode.number}`;
       const rating = ratings.get(key);
-      if (rating) {
-        showRatings[`${episode.season}:${episode.number}`] = rating;
-      }
+      const runtime = runtimes.get(key);
+      if (!rating && !runtime) continue;
+      showRatings[`${episode.season}:${episode.number}`] = {
+        imdbId: rating?.imdbId || runtime.imdbId,
+        ...(rating ? { rating: rating.rating, votes: rating.votes } : {}),
+        ...(runtime ? { runtime: runtime.runtime } : {}),
+      };
     }
 
     output.shows[String(show.id)] = {
@@ -159,14 +185,18 @@ async function main() {
     throw new Error("No tracked shows found in tv-data.json.");
   }
 
-  const [episodePath, ratingsPath] = await Promise.all([
+  const [basicsPath, episodePath, ratingsPath] = await Promise.all([
+    ensureDataset(TITLE_BASICS_URL, "title.basics.tsv.gz"),
     ensureDataset(TITLE_EPISODE_URL, "title.episode.tsv.gz"),
     ensureDataset(TITLE_RATINGS_URL, "title.ratings.tsv.gz"),
   ]);
   const showsByImdbId = await loadShowMappings(shows);
   const episodeMap = await readEpisodeMap(episodePath, showsByImdbId);
-  const ratings = await readRatings(ratingsPath, episodeMap);
-  const output = buildOutput(shows, showsByImdbId, episodeMap, ratings);
+  const [ratings, runtimes] = await Promise.all([
+    readRatings(ratingsPath, episodeMap),
+    readRuntimes(basicsPath, episodeMap),
+  ]);
+  const output = buildOutput(shows, showsByImdbId, episodeMap, ratings, runtimes);
 
   fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`Wrote ${path.relative(ROOT, OUTPUT_PATH)}`);
