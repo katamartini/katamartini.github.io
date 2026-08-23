@@ -1,7 +1,773 @@
 {
   "schema_version": 1,
   "server": "vruet",
-  "data_updated_at": null,
-  "players": [],
-  "results": []
+  "data_updated_at": "2026-08-23T05:51:18.338085+00:00",
+  "players": [
+    {
+      "id": "8d4623a8adac4083",
+      "name": "barney buttloaves"
+    },
+    {
+      "id": "1c4383b38c1691e3",
+      "name": "Marty"
+    },
+    {
+      "id": "c03d5d55866019e7",
+      "name": "tb"
+    }
+  ],
+  "results": [
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1879,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XXXYX\nYXXYX\nXXXYG\nXXGGG\nGGGGG",
+      "posted_at": "2026-08-11T06:23:24.725000+00:00",
+      "tracked_at": "2026-08-11T06:23:24.761501+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXXYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXXYG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XXGGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1879,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "YXXXX\nXXXGX\nXXXGG\nXXXGG\nGGGGG",
+      "posted_at": "2026-08-12T04:14:01.291000+00:00",
+      "tracked_at": "2026-08-12T04:14:01.323349+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "YXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXXGX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXXGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XXXGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1880,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nYXXXX\nXGGXX\nXGGGG\nGGGGG",
+      "posted_at": "2026-08-12T05:19:53.498000+00:00",
+      "tracked_at": "2026-08-12T05:19:53.654998+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1880,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXXX\nXXYYY\nXGGGG\nGGGGG",
+      "posted_at": "2026-08-12T11:50:42.100000+00:00",
+      "tracked_at": "2026-08-12T11:50:42.143835+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXYYY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1881,
+      "score": 6,
+      "hard_mode": true,
+      "grid_pattern": "XGXXX\nGGXXX\nGGXYX\nGGGXX\nGGGGX\nGGGGG",
+      "posted_at": "2026-08-13T04:01:31.361000+00:00",
+      "tracked_at": "2026-08-13T04:01:31.426965+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGXYX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGXX"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGX"
+        },
+        {
+          "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1881,
+      "score": 1,
+      "hard_mode": false,
+      "grid_pattern": "GGGGG",
+      "posted_at": "2026-08-14T03:52:58.422000+00:00",
+      "tracked_at": "2026-08-14T03:52:58.458299+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "8d4623a8adac4083",
+      "player_name": "barney buttloaves",
+      "puzzle_number": 1881,
+      "score": 2,
+      "hard_mode": false,
+      "grid_pattern": "YYYYX\nGGGGG",
+      "posted_at": "2026-08-14T03:58:51.341000+00:00",
+      "tracked_at": "2026-08-14T03:58:51.454533+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "YYYYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1882,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXYXXY\nGXGGG\nGGGGG",
+      "posted_at": "2026-08-14T05:46:47.065000+00:00",
+      "tracked_at": "2026-08-14T05:46:47.121593+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYXXY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GXGGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1882,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XXXXX\nXXXXX\nXXXYX\nYYYYX\nGGGGG",
+      "posted_at": "2026-08-15T01:54:58.757000+00:00",
+      "tracked_at": "2026-08-15T01:54:58.801259+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXXYX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "YYYYX"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1883,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXXX\nXXGXX\nXYGXY\nGGGGG",
+      "posted_at": "2026-08-15T04:06:28.113000+00:00",
+      "tracked_at": "2026-08-15T04:06:28.187676+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXGXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XYGXY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1883,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXG\nXYGXG\nXXGYG\nGGGGG",
+      "posted_at": "2026-08-15T05:49:32.964000+00:00",
+      "tracked_at": "2026-08-15T05:49:33.001041+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYGXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXGYG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1884,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XXXXX\nYXYXY\nYYYXY\nYYYYY\nGGGGG",
+      "posted_at": "2026-08-16T04:30:28.886000+00:00",
+      "tracked_at": "2026-08-16T04:30:28.932628+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXYXY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YYYXY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "YYYYY"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1884,
+      "score": 6,
+      "hard_mode": false,
+      "grid_pattern": "XYXXX\nXXYXX\nGXXGX\nGXXGX\nGGGGX\nGGGGG",
+      "posted_at": "2026-08-16T06:55:14.217000+00:00",
+      "tracked_at": "2026-08-16T06:55:14.275790+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXYXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GXXGX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GXXGX"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGX"
+        },
+        {
+          "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1885,
+      "score": 2,
+      "hard_mode": true,
+      "grid_pattern": "YGXXY\nGGGGG",
+      "posted_at": "2026-08-17T04:01:43.879000+00:00",
+      "tracked_at": "2026-08-17T04:01:43.909435+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "YGXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1885,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXXGXG\nXGGYG\nGGGXG\nGGGGG",
+      "posted_at": "2026-08-17T05:29:58.112000+00:00",
+      "tracked_at": "2026-08-17T05:29:58.142696+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXGXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGYG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGXG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1886,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "XYXXY\nGGXYX\nGGGGG",
+      "posted_at": "2026-08-18T04:03:32.315000+00:00",
+      "tracked_at": "2026-08-18T04:03:32.430040+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGXYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1886,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nYYYYX\nGYGGY\nGGGGG",
+      "posted_at": "2026-08-18T22:10:22.027000+00:00",
+      "tracked_at": "2026-08-18T22:10:22.066503+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYYYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GYGGY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1887,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XGXXX\nXGXXX\nXGXXG\nGGGGG",
+      "posted_at": "2026-08-19T04:08:36.855000+00:00",
+      "tracked_at": "2026-08-19T04:08:36.955910+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGXXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1887,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXGXX\nXYGXX\nGXGGX\nGGGGG",
+      "posted_at": "2026-08-19T05:12:27.300000+00:00",
+      "tracked_at": "2026-08-19T05:12:27.332456+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXGXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYGXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GXGGX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1888,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XYYXX\nYGYXG\nGGGXG\nGGGGG",
+      "posted_at": "2026-08-20T04:03:33.361000+00:00",
+      "tracked_at": "2026-08-20T04:03:33.475241+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYYXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YGYXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1888,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nGXYXX\nGGGXG\nGGGGG",
+      "posted_at": "2026-08-21T00:52:48.492000+00:00",
+      "tracked_at": "2026-08-21T00:52:48.594987+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GXYXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1889,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "XGXXY\nGGXXG\nGGGGG",
+      "posted_at": "2026-08-21T04:28:00.450000+00:00",
+      "tracked_at": "2026-08-21T04:28:00.491962+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGXXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1889,
+      "score": 3,
+      "hard_mode": false,
+      "grid_pattern": "GXXGG\nGGXGG\nGGGGG",
+      "posted_at": "2026-08-21T05:06:22.237000+00:00",
+      "tracked_at": "2026-08-21T05:06:22.336464+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "GXXGG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GGXGG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1890,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "XGXYX\nXGXGG\nGGGGG",
+      "posted_at": "2026-08-22T04:09:10.812000+00:00",
+      "tracked_at": "2026-08-22T04:09:10.853961+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1890,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XYXXX\nYXXXX\nXGGGG\nGGGGG",
+      "posted_at": "2026-08-22T05:08:41.247000+00:00",
+      "tracked_at": "2026-08-22T05:08:41.483825+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1891,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXYX\nYXXGY\nYXXGG\nGGGGG",
+      "posted_at": "2026-08-23T04:20:39.128000+00:00",
+      "tracked_at": "2026-08-23T04:20:39.230136+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXXGY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YXXGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1891,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXY\nXYGGX\nYYGGG\nGGGGG",
+      "posted_at": "2026-08-23T05:51:18.295000+00:00",
+      "tracked_at": "2026-08-23T05:51:18.338085+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYGGX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YYGGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    }
+  ]
 }
