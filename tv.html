@@ -654,6 +654,21 @@
       font-weight: 800;
     }
 
+    .episode-number-stack {
+      width: 42px;
+      display: grid;
+      gap: 5px;
+      justify-items: center;
+    }
+
+    .episode-runtime {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
     .episode-main {
       min-height: 0;
       padding: 0;
@@ -1017,6 +1032,10 @@
     .inline-episodes .episode-num {
       width: 40px;
       height: 40px;
+    }
+
+    .inline-episodes .episode-number-stack {
+      width: 40px;
     }
 
     .show-row-actions {
@@ -2152,6 +2171,7 @@
     function renderShowRow(show) {
       const watched = watchedCount(show);
       const aired = airedEpisodes(show).length;
+      const watchedPercentage = aired ? ((watched / aired) * 100).toFixed(1) : "0.0";
       const unwatched = unwatchedAiredEpisodes(show);
       return `
         <article class="show-row${isStalePinnedShow(show) ? " stale-pinned" : ""}">
@@ -2167,7 +2187,7 @@
               <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
-            <div class="meta">${watched}/${aired} aired watched</div>
+            <div class="meta">${watched}/${aired} aired watched (${watchedPercentage}%)</div>
             <div class="meta">${formatRuntimeMinutes(unwatchedRuntimeMinutes(show, unwatched))} left</div>
             <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
@@ -2257,6 +2277,8 @@
       const future = episode.airdate && episode.airdate > today;
       const label = `S${episode.season}E${episode.number || "?"}`;
       const watchUrl = episodeWatchUrl(show, episode);
+      const runtime = episodeRuntime(show, episode);
+      const runtimeLabel = runtime > 0 ? `${Math.round(runtime)}m` : "n/a";
       const rating = displayEpisodeRating(show, episode);
       const ratingLabel = rating ? rating.rating.toFixed(1) : "";
       const ratingTitle = rating
@@ -2266,7 +2288,10 @@
         ? `<span class="episode-rating ${episodeRatingClass(rating.rating)}" title="${escapeAttr(ratingTitle)}">${escapeAttr(ratingLabel)}</span>`
         : "";
       const episodeContent = `
-        <span class="episode-num">${episode.number || "?"}</span>
+        <span class="episode-number-stack">
+          <span class="episode-num">${episode.number || "?"}</span>
+          <span class="episode-runtime">${escapeAttr(runtimeLabel)}</span>
+        </span>
         <span class="episode-detail">
           <span class="episode-name">${escapeAttr(label)} ${escapeAttr(episode.name)}</span>
           <span class="episode-date">${escapeAttr(episode.airdate || "No airdate")}${future ? " / unaired" : ""}</span>
