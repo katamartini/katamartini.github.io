@@ -122,6 +122,31 @@
       background: var(--green);
     }
 
+    [hidden] { display: none !important; }
+
+    .view-nav-wrap {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .view-nav {
+      display: flex;
+      gap: 4px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .view-tab {
+      min-width: 120px;
+      border-color: transparent;
+    }
+
+    .view-tab[aria-selected="true"] {
+      border-color: var(--green);
+      background: rgba(106, 170, 100, 0.12);
+      color: var(--text);
+    }
+
     .map-section {
       padding: 28px 0 32px;
       border-bottom: 1px solid var(--border);
@@ -520,6 +545,117 @@
       color: #ffcaca;
     }
 
+    .player-section {
+      padding-top: 30px;
+      padding-bottom: 60px;
+    }
+
+    .player-intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    .player-intro h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.02em;
+    }
+
+    .player-intro p {
+      max-width: 760px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .player-intro-actions {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .player-count {
+      color: var(--bright);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .player-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+    }
+
+    .player-table {
+      width: 100%;
+      min-width: 1040px;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .player-table th {
+      padding: 11px 12px;
+      background: var(--surface-raised);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .player-table th:first-child,
+    .player-table td:first-child { text-align: left; }
+
+    .player-table td {
+      padding: 13px 12px;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .player-table tbody tr:hover td { background: var(--surface-raised); }
+
+    .player-name {
+      display: block;
+      color: var(--bright);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+
+    .player-record {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: normal;
+    }
+
+    .active-streak {
+      color: var(--bright);
+      font-weight: 800;
+    }
+
+    .player-note {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
     footer {
       padding: 24px 0 40px;
       border-top: 1px solid var(--border);
@@ -532,6 +668,8 @@
       header { padding-top: 36px; }
       .stats { grid-template-columns: 1fr; width: 100%; border-bottom: 0; }
       .stat { min-height: auto; padding: 12px 0; border-right: 0; border-bottom: 1px solid var(--border); }
+      .view-nav { display: grid; grid-template-columns: 1fr 1fr; }
+      .view-tab { min-width: 0; }
       .map-intro { align-items: start; flex-direction: column; gap: 10px; }
       .map-selection { align-items: start; flex-direction: column; }
       .map-matrix { grid-template-columns: 24px repeat(9, minmax(0, 1fr)); gap: 2px; }
@@ -547,6 +685,8 @@
       .pattern-code { display: none; }
       .date-long { display: none; }
       .date-short { display: inline; }
+      .player-intro { align-items: stretch; flex-direction: column; }
+      .player-intro-actions { justify-content: space-between; }
     }
 
     @media (max-width: 1000px) {
@@ -576,6 +716,15 @@
       </div>
     </div>
   </header>
+
+  <div class="view-nav-wrap">
+    <div class="view-nav shell" role="tablist" aria-label="Wurble views">
+      <button class="view-tab" id="patterns-tab" type="button" role="tab" aria-selected="true" aria-controls="patterns-panel">Patterns</button>
+      <button class="view-tab" id="players-tab" type="button" role="tab" aria-selected="false" aria-controls="players-panel">Player stats</button>
+    </div>
+  </div>
+
+  <div id="patterns-panel" role="tabpanel" aria-labelledby="patterns-tab">
 
   <section class="map-section" aria-labelledby="map-title">
     <div class="shell">
@@ -638,13 +787,50 @@
     </div>
     <p class="empty" id="empty">No patterns match that search.</p>
   </main>
+  </div>
+
+  <section class="player-section shell" id="players-panel" role="tabpanel" aria-labelledby="players-tab" hidden>
+    <div class="player-intro">
+      <div>
+        <h2>Player stats</h2>
+        <p>One Wordle number counts as one game per player. Duplicate posts do not inflate games, wins, or streaks.</p>
+      </div>
+      <div class="player-intro-actions">
+        <strong class="player-count" id="player-count">Loading players…</strong>
+        <button class="refresh-button" id="refresh-player-data" type="button">Refresh data</button>
+      </div>
+    </div>
+    <p class="data-error" id="history-error" role="alert" hidden>Could not load the player history. Try refreshing the page.</p>
+    <div class="player-table-wrap">
+      <table class="player-table" aria-label="Wordle player statistics">
+        <thead>
+          <tr>
+            <th scope="col">Player</th>
+            <th scope="col">Played</th>
+            <th scope="col">Win %</th>
+            <th scope="col">Active streak</th>
+            <th scope="col">Best streak</th>
+            <th scope="col">Avg guesses</th>
+            <th scope="col">Best solve</th>
+            <th scope="col">First unlocks</th>
+            <th scope="col">Unique rows</th>
+            <th scope="col">Hard mode</th>
+          </tr>
+        </thead>
+        <tbody id="player-stats-body" aria-busy="true"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="players-empty">No player results have been exported yet.</p>
+    <p class="player-note">Active streaks include a solve from today, or yesterday when today has not yet been submitted. First unlocks and unique rows use only valid Wordlegami patterns.</p>
+  </section>
 
   <footer>
-    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv</div>
+    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv and wordle-history.json</div>
   </footer>
 
   <script>
     const DATA_URL = 'wurble.csv';
+    const HISTORY_URL = 'wordle-history.json';
     const WORDLE_EPOCH_UTC = Date.UTC(2021, 5, 19);
     const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
     const STATES = ['X', 'Y', 'G'];
@@ -652,8 +838,12 @@
     const IMPOSSIBLE_PATTERNS = new Set(['YGGGG', 'GYGGG', 'GGYGG', 'GGGYG', 'GGGGY']);
     const PAIRS = STATES.flatMap(first => STATES.map(second => first + second));
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
+    const tabButtons = Array.from(document.querySelectorAll('[role="tab"]'));
+    const patternsPanel = document.querySelector('#patterns-panel');
+    const playersPanel = document.querySelector('#players-panel');
     const search = document.querySelector('#search');
     const refreshButton = document.querySelector('#refresh-data');
+    const playerRefreshButton = document.querySelector('#refresh-player-data');
     const visibleCount = document.querySelector('#visible-count');
     const empty = document.querySelector('#empty');
     const gallery = document.querySelector('#gallery');
@@ -663,6 +853,10 @@
     const mapSelectedTiles = document.querySelector('#map-selected-tiles');
     const mapSelectedPattern = document.querySelector('#map-selected-pattern');
     const mapSelectedDetail = document.querySelector('#map-selected-detail');
+    const playerCount = document.querySelector('#player-count');
+    const playerStatsBody = document.querySelector('#player-stats-body');
+    const playersEmpty = document.querySelector('#players-empty');
+    const historyError = document.querySelector('#history-error');
     let galleryRows = [];
     let activeFilter = 'all';
     let activeMapCell = null;
@@ -766,6 +960,58 @@
       }
     }
 
+    function isValidRowPattern(pattern) {
+      return /^[XYG]{5}$/.test(pattern) && !IMPOSSIBLE_PATTERNS.has(pattern);
+    }
+
+    function validateHistory(history) {
+      if (!history || history.schema_version !== 1) throw new Error('Unexpected history schema');
+      if (!Array.isArray(history.players) || !Array.isArray(history.results)) {
+        throw new Error('Incomplete history data');
+      }
+      if (
+        history.data_updated_at !== null
+        && (typeof history.data_updated_at !== 'string' || Number.isNaN(Date.parse(history.data_updated_at)))
+      ) {
+        throw new Error('Invalid history update date');
+      }
+
+      const playerIds = new Set();
+      for (const player of history.players) {
+        if (!player || typeof player.id !== 'string' || !player.id || typeof player.name !== 'string' || !player.name) {
+          throw new Error('Invalid player');
+        }
+        if (playerIds.has(player.id)) throw new Error(`Duplicate player: ${player.id}`);
+        playerIds.add(player.id);
+      }
+
+      for (const result of history.results) {
+        if (!result || !playerIds.has(result.player_id) || typeof result.player_name !== 'string') {
+          throw new Error('Invalid result player');
+        }
+        if (!Number.isInteger(result.puzzle_number) || result.puzzle_number < 0) {
+          throw new Error('Invalid result puzzle number');
+        }
+        if (result.score !== null && (!Number.isInteger(result.score) || result.score < 1 || result.score > 6)) {
+          throw new Error('Invalid result score');
+        }
+        if (typeof result.hard_mode !== 'boolean' || typeof result.grid_pattern !== 'string') {
+          throw new Error('Invalid result details');
+        }
+        if (Number.isNaN(Date.parse(result.posted_at)) || Number.isNaN(Date.parse(result.tracked_at))) {
+          throw new Error('Invalid result timestamp');
+        }
+        if (!Array.isArray(result.rows) || result.rows.length < 1 || result.rows.length > 6) {
+          throw new Error('Invalid result rows');
+        }
+        for (const row of result.rows) {
+          if (!Number.isInteger(row.row_number) || !isValidRowPattern(row.pattern)) {
+            throw new Error('Invalid result row');
+          }
+        }
+      }
+    }
+
     function makeElement(tagName, className, text) {
       const node = document.createElement(tagName);
       if (className) node.className = className;
@@ -777,6 +1023,172 @@
       const puzzleNumber = Number(wordleNumber);
       if (!Number.isInteger(puzzleNumber) || puzzleNumber < 0) return null;
       return new Date(WORDLE_EPOCH_UTC + puzzleNumber * MILLISECONDS_PER_DAY);
+    }
+
+    function currentWordleNumber() {
+      const today = new Date();
+      const localDateAsUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+      return Math.floor((localDateAsUtc - WORDLE_EPOCH_UTC) / MILLISECONDS_PER_DAY);
+    }
+
+    function longestStreak(puzzleNumbers) {
+      const sorted = [...puzzleNumbers].sort((first, second) => first - second);
+      let longest = 0;
+      let current = 0;
+      let previous = null;
+      for (const puzzleNumber of sorted) {
+        current = previous !== null && puzzleNumber === previous + 1 ? current + 1 : 1;
+        longest = Math.max(longest, current);
+        previous = puzzleNumber;
+      }
+      return longest;
+    }
+
+    function streakEndingAt(wins, puzzleNumber) {
+      let streak = 0;
+      while (wins.has(puzzleNumber - streak)) streak += 1;
+      return streak;
+    }
+
+    function calculatePlayerStats(history) {
+      const canonicalNames = new Map(history.players.map(player => [player.id, player.name]));
+      const groups = new Map();
+      const firstSeenPatterns = new Set();
+
+      function groupFor(result) {
+        let group = groups.get(result.player_id);
+        if (!group) {
+          group = {
+            id: result.player_id,
+            name: canonicalNames.get(result.player_id) || result.player_name,
+            days: new Map(),
+            patterns: new Set(),
+            firstUnlocks: 0,
+          };
+          groups.set(result.player_id, group);
+        }
+        return group;
+      }
+
+      for (const result of history.results) {
+        const group = groupFor(result);
+        let day = group.days.get(result.puzzle_number);
+        if (!day) {
+          day = { solved: false, score: null, hardMode: false };
+          group.days.set(result.puzzle_number, day);
+        }
+        if (result.score !== null) {
+          day.solved = true;
+          if (day.score === null) day.score = result.score;
+        }
+        day.hardMode ||= result.hard_mode;
+
+        for (const row of result.rows) {
+          if (!isValidRowPattern(row.pattern)) continue;
+          group.patterns.add(row.pattern);
+          if (!firstSeenPatterns.has(row.pattern)) {
+            firstSeenPatterns.add(row.pattern);
+            group.firstUnlocks += 1;
+          }
+        }
+      }
+
+      const todayPuzzle = currentWordleNumber();
+      const stats = [];
+      for (const group of groups.values()) {
+        const wins = new Set(
+          [...group.days.entries()]
+            .filter(([, day]) => day.solved)
+            .map(([puzzleNumber]) => puzzleNumber)
+        );
+        const scores = [...group.days.values()]
+          .filter(day => day.solved && day.score !== null)
+          .map(day => day.score);
+        const played = group.days.size;
+        const winCount = wins.size;
+        const playedToday = group.days.has(todayPuzzle);
+        const activeAnchor = wins.has(todayPuzzle)
+          ? todayPuzzle
+          : !playedToday && wins.has(todayPuzzle - 1) ? todayPuzzle - 1 : null;
+        const hardModeCount = [...group.days.values()].filter(day => day.hardMode).length;
+        stats.push({
+          id: group.id,
+          name: group.name,
+          played,
+          wins: winCount,
+          losses: played - winCount,
+          winPercentage: played ? winCount / played * 100 : 0,
+          activeStreak: activeAnchor === null ? 0 : streakEndingAt(wins, activeAnchor),
+          bestStreak: longestStreak(wins),
+          averageScore: scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null,
+          bestScore: scores.length ? Math.min(...scores) : null,
+          firstUnlocks: group.firstUnlocks,
+          uniquePatterns: group.patterns.size,
+          hardModeCount,
+          hardModePercentage: played ? hardModeCount / played * 100 : 0,
+          lastPlayed: Math.max(...group.days.keys()),
+        });
+      }
+
+      stats.sort((first, second) => (
+        second.activeStreak - first.activeStreak
+        || second.bestStreak - first.bestStreak
+        || second.played - first.played
+        || second.winPercentage - first.winPercentage
+        || first.name.localeCompare(second.name)
+      ));
+      return stats;
+    }
+
+    function formatPercentage(value) {
+      return `${value.toFixed(value === Math.round(value) ? 0 : 1)}%`;
+    }
+
+    function renderPlayerStats(history) {
+      const stats = calculatePlayerStats(history);
+      const fragment = document.createDocumentFragment();
+
+      for (const player of stats) {
+        const row = document.createElement('tr');
+        const playerCell = document.createElement('td');
+        playerCell.append(
+          makeElement('strong', 'player-name', player.name),
+          makeElement('span', 'player-record', `${player.wins}–${player.losses} · last played #${player.lastPlayed.toLocaleString('en-US')}`),
+        );
+        const playedCell = makeElement('td', '', player.played.toLocaleString('en-US'));
+        const winCell = makeElement('td', '', formatPercentage(player.winPercentage));
+        const activeCell = makeElement('td', 'active-streak', player.activeStreak.toLocaleString('en-US'));
+        const bestStreakCell = makeElement('td', '', player.bestStreak.toLocaleString('en-US'));
+        const averageCell = makeElement('td', '', player.averageScore === null ? '—' : player.averageScore.toFixed(2));
+        const bestCell = makeElement('td', '', player.bestScore === null ? '—' : `${player.bestScore}/6`);
+        const unlockCell = makeElement('td', '', player.firstUnlocks.toLocaleString('en-US'));
+        const patternCell = makeElement('td', '', player.uniquePatterns.toLocaleString('en-US'));
+        const hardModeCell = makeElement(
+          'td',
+          '',
+          player.hardModeCount
+            ? `${player.hardModeCount.toLocaleString('en-US')} · ${formatPercentage(player.hardModePercentage)}`
+            : '—',
+        );
+        row.append(
+          playerCell,
+          playedCell,
+          winCell,
+          activeCell,
+          bestStreakCell,
+          averageCell,
+          bestCell,
+          unlockCell,
+          patternCell,
+          hardModeCell,
+        );
+        fragment.append(row);
+      }
+
+      playerStatsBody.replaceChildren(fragment);
+      playerStatsBody.setAttribute('aria-busy', 'false');
+      playerCount.textContent = `${stats.length} ${stats.length === 1 ? 'player' : 'players'}`;
+      playersEmpty.style.display = stats.length ? 'none' : 'block';
     }
 
     function makeGalleryRow(record) {
@@ -990,21 +1402,63 @@
     }
     search.addEventListener('input', updateGallery);
 
-    async function loadData({ manual = false } = {}) {
-      if (manual) {
-        refreshButton.disabled = true;
-        refreshButton.textContent = 'Refreshing…';
+    function selectTab(selectedTab) {
+      for (const tab of tabButtons) {
+        const selected = tab === selectedTab;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
       }
+      patternsPanel.hidden = selectedTab.id !== 'patterns-tab';
+      playersPanel.hidden = selectedTab.id !== 'players-tab';
+    }
+
+    tabButtons.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        const nextTab = tabButtons[(index + direction + tabButtons.length) % tabButtons.length];
+        selectTab(nextTab);
+        nextTab.focus();
+      });
+    });
+
+    function setRefreshState(text, disabled) {
+      for (const button of [refreshButton, playerRefreshButton]) {
+        button.disabled = disabled;
+        button.textContent = text;
+      }
+    }
+
+    async function fetchPatternData(cacheBust) {
+      const response = await fetch(`${DATA_URL}?v=${cacheBust}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`CSV request failed with status ${response.status}`);
+      const records = parseCsv(await response.text());
+      validateRecords(records);
+      renderRecords(records);
+    }
+
+    async function fetchPlayerHistory(cacheBust) {
+      const response = await fetch(`${HISTORY_URL}?v=${cacheBust}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`History request failed with status ${response.status}`);
+      const history = await response.json();
+      validateHistory(history);
+      renderPlayerStats(history);
+    }
+
+    async function loadData({ manual = false } = {}) {
+      if (manual) setRefreshState('Refreshing…', true);
       dataError.hidden = true;
-      try {
-        const response = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`CSV request failed with status ${response.status}`);
-        const records = parseCsv(await response.text());
-        validateRecords(records);
-        renderRecords(records);
-        if (manual) refreshButton.textContent = 'Up to date';
-      } catch (error) {
-        console.error('Could not load Wordlegami data', error);
+      historyError.hidden = true;
+      const cacheBust = Date.now();
+      const [patternsResult, historyResult] = await Promise.allSettled([
+        fetchPatternData(cacheBust),
+        fetchPlayerHistory(cacheBust),
+      ]);
+
+      if (patternsResult.status === 'rejected') {
+        console.error('Could not load Wordlegami data', patternsResult.reason);
         gallery.replaceChildren();
         gallery.setAttribute('aria-busy', 'false');
         visibleCount.textContent = '0';
@@ -1012,18 +1466,28 @@
         mapPanels.replaceChildren();
         mapSelectedDetail.textContent = 'Could not load the pattern history.';
         dataError.hidden = false;
-        if (manual) refreshButton.textContent = 'Try again';
-      } finally {
-        if (manual) {
-          window.setTimeout(() => {
-            refreshButton.disabled = false;
-            refreshButton.textContent = 'Refresh data';
-          }, 1800);
-        }
+      }
+
+      if (historyResult.status === 'rejected') {
+        console.error('Could not load player history', historyResult.reason);
+        playerStatsBody.replaceChildren();
+        playerStatsBody.setAttribute('aria-busy', 'false');
+        playerCount.textContent = 'Stats unavailable';
+        playersEmpty.style.display = 'none';
+        historyError.hidden = false;
+      }
+
+      if (manual) {
+        const failureCount = [patternsResult, historyResult]
+          .filter(result => result.status === 'rejected').length;
+        setRefreshState(failureCount === 0 ? 'Up to date' : failureCount === 1 ? 'Partly updated' : 'Try again', true);
+        window.setTimeout(() => setRefreshState('Refresh data', false), 1800);
       }
     }
 
     refreshButton.addEventListener('click', () => loadData({ manual: true }));
+    playerRefreshButton.addEventListener('click', () => loadData({ manual: true }));
+    selectTab(document.querySelector('#patterns-tab'));
     loadData();
   </script>
 </body>
