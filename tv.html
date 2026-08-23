@@ -941,6 +941,11 @@
       background: #ffffff;
     }
 
+    .show-row.stale-pinned {
+      border-color: #e7a8b3;
+      background: #fff0f3;
+    }
+
     .show-row-pin {
       display: flex;
       flex-direction: column;
@@ -1589,6 +1594,16 @@
       return watchedCount(show) ? "Last watched: Date not recorded" : "Nothing watched yet";
     }
 
+    function isStalePinnedShow(show) {
+      if (!show.pinned || !show.lastWatchedAt) return false;
+      const lastWatched = new Date(show.lastWatchedAt);
+      if (Number.isNaN(lastWatched.getTime())) return false;
+      const today = new Date();
+      const todayValue = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+      const lastWatchedValue = Date.UTC(lastWatched.getFullYear(), lastWatched.getMonth(), lastWatched.getDate());
+      return todayValue - lastWatchedValue >= 6 * 24 * 60 * 60 * 1000;
+    }
+
     function showMeta(show) {
       const bits = [formatYear(show), show.network, show.genres.slice(0, 2).join(", ")].filter(Boolean);
       return bits.join(" / ");
@@ -2139,7 +2154,7 @@
       const aired = airedEpisodes(show).length;
       const unwatched = unwatchedAiredEpisodes(show);
       return `
-        <article class="show-row">
+        <article class="show-row${isStalePinnedShow(show) ? " stale-pinned" : ""}">
           <div class="show-row-pin">
             ${renderPinButton(show)}
             <button type="button" data-edit-watch-url="${show.id}" title="${show.watchBaseUrl ? `Saved URL: ${escapeAttr(show.watchBaseUrl)}` : "Add watch URL"}">#</button>
