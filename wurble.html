@@ -24,6 +24,18 @@
 
     * { box-sizing: border-box; }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -470,6 +482,45 @@
       text-transform: uppercase;
     }
 
+    .sort-button {
+      display: inline-flex;
+      width: 100%;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      text-align: inherit;
+      text-transform: inherit;
+      white-space: nowrap;
+    }
+
+    .sort-button:hover,
+    th[aria-sort="ascending"] .sort-button,
+    th[aria-sort="descending"] .sort-button { color: var(--text); }
+
+    .sort-button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 4px;
+    }
+
+    .sort-indicator {
+      display: inline-block;
+      width: 1em;
+      color: #6e7573;
+      text-align: center;
+    }
+
+    th[aria-sort="ascending"] .sort-indicator,
+    th[aria-sort="descending"] .sort-indicator { color: var(--bright); }
+
     .archive-table td {
       height: 44px;
       padding: 7px 12px;
@@ -541,9 +592,17 @@
       white-space: nowrap;
     }
 
-    .rarity-score {
-      color: var(--text);
+    .rarity-stars {
+      display: inline-flex;
+      color: var(--yellow);
+      font-size: 15px;
       font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .rarity-stars-empty {
+      color: #55513c;
     }
 
     .rarity-detail {
@@ -642,6 +701,8 @@
 
     .player-table th:first-child,
     .player-table td:first-child { text-align: left; }
+
+    .player-table th:not(:first-child) .sort-button { justify-content: flex-end; }
 
     .player-table td {
       padding: 13px 12px;
@@ -801,17 +862,17 @@
 
   <main class="shell">
     <p class="result-line" aria-live="polite"><span id="visible-count">—</span> patterns shown</p>
-    <p class="rarity-note" id="rarity-explanation">Theoretical rarity compares every original valid Wordle guess with every original solution. Scores are percentile ranks across the 238 possible single-row patterns: 100 is rarest and 1 is most common.</p>
+    <p class="rarity-note" id="rarity-explanation">Theoretical rarity compares every original valid Wordle guess with every original solution. The 238 possible single-row patterns are divided into five rarity bands: ★★★★★ marks the rarest fifth.</p>
     <p class="data-error" id="data-error" role="alert" hidden>Could not load the Wordlegami data. Try refreshing the page.</p>
     <div class="archive-table-wrap">
       <table class="archive-table" aria-label="All Wordlegami patterns" aria-describedby="rarity-explanation">
         <thead>
           <tr>
-            <th scope="col">Pattern</th>
-            <th scope="col">First unlocker</th>
-            <th scope="col">Wordle #</th>
-            <th scope="col">Date</th>
-            <th scope="col">Rarity</th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="pattern" data-sort-default="asc">Pattern <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="unlocker" data-sort-default="asc">First unlocker <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="wordle" data-sort-default="desc">Wordle # <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="date" data-sort-default="desc">Date <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="rarity" data-sort-default="desc">Rarity <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
           </tr>
         </thead>
         <tbody id="gallery" aria-busy="true"></tbody>
@@ -837,16 +898,16 @@
       <table class="player-table" aria-label="Wordle player statistics">
         <thead>
           <tr>
-            <th scope="col">Player</th>
-            <th scope="col">Played</th>
-            <th scope="col">Win %</th>
-            <th scope="col">Active streak</th>
-            <th scope="col">Best streak</th>
-            <th scope="col">Avg guesses</th>
-            <th scope="col">Best solve</th>
-            <th scope="col">First unlocks</th>
-            <th scope="col">Unique rows</th>
-            <th scope="col">Hard mode</th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="name" data-sort-default="asc">Player <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="played" data-sort-default="desc">Played <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="winPercentage" data-sort-default="desc">Win % <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="activeStreak" data-sort-default="desc">Active streak <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="bestStreak" data-sort-default="desc">Best streak <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="averageScore" data-sort-default="asc">Avg guesses <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="bestScore" data-sort-default="asc">Best solve <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="firstUnlocks" data-sort-default="desc">First unlocks <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="uniquePatterns" data-sort-default="desc">Unique rows <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-player-sort="hardModePercentage" data-sort-default="desc">Hard mode <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
           </tr>
         </thead>
         <tbody id="player-stats-body" aria-busy="true"></tbody>
@@ -872,6 +933,8 @@
     const PAIRS = STATES.flatMap(first => STATES.map(second => first + second));
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const tabButtons = Array.from(document.querySelectorAll('[role="tab"]'));
+    const patternSortButtons = Array.from(document.querySelectorAll('[data-pattern-sort]'));
+    const playerSortButtons = Array.from(document.querySelectorAll('[data-player-sort]'));
     const patternsPanel = document.querySelector('#patterns-panel');
     const playersPanel = document.querySelector('#players-panel');
     const search = document.querySelector('#search');
@@ -895,6 +958,10 @@
     let activeMapCell = null;
     let recordsByPattern = new Map();
     let rarityByPattern = new Map();
+    let patternRecords = [];
+    let playerStats = [];
+    let patternSort = { key: null, direction: null };
+    let playerSort = { key: null, direction: null };
 
     function parseCsv(source) {
       const rows = [];
@@ -1104,8 +1171,8 @@
       return new Date(WORDLE_EPOCH_UTC + puzzleNumber * MILLISECONDS_PER_DAY);
     }
 
-    function formatRarityScore(score) {
-      return Number.isInteger(score) ? String(score) : score.toFixed(1);
+    function rarityStarsForScore(score) {
+      return Math.max(1, Math.min(5, Math.ceil(score / 20)));
     }
 
     function formatOneIn(oneIn) {
@@ -1116,7 +1183,71 @@
     function rarityDescription(pattern) {
       const rarity = rarityByPattern.get(pattern);
       if (!rarity) return '';
-      return `Theoretical rarity ${formatRarityScore(rarity.rarity_score)}/100 (#${rarity.rarity_rank} rarest; about 1 in ${formatOneIn(rarity.one_in)})`;
+      const stars = rarityStarsForScore(rarity.rarity_score);
+      return `Theoretical rarity ${stars} of 5 stars (#${rarity.rarity_rank} rarest; about 1 in ${formatOneIn(rarity.one_in)})`;
+    }
+
+    function compareSortValues(first, second, direction) {
+      const firstMissing = first === null || first === undefined || first === '';
+      const secondMissing = second === null || second === undefined || second === '';
+      if (firstMissing || secondMissing) {
+        if (firstMissing && secondMissing) return 0;
+        return firstMissing ? 1 : -1;
+      }
+
+      const comparison = typeof first === 'string' && typeof second === 'string'
+        ? first.localeCompare(second, undefined, { numeric: true, sensitivity: 'base' })
+        : first - second;
+      return direction === 'asc' ? comparison : -comparison;
+    }
+
+    function patternSortValue(record, key) {
+      if (key === 'pattern') return record.pattern;
+      if (key === 'unlocker') return record.status === 'unlocked' ? record.unlocked_by : null;
+      if (key === 'wordle' || key === 'date') {
+        return record.status === 'unlocked' ? Number(record.wordle_number) : null;
+      }
+      if (key === 'rarity') return rarityByPattern.get(record.pattern)?.one_in ?? null;
+      return null;
+    }
+
+    function sortedPatternRecords() {
+      if (!patternSort.key) return [...patternRecords];
+      return [...patternRecords].sort((first, second) => (
+        compareSortValues(
+          patternSortValue(first, patternSort.key),
+          patternSortValue(second, patternSort.key),
+          patternSort.direction,
+        ) || first.pattern.localeCompare(second.pattern)
+      ));
+    }
+
+    function sortedPlayerStats() {
+      if (!playerSort.key) return [...playerStats];
+      return [...playerStats].sort((first, second) => (
+        compareSortValues(first[playerSort.key], second[playerSort.key], playerSort.direction)
+        || first.name.localeCompare(second.name)
+      ));
+    }
+
+    function updateSortHeaders(buttonsToUpdate, sortState, attributeName) {
+      for (const button of buttonsToUpdate) {
+        const active = button.dataset[attributeName] === sortState.key;
+        const direction = active ? sortState.direction : null;
+        button.closest('th').setAttribute(
+          'aria-sort',
+          direction === 'asc' ? 'ascending' : direction === 'desc' ? 'descending' : 'none',
+        );
+        button.querySelector('.sort-indicator').textContent = direction === 'asc' ? '↑' : direction === 'desc' ? '↓' : '↕';
+      }
+    }
+
+    function nextSortState(button, currentState, attributeName) {
+      const key = button.dataset[attributeName];
+      const direction = currentState.key === key
+        ? currentState.direction === 'asc' ? 'desc' : 'asc'
+        : button.dataset.sortDefault;
+      return { key, direction };
     }
 
     function currentWordleNumber() {
@@ -1238,8 +1369,8 @@
       return `${value.toFixed(value === Math.round(value) ? 0 : 1)}%`;
     }
 
-    function renderPlayerStats(history) {
-      const stats = calculatePlayerStats(history);
+    function renderPlayerRows() {
+      const stats = sortedPlayerStats();
       const fragment = document.createDocumentFragment();
 
       for (const player of stats) {
@@ -1281,8 +1412,13 @@
 
       playerStatsBody.replaceChildren(fragment);
       playerStatsBody.setAttribute('aria-busy', 'false');
-      playerCount.textContent = `${stats.length} ${stats.length === 1 ? 'player' : 'players'}`;
-      playersEmpty.style.display = stats.length ? 'none' : 'block';
+    }
+
+    function renderPlayerStats(history) {
+      playerStats = calculatePlayerStats(history);
+      renderPlayerRows();
+      playerCount.textContent = `${playerStats.length} ${playerStats.length === 1 ? 'player' : 'players'}`;
+      playersEmpty.style.display = playerStats.length ? 'none' : 'block';
     }
 
     function makeGalleryRow(record) {
@@ -1311,9 +1447,14 @@
       const dateCell = makeElement('td', 'table-date');
       const rarity = rarityByPattern.get(record.pattern);
       const rarityCell = makeElement('td', 'table-rarity');
-      rarityCell.append(
-        makeElement('span', 'rarity-score', `${formatRarityScore(rarity.rarity_score)} / 100`),
+      const rarityStars = rarityStarsForScore(rarity.rarity_score);
+      const starRating = makeElement('span', 'rarity-stars');
+      starRating.setAttribute('aria-hidden', 'true');
+      starRating.append(
+        makeElement('span', '', '★'.repeat(rarityStars)),
+        makeElement('span', 'rarity-stars-empty', '☆'.repeat(5 - rarityStars)),
       );
+      rarityCell.append(starRating, makeElement('span', 'sr-only', `${rarityStars} of 5 stars`));
       const rarityDetail = makeElement('span', 'rarity-detail', `#${rarity.rarity_rank} rarest`);
       rarityDetail.append(makeElement('span', 'rarity-odds', ` · 1 in ${formatOneIn(rarity.one_in)}`));
       rarityCell.append(rarityDetail);
@@ -1457,12 +1598,18 @@
       showMapPattern('GGGGY', defaultCell);
     }
 
-    function renderRecords(records) {
+    function renderArchiveRows() {
       const fragment = document.createDocumentFragment();
-      records.forEach(record => fragment.append(makeGalleryRow(record)));
+      sortedPatternRecords().forEach(record => fragment.append(makeGalleryRow(record)));
       gallery.replaceChildren(fragment);
       gallery.setAttribute('aria-busy', 'false');
       galleryRows = Array.from(gallery.querySelectorAll('.pattern-row'));
+      updateGallery();
+    }
+
+    function renderRecords(records) {
+      patternRecords = records;
+      renderArchiveRows();
 
       const unlockedCount = records.filter(record => record.status === 'unlocked').length;
       const lockedCount = records.length - unlockedCount;
@@ -1477,7 +1624,6 @@
       progress.setAttribute('aria-label', `${completion.toFixed(1)}% complete`);
       progress.querySelector('span').style.width = `${completion}%`;
       renderMap(records);
-      updateGallery();
     }
 
     function updateGallery() {
@@ -1504,6 +1650,22 @@
       });
     }
     search.addEventListener('input', updateGallery);
+
+    for (const button of patternSortButtons) {
+      button.addEventListener('click', () => {
+        patternSort = nextSortState(button, patternSort, 'patternSort');
+        updateSortHeaders(patternSortButtons, patternSort, 'patternSort');
+        renderArchiveRows();
+      });
+    }
+
+    for (const button of playerSortButtons) {
+      button.addEventListener('click', () => {
+        playerSort = nextSortState(button, playerSort, 'playerSort');
+        updateSortHeaders(playerSortButtons, playerSort, 'playerSort');
+        renderPlayerRows();
+      });
+    }
 
     function selectTab(selectedTab) {
       for (const tab of tabButtons) {
