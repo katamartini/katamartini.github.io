@@ -423,9 +423,16 @@
     main { padding-top: 28px; padding-bottom: 60px; }
 
     .result-line {
-      margin: 0 0 14px;
+      margin: 0 0 5px;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    .rarity-note {
+      margin: 0 0 14px;
+      color: #747b79;
+      font-size: 11px;
+      line-height: 1.45;
     }
 
     .archive-table-wrap {
@@ -442,13 +449,15 @@
     }
 
     .archive-table th:nth-child(1),
-    .archive-table td:nth-child(1) { width: 34%; }
+    .archive-table td:nth-child(1) { width: 31%; }
     .archive-table th:nth-child(2),
-    .archive-table td:nth-child(2) { width: 28%; }
+    .archive-table td:nth-child(2) { width: 22%; }
     .archive-table th:nth-child(3),
-    .archive-table td:nth-child(3) { width: 18%; }
+    .archive-table td:nth-child(3) { width: 12%; }
     .archive-table th:nth-child(4),
-    .archive-table td:nth-child(4) { width: 20%; }
+    .archive-table td:nth-child(4) { width: 15%; }
+    .archive-table th:nth-child(5),
+    .archive-table td:nth-child(5) { width: 20%; }
 
     .archive-table th {
       padding: 10px 12px;
@@ -526,6 +535,23 @@
 
     .table-wordle,
     .table-date { white-space: nowrap; }
+
+    .table-rarity {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .rarity-score {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .rarity-detail {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+    }
 
     .date-short { display: none; }
 
@@ -682,9 +708,13 @@
       .archive-table td { height: 36px; padding: 5px; font-size: 11px; }
       .table-pattern { gap: 0; }
       .table-tiles { grid-template-columns: repeat(5, 15px); gap: 3px; }
+      .table-wordle,
+      .table-date,
+      .table-rarity { font-size: 10px; }
       .pattern-code { display: none; }
       .date-long { display: none; }
       .date-short { display: inline; }
+      .rarity-odds { display: none; }
       .player-intro { align-items: stretch; flex-direction: column; }
       .player-intro-actions { justify-content: space-between; }
     }
@@ -771,15 +801,17 @@
 
   <main class="shell">
     <p class="result-line" aria-live="polite"><span id="visible-count">—</span> patterns shown</p>
+    <p class="rarity-note" id="rarity-explanation">Theoretical rarity compares every original valid Wordle guess with every original solution. Scores are percentile ranks across the 238 possible single-row patterns: 100 is rarest and 1 is most common.</p>
     <p class="data-error" id="data-error" role="alert" hidden>Could not load the Wordlegami data. Try refreshing the page.</p>
     <div class="archive-table-wrap">
-      <table class="archive-table" aria-label="All Wordlegami patterns">
+      <table class="archive-table" aria-label="All Wordlegami patterns" aria-describedby="rarity-explanation">
         <thead>
           <tr>
             <th scope="col">Pattern</th>
             <th scope="col">First unlocker</th>
             <th scope="col">Wordle #</th>
             <th scope="col">Date</th>
+            <th scope="col">Rarity</th>
           </tr>
         </thead>
         <tbody id="gallery" aria-busy="true"></tbody>
@@ -825,12 +857,13 @@
   </section>
 
   <footer>
-    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv and wordle-history.json</div>
+    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv, wordle-history.json, and wurble-rarity.json</div>
   </footer>
 
   <script>
     const DATA_URL = 'wurble.csv';
     const HISTORY_URL = 'wordle-history.json';
+    const RARITY_URL = 'wurble-rarity.json';
     const WORDLE_EPOCH_UTC = Date.UTC(2021, 5, 19);
     const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
     const STATES = ['X', 'Y', 'G'];
@@ -861,6 +894,7 @@
     let activeFilter = 'all';
     let activeMapCell = null;
     let recordsByPattern = new Map();
+    let rarityByPattern = new Map();
 
     function parseCsv(source) {
       const rows = [];
@@ -964,6 +998,51 @@
       return /^[XYG]{5}$/.test(pattern) && !IMPOSSIBLE_PATTERNS.has(pattern);
     }
 
+    function validateRarityData(data) {
+      if (!data || data.schema_version !== 1 || data.model !== 'original-wordle-uniform-guess-answer') {
+        throw new Error('Unexpected rarity schema');
+      }
+      if (!Number.isInteger(data.total_pairs) || data.total_pairs < 1 || !data.patterns) {
+        throw new Error('Incomplete rarity data');
+      }
+
+      const entries = Object.entries(data.patterns);
+      if (entries.length !== 238) {
+        throw new Error(`Expected 238 rarity patterns, received ${entries.length}`);
+      }
+
+      let occurrenceTotal = 0;
+      const rarityMap = new Map();
+      for (const [pattern, rarity] of entries) {
+        if (!isValidRowPattern(pattern) || rarityMap.has(pattern)) {
+          throw new Error(`Invalid rarity pattern: ${pattern}`);
+        }
+        if (
+          !rarity
+          || !Number.isInteger(rarity.rarity_rank)
+          || rarity.rarity_rank < 1
+          || rarity.rarity_rank > 238
+          || typeof rarity.rarity_score !== 'number'
+          || rarity.rarity_score < 1
+          || rarity.rarity_score > 100
+          || !Number.isInteger(rarity.occurrences)
+          || rarity.occurrences < 1
+          || typeof rarity.probability !== 'number'
+          || rarity.probability <= 0
+          || typeof rarity.one_in !== 'number'
+          || rarity.one_in < 1
+        ) {
+          throw new Error(`Invalid rarity values for ${pattern}`);
+        }
+        occurrenceTotal += rarity.occurrences;
+        rarityMap.set(pattern, rarity);
+      }
+      if (occurrenceTotal !== data.total_pairs) {
+        throw new Error('Rarity occurrences do not match the model total');
+      }
+      return rarityMap;
+    }
+
     function validateHistory(history) {
       if (!history || history.schema_version !== 1) throw new Error('Unexpected history schema');
       if (!Array.isArray(history.players) || !Array.isArray(history.results)) {
@@ -1023,6 +1102,21 @@
       const puzzleNumber = Number(wordleNumber);
       if (!Number.isInteger(puzzleNumber) || puzzleNumber < 0) return null;
       return new Date(WORDLE_EPOCH_UTC + puzzleNumber * MILLISECONDS_PER_DAY);
+    }
+
+    function formatRarityScore(score) {
+      return Number.isInteger(score) ? String(score) : score.toFixed(1);
+    }
+
+    function formatOneIn(oneIn) {
+      const maximumFractionDigits = oneIn >= 100 ? 0 : oneIn >= 10 ? 1 : 2;
+      return oneIn.toLocaleString(undefined, { maximumFractionDigits });
+    }
+
+    function rarityDescription(pattern) {
+      const rarity = rarityByPattern.get(pattern);
+      if (!rarity) return '';
+      return `Theoretical rarity ${formatRarityScore(rarity.rarity_score)}/100 (#${rarity.rarity_rank} rarest; about 1 in ${formatOneIn(rarity.one_in)})`;
     }
 
     function currentWordleNumber() {
@@ -1215,6 +1309,15 @@
       const unlockerCell = makeElement('td', 'table-unlocker');
       const wordleCell = makeElement('td', 'table-wordle');
       const dateCell = makeElement('td', 'table-date');
+      const rarity = rarityByPattern.get(record.pattern);
+      const rarityCell = makeElement('td', 'table-rarity');
+      rarityCell.append(
+        makeElement('span', 'rarity-score', `${formatRarityScore(rarity.rarity_score)} / 100`),
+      );
+      const rarityDetail = makeElement('span', 'rarity-detail', `#${rarity.rarity_rank} rarest`);
+      rarityDetail.append(makeElement('span', 'rarity-odds', ` · 1 in ${formatOneIn(rarity.one_in)}`));
+      rarityCell.append(rarityDetail);
+      rarityCell.title = rarityDescription(record.pattern);
       if (record.status === 'unlocked') {
         unlockerCell.textContent = record.unlocked_by;
         wordleCell.textContent = `#${Number(record.wordle_number).toLocaleString('en-US')}`;
@@ -1245,7 +1348,7 @@
         dateCell.textContent = '—';
       }
 
-      row.append(patternCell, unlockerCell, wordleCell, dateCell);
+      row.append(patternCell, unlockerCell, wordleCell, dateCell, rarityCell);
       return row;
     }
 
@@ -1284,9 +1387,9 @@
         mapSelectedDetail.textContent = 'Impossible · four greens and one yellow cannot occur';
       } else if (record?.status === 'unlocked') {
         const count = Number(record.seen_count);
-        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'} · first unlocked by ${record.unlocked_by} on Wordle #${Number(record.wordle_number).toLocaleString('en-US')}`;
+        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'} · first unlocked by ${record.unlocked_by} on Wordle #${Number(record.wordle_number).toLocaleString('en-US')} · ${rarityDescription(pattern)}`;
       } else {
-        mapSelectedDetail.textContent = 'Seen 0 times · not yet unlocked';
+        mapSelectedDetail.textContent = `Seen 0 times · not yet unlocked · ${rarityDescription(pattern)}`;
       }
     }
 
@@ -1335,8 +1438,8 @@
               cell.textContent = String(seenCount);
               cell.style.background = patternBackground(pattern, status === 'locked');
               description = status === 'unlocked'
-                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}`
-                : `${pattern}: seen 0 times; not yet unlocked`;
+                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
+                : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
             }
             cell.setAttribute('aria-label', description);
             cell.title = description;
@@ -1432,10 +1535,28 @@
     }
 
     async function fetchPatternData(cacheBust) {
-      const response = await fetch(`${DATA_URL}?v=${cacheBust}`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`CSV request failed with status ${response.status}`);
-      const records = parseCsv(await response.text());
+      const [patternResponse, rarityResponse] = await Promise.all([
+        fetch(`${DATA_URL}?v=${cacheBust}`, { cache: 'no-store' }),
+        fetch(`${RARITY_URL}?v=${cacheBust}`, { cache: 'no-store' }),
+      ]);
+      if (!patternResponse.ok) {
+        throw new Error(`CSV request failed with status ${patternResponse.status}`);
+      }
+      if (!rarityResponse.ok) {
+        throw new Error(`Rarity request failed with status ${rarityResponse.status}`);
+      }
+      const [csv, rarityData] = await Promise.all([
+        patternResponse.text(),
+        rarityResponse.json(),
+      ]);
+      const records = parseCsv(csv);
       validateRecords(records);
+      rarityByPattern = validateRarityData(rarityData);
+      for (const record of records) {
+        if (!rarityByPattern.has(record.pattern)) {
+          throw new Error(`No rarity data for ${record.pattern}`);
+        }
+      }
       renderRecords(records);
     }
 

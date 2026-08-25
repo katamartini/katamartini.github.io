@@ -1,0 +1,1680 @@
+{
+  "schema_version": 1,
+  "model": "original-wordle-uniform-guess-answer",
+  "description": "Every original valid Wordle guess paired uniformly with every original solution, using standard duplicate-letter scoring.",
+  "guess_count": 12972,
+  "answer_count": 2315,
+  "total_pairs": 30030180,
+  "source_urls": {
+    "answers": "https://gist.githubusercontent.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b/raw/5d752e5f0702da315298a6bb5a771586d6ff445c/wordle-answers-alphabetical.txt",
+    "extra_guesses": "https://gist.githubusercontent.com/cfreshman/cdcdf777450c5b5301e439061d29694c/raw/de1df631b45492e0974f7affe266ec36fed736eb/wordle-allowed-guesses.txt"
+  },
+  "patterns": {
+    "YGYYG": {
+      "rarity_rank": 1,
+      "rarity_score": 100,
+      "occurrences": 15,
+      "probability": 4.994975055094575e-7,
+      "one_in": 2002012
+    },
+    "YYGYG": {
+      "rarity_rank": 2,
+      "rarity_score": 99.6,
+      "occurrences": 22,
+      "probability": 7.325963414138709e-7,
+      "one_in": 1365008.1818181819
+    },
+    "YYGGG": {
+      "rarity_rank": 3,
+      "rarity_score": 99.2,
+      "occurrences": 30,
+      "probability": 9.98995011018915e-7,
+      "one_in": 1001006
+    },
+    "GYGYY": {
+      "rarity_rank": 4,
+      "rarity_score": 98.7,
+      "occurrences": 32,
+      "probability": 0.000001065594678420176,
+      "one_in": 938443.125
+    },
+    "YGGYY": {
+      "rarity_rank": 5,
+      "rarity_score": 98.3,
+      "occurrences": 34,
+      "probability": 0.000001132194345821437,
+      "one_in": 883240.5882352941
+    },
+    "GYYGY": {
+      "rarity_rank": 6,
+      "rarity_score": 97.9,
+      "occurrences": 35,
+      "probability": 0.0000011654941795220675,
+      "one_in": 858005.1428571428
+    },
+    "GYGGY": {
+      "rarity_rank": 7,
+      "rarity_score": 97.5,
+      "occurrences": 40,
+      "probability": 0.00000133199334802522,
+      "one_in": 750754.5
+    },
+    "GGYGY": {
+      "rarity_rank": 8,
+      "rarity_score": 97.1,
+      "occurrences": 41,
+      "probability": 0.0000013652931817258505,
+      "one_in": 732443.4146341464
+    },
+    "YGGGY": {
+      "rarity_rank": 8,
+      "rarity_score": 97.1,
+      "occurrences": 41,
+      "probability": 0.0000013652931817258505,
+      "one_in": 732443.4146341464
+    },
+    "YGGYG": {
+      "rarity_rank": 10,
+      "rarity_score": 96.2,
+      "occurrences": 44,
+      "probability": 0.0000014651926828277419,
+      "one_in": 682504.0909090909
+    },
+    "GYYYG": {
+      "rarity_rank": 11,
+      "rarity_score": 95.8,
+      "occurrences": 45,
+      "probability": 0.0000014984925165283725,
+      "one_in": 667337.3333333334
+    },
+    "GGYYG": {
+      "rarity_rank": 12,
+      "rarity_score": 95.4,
+      "occurrences": 46,
+      "probability": 0.0000015317923502290029,
+      "one_in": 652830
+    },
+    "GYGYG": {
+      "rarity_rank": 12,
+      "rarity_score": 95.4,
+      "occurrences": 46,
+      "probability": 0.0000015317923502290029,
+      "one_in": 652830
+    },
+    "YGYGY": {
+      "rarity_rank": 12,
+      "rarity_score": 95.4,
+      "occurrences": 46,
+      "probability": 0.0000015317923502290029,
+      "one_in": 652830
+    },
+    "YYGGY": {
+      "rarity_rank": 12,
+      "rarity_score": 95.4,
+      "occurrences": 46,
+      "probability": 0.0000015317923502290029,
+      "one_in": 652830
+    },
+    "YYYGG": {
+      "rarity_rank": 16,
+      "rarity_score": 93.7,
+      "occurrences": 51,
+      "probability": 0.0000016982915187321554,
+      "one_in": 588827.0588235294
+    },
+    "GYYGG": {
+      "rarity_rank": 17,
+      "rarity_score": 93.3,
+      "occurrences": 54,
+      "probability": 0.000001798191019834047,
+      "one_in": 556114.4444444445
+    },
+    "YGYGG": {
+      "rarity_rank": 18,
+      "rarity_score": 92.9,
+      "occurrences": 62,
+      "probability": 0.0000020645896894390907,
+      "one_in": 484357.7419354839
+    },
+    "GGGYY": {
+      "rarity_rank": 19,
+      "rarity_score": 92.5,
+      "occurrences": 84,
+      "probability": 0.0000027971860308529618,
+      "one_in": 357502.14285714284
+    },
+    "GGYYY": {
+      "rarity_rank": 20,
+      "rarity_score": 92.1,
+      "occurrences": 113,
+      "probability": 0.0000037628812081712464,
+      "one_in": 265753.80530973454
+    },
+    "YGYYY": {
+      "rarity_rank": 21,
+      "rarity_score": 91.6,
+      "occurrences": 129,
+      "probability": 0.000004295678547381335,
+      "one_in": 232792.09302325582
+    },
+    "YYYGY": {
+      "rarity_rank": 22,
+      "rarity_score": 91.2,
+      "occurrences": 148,
+      "probability": 0.000004928375387693314,
+      "one_in": 202906.62162162163
+    },
+    "YYGYY": {
+      "rarity_rank": 23,
+      "rarity_score": 90.8,
+      "occurrences": 174,
+      "probability": 0.000005794171063909707,
+      "one_in": 172587.24137931035
+    },
+    "YYYYG": {
+      "rarity_rank": 24,
+      "rarity_score": 90.4,
+      "occurrences": 177,
+      "probability": 0.000005894070565011598,
+      "one_in": 169662.0338983051
+    },
+    "GYYYY": {
+      "rarity_rank": 25,
+      "rarity_score": 90,
+      "occurrences": 281,
+      "probability": 0.00000935725326987717,
+      "one_in": 106868.96797153025
+    },
+    "GXGGY": {
+      "rarity_rank": 26,
+      "rarity_score": 89.6,
+      "occurrences": 402,
+      "probability": 0.00001338653314765346,
+      "one_in": 74701.94029850746
+    },
+    "GYGXG": {
+      "rarity_rank": 27,
+      "rarity_score": 89.1,
+      "occurrences": 404,
+      "probability": 0.000013453132815054722,
+      "one_in": 74332.12871287129
+    },
+    "GGYXG": {
+      "rarity_rank": 28,
+      "rarity_score": 88.7,
+      "occurrences": 439,
+      "probability": 0.000014618626994576788,
+      "one_in": 68405.87699316628
+    },
+    "GXGYG": {
+      "rarity_rank": 29,
+      "rarity_score": 88.3,
+      "occurrences": 469,
+      "probability": 0.000015617622005595704,
+      "one_in": 64030.234541577825
+    },
+    "GGXYG": {
+      "rarity_rank": 30,
+      "rarity_score": 87.9,
+      "occurrences": 486,
+      "probability": 0.00001618371917850642,
+      "one_in": 61790.49382716049
+    },
+    "GXYGG": {
+      "rarity_rank": 31,
+      "rarity_score": 87.5,
+      "occurrences": 492,
+      "probability": 0.000016383518180710206,
+      "one_in": 61036.95121951219
+    },
+    "GYGGX": {
+      "rarity_rank": 32,
+      "rarity_score": 87.1,
+      "occurrences": 523,
+      "probability": 0.00001741581302542975,
+      "one_in": 57419.082217973235
+    },
+    "GYXGY": {
+      "rarity_rank": 33,
+      "rarity_score": 86.6,
+      "occurrences": 544,
+      "probability": 0.00001811510953314299,
+      "one_in": 55202.53676470588
+    },
+    "YXGGG": {
+      "rarity_rank": 34,
+      "rarity_score": 86.2,
+      "occurrences": 545,
+      "probability": 0.000018148409366843622,
+      "one_in": 55101.247706422015
+    },
+    "YYGGX": {
+      "rarity_rank": 34,
+      "rarity_score": 86.2,
+      "occurrences": 545,
+      "probability": 0.000018148409366843622,
+      "one_in": 55101.247706422015
+    },
+    "GYXGG": {
+      "rarity_rank": 36,
+      "rarity_score": 85.4,
+      "occurrences": 565,
+      "probability": 0.00001881440604085623,
+      "one_in": 53150.761061946905
+    },
+    "XYGGG": {
+      "rarity_rank": 37,
+      "rarity_score": 85,
+      "occurrences": 567,
+      "probability": 0.000018881005708257493,
+      "one_in": 52963.28042328043
+    },
+    "XGGYG": {
+      "rarity_rank": 38,
+      "rarity_score": 84.5,
+      "occurrences": 600,
+      "probability": 0.0000199799002203783,
+      "one_in": 50050.3
+    },
+    "YYGXG": {
+      "rarity_rank": 39,
+      "rarity_score": 84.1,
+      "occurrences": 615,
+      "probability": 0.00002047939772588776,
+      "one_in": 48829.560975609755
+    },
+    "GGXGY": {
+      "rarity_rank": 40,
+      "rarity_score": 83.7,
+      "occurrences": 638,
+      "probability": 0.000021245293901002257,
+      "one_in": 47069.24764890282
+    },
+    "GGYGX": {
+      "rarity_rank": 41,
+      "rarity_score": 83.3,
+      "occurrences": 650,
+      "probability": 0.000021644891905409823,
+      "one_in": 46200.276923076926
+    },
+    "YGGXG": {
+      "rarity_rank": 42,
+      "rarity_score": 82.9,
+      "occurrences": 685,
+      "probability": 0.00002281038608493189,
+      "one_in": 43839.67883211679
+    },
+    "YGXYG": {
+      "rarity_rank": 43,
+      "rarity_score": 82.5,
+      "occurrences": 690,
+      "probability": 0.000022976885253435045,
+      "one_in": 43522
+    },
+    "XGYYG": {
+      "rarity_rank": 44,
+      "rarity_score": 82,
+      "occurrences": 694,
+      "probability": 0.000023110084588237565,
+      "one_in": 43271.15273775216
+    },
+    "GXYGY": {
+      "rarity_rank": 45,
+      "rarity_score": 81.6,
+      "occurrences": 711,
+      "probability": 0.000023676181761148286,
+      "one_in": 42236.54008438819
+    },
+    "YGGGX": {
+      "rarity_rank": 46,
+      "rarity_score": 81.2,
+      "occurrences": 726,
+      "probability": 0.00002417567926665774,
+      "one_in": 41363.884297520664
+    },
+    "GXYYG": {
+      "rarity_rank": 47,
+      "rarity_score": 80.8,
+      "occurrences": 735,
+      "probability": 0.000024475377769963418,
+      "one_in": 40857.38775510204
+    },
+    "GXGYY": {
+      "rarity_rank": 48,
+      "rarity_score": 80.4,
+      "occurrences": 763,
+      "probability": 0.00002540777311358107,
+      "one_in": 39358.03407601573
+    },
+    "XGGGY": {
+      "rarity_rank": 49,
+      "rarity_score": 79.9,
+      "occurrences": 771,
+      "probability": 0.000025674171783186114,
+      "one_in": 38949.64980544747
+    },
+    "YYYYY": {
+      "rarity_rank": 50,
+      "rarity_score": 79.5,
+      "occurrences": 814,
+      "probability": 0.000027106064632313225,
+      "one_in": 36892.11302211302
+    },
+    "GYGXY": {
+      "rarity_rank": 51,
+      "rarity_score": 79.1,
+      "occurrences": 825,
+      "probability": 0.00002747236280302016,
+      "one_in": 36400.218181818185
+    },
+    "YXGGY": {
+      "rarity_rank": 52,
+      "rarity_score": 78.7,
+      "occurrences": 848,
+      "probability": 0.000028238258978134663,
+      "one_in": 35412.948113207545
+    },
+    "GYXYG": {
+      "rarity_rank": 53,
+      "rarity_score": 78.3,
+      "occurrences": 866,
+      "probability": 0.000028837655984746014,
+      "one_in": 34676.88221709007
+    },
+    "YXGYG": {
+      "rarity_rank": 54,
+      "rarity_score": 77.9,
+      "occurrences": 884,
+      "probability": 0.00002943705299135736,
+      "one_in": 33970.79185520362
+    },
+    "YGYXG": {
+      "rarity_rank": 55,
+      "rarity_score": 77.4,
+      "occurrences": 907,
+      "probability": 0.000030202949166471863,
+      "one_in": 33109.34950385887
+    },
+    "YXYGG": {
+      "rarity_rank": 56,
+      "rarity_score": 77,
+      "occurrences": 914,
+      "probability": 0.000030436048002376276,
+      "one_in": 32855.77680525164
+    },
+    "YGGYX": {
+      "rarity_rank": 57,
+      "rarity_score": 76.6,
+      "occurrences": 964,
+      "probability": 0.0000321010396874078,
+      "one_in": 31151.639004149376
+    },
+    "YGXGY": {
+      "rarity_rank": 58,
+      "rarity_score": 76.2,
+      "occurrences": 966,
+      "probability": 0.000032167639354809064,
+      "one_in": 31087.14285714286
+    },
+    "XYGGY": {
+      "rarity_rank": 59,
+      "rarity_score": 75.8,
+      "occurrences": 979,
+      "probability": 0.00003260053719291726,
+      "one_in": 30674.341164453523
+    },
+    "GYYGX": {
+      "rarity_rank": 60,
+      "rarity_score": 75.4,
+      "occurrences": 985,
+      "probability": 0.00003280033619512104,
+      "one_in": 30487.4923857868
+    },
+    "XYGYG": {
+      "rarity_rank": 61,
+      "rarity_score": 74.9,
+      "occurrences": 991,
+      "probability": 0.00003300013519732483,
+      "one_in": 30302.90615539859
+    },
+    "YGXGG": {
+      "rarity_rank": 62,
+      "rarity_score": 74.5,
+      "occurrences": 1001,
+      "probability": 0.00003333313353433113,
+      "one_in": 30000.17982017982
+    },
+    "XGYGG": {
+      "rarity_rank": 63,
+      "rarity_score": 74.1,
+      "occurrences": 1005,
+      "probability": 0.00003346633286913365,
+      "one_in": 29880.776119402984
+    },
+    "YGGXY": {
+      "rarity_rank": 64,
+      "rarity_score": 73.7,
+      "occurrences": 1032,
+      "probability": 0.00003436542837905068,
+      "one_in": 29099.011627906977
+    },
+    "GYYXG": {
+      "rarity_rank": 65,
+      "rarity_score": 73.3,
+      "occurrences": 1094,
+      "probability": 0.00003643001806848977,
+      "one_in": 27449.890310786104
+    },
+    "YGYGX": {
+      "rarity_rank": 65,
+      "rarity_score": 73.3,
+      "occurrences": 1094,
+      "probability": 0.00003643001806848977,
+      "one_in": 27449.890310786104
+    },
+    "GGGYX": {
+      "rarity_rank": 67,
+      "rarity_score": 72.4,
+      "occurrences": 1126,
+      "probability": 0.00003749561274690994,
+      "one_in": 26669.786856127885
+    },
+    "GYGYX": {
+      "rarity_rank": 68,
+      "rarity_score": 72,
+      "occurrences": 1185,
+      "probability": 0.000039460302935247144,
+      "one_in": 25341.92405063291
+    },
+    "XGYGY": {
+      "rarity_rank": 69,
+      "rarity_score": 71.6,
+      "occurrences": 1197,
+      "probability": 0.00003985990093965471,
+      "one_in": 25087.869674185462
+    },
+    "GGYXY": {
+      "rarity_rank": 70,
+      "rarity_score": 71.2,
+      "occurrences": 1336,
+      "probability": 0.00004448857782404235,
+      "one_in": 22477.67964071856
+    },
+    "GGGXY": {
+      "rarity_rank": 71,
+      "rarity_score": 70.8,
+      "occurrences": 1361,
+      "probability": 0.00004532107366655811,
+      "one_in": 22064.790595150625
+    },
+    "YYXGG": {
+      "rarity_rank": 72,
+      "rarity_score": 70.3,
+      "occurrences": 1409,
+      "probability": 0.00004691946568418837,
+      "one_in": 21313.115684882894
+    },
+    "XYYGG": {
+      "rarity_rank": 73,
+      "rarity_score": 69.9,
+      "occurrences": 1452,
+      "probability": 0.00004835135853331548,
+      "one_in": 20681.942148760332
+    },
+    "XGGYY": {
+      "rarity_rank": 74,
+      "rarity_score": 69.5,
+      "occurrences": 1487,
+      "probability": 0.000049516852712837554,
+      "one_in": 20195.1445864156
+    },
+    "YXYGY": {
+      "rarity_rank": 75,
+      "rarity_score": 69.1,
+      "occurrences": 1646,
+      "probability": 0.0000548115262712378,
+      "one_in": 18244.33778857837
+    },
+    "GGYYX": {
+      "rarity_rank": 76,
+      "rarity_score": 68.7,
+      "occurrences": 1844,
+      "probability": 0.00006140489334396264,
+      "one_in": 16285.347071583514
+    },
+    "GXGGG": {
+      "rarity_rank": 77,
+      "rarity_score": 68.3,
+      "occurrences": 1925,
+      "probability": 0.0000641021798737137,
+      "one_in": 15600.093506493506
+    },
+    "GGXYY": {
+      "rarity_rank": 78,
+      "rarity_score": 67.8,
+      "occurrences": 1940,
+      "probability": 0.00006460167737922317,
+      "one_in": 15479.474226804125
+    },
+    "YXYYG": {
+      "rarity_rank": 79,
+      "rarity_score": 67.4,
+      "occurrences": 1953,
+      "probability": 0.00006503457521733137,
+      "one_in": 15376.436251920122
+    },
+    "YGYXY": {
+      "rarity_rank": 80,
+      "rarity_score": 67,
+      "occurrences": 2035,
+      "probability": 0.00006776516158078307,
+      "one_in": 14756.845208845209
+    },
+    "YXGYY": {
+      "rarity_rank": 81,
+      "rarity_score": 66.6,
+      "occurrences": 2051,
+      "probability": 0.00006829795891999315,
+      "one_in": 14641.725987323256
+    },
+    "YYGYX": {
+      "rarity_rank": 82,
+      "rarity_score": 66.2,
+      "occurrences": 2132,
+      "probability": 0.00007099524544974422,
+      "one_in": 14085.45028142589
+    },
+    "GGGXG": {
+      "rarity_rank": 83,
+      "rarity_score": 65.7,
+      "occurrences": 2141,
+      "probability": 0.00007129494395304989,
+      "one_in": 14026.240074731433
+    },
+    "YYYGX": {
+      "rarity_rank": 84,
+      "rarity_score": 65.3,
+      "occurrences": 2176,
+      "probability": 0.00007246043813257196,
+      "one_in": 13800.63419117647
+    },
+    "YGYYX": {
+      "rarity_rank": 85,
+      "rarity_score": 64.9,
+      "occurrences": 2251,
+      "probability": 0.00007495792566011926,
+      "one_in": 13340.817414482452
+    },
+    "YGXYY": {
+      "rarity_rank": 86,
+      "rarity_score": 64.5,
+      "occurrences": 2299,
+      "probability": 0.00007655631767774952,
+      "one_in": 13062.27925184863
+    },
+    "GGXGG": {
+      "rarity_rank": 87,
+      "rarity_score": 64.1,
+      "occurrences": 2303,
+      "probability": 0.00007668951701255204,
+      "one_in": 13039.591836734693
+    },
+    "GGGGG": {
+      "rarity_rank": 88,
+      "rarity_score": 63.7,
+      "occurrences": 2315,
+      "probability": 0.0000770891150169596,
+      "one_in": 12972
+    },
+    "YYXYG": {
+      "rarity_rank": 89,
+      "rarity_score": 63.2,
+      "occurrences": 2391,
+      "probability": 0.00007961990237820753,
+      "one_in": 12559.673776662485
+    },
+    "YYGXY": {
+      "rarity_rank": 90,
+      "rarity_score": 62.8,
+      "occurrences": 2398,
+      "probability": 0.00007985300121411194,
+      "one_in": 12523.01084236864
+    },
+    "YYXGY": {
+      "rarity_rank": 91,
+      "rarity_score": 62.4,
+      "occurrences": 2495,
+      "probability": 0.00008308308508307309,
+      "one_in": 12036.144288577154
+    },
+    "GYYXY": {
+      "rarity_rank": 92,
+      "rarity_score": 62,
+      "occurrences": 2648,
+      "probability": 0.00008817795963926956,
+      "one_in": 11340.70241691843
+    },
+    "GGGGX": {
+      "rarity_rank": 93,
+      "rarity_score": 61.6,
+      "occurrences": 2682,
+      "probability": 0.00008931015398509099,
+      "one_in": 11196.935123042505
+    },
+    "YYYXG": {
+      "rarity_rank": 94,
+      "rarity_score": 61.2,
+      "occurrences": 2711,
+      "probability": 0.00009027584916240928,
+      "one_in": 11077.159719660642
+    },
+    "GXYYY": {
+      "rarity_rank": 95,
+      "rarity_score": 60.7,
+      "occurrences": 2717,
+      "probability": 0.00009047564816461306,
+      "one_in": 11052.697828487302
+    },
+    "XYYGY": {
+      "rarity_rank": 96,
+      "rarity_score": 60.3,
+      "occurrences": 2852,
+      "probability": 0.00009497112571419819,
+      "one_in": 10529.516129032258
+    },
+    "XYYYG": {
+      "rarity_rank": 97,
+      "rarity_score": 59.9,
+      "occurrences": 2869,
+      "probability": 0.0000955372228871089,
+      "one_in": 10467.124433600558
+    },
+    "GYXYY": {
+      "rarity_rank": 98,
+      "rarity_score": 59.5,
+      "occurrences": 2957,
+      "probability": 0.00009846760825276439,
+      "one_in": 10155.623943185661
+    },
+    "XYGYY": {
+      "rarity_rank": 99,
+      "rarity_score": 59.1,
+      "occurrences": 3189,
+      "probability": 0.00010619316967131066,
+      "one_in": 9416.801505174035
+    },
+    "XGYYY": {
+      "rarity_rank": 100,
+      "rarity_score": 58.6,
+      "occurrences": 3573,
+      "probability": 0.00011898030581235278,
+      "one_in": 8404.752308984047
+    },
+    "GYYYX": {
+      "rarity_rank": 101,
+      "rarity_score": 58.2,
+      "occurrences": 4307,
+      "probability": 0.00014342238374861555,
+      "one_in": 6972.41235198514
+    },
+    "XGGGG": {
+      "rarity_rank": 102,
+      "rarity_score": 57.8,
+      "occurrences": 4597,
+      "probability": 0.00015307933552179842,
+      "one_in": 6532.560365455732
+    },
+    "GXXGY": {
+      "rarity_rank": 103,
+      "rarity_score": 57.4,
+      "occurrences": 6305,
+      "probability": 0.0002099554514824753,
+      "one_in": 4762.915146708961
+    },
+    "YXGGX": {
+      "rarity_rank": 104,
+      "rarity_score": 57,
+      "occurrences": 6832,
+      "probability": 0.00022750446384270758,
+      "one_in": 4395.518149882904
+    },
+    "GXYXG": {
+      "rarity_rank": 105,
+      "rarity_score": 56.6,
+      "occurrences": 7039,
+      "probability": 0.00023439752941873808,
+      "one_in": 4266.256570535587
+    },
+    "GXXYG": {
+      "rarity_rank": 106,
+      "rarity_score": 56.1,
+      "occurrences": 7098,
+      "probability": 0.00023636221960707528,
+      "one_in": 4230.794590025359
+    },
+    "GXGXG": {
+      "rarity_rank": 107,
+      "rarity_score": 55.7,
+      "occurrences": 7297,
+      "probability": 0.00024298888651350076,
+      "one_in": 4115.414553926271
+    },
+    "YXYYY": {
+      "rarity_rank": 108,
+      "rarity_score": 55.3,
+      "occurrences": 7498,
+      "probability": 0.00024968215308732747,
+      "one_in": 4005.0920245398775
+    },
+    "XYGXG": {
+      "rarity_rank": 109,
+      "rarity_score": 54.9,
+      "occurrences": 7536,
+      "probability": 0.00025094754676795145,
+      "one_in": 3984.896496815287
+    },
+    "GXYGX": {
+      "rarity_rank": 110,
+      "rarity_score": 54.5,
+      "occurrences": 7626,
+      "probability": 0.0002539445318010082,
+      "one_in": 3937.86782061369
+    },
+    "GXGXY": {
+      "rarity_rank": 111,
+      "rarity_score": 54.1,
+      "occurrences": 7647,
+      "probability": 0.00025464382830872145,
+      "one_in": 3927.0537465672815
+    },
+    "GYXGX": {
+      "rarity_rank": 112,
+      "rarity_score": 53.6,
+      "occurrences": 7665,
+      "probability": 0.0002552432253153328,
+      "one_in": 3917.8317025440315
+    },
+    "YXGXG": {
+      "rarity_rank": 113,
+      "rarity_score": 53.2,
+      "occurrences": 7793,
+      "probability": 0.0002595056040290135,
+      "one_in": 3853.481329398178
+    },
+    "GXGGX": {
+      "rarity_rank": 114,
+      "rarity_score": 52.8,
+      "occurrences": 7953,
+      "probability": 0.00026483357742111436,
+      "one_in": 3775.9562429271973
+    },
+    "XYGGX": {
+      "rarity_rank": 115,
+      "rarity_score": 52.4,
+      "occurrences": 8094,
+      "probability": 0.00026952885397290324,
+      "one_in": 3710.177909562639
+    },
+    "GYXXG": {
+      "rarity_rank": 116,
+      "rarity_score": 52,
+      "occurrences": 8532,
+      "probability": 0.00028411418113377944,
+      "one_in": 3519.7116736990156
+    },
+    "XGXYG": {
+      "rarity_rank": 117,
+      "rarity_score": 51.5,
+      "occurrences": 8642,
+      "probability": 0.0002877771628408488,
+      "one_in": 3474.9109002545706
+    },
+    "XXGYG": {
+      "rarity_rank": 118,
+      "rarity_score": 51.1,
+      "occurrences": 9544,
+      "probability": 0.00031781361283881747,
+      "one_in": 3146.4983235540653
+    },
+    "XGYXG": {
+      "rarity_rank": 119,
+      "rarity_score": 50.7,
+      "occurrences": 9877,
+      "probability": 0.0003289024574611274,
+      "one_in": 3040.4151058013567
+    },
+    "GXGYX": {
+      "rarity_rank": 120,
+      "rarity_score": 50.3,
+      "occurrences": 9929,
+      "probability": 0.00033063404881356024,
+      "one_in": 3024.491892436298
+    },
+    "YYYXY": {
+      "rarity_rank": 121,
+      "rarity_score": 49.9,
+      "occurrences": 10123,
+      "probability": 0.00033709421655148255,
+      "one_in": 2966.529684876025
+    },
+    "GXXGG": {
+      "rarity_rank": 122,
+      "rarity_score": 49.5,
+      "occurrences": 10319,
+      "probability": 0.0003436209839568061,
+      "one_in": 2910.1831572826823
+    },
+    "GYGXX": {
+      "rarity_rank": 123,
+      "rarity_score": 49,
+      "occurrences": 10536,
+      "probability": 0.00035084704786984296,
+      "one_in": 2850.244874715262
+    },
+    "YGXXG": {
+      "rarity_rank": 124,
+      "rarity_score": 48.6,
+      "occurrences": 10910,
+      "probability": 0.00036330118567387873,
+      "one_in": 2752.5371219065078
+    },
+    "YYXYY": {
+      "rarity_rank": 125,
+      "rarity_score": 48.2,
+      "occurrences": 11012,
+      "probability": 0.00036669776871134304,
+      "one_in": 2727.0414093715945
+    },
+    "GGXGX": {
+      "rarity_rank": 126,
+      "rarity_score": 47.8,
+      "occurrences": 11070,
+      "probability": 0.0003686291590659796,
+      "one_in": 2712.7533875338754
+    },
+    "XXGGY": {
+      "rarity_rank": 127,
+      "rarity_score": 47.4,
+      "occurrences": 11182,
+      "probability": 0.00037235874044045026,
+      "one_in": 2685.5821856555176
+    },
+    "YGGXX": {
+      "rarity_rank": 128,
+      "rarity_score": 46.9,
+      "occurrences": 11315,
+      "probability": 0.0003767876183226341,
+      "one_in": 2654.015024304021
+    },
+    "YGXGX": {
+      "rarity_rank": 129,
+      "rarity_score": 46.5,
+      "occurrences": 11391,
+      "probability": 0.000379318405683882,
+      "one_in": 2636.307611272057
+    },
+    "XGXGY": {
+      "rarity_rank": 130,
+      "rarity_score": 46.1,
+      "occurrences": 11662,
+      "probability": 0.0003883426606167529,
+      "one_in": 2575.0454467501286
+    },
+    "XGYGX": {
+      "rarity_rank": 131,
+      "rarity_score": 45.7,
+      "occurrences": 12337,
+      "probability": 0.0004108200483646785,
+      "one_in": 2434.1557915214394
+    },
+    "GGXXG": {
+      "rarity_rank": 132,
+      "rarity_score": 45.3,
+      "occurrences": 12442,
+      "probability": 0.0004143165309032447,
+      "one_in": 2413.613566950651
+    },
+    "YXXGG": {
+      "rarity_rank": 133,
+      "rarity_score": 44.9,
+      "occurrences": 12452,
+      "probability": 0.00041464952924025097,
+      "one_in": 2411.6752328943144
+    },
+    "YYYYX": {
+      "rarity_rank": 134,
+      "rarity_score": 44.4,
+      "occurrences": 12763,
+      "probability": 0.0004250057775211471,
+      "one_in": 2352.9091906291624
+    },
+    "XGGYX": {
+      "rarity_rank": 135,
+      "rarity_score": 44,
+      "occurrences": 12914,
+      "probability": 0.00043003405240994225,
+      "one_in": 2325.397243301843
+    },
+    "XXYGG": {
+      "rarity_rank": 136,
+      "rarity_score": 43.6,
+      "occurrences": 13093,
+      "probability": 0.0004359947226423551,
+      "one_in": 2293.6057435270754
+    },
+    "XGGXG": {
+      "rarity_rank": 137,
+      "rarity_score": 43.2,
+      "occurrences": 13411,
+      "probability": 0.0004465840697591556,
+      "one_in": 2239.22004324808
+    },
+    "GGYXX": {
+      "rarity_rank": 138,
+      "rarity_score": 42.8,
+      "occurrences": 14113,
+      "probability": 0.00046996055301699825,
+      "one_in": 2127.838163395451
+    },
+    "XYXGG": {
+      "rarity_rank": 139,
+      "rarity_score": 42.4,
+      "occurrences": 14131,
+      "probability": 0.0004705599500236096,
+      "one_in": 2125.1277333522044
+    },
+    "GGXYX": {
+      "rarity_rank": 140,
+      "rarity_score": 41.9,
+      "occurrences": 14736,
+      "probability": 0.0004907063494124911,
+      "one_in": 2037.878664495114
+    },
+    "GGXXY": {
+      "rarity_rank": 141,
+      "rarity_score": 41.5,
+      "occurrences": 15024,
+      "probability": 0.0005002967015182726,
+      "one_in": 1998.8138977635783
+    },
+    "XGGGX": {
+      "rarity_rank": 142,
+      "rarity_score": 41.1,
+      "occurrences": 15109,
+      "probability": 0.0005031271873828262,
+      "one_in": 1987.5689986101
+    },
+    "XYYYY": {
+      "rarity_rank": 143,
+      "rarity_score": 40.7,
+      "occurrences": 15755,
+      "probability": 0.0005246388799534335,
+      "one_in": 1906.0729927007299
+    },
+    "YXYGX": {
+      "rarity_rank": 144,
+      "rarity_score": 40.3,
+      "occurrences": 15799,
+      "probability": 0.0005261040726362613,
+      "one_in": 1900.7646053547694
+    },
+    "XGGXY": {
+      "rarity_rank": 145,
+      "rarity_score": 39.8,
+      "occurrences": 16475,
+      "probability": 0.0005486147602178875,
+      "one_in": 1822.7726858877086
+    },
+    "YYGXX": {
+      "rarity_rank": 146,
+      "rarity_score": 39.4,
+      "occurrences": 16548,
+      "probability": 0.0005510456480780335,
+      "one_in": 1814.7316896301668
+    },
+    "YXGYX": {
+      "rarity_rank": 147,
+      "rarity_score": 39,
+      "occurrences": 16561,
+      "probability": 0.0005514785459161417,
+      "one_in": 1813.3071674415796
+    },
+    "YXYXG": {
+      "rarity_rank": 148,
+      "rarity_score": 38.6,
+      "occurrences": 16811,
+      "probability": 0.0005598035043412993,
+      "one_in": 1786.3410861935638
+    },
+    "GXYXY": {
+      "rarity_rank": 149,
+      "rarity_score": 38.2,
+      "occurrences": 16849,
+      "probability": 0.0005610688980219233,
+      "one_in": 1782.3123034007954
+    },
+    "YXXYG": {
+      "rarity_rank": 150,
+      "rarity_score": 37.8,
+      "occurrences": 17402,
+      "probability": 0.0005794837060583719,
+      "one_in": 1725.6740604528215
+    },
+    "YXGXY": {
+      "rarity_rank": 151,
+      "rarity_score": 37.3,
+      "occurrences": 18174,
+      "probability": 0.0006051911776752587,
+      "one_in": 1652.3704192802904
+    },
+    "YYXGX": {
+      "rarity_rank": 152,
+      "rarity_score": 36.9,
+      "occurrences": 18597,
+      "probability": 0.0006192770073306254,
+      "one_in": 1614.7862558477175
+    },
+    "YXXGY": {
+      "rarity_rank": 153,
+      "rarity_score": 36.5,
+      "occurrences": 18820,
+      "probability": 0.000626702870245866,
+      "one_in": 1595.6524973432518
+    },
+    "XXGGG": {
+      "rarity_rank": 154,
+      "rarity_score": 36.1,
+      "occurrences": 19422,
+      "probability": 0.0006467493701336456,
+      "one_in": 1546.1940067964165
+    },
+    "XGXGG": {
+      "rarity_rank": 155,
+      "rarity_score": 35.7,
+      "occurrences": 19881,
+      "probability": 0.000662033993802235,
+      "one_in": 1510.4964539007092
+    },
+    "YGXYX": {
+      "rarity_rank": 156,
+      "rarity_score": 35.3,
+      "occurrences": 20253,
+      "probability": 0.0006744215319388695,
+      "one_in": 1482.752184861502
+    },
+    "GYXXY": {
+      "rarity_rank": 157,
+      "rarity_score": 34.8,
+      "occurrences": 20616,
+      "probability": 0.0006865093715721983,
+      "one_in": 1456.6443538998835
+    },
+    "GGGXX": {
+      "rarity_rank": 158,
+      "rarity_score": 34.4,
+      "occurrences": 20661,
+      "probability": 0.0006880078640887267,
+      "one_in": 1453.4717583853637
+    },
+    "XXYYG": {
+      "rarity_rank": 159,
+      "rarity_score": 34,
+      "occurrences": 20834,
+      "probability": 0.0006937687353189358,
+      "one_in": 1441.4025151195162
+    },
+    "XXYGY": {
+      "rarity_rank": 160,
+      "rarity_score": 33.6,
+      "occurrences": 21444,
+      "probability": 0.0007140816338763204,
+      "one_in": 1400.4001119194181
+    },
+    "GXXYY": {
+      "rarity_rank": 161,
+      "rarity_score": 33.2,
+      "occurrences": 21460,
+      "probability": 0.0007146144312155305,
+      "one_in": 1399.3560111835975
+    },
+    "YGYXX": {
+      "rarity_rank": 162,
+      "rarity_score": 32.7,
+      "occurrences": 22171,
+      "probability": 0.0007382906129766788,
+      "one_in": 1354.4801768075413
+    },
+    "YYXXG": {
+      "rarity_rank": 163,
+      "rarity_score": 32.3,
+      "occurrences": 22407,
+      "probability": 0.0007461493737300276,
+      "one_in": 1340.2142187709198
+    },
+    "XYXYG": {
+      "rarity_rank": 164,
+      "rarity_score": 31.9,
+      "occurrences": 22602,
+      "probability": 0.0007526428413016505,
+      "one_in": 1328.6514467746217
+    },
+    "YGXXY": {
+      "rarity_rank": 165,
+      "rarity_score": 31.5,
+      "occurrences": 23012,
+      "probability": 0.000766295773118909,
+      "one_in": 1304.9791413175735
+    },
+    "XYGXY": {
+      "rarity_rank": 166,
+      "rarity_score": 31.1,
+      "occurrences": 23432,
+      "probability": 0.0007802817032731738,
+      "one_in": 1281.5884260839878
+    },
+    "XYXGY": {
+      "rarity_rank": 167,
+      "rarity_score": 30.7,
+      "occurrences": 23617,
+      "probability": 0.0007864421725077905,
+      "one_in": 1271.549307702079
+    },
+    "XYGYX": {
+      "rarity_rank": 168,
+      "rarity_score": 30.2,
+      "occurrences": 24527,
+      "probability": 0.0008167450211753642,
+      "one_in": 1224.372324377217
+    },
+    "XXGYY": {
+      "rarity_rank": 169,
+      "rarity_score": 29.8,
+      "occurrences": 24729,
+      "probability": 0.0008234715875828916,
+      "one_in": 1214.3709814387967
+    },
+    "GXYYX": {
+      "rarity_rank": 170,
+      "rarity_score": 29.4,
+      "occurrences": 24762,
+      "probability": 0.0008245704820950124,
+      "one_in": 1212.752604797674
+    },
+    "XYYGX": {
+      "rarity_rank": 171,
+      "rarity_score": 29,
+      "occurrences": 25369,
+      "probability": 0.0008447834811512951,
+      "one_in": 1183.7352674524025
+    },
+    "XYYXG": {
+      "rarity_rank": 172,
+      "rarity_score": 28.6,
+      "occurrences": 27069,
+      "probability": 0.0009013931984423669,
+      "one_in": 1109.3937714729025
+    },
+    "GYXYX": {
+      "rarity_rank": 173,
+      "rarity_score": 28.2,
+      "occurrences": 27143,
+      "probability": 0.0009038573861362136,
+      "one_in": 1106.3692296356335
+    },
+    "XGYXY": {
+      "rarity_rank": 174,
+      "rarity_score": 27.7,
+      "occurrences": 27270,
+      "probability": 0.0009080864650161937,
+      "one_in": 1101.2167216721673
+    },
+    "XGYYX": {
+      "rarity_rank": 175,
+      "rarity_score": 27.3,
+      "occurrences": 28651,
+      "probability": 0.0009540735353567644,
+      "one_in": 1048.137237792747
+    },
+    "XGXYY": {
+      "rarity_rank": 176,
+      "rarity_score": 26.9,
+      "occurrences": 30564,
+      "probability": 0.0010177761172260706,
+      "one_in": 982.534354142128
+    },
+    "GYYXX": {
+      "rarity_rank": 177,
+      "rarity_score": 26.5,
+      "occurrences": 31787,
+      "probability": 0.0010585018138419416,
+      "one_in": 944.731494006984
+    },
+    "YXYXY": {
+      "rarity_rank": 178,
+      "rarity_score": 26.1,
+      "occurrences": 50951,
+      "probability": 0.0016966598268808245,
+      "one_in": 589.3933386979647
+    },
+    "GXXGX": {
+      "rarity_rank": 179,
+      "rarity_score": 25.6,
+      "occurrences": 59538,
+      "probability": 0.0019826054988681388,
+      "one_in": 504.386778192079
+    },
+    "YXYYX": {
+      "rarity_rank": 180,
+      "rarity_score": 25.2,
+      "occurrences": 62281,
+      "probability": 0.0020739469427089683,
+      "one_in": 482.17241213211094
+    },
+    "GXXXG": {
+      "rarity_rank": 181,
+      "rarity_score": 24.8,
+      "occurrences": 62648,
+      "probability": 0.0020861679816770993,
+      "one_in": 479.34778444643086
+    },
+    "YXXYY": {
+      "rarity_rank": 182,
+      "rarity_score": 24.4,
+      "occurrences": 65418,
+      "probability": 0.002178408521027846,
+      "one_in": 459.05071998532514
+    },
+    "GXGXX": {
+      "rarity_rank": 183,
+      "rarity_score": 24,
+      "occurrences": 69723,
+      "probability": 0.0023217643051090604,
+      "one_in": 430.7069403209845
+    },
+    "XXGXG": {
+      "rarity_rank": 184,
+      "rarity_score": 23.6,
+      "occurrences": 71939,
+      "probability": 0.0023955567365896574,
+      "one_in": 417.43949735192314
+    },
+    "YYXYX": {
+      "rarity_rank": 185,
+      "rarity_score": 23.1,
+      "occurrences": 79898,
+      "probability": 0.0026605901130129757,
+      "one_in": 375.85646699541917
+    },
+    "XXGGX": {
+      "rarity_rank": 186,
+      "rarity_score": 22.7,
+      "occurrences": 81018,
+      "probability": 0.0026978859267576816,
+      "one_in": 370.66059394208696
+    },
+    "YYXXY": {
+      "rarity_rank": 187,
+      "rarity_score": 22.3,
+      "occurrences": 81827,
+      "probability": 0.002724825492221492,
+      "one_in": 366.9959793222286
+    },
+    "XXYYY": {
+      "rarity_rank": 188,
+      "rarity_score": 21.9,
+      "occurrences": 87163,
+      "probability": 0.0029025134048480563,
+      "one_in": 344.52898592292604
+    },
+    "YYYXX": {
+      "rarity_rank": 189,
+      "rarity_score": 21.5,
+      "occurrences": 87334,
+      "probability": 0.002908207676410864,
+      "one_in": 343.8543980580301
+    },
+    "YXGXX": {
+      "rarity_rank": 190,
+      "rarity_score": 21.1,
+      "occurrences": 95749,
+      "probability": 0.0031884257770016695,
+      "one_in": 313.634398270478
+    },
+    "XYYXY": {
+      "rarity_rank": 191,
+      "rarity_score": 20.6,
+      "occurrences": 100040,
+      "probability": 0.003331315363411075,
+      "one_in": 300.1817273090764
+    },
+    "XYXYY": {
+      "rarity_rank": 192,
+      "rarity_score": 20.2,
+      "occurrences": 102608,
+      "probability": 0.0034168293363542944,
+      "one_in": 292.6689926711368
+    },
+    "XGXGX": {
+      "rarity_rank": 193,
+      "rarity_score": 19.8,
+      "occurrences": 102846,
+      "probability": 0.0034247546967750443,
+      "one_in": 291.9917157692083
+    },
+    "GXXXY": {
+      "rarity_rank": 194,
+      "rarity_score": 19.4,
+      "occurrences": 103995,
+      "probability": 0.003463016205697069,
+      "one_in": 288.76561373142937
+    },
+    "XGXXG": {
+      "rarity_rank": 195,
+      "rarity_score": 19,
+      "occurrences": 111823,
+      "probability": 0.0037236873039056045,
+      "one_in": 268.55101365550917
+    },
+    "YXXGX": {
+      "rarity_rank": 196,
+      "rarity_score": 18.5,
+      "occurrences": 113359,
+      "probability": 0.0037748358484697726,
+      "one_in": 264.9121816529786
+    },
+    "YXXXG": {
+      "rarity_rank": 197,
+      "rarity_score": 18.1,
+      "occurrences": 118853,
+      "probability": 0.003957785134821036,
+      "one_in": 252.66657131077886
+    },
+    "XYYYX": {
+      "rarity_rank": 198,
+      "rarity_score": 17.7,
+      "occurrences": 121521,
+      "probability": 0.004046629091134319,
+      "one_in": 247.11926333720098
+    },
+    "GGXXX": {
+      "rarity_rank": 199,
+      "rarity_score": 17.3,
+      "occurrences": 125947,
+      "probability": 0.004194014155093309,
+      "one_in": 238.43505601562563
+    },
+    "XXXYG": {
+      "rarity_rank": 200,
+      "rarity_score": 16.9,
+      "occurrences": 126334,
+      "probability": 0.004206901190735453,
+      "one_in": 237.704655912106
+    },
+    "GXYXX": {
+      "rarity_rank": 201,
+      "rarity_score": 16.5,
+      "occurrences": 127070,
+      "probability": 0.004231409868339118,
+      "one_in": 236.32785079090266
+    },
+    "XXXGG": {
+      "rarity_rank": 202,
+      "rarity_score": 16,
+      "occurrences": 128581,
+      "probability": 0.00428172591706077,
+      "one_in": 233.5506801160358
+    },
+    "XGGXX": {
+      "rarity_rank": 203,
+      "rarity_score": 15.6,
+      "occurrences": 128881,
+      "probability": 0.004291715867170959,
+      "one_in": 233.00703749970904
+    },
+    "XXYXG": {
+      "rarity_rank": 204,
+      "rarity_score": 15.2,
+      "occurrences": 131984,
+      "probability": 0.0043950452511440155,
+      "one_in": 227.52894290216997
+    },
+    "XYGXX": {
+      "rarity_rank": 205,
+      "rarity_score": 14.8,
+      "occurrences": 133211,
+      "probability": 0.00443590414709469,
+      "one_in": 225.43318494718903
+    },
+    "GXXYX": {
+      "rarity_rank": 206,
+      "rarity_score": 14.4,
+      "occurrences": 133222,
+      "probability": 0.004436270445265397,
+      "one_in": 225.4145711669244
+    },
+    "XXGYX": {
+      "rarity_rank": 207,
+      "rarity_score": 13.9,
+      "occurrences": 139624,
+      "probability": 0.004649455980616833,
+      "one_in": 215.07892625909585
+    },
+    "XYXGX": {
+      "rarity_rank": 208,
+      "rarity_score": 13.5,
+      "occurrences": 139656,
+      "probability": 0.004650521575295253,
+      "one_in": 215.02964426877472
+    },
+    "XXYGX": {
+      "rarity_rank": 209,
+      "rarity_score": 13.1,
+      "occurrences": 139693,
+      "probability": 0.004651753669142176,
+      "one_in": 214.9726901133199
+    },
+    "XXGXY": {
+      "rarity_rank": 210,
+      "rarity_score": 12.7,
+      "occurrences": 142428,
+      "probability": 0.004742828714313401,
+      "one_in": 210.84463729042042
+    },
+    "XXXGY": {
+      "rarity_rank": 211,
+      "rarity_score": 12.3,
+      "occurrences": 145704,
+      "probability": 0.004851918969516666,
+      "one_in": 206.1040191072311
+    },
+    "XYXXG": {
+      "rarity_rank": 212,
+      "rarity_score": 11.9,
+      "occurrences": 152705,
+      "probability": 0.005085051105254781,
+      "one_in": 196.6548574048001
+    },
+    "GYXXX": {
+      "rarity_rank": 213,
+      "rarity_score": 11.4,
+      "occurrences": 157423,
+      "probability": 0.005242159720654355,
+      "one_in": 190.7610704916054
+    },
+    "YGXXX": {
+      "rarity_rank": 214,
+      "rarity_score": 11,
+      "occurrences": 163701,
+      "probability": 0.005451216076626913,
+      "one_in": 183.44530577088716
+    },
+    "XGXYX": {
+      "rarity_rank": 215,
+      "rarity_score": 10.6,
+      "occurrences": 173081,
+      "probability": 0.005763568516738827,
+      "one_in": 173.50361969251392
+    },
+    "XGYXX": {
+      "rarity_rank": 216,
+      "rarity_score": 10.2,
+      "occurrences": 187897,
+      "probability": 0.006256938852847369,
+      "one_in": 159.82256236129368
+    },
+    "XGXXY": {
+      "rarity_rank": 217,
+      "rarity_score": 9.8,
+      "occurrences": 198544,
+      "probability": 0.006611482182257981,
+      "one_in": 151.2520146667741
+    },
+    "YXYXX": {
+      "rarity_rank": 218,
+      "rarity_score": 9.4,
+      "occurrences": 305177,
+      "probability": 0.010162343349257313,
+      "one_in": 98.40250084377263
+    },
+    "YXXYX": {
+      "rarity_rank": 219,
+      "rarity_score": 8.9,
+      "occurrences": 338147,
+      "probability": 0.011260238866367102,
+      "one_in": 88.80806276560195
+    },
+    "YXXXY": {
+      "rarity_rank": 220,
+      "rarity_score": 8.5,
+      "occurrences": 338439,
+      "probability": 0.011269962417807686,
+      "one_in": 88.73144052547136
+    },
+    "XXYXY": {
+      "rarity_rank": 221,
+      "rarity_score": 8.1,
+      "occurrences": 388866,
+      "probability": 0.01294917313182938,
+      "one_in": 77.22500810047677
+    },
+    "YYXXX": {
+      "rarity_rank": 222,
+      "rarity_score": 7.7,
+      "occurrences": 438594,
+      "probability": 0.014605107262094333,
+      "one_in": 68.46919930505206
+    },
+    "XXXYY": {
+      "rarity_rank": 223,
+      "rarity_score": 7.3,
+      "occurrences": 472479,
+      "probability": 0.015733472127040196,
+      "one_in": 63.55876134177392
+    },
+    "XXYYX": {
+      "rarity_rank": 224,
+      "rarity_score": 6.8,
+      "occurrences": 479256,
+      "probability": 0.01595914510002937,
+      "one_in": 62.659997996895186
+    },
+    "XYXYX": {
+      "rarity_rank": 225,
+      "rarity_score": 6.4,
+      "occurrences": 507567,
+      "probability": 0.01690189669192792,
+      "one_in": 59.164957532700114
+    },
+    "XYXXY": {
+      "rarity_rank": 226,
+      "rarity_score": 6,
+      "occurrences": 513616,
+      "probability": 0.017103327385983035,
+      "one_in": 58.468155197657396
+    },
+    "XYYXX": {
+      "rarity_rank": 227,
+      "rarity_score": 5.6,
+      "occurrences": 616252,
+      "probability": 0.020521089117680948,
+      "one_in": 48.730357061721506
+    },
+    "GXXXX": {
+      "rarity_rank": 228,
+      "rarity_score": 5.2,
+      "occurrences": 617774,
+      "probability": 0.020571771464573306,
+      "one_in": 48.610300854357746
+    },
+    "XXGXX": {
+      "rarity_rank": 229,
+      "rarity_score": 4.8,
+      "occurrences": 653281,
+      "probability": 0.02175414865978159,
+      "one_in": 45.968243374596845
+    },
+    "XXXGX": {
+      "rarity_rank": 230,
+      "rarity_score": 4.3,
+      "occurrences": 722992,
+      "probability": 0.024075513366886247,
+      "one_in": 41.535978268085955
+    },
+    "XXXXG": {
+      "rarity_rank": 231,
+      "rarity_score": 3.9,
+      "occurrences": 734699,
+      "probability": 0.024465354520019526,
+      "one_in": 40.87412668317229
+    },
+    "XGXXX": {
+      "rarity_rank": 232,
+      "rarity_score": 3.5,
+      "occurrences": 1100211,
+      "probability": 0.03663684333560438,
+      "one_in": 27.294927972907015
+    },
+    "YXXXX": {
+      "rarity_rank": 233,
+      "rarity_score": 3.1,
+      "occurrences": 1423426,
+      "probability": 0.04739984908515367,
+      "one_in": 21.09711358370579
+    },
+    "XXXXY": {
+      "rarity_rank": 234,
+      "rarity_score": 2.7,
+      "occurrences": 1820602,
+      "probability": 0.06062574383503529,
+      "one_in": 16.49464298072835
+    },
+    "XXXYX": {
+      "rarity_rank": 235,
+      "rarity_score": 2.3,
+      "occurrences": 1834374,
+      "probability": 0.06108434914476037,
+      "one_in": 16.37080551730454
+    },
+    "XXYXX": {
+      "rarity_rank": 236,
+      "rarity_score": 1.8,
+      "occurrences": 1859378,
+      "probability": 0.06191697818661094,
+      "one_in": 16.150658983810715
+    },
+    "XYXXX": {
+      "rarity_rank": 237,
+      "rarity_score": 1.4,
+      "occurrences": 2255968,
+      "probability": 0.07512335923394399,
+      "one_in": 13.311438814734961
+    },
+    "XXXXX": {
+      "rarity_rank": 238,
+      "rarity_score": 1,
+      "occurrences": 6712224,
+      "probability": 0.22351594296138086,
+      "one_in": 4.4739537893848595
+    }
+  }
+}
