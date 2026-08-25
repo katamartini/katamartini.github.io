@@ -1,0 +1,2229 @@
+{
+  "schema_version": 2,
+  "model": "full-game-information-ensemble-v1",
+  "description": "Complete six-turn Wordle games played by an ensemble of greedy information-seeking solvers. A small mechanics prior gives never-generated patterns finite estimates.",
+  "guess_count": 12972,
+  "answer_count": 2315,
+  "max_turns": 6,
+  "simulated_games": 11575,
+  "simulated_rows": 40797,
+  "solved_games": 11550,
+  "failed_games": 25,
+  "average_rows_per_game": 3.5245788336933046,
+  "smoothing": {
+    "prior_weight_rows": 238,
+    "prior_model": "half-uniform-patterns-half-uniform-original-valid-guess-answer-pairs",
+    "uniform_pattern_share": 0.5,
+    "mechanics_pair_count": 30030180
+  },
+  "strategies": [
+    {
+      "id": "entropy-unrestricted-best",
+      "objective": "entropy",
+      "guess_pool": "all_words",
+      "opening_word": "soare",
+      "opening_rank": 1,
+      "games": 2315,
+      "simulated_rows": 8020,
+      "solved_games": 2315,
+      "failed_games": 0,
+      "average_rows": 3.464362850971922
+    },
+    {
+      "id": "entropy-unrestricted-runner-up",
+      "objective": "entropy",
+      "guess_pool": "all_words",
+      "opening_word": "roate",
+      "opening_rank": 2,
+      "games": 2315,
+      "simulated_rows": 8025,
+      "solved_games": 2315,
+      "failed_games": 0,
+      "average_rows": 3.466522678185745
+    },
+    {
+      "id": "remaining-unrestricted",
+      "objective": "expected_remaining",
+      "guess_pool": "all_words",
+      "opening_word": "roate",
+      "opening_rank": 1,
+      "games": 2315,
+      "simulated_rows": 8059,
+      "solved_games": 2315,
+      "failed_games": 0,
+      "average_rows": 3.4812095032397408
+    },
+    {
+      "id": "entropy-candidate-only",
+      "objective": "entropy",
+      "guess_pool": "remaining_answers",
+      "opening_word": "raise",
+      "opening_rank": 1,
+      "games": 2315,
+      "simulated_rows": 8319,
+      "solved_games": 2304,
+      "failed_games": 11,
+      "average_rows": 3.5935205183585315
+    },
+    {
+      "id": "remaining-candidate-only",
+      "objective": "expected_remaining",
+      "guess_pool": "remaining_answers",
+      "opening_word": "raise",
+      "opening_rank": 1,
+      "games": 2315,
+      "simulated_rows": 8374,
+      "solved_games": 2301,
+      "failed_games": 14,
+      "average_rows": 3.6172786177105833
+    }
+  ],
+  "source_urls": {
+    "answers": "https://gist.githubusercontent.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b/raw/5d752e5f0702da315298a6bb5a771586d6ff445c/wordle-answers-alphabetical.txt",
+    "extra_guesses": "https://gist.githubusercontent.com/cfreshman/cdcdf777450c5b5301e439061d29694c/raw/de1df631b45492e0974f7affe266ec36fed736eb/wordle-allowed-guesses.txt"
+  },
+  "patterns": {
+    "YGYYG": {
+      "rarity_rank": 1,
+      "rarity_score": 100,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012186168885174984,
+      "one_in": 82060.24464477465,
+      "mechanics_probability": 4.994975055094575e-7
+    },
+    "YYGYG": {
+      "rarity_rank": 2,
+      "rarity_score": 99.6,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012186844863278377,
+      "one_in": 82055.6929392954,
+      "mechanics_probability": 7.325963414138709e-7
+    },
+    "YGGYY": {
+      "rarity_rank": 3,
+      "rarity_score": 99.2,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012188003682884192,
+      "one_in": 82047.89119027884,
+      "mechanics_probability": 0.000001132194345821437
+    },
+    "YGGGY": {
+      "rarity_rank": 4,
+      "rarity_score": 98.7,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.00001218867966098758,
+      "one_in": 82043.34085509765,
+      "mechanics_probability": 0.0000013652931817258505
+    },
+    "YYGGY": {
+      "rarity_rank": 5,
+      "rarity_score": 98.3,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.00001218916250249,
+      "one_in": 82040.09092468167,
+      "mechanics_probability": 0.0000015317923502290029
+    },
+    "GGGYY": {
+      "rarity_rank": 6,
+      "rarity_score": 97.9,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012192832097908407,
+      "one_in": 82015.39986526534,
+      "mechanics_probability": 0.0000027971860308529618
+    },
+    "YYYGY": {
+      "rarity_rank": 7,
+      "rarity_score": 97.5,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012199012469139407,
+      "one_in": 81973.8485004226,
+      "mechanics_probability": 0.000004928375387693314
+    },
+    "YYGYY": {
+      "rarity_rank": 8,
+      "rarity_score": 97.1,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012201523244951999,
+      "one_in": 81956.98028225443,
+      "mechanics_probability": 0.000005794171063909707
+    },
+    "GYYYY": {
+      "rarity_rank": 9,
+      "rarity_score": 96.7,
+      "simulated_occurrences": 0,
+      "simulated_probability": 0,
+      "smoothed_probability": 0.000012211856053103821,
+      "one_in": 81887.63408702606,
+      "mechanics_probability": 0.00000935725326987717
+    },
+    "YGYGY": {
+      "rarity_rank": 10,
+      "rarity_score": 96.2,
+      "simulated_occurrences": 1,
+      "simulated_probability": 0.00002451160624555727,
+      "smoothed_probability": 0.00003655860322382545,
+      "one_in": 27353.34262848134,
+      "mechanics_probability": 0.0000015317923502290029
+    },
+    "GYYGY": {
+      "rarity_rank": 11,
+      "rarity_score": 95.8,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.00006092698169385557,
+      "one_in": 16413.089442453853,
+      "mechanics_probability": 0.0000011654941795220675
+    },
+    "GYYYG": {
+      "rarity_rank": 12,
+      "rarity_score": 95.4,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.00006092794737686041,
+      "one_in": 16412.829301710335,
+      "mechanics_probability": 0.0000014984925165283725
+    },
+    "GYYGG": {
+      "rarity_rank": 13,
+      "rarity_score": 95,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.000060928816491564765,
+      "one_in": 16412.595182091616,
+      "mechanics_probability": 0.000001798191019834047
+    },
+    "GGYYY": {
+      "rarity_rank": 14,
+      "rarity_score": 94.6,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.00006093451402129334,
+      "one_in": 16411.060563321367,
+      "mechanics_probability": 0.0000037628812081712464
+    },
+    "YGYYY": {
+      "rarity_rank": 15,
+      "rarity_score": 94.2,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.00006093605911410109,
+      "one_in": 16410.644444983347,
+      "mechanics_probability": 0.000004295678547381335
+    },
+    "YYGGX": {
+      "rarity_rank": 16,
+      "rarity_score": 93.7,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.00006097623152710258,
+      "one_in": 16399.83277017574,
+      "mechanics_probability": 0.000018148409366843622
+    },
+    "YYYYY": {
+      "rarity_rank": 17,
+      "rarity_score": 93.3,
+      "simulated_occurrences": 2,
+      "simulated_probability": 0.00004902321249111454,
+      "smoothed_probability": 0.000061002208399932866,
+      "one_in": 16392.849148082652,
+      "mechanics_probability": 0.000027106064632313225
+    },
+    "GYGYY": {
+      "rarity_rank": 18,
+      "rarity_score": 92.9,
+      "simulated_occurrences": 3,
+      "simulated_probability": 0.00007353481873667182,
+      "smoothed_probability": 0.00008529613271028955,
+      "one_in": 11723.860956234968,
+      "mechanics_probability": 0.000001065594678420176
+    },
+    "GGYGY": {
+      "rarity_rank": 19,
+      "rarity_score": 92.5,
+      "simulated_occurrences": 3,
+      "simulated_probability": 0.00007353481873667182,
+      "smoothed_probability": 0.00008529700182499391,
+      "one_in": 11723.741498578416,
+      "mechanics_probability": 0.0000013652931817258505
+    },
+    "YYYYG": {
+      "rarity_rank": 20,
+      "rarity_score": 92.1,
+      "simulated_occurrences": 3,
+      "simulated_probability": 0.00007353481873667182,
+      "smoothed_probability": 0.00008531013511385979,
+      "one_in": 11721.936656944017,
+      "mechanics_probability": 0.000005894070565011598
+    },
+    "GYYGX": {
+      "rarity_rank": 21,
+      "rarity_score": 91.6,
+      "simulated_occurrences": 3,
+      "simulated_probability": 0.00007353481873667182,
+      "smoothed_probability": 0.00008538816230065113,
+      "one_in": 11711.225222051353,
+      "mechanics_probability": 0.00003280033619512104
+    },
+    "YGGXY": {
+      "rarity_rank": 22,
+      "rarity_score": 91.2,
+      "simulated_occurrences": 3,
+      "simulated_probability": 0.00007353481873667182,
+      "smoothed_probability": 0.0000853927010107739,
+      "one_in": 11710.602758353214,
+      "mechanics_probability": 0.00003436542837905068
+    },
+    "YGGYG": {
+      "rarity_rank": 23,
+      "rarity_score": 90.8,
+      "simulated_occurrences": 4,
+      "simulated_probability": 0.00009804642498222908,
+      "smoothed_probability": 0.00010966673225123082,
+      "one_in": 9118.535580226306,
+      "mechanics_probability": 0.0000014651926828277419
+    },
+    "GGYXY": {
+      "rarity_rank": 24,
+      "rarity_score": 90.4,
+      "simulated_occurrences": 4,
+      "simulated_probability": 0.00009804642498222908,
+      "smoothed_probability": 0.00010979149849545658,
+      "one_in": 9108.173344053432,
+      "mechanics_probability": 0.00004448857782404235
+    },
+    "YYGGG": {
+      "rarity_rank": 25,
+      "rarity_score": 90,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.00013403482101635947,
+      "one_in": 7460.747829684841,
+      "mechanics_probability": 9.98995011018915e-7
+    },
+    "GYGGY": {
+      "rarity_rank": 26,
+      "rarity_score": 89.6,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.0001340357866993643,
+      "one_in": 7460.694077492535,
+      "mechanics_probability": 0.00000133199334802522
+    },
+    "GXYGY": {
+      "rarity_rank": 27,
+      "rarity_score": 89.1,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.00013410058402898932,
+      "one_in": 7457.089074152161,
+      "mechanics_probability": 0.000023676181761148286
+    },
+    "YXGGY": {
+      "rarity_rank": 28,
+      "rarity_score": 88.7,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.00013411381388615568,
+      "one_in": 7456.35345848015,
+      "mechanics_probability": 0.000028238258978134663
+    },
+    "YGXGY": {
+      "rarity_rank": 29,
+      "rarity_score": 88.3,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.0001341252089456128,
+      "one_in": 7455.719978825872,
+      "mechanics_probability": 0.000032167639354809064
+    },
+    "YGYYX": {
+      "rarity_rank": 30,
+      "rarity_score": 87.9,
+      "simulated_occurrences": 5,
+      "simulated_probability": 0.00012255803122778635,
+      "smoothed_probability": 0.00013424929921173522,
+      "one_in": 7448.828454760279,
+      "mechanics_probability": 0.00007495792566011926
+    },
+    "YYYGG": {
+      "rarity_rank": 31,
+      "rarity_score": 87.5,
+      "simulated_occurrences": 6,
+      "simulated_probability": 0.00014706963747334364,
+      "smoothed_probability": 0.0001584062896720051,
+      "one_in": 6312.880644263512,
+      "mechanics_probability": 0.0000016982915187321554
+    },
+    "YGYGG": {
+      "rarity_rank": 32,
+      "rarity_score": 87.1,
+      "simulated_occurrences": 6,
+      "simulated_probability": 0.00014706963747334364,
+      "smoothed_probability": 0.00015840735192331043,
+      "one_in": 6312.838311217581,
+      "mechanics_probability": 0.0000020645896894390907
+    },
+    "GXYYG": {
+      "rarity_rank": 33,
+      "rarity_score": 86.6,
+      "simulated_occurrences": 6,
+      "simulated_probability": 0.00014706963747334364,
+      "smoothed_probability": 0.0001584723423895364,
+      "one_in": 6310.249378039281,
+      "mechanics_probability": 0.000024475377769963418
+    },
+    "GYXYG": {
+      "rarity_rank": 34,
+      "rarity_score": 86.2,
+      "simulated_occurrences": 7,
+      "simulated_probability": 0.0001715812437189009,
+      "smoothed_probability": 0.00018285443355823527,
+      "one_in": 5468.831028816816,
+      "mechanics_probability": 0.000028837655984746014
+    },
+    "GYYXY": {
+      "rarity_rank": 35,
+      "rarity_score": 85.8,
+      "simulated_occurrences": 7,
+      "simulated_probability": 0.0001715812437189009,
+      "smoothed_probability": 0.00018302651826969838,
+      "one_in": 5463.689138895446,
+      "mechanics_probability": 0.00008817795963926956
+    },
+    "XGYYY": {
+      "rarity_rank": 36,
+      "rarity_score": 85.4,
+      "simulated_occurrences": 7,
+      "simulated_probability": 0.0001715812437189009,
+      "smoothed_probability": 0.0001831158439476464,
+      "one_in": 5461.023898543177,
+      "mechanics_probability": 0.00011898030581235278
+    },
+    "XGGYY": {
+      "rarity_rank": 37,
+      "rarity_score": 85,
+      "simulated_occurrences": 8,
+      "simulated_probability": 0.00019609284996445817,
+      "smoothed_probability": 0.0002072838431941715,
+      "one_in": 4824.3026788308725,
+      "mechanics_probability": 0.000049516852712837554
+    },
+    "GGYYG": {
+      "rarity_rank": 38,
+      "rarity_score": 84.5,
+      "simulated_occurrences": 9,
+      "simulated_probability": 0.00022060445621001543,
+      "smoothed_probability": 0.000231514128994509,
+      "one_in": 4319.39080497207,
+      "mechanics_probability": 0.0000015317923502290029
+    },
+    "GYXGY": {
+      "rarity_rank": 39,
+      "rarity_score": 84.1,
+      "simulated_occurrences": 9,
+      "simulated_probability": 0.00022060445621001543,
+      "smoothed_probability": 0.00023156222000815022,
+      "one_in": 4318.493750685251,
+      "mechanics_probability": 0.00001811510953314299
+    },
+    "GYYXG": {
+      "rarity_rank": 40,
+      "rarity_score": 83.7,
+      "simulated_occurrences": 9,
+      "simulated_probability": 0.00022060445621001543,
+      "smoothed_probability": 0.00023161533257341657,
+      "one_in": 4317.5034609724025,
+      "mechanics_probability": 0.00003643001806848977
+    },
+    "YGYGX": {
+      "rarity_rank": 40,
+      "rarity_score": 83.7,
+      "simulated_occurrences": 9,
+      "simulated_probability": 0.00022060445621001543,
+      "smoothed_probability": 0.00023161533257341657,
+      "one_in": 4317.5034609724025,
+      "mechanics_probability": 0.00003643001806848977
+    },
+    "XYGYY": {
+      "rarity_rank": 42,
+      "rarity_score": 82.9,
+      "simulated_occurrences": 9,
+      "simulated_probability": 0.00022060445621001543,
+      "smoothed_probability": 0.0002318176431629313,
+      "one_in": 4313.735513638871,
+      "mechanics_probability": 0.00010619316967131066
+    },
+    "GYGXY": {
+      "rarity_rank": 43,
+      "rarity_score": 82.5,
+      "simulated_occurrences": 10,
+      "simulated_probability": 0.0002451160624555727,
+      "smoothed_probability": 0.00025595879642192177,
+      "one_in": 3906.878817915688,
+      "mechanics_probability": 0.00002747236280302016
+    },
+    "GGYXG": {
+      "rarity_rank": 44,
+      "rarity_score": 82,
+      "simulated_occurrences": 11,
+      "simulated_probability": 0.00026962766870113,
+      "smoothed_probability": 0.00028029096177927025,
+      "one_in": 3567.7211767802282,
+      "mechanics_probability": 0.000014618626994576788
+    },
+    "YGGYX": {
+      "rarity_rank": 45,
+      "rarity_score": 81.6,
+      "simulated_occurrences": 11,
+      "simulated_probability": 0.00026962766870113,
+      "smoothed_probability": 0.0002803416601370245,
+      "one_in": 3567.075972622917,
+      "mechanics_probability": 0.0000321010396874078
+    },
+    "XYGGY": {
+      "rarity_rank": 46,
+      "rarity_score": 81.2,
+      "simulated_occurrences": 11,
+      "simulated_probability": 0.00026962766870113,
+      "smoothed_probability": 0.00028034310866153177,
+      "one_in": 3567.0575416474235,
+      "mechanics_probability": 0.00003260053719291726
+    },
+    "GYGYG": {
+      "rarity_rank": 47,
+      "rarity_score": 80.8,
+      "simulated_occurrences": 12,
+      "simulated_probability": 0.0002941392749466873,
+      "smoothed_probability": 0.00030462245115851533,
+      "one_in": 3282.7521287314225,
+      "mechanics_probability": 0.0000015317923502290029
+    },
+    "GXGYY": {
+      "rarity_rank": 48,
+      "rarity_score": 80.4,
+      "simulated_occurrences": 12,
+      "simulated_probability": 0.0002941392749466873,
+      "smoothed_probability": 0.0003046916906299626,
+      "one_in": 3282.006141790276,
+      "mechanics_probability": 0.00002540777311358107
+    },
+    "GYGYX": {
+      "rarity_rank": 49,
+      "rarity_score": 79.9,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.0003291018831741025,
+      "one_in": 3038.5727068932542,
+      "mechanics_probability": 0.000039460302935247144
+    },
+    "GGYYX": {
+      "rarity_rank": 50,
+      "rarity_score": 79.5,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.00032916552168412165,
+      "one_in": 3037.9852509572183,
+      "mechanics_probability": 0.00006140489334396264
+    },
+    "YGYXY": {
+      "rarity_rank": 51,
+      "rarity_score": 79.1,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.00032918396622951413,
+      "one_in": 3037.815029249567,
+      "mechanics_probability": 0.00006776516158078307
+    },
+    "YYGYX": {
+      "rarity_rank": 52,
+      "rarity_score": 78.7,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.0003291933333546611,
+      "one_in": 3037.7285888795195,
+      "mechanics_probability": 0.00007099524544974422
+    },
+    "YYXGY": {
+      "rarity_rank": 53,
+      "rarity_score": 78.3,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.0003292283876477369,
+      "one_in": 3037.4051494914397,
+      "mechanics_probability": 0.00008308308508307309
+    },
+    "GYXYY": {
+      "rarity_rank": 54,
+      "rarity_score": 77.9,
+      "simulated_occurrences": 13,
+      "simulated_probability": 0.0003186508811922445,
+      "smoothed_probability": 0.0003292730022025607,
+      "one_in": 3036.993598961461,
+      "mechanics_probability": 0.00009846760825276439
+    },
+    "YXGYY": {
+      "rarity_rank": 55,
+      "rarity_score": 77.4,
+      "simulated_occurrences": 14,
+      "simulated_probability": 0.0003431624874378018,
+      "smoothed_probability": 0.00035355495204365735,
+      "one_in": 2828.4146331982897,
+      "mechanics_probability": 0.00006829795891999315
+    },
+    "YYGXY": {
+      "rarity_rank": 56,
+      "rarity_score": 77,
+      "simulated_occurrences": 14,
+      "simulated_probability": 0.0003431624874378018,
+      "smoothed_probability": 0.0003535884612439254,
+      "one_in": 2828.1465873688203,
+      "mechanics_probability": 0.00007985300121411194
+    },
+    "GGXGY": {
+      "rarity_rank": 57,
+      "rarity_score": 76.6,
+      "simulated_occurrences": 15,
+      "simulated_probability": 0.00036767409368335905,
+      "smoothed_probability": 0.0003777879417564084,
+      "one_in": 2646.9876072560937,
+      "mechanics_probability": 0.000021245293901002257
+    },
+    "GGYGX": {
+      "rarity_rank": 58,
+      "rarity_score": 76.2,
+      "simulated_occurrences": 15,
+      "simulated_probability": 0.00036767409368335905,
+      "smoothed_probability": 0.0003777891005760142,
+      "one_in": 2646.979487961146,
+      "mechanics_probability": 0.000021644891905409823
+    },
+    "YXYGY": {
+      "rarity_rank": 59,
+      "rarity_score": 75.8,
+      "simulated_occurrences": 15,
+      "simulated_probability": 0.00036767409368335905,
+      "smoothed_probability": 0.0003778852826032966,
+      "one_in": 2646.305760073219,
+      "mechanics_probability": 0.0000548115262712378
+    },
+    "YGXYY": {
+      "rarity_rank": 60,
+      "rarity_score": 75.4,
+      "simulated_occurrences": 15,
+      "simulated_probability": 0.00036767409368335905,
+      "smoothed_probability": 0.00037794834170351295,
+      "one_in": 2645.86423502412,
+      "mechanics_probability": 0.00007655631767774952
+    },
+    "GGXYY": {
+      "rarity_rank": 61,
+      "rarity_score": 74.9,
+      "simulated_occurrences": 16,
+      "simulated_probability": 0.00039218569992891634,
+      "smoothed_probability": 0.0004022831144049745,
+      "one_in": 2485.811519777859,
+      "mechanics_probability": 0.00006460167737922317
+    },
+    "GGXYG": {
+      "rarity_rank": 62,
+      "rarity_score": 74.5,
+      "simulated_occurrences": 18,
+      "simulated_probability": 0.00044120891242003087,
+      "smoothed_probability": 0.00045088158553874117,
+      "one_in": 2217.8772255804997,
+      "mechanics_probability": 0.00001618371917850642
+    },
+    "YYGXG": {
+      "rarity_rank": 63,
+      "rarity_score": 74.1,
+      "simulated_occurrences": 18,
+      "simulated_probability": 0.00044120891242003087,
+      "smoothed_probability": 0.0004508940428495036,
+      "one_in": 2217.815950018602,
+      "mechanics_probability": 0.00002047939772588776
+    },
+    "YYYXY": {
+      "rarity_rank": 64,
+      "rarity_score": 73.7,
+      "simulated_occurrences": 18,
+      "simulated_probability": 0.00044120891242003087,
+      "smoothed_probability": 0.0004518122142505088,
+      "one_in": 2213.308911222897,
+      "mechanics_probability": 0.00033709421655148255
+    },
+    "GYXGG": {
+      "rarity_rank": 65,
+      "rarity_score": 73.3,
+      "simulated_occurrences": 19,
+      "simulated_probability": 0.00046572051866558816,
+      "smoothed_probability": 0.00047525865515581485,
+      "one_in": 2104.1173877667675,
+      "mechanics_probability": 0.00001881440604085623
+    },
+    "XGYYG": {
+      "rarity_rank": 66,
+      "rarity_score": 72.8,
+      "simulated_occurrences": 19,
+      "simulated_probability": 0.00046572051866558816,
+      "smoothed_probability": 0.00047527111246657727,
+      "one_in": 2104.062236836083,
+      "mechanics_probability": 0.000023110084588237565
+    },
+    "YXYGG": {
+      "rarity_rank": 67,
+      "rarity_score": 72.4,
+      "simulated_occurrences": 19,
+      "simulated_probability": 0.00046572051866558816,
+      "smoothed_probability": 0.00047529235749268383,
+      "one_in": 2103.968187654675,
+      "mechanics_probability": 0.000030436048002376276
+    },
+    "GXYGG": {
+      "rarity_rank": 68,
+      "rarity_score": 72,
+      "simulated_occurrences": 20,
+      "simulated_probability": 0.0004902321249111454,
+      "smoothed_probability": 0.0004996210463912149,
+      "one_in": 2001.5169641532211,
+      "mechanics_probability": 0.000016383518180710206
+    },
+    "XYGYG": {
+      "rarity_rank": 69,
+      "rarity_score": 71.6,
+      "simulated_occurrences": 21,
+      "simulated_probability": 0.0005147437311567027,
+      "smoothed_probability": 0.0005240386746944921,
+      "one_in": 1908.2561045384432,
+      "mechanics_probability": 0.00003300013519732483
+    },
+    "GGGXY": {
+      "rarity_rank": 70,
+      "rarity_score": 71.2,
+      "simulated_occurrences": 21,
+      "simulated_probability": 0.0005147437311567027,
+      "smoothed_probability": 0.0005240744049656713,
+      "one_in": 1908.1260037217494,
+      "mechanics_probability": 0.00004532107366655811
+    },
+    "GYGGX": {
+      "rarity_rank": 71,
+      "rarity_score": 70.8,
+      "simulated_occurrences": 22,
+      "simulated_probability": 0.00053925533740226,
+      "smoothed_probability": 0.0005483629214512009,
+      "one_in": 1823.609804531597,
+      "mechanics_probability": 0.00001741581302542975
+    },
+    "GGGYX": {
+      "rarity_rank": 72,
+      "rarity_score": 70.3,
+      "simulated_occurrences": 22,
+      "simulated_probability": 0.00053925533740226,
+      "smoothed_probability": 0.0005484211521363929,
+      "one_in": 1823.4161758795528,
+      "mechanics_probability": 0.00003749561274690994
+    },
+    "GYYYX": {
+      "rarity_rank": 73,
+      "rarity_score": 69.9,
+      "simulated_occurrences": 22,
+      "simulated_probability": 0.00053925533740226,
+      "smoothed_probability": 0.0005487283359002336,
+      "one_in": 1822.395408757994,
+      "mechanics_probability": 0.00014342238374861555
+    },
+    "GXXYG": {
+      "rarity_rank": 74,
+      "rarity_score": 69.5,
+      "simulated_occurrences": 22,
+      "simulated_probability": 0.00053925533740226,
+      "smoothed_probability": 0.0005489978580268854,
+      "one_in": 1821.5007315220312,
+      "mechanics_probability": 0.00023636221960707528
+    },
+    "YYXGG": {
+      "rarity_rank": 75,
+      "rarity_score": 69.1,
+      "simulated_occurrences": 23,
+      "simulated_probability": 0.0005637669436478173,
+      "smoothed_probability": 0.0005728179216867654,
+      "one_in": 1745.7554349125812,
+      "mechanics_probability": 0.00004691946568418837
+    },
+    "GXXGY": {
+      "rarity_rank": 76,
+      "rarity_score": 68.7,
+      "simulated_occurrences": 23,
+      "simulated_probability": 0.0005637669436478173,
+      "smoothed_probability": 0.0005732907200859367,
+      "one_in": 1744.3156935282318,
+      "mechanics_probability": 0.0002099554514824753
+    },
+    "YXGGG": {
+      "rarity_rank": 77,
+      "rarity_score": 68.3,
+      "simulated_occurrences": 24,
+      "simulated_probability": 0.0005882785498933746,
+      "smoothed_probability": 0.0005971039273964824,
+      "one_in": 1674.7503309185086,
+      "mechanics_probability": 0.000018148409366843622
+    },
+    "YGGGX": {
+      "rarity_rank": 78,
+      "rarity_score": 67.8,
+      "simulated_occurrences": 24,
+      "simulated_probability": 0.0005882785498933746,
+      "smoothed_probability": 0.00059712140625887,
+      "one_in": 1674.7013078383427,
+      "mechanics_probability": 0.00002417567926665774
+    },
+    "YXYYG": {
+      "rarity_rank": 79,
+      "rarity_score": 67.4,
+      "simulated_occurrences": 24,
+      "simulated_probability": 0.0005882785498933746,
+      "smoothed_probability": 0.0005972398955635643,
+      "one_in": 1674.3690557650796,
+      "mechanics_probability": 0.00006503457521733137
+    },
+    "YYYXG": {
+      "rarity_rank": 80,
+      "rarity_score": 67,
+      "simulated_occurrences": 24,
+      "simulated_probability": 0.0005882785498933746,
+      "smoothed_probability": 0.0005973130943353315,
+      "one_in": 1674.1638672977094,
+      "mechanics_probability": 0.00009027584916240928
+    },
+    "XYGGG": {
+      "rarity_rank": 81,
+      "rarity_score": 66.6,
+      "simulated_occurrences": 25,
+      "simulated_probability": 0.0006127901561389317,
+      "smoothed_probability": 0.0006214754926204285,
+      "one_in": 1609.0739085841292,
+      "mechanics_probability": 0.000018881005708257493
+    },
+    "YGXYG": {
+      "rarity_rank": 82,
+      "rarity_score": 66.2,
+      "simulated_occurrences": 25,
+      "simulated_probability": 0.0006127901561389317,
+      "smoothed_probability": 0.0006214873705213881,
+      "one_in": 1609.0431558746948,
+      "mechanics_probability": 0.000022976885253435045
+    },
+    "XYYGG": {
+      "rarity_rank": 83,
+      "rarity_score": 65.7,
+      "simulated_occurrences": 26,
+      "simulated_probability": 0.000637301762384489,
+      "smoothed_probability": 0.0006459303962876925,
+      "one_in": 1548.154423057384,
+      "mechanics_probability": 0.00004835135853331548
+    },
+    "YYXYG": {
+      "rarity_rank": 84,
+      "rarity_score": 65.3,
+      "simulated_occurrences": 26,
+      "simulated_probability": 0.000637301762384489,
+      "smoothed_probability": 0.0006460210739218474,
+      "one_in": 1547.9371190311592,
+      "mechanics_probability": 0.00007961990237820753
+    },
+    "GXYYY": {
+      "rarity_rank": 85,
+      "rarity_score": 64.9,
+      "simulated_occurrences": 26,
+      "simulated_probability": 0.000637301762384489,
+      "smoothed_probability": 0.0006460525551878053,
+      "one_in": 1547.8616901519774,
+      "mechanics_probability": 0.00009047564816461306
+    },
+    "YXGYG": {
+      "rarity_rank": 86,
+      "rarity_score": 64.5,
+      "simulated_occurrences": 27,
+      "simulated_probability": 0.0006618133686300463,
+      "smoothed_probability": 0.000670244986214353,
+      "one_in": 1491.9917650531847,
+      "mechanics_probability": 0.00002943705299135736
+    },
+    "XGYGY": {
+      "rarity_rank": 87,
+      "rarity_score": 64.1,
+      "simulated_occurrences": 28,
+      "simulated_probability": 0.0006863249748756036,
+      "smoothed_probability": 0.0006946446528137399,
+      "one_in": 1439.5849675792972,
+      "mechanics_probability": 0.00003985990093965471
+    },
+    "GYGXG": {
+      "rarity_rank": 88,
+      "rarity_score": 63.7,
+      "simulated_occurrences": 29,
+      "simulated_probability": 0.0007108365811211609,
+      "smoothed_probability": 0.0007189375148727913,
+      "one_in": 1390.9414647487686,
+      "mechanics_probability": 0.000013453132815054722
+    },
+    "YGYXG": {
+      "rarity_rank": 89,
+      "rarity_score": 63.2,
+      "simulated_occurrences": 30,
+      "simulated_probability": 0.0007353481873667181,
+      "smoothed_probability": 0.0007433555294492704,
+      "one_in": 1345.2513102860346,
+      "mechanics_probability": 0.000030202949166471863
+    },
+    "GYXGX": {
+      "rarity_rank": 90,
+      "rarity_score": 62.8,
+      "simulated_occurrences": 30,
+      "simulated_probability": 0.0007353481873667181,
+      "smoothed_probability": 0.0007440081380239436,
+      "one_in": 1344.0713197787873,
+      "mechanics_probability": 0.0002552432253153328
+    },
+    "YYYGX": {
+      "rarity_rank": 91,
+      "rarity_score": 62.4,
+      "simulated_occurrences": 32,
+      "simulated_probability": 0.0007843713998578327,
+      "smoothed_probability": 0.0007922169560652559,
+      "one_in": 1262.2804805475896,
+      "mechanics_probability": 0.00007246043813257196
+    },
+    "XGYXY": {
+      "rarity_rank": 92,
+      "rarity_score": 62,
+      "simulated_occurrences": 33,
+      "simulated_probability": 0.00080888300610339,
+      "smoothed_probability": 0.0008190096817189455,
+      "one_in": 1220.986787239426,
+      "mechanics_probability": 0.0009080864650161937
+    },
+    "YGGXG": {
+      "rarity_rank": 93,
+      "rarity_score": 61.6,
+      "simulated_occurrences": 34,
+      "simulated_probability": 0.0008333946123489473,
+      "smoothed_probability": 0.0008408118541719047,
+      "one_in": 1189.3267144584634,
+      "mechanics_probability": 0.00002281038608493189
+    },
+    "YYYYX": {
+      "rarity_rank": 94,
+      "rarity_score": 61.2,
+      "simulated_occurrences": 34,
+      "simulated_probability": 0.0008333946123489473,
+      "smoothed_probability": 0.0008419782061051546,
+      "one_in": 1187.6791973343668,
+      "mechanics_probability": 0.0004250057775211471
+    },
+    "GXGGY": {
+      "rarity_rank": 95,
+      "rarity_score": 60.7,
+      "simulated_occurrences": 35,
+      "simulated_probability": 0.0008579062185945044,
+      "smoothed_probability": 0.0008651539660642029,
+      "one_in": 1155.8636256957182,
+      "mechanics_probability": 0.00001338653314765346
+    },
+    "GXYXG": {
+      "rarity_rank": 96,
+      "rarity_score": 60.3,
+      "simulated_occurrences": 38,
+      "simulated_probability": 0.0009314410373311763,
+      "smoothed_probability": 0.0009389032120385238,
+      "one_in": 1065.0725092619764,
+      "mechanics_probability": 0.00023439752941873808
+    },
+    "XGYGX": {
+      "rarity_rank": 97,
+      "rarity_score": 59.9,
+      "simulated_occurrences": 38,
+      "simulated_probability": 0.0009314410373311763,
+      "smoothed_probability": 0.00093941483089449,
+      "one_in": 1064.4924554233642,
+      "mechanics_probability": 0.0004108200483646785
+    },
+    "XYYGY": {
+      "rarity_rank": 98,
+      "rarity_score": 59.5,
+      "simulated_occurrences": 39,
+      "simulated_probability": 0.0009559526435767336,
+      "smoothed_probability": 0.0009628683212857314,
+      "one_in": 1038.5636103020672,
+      "mechanics_probability": 0.00009497112571419819
+    },
+    "XYYYG": {
+      "rarity_rank": 99,
+      "rarity_score": 59.1,
+      "simulated_occurrences": 39,
+      "simulated_probability": 0.0009559526435767336,
+      "smoothed_probability": 0.0009628699629468395,
+      "one_in": 1038.56183958582,
+      "mechanics_probability": 0.0000955372228871089
+    },
+    "GXYGX": {
+      "rarity_rank": 100,
+      "rarity_score": 58.6,
+      "simulated_occurrences": 39,
+      "simulated_probability": 0.0009559526435767336,
+      "smoothed_probability": 0.0009633293383522436,
+      "one_in": 1038.0665886398526,
+      "mechanics_probability": 0.0002539445318010082
+    },
+    "GYXXY": {
+      "rarity_rank": 101,
+      "rarity_score": 58.2,
+      "simulated_occurrences": 39,
+      "simulated_probability": 0.0009559526435767336,
+      "smoothed_probability": 0.0009645837605755353,
+      "one_in": 1036.7166034428499,
+      "mechanics_probability": 0.0006865093715721983
+    },
+    "GYXXG": {
+      "rarity_rank": 102,
+      "rarity_score": 57.8,
+      "simulated_occurrences": 40,
+      "simulated_probability": 0.0009804642498222908,
+      "smoothed_probability": 0.000987786269953818,
+      "one_in": 1012.364749761862,
+      "mechanics_probability": 0.00028411418113377944
+    },
+    "XYGGX": {
+      "rarity_rank": 103,
+      "rarity_score": 57.4,
+      "simulated_occurrences": 41,
+      "simulated_probability": 0.001004975856067848,
+      "smoothed_probability": 0.0010121134137595412,
+      "one_in": 988.0315648475151,
+      "mechanics_probability": 0.00026952885397290324
+    },
+    "XGGGY": {
+      "rarity_rank": 104,
+      "rarity_score": 57,
+      "simulated_occurrences": 42,
+      "simulated_probability": 0.0010294874623134054,
+      "smoothed_probability": 0.00103577568481643,
+      "one_in": 965.4600070837051,
+      "mechanics_probability": 0.000025674171783186114
+    },
+    "GXGYG": {
+      "rarity_rank": 105,
+      "rarity_score": 56.6,
+      "simulated_occurrences": 43,
+      "simulated_probability": 0.0010539990685589627,
+      "smoothed_probability": 0.001060115961911019,
+      "one_in": 943.293032016374,
+      "mechanics_probability": 0.000015617622005595704
+    },
+    "YYXYY": {
+      "rarity_rank": 106,
+      "rarity_score": 56.1,
+      "simulated_occurrences": 43,
+      "simulated_probability": 0.0010539990685589627,
+      "smoothed_probability": 0.0010611340815030255,
+      "one_in": 942.3879766292746,
+      "mechanics_probability": 0.00036669776871134304
+    },
+    "YXXGY": {
+      "rarity_rank": 107,
+      "rarity_score": 55.7,
+      "simulated_occurrences": 43,
+      "simulated_probability": 0.0010539990685589627,
+      "smoothed_probability": 0.0010618880867932072,
+      "one_in": 941.7188237038209,
+      "mechanics_probability": 0.000626702870245866
+    },
+    "YYGXX": {
+      "rarity_rank": 108,
+      "rarity_score": 55.3,
+      "simulated_occurrences": 44,
+      "simulated_probability": 0.00107851067480452,
+      "smoothed_probability": 0.0010860381243358423,
+      "one_in": 920.777988904894,
+      "mechanics_probability": 0.0005510456480780335
+    },
+    "XYYYY": {
+      "rarity_rank": 109,
+      "rarity_score": 54.9,
+      "simulated_occurrences": 47,
+      "simulated_probability": 0.0011520454935411918,
+      "smoothed_probability": 0.0011590698678375646,
+      "one_in": 862.7607599407829,
+      "mechanics_probability": 0.0005246388799534335
+    },
+    "XXYGY": {
+      "rarity_rank": 110,
+      "rarity_score": 54.5,
+      "simulated_occurrences": 47,
+      "simulated_probability": 0.0011520454935411918,
+      "smoothed_probability": 0.0011596192448990199,
+      "one_in": 862.3520214922618,
+      "mechanics_probability": 0.0007140816338763204
+    },
+    "GXXYY": {
+      "rarity_rank": 111,
+      "rarity_score": 54.1,
+      "simulated_occurrences": 47,
+      "simulated_probability": 0.0011520454935411918,
+      "smoothed_probability": 0.0011596207899918277,
+      "one_in": 862.3508724839672,
+      "mechanics_probability": 0.0007146144312155305
+    },
+    "XYGYX": {
+      "rarity_rank": 112,
+      "rarity_score": 53.6,
+      "simulated_occurrences": 48,
+      "simulated_probability": 0.0011765570997867491,
+      "smoothed_probability": 0.0011842864056907487,
+      "one_in": 844.3903393594546,
+      "mechanics_probability": 0.0008167450211753642
+    },
+    "YXYGX": {
+      "rarity_rank": 113,
+      "rarity_score": 53.2,
+      "simulated_occurrences": 49,
+      "simulated_probability": 0.0012010687060323062,
+      "smoothed_probability": 0.0012078129982854566,
+      "one_in": 827.9427373438965,
+      "mechanics_probability": 0.0005261040726362613
+    },
+    "GYXYX": {
+      "rarity_rank": 114,
+      "rarity_score": 52.8,
+      "simulated_occurrences": 49,
+      "simulated_probability": 0.0012010687060323062,
+      "smoothed_probability": 0.001208908469086151,
+      "one_in": 827.1924844367489,
+      "mechanics_probability": 0.0009038573861362136
+    },
+    "GGYXX": {
+      "rarity_rank": 115,
+      "rarity_score": 52.4,
+      "simulated_occurrences": 50,
+      "simulated_probability": 0.0012255803122778635,
+      "smoothed_probability": 0.0012320196248521756,
+      "one_in": 811.6753822975712,
+      "mechanics_probability": 0.00046996055301699825
+    },
+    "GGXYX": {
+      "rarity_rank": 116,
+      "rarity_score": 52,
+      "simulated_occurrences": 52,
+      "simulated_probability": 0.001274603524768978,
+      "smoothed_probability": 0.0012808186683460482,
+      "one_in": 780.7506438763295,
+      "mechanics_probability": 0.0004907063494124911
+    },
+    "GYYXX": {
+      "rarity_rank": 117,
+      "rarity_score": 51.5,
+      "simulated_occurrences": 53,
+      "simulated_probability": 0.0012991151310145354,
+      "smoothed_probability": 0.0013068346951589421,
+      "one_in": 765.2077219134255,
+      "mechanics_probability": 0.0010585018138419416
+    },
+    "YXGGX": {
+      "rarity_rank": 118,
+      "rarity_score": 51.1,
+      "simulated_occurrences": 54,
+      "simulated_probability": 0.0013236267372600927,
+      "smoothed_probability": 0.0013287942739416908,
+      "one_in": 752.5619425147231,
+      "mechanics_probability": 0.00022750446384270758
+    },
+    "YGXGX": {
+      "rarity_rank": 119,
+      "rarity_score": 50.7,
+      "simulated_occurrences": 54,
+      "simulated_probability": 0.0013236267372600927,
+      "smoothed_probability": 0.001329234528823599,
+      "one_in": 752.3126869755795,
+      "mechanics_probability": 0.000379318405683882
+    },
+    "YGXYX": {
+      "rarity_rank": 120,
+      "rarity_score": 50.3,
+      "simulated_occurrences": 54,
+      "simulated_probability": 0.0013236267372600927,
+      "smoothed_probability": 0.0013300903171024913,
+      "one_in": 751.8286443723837,
+      "mechanics_probability": 0.0006744215319388695
+    },
+    "GXGYX": {
+      "rarity_rank": 121,
+      "rarity_score": 49.9,
+      "simulated_occurrences": 55,
+      "simulated_probability": 0.00134813834350565,
+      "smoothed_probability": 0.0013534627866896264,
+      "one_in": 738.8455817435919,
+      "mechanics_probability": 0.00033063404881356024
+    },
+    "XXYYG": {
+      "rarity_rank": 122,
+      "rarity_score": 49.5,
+      "simulated_occurrences": 55,
+      "simulated_probability": 0.00134813834350565,
+      "smoothed_probability": 0.001354515864006408,
+      "one_in": 738.2711613595905,
+      "mechanics_probability": 0.0006937687353189358
+    },
+    "XYGXY": {
+      "rarity_rank": 123,
+      "rarity_score": 49,
+      "simulated_occurrences": 56,
+      "simulated_probability": 0.0013726499497512072,
+      "smoothed_probability": 0.001379136189172402,
+      "one_in": 725.0915521258886,
+      "mechanics_probability": 0.0007802817032731738
+    },
+    "XGGYG": {
+      "rarity_rank": 124,
+      "rarity_score": 48.6,
+      "simulated_occurrences": 58,
+      "simulated_probability": 0.0014216731622423218,
+      "smoothed_probability": 0.001425670223178414,
+      "one_in": 701.4244835461195,
+      "mechanics_probability": 0.0000199799002203783
+    },
+    "XGXGY": {
+      "rarity_rank": 125,
+      "rarity_score": 48.2,
+      "simulated_occurrences": 58,
+      "simulated_probability": 0.0014216731622423218,
+      "smoothed_probability": 0.001426738461718372,
+      "one_in": 700.8993076387625,
+      "mechanics_probability": 0.0003883426606167529
+    },
+    "XXGYY": {
+      "rarity_rank": 126,
+      "rarity_score": 47.8,
+      "simulated_occurrences": 59,
+      "simulated_probability": 0.0014461847684878791,
+      "smoothed_probability": 0.0014523697604221363,
+      "one_in": 688.5298959332137,
+      "mechanics_probability": 0.0008234715875828916
+    },
+    "YXYYY": {
+      "rarity_rank": 127,
+      "rarity_score": 47.4,
+      "simulated_occurrences": 61,
+      "simulated_probability": 0.0014952079809789935,
+      "smoothed_probability": 0.0014994446734791615,
+      "one_in": 666.9135698616342,
+      "mechanics_probability": 0.00024968215308732747
+    },
+    "XGGYX": {
+      "rarity_rank": 128,
+      "rarity_score": 46.9,
+      "simulated_occurrences": 61,
+      "simulated_probability": 0.0014952079809789935,
+      "smoothed_probability": 0.0014999676873945847,
+      "one_in": 666.681028134,
+      "mechanics_probability": 0.00043003405240994225
+    },
+    "GYGXX": {
+      "rarity_rank": 129,
+      "rarity_score": 46.5,
+      "simulated_occurrences": 62,
+      "simulated_probability": 0.0015197195872245508,
+      "smoothed_probability": 0.0015241074886973684,
+      "one_in": 656.1217023181777,
+      "mechanics_probability": 0.00035084704786984296
+    },
+    "XGYXG": {
+      "rarity_rank": 130,
+      "rarity_score": 46.1,
+      "simulated_occurrences": 63,
+      "simulated_probability": 0.001544231193470108,
+      "smoothed_probability": 0.0015484132909086847,
+      "one_in": 645.8224079264722,
+      "mechanics_probability": 0.0003289024574611274
+    },
+    "XXGGY": {
+      "rarity_rank": 131,
+      "rarity_score": 45.7,
+      "simulated_occurrences": 64,
+      "simulated_probability": 0.0015687427997156654,
+      "smoothed_probability": 0.0015729087532621521,
+      "one_in": 635.7647879611825,
+      "mechanics_probability": 0.00037235874044045026
+    },
+    "GGXXY": {
+      "rarity_rank": 132,
+      "rarity_score": 45.3,
+      "simulated_occurrences": 65,
+      "simulated_probability": 0.0015932544059612226,
+      "smoothed_probability": 0.0015976492093939484,
+      "one_in": 625.9196287396153,
+      "mechanics_probability": 0.0005002967015182726
+    },
+    "GXYXY": {
+      "rarity_rank": 133,
+      "rarity_score": 44.9,
+      "simulated_occurrences": 68,
+      "simulated_probability": 0.0016667892246978945,
+      "smoothed_probability": 0.0016709337687063387,
+      "one_in": 598.4677661845416,
+      "mechanics_probability": 0.0005610688980219233
+    },
+    "YGXGG": {
+      "rarity_rank": 134,
+      "rarity_score": 44.4,
+      "simulated_occurrences": 70,
+      "simulated_probability": 0.0017158124371890089,
+      "smoothed_probability": 0.0017181422357229338,
+      "one_in": 582.0239903358381,
+      "mechanics_probability": 0.00003333313353433113
+    },
+    "GXGXY": {
+      "rarity_rank": 135,
+      "rarity_score": 44,
+      "simulated_occurrences": 70,
+      "simulated_probability": 0.0017158124371890089,
+      "smoothed_probability": 0.0017187840286479528,
+      "one_in": 581.8066629270636,
+      "mechanics_probability": 0.00025464382830872145
+    },
+    "YYXGX": {
+      "rarity_rank": 136,
+      "rarity_score": 43.6,
+      "simulated_occurrences": 70,
+      "simulated_probability": 0.0017158124371890089,
+      "smoothed_probability": 0.0017198414515382562,
+      "one_in": 581.4489464163005,
+      "mechanics_probability": 0.0006192770073306254
+    },
+    "YGYXX": {
+      "rarity_rank": 137,
+      "rarity_score": 43.2,
+      "simulated_occurrences": 70,
+      "simulated_probability": 0.0017158124371890089,
+      "smoothed_probability": 0.0017201865866441873,
+      "one_in": 581.3322855579535,
+      "mechanics_probability": 0.0007382906129766788
+    },
+    "YGGXX": {
+      "rarity_rank": 138,
+      "rarity_score": 42.8,
+      "simulated_occurrences": 73,
+      "simulated_probability": 0.0017893472559256808,
+      "smoothed_probability": 0.0017922465633381356,
+      "one_in": 557.958944073776,
+      "mechanics_probability": 0.0003767876183226341
+    },
+    "XXYGG": {
+      "rarity_rank": 139,
+      "rarity_score": 42.4,
+      "simulated_occurrences": 76,
+      "simulated_probability": 0.0018628820746623526,
+      "smoothed_probability": 0.001865526583940403,
+      "one_in": 536.0416777807475,
+      "mechanics_probability": 0.0004359947226423551
+    },
+    "YXGXY": {
+      "rarity_rank": 140,
+      "rarity_score": 41.9,
+      "simulated_occurrences": 76,
+      "simulated_probability": 0.0018628820746623526,
+      "smoothed_probability": 0.001866017247475164,
+      "one_in": 535.9007272591191,
+      "mechanics_probability": 0.0006051911776752587
+    },
+    "GXYYX": {
+      "rarity_rank": 141,
+      "rarity_score": 41.5,
+      "simulated_occurrences": 76,
+      "simulated_probability": 0.0018628820746623526,
+      "smoothed_probability": 0.001866653439438755,
+      "one_in": 535.718081820624,
+      "mechanics_probability": 0.0008245704820950124
+    },
+    "XYGXG": {
+      "rarity_rank": 142,
+      "rarity_score": 41.1,
+      "simulated_occurrences": 79,
+      "simulated_probability": 0.0019364168933990245,
+      "smoothed_probability": 0.001938098276058618,
+      "one_in": 515.969707188241,
+      "mechanics_probability": 0.00025094754676795145
+    },
+    "XGXYG": {
+      "rarity_rank": 143,
+      "rarity_score": 40.7,
+      "simulated_occurrences": 80,
+      "simulated_probability": 0.0019609284996445816,
+      "smoothed_probability": 0.001962574521320289,
+      "one_in": 509.53479174246434,
+      "mechanics_probability": 0.0002877771628408488
+    },
+    "YXXYG": {
+      "rarity_rank": 144,
+      "rarity_score": 40.3,
+      "simulated_occurrences": 80,
+      "simulated_probability": 0.0019609284996445816,
+      "smoothed_probability": 0.001963420459632532,
+      "one_in": 509.31525903889025,
+      "mechanics_probability": 0.0005794837060583719
+    },
+    "XYXGY": {
+      "rarity_rank": 145,
+      "rarity_score": 39.8,
+      "simulated_occurrences": 81,
+      "simulated_probability": 0.001985440105890139,
+      "smoothed_probability": 0.0019883900723413777,
+      "one_in": 502.919429094954,
+      "mechanics_probability": 0.0007864421725077905
+    },
+    "XGYYX": {
+      "rarity_rank": 146,
+      "rarity_score": 39.4,
+      "simulated_occurrences": 82,
+      "simulated_probability": 0.002009951712135696,
+      "smoothed_probability": 0.0020132456378873513,
+      "one_in": 496.7103771049888,
+      "mechanics_probability": 0.0009540735353567644
+    },
+    "XGGXY": {
+      "rarity_rank": 147,
+      "rarity_score": 39,
+      "simulated_occurrences": 84,
+      "simulated_probability": 0.0020589749246268108,
+      "smoothed_probability": 0.0020608087037033247,
+      "one_in": 485.2463977869343,
+      "mechanics_probability": 0.0005486147602178875
+    },
+    "YXYXG": {
+      "rarity_rank": 148,
+      "rarity_score": 38.6,
+      "simulated_occurrences": 84,
+      "simulated_probability": 0.0020589749246268108,
+      "smoothed_probability": 0.0020608411506522874,
+      "one_in": 485.23875781667346,
+      "mechanics_probability": 0.0005598035043412993
+    },
+    "YXGYX": {
+      "rarity_rank": 149,
+      "rarity_score": 38.2,
+      "simulated_occurrences": 86,
+      "simulated_probability": 0.0021079981371179253,
+      "smoothed_probability": 0.0021095558900198373,
+      "one_in": 474.0334232105111,
+      "mechanics_probability": 0.0005514785459161417
+    },
+    "YGXXG": {
+      "rarity_rank": 150,
+      "rarity_score": 37.8,
+      "simulated_occurrences": 89,
+      "simulated_probability": 0.002181532955854597,
+      "smoothed_probability": 0.0021821185047178064,
+      "one_in": 458.2702533514883,
+      "mechanics_probability": 0.00036330118567387873
+    },
+    "YXXGG": {
+      "rarity_rank": 151,
+      "rarity_score": 37.3,
+      "simulated_occurrences": 92,
+      "simulated_probability": 0.002255067774591269,
+      "smoothed_probability": 0.00225537573520116,
+      "one_in": 443.3851018224281,
+      "mechanics_probability": 0.00041464952924025097
+    },
+    "GXXYX": {
+      "rarity_rank": 152,
+      "rarity_score": 36.9,
+      "simulated_occurrences": 92,
+      "simulated_probability": 0.002255067774591269,
+      "smoothed_probability": 0.002267038288850654,
+      "one_in": 441.1041511376419,
+      "mechanics_probability": 0.004436270445265397
+    },
+    "XYYGX": {
+      "rarity_rank": 153,
+      "rarity_score": 36.5,
+      "simulated_occurrences": 93,
+      "simulated_probability": 0.0022795793808368264,
+      "smoothed_probability": 0.0022809925486598514,
+      "one_in": 438.4056408196198,
+      "mechanics_probability": 0.0008447834811512951
+    },
+    "XGYGG": {
+      "rarity_rank": 154,
+      "rarity_score": 36.1,
+      "simulated_occurrences": 96,
+      "simulated_probability": 0.0023531141995734983,
+      "smoothed_probability": 0.0023517480807508572,
+      "one_in": 425.2156122439457,
+      "mechanics_probability": 0.00003346633286913365
+    },
+    "GGXGX": {
+      "rarity_rank": 155,
+      "rarity_score": 35.7,
+      "simulated_occurrences": 100,
+      "simulated_probability": 0.002451160624555727,
+      "smoothed_probability": 0.002450197803580574,
+      "one_in": 408.1303144336589,
+      "mechanics_probability": 0.0003686291590659796
+    },
+    "XYYXG": {
+      "rarity_rank": 156,
+      "rarity_score": 35.3,
+      "simulated_occurrences": 100,
+      "simulated_probability": 0.002451160624555727,
+      "smoothed_probability": 0.002451742799820023,
+      "one_in": 407.87312603646996,
+      "mechanics_probability": 0.0009013931984423669
+    },
+    "XGXYY": {
+      "rarity_rank": 157,
+      "rarity_score": 34.8,
+      "simulated_occurrences": 101,
+      "simulated_probability": 0.0024756722308012843,
+      "smoothed_probability": 0.002476449746751551,
+      "one_in": 403.8038733924386,
+      "mechanics_probability": 0.0010177761172260706
+    },
+    "GXXGX": {
+      "rarity_rank": 158,
+      "rarity_score": 34.4,
+      "simulated_occurrences": 102,
+      "simulated_probability": 0.0025001838370468416,
+      "smoothed_probability": 0.0025036171574111202,
+      "one_in": 399.422090969394,
+      "mechanics_probability": 0.0019826054988681388
+    },
+    "XYYXY": {
+      "rarity_rank": 159,
+      "rarity_score": 34,
+      "simulated_occurrences": 104,
+      "simulated_probability": 0.002549207049537956,
+      "smoothed_probability": 0.0025562672481600074,
+      "one_in": 391.19540443973403,
+      "mechanics_probability": 0.003331315363411075
+    },
+    "XXGYG": {
+      "rarity_rank": 160,
+      "rarity_score": 33.6,
+      "simulated_occurrences": 110,
+      "simulated_probability": 0.0026962766870113,
+      "smoothed_probability": 0.002693744847567389,
+      "one_in": 371.2304084416381,
+      "mechanics_probability": 0.00031781361283881747
+    },
+    "XYXGG": {
+      "rarity_rank": 161,
+      "rarity_score": 33.2,
+      "simulated_occurrences": 110,
+      "simulated_probability": 0.0026962766870113,
+      "smoothed_probability": 0.0026941878063617107,
+      "one_in": 371.1693734337034,
+      "mechanics_probability": 0.0004705599500236096
+    },
+    "GXXGG": {
+      "rarity_rank": 162,
+      "rarity_score": 32.7,
+      "simulated_occurrences": 112,
+      "simulated_probability": 0.0027452998995024145,
+      "smoothed_probability": 0.0027425585694429355,
+      "one_in": 364.623024332756,
+      "mechanics_probability": 0.0003436209839568061
+    },
+    "YXYYX": {
+      "rarity_rank": 163,
+      "rarity_score": 32.3,
+      "simulated_occurrences": 115,
+      "simulated_probability": 0.0028188347182390864,
+      "smoothed_probability": 0.0028206847736367093,
+      "one_in": 354.5238409291301,
+      "mechanics_probability": 0.0020739469427089683
+    },
+    "YXGXG": {
+      "rarity_rank": 164,
+      "rarity_score": 31.9,
+      "simulated_occurrences": 122,
+      "simulated_probability": 0.002990415961957987,
+      "smoothed_probability": 0.0029860090451292666,
+      "one_in": 334.8951677260272,
+      "mechanics_probability": 0.0002595056040290135
+    },
+    "GXXXG": {
+      "rarity_rank": 165,
+      "rarity_score": 31.5,
+      "simulated_occurrences": 123,
+      "simulated_probability": 0.0030149275682035443,
+      "smoothed_probability": 0.0030156757399736707,
+      "one_in": 331.60063820678903,
+      "mechanics_probability": 0.0020861679816770993
+    },
+    "YXXGX": {
+      "rarity_rank": 166,
+      "rarity_score": 31.1,
+      "simulated_occurrences": 127,
+      "simulated_probability": 0.0031129739931857734,
+      "smoothed_probability": 0.003118050577944874,
+      "one_in": 320.71320685859627,
+      "mechanics_probability": 0.0037748358484697726
+    },
+    "YYXXG": {
+      "rarity_rank": 167,
+      "rarity_score": 30.7,
+      "simulated_occurrences": 131,
+      "simulated_probability": 0.0032110204181680026,
+      "smoothed_probability": 0.003206745260764564,
+      "one_in": 311.8426687131289,
+      "mechanics_probability": 0.0007461493737300276
+    },
+    "GXYXX": {
+      "rarity_rank": 168,
+      "rarity_score": 30.2,
+      "simulated_occurrences": 131,
+      "simulated_probability": 0.0032110204181680026,
+      "smoothed_probability": 0.0032168523887981565,
+      "one_in": 310.8628805854559,
+      "mechanics_probability": 0.004231409868339118
+    },
+    "XYXYG": {
+      "rarity_rank": 169,
+      "rarity_score": 29.8,
+      "simulated_occurrences": 133,
+      "simulated_probability": 0.003260043630659117,
+      "smoothed_probability": 0.003255502973025829,
+      "one_in": 307.1721968266395,
+      "mechanics_probability": 0.0007526428413016505
+    },
+    "YXXYY": {
+      "rarity_rank": 170,
+      "rarity_score": 29.4,
+      "simulated_occurrences": 138,
+      "simulated_probability": 0.0033826016618869036,
+      "smoothed_probability": 0.003381484844986044,
+      "one_in": 295.7280738616255,
+      "mechanics_probability": 0.002178408521027846
+    },
+    "YYXXY": {
+      "rarity_rank": 171,
+      "rarity_score": 29,
+      "simulated_occurrences": 139,
+      "simulated_probability": 0.003407113268132461,
+      "smoothed_probability": 0.003407438874950027,
+      "one_in": 293.47555061120966,
+      "mechanics_probability": 0.002724825492221492
+    },
+    "XYXYY": {
+      "rarity_rank": 172,
+      "rarity_score": 28.6,
+      "simulated_occurrences": 141,
+      "simulated_probability": 0.003456136480623575,
+      "smoothed_probability": 0.003458184542245063,
+      "one_in": 289.16906769550167,
+      "mechanics_probability": 0.0034168293363542944
+    },
+    "YGXXY": {
+      "rarity_rank": 173,
+      "rarity_score": 28.2,
+      "simulated_occurrences": 150,
+      "simulated_probability": 0.0036767409368335907,
+      "smoothed_probability": 0.00366982305829173,
+      "one_in": 272.4927017231973,
+      "mechanics_probability": 0.000766295773118909
+    },
+    "XXGXY": {
+      "rarity_rank": 174,
+      "rarity_score": 27.7,
+      "simulated_occurrences": 156,
+      "simulated_probability": 0.0038238105743069344,
+      "smoothed_probability": 0.0038275715027903815,
+      "one_in": 261.2622649298592,
+      "mechanics_probability": 0.004742828714313401
+    },
+    "GXGXX": {
+      "rarity_rank": 175,
+      "rarity_score": 27.3,
+      "simulated_occurrences": 158,
+      "simulated_probability": 0.003872833786798049,
+      "smoothed_probability": 0.0038692893859463384,
+      "one_in": 258.4453888696214,
+      "mechanics_probability": 0.0023217643051090604
+    },
+    "GYXXX": {
+      "rarity_rank": 176,
+      "rarity_score": 26.9,
+      "simulated_occurrences": 159,
+      "simulated_probability": 0.0038973453930436063,
+      "smoothed_probability": 0.0039021278666201502,
+      "one_in": 256.2704335125121,
+      "mechanics_probability": 0.005242159720654355
+    },
+    "XXXGY": {
+      "rarity_rank": 177,
+      "rarity_score": 26.5,
+      "simulated_occurrences": 160,
+      "simulated_probability": 0.003921856999289163,
+      "smoothed_probability": 0.00392536562342811,
+      "one_in": 254.75333916199062,
+      "mechanics_probability": 0.004851918969516666
+    },
+    "GXGGX": {
+      "rarity_rank": 178,
+      "rarity_score": 26.1,
+      "simulated_occurrences": 162,
+      "simulated_probability": 0.003970880211780278,
+      "smoothed_probability": 0.0039608021249107625,
+      "one_in": 252.47411217810588,
+      "mechanics_probability": 0.00026483357742111436
+    },
+    "YYXYX": {
+      "rarity_rank": 179,
+      "rarity_score": 25.6,
+      "simulated_occurrences": 163,
+      "simulated_probability": 0.0039953918180258355,
+      "smoothed_probability": 0.003992119172010444,
+      "one_in": 250.4935240939706,
+      "mechanics_probability": 0.0026605901130129757
+    },
+    "XYGXX": {
+      "rarity_rank": 180,
+      "rarity_score": 25.2,
+      "simulated_occurrences": 164,
+      "simulated_probability": 0.004019903424271392,
+      "smoothed_probability": 0.0040216369585355,
+      "one_in": 248.65496570435215,
+      "mechanics_probability": 0.00443590414709469
+    },
+    "XXXYG": {
+      "rarity_rank": 181,
+      "rarity_score": 24.8,
+      "simulated_occurrences": 166,
+      "simulated_probability": 0.004068926636762507,
+      "smoothed_probability": 0.004069711739775741,
+      "one_in": 245.71764880210029,
+      "mechanics_probability": 0.004206901190735453
+    },
+    "XXYYY": {
+      "rarity_rank": 182,
+      "rarity_score": 24.4,
+      "simulated_occurrences": 168,
+      "simulated_probability": 0.0041179498492536215,
+      "smoothed_probability": 0.004114667944320139,
+      "one_in": 243.03297703047787,
+      "mechanics_probability": 0.0029025134048480563
+    },
+    "YYYXX": {
+      "rarity_rank": 183,
+      "rarity_score": 24,
+      "simulated_occurrences": 169,
+      "simulated_probability": 0.004142461455499179,
+      "smoothed_probability": 0.004139053898220857,
+      "one_in": 241.60110609572948,
+      "mechanics_probability": 0.002908207676410864
+    },
+    "GXXXY": {
+      "rarity_rank": 184,
+      "rarity_score": 23.6,
+      "simulated_occurrences": 169,
+      "simulated_probability": 0.004142461455499179,
+      "smoothed_probability": 0.004140662822675227,
+      "one_in": 241.50722790654885,
+      "mechanics_probability": 0.003463016205697069
+    },
+    "GGXXG": {
+      "rarity_rank": 185,
+      "rarity_score": 23.1,
+      "simulated_occurrences": 172,
+      "simulated_probability": 0.004215996274235851,
+      "smoothed_probability": 0.0042049300272249904,
+      "one_in": 237.81608576729204,
+      "mechanics_probability": 0.0004143165309032447
+    },
+    "GGXXX": {
+      "rarity_rank": 186,
+      "rarity_score": 22.7,
+      "simulated_occurrences": 173,
+      "simulated_probability": 0.0042405078804814075,
+      "smoothed_probability": 0.004240260452892801,
+      "one_in": 235.83456985944753,
+      "mechanics_probability": 0.004194014155093309
+    },
+    "XXGGX": {
+      "rarity_rank": 187,
+      "rarity_score": 22.3,
+      "simulated_occurrences": 176,
+      "simulated_probability": 0.00431404269921808,
+      "smoothed_probability": 0.004309030057884347,
+      "one_in": 232.07078775657956,
+      "mechanics_probability": 0.0026978859267576816
+    },
+    "YXYXY": {
+      "rarity_rank": 188,
+      "rarity_score": 21.9,
+      "simulated_occurrences": 178,
+      "simulated_probability": 0.004363065911709194,
+      "smoothed_probability": 0.004354865420236355,
+      "one_in": 229.62822119672444,
+      "mechanics_probability": 0.0016966598268808245
+    },
+    "XYXGX": {
+      "rarity_rank": 189,
+      "rarity_score": 21.5,
+      "simulated_occurrences": 196,
+      "simulated_probability": 0.004804274824129225,
+      "smoothed_probability": 0.004802081444314856,
+      "one_in": 208.24303202601686,
+      "mechanics_probability": 0.004650521575295253
+    },
+    "XXYGX": {
+      "rarity_rank": 190,
+      "rarity_score": 21.1,
+      "simulated_occurrences": 196,
+      "simulated_probability": 0.004804274824129225,
+      "smoothed_probability": 0.004802085017341974,
+      "one_in": 208.2428770812381,
+      "mechanics_probability": 0.004651753669142176
+    },
+    "GXGXG": {
+      "rarity_rank": 191,
+      "rarity_score": 20.6,
+      "simulated_occurrences": 209,
+      "simulated_probability": 0.00512292570532147,
+      "smoothed_probability": 0.00510610249000841,
+      "one_in": 195.84409086123787,
+      "mechanics_probability": 0.00024298888651350076
+    },
+    "XGXGX": {
+      "rarity_rank": 192,
+      "rarity_score": 20.2,
+      "simulated_occurrences": 225,
+      "simulated_probability": 0.005515111405250386,
+      "smoothed_probability": 0.005505240546092756,
+      "one_in": 181.64510553671116,
+      "mechanics_probability": 0.0034247546967750443
+    },
+    "XYYYX": {
+      "rarity_rank": 193,
+      "rarity_score": 19.8,
+      "simulated_occurrences": 228,
+      "simulated_probability": 0.005588646223987058,
+      "smoothed_probability": 0.005580152281268307,
+      "one_in": 179.20657888797098,
+      "mechanics_probability": 0.004046629091134319
+    },
+    "XXGGG": {
+      "rarity_rank": 194,
+      "rarity_score": 19.4,
+      "simulated_occurrences": 229,
+      "simulated_probability": 0.005613157830232615,
+      "smoothed_probability": 0.005594662195078492,
+      "one_in": 178.74180158360218,
+      "mechanics_probability": 0.0006467493701336456
+    },
+    "GGXGG": {
+      "rarity_rank": 195,
+      "rarity_score": 19,
+      "simulated_occurrences": 233,
+      "simulated_probability": 0.005711204255214844,
+      "smoothed_probability": 0.005690486805227842,
+      "one_in": 175.7318897710652,
+      "mechanics_probability": 0.00007668951701255204
+    },
+    "XGYXX": {
+      "rarity_rank": 196,
+      "rarity_score": 18.5,
+      "simulated_occurrences": 234,
+      "simulated_probability": 0.005735715861460402,
+      "smoothed_probability": 0.005732778743109269,
+      "one_in": 174.4354779437438,
+      "mechanics_probability": 0.006256938852847369
+    },
+    "YXXXG": {
+      "rarity_rank": 197,
+      "rarity_score": 18.1,
+      "simulated_occurrences": 244,
+      "simulated_probability": 0.005980831923915974,
+      "smoothed_probability": 0.005969805688583982,
+      "one_in": 167.50963970440327,
+      "mechanics_probability": 0.003957785134821036
+    },
+    "YXGXX": {
+      "rarity_rank": 198,
+      "rarity_score": 17.7,
+      "simulated_occurrences": 245,
+      "simulated_probability": 0.006005343530161532,
+      "smoothed_probability": 0.005991944015290927,
+      "one_in": 166.89074488147514,
+      "mechanics_probability": 0.0031884257770016695
+    },
+    "YXYXX": {
+      "rarity_rank": 199,
+      "rarity_score": 17.3,
+      "simulated_occurrences": 252,
+      "simulated_probability": 0.006176924773880432,
+      "smoothed_probability": 0.006182754206374111,
+      "one_in": 161.74021586836656,
+      "mechanics_probability": 0.010162343349257313
+    },
+    "XXGYX": {
+      "rarity_rank": 200,
+      "rarity_score": 16.9,
+      "simulated_occurrences": 258,
+      "simulated_probability": 0.006323994411353776,
+      "smoothed_probability": 0.006312983678852039,
+      "one_in": 158.40370431336854,
+      "mechanics_probability": 0.004649455980616833
+    },
+    "GGGGX": {
+      "rarity_rank": 201,
+      "rarity_score": 16.5,
+      "simulated_occurrences": 263,
+      "simulated_probability": 0.006446552442581562,
+      "smoothed_probability": 0.006421606626253789,
+      "one_in": 155.7242693614473,
+      "mechanics_probability": 0.00008931015398509099
+    },
+    "YGXXX": {
+      "rarity_rank": 202,
+      "rarity_score": 16,
+      "simulated_occurrences": 264,
+      "simulated_probability": 0.00647106404882712,
+      "smoothed_probability": 0.006461525398150814,
+      "one_in": 154.7622176469637,
+      "mechanics_probability": 0.005451216076626913
+    },
+    "YXXYX": {
+      "rarity_rank": 203,
+      "rarity_score": 15.6,
+      "simulated_occurrences": 270,
+      "simulated_probability": 0.0066181336863004635,
+      "smoothed_probability": 0.0066245879962251175,
+      "one_in": 150.9527838666841,
+      "mechanics_probability": 0.011260238866367102
+    },
+    "XGGGX": {
+      "rarity_rank": 204,
+      "rarity_score": 15.2,
+      "simulated_occurrences": 272,
+      "simulated_probability": 0.006667156898791578,
+      "smoothed_probability": 0.006642131647015928,
+      "one_in": 150.55407708597048,
+      "mechanics_probability": 0.0005031271873828262
+    },
+    "XGXXY": {
+      "rarity_rank": 205,
+      "rarity_score": 14.8,
+      "simulated_occurrences": 274,
+      "simulated_probability": 0.006716180111282693,
+      "smoothed_probability": 0.006708584534657943,
+      "one_in": 149.0627411540828,
+      "mechanics_probability": 0.006611482182257981
+    },
+    "XGXYX": {
+      "rarity_rank": 206,
+      "rarity_score": 14.4,
+      "simulated_occurrences": 275,
+      "simulated_probability": 0.0067406917175282495,
+      "smoothed_probability": 0.0067304950567440465,
+      "one_in": 148.57748078991403,
+      "mechanics_probability": 0.005763568516738827
+    },
+    "GXXXX": {
+      "rarity_rank": 207,
+      "rarity_score": 13.9,
+      "simulated_occurrences": 274,
+      "simulated_probability": 0.006716180111282693,
+      "smoothed_probability": 0.006749068863269995,
+      "one_in": 148.16858743911075,
+      "mechanics_probability": 0.020571771464573306
+    },
+    "XYXXG": {
+      "rarity_rank": 208,
+      "rarity_score": 13.5,
+      "simulated_occurrences": 290,
+      "simulated_probability": 0.0071083658112116085,
+      "smoothed_probability": 0.007094068991873409,
+      "one_in": 140.9628241768648,
+      "mechanics_probability": 0.005085051105254781
+    },
+    "XXGXG": {
+      "rarity_rank": 209,
+      "rarity_score": 13.1,
+      "simulated_occurrences": 291,
+      "simulated_probability": 0.007132877417457166,
+      "smoothed_probability": 0.007110638997237826,
+      "one_in": 140.63433685614703,
+      "mechanics_probability": 0.0023955567365896574
+    },
+    "GGGXX": {
+      "rarity_rank": 210,
+      "rarity_score": 12.7,
+      "simulated_occurrences": 293,
+      "simulated_probability": 0.007181900629948281,
+      "smoothed_probability": 0.00715442604936826,
+      "one_in": 139.77361609437568,
+      "mechanics_probability": 0.0006880078640887267
+    },
+    "XXXGG": {
+      "rarity_rank": 211,
+      "rarity_score": 12.3,
+      "simulated_occurrences": 298,
+      "simulated_probability": 0.007304458661176067,
+      "smoothed_probability": 0.007286694903963209,
+      "one_in": 137.2364306698368,
+      "mechanics_probability": 0.00428172591706077
+    },
+    "XXYXG": {
+      "rarity_rank": 212,
+      "rarity_score": 11.9,
+      "simulated_occurrences": 305,
+      "simulated_probability": 0.007476039904894967,
+      "smoothed_probability": 0.0074576096109391045,
+      "one_in": 134.09122388669448,
+      "mechanics_probability": 0.0043950452511440155
+    },
+    "XGGXG": {
+      "rarity_rank": 213,
+      "rarity_score": 11.4,
+      "simulated_occurrences": 313,
+      "simulated_probability": 0.007672132754859426,
+      "smoothed_probability": 0.0076411147436164575,
+      "one_in": 130.87095712512632,
+      "mechanics_probability": 0.0004465840697591556
+    },
+    "GXGGG": {
+      "rarity_rank": 214,
+      "rarity_score": 11,
+      "simulated_occurrences": 319,
+      "simulated_probability": 0.00781920239233277,
+      "smoothed_probability": 0.007786222204445107,
+      "one_in": 128.43198842040573,
+      "mechanics_probability": 0.0000641021798737137
+    },
+    "GGGXG": {
+      "rarity_rank": 215,
+      "rarity_score": 10.6,
+      "simulated_occurrences": 323,
+      "simulated_probability": 0.007917248817314999,
+      "smoothed_probability": 0.007883720826083353,
+      "one_in": 126.84365949279838,
+      "mechanics_probability": 0.00007129494395304989
+    },
+    "XXXGX": {
+      "rarity_rank": 216,
+      "rarity_score": 10.2,
+      "simulated_occurrences": 326,
+      "simulated_probability": 0.007990783636051671,
+      "smoothed_probability": 0.008026440504219799,
+      "one_in": 124.58822805380078,
+      "mechanics_probability": 0.024075513366886247
+    },
+    "XGXXG": {
+      "rarity_rank": 217,
+      "rarity_score": 9.8,
+      "simulated_occurrences": 329,
+      "simulated_probability": 0.008064318454788342,
+      "smoothed_probability": 0.00804052927474509,
+      "one_in": 124.36992215685989,
+      "mechanics_probability": 0.0037236873039056045
+    },
+    "XGGXX": {
+      "rarity_rank": 218,
+      "rarity_score": 9.4,
+      "simulated_occurrences": 340,
+      "simulated_probability": 0.008333946123489472,
+      "smoothed_probability": 0.008310240384749442,
+      "one_in": 120.33346253559071,
+      "mechanics_probability": 0.004291715867170959
+    },
+    "XYXXY": {
+      "rarity_rank": 219,
+      "rarity_score": 8.9,
+      "simulated_occurrences": 352,
+      "simulated_probability": 0.00862808539843616,
+      "smoothed_probability": 0.00863982687849231,
+      "one_in": 115.74305990891621,
+      "mechanics_probability": 0.017103327385983035
+    },
+    "XXYYX": {
+      "rarity_rank": 220,
+      "rarity_score": 8.5,
+      "simulated_occurrences": 373,
+      "simulated_probability": 0.009142829129592862,
+      "smoothed_probability": 0.009148267046835714,
+      "one_in": 109.31032018199437,
+      "mechanics_probability": 0.01595914510002937
+    },
+    "XXYXY": {
+      "rarity_rank": 221,
+      "rarity_score": 8.1,
+      "simulated_occurrences": 390,
+      "simulated_probability": 0.009559526435767336,
+      "smoothed_probability": 0.009553818730417636,
+      "one_in": 104.67018772464044,
+      "mechanics_probability": 0.01294917313182938
+    },
+    "XYXYX": {
+      "rarity_rank": 222,
+      "rarity_score": 7.7,
+      "simulated_occurrences": 407,
+      "simulated_probability": 0.00997622374194181,
+      "smoothed_probability": 0.009979561976516131,
+      "one_in": 100.20479880311343,
+      "mechanics_probability": 0.01690189669192792
+    },
+    "XXXYY": {
+      "rarity_rank": 223,
+      "rarity_score": 7.3,
+      "simulated_occurrences": 408,
+      "simulated_probability": 0.010000735348187366,
+      "smoothed_probability": 0.010000543028710071,
+      "one_in": 99.99457000776346,
+      "mechanics_probability": 0.015733472127040196
+    },
+    "XYYXX": {
+      "rarity_rank": 224,
+      "rarity_score": 6.8,
+      "simulated_occurrences": 430,
+      "simulated_probability": 0.010539990685589628,
+      "smoothed_probability": 0.010550554638844988,
+      "one_in": 94.78174695368187,
+      "mechanics_probability": 0.020521089117680948
+    },
+    "XGXGG": {
+      "rarity_rank": 225,
+      "rarity_score": 6.4,
+      "simulated_occurrences": 434,
+      "simulated_probability": 0.010638037110571855,
+      "smoothed_probability": 0.01059044186780218,
+      "one_in": 94.42476645287782,
+      "mechanics_probability": 0.000662033993802235
+    },
+    "YYXXX": {
+      "rarity_rank": 226,
+      "rarity_score": 6,
+      "simulated_occurrences": 434,
+      "simulated_probability": 0.010638037110571855,
+      "smoothed_probability": 0.010630876270602881,
+      "one_in": 94.06562305360079,
+      "mechanics_probability": 0.014605107262094333
+    },
+    "XXGXX": {
+      "rarity_rank": 227,
+      "rarity_score": 5.6,
+      "simulated_occurrences": 472,
+      "simulated_probability": 0.011569478147903033,
+      "smoothed_probability": 0.01157764697673971,
+      "one_in": 86.37333665545934,
+      "mechanics_probability": 0.02175414865978159
+    },
+    "YXXXY": {
+      "rarity_rank": 228,
+      "rarity_score": 5.2,
+      "simulated_occurrences": 512,
+      "simulated_probability": 0.012549942397725323,
+      "smoothed_probability": 0.012522020848732036,
+      "one_in": 79.85931440940371,
+      "mechanics_probability": 0.011269962417807686
+    },
+    "XXXXG": {
+      "rarity_rank": 229,
+      "rarity_score": 4.8,
+      "simulated_occurrences": 550,
+      "simulated_probability": 0.013481383435056499,
+      "smoothed_probability": 0.013486325750892708,
+      "one_in": 74.14918032317338,
+      "mechanics_probability": 0.024465354520019526
+    },
+    "YXXXX": {
+      "rarity_rank": 230,
+      "rarity_score": 4.3,
+      "simulated_occurrences": 554,
+      "simulated_probability": 0.013579429860038728,
+      "smoothed_probability": 0.01365031270966573,
+      "one_in": 73.25839497375793,
+      "mechanics_probability": 0.04739984908515367
+    },
+    "XXXYX": {
+      "rarity_rank": 231,
+      "rarity_score": 3.9,
+      "simulated_occurrences": 588,
+      "simulated_probability": 0.014412824472387675,
+      "smoothed_probability": 0.014518558244138577,
+      "one_in": 68.87736255793301,
+      "mechanics_probability": 0.06108434914476037
+    },
+    "XYXXX": {
+      "rarity_rank": 232,
+      "rarity_score": 3.5,
+      "simulated_occurrences": 751,
+      "simulated_probability": 0.01840821629041351,
+      "smoothed_probability": 0.01853148969779065,
+      "one_in": 53.962202516251104,
+      "mechanics_probability": 0.07512335923394399
+    },
+    "XGXXX": {
+      "rarity_rank": 233,
+      "rarity_score": 3.1,
+      "simulated_occurrences": 800,
+      "simulated_probability": 0.019609284996445816,
+      "smoothed_probability": 0.019613982803873203,
+      "one_in": 50.984035725907155,
+      "mechanics_probability": 0.03663684333560438
+    },
+    "XXXXY": {
+      "rarity_rank": 234,
+      "rarity_score": 2.7,
+      "simulated_occurrences": 804,
+      "simulated_probability": 0.019707331421428047,
+      "smoothed_probability": 0.019781027501312762,
+      "one_in": 50.55349121442935,
+      "mechanics_probability": 0.06062574383503529
+    },
+    "XXYXX": {
+      "rarity_rank": 235,
+      "rarity_score": 2.3,
+      "simulated_occurrences": 846,
+      "simulated_probability": 0.020736818883741452,
+      "smoothed_probability": 0.02080828854402843,
+      "one_in": 48.05777264593826,
+      "mechanics_probability": 0.06191697818661094
+    },
+    "XGGGG": {
+      "rarity_rank": 236,
+      "rarity_score": 1.8,
+      "simulated_occurrences": 1083,
+      "simulated_probability": 0.026546069563938526,
+      "smoothed_probability": 0.02640473294604428,
+      "one_in": 37.87199825286667,
+      "mechanics_probability": 0.00015307933552179842
+    },
+    "XXXXX": {
+      "rarity_rank": 237,
+      "rarity_score": 1.4,
+      "simulated_occurrences": 1341,
+      "simulated_probability": 0.0328700639752923,
+      "smoothed_probability": 0.03333979279182172,
+      "one_in": 29.994187613706494,
+      "mechanics_probability": 0.22351594296138086
+    },
+    "GGGGG": {
+      "rarity_rank": 238,
+      "rarity_score": 1,
+      "simulated_occurrences": 11550,
+      "simulated_probability": 0.2831090521361865,
+      "smoothed_probability": 0.2814794486074007,
+      "one_in": 3.5526572364249964,
+      "mechanics_probability": 0.0000770891150169596
+    }
+  }
+}

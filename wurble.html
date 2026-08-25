@@ -862,7 +862,7 @@
 
   <main class="shell">
     <p class="result-line" aria-live="polite"><span id="visible-count">—</span> patterns shown</p>
-    <p class="rarity-note" id="rarity-explanation">Theoretical rarity compares every original valid Wordle guess with every original solution. The 238 possible single-row patterns are divided into five rarity bands: ★★★★★ marks the rarest fifth.</p>
+    <p class="rarity-note" id="rarity-explanation">Theoretical rarity comes from complete six-turn games played by five information-seeking solvers across all 2,315 original answers, using all previous feedback. A light smoothing prior covers patterns the solvers never produced. ★★★★★ marks the rarest fifth.</p>
     <p class="data-error" id="data-error" role="alert" hidden>Could not load the Wordlegami data. Try refreshing the page.</p>
     <div class="archive-table-wrap">
       <table class="archive-table" aria-label="All Wordlegami patterns" aria-describedby="rarity-explanation">
@@ -918,13 +918,13 @@
   </section>
 
   <footer>
-    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv, wordle-history.json, and wurble-rarity.json</div>
+    <div class="shell">Data from the bot's Wordle history · Updated from wurble.csv, wordle-history.json, and wurble-game-rarity.json</div>
   </footer>
 
   <script>
     const DATA_URL = 'wurble.csv';
     const HISTORY_URL = 'wordle-history.json';
-    const RARITY_URL = 'wurble-rarity.json';
+    const RARITY_URL = 'wurble-game-rarity.json';
     const WORDLE_EPOCH_UTC = Date.UTC(2021, 5, 19);
     const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
     const STATES = ['X', 'Y', 'G'];
@@ -1066,10 +1066,21 @@
     }
 
     function validateRarityData(data) {
-      if (!data || data.schema_version !== 1 || data.model !== 'original-wordle-uniform-guess-answer') {
+      if (!data || data.schema_version !== 2 || data.model !== 'full-game-information-ensemble-v1') {
         throw new Error('Unexpected rarity schema');
       }
-      if (!Number.isInteger(data.total_pairs) || data.total_pairs < 1 || !data.patterns) {
+      if (
+        !Number.isInteger(data.simulated_games)
+        || data.simulated_games < 1
+        || !Number.isInteger(data.simulated_rows)
+        || data.simulated_rows < data.simulated_games
+        || !Number.isInteger(data.solved_games)
+        || !Number.isInteger(data.failed_games)
+        || data.solved_games + data.failed_games !== data.simulated_games
+        || !Array.isArray(data.strategies)
+        || data.strategies.length < 2
+        || !data.patterns
+      ) {
         throw new Error('Incomplete rarity data');
       }
 
@@ -1078,7 +1089,7 @@
         throw new Error(`Expected 238 rarity patterns, received ${entries.length}`);
       }
 
-      let occurrenceTotal = 0;
+      let simulatedTotal = 0;
       const rarityMap = new Map();
       for (const [pattern, rarity] of entries) {
         if (!isValidRowPattern(pattern) || rarityMap.has(pattern)) {
@@ -1092,20 +1103,27 @@
           || typeof rarity.rarity_score !== 'number'
           || rarity.rarity_score < 1
           || rarity.rarity_score > 100
-          || !Number.isInteger(rarity.occurrences)
-          || rarity.occurrences < 1
-          || typeof rarity.probability !== 'number'
-          || rarity.probability <= 0
+          || !Number.isInteger(rarity.simulated_occurrences)
+          || rarity.simulated_occurrences < 0
+          || typeof rarity.simulated_probability !== 'number'
+          || rarity.simulated_probability < 0
+          || rarity.simulated_probability > 1
+          || typeof rarity.smoothed_probability !== 'number'
+          || rarity.smoothed_probability <= 0
+          || rarity.smoothed_probability > 1
           || typeof rarity.one_in !== 'number'
           || rarity.one_in < 1
+          || typeof rarity.mechanics_probability !== 'number'
+          || rarity.mechanics_probability <= 0
+          || rarity.mechanics_probability > 1
         ) {
           throw new Error(`Invalid rarity values for ${pattern}`);
         }
-        occurrenceTotal += rarity.occurrences;
+        simulatedTotal += rarity.simulated_occurrences;
         rarityMap.set(pattern, rarity);
       }
-      if (occurrenceTotal !== data.total_pairs) {
-        throw new Error('Rarity occurrences do not match the model total');
+      if (simulatedTotal !== data.simulated_rows) {
+        throw new Error('Rarity occurrences do not match the simulation total');
       }
       return rarityMap;
     }
