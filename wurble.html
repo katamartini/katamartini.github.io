@@ -283,19 +283,21 @@
     }
 
     .map-cell {
-      display: grid;
-      place-items: center;
+      position: relative;
+      display: block;
       min-width: 0;
       aspect-ratio: 1;
+      overflow: hidden;
       padding: 0;
       border: 1px solid transparent;
       border-radius: 3px;
+      background: var(--surface-raised);
       color: var(--text);
       font-size: clamp(8px, 0.8vw, 11px);
       font-variant-numeric: tabular-nums;
       font-weight: 800;
-      text-shadow: 0 1px 2px var(--page);
       box-shadow: none;
+      isolation: isolate;
     }
 
     .map-cell:hover {
@@ -304,7 +306,88 @@
       filter: brightness(1.16);
     }
 
+    .map-cell-pattern-bar {
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 22%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .map-cell-avatars {
+      position: absolute;
+      z-index: 1;
+      top: 22%;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: grid;
+      grid-template-columns: repeat(var(--avatar-columns), minmax(0, 1fr));
+      grid-auto-rows: minmax(0, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .map-cell-avatar {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      place-items: center;
+      background: #3c4542;
+      color: #dce4e1;
+      font-size: clamp(6px, 0.58vw, 8px);
+      line-height: 1;
+      text-shadow: 0 1px 2px var(--page);
+    }
+
+    .map-cell-avatar:nth-child(3n + 2) { background: #45423b; }
+    .map-cell-avatar:nth-child(3n) { background: #3d3c48; }
+
+    .map-cell-avatar-initial,
+    .map-cell-avatar img {
+      grid-area: 1 / 1;
+    }
+
+    .map-cell-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .map-cell-total,
+    .map-cell-symbol {
+      position: absolute;
+      z-index: 4;
+      top: 61%;
+      left: 50%;
+      display: grid;
+      min-width: 1.65em;
+      min-height: 1.65em;
+      padding: 1px 3px;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 999px;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      background: rgba(11, 13, 12, 0.82);
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000;
+    }
+
     .map-cell-locked { color: #858c89; }
+
+    .map-cell-locked .map-cell-pattern-bar { opacity: 0.55; }
+
+    .map-cell-locked .map-cell-total {
+      border-color: rgba(133, 140, 137, 0.35);
+      background: rgba(24, 27, 26, 0.88);
+      color: #858c89;
+      text-shadow: none;
+    }
 
     .map-cell-unlocked {
       border-color: rgba(184, 242, 169, 0.42);
@@ -312,12 +395,20 @@
     }
 
     .map-cell-impossible {
-      display: grid;
-      place-items: center;
       background: repeating-linear-gradient(135deg, #242727 0 4px, #363a3a 4px 7px);
       color: #6d7472;
       font-size: 11px;
       opacity: 0.8;
+      text-shadow: none;
+    }
+
+    .map-cell-impossible .map-cell-pattern-bar { opacity: 0.42; }
+
+    .map-cell-impossible .map-cell-symbol {
+      border: 0;
+      background: transparent;
+      color: #8b9290;
+      font-size: 13px;
       text-shadow: none;
     }
 
@@ -831,7 +922,7 @@
       <div class="map-intro">
         <div>
           <h2 id="map-title">Pattern map</h2>
-          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. The number in each square is how many times that row has appeared.</p>
+          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. Colors run along each square’s top edge, avatars show every player who has found it, and the overlaid number is its total occurrences.</p>
         </div>
         <strong class="map-count" id="map-count">Loading map…</strong>
       </div>
@@ -969,6 +1060,7 @@
     let recordsByPattern = new Map();
     let rarityByPattern = new Map();
     let patternRecords = [];
+    let patternPlayers = new Map();
     let playerStats = [];
     let patternSort = { key: null, direction: null };
     let playerSort = { key: null, direction: null };
@@ -1139,7 +1231,9 @@
     }
 
     function validateHistory(history) {
-      if (!history || history.schema_version !== 1) throw new Error('Unexpected history schema');
+      if (!history || ![1, 2].includes(history.schema_version)) {
+        throw new Error('Unexpected history schema');
+      }
       if (!Array.isArray(history.players) || !Array.isArray(history.results)) {
         throw new Error('Incomplete history data');
       }
@@ -1154,6 +1248,16 @@
       for (const player of history.players) {
         if (!player || typeof player.id !== 'string' || !player.id || typeof player.name !== 'string' || !player.name) {
           throw new Error('Invalid player');
+        }
+        if (
+          player.avatar !== undefined
+          && player.avatar !== null
+          && (
+            typeof player.avatar !== 'string'
+            || !/^data:image\/(?:gif|jpeg|png|webp);base64,/.test(player.avatar)
+          )
+        ) {
+          throw new Error(`Invalid player avatar: ${player.id}`);
         }
         if (playerIds.has(player.id)) throw new Error(`Duplicate player: ${player.id}`);
         playerIds.add(player.id);
@@ -1269,6 +1373,32 @@
         );
         button.querySelector('.sort-indicator').textContent = direction === 'asc' ? '↑' : direction === 'desc' ? '↓' : '↕';
       }
+    }
+
+    function indexPatternPlayers(history) {
+      const players = new Map(history.players.map(player => [player.id, player]));
+      const playerIdsByPattern = new Map();
+
+      for (const result of history.results) {
+        for (const row of result.rows) {
+          if (!isValidRowPattern(row.pattern)) continue;
+          let playerIds = playerIdsByPattern.get(row.pattern);
+          if (!playerIds) {
+            playerIds = new Set();
+            playerIdsByPattern.set(row.pattern, playerIds);
+          }
+          playerIds.add(result.player_id);
+        }
+      }
+
+      patternPlayers = new Map(
+        [...playerIdsByPattern.entries()].map(([pattern, playerIds]) => [
+          pattern,
+          [...playerIds]
+            .map(playerId => players.get(playerId))
+            .filter(Boolean),
+        ])
+      );
     }
 
     function nextSortState(button, currentState, attributeName) {
@@ -1539,6 +1669,43 @@
       return `linear-gradient(90deg, ${stops.join(', ')})`;
     }
 
+    function playerInitials(name) {
+      const words = name.trim().split(/\s+/).filter(Boolean);
+      const initials = words
+        .slice(0, 2)
+        .map(word => [...word][0] || '')
+        .join('');
+      return initials.toLocaleUpperCase() || '?';
+    }
+
+    function mapAvatarsForPlayers(players) {
+      const avatars = makeElement('span', 'map-cell-avatars');
+      avatars.setAttribute('aria-hidden', 'true');
+      const columns = players.length <= 1 ? 1 : players.length <= 4 ? 2 : 3;
+      avatars.style.setProperty('--avatar-columns', String(columns));
+
+      for (const player of players) {
+        const avatar = makeElement('span', 'map-cell-avatar');
+        avatar.title = player.name;
+        avatar.append(makeElement('span', 'map-cell-avatar-initial', playerInitials(player.name)));
+        if (player.avatar) {
+          const image = document.createElement('img');
+          image.alt = '';
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          image.src = player.avatar;
+          image.addEventListener('error', () => image.remove(), { once: true });
+          avatar.append(image);
+        }
+        avatars.append(avatar);
+      }
+      return avatars;
+    }
+
+    function patternPlayerNames(pattern) {
+      return (patternPlayers.get(pattern) || []).map(player => player.name).join(', ');
+    }
+
     function showMapPattern(pattern, cell) {
       if (activeMapCell) {
         activeMapCell.classList.remove('map-cell-selected');
@@ -1562,7 +1729,9 @@
         mapSelectedDetail.textContent = 'Impossible · four greens and one yellow cannot occur';
       } else if (record?.status === 'unlocked') {
         const count = Number(record.seen_count);
-        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'} · first unlocked by ${record.unlocked_by} on Wordle #${Number(record.wordle_number).toLocaleString('en-US')} · ${rarityDescription(pattern)}`;
+        const playerNames = patternPlayerNames(pattern);
+        const playersDetail = playerNames ? ` · found by ${playerNames}` : '';
+        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'}${playersDetail} · first unlocked by ${record.unlocked_by} on Wordle #${Number(record.wordle_number).toLocaleString('en-US')} · ${rarityDescription(pattern)}`;
       } else {
         mapSelectedDetail.textContent = `Seen 0 times · not yet unlocked · ${rarityDescription(pattern)}`;
       }
@@ -1604,16 +1773,27 @@
             cell.setAttribute('role', 'gridcell');
             cell.setAttribute('aria-pressed', 'false');
 
+            const patternBar = makeElement('span', 'map-cell-pattern-bar');
+            patternBar.setAttribute('aria-hidden', 'true');
+            patternBar.style.background = patternBackground(
+              pattern,
+              status !== 'unlocked',
+            );
+            cell.append(patternBar);
+
             let description;
             if (status === 'impossible') {
-              cell.textContent = '×';
+              cell.append(makeElement('span', 'map-cell-symbol', '×'));
               description = `${pattern}: impossible`;
             } else {
               const seenCount = Number(record?.seen_count || 0);
-              cell.textContent = String(seenCount);
-              cell.style.background = patternBackground(pattern, status === 'locked');
+              const players = patternPlayers.get(pattern) || [];
+              if (players.length) cell.append(mapAvatarsForPlayers(players));
+              cell.append(makeElement('span', 'map-cell-total', String(seenCount)));
+              const playerNames = players.map(player => player.name).join(', ');
+              const playerDescription = playerNames ? `; found by ${playerNames}` : '';
               description = status === 'unlocked'
-                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
+                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}${playerDescription}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
                 : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
             }
             cell.setAttribute('aria-label', description);
@@ -1761,7 +1941,9 @@
       if (!response.ok) throw new Error(`History request failed with status ${response.status}`);
       const history = await response.json();
       validateHistory(history);
+      indexPatternPlayers(history);
       renderPlayerStats(history);
+      if (patternRecords.length) renderMap(patternRecords);
     }
 
     async function loadData({ manual = false } = {}) {
