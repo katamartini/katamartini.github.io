@@ -195,6 +195,70 @@
       text-transform: uppercase;
     }
 
+    .map-view-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .map-view-label {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .map-player-filters {
+      display: flex;
+      min-width: 0;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 1px 1px 3px;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .map-player-filter {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+
+    .map-player-filter[aria-pressed="true"] {
+      border-color: var(--green);
+      background: rgba(106, 170, 100, 0.14);
+      color: var(--text);
+    }
+
+    .map-player-filter-avatar {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      overflow: hidden;
+      border-radius: 50%;
+      place-items: center;
+      background: #3c4542;
+      color: #dce4e1;
+      font-size: 8px;
+      line-height: 1;
+    }
+
+    .map-player-filter-avatar span,
+    .map-player-filter-avatar img {
+      grid-area: 1 / 1;
+    }
+
+    .map-player-filter-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .map-selection {
       display: flex;
       align-items: center;
@@ -856,6 +920,8 @@
       .view-nav { display: grid; grid-template-columns: 1fr 1fr; }
       .view-tab { min-width: 0; }
       .map-intro { align-items: start; flex-direction: column; gap: 10px; }
+      .map-view-control { align-items: start; flex-direction: column; gap: 7px; }
+      .map-player-filters { width: 100%; }
       .map-selection { align-items: start; flex-direction: column; }
       .map-matrix { grid-template-columns: 24px repeat(9, minmax(0, 1fr)); gap: 2px; }
       .map-matrix-label { font-size: 7px; }
@@ -922,9 +988,16 @@
       <div class="map-intro">
         <div>
           <h2 id="map-title">Pattern map</h2>
-          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. Colors run along each square’s top edge, avatars show every player who has found it, and the overlaid number is its total occurrences.</p>
+          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. Choose the cumulative map or one player; the colors, avatars, and occurrence totals update to match.</p>
         </div>
         <strong class="map-count" id="map-count">Loading map…</strong>
+      </div>
+
+      <div class="map-view-control">
+        <span class="map-view-label" id="map-view-label">Map view</span>
+        <div class="map-player-filters" id="map-player-filters" role="group" aria-labelledby="map-view-label">
+          <button class="map-player-filter" type="button" aria-pressed="true">Cumulative</button>
+        </div>
       </div>
 
       <div class="map-selection" aria-live="polite">
@@ -1047,6 +1120,7 @@
     const dataError = document.querySelector('#data-error');
     const mapPanels = document.querySelector('#map-panels');
     const mapCount = document.querySelector('#map-count');
+    const mapPlayerFilters = document.querySelector('#map-player-filters');
     const mapSelectedTiles = document.querySelector('#map-selected-tiles');
     const mapSelectedPattern = document.querySelector('#map-selected-pattern');
     const mapSelectedDetail = document.querySelector('#map-selected-detail');
@@ -1057,10 +1131,14 @@
     let galleryRows = [];
     let activeFilter = 'all';
     let activeMapCell = null;
+    let activeMapPattern = 'GGGGY';
+    let activeMapPlayerId = null;
     let recordsByPattern = new Map();
     let rarityByPattern = new Map();
     let patternRecords = [];
     let patternPlayers = new Map();
+    let playersById = new Map();
+    let playerPatternStats = new Map();
     let playerStats = [];
     let patternSort = { key: null, direction: null };
     let playerSort = { key: null, direction: null };
@@ -1376,12 +1454,25 @@
     }
 
     function indexPatternPlayers(history) {
-      const players = new Map(history.players.map(player => [player.id, player]));
+      playersById = new Map(history.players.map(player => [player.id, player]));
+      playerPatternStats = new Map(history.players.map(player => [player.id, new Map()]));
       const playerIdsByPattern = new Map();
 
       for (const result of history.results) {
+        const statsForPlayer = playerPatternStats.get(result.player_id);
         for (const row of result.rows) {
           if (!isValidRowPattern(row.pattern)) continue;
+
+          if (statsForPlayer) {
+            const existing = statsForPlayer.get(row.pattern);
+            statsForPlayer.set(row.pattern, {
+              count: (existing?.count || 0) + 1,
+              firstPuzzleNumber: existing
+                ? Math.min(existing.firstPuzzleNumber, result.puzzle_number)
+                : result.puzzle_number,
+            });
+          }
+
           let playerIds = playerIdsByPattern.get(row.pattern);
           if (!playerIds) {
             playerIds = new Set();
@@ -1395,10 +1486,64 @@
         [...playerIdsByPattern.entries()].map(([pattern, playerIds]) => [
           pattern,
           [...playerIds]
-            .map(playerId => players.get(playerId))
+            .map(playerId => playersById.get(playerId))
             .filter(Boolean),
         ])
       );
+    }
+
+    function makeMapPlayerFilterAvatar(player) {
+      const avatar = makeElement('span', 'map-player-filter-avatar');
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.append(makeElement('span', '', playerInitials(player.name)));
+      if (player.avatar) {
+        const image = document.createElement('img');
+        image.alt = '';
+        image.decoding = 'async';
+        image.src = player.avatar;
+        image.addEventListener('error', () => image.remove(), { once: true });
+        avatar.append(image);
+      }
+      return avatar;
+    }
+
+    function updateMapPlayerFilterButtons() {
+      for (const button of mapPlayerFilters.querySelectorAll('.map-player-filter')) {
+        const playerId = button.dataset.playerId || null;
+        button.setAttribute('aria-pressed', String(playerId === activeMapPlayerId));
+      }
+    }
+
+    function selectMapPlayer(playerId) {
+      activeMapPlayerId = playerId && playersById.has(playerId) ? playerId : null;
+      updateMapPlayerFilterButtons();
+      if (patternRecords.length) renderMap(patternRecords);
+    }
+
+    function renderMapPlayerFilters(history) {
+      if (activeMapPlayerId && !playersById.has(activeMapPlayerId)) activeMapPlayerId = null;
+
+      const fragment = document.createDocumentFragment();
+      const cumulative = makeElement('button', 'map-player-filter', 'Cumulative');
+      cumulative.type = 'button';
+      cumulative.dataset.playerId = '';
+      cumulative.addEventListener('click', () => selectMapPlayer(null));
+      fragment.append(cumulative);
+
+      const players = [...history.players].sort((first, second) => (
+        first.name.localeCompare(second.name, undefined, { sensitivity: 'base' })
+      ));
+      for (const player of players) {
+        const button = makeElement('button', 'map-player-filter');
+        button.type = 'button';
+        button.dataset.playerId = player.id;
+        button.append(makeMapPlayerFilterAvatar(player), document.createTextNode(player.name));
+        button.addEventListener('click', () => selectMapPlayer(player.id));
+        fragment.append(button);
+      }
+
+      mapPlayerFilters.replaceChildren(fragment);
+      updateMapPlayerFilterButtons();
     }
 
     function nextSortState(button, currentState, attributeName) {
@@ -1712,6 +1857,7 @@
         activeMapCell.setAttribute('aria-pressed', 'false');
       }
       activeMapCell = cell || null;
+      activeMapPattern = pattern;
       if (activeMapCell) {
         activeMapCell.classList.add('map-cell-selected');
         activeMapCell.setAttribute('aria-pressed', 'true');
@@ -1725,8 +1871,17 @@
       }
 
       const record = recordsByPattern.get(pattern);
+      const activePlayer = activeMapPlayerId ? playersById.get(activeMapPlayerId) : null;
+      const playerPattern = activePlayer
+        ? playerPatternStats.get(activePlayer.id)?.get(pattern)
+        : null;
       if (IMPOSSIBLE_PATTERNS.has(pattern)) {
         mapSelectedDetail.textContent = 'Impossible · four greens and one yellow cannot occur';
+      } else if (activePlayer && playerPattern) {
+        const count = playerPattern.count;
+        mapSelectedDetail.textContent = `Seen ${count.toLocaleString('en-US')} ${count === 1 ? 'time' : 'times'} by ${activePlayer.name} · first seen on Wordle #${playerPattern.firstPuzzleNumber.toLocaleString('en-US')} · ${rarityDescription(pattern)}`;
+      } else if (activePlayer) {
+        mapSelectedDetail.textContent = `Seen 0 times by ${activePlayer.name} · ${rarityDescription(pattern)}`;
       } else if (record?.status === 'unlocked') {
         const count = Number(record.seen_count);
         const playerNames = patternPlayerNames(pattern);
@@ -1739,11 +1894,20 @@
 
     function renderMap(records) {
       recordsByPattern = new Map(records.map(record => [record.pattern, record]));
-      const unlockedCount = records.filter(record => record.status === 'unlocked').length;
-      mapCount.textContent = `${unlockedCount} of ${records.length} unlocked`;
+      const activePlayer = activeMapPlayerId ? playersById.get(activeMapPlayerId) : null;
+      const activePlayerPatterns = activePlayer
+        ? playerPatternStats.get(activePlayer.id) || new Map()
+        : null;
+      if (activePlayer) {
+        const seenCount = records.filter(record => activePlayerPatterns.has(record.pattern)).length;
+        mapCount.textContent = `${seenCount} of ${records.length} seen by ${activePlayer.name}`;
+      } else {
+        const unlockedCount = records.filter(record => record.status === 'unlocked').length;
+        mapCount.textContent = `${unlockedCount} of ${records.length} unlocked`;
+      }
 
       const fragment = document.createDocumentFragment();
-      let defaultCell = null;
+      let selectedCell = null;
 
       for (const middle of STATES) {
         const panel = makeElement('section', 'map-panel');
@@ -1765,9 +1929,12 @@
           for (const suffix of PAIRS) {
             const pattern = prefix + middle + suffix;
             const record = recordsByPattern.get(pattern);
+            const playerPattern = activePlayerPatterns?.get(pattern);
             const status = IMPOSSIBLE_PATTERNS.has(pattern)
               ? 'impossible'
-              : record?.status === 'unlocked' ? 'unlocked' : 'locked';
+              : activePlayer
+                ? playerPattern ? 'unlocked' : 'locked'
+                : record?.status === 'unlocked' ? 'unlocked' : 'locked';
             const cell = makeElement('button', `map-cell map-cell-${status}`);
             cell.type = 'button';
             cell.setAttribute('role', 'gridcell');
@@ -1786,21 +1953,31 @@
               cell.append(makeElement('span', 'map-cell-symbol', '×'));
               description = `${pattern}: impossible`;
             } else {
-              const seenCount = Number(record?.seen_count || 0);
-              const players = patternPlayers.get(pattern) || [];
+              const seenCount = activePlayer
+                ? playerPattern?.count || 0
+                : Number(record?.seen_count || 0);
+              const players = activePlayer
+                ? playerPattern ? [activePlayer] : []
+                : patternPlayers.get(pattern) || [];
               if (players.length) cell.append(mapAvatarsForPlayers(players));
               cell.append(makeElement('span', 'map-cell-total', String(seenCount)));
               const playerNames = players.map(player => player.name).join(', ');
               const playerDescription = playerNames ? `; found by ${playerNames}` : '';
-              description = status === 'unlocked'
-                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}${playerDescription}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
-                : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
+              if (activePlayer && playerPattern) {
+                description = `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'} by ${activePlayer.name}; first seen on Wordle #${playerPattern.firstPuzzleNumber}; ${rarityDescription(pattern)}`;
+              } else if (activePlayer) {
+                description = `${pattern}: seen 0 times by ${activePlayer.name}; ${rarityDescription(pattern)}`;
+              } else {
+                description = status === 'unlocked'
+                  ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}${playerDescription}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
+                  : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
+              }
             }
             cell.setAttribute('aria-label', description);
             cell.title = description;
             cell.addEventListener('click', () => showMapPattern(pattern, cell));
             matrix.append(cell);
-            if (pattern === 'GGGGY') defaultCell = cell;
+            if (pattern === activeMapPattern) selectedCell = cell;
           }
         }
 
@@ -1809,7 +1986,7 @@
       }
 
       mapPanels.replaceChildren(fragment);
-      showMapPattern('GGGGY', defaultCell);
+      showMapPattern(activeMapPattern, selectedCell);
     }
 
     function renderArchiveRows() {
@@ -1942,6 +2119,7 @@
       const history = await response.json();
       validateHistory(history);
       indexPatternPlayers(history);
+      renderMapPlayerFilters(history);
       renderPlayerStats(history);
       if (patternRecords.length) renderMap(patternRecords);
     }
