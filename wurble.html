@@ -160,6 +160,7 @@
     }
 
     .map-section {
+      scroll-margin-top: 12px;
       padding: 28px 0 32px;
       border-bottom: 1px solid var(--border);
       background: transparent;
@@ -1144,6 +1145,11 @@
     let activeMapCell = null;
     const initialMapParameters = new URLSearchParams(window.location.search);
     const linkedMapPattern = (initialMapParameters.get('pattern') || '').toLocaleUpperCase();
+    let pendingLinkedMapScroll = (
+      initialMapParameters.has('pattern')
+      || initialMapParameters.has('player')
+      || window.location.hash === '#pattern-map'
+    );
     let activeMapPattern = /^[XYG]{5}$/.test(linkedMapPattern) ? linkedMapPattern : 'GGGGY';
     let activeMapPlayerId = initialMapParameters.get('player') || null;
     let recordsByPattern = new Map();
@@ -1885,6 +1891,14 @@
       window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
     }
 
+    function scrollToLinkedMap() {
+      if (!pendingLinkedMapScroll) return;
+      pendingLinkedMapScroll = false;
+      window.requestAnimationFrame(() => {
+        document.querySelector('#pattern-map').scrollIntoView({ block: 'start' });
+      });
+    }
+
     function copyTextFallback(text) {
       const field = document.createElement('textarea');
       field.value = text;
@@ -2227,6 +2241,7 @@
         setRefreshState(failureCount === 0 ? 'Up to date' : failureCount === 1 ? 'Partly updated' : 'Try again', true);
         window.setTimeout(() => setRefreshState('Refresh data', false), 1800);
       }
+      scrollToLinkedMap();
     }
 
     refreshButton.addEventListener('click', () => loadData({ manual: true }));
