@@ -297,6 +297,14 @@
       font-size: 13px;
     }
 
+    .map-selection-copy {
+      flex: 0 0 auto;
+      margin-left: auto;
+      background: var(--surface-raised);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
     .map-axis-label {
       margin: 18px 0 8px;
       color: var(--muted);
@@ -923,6 +931,7 @@
       .map-view-control { align-items: start; flex-direction: column; gap: 7px; }
       .map-player-filters { width: 100%; }
       .map-selection { align-items: start; flex-direction: column; }
+      .map-selection-copy { margin-left: 0; }
       .map-matrix { grid-template-columns: 24px repeat(9, minmax(0, 1fr)); gap: 2px; }
       .map-matrix-label { font-size: 7px; }
       .toolbar { align-items: stretch; flex-direction: column; }
@@ -983,7 +992,7 @@
 
   <div id="patterns-panel" role="tabpanel" aria-labelledby="patterns-tab">
 
-  <section class="map-section" aria-labelledby="map-title">
+  <section class="map-section" id="pattern-map" aria-labelledby="map-title">
     <div class="shell">
       <div class="map-intro">
         <div>
@@ -1006,6 +1015,7 @@
           <code id="map-selected-pattern">GGGGY</code>
           <div class="map-selection-detail" id="map-selected-detail">Loading pattern history…</div>
         </div>
+        <button class="map-selection-copy" id="copy-map-link" type="button">Copy link</button>
       </div>
 
       <p class="map-axis-label">Columns: tiles 4–5 · Rows: tiles 1–2</p>
@@ -1124,6 +1134,7 @@
     const mapSelectedTiles = document.querySelector('#map-selected-tiles');
     const mapSelectedPattern = document.querySelector('#map-selected-pattern');
     const mapSelectedDetail = document.querySelector('#map-selected-detail');
+    const copyMapLinkButton = document.querySelector('#copy-map-link');
     const playerCount = document.querySelector('#player-count');
     const playerStatsBody = document.querySelector('#player-stats-body');
     const playersEmpty = document.querySelector('#players-empty');
@@ -1131,8 +1142,10 @@
     let galleryRows = [];
     let activeFilter = 'all';
     let activeMapCell = null;
-    let activeMapPattern = 'GGGGY';
-    let activeMapPlayerId = null;
+    const initialMapParameters = new URLSearchParams(window.location.search);
+    const linkedMapPattern = (initialMapParameters.get('pattern') || '').toLocaleUpperCase();
+    let activeMapPattern = /^[XYG]{5}$/.test(linkedMapPattern) ? linkedMapPattern : 'GGGGY';
+    let activeMapPlayerId = initialMapParameters.get('player') || null;
     let recordsByPattern = new Map();
     let rarityByPattern = new Map();
     let patternRecords = [];
@@ -1517,7 +1530,11 @@
     function selectMapPlayer(playerId) {
       activeMapPlayerId = playerId && playersById.has(playerId) ? playerId : null;
       updateMapPlayerFilterButtons();
-      if (patternRecords.length) renderMap(patternRecords);
+      if (patternRecords.length) {
+        renderMap(patternRecords);
+      } else {
+        syncMapDeepLink();
+      }
     }
 
     function renderMapPlayerFilters(history) {
@@ -1851,6 +1868,55 @@
       return (patternPlayers.get(pattern) || []).map(player => player.name).join(', ');
     }
 
+    function buildMapDeepLink() {
+      const url = new URL(window.location.href);
+      url.searchParams.set('pattern', activeMapPattern);
+      if (activeMapPlayerId) {
+        url.searchParams.set('player', activeMapPlayerId);
+      } else {
+        url.searchParams.delete('player');
+      }
+      url.hash = 'pattern-map';
+      return url;
+    }
+
+    function syncMapDeepLink() {
+      const url = buildMapDeepLink();
+      window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }
+
+    function copyTextFallback(text) {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.append(field);
+      field.select();
+      const copied = document.execCommand('copy');
+      field.remove();
+      if (!copied) throw new Error('Copy command failed');
+    }
+
+    async function copyMapDeepLink() {
+      const url = buildMapDeepLink();
+      syncMapDeepLink();
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(url.href);
+        } else {
+          copyTextFallback(url.href);
+        }
+        copyMapLinkButton.textContent = 'Copied!';
+      } catch (error) {
+        console.error('Could not copy map link', error);
+        copyMapLinkButton.textContent = 'Copy failed';
+      }
+      window.setTimeout(() => {
+        copyMapLinkButton.textContent = 'Copy link';
+      }, 1600);
+    }
+
     function showMapPattern(pattern, cell) {
       if (activeMapCell) {
         activeMapCell.classList.remove('map-cell-selected');
@@ -1890,6 +1956,7 @@
       } else {
         mapSelectedDetail.textContent = `Seen 0 times · not yet unlocked · ${rarityDescription(pattern)}`;
       }
+      syncMapDeepLink();
     }
 
     function renderMap(records) {
@@ -2164,6 +2231,7 @@
 
     refreshButton.addEventListener('click', () => loadData({ manual: true }));
     playerRefreshButton.addEventListener('click', () => loadData({ manual: true }));
+    copyMapLinkButton.addEventListener('click', copyMapDeepLink);
     selectTab(document.querySelector('#patterns-tab'));
     loadData();
   </script>
