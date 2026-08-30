@@ -461,15 +461,17 @@
     }
 
     .archive-table th:nth-child(1),
-    .archive-table td:nth-child(1) { width: 31%; }
+    .archive-table td:nth-child(1) { width: 27%; }
     .archive-table th:nth-child(2),
-    .archive-table td:nth-child(2) { width: 22%; }
+    .archive-table td:nth-child(2) { width: 11%; }
     .archive-table th:nth-child(3),
-    .archive-table td:nth-child(3) { width: 12%; }
+    .archive-table td:nth-child(3) { width: 18%; }
     .archive-table th:nth-child(4),
-    .archive-table td:nth-child(4) { width: 15%; }
+    .archive-table td:nth-child(4) { width: 11%; }
     .archive-table th:nth-child(5),
-    .archive-table td:nth-child(5) { width: 20%; }
+    .archive-table td:nth-child(5) { width: 15%; }
+    .archive-table th:nth-child(6),
+    .archive-table td:nth-child(6) { width: 18%; }
 
     .archive-table th {
       padding: 10px 12px;
@@ -584,8 +586,13 @@
     .table-unlocker { overflow-wrap: anywhere; }
     .unlocked .table-unlocker { color: var(--bright); }
 
+    .table-occurrences,
     .table-wordle,
     .table-date { white-space: nowrap; }
+
+    .table-occurrences { font-variant-numeric: tabular-nums; }
+
+    .column-label-short { display: none; }
 
     .table-rarity {
       font-variant-numeric: tabular-nums;
@@ -772,6 +779,8 @@
       .table-wordle,
       .table-date,
       .table-rarity { font-size: 10px; }
+      .column-label-long { display: none; }
+      .column-label-short { display: inline; }
       .pattern-code { display: none; }
       .date-long { display: none; }
       .date-short { display: inline; }
@@ -869,6 +878,7 @@
         <thead>
           <tr>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="pattern" data-sort-default="asc">Pattern <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="occurrences" data-sort-default="desc"><span class="column-label-long">Occurrences</span><span class="column-label-short">Seen</span> <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="unlocker" data-sort-default="asc">First unlocker <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="wordle" data-sort-default="desc">Wordle # <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="date" data-sort-default="desc">Date <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
@@ -1221,6 +1231,7 @@
 
     function patternSortValue(record, key) {
       if (key === 'pattern') return record.pattern;
+      if (key === 'occurrences') return Number(record.seen_count);
       if (key === 'unlocker') return record.status === 'unlocked' ? record.unlocked_by : null;
       if (key === 'wordle' || key === 'date') {
         return record.status === 'unlocked' ? Number(record.wordle_number) : null;
@@ -1446,7 +1457,7 @@
       const unlockDateIso = unlockDate ? unlockDate.toISOString().slice(0, 10) : '';
       const row = makeElement('tr', `pattern-row ${record.status}`);
       row.dataset.status = record.status;
-      row.dataset.search = `${record.pattern} ${record.unlocked_by} ${record.wordle_number} ${unlockDateIso} ${record.status}`.toLocaleLowerCase();
+      row.dataset.search = `${record.pattern} ${record.seen_count} ${record.unlocked_by} ${record.wordle_number} ${unlockDateIso} ${record.status}`.toLocaleLowerCase();
 
       const patternCell = makeElement('td');
       const pattern = makeElement('div', 'table-pattern');
@@ -1460,6 +1471,11 @@
       pattern.append(tiles, makeElement('code', 'pattern-code', record.pattern));
       patternCell.append(pattern);
 
+      const occurrencesCell = makeElement(
+        'td',
+        'table-occurrences',
+        Number(record.seen_count).toLocaleString('en-US'),
+      );
       const unlockerCell = makeElement('td', 'table-unlocker');
       const wordleCell = makeElement('td', 'table-wordle');
       const dateCell = makeElement('td', 'table-date');
@@ -1507,7 +1523,7 @@
         dateCell.textContent = '—';
       }
 
-      row.append(patternCell, unlockerCell, wordleCell, dateCell, rarityCell);
+      row.append(patternCell, occurrencesCell, unlockerCell, wordleCell, dateCell, rarityCell);
       return row;
     }
 
