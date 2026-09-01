@@ -238,6 +238,27 @@
       color: var(--text);
     }
 
+    .map-player-filter-count {
+      display: inline-grid;
+      min-width: 22px;
+      height: 20px;
+      padding: 0 6px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      place-items: center;
+      background: var(--surface-raised);
+      color: var(--muted);
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .map-player-filter[aria-pressed="true"] .map-player-filter-count {
+      border-color: rgba(106, 170, 100, 0.58);
+      color: var(--text);
+    }
+
     .map-player-filter-avatar {
       display: grid;
       width: 22px;
@@ -1555,14 +1576,33 @@
       cumulative.addEventListener('click', () => selectMapPlayer(null));
       fragment.append(cumulative);
 
-      const players = [...history.players].sort((first, second) => (
-        first.name.localeCompare(second.name, undefined, { sensitivity: 'base' })
-      ));
+      const players = [...history.players].sort((first, second) => {
+        const firstUniquePatterns = playerPatternStats.get(first.id)?.size || 0;
+        const secondUniquePatterns = playerPatternStats.get(second.id)?.size || 0;
+        return secondUniquePatterns - firstUniquePatterns
+          || first.name.localeCompare(second.name, undefined, { sensitivity: 'base' });
+      });
       for (const player of players) {
+        const uniquePatterns = playerPatternStats.get(player.id)?.size || 0;
         const button = makeElement('button', 'map-player-filter');
         button.type = 'button';
         button.dataset.playerId = player.id;
-        button.append(makeMapPlayerFilterAvatar(player), document.createTextNode(player.name));
+        button.setAttribute(
+          'aria-label',
+          `${player.name}, ${uniquePatterns} unique ${uniquePatterns === 1 ? 'unlock' : 'unlocks'}`,
+        );
+        button.title = `${uniquePatterns.toLocaleString('en-US')} unique ${uniquePatterns === 1 ? 'unlock' : 'unlocks'}`;
+        const count = makeElement(
+          'span',
+          'map-player-filter-count',
+          uniquePatterns.toLocaleString('en-US'),
+        );
+        count.setAttribute('aria-hidden', 'true');
+        button.append(
+          makeMapPlayerFilterAvatar(player),
+          document.createTextNode(player.name),
+          count,
+        );
         button.addEventListener('click', () => selectMapPlayer(player.id));
         fragment.append(button);
       }
