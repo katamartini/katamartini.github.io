@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-08-31T21:38:23.154113+00:00",
+  "data_updated_at": "2026-09-01T11:19:29.371035+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -1699,6 +1699,102 @@
         },
         {
           "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1900,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XYXXX\nGXXXX\nGYXXY\nGGXGX\nGGGGG",
+      "posted_at": "2026-09-01T07:30:18.583000+00:00",
+      "tracked_at": "2026-09-01T07:30:18.614940+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GXXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GYXXY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGXGX"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1900,
+      "score": 6,
+      "hard_mode": false,
+      "grid_pattern": "XGXXX\nXGYXX\nGGXXX\nGGYXX\nGGGGX\nGGGGG",
+      "posted_at": "2026-09-01T11:13:58.844000+00:00",
+      "tracked_at": "2026-09-01T11:13:58.981367+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGYXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGXXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGYXX"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGX"
+        },
+        {
+          "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "353fdaeb72f2a7dc",
+      "player_name": "Ryan (Mayan)",
+      "puzzle_number": 1900,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXYYYX\nXYYXX\nGGGGG",
+      "posted_at": "2026-09-01T11:19:29.332000+00:00",
+      "tracked_at": "2026-09-01T11:19:29.371035+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYYYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XYYXX"
+        },
+        {
+          "row_number": 4,
           "pattern": "GGGGG"
         }
       ]
