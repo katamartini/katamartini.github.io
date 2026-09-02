@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-02T10:44:08.888832+00:00",
+  "data_updated_at": "2026-09-02T12:16:53.658632+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -1919,6 +1919,38 @@
         },
         {
           "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1901,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XYXXY\nYYXXX\nXYGXX\nGGGGX\nGGGGG",
+      "posted_at": "2026-09-02T12:16:53.605000+00:00",
+      "tracked_at": "2026-09-02T12:16:53.658632+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XYGXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGX"
+        },
+        {
+          "row_number": 5,
           "pattern": "GGGGG"
         }
       ]
