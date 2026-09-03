@@ -54,7 +54,9 @@
 
     button:focus-visible,
     input:focus-visible,
-    textarea:focus-visible {
+    textarea:focus-visible,
+    summary:focus-visible,
+    a:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 3px;
     }
@@ -80,6 +82,43 @@
       justify-content: space-between;
       gap: 18px;
       margin-bottom: 22px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .backup-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .backup-dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      border-radius: 50%;
+      background: var(--muted);
+      box-shadow: 0 0 0 3px rgba(156, 168, 182, 0.12);
+    }
+
+    .backup-button[data-state="saving"] .backup-dot {
+      background: var(--orange);
+      box-shadow: 0 0 0 3px rgba(243, 155, 61, 0.16);
+    }
+
+    .backup-button[data-state="success"] .backup-dot {
+      background: var(--green);
+      box-shadow: 0 0 0 3px rgba(65, 196, 134, 0.16);
+    }
+
+    .backup-button[data-state="error"] .backup-dot {
+      background: var(--red);
+      box-shadow: 0 0 0 3px rgba(239, 107, 97, 0.16);
     }
 
     .brand {
@@ -524,6 +563,13 @@
       background: var(--surface);
     }
 
+    .history-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+
     .history-date,
     .history-score,
     .history-detail {
@@ -565,6 +611,108 @@
       color: #ffaaa3;
     }
 
+    .shot-detail {
+      grid-column: 1 / -1;
+      min-width: 0;
+      padding-top: 2px;
+      border-top: 1px solid transparent;
+    }
+
+    .shot-detail[open] {
+      margin-top: 3px;
+      padding-top: 15px;
+      border-top-color: var(--border);
+    }
+
+    .shot-detail summary {
+      width: fit-content;
+      border-radius: 8px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .shot-detail summary::marker {
+      color: var(--orange);
+    }
+
+    .shot-chart-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 13px 0 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .shot-key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .shot-key-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .shot-key-dot.made {
+      background: var(--green);
+    }
+
+    .shot-key-dot.missed {
+      background: var(--red);
+    }
+
+    .shot-chart-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #11161d;
+    }
+
+    .shot-chart {
+      display: block;
+      width: 100%;
+      min-width: 620px;
+      height: auto;
+    }
+
+    .shot-chart-grid {
+      stroke: #2b3541;
+      stroke-width: 1;
+    }
+
+    .shot-chart-axis {
+      fill: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .shot-chart-line {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .shot-chart-point {
+      stroke: #11161d;
+      stroke-width: 1.5;
+    }
+
+    .shot-chart-point.made {
+      fill: var(--green);
+    }
+
+    .shot-chart-point.missed {
+      fill: var(--red);
+    }
+
     .empty-history {
       padding: 25px;
       border: 1px dashed var(--border-bright);
@@ -581,6 +729,103 @@
       font-size: 0.78rem;
       line-height: 1.45;
       text-align: center;
+    }
+
+    .backup-body {
+      display: grid;
+      gap: 17px;
+      padding: 22px 24px 24px;
+    }
+
+    .backup-connect-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .backup-status-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 11px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .backup-status-indicator {
+      width: 11px;
+      height: 11px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .backup-status-card[data-state="saving"] .backup-status-indicator {
+      background: var(--orange);
+    }
+
+    .backup-status-card[data-state="success"] .backup-status-indicator {
+      background: var(--green);
+    }
+
+    .backup-status-card[data-state="error"] .backup-status-indicator {
+      background: var(--red);
+    }
+
+    .backup-status-copy strong,
+    .backup-status-copy span {
+      display: block;
+    }
+
+    .backup-status-copy strong {
+      font-size: 0.92rem;
+    }
+
+    .backup-status-copy span {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .backup-help {
+      margin: 0;
+      padding-left: 21px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+
+    .backup-help strong {
+      color: var(--text);
+    }
+
+    .backup-link {
+      width: fit-content;
+      border-radius: 7px;
+      color: var(--blue);
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-underline-offset: 3px;
+    }
+
+    .backup-connected-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .backup-connected-actions .disconnect-button {
+      grid-column: 1 / -1;
+      border-color: rgba(239, 107, 97, 0.35);
+      color: #ffaaa3;
+    }
+
+    .backup-public-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
     }
 
     dialog {
@@ -804,9 +1049,11 @@
         grid-column: 1;
       }
 
-      .remove-button {
+      .history-actions {
         grid-column: 2;
         grid-row: 1 / span 3;
+        align-self: start;
+        flex-direction: column;
       }
     }
 
@@ -818,12 +1065,24 @@
 
       .app-header {
         align-items: flex-start;
+        flex-wrap: wrap;
       }
 
-      .app-header > .primary-button {
+      .header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+      }
+
+      .header-actions .primary-button,
+      .header-actions .secondary-button {
         min-height: 46px;
         padding: 9px 13px;
         white-space: nowrap;
+      }
+
+      .backup-button {
+        justify-content: center;
       }
 
       .brand-mark {
@@ -894,7 +1153,13 @@
           <h1>Ballin'</h1>
         </div>
       </div>
-      <button class="primary-button" id="openImportButton" type="button">＋ Import run</button>
+      <div class="header-actions">
+        <button class="secondary-button backup-button" id="openBackupButton" type="button" data-state="disconnected">
+          <span class="backup-dot" aria-hidden="true"></span>
+          <span id="backupButtonText">GitHub backup</span>
+        </button>
+        <button class="primary-button" id="openImportButton" type="button">＋ Import run</button>
+      </div>
     </header>
 
     <section class="empty-state panel" id="emptyState">
@@ -1005,7 +1270,7 @@
       </section>
     </div>
 
-    <p class="data-note">Dashboard data stays in this browser. It is not uploaded or shared.</p>
+    <p class="data-note">Runs are saved in this browser. GitHub backup stores a public copy in this site's repository.</p>
   </main>
 
   <dialog id="importDialog" aria-labelledby="importTitle">
@@ -1051,6 +1316,67 @@
     </form>
   </dialog>
 
+  <dialog id="backupDialog" aria-labelledby="backupTitle">
+    <div class="dialog-header">
+      <h2 id="backupTitle">GitHub backup</h2>
+      <p>Back up your run history to <strong>data/ballin-runs.json</strong> in this site's repository.</p>
+    </div>
+    <div class="backup-body">
+      <div class="backup-status-card" id="backupStatusCard" data-state="disconnected">
+        <span class="backup-status-indicator" aria-hidden="true"></span>
+        <div class="backup-status-copy">
+          <strong id="backupStatusTitle">Not connected</strong>
+          <span id="backupStatusDetail">Your runs are currently saved only in this browser.</span>
+        </div>
+      </div>
+
+      <form class="backup-connect-form" id="backupConnectForm">
+        <div class="field">
+          <label for="githubToken">Fine-grained GitHub token</label>
+          <input
+            id="githubToken"
+            name="githubToken"
+            type="password"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="github_pat_…"
+            required
+          >
+          <p class="field-hint">The token stays in this browser and is never written to the backup file.</p>
+        </div>
+        <ol class="backup-help">
+          <li>Limit repository access to <strong>katamartini.github.io</strong>.</li>
+          <li>Set repository permission <strong>Contents</strong> to <strong>Read and write</strong>.</li>
+        </ol>
+        <a
+          class="backup-link"
+          href="https://github.com/settings/personal-access-tokens/new?name=Ballin%20backup&amp;description=Back%20up%20Ballin%20run%20data&amp;target_name=katamartini&amp;contents=write"
+          target="_blank"
+          rel="noreferrer"
+        >Create a restricted token on GitHub ↗</a>
+        <button class="primary-button" id="connectBackupButton" type="submit">Connect &amp; back up</button>
+      </form>
+
+      <div class="backup-connected-actions" id="backupConnectedActions" hidden>
+        <button class="primary-button" id="backupNowButton" type="button">Back up now</button>
+        <button class="secondary-button" id="restoreBackupButton" type="button">Restore from GitHub</button>
+        <button class="secondary-button disconnect-button" id="disconnectBackupButton" type="button">Disconnect this browser</button>
+      </div>
+
+      <a
+        class="backup-link"
+        id="backupFileLink"
+        href="https://github.com/katamartini/katamartini.github.io/blob/main/data/ballin-runs.json"
+        target="_blank"
+        rel="noreferrer"
+        hidden
+      >View backup file ↗</a>
+      <p class="backup-public-note">This is a public repository, so the backed-up run data can be viewed by anyone. Your GitHub token is not included.</p>
+      <button class="secondary-button" id="closeBackupButton" type="button">Close</button>
+    </div>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -1059,6 +1385,9 @@
 
       const STORAGE_KEY = "ballin.performance.v1";
       const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
+      const BACKUP_TOKEN_KEY = "ballin.githubBackupToken.v1";
+      const BACKUP_API_URL = "https://api.github.com/repos/katamartini/katamartini.github.io/contents/data/ballin-runs.json";
+      const GITHUB_API_VERSION = "2026-03-10";
       const MAX_SHOTS = 100;
       const MAX_TEN_SETS = 10;
       const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
@@ -1066,6 +1395,8 @@
       const elements = {
         emptyState: document.querySelector("#emptyState"),
         dashboard: document.querySelector("#dashboard"),
+        openBackupButton: document.querySelector("#openBackupButton"),
+        backupButtonText: document.querySelector("#backupButtonText"),
         openImportButton: document.querySelector("#openImportButton"),
         emptyImportButton: document.querySelector("#emptyImportButton"),
         percentageRing: document.querySelector("#percentageRing"),
@@ -1101,10 +1432,25 @@
         importPreview: document.querySelector("#importPreview"),
         saveImportButton: document.querySelector("#saveImportButton"),
         cancelImportButton: document.querySelector("#cancelImportButton"),
+        backupDialog: document.querySelector("#backupDialog"),
+        backupStatusCard: document.querySelector("#backupStatusCard"),
+        backupStatusTitle: document.querySelector("#backupStatusTitle"),
+        backupStatusDetail: document.querySelector("#backupStatusDetail"),
+        backupConnectForm: document.querySelector("#backupConnectForm"),
+        githubToken: document.querySelector("#githubToken"),
+        connectBackupButton: document.querySelector("#connectBackupButton"),
+        backupConnectedActions: document.querySelector("#backupConnectedActions"),
+        backupNowButton: document.querySelector("#backupNowButton"),
+        restoreBackupButton: document.querySelector("#restoreBackupButton"),
+        disconnectBackupButton: document.querySelector("#disconnectBackupButton"),
+        backupFileLink: document.querySelector("#backupFileLink"),
+        closeBackupButton: document.querySelector("#closeBackupButton"),
         toast: document.querySelector("#toast")
       };
 
       let toastTimer;
+      let backupQueue = Promise.resolve();
+      let backupUiState = { status: "disconnected", detail: "Your runs are currently saved only in this browser." };
       let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
       let state = loadState();
 
@@ -1167,17 +1513,44 @@
           .sort(sortRunsNewestFirst);
       }
 
+      function cleanDeletedRunIds(value) {
+        if (!Array.isArray(value)) return [];
+        return [...new Set(value.map((id) => String(id || "")).filter(Boolean))].sort();
+      }
+
+      function cleanState(value) {
+        const deletedRunIds = cleanDeletedRunIds(value?.deletedRunIds);
+        const deleted = new Set(deletedRunIds);
+        return {
+          runs: cleanRuns(value?.runs).filter((run) => !deleted.has(run.id)),
+          deletedRunIds
+        };
+      }
+
+      function mergeStates(localState, remoteState) {
+        const local = cleanState(localState);
+        const remote = cleanState(remoteState);
+        const deletedRunIds = [...new Set([...local.deletedRunIds, ...remote.deletedRunIds])];
+        const deleted = new Set(deletedRunIds);
+        const runsById = new Map(remote.runs.map((run) => [run.id, run]));
+        local.runs.forEach((run) => runsById.set(run.id, run));
+        return cleanState({
+          runs: [...runsById.values()].filter((run) => !deleted.has(run.id)),
+          deletedRunIds
+        });
+      }
+
       function loadState() {
         try {
           const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
           if (parsed && typeof parsed === "object") {
-            return { runs: cleanRuns(parsed.runs) };
+            return cleanState(parsed);
           }
         } catch {
           // Try the earlier tracker format before starting with an empty dashboard.
         }
 
-        return { runs: migrateLegacyRuns() };
+        return cleanState({ runs: migrateLegacyRuns(), deletedRunIds: [] });
       }
 
       function migrateLegacyRuns() {
@@ -1220,6 +1593,246 @@
           showToast("The dashboard could not save that change.");
           return false;
         }
+      }
+
+      function getBackupToken() {
+        return localStorage.getItem(BACKUP_TOKEN_KEY)?.trim() || "";
+      }
+
+      function githubHeaders(token) {
+        return {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": GITHUB_API_VERSION
+        };
+      }
+
+      function encodeBase64(value) {
+        const bytes = new TextEncoder().encode(value);
+        let binary = "";
+        bytes.forEach((byte) => {
+          binary += String.fromCharCode(byte);
+        });
+        return btoa(binary);
+      }
+
+      function decodeBase64(value) {
+        const binary = atob(value.replace(/\s/g, ""));
+        const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+        return new TextDecoder().decode(bytes);
+      }
+
+      function stateSignature(value) {
+        const cleaned = cleanState(value);
+        return JSON.stringify({ runs: cleaned.runs, deletedRunIds: cleaned.deletedRunIds });
+      }
+
+      function backupPayload(value) {
+        const cleaned = cleanState(value);
+        return JSON.stringify(
+          {
+            version: 1,
+            updatedAt: new Date().toISOString(),
+            runs: cleaned.runs,
+            deletedRunIds: cleaned.deletedRunIds
+          },
+          null,
+          2
+        ) + "\n";
+      }
+
+      function setBackupUi(status, detail) {
+        backupUiState = { status, detail };
+        const connected = Boolean(getBackupToken());
+        const titles = {
+          disconnected: "Not connected",
+          idle: "Connected",
+          saving: "Backing up…",
+          success: "Backup current",
+          error: "Backup needs attention"
+        };
+        const buttonLabels = {
+          disconnected: "GitHub backup",
+          idle: "GitHub connected",
+          saving: "Backing up…",
+          success: "Backed up",
+          error: "Backup issue"
+        };
+        const visibleStatus = connected ? status : "disconnected";
+
+        elements.openBackupButton.dataset.state = visibleStatus;
+        elements.backupButtonText.textContent = buttonLabels[visibleStatus];
+        elements.backupStatusCard.dataset.state = visibleStatus;
+        elements.backupStatusTitle.textContent = titles[visibleStatus];
+        elements.backupStatusDetail.textContent = connected
+          ? detail
+          : "Your runs are currently saved only in this browser.";
+        elements.backupConnectForm.hidden = connected;
+        elements.backupConnectedActions.hidden = !connected;
+        elements.backupFileLink.hidden = !connected;
+        elements.backupNowButton.disabled = visibleStatus === "saving";
+        elements.restoreBackupButton.disabled = visibleStatus === "saving";
+        elements.disconnectBackupButton.disabled = visibleStatus === "saving";
+      }
+
+      async function githubErrorMessage(response) {
+        let message = "GitHub could not update the backup.";
+        try {
+          const body = await response.json();
+          if (typeof body?.message === "string") message = body.message;
+        } catch {
+          // Keep the safe fallback message.
+        }
+
+        if (response.status === 401) return "The token was not accepted. Create a new fine-grained token and try again.";
+        if (response.status === 403) return "The token needs Contents: Read and write access to this repository.";
+        if (response.status === 404) return "The token cannot access the katamartini.github.io repository.";
+        if (response.status === 409) return "GitHub changed while this backup was saving. Try Back up now again.";
+        return `${message} (${response.status})`;
+      }
+
+      async function readGithubBackup(token) {
+        const response = await fetch(`${BACKUP_API_URL}?ref=main`, {
+          headers: githubHeaders(token),
+          cache: "no-store"
+        });
+        if (response.status === 404) {
+          return { sha: null, state: cleanState({ runs: [], deletedRunIds: [] }) };
+        }
+        if (!response.ok) throw new Error(await githubErrorMessage(response));
+
+        const file = await response.json();
+        if (file.type !== "file" || typeof file.content !== "string") {
+          throw new Error("The GitHub backup path is not a readable file.");
+        }
+
+        try {
+          return {
+            sha: String(file.sha || ""),
+            state: cleanState(JSON.parse(decodeBase64(file.content)))
+          };
+        } catch {
+          throw new Error("The GitHub backup file does not contain valid Ballin data.");
+        }
+      }
+
+      async function writeGithubBackup(token, currentFile) {
+        const body = {
+          message: "Back up Ballin run data",
+          content: encodeBase64(backupPayload(state)),
+          branch: "main"
+        };
+        if (currentFile.sha) body.sha = currentFile.sha;
+
+        const response = await fetch(BACKUP_API_URL, {
+          method: "PUT",
+          headers: {
+            ...githubHeaders(token),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) throw new Error(await githubErrorMessage(response));
+      }
+
+      async function backupToGithub() {
+        const token = getBackupToken();
+        if (!token) {
+          setBackupUi("disconnected", "Your runs are currently saved only in this browser.");
+          return false;
+        }
+
+        setBackupUi("saving", "Merging this browser's runs with the repository backup.");
+        try {
+          const currentFile = await readGithubBackup(token);
+          const merged = mergeStates(state, currentFile.state);
+          if (stateSignature(merged) !== stateSignature(state)) {
+            state = merged;
+            saveState(state);
+            render();
+          }
+
+          if (stateSignature(currentFile.state) !== stateSignature(state)) {
+            await writeGithubBackup(token, currentFile);
+          }
+
+          const time = new Intl.DateTimeFormat(undefined, {
+            hour: "numeric",
+            minute: "2-digit"
+          }).format(new Date());
+          setBackupUi("success", `All ${state.runs.length} ${state.runs.length === 1 ? "run is" : "runs are"} backed up · ${time}`);
+          return true;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "GitHub backup failed.";
+          setBackupUi("error", message);
+          showToast("GitHub backup needs attention.");
+          return false;
+        }
+      }
+
+      function queueBackup() {
+        if (!getBackupToken()) return Promise.resolve(false);
+        backupQueue = backupQueue.catch(() => false).then(backupToGithub);
+        return backupQueue;
+      }
+
+      function openBackup() {
+        if (getBackupToken() && backupUiState.status === "disconnected") {
+          setBackupUi("idle", "New run changes will be backed up automatically.");
+        } else {
+          setBackupUi(backupUiState.status, backupUiState.detail);
+        }
+        elements.backupDialog.showModal();
+        if (!getBackupToken()) setTimeout(() => elements.githubToken.focus(), 0);
+      }
+
+      function closeBackup() {
+        elements.backupDialog.close();
+      }
+
+      async function connectBackup(event) {
+        event.preventDefault();
+        const token = elements.githubToken.value.trim();
+        if (!token) return;
+
+        try {
+          localStorage.setItem(BACKUP_TOKEN_KEY, token);
+        } catch {
+          showToast("This browser could not save the GitHub connection.");
+          return;
+        }
+        elements.githubToken.value = "";
+        setBackupUi("idle", "Checking the repository and backing up your runs.");
+        const backedUp = await queueBackup();
+        if (backedUp) showToast("GitHub backup connected.");
+      }
+
+      async function restoreFromGithub() {
+        const token = getBackupToken();
+        if (!token) return;
+        const confirmed = window.confirm("Replace this browser's runs with the GitHub backup?");
+        if (!confirmed) return;
+
+        setBackupUi("saving", "Loading the repository backup.");
+        try {
+          const remote = await readGithubBackup(token);
+          state = cleanState(remote.state);
+          if (!saveState(state)) throw new Error("The restored data could not be saved in this browser.");
+          render();
+          setBackupUi("success", `Restored ${state.runs.length} ${state.runs.length === 1 ? "run" : "runs"} from GitHub.`);
+          showToast("GitHub backup restored.");
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "GitHub restore failed.";
+          setBackupUi("error", message);
+          showToast("GitHub restore needs attention.");
+        }
+      }
+
+      function disconnectBackup() {
+        localStorage.removeItem(BACKUP_TOKEN_KEY);
+        elements.githubToken.value = "";
+        setBackupUi("disconnected", "Your runs are currently saved only in this browser.");
+        showToast("GitHub backup disconnected from this browser.");
       }
 
       function sortRunsNewestFirst(first, second) {
@@ -1415,15 +2028,17 @@
           shots: [...importResult.shots],
           tenCounts: [...importResult.tenCounts]
         };
-        const nextState = {
-          runs: [run, ...state.runs].sort(sortRunsNewestFirst)
-        };
+        const nextState = cleanState({
+          runs: [run, ...state.runs].sort(sortRunsNewestFirst),
+          deletedRunIds: state.deletedRunIds
+        });
 
         if (saveState(nextState)) {
           state = nextState;
           closeImport();
           render();
           showToast("Run imported.");
+          queueBackup();
         }
       }
 
@@ -1434,11 +2049,15 @@
         );
         if (!confirmed) return;
 
-        const nextState = { runs: state.runs.filter((item) => item.id !== run.id) };
+        const nextState = cleanState({
+          runs: state.runs.filter((item) => item.id !== run.id),
+          deletedRunIds: [...state.deletedRunIds, run.id]
+        });
         if (saveState(nextState)) {
           state = nextState;
           render();
           showToast("Run removed.");
+          queueBackup();
         }
       }
 
@@ -1639,6 +2258,116 @@
         return `${firstLabel}: ${formatPercentage(first.percentage)} · ${secondLabel}: ${formatPercentage(second.percentage)}`;
       }
 
+      function createShotChart(run) {
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        const key = document.createElement("div");
+        const chartScroll = document.createElement("div");
+        const chart = svgElement("svg", {
+          class: "shot-chart",
+          viewBox: "0 0 700 230",
+          role: "img",
+          "aria-label": `${formatDate(run.date)} running percentage after every shot`
+        });
+        const title = svgElement("title");
+        const description = svgElement("desc");
+        const width = 700;
+        const height = 230;
+        const padding = { top: 18, right: 18, bottom: 34, left: 44 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+
+        details.className = "shot-detail";
+        summary.textContent = "Shot-by-shot graph";
+        key.className = "shot-chart-key";
+        chartScroll.className = "shot-chart-scroll";
+        title.textContent = `${formatDate(run.date)} shot-by-shot running percentage`;
+        description.textContent = "The orange line is the running free throw percentage. Green points are makes and red points are misses.";
+        chart.append(title, description);
+
+        [100, 75, 50, 25, 0].forEach((value) => {
+          const y = padding.top + ((100 - value) / 100) * chartHeight;
+          chart.appendChild(svgElement("line", {
+            class: "shot-chart-grid",
+            x1: padding.left,
+            x2: width - padding.right,
+            y1: y,
+            y2: y
+          }));
+          const label = svgElement("text", {
+            class: "shot-chart-axis",
+            x: padding.left - 8,
+            y: y + 4,
+            "text-anchor": "end"
+          });
+          label.textContent = `${value}%`;
+          chart.appendChild(label);
+        });
+
+        let makes = 0;
+        const points = run.shots.map((made, index) => {
+          if (made) makes += 1;
+          const value = (makes / (index + 1)) * 100;
+          const x = run.shots.length === 1
+            ? padding.left + chartWidth / 2
+            : padding.left + (index / (run.shots.length - 1)) * chartWidth;
+          const y = padding.top + ((100 - value) / 100) * chartHeight;
+          return { x, y, value, made, shot: index + 1, makes };
+        });
+
+        chart.appendChild(svgElement("polyline", {
+          class: "shot-chart-line",
+          points: points.map((point) => `${point.x},${point.y}`).join(" ")
+        }));
+
+        points.forEach((point) => {
+          const circle = svgElement("circle", {
+            class: `shot-chart-point ${point.made ? "made" : "missed"}`,
+            cx: point.x,
+            cy: point.y,
+            r: 3.6
+          });
+          const pointTitle = svgElement("title");
+          pointTitle.textContent = `Shot ${point.shot}: ${point.made ? "made" : "missed"} · ${formatPercentage(point.value)} running`;
+          circle.appendChild(pointTitle);
+          chart.appendChild(circle);
+        });
+
+        const xLabels = [...new Set([1, 25, 50, 75, run.shots.length].filter((value) => value <= run.shots.length))];
+        xLabels.forEach((shotNumber) => {
+          const x = run.shots.length === 1
+            ? padding.left + chartWidth / 2
+            : padding.left + ((shotNumber - 1) / (run.shots.length - 1)) * chartWidth;
+          const label = svgElement("text", {
+            class: "shot-chart-axis",
+            x,
+            y: height - 10,
+            "text-anchor": "middle"
+          });
+          label.textContent = shotNumber;
+          chart.appendChild(label);
+        });
+
+        [
+          { label: "Made", className: "made" },
+          { label: "Missed", className: "missed" }
+        ].forEach((item) => {
+          const keyItem = document.createElement("span");
+          const dot = document.createElement("span");
+          keyItem.className = "shot-key-item";
+          dot.className = `shot-key-dot ${item.className}`;
+          keyItem.append(dot, item.label);
+          key.appendChild(keyItem);
+        });
+        const lineKey = document.createElement("span");
+        lineKey.textContent = "Orange line = running percentage";
+        key.appendChild(lineKey);
+
+        chartScroll.appendChild(chart);
+        details.append(summary, key, chartScroll);
+        return details;
+      }
+
       function renderHistory() {
         elements.historyList.replaceChildren();
         elements.emptyHistory.hidden = state.runs.length > 0;
@@ -1653,12 +2382,14 @@
           const resultLine = document.createElement("span");
           const detail = document.createElement("p");
           const remove = document.createElement("button");
+          const actions = document.createElement("div");
 
           item.className = "history-item";
           date.className = "history-date";
           score.className = "history-score";
           detail.className = "history-detail";
           remove.className = "remove-button";
+          actions.className = "history-actions";
 
           date.textContent = formatDate(run.date);
           percentage.textContent = formatPercentage(result.percentage);
@@ -1672,7 +2403,9 @@
           remove.addEventListener("click", () => removeRun(run));
 
           score.append(percentage, resultLine);
-          item.append(date, score, detail, remove);
+          actions.appendChild(remove);
+          item.append(date, score, detail, actions);
+          if (run.format === "exact") item.appendChild(createShotChart(run));
           elements.historyList.appendChild(item);
         });
       }
@@ -1708,9 +2441,24 @@
       elements.importDialog.addEventListener("click", (event) => {
         if (event.target === elements.importDialog) closeImport();
       });
+      elements.openBackupButton.addEventListener("click", openBackup);
+      elements.closeBackupButton.addEventListener("click", closeBackup);
+      elements.backupConnectForm.addEventListener("submit", connectBackup);
+      elements.backupNowButton.addEventListener("click", queueBackup);
+      elements.restoreBackupButton.addEventListener("click", restoreFromGithub);
+      elements.disconnectBackupButton.addEventListener("click", disconnectBackup);
+      elements.backupDialog.addEventListener("click", (event) => {
+        if (event.target === elements.backupDialog) closeBackup();
+      });
 
       saveState(state);
       render();
+      if (getBackupToken()) {
+        setBackupUi("idle", "New run changes will be backed up automatically.");
+        queueBackup();
+      } else {
+        setBackupUi("disconnected", "Your runs are currently saved only in this browser.");
+      }
     })();
   </script>
 </body>
