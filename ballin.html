@@ -741,6 +741,11 @@
       stroke-width: 1;
     }
 
+    .shot-chart-grid.zero {
+      stroke: #718094;
+      stroke-width: 1.5;
+    }
+
     .shot-chart-axis {
       fill: var(--muted);
       font-size: 11px;
@@ -2430,16 +2435,42 @@
         return `${firstLabel}: ${formatPercentage(first.percentage)} · ${secondLabel}: ${formatPercentage(second.percentage)}`;
       }
 
+      function shotDifferentials(shots) {
+        let differential = 0;
+        return shots.map((made) => {
+          differential += made ? 1 : -1;
+          return differential;
+        });
+      }
+
+      function differentialAxis(values) {
+        const rawMin = Math.min(0, ...values);
+        const rawMax = Math.max(0, ...values);
+        const range = Math.max(rawMax - rawMin, 1);
+        const step = range <= 8 ? 2 : range <= 20 ? 5 : range <= 50 ? 10 : 20;
+        const min = Math.floor((rawMin - step) / step) * step;
+        const max = Math.ceil((rawMax + step) / step) * step;
+        const ticks = [];
+        for (let value = max; value >= min; value -= step) ticks.push(value);
+        return { min, max, ticks };
+      }
+
+      function formatDifferential(value) {
+        return value > 0 ? `+${value}` : String(value);
+      }
+
       function createShotChart(run) {
         const details = document.createElement("details");
         const summary = document.createElement("summary");
         const key = document.createElement("div");
         const chartScroll = document.createElement("div");
+        const differentials = shotDifferentials(run.shots);
+        const axis = differentialAxis(differentials);
         const chart = svgElement("svg", {
           class: "shot-chart",
           viewBox: "0 0 700 230",
           role: "img",
-          "aria-label": `${formatDate(run.date)} running percentage after every shot`
+          "aria-label": `${formatDate(run.date)} cumulative make-minus-miss differential after every shot`
         });
         const title = svgElement("title");
         const description = svgElement("desc");
@@ -2450,17 +2481,17 @@
         const chartHeight = height - padding.top - padding.bottom;
 
         details.className = "shot-detail";
-        summary.textContent = "Shot-by-shot graph";
+        summary.textContent = "Shot-by-shot differential";
         key.className = "shot-chart-key";
         chartScroll.className = "shot-chart-scroll";
-        title.textContent = `${formatDate(run.date)} shot-by-shot running percentage`;
-        description.textContent = "The orange line is the running free throw percentage. Green points are makes and red points are misses.";
+        title.textContent = `${formatDate(run.date)} shot-by-shot make-minus-miss differential`;
+        description.textContent = "The orange line rises by one for every make and falls by one for every miss. Green points are makes and red points are misses.";
         chart.append(title, description);
 
-        [100, 75, 50, 25, 0].forEach((value) => {
-          const y = padding.top + ((100 - value) / 100) * chartHeight;
+        axis.ticks.forEach((value) => {
+          const y = padding.top + ((axis.max - value) / (axis.max - axis.min)) * chartHeight;
           chart.appendChild(svgElement("line", {
-            class: "shot-chart-grid",
+            class: `shot-chart-grid${value === 0 ? " zero" : ""}`,
             x1: padding.left,
             x2: width - padding.right,
             y1: y,
@@ -2472,24 +2503,23 @@
             y: y + 4,
             "text-anchor": "end"
           });
-          label.textContent = `${value}%`;
+          label.textContent = formatDifferential(value);
           chart.appendChild(label);
         });
 
-        let makes = 0;
         const points = run.shots.map((made, index) => {
-          if (made) makes += 1;
-          const value = (makes / (index + 1)) * 100;
-          const x = run.shots.length === 1
-            ? padding.left + chartWidth / 2
-            : padding.left + (index / (run.shots.length - 1)) * chartWidth;
-          const y = padding.top + ((100 - value) / 100) * chartHeight;
-          return { x, y, value, made, shot: index + 1, makes };
+          const value = differentials[index];
+          const x = padding.left + ((index + 1) / run.shots.length) * chartWidth;
+          const y = padding.top + ((axis.max - value) / (axis.max - axis.min)) * chartHeight;
+          return { x, y, value, made, shot: index + 1 };
         });
+
+        const zeroY = padding.top + (axis.max / (axis.max - axis.min)) * chartHeight;
+        const linePoints = [{ x: padding.left, y: zeroY }, ...points];
 
         chart.appendChild(svgElement("polyline", {
           class: "shot-chart-line",
-          points: points.map((point) => `${point.x},${point.y}`).join(" ")
+          points: linePoints.map((point) => `${point.x},${point.y}`).join(" ")
         }));
 
         points.forEach((point) => {
@@ -2500,16 +2530,14 @@
             r: 3.6
           });
           const pointTitle = svgElement("title");
-          pointTitle.textContent = `Shot ${point.shot}: ${point.made ? "made" : "missed"} · ${formatPercentage(point.value)} running`;
+          pointTitle.textContent = `Shot ${point.shot}: ${point.made ? "made" : "missed"} · Differential ${formatDifferential(point.value)}`;
           circle.appendChild(pointTitle);
           chart.appendChild(circle);
         });
 
-        const xLabels = [...new Set([1, 25, 50, 75, run.shots.length].filter((value) => value <= run.shots.length))];
+        const xLabels = [...new Set([0, 25, 50, 75, run.shots.length].filter((value) => value <= run.shots.length))];
         xLabels.forEach((shotNumber) => {
-          const x = run.shots.length === 1
-            ? padding.left + chartWidth / 2
-            : padding.left + ((shotNumber - 1) / (run.shots.length - 1)) * chartWidth;
+          const x = padding.left + (shotNumber / run.shots.length) * chartWidth;
           const label = svgElement("text", {
             class: "shot-chart-axis",
             x,
@@ -2532,7 +2560,7 @@
           key.appendChild(keyItem);
         });
         const lineKey = document.createElement("span");
-        lineKey.textContent = "Orange line = running percentage";
+        lineKey.textContent = "Orange line = cumulative makes minus misses";
         key.appendChild(lineKey);
 
         chartScroll.appendChild(chart);
