@@ -3,27 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101317">
-  <meta name="description" content="A simple, private free throw tracker for 100-shot sessions.">
-  <title>Ballin' — Free Throw Tracker</title>
+  <meta name="theme-color" content="#0d1117">
+  <meta name="description" content="Free throw statistics and trends from Ballin' app sessions.">
+  <title>Ballin' — Free Throw Statistics</title>
   <style>
     :root {
       color-scheme: dark;
-      --page: #101317;
-      --surface: #181d23;
-      --surface-raised: #20262e;
-      --surface-soft: #262d36;
-      --border: #343c47;
-      --text: #f8f5ee;
-      --muted: #9ea8b4;
-      --orange: #f29a38;
-      --orange-dark: #b95d12;
-      --green: #36b97a;
-      --green-dark: #167149;
-      --red: #ed6257;
-      --red-dark: #a6332d;
-      --focus: #ffd18a;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+      --page: #0d1117;
+      --surface: #151b23;
+      --surface-raised: #1b222c;
+      --surface-soft: #222b36;
+      --border: #303a47;
+      --border-bright: #455262;
+      --text: #f8f5ed;
+      --muted: #9ca8b6;
+      --orange: #f39b3d;
+      --orange-soft: rgba(243, 155, 61, 0.13);
+      --green: #41c486;
+      --red: #ef6b61;
+      --blue: #68a9f4;
+      --focus: #ffd390;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
     }
 
     * {
@@ -39,60 +39,69 @@
       min-height: 100vh;
       margin: 0;
       background:
-        radial-gradient(circle at 50% -8rem, rgba(242, 154, 56, 0.18), transparent 30rem),
+        radial-gradient(circle at 72% -8rem, rgba(243, 155, 61, 0.17), transparent 34rem),
         var(--page);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
-    button {
+    button,
+    input,
+    textarea {
       font: inherit;
     }
 
-    button:focus-visible {
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 3px;
     }
 
     button:disabled {
       cursor: not-allowed;
-      filter: saturate(0.35);
       opacity: 0.42;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     .app-shell {
-      width: min(760px, 100%);
+      width: min(1120px, 100%);
       margin: 0 auto;
-      padding: max(22px, env(safe-area-inset-top)) 18px max(36px, env(safe-area-inset-bottom));
+      padding: max(24px, env(safe-area-inset-top)) 22px max(48px, env(safe-area-inset-bottom));
     }
 
     .app-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
+      gap: 18px;
+      margin-bottom: 22px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 13px;
+      min-width: 0;
     }
 
     .brand-mark {
       display: grid;
-      width: 48px;
-      height: 48px;
-      flex: 0 0 48px;
+      width: 50px;
+      height: 50px;
+      flex: 0 0 50px;
       place-items: center;
-      border: 1px solid rgba(255, 209, 138, 0.32);
+      border: 1px solid rgba(255, 211, 144, 0.32);
       border-radius: 15px;
       background: var(--orange);
       box-shadow: inset 0 -5px 0 rgba(117, 52, 5, 0.22);
-      color: #20140a;
-      font-size: 25px;
+      color: #241508;
+      font-size: 1.55rem;
+      font-weight: 950;
     }
 
     .brand-copy p,
@@ -102,296 +111,390 @@
 
     .brand-copy p {
       color: var(--orange);
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 850;
       letter-spacing: 0.13em;
       text-transform: uppercase;
     }
 
     .brand-copy h1 {
-      margin-top: 1px;
-      font-size: clamp(1.55rem, 7vw, 2.1rem);
+      margin-top: 2px;
+      font-size: clamp(1.65rem, 6vw, 2.3rem);
       line-height: 1;
       letter-spacing: -0.045em;
     }
 
-    .save-state {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .save-state::before {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--green);
-      content: "";
-      box-shadow: 0 0 0 4px rgba(54, 185, 122, 0.12);
-    }
-
-    .save-state[data-error="true"]::before {
-      background: var(--red);
-      box-shadow: 0 0 0 4px rgba(237, 98, 87, 0.12);
-    }
-
-    .session-card {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(20px, 5vw, 30px);
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      background: linear-gradient(145deg, rgba(32, 38, 46, 0.98), rgba(24, 29, 35, 0.98));
-      box-shadow: var(--shadow);
-    }
-
-    .session-card::after {
-      position: absolute;
-      right: -54px;
-      bottom: -92px;
-      width: 210px;
-      height: 210px;
-      border: 2px solid rgba(242, 154, 56, 0.09);
-      border-radius: 50%;
-      content: "";
-      pointer-events: none;
-    }
-
-    .scoreboard {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
-      gap: 18px;
-    }
-
-    .section-label {
-      margin: 0 0 7px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .attempts {
-      margin: 0;
-      font-size: clamp(2.25rem, 12vw, 4.2rem);
-      line-height: 0.9;
-      letter-spacing: -0.065em;
-    }
-
-    .attempts span {
-      color: var(--muted);
-      font-size: 0.45em;
-      font-weight: 750;
-      letter-spacing: -0.025em;
-    }
-
-    .percentage-wrap {
-      text-align: right;
-    }
-
-    .percentage {
-      display: block;
-      color: var(--orange);
-      font-size: clamp(2.25rem, 13vw, 4.5rem);
-      font-variant-numeric: tabular-nums;
-      font-weight: 900;
-      line-height: 0.86;
-      letter-spacing: -0.065em;
-    }
-
-    .percentage-label {
-      display: block;
-      margin-top: 9px;
-      color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .progress-track {
-      height: 10px;
-      margin: 24px 0 18px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #0f1317;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
-    .progress-fill {
-      width: 0;
-      height: 100%;
-      border-radius: inherit;
-      background: var(--orange);
-      transition: width 180ms ease-out;
-    }
-
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-    }
-
-    .stat {
-      min-width: 0;
-      padding: 13px 10px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(13, 17, 21, 0.45);
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: clamp(1.35rem, 6vw, 1.85rem);
-      font-variant-numeric: tabular-nums;
-      line-height: 1;
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .stat.made strong {
-      color: var(--green);
-    }
-
-    .stat.missed strong {
-      color: var(--red);
-    }
-
-    .complete-message {
-      margin: 16px 0 0;
-      padding: 13px 15px;
-      border: 1px solid rgba(242, 154, 56, 0.36);
+    .primary-button,
+    .secondary-button,
+    .remove-button {
       border-radius: 13px;
-      background: rgba(242, 154, 56, 0.1);
-      color: #ffd59b;
-      font-size: 0.95rem;
-      font-weight: 760;
-      text-align: center;
-    }
-
-    .complete-message[hidden] {
-      display: none;
-    }
-
-    .shot-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .shot-button {
-      min-height: 104px;
-      border: 0;
-      border-radius: 20px;
-      color: white;
       cursor: pointer;
-      font-size: clamp(1.2rem, 5vw, 1.55rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      transition: transform 90ms ease, filter 120ms ease;
+      font-weight: 800;
+      transition: transform 90ms ease, filter 120ms ease, background 120ms ease;
     }
 
-    .shot-button:active:not(:disabled) {
-      transform: scale(0.975);
-    }
-
-    .shot-button.made {
-      border-bottom: 5px solid var(--green-dark);
-      background: var(--green);
-    }
-
-    .shot-button.missed {
-      border-bottom: 5px solid var(--red-dark);
-      background: var(--red);
-    }
-
-    .shot-button .key {
-      display: block;
-      margin-top: 5px;
-      font-size: 0.72rem;
-      font-weight: 750;
-      letter-spacing: 0.06em;
-      opacity: 0.72;
-      text-transform: uppercase;
-    }
-
-    .utility-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .utility-button {
-      min-height: 54px;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      background: var(--surface-raised);
-      color: var(--text);
-      cursor: pointer;
-      font-size: 0.92rem;
-      font-weight: 780;
-      transition: background 120ms ease, transform 90ms ease;
-    }
-
-    .utility-button:hover:not(:disabled) {
-      background: var(--surface-soft);
-    }
-
-    .utility-button:active:not(:disabled) {
+    .primary-button:active:not(:disabled),
+    .secondary-button:active:not(:disabled),
+    .remove-button:active:not(:disabled) {
       transform: translateY(1px);
     }
 
-    .new-session-button {
+    .primary-button {
+      min-height: 50px;
+      padding: 11px 18px;
+      border: 1px solid #b85b13;
+      background: var(--orange);
+      color: #211408;
+    }
+
+    .primary-button:hover:not(:disabled) {
+      filter: brightness(1.07);
+    }
+
+    .secondary-button {
+      min-height: 46px;
+      padding: 10px 15px;
+      border: 1px solid var(--border-bright);
+      background: var(--surface-soft);
+      color: var(--text);
+    }
+
+    .secondary-button:hover:not(:disabled) {
+      background: #2a3542;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(290px, 0.85fr) minmax(0, 1.65fr);
+      gap: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(21, 27, 35, 0.96);
+      box-shadow: 0 14px 44px rgba(0, 0, 0, 0.16);
+    }
+
+    .overall-panel {
+      display: flex;
+      min-height: 270px;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+    }
+
+    .overall-layout {
+      display: grid;
+      grid-template-columns: 142px minmax(0, 1fr);
+      align-items: center;
+      gap: 24px;
       width: 100%;
-      min-height: 48px;
-      margin-top: 5px;
-      border: 0;
-      background: transparent;
+    }
+
+    .percentage-ring {
+      --progress: 0deg;
+      position: relative;
+      display: grid;
+      width: 142px;
+      height: 142px;
+      place-items: center;
+      border-radius: 50%;
+      background: conic-gradient(var(--orange) var(--progress), #27303a 0);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .percentage-ring::before {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--surface);
+      content: "";
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .percentage-ring strong {
+      position: relative;
+      font-size: 2.25rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+    }
+
+    .overall-copy h2,
+    .panel-title h2,
+    .history-heading h2 {
+      margin: 0;
+      letter-spacing: -0.035em;
+    }
+
+    .overall-copy h2 {
+      font-size: 1.45rem;
+    }
+
+    .overall-copy p {
+      margin: 8px 0 0;
       color: var(--muted);
-      cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .made-total {
+      display: block;
+      margin-top: 18px;
+      color: var(--text);
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 820;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .summary-card {
+      display: flex;
+      min-height: 128px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+    }
+
+    .summary-card span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .summary-card strong {
+      margin-top: 18px;
+      font-size: clamp(1.8rem, 5vw, 2.65rem);
+      font-variant-numeric: tabular-nums;
+      font-weight: 920;
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .summary-card small {
+      display: block;
+      min-height: 1.2em;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 650;
+    }
+
+    .change-positive {
+      color: var(--green) !important;
+    }
+
+    .change-negative {
+      color: var(--red) !important;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      display: grid;
+      min-height: 240px;
+      place-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .empty-state-inner {
+      max-width: 500px;
+    }
+
+    .empty-state h2 {
+      margin: 0;
+      font-size: clamp(1.65rem, 5vw, 2.2rem);
+      letter-spacing: -0.045em;
+    }
+
+    .empty-state p {
+      margin: 10px auto 20px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .trend-panel,
+    .blocks-panel {
+      padding: 22px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .panel-title h2 {
+      font-size: 1.22rem;
+    }
+
+    .panel-title span {
+      color: var(--muted);
+      font-size: 0.8rem;
       font-weight: 700;
     }
 
-    .history-section {
-      margin-top: 32px;
+    .chart-wrap {
+      min-height: 250px;
     }
 
-    .history-header {
+    .trend-chart {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .chart-grid-line {
+      stroke: #2d3742;
+      stroke-width: 1;
+    }
+
+    .chart-grid-label {
+      fill: var(--muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .chart-line {
+      fill: none;
+      stroke: var(--orange);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 4;
+    }
+
+    .chart-area {
+      fill: url(#areaGradient);
+      stroke: none;
+    }
+
+    .chart-point {
+      fill: var(--surface);
+      stroke: var(--orange);
+      stroke-width: 3;
+    }
+
+    .chart-empty {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .block-list {
+      display: grid;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .block-topline {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .block-topline span {
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .block-topline strong {
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .block-track {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #29323c;
+    }
+
+    .block-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+      transition: width 180ms ease-out;
+    }
+
+    .streak-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .streak-stat {
+      padding: 13px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .streak-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 750;
+    }
+
+    .streak-stat strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 1.45rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .history-section {
+      margin-top: 28px;
+    }
+
+    .history-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
       margin-bottom: 12px;
     }
 
-    .history-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      letter-spacing: -0.035em;
+    .history-heading h2 {
+      font-size: 1.55rem;
     }
 
-    .history-header span {
+    .history-heading span {
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 700;
     }
 
@@ -403,117 +506,190 @@
       list-style: none;
     }
 
-    .history-item,
-    .empty-history {
+    .history-item {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      padding: 17px 18px;
       border: 1px solid var(--border);
       border-radius: 17px;
       background: var(--surface);
     }
 
-    .history-item {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 14px;
-      padding: 15px;
+    .history-date,
+    .history-score,
+    .history-detail {
+      margin: 0;
     }
 
     .history-date {
-      margin: 0;
-      font-size: 0.95rem;
-      font-weight: 800;
+      font-size: 0.93rem;
+      font-weight: 820;
     }
 
-    .history-summary {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 0.82rem;
+    .history-score strong {
+      display: block;
+      font-size: 1.18rem;
       font-variant-numeric: tabular-nums;
+    }
+
+    .history-score span,
+    .history-detail {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
       font-weight: 650;
     }
 
-    .copy-history {
-      min-width: 76px;
-      min-height: 44px;
-      border: 1px solid rgba(242, 154, 56, 0.5);
-      border-radius: 12px;
-      background: rgba(242, 154, 56, 0.1);
-      color: #ffc980;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 800;
+    .remove-button {
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.79rem;
+    }
+
+    .remove-button:hover {
+      border-color: rgba(239, 107, 97, 0.55);
+      background: rgba(239, 107, 97, 0.08);
+      color: #ffaaa3;
     }
 
     .empty-history {
-      margin: 0;
-      padding: 22px;
+      padding: 25px;
+      border: 1px dashed var(--border-bright);
+      border-radius: 17px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       line-height: 1.5;
       text-align: center;
     }
 
-    .empty-history[hidden] {
-      display: none;
+    .data-note {
+      margin: 18px 0 0;
+      color: #7f8b99;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      text-align: center;
     }
 
     dialog {
-      width: min(420px, calc(100% - 32px));
+      width: min(520px, calc(100% - 30px));
+      max-height: calc(100vh - 30px);
       padding: 0;
-      border: 1px solid var(--border);
-      border-radius: 20px;
+      overflow: auto;
+      border: 1px solid var(--border-bright);
+      border-radius: 22px;
       background: var(--surface-raised);
       color: var(--text);
       box-shadow: var(--shadow);
     }
 
     dialog::backdrop {
-      background: rgba(4, 7, 10, 0.74);
+      background: rgba(4, 7, 10, 0.78);
       backdrop-filter: blur(3px);
     }
 
-    .dialog-body {
-      padding: 24px 24px 10px;
+    .dialog-header {
+      padding: 24px 24px 0;
     }
 
-    .dialog-body h2 {
+    .dialog-header h2 {
       margin: 0;
-      font-size: 1.35rem;
+      font-size: 1.45rem;
+      letter-spacing: -0.035em;
     }
 
-    .dialog-body p {
-      margin: 10px 0 0;
+    .dialog-header p {
+      margin: 9px 0 0;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       line-height: 1.5;
+    }
+
+    .import-form {
+      display: grid;
+      gap: 17px;
+      padding: 22px 24px 24px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border-bright);
+      border-radius: 13px;
+      background: #11161d;
+      color: var(--text);
+    }
+
+    .field input {
+      min-height: 48px;
+      padding: 10px 12px;
+    }
+
+    .field textarea {
+      min-height: 190px;
+      padding: 13px;
+      resize: vertical;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .field-hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .import-preview {
+      min-height: 49px;
+      margin: 0;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .import-preview[data-valid="true"] {
+      border-color: rgba(65, 196, 134, 0.45);
+      background: rgba(65, 196, 134, 0.08);
+      color: #8ee0b8;
+    }
+
+    .import-preview[data-error="true"] {
+      border-color: rgba(239, 107, 97, 0.5);
+      background: rgba(239, 107, 97, 0.08);
+      color: #ffaaa3;
     }
 
     .dialog-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 16px 24px 24px;
-    }
-
-    .dialog-actions button {
-      min-height: 48px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: var(--surface-soft);
-      color: var(--text);
-      cursor: pointer;
-      font-weight: 800;
-    }
-
-    .dialog-actions .confirm {
-      border-color: var(--orange-dark);
-      background: var(--orange);
-      color: #241408;
     }
 
     .toast {
       position: fixed;
-      z-index: 10;
+      z-index: 20;
       right: 16px;
       bottom: max(18px, env(safe-area-inset-bottom));
       left: 16px;
@@ -521,10 +697,10 @@
       max-width: calc(100% - 32px);
       margin: auto;
       padding: 12px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-bright);
       border-radius: 999px;
-      background: #282f38;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+      background: #28313c;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.42);
       color: var(--text);
       font-size: 0.88rem;
       font-weight: 750;
@@ -539,30 +715,92 @@
       transform: translateY(0);
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 850px) {
+      .dashboard-grid,
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .overall-panel {
+        min-height: 230px;
+      }
+
+      .history-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .history-score,
+      .history-detail {
+        grid-column: 1;
+      }
+
+      .remove-button {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+      }
+    }
+
+    @media (max-width: 560px) {
       .app-shell {
         padding-right: 14px;
         padding-left: 14px;
       }
 
-      .save-state {
-        overflow: hidden;
-        max-width: 94px;
-        text-overflow: ellipsis;
+      .app-header {
+        align-items: flex-start;
       }
 
-      .session-card {
-        border-radius: 21px;
+      .app-header > .primary-button {
+        min-height: 46px;
+        padding: 9px 13px;
+        white-space: nowrap;
       }
 
-      .shot-button {
-        min-height: 96px;
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+        border-radius: 13px;
       }
 
-      .utility-button {
-        padding-right: 8px;
-        padding-left: 8px;
-        font-size: 0.84rem;
+      .brand-copy p {
+        font-size: 0.68rem;
+      }
+
+      .overall-layout {
+        grid-template-columns: 118px minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .percentage-ring {
+        width: 118px;
+        height: 118px;
+      }
+
+      .percentage-ring::before {
+        width: 91px;
+        height: 91px;
+      }
+
+      .percentage-ring strong {
+        font-size: 1.88rem;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .summary-card:last-child {
+        grid-column: 1 / -1;
+        min-height: 112px;
+      }
+
+      .chart-wrap {
+        min-height: 190px;
+      }
+
+      .history-item {
+        gap: 9px 12px;
       }
     }
 
@@ -580,102 +818,153 @@
   <main class="app-shell">
     <header class="app-header">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">●</div>
+        <div class="brand-mark" aria-hidden="true">%</div>
         <div class="brand-copy">
-          <p>Free throw tracker</p>
+          <p>Free throw performance</p>
           <h1>Ballin'</h1>
         </div>
       </div>
-      <div class="save-state" id="saveState">Saved locally</div>
+      <button class="primary-button" id="openImportButton" type="button">＋ Import run</button>
     </header>
 
-    <section class="session-card" aria-labelledby="sessionTitle">
-      <div class="scoreboard">
-        <div>
-          <p class="section-label" id="sessionTitle">Current session</p>
-          <p class="attempts"><strong id="attemptCount">0</strong> <span>/ 100</span></p>
-        </div>
-        <div class="percentage-wrap">
-          <strong class="percentage" id="percentage">0%</strong>
-          <span class="percentage-label">shooting</span>
-        </div>
+    <section class="empty-state panel" id="emptyState">
+      <div class="empty-state-inner">
+        <h2>Bring in your first run</h2>
+        <p>In the app, copy a session as 1s and 0s. Paste it here to start building your performance history.</p>
+        <button class="primary-button" id="emptyImportButton" type="button">Import app data</button>
       </div>
-
-      <div
-        class="progress-track"
-        id="progressTrack"
-        role="progressbar"
-        aria-label="Session progress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="0"
-      >
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat made">
-          <strong id="madeCount">0</strong>
-          <span>Made</span>
-        </div>
-        <div class="stat missed">
-          <strong id="missedCount">0</strong>
-          <span>Missed</span>
-        </div>
-        <div class="stat">
-          <strong id="remainingCount">100</strong>
-          <span>Left</span>
-        </div>
-      </div>
-
-      <p class="complete-message" id="completeMessage" hidden>
-        Set complete. Start a new session to save it to History.
-      </p>
     </section>
 
-    <section aria-label="Record a shot">
-      <div class="shot-actions">
-        <button class="shot-button made" id="madeButton" type="button">
-          ✓ Made
-          <span class="key">M or 1</span>
-        </button>
-        <button class="shot-button missed" id="missedButton" type="button">
-          × Miss
-          <span class="key">X or 0</span>
-        </button>
-      </div>
+    <div id="dashboard" hidden>
+      <section class="dashboard-grid" aria-label="Performance overview">
+        <article class="overall-panel panel">
+          <div class="overall-layout">
+            <div
+              class="percentage-ring"
+              id="percentageRing"
+              role="img"
+              aria-label="Overall free throw percentage"
+            >
+              <strong id="overallPercentage">—</strong>
+            </div>
+            <div class="overall-copy">
+              <h2>Overall</h2>
+              <p>Every shot across every imported run.</p>
+              <strong class="made-total" id="overallMade">—</strong>
+            </div>
+          </div>
+        </article>
 
-      <div class="utility-actions">
-        <button class="utility-button" id="undoButton" type="button" disabled>↶ Undo</button>
-        <button class="utility-button" id="copyButton" type="button" disabled>Copy 1s &amp; 0s</button>
-      </div>
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span>Runs</span>
+            <strong id="runCount">0</strong>
+            <small id="totalShots">0 total shots</small>
+          </article>
+          <article class="summary-card">
+            <span>Average run</span>
+            <strong id="averageRun">—</strong>
+            <small id="recentChange">Needs 2 runs</small>
+          </article>
+          <article class="summary-card">
+            <span>Best run</span>
+            <strong id="bestRun">—</strong>
+            <small id="bestRunDate">No runs yet</small>
+          </article>
+        </div>
+      </section>
 
-      <button class="new-session-button" id="newSessionButton" type="button" disabled>
-        Start a new session
-      </button>
-    </section>
+      <section class="analytics-grid">
+        <article class="trend-panel panel">
+          <div class="panel-title">
+            <h2>Run trend</h2>
+            <span>Last 12 runs</span>
+          </div>
+          <div class="chart-wrap" id="chartWrap">
+            <svg
+              class="trend-chart"
+              id="trendChart"
+              viewBox="0 0 700 260"
+              role="img"
+              aria-labelledby="trendChartTitle trendChartDescription"
+            >
+              <title id="trendChartTitle">Free throw percentage by run</title>
+              <desc id="trendChartDescription">Your free throw percentage over recent imported runs.</desc>
+              <defs>
+                <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#f39b3d" stop-opacity="0.26"></stop>
+                  <stop offset="100%" stop-color="#f39b3d" stop-opacity="0"></stop>
+                </linearGradient>
+              </defs>
+              <g id="chartGrid"></g>
+              <path class="chart-area" id="chartArea"></path>
+              <polyline class="chart-line" id="chartLine"></polyline>
+              <g id="chartPoints"></g>
+            </svg>
+            <p class="chart-empty" id="chartEmpty" hidden>Import a second run to see a trend line.</p>
+          </div>
+        </article>
 
-    <section class="history-section" aria-labelledby="historyTitle">
-      <div class="history-header">
-        <h2 id="historyTitle">History</h2>
-        <span id="historyCount">0 sessions</span>
-      </div>
-      <p class="empty-history" id="emptyHistory">
-        Start a new session to archive the current result here.
-      </p>
-      <ol class="history-list" id="historyList"></ol>
-    </section>
+        <article class="blocks-panel panel">
+          <div class="panel-title">
+            <h2>Shot blocks</h2>
+            <span>All runs</span>
+          </div>
+          <ol class="block-list" id="blockList"></ol>
+          <div class="streak-row">
+            <div class="streak-stat">
+              <span>Best make streak</span>
+              <strong id="bestStreak">—</strong>
+            </div>
+            <div class="streak-stat">
+              <span>Last 10 shots</span>
+              <strong id="finishPercentage">—</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="history-section" aria-labelledby="historyTitle">
+        <div class="history-heading">
+          <h2 id="historyTitle">Runs</h2>
+          <span id="historyCount">0 imported</span>
+        </div>
+        <ol class="history-list" id="historyList"></ol>
+        <p class="empty-history" id="emptyHistory" hidden>No runs have been imported.</p>
+      </section>
+    </div>
+
+    <p class="data-note">Dashboard data stays in this browser. It is not uploaded or shared.</p>
   </main>
 
-  <dialog id="newSessionDialog" aria-labelledby="dialogTitle">
-    <div class="dialog-body">
-      <h2 id="dialogTitle">Start a new session?</h2>
-      <p>The current result will be saved to History before the counter returns to zero.</p>
+  <dialog id="importDialog" aria-labelledby="importTitle">
+    <div class="dialog-header">
+      <h2 id="importTitle">Import an app run</h2>
+      <p>Tap Copy in the app, then paste the 1s and 0s below. One run can contain up to 100 shots.</p>
     </div>
-    <div class="dialog-actions">
-      <button id="cancelNewSession" type="button">Cancel</button>
-      <button class="confirm" id="confirmNewSession" type="button">Save &amp; start over</button>
-    </div>
+    <form class="import-form" id="importForm">
+      <div class="field">
+        <label for="runDate">Run date</label>
+        <input id="runDate" name="runDate" type="date" required>
+      </div>
+      <div class="field">
+        <label for="runData">Shot results</label>
+        <textarea
+          id="runData"
+          name="runData"
+          inputmode="numeric"
+          placeholder="1&#10;0&#10;1&#10;1&#10;0"
+          aria-describedby="runDataHint importPreview"
+          required
+        ></textarea>
+        <p class="field-hint" id="runDataHint">1 = made · 0 = missed · one result per line</p>
+      </div>
+      <p class="import-preview" id="importPreview" aria-live="polite">Paste a run to preview it.</p>
+      <div class="dialog-actions">
+        <button class="secondary-button" id="cancelImportButton" type="button">Cancel</button>
+        <button class="primary-button" id="saveImportButton" type="submit" disabled>Save run</button>
+      </div>
+    </form>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -684,177 +973,491 @@
     (() => {
       "use strict";
 
-      const STORAGE_KEY = "ballin.freeThrowTracker.v1";
-      const SESSION_SIZE = 100;
+      const STORAGE_KEY = "ballin.performance.v1";
+      const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
+      const MAX_SHOTS = 100;
+      const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
       const elements = {
-        attemptCount: document.querySelector("#attemptCount"),
-        madeCount: document.querySelector("#madeCount"),
-        missedCount: document.querySelector("#missedCount"),
-        remainingCount: document.querySelector("#remainingCount"),
-        percentage: document.querySelector("#percentage"),
-        progressTrack: document.querySelector("#progressTrack"),
-        progressFill: document.querySelector("#progressFill"),
-        completeMessage: document.querySelector("#completeMessage"),
-        madeButton: document.querySelector("#madeButton"),
-        missedButton: document.querySelector("#missedButton"),
-        undoButton: document.querySelector("#undoButton"),
-        copyButton: document.querySelector("#copyButton"),
-        newSessionButton: document.querySelector("#newSessionButton"),
+        emptyState: document.querySelector("#emptyState"),
+        dashboard: document.querySelector("#dashboard"),
+        openImportButton: document.querySelector("#openImportButton"),
+        emptyImportButton: document.querySelector("#emptyImportButton"),
+        percentageRing: document.querySelector("#percentageRing"),
+        overallPercentage: document.querySelector("#overallPercentage"),
+        overallMade: document.querySelector("#overallMade"),
+        runCount: document.querySelector("#runCount"),
+        totalShots: document.querySelector("#totalShots"),
+        averageRun: document.querySelector("#averageRun"),
+        recentChange: document.querySelector("#recentChange"),
+        bestRun: document.querySelector("#bestRun"),
+        bestRunDate: document.querySelector("#bestRunDate"),
+        trendChart: document.querySelector("#trendChart"),
+        trendChartDescription: document.querySelector("#trendChartDescription"),
+        chartGrid: document.querySelector("#chartGrid"),
+        chartArea: document.querySelector("#chartArea"),
+        chartLine: document.querySelector("#chartLine"),
+        chartPoints: document.querySelector("#chartPoints"),
+        chartEmpty: document.querySelector("#chartEmpty"),
+        blockList: document.querySelector("#blockList"),
+        bestStreak: document.querySelector("#bestStreak"),
+        finishPercentage: document.querySelector("#finishPercentage"),
         historyCount: document.querySelector("#historyCount"),
-        emptyHistory: document.querySelector("#emptyHistory"),
         historyList: document.querySelector("#historyList"),
-        saveState: document.querySelector("#saveState"),
-        dialog: document.querySelector("#newSessionDialog"),
-        cancelNewSession: document.querySelector("#cancelNewSession"),
-        confirmNewSession: document.querySelector("#confirmNewSession"),
+        emptyHistory: document.querySelector("#emptyHistory"),
+        importDialog: document.querySelector("#importDialog"),
+        importForm: document.querySelector("#importForm"),
+        runDate: document.querySelector("#runDate"),
+        runData: document.querySelector("#runData"),
+        importPreview: document.querySelector("#importPreview"),
+        saveImportButton: document.querySelector("#saveImportButton"),
+        cancelImportButton: document.querySelector("#cancelImportButton"),
         toast: document.querySelector("#toast")
       };
 
       let toastTimer;
+      let importResult = { valid: false, shots: [], message: "" };
       let state = loadState();
-
-      function cleanShots(value) {
-        if (!Array.isArray(value)) return [];
-
-        return value
-          .filter((shot) => shot === true || shot === false || shot === 1 || shot === 0)
-          .slice(0, SESSION_SIZE)
-          .map((shot) => shot === true || shot === 1);
-      }
-
-      function loadState() {
-        try {
-          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-          if (!parsed || typeof parsed !== "object") throw new Error("No saved state");
-
-          const sessions = Array.isArray(parsed.sessions)
-            ? parsed.sessions
-                .map((session) => ({
-                  id: String(session?.id || ""),
-                  savedAt: Number(session?.savedAt),
-                  shots: cleanShots(session?.shots)
-                }))
-                .filter((session) => session.id && session.savedAt > 0 && session.shots.length > 0)
-            : [];
-
-          return {
-            current: cleanShots(parsed.current),
-            sessions
-          };
-        } catch {
-          return { current: [], sessions: [] };
-        }
-      }
-
-      function saveState(nextState) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
-          elements.saveState.textContent = "Saved locally";
-          elements.saveState.dataset.error = "false";
-          return true;
-        } catch {
-          elements.saveState.textContent = "Save failed";
-          elements.saveState.dataset.error = "true";
-          showToast("That change could not be saved.");
-          return false;
-        }
-      }
-
-      function counts(shots) {
-        const made = shots.reduce((total, shot) => total + (shot ? 1 : 0), 0);
-        const attempts = shots.length;
-        return {
-          attempts,
-          made,
-          missed: attempts - made,
-          percentage: attempts === 0 ? 0 : Math.round((made / attempts) * 100)
-        };
-      }
-
-      function recordShot(made) {
-        if (state.current.length >= SESSION_SIZE) return;
-
-        const nextState = {
-          ...state,
-          current: [...state.current, made]
-        };
-
-        if (saveState(nextState)) {
-          state = nextState;
-          if (navigator.vibrate) navigator.vibrate(16);
-          renderCurrent();
-        }
-      }
-
-      function undoShot() {
-        if (state.current.length === 0) return;
-
-        const nextState = {
-          ...state,
-          current: state.current.slice(0, -1)
-        };
-
-        if (saveState(nextState)) {
-          state = nextState;
-          if (navigator.vibrate) navigator.vibrate(10);
-          renderCurrent();
-        }
-      }
 
       function makeId() {
         if (window.crypto?.randomUUID) return window.crypto.randomUUID();
         return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
       }
 
-      function archiveAndReset() {
-        if (state.current.length === 0) return;
+      function todayForInput() {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        return now.toISOString().slice(0, 10);
+      }
 
-        const archived = {
+      function dateFromTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        return date.toISOString().slice(0, 10);
+      }
+
+      function cleanShots(value) {
+        if (!Array.isArray(value)) return [];
+
+        return value
+          .filter((shot) => shot === true || shot === false || shot === 1 || shot === 0)
+          .slice(0, MAX_SHOTS)
+          .map((shot) => shot === true || shot === 1);
+      }
+
+      function cleanRuns(value) {
+        if (!Array.isArray(value)) return [];
+
+        return value
+          .map((run) => ({
+            id: String(run?.id || ""),
+            date: /^\d{4}-\d{2}-\d{2}$/.test(String(run?.date || "")) ? run.date : "",
+            importedAt: Number(run?.importedAt) || 0,
+            shots: cleanShots(run?.shots)
+          }))
+          .filter((run) => run.id && run.date && run.shots.length > 0)
+          .sort(sortRunsNewestFirst);
+      }
+
+      function loadState() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (parsed && typeof parsed === "object") {
+            return { runs: cleanRuns(parsed.runs) };
+          }
+        } catch {
+          // Try the earlier tracker format before starting with an empty dashboard.
+        }
+
+        return { runs: migrateLegacyRuns() };
+      }
+
+      function migrateLegacyRuns() {
+        try {
+          const legacy = JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY));
+          if (!legacy || typeof legacy !== "object") return [];
+
+          const migrated = Array.isArray(legacy.sessions)
+            ? legacy.sessions.map((session) => ({
+                id: String(session?.id || makeId()),
+                date: dateFromTimestamp(Number(session?.savedAt) || Date.now()),
+                importedAt: Number(session?.savedAt) || Date.now(),
+                shots: cleanShots(session?.shots)
+              }))
+            : [];
+
+          const current = cleanShots(legacy.current);
+          if (current.length > 0) {
+            migrated.push({
+              id: makeId(),
+              date: todayForInput(),
+              importedAt: Date.now(),
+              shots: current
+            });
+          }
+
+          return cleanRuns(migrated);
+        } catch {
+          return [];
+        }
+      }
+
+      function saveState(nextState) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
+          return true;
+        } catch {
+          showToast("The dashboard could not save that change.");
+          return false;
+        }
+      }
+
+      function sortRunsNewestFirst(first, second) {
+        const byDate = second.date.localeCompare(first.date);
+        if (byDate !== 0) return byDate;
+        return second.importedAt - first.importedAt;
+      }
+
+      function summarize(shots) {
+        const makes = shots.reduce((total, shot) => total + (shot ? 1 : 0), 0);
+        const attempts = shots.length;
+        return {
+          makes,
+          attempts,
+          misses: attempts - makes,
+          percentage: attempts ? (makes / attempts) * 100 : null
+        };
+      }
+
+      function formatPercentage(value) {
+        if (value === null || Number.isNaN(value)) return "—";
+        const rounded = Math.round(value * 10) / 10;
+        return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}%`;
+      }
+
+      function formatDate(dateValue) {
+        const [year, month, day] = dateValue.split("-").map(Number);
+        return new Intl.DateTimeFormat(undefined, {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        }).format(new Date(year, month - 1, day));
+      }
+
+      function parseImport(value) {
+        const trimmed = value.trim();
+        if (!trimmed) {
+          return { valid: false, shots: [], message: "Paste a run to preview it.", error: false };
+        }
+
+        const tokens = trimmed.split(/[\s,;]+/).filter(Boolean);
+        const invalid = tokens.find((token) => token !== "0" && token !== "1");
+        if (invalid) {
+          return { valid: false, shots: [], message: `“${invalid}” is not valid. Use only 1s and 0s.`, error: true };
+        }
+        if (tokens.length > MAX_SHOTS) {
+          return { valid: false, shots: [], message: `This contains ${tokens.length} shots. A run can contain up to 100.`, error: true };
+        }
+
+        const shots = tokens.map((token) => token === "1");
+        const result = summarize(shots);
+        return {
+          valid: true,
+          shots,
+          message: `${result.makes} made · ${result.attempts} shots · ${formatPercentage(result.percentage)}`,
+          error: false
+        };
+      }
+
+      function openImport() {
+        elements.importForm.reset();
+        elements.runDate.value = todayForInput();
+        updateImportPreview();
+        elements.importDialog.showModal();
+        setTimeout(() => elements.runData.focus(), 0);
+      }
+
+      function closeImport() {
+        elements.importDialog.close();
+      }
+
+      function updateImportPreview() {
+        importResult = parseImport(elements.runData.value);
+        elements.importPreview.textContent = importResult.message;
+        elements.importPreview.dataset.valid = String(importResult.valid);
+        elements.importPreview.dataset.error = String(importResult.error);
+        elements.saveImportButton.disabled = !importResult.valid || !elements.runDate.value;
+      }
+
+      function importRun(event) {
+        event.preventDefault();
+        updateImportPreview();
+        if (!importResult.valid || !elements.runDate.value) return;
+
+        const run = {
           id: makeId(),
-          savedAt: Date.now(),
-          shots: [...state.current]
+          date: elements.runDate.value,
+          importedAt: Date.now(),
+          shots: [...importResult.shots]
         };
         const nextState = {
-          current: [],
-          sessions: [archived, ...state.sessions]
+          runs: [run, ...state.runs].sort(sortRunsNewestFirst)
         };
 
         if (saveState(nextState)) {
           state = nextState;
-          elements.dialog.close();
+          closeImport();
           render();
-          showToast("Session saved to History.");
+          showToast("Run imported.");
         }
       }
 
-      function binaryLines(shots) {
-        return shots.map((shot) => (shot ? "1" : "0")).join("\n");
+      function removeRun(run) {
+        const result = summarize(run.shots);
+        const confirmed = window.confirm(
+          `Remove the ${formatDate(run.date)} run (${result.makes}/${result.attempts})?`
+        );
+        if (!confirmed) return;
+
+        const nextState = { runs: state.runs.filter((item) => item.id !== run.id) };
+        if (saveState(nextState)) {
+          state = nextState;
+          render();
+          showToast("Run removed.");
+        }
       }
 
-      async function copyShots(shots) {
-        if (!shots.length) return;
-        const text = binaryLines(shots);
+      function longestMakeStreak(shots) {
+        let current = 0;
+        let best = 0;
+        shots.forEach((made) => {
+          current = made ? current + 1 : 0;
+          best = Math.max(best, current);
+        });
+        return best;
+      }
 
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch {
-          const helper = document.createElement("textarea");
-          helper.value = text;
-          helper.setAttribute("readonly", "");
-          helper.style.position = "fixed";
-          helper.style.opacity = "0";
-          document.body.appendChild(helper);
-          helper.select();
-          const copied = document.execCommand("copy");
-          helper.remove();
-          if (!copied) {
-            showToast("Could not copy these shots.");
-            return;
-          }
+      function allShots() {
+        return state.runs.flatMap((run) => run.shots);
+      }
+
+      function runPercentages() {
+        return state.runs.map((run) => summarize(run.shots).percentage);
+      }
+
+      function renderOverview() {
+        const shots = allShots();
+        const overall = summarize(shots);
+        const percentages = runPercentages();
+        const average = percentages.reduce((total, value) => total + value, 0) / percentages.length;
+        const bestValue = Math.max(...percentages);
+        const bestIndex = percentages.indexOf(bestValue);
+        const latest = percentages[0];
+        const previous = percentages[1];
+
+        elements.overallPercentage.textContent = formatPercentage(overall.percentage);
+        elements.overallMade.textContent = `${overall.makes} made of ${overall.attempts}`;
+        elements.percentageRing.style.setProperty("--progress", `${overall.percentage * 3.6}deg`);
+        elements.percentageRing.setAttribute(
+          "aria-label",
+          `Overall free throw percentage: ${formatPercentage(overall.percentage)}`
+        );
+        elements.runCount.textContent = state.runs.length;
+        elements.totalShots.textContent = `${overall.attempts} total ${overall.attempts === 1 ? "shot" : "shots"}`;
+        elements.averageRun.textContent = formatPercentage(average);
+        elements.bestRun.textContent = formatPercentage(bestValue);
+        elements.bestRunDate.textContent = formatDate(state.runs[bestIndex].date);
+
+        elements.recentChange.classList.remove("change-positive", "change-negative");
+        if (state.runs.length < 2) {
+          elements.recentChange.textContent = "Needs 2 runs";
+        } else {
+          const change = Math.round((latest - previous) * 10) / 10;
+          const prefix = change > 0 ? "+" : "";
+          elements.recentChange.textContent = `${prefix}${change.toFixed(1)} pts vs previous`;
+          if (change > 0) elements.recentChange.classList.add("change-positive");
+          if (change < 0) elements.recentChange.classList.add("change-negative");
+        }
+      }
+
+      function svgElement(name, attributes = {}) {
+        const node = document.createElementNS(SVG_NAMESPACE, name);
+        Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, String(value)));
+        return node;
+      }
+
+      function renderTrend() {
+        const recent = state.runs.slice(0, 12).reverse();
+        const values = recent.map((run) => summarize(run.shots).percentage);
+        const width = 700;
+        const height = 260;
+        const padding = { top: 16, right: 16, bottom: 28, left: 42 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+
+        elements.chartGrid.replaceChildren();
+        elements.chartPoints.replaceChildren();
+        elements.chartLine.setAttribute("points", "");
+        elements.chartArea.setAttribute("d", "");
+
+        [100, 75, 50, 25, 0].forEach((value) => {
+          const y = padding.top + ((100 - value) / 100) * chartHeight;
+          elements.chartGrid.append(
+            svgElement("line", {
+              class: "chart-grid-line",
+              x1: padding.left,
+              x2: width - padding.right,
+              y1: y,
+              y2: y
+            })
+          );
+          const label = svgElement("text", {
+            class: "chart-grid-label",
+            x: padding.left - 9,
+            y: y + 4,
+            "text-anchor": "end"
+          });
+          label.textContent = value;
+          elements.chartGrid.append(label);
+        });
+
+        const points = values.map((value, index) => {
+          const x = values.length === 1
+            ? padding.left + chartWidth / 2
+            : padding.left + (index / (values.length - 1)) * chartWidth;
+          const y = padding.top + ((100 - value) / 100) * chartHeight;
+          return { x, y, value, run: recent[index] };
+        });
+
+        const pointString = points.map((point) => `${point.x},${point.y}`).join(" ");
+        elements.chartLine.setAttribute("points", pointString);
+        if (points.length > 1) {
+          const first = points[0];
+          const last = points[points.length - 1];
+          elements.chartArea.setAttribute(
+            "d",
+            `M ${first.x} ${padding.top + chartHeight} L ${pointString.replaceAll(" ", " L ")} L ${last.x} ${padding.top + chartHeight} Z`
+          );
         }
 
-        showToast(`Copied ${shots.length} ${shots.length === 1 ? "shot" : "shots"}.`);
+        points.forEach((point) => {
+          const circle = svgElement("circle", {
+            class: "chart-point",
+            cx: point.x,
+            cy: point.y,
+            r: 6
+          });
+          const title = svgElement("title");
+          title.textContent = `${formatDate(point.run.date)}: ${formatPercentage(point.value)}`;
+          circle.appendChild(title);
+          elements.chartPoints.appendChild(circle);
+        });
+
+        elements.chartEmpty.hidden = points.length >= 2;
+        elements.trendChartDescription.textContent = points.length
+          ? recent.map((run, index) => `${formatDate(run.date)} ${formatPercentage(values[index])}`).join(", ")
+          : "No imported runs.";
+      }
+
+      function renderBlocks() {
+        const blocks = [
+          { label: "Shots 1–25", start: 0, end: 25 },
+          { label: "Shots 26–50", start: 25, end: 50 },
+          { label: "Shots 51–75", start: 50, end: 75 },
+          { label: "Shots 76–100", start: 75, end: 100 }
+        ];
+
+        elements.blockList.replaceChildren();
+        blocks.forEach((block) => {
+          const shots = state.runs.flatMap((run) => run.shots.slice(block.start, block.end));
+          const result = summarize(shots);
+          const item = document.createElement("li");
+          const topLine = document.createElement("div");
+          const label = document.createElement("span");
+          const value = document.createElement("strong");
+          const track = document.createElement("div");
+          const fill = document.createElement("div");
+
+          topLine.className = "block-topline";
+          track.className = "block-track";
+          fill.className = "block-fill";
+          label.textContent = block.label;
+          value.textContent = result.attempts
+            ? `${formatPercentage(result.percentage)} · ${result.makes}/${result.attempts}`
+            : "No shots";
+          fill.style.width = `${result.percentage || 0}%`;
+          track.setAttribute("role", "progressbar");
+          track.setAttribute("aria-label", `${block.label} percentage`);
+          track.setAttribute("aria-valuemin", "0");
+          track.setAttribute("aria-valuemax", "100");
+          track.setAttribute("aria-valuenow", String(Math.round(result.percentage || 0)));
+
+          topLine.append(label, value);
+          track.appendChild(fill);
+          item.append(topLine, track);
+          elements.blockList.appendChild(item);
+        });
+
+        const bestStreak = Math.max(...state.runs.map((run) => longestMakeStreak(run.shots)));
+        const finishingShots = state.runs.flatMap((run) => run.shots.slice(-10));
+        const finish = summarize(finishingShots);
+        elements.bestStreak.textContent = `${bestStreak} ${bestStreak === 1 ? "make" : "makes"}`;
+        elements.finishPercentage.textContent = formatPercentage(finish.percentage);
+      }
+
+      function splitSummary(shots) {
+        const first = summarize(shots.slice(0, 50));
+        const second = summarize(shots.slice(50, 100));
+        if (!second.attempts) return `First 50: ${formatPercentage(first.percentage)}`;
+        return `First 50: ${formatPercentage(first.percentage)} · Second 50: ${formatPercentage(second.percentage)}`;
+      }
+
+      function renderHistory() {
+        elements.historyList.replaceChildren();
+        elements.emptyHistory.hidden = state.runs.length > 0;
+        elements.historyCount.textContent = `${state.runs.length} ${state.runs.length === 1 ? "run" : "runs"} imported`;
+
+        state.runs.forEach((run) => {
+          const result = summarize(run.shots);
+          const item = document.createElement("li");
+          const date = document.createElement("p");
+          const score = document.createElement("p");
+          const percentage = document.createElement("strong");
+          const resultLine = document.createElement("span");
+          const detail = document.createElement("p");
+          const remove = document.createElement("button");
+
+          item.className = "history-item";
+          date.className = "history-date";
+          score.className = "history-score";
+          detail.className = "history-detail";
+          remove.className = "remove-button";
+
+          date.textContent = formatDate(run.date);
+          percentage.textContent = formatPercentage(result.percentage);
+          resultLine.textContent = `${result.makes} made of ${result.attempts}`;
+          detail.textContent = `${splitSummary(run.shots)} · Best streak: ${longestMakeStreak(run.shots)}`;
+          remove.type = "button";
+          remove.textContent = "Remove";
+          remove.setAttribute("aria-label", `Remove run from ${date.textContent}`);
+          remove.addEventListener("click", () => removeRun(run));
+
+          score.append(percentage, resultLine);
+          item.append(date, score, detail, remove);
+          elements.historyList.appendChild(item);
+        });
+      }
+
+      function render() {
+        const hasRuns = state.runs.length > 0;
+        elements.emptyState.hidden = hasRuns;
+        elements.dashboard.hidden = !hasRuns;
+        if (!hasRuns) return;
+
+        renderOverview();
+        renderTrend();
+        renderBlocks();
+        renderHistory();
       }
 
       function showToast(message) {
@@ -866,102 +1469,17 @@
         }, 2200);
       }
 
-      function renderCurrent() {
-        const current = counts(state.current);
-        const complete = current.attempts >= SESSION_SIZE;
-        const hasShots = current.attempts > 0;
-
-        elements.attemptCount.textContent = current.attempts;
-        elements.madeCount.textContent = current.made;
-        elements.missedCount.textContent = current.missed;
-        elements.remainingCount.textContent = SESSION_SIZE - current.attempts;
-        elements.percentage.textContent = `${current.percentage}%`;
-        elements.progressFill.style.width = `${current.attempts}%`;
-        elements.progressTrack.setAttribute("aria-valuenow", String(current.attempts));
-        elements.completeMessage.hidden = !complete;
-        elements.madeButton.disabled = complete;
-        elements.missedButton.disabled = complete;
-        elements.undoButton.disabled = !hasShots;
-        elements.copyButton.disabled = !hasShots;
-        elements.newSessionButton.disabled = !hasShots;
-      }
-
-      function formatDate(timestamp) {
-        return new Intl.DateTimeFormat(undefined, {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "2-digit"
-        }).format(new Date(timestamp));
-      }
-
-      function renderHistory() {
-        elements.historyList.replaceChildren();
-        elements.emptyHistory.hidden = state.sessions.length > 0;
-        elements.historyCount.textContent = `${state.sessions.length} ${state.sessions.length === 1 ? "session" : "sessions"}`;
-
-        state.sessions.forEach((session) => {
-          const result = counts(session.shots);
-          const item = document.createElement("li");
-          item.className = "history-item";
-
-          const details = document.createElement("div");
-          const date = document.createElement("p");
-          const summary = document.createElement("p");
-          date.className = "history-date";
-          summary.className = "history-summary";
-          date.textContent = formatDate(session.savedAt);
-          summary.textContent = `${result.made} made · ${result.attempts} shots · ${result.percentage}%`;
-          details.append(date, summary);
-
-          const copy = document.createElement("button");
-          copy.className = "copy-history";
-          copy.type = "button";
-          copy.textContent = "Copy";
-          copy.setAttribute("aria-label", `Copy session from ${date.textContent} as ones and zeros`);
-          copy.addEventListener("click", () => copyShots(session.shots));
-
-          item.append(details, copy);
-          elements.historyList.appendChild(item);
-        });
-      }
-
-      function render() {
-        renderCurrent();
-        renderHistory();
-      }
-
-      elements.madeButton.addEventListener("click", () => recordShot(true));
-      elements.missedButton.addEventListener("click", () => recordShot(false));
-      elements.undoButton.addEventListener("click", undoShot);
-      elements.copyButton.addEventListener("click", () => copyShots(state.current));
-      elements.newSessionButton.addEventListener("click", () => elements.dialog.showModal());
-      elements.cancelNewSession.addEventListener("click", () => elements.dialog.close());
-      elements.confirmNewSession.addEventListener("click", archiveAndReset);
-
-      document.addEventListener("keydown", (event) => {
-        const key = event.key.toLowerCase();
-        const undoShortcut = key === "z" && (event.ctrlKey || event.metaKey);
-        if (elements.dialog.open || event.altKey) return;
-        if ((event.ctrlKey || event.metaKey) && !undoShortcut) return;
-
-        if (key === "m" || key === "1") {
-          event.preventDefault();
-          recordShot(true);
-        } else if (key === "x" || key === "0") {
-          event.preventDefault();
-          recordShot(false);
-        } else if (key === "backspace" || undoShortcut) {
-          event.preventDefault();
-          undoShot();
-        }
+      elements.openImportButton.addEventListener("click", openImport);
+      elements.emptyImportButton.addEventListener("click", openImport);
+      elements.cancelImportButton.addEventListener("click", closeImport);
+      elements.importForm.addEventListener("submit", importRun);
+      elements.runData.addEventListener("input", updateImportPreview);
+      elements.runDate.addEventListener("input", updateImportPreview);
+      elements.importDialog.addEventListener("click", (event) => {
+        if (event.target === elements.importDialog) closeImport();
       });
 
-      elements.dialog.addEventListener("click", (event) => {
-        if (event.target === elements.dialog) elements.dialog.close();
-      });
-
+      saveState(state);
       render();
     })();
   </script>
