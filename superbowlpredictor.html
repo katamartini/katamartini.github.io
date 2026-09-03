@@ -441,37 +441,48 @@
 
     .candidate-summary strong { color: var(--ink); }
 
-    .candidate-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-    }
-
-    .candidate-card {
-      min-height: 150px;
-      padding: 20px;
-      background: #0d283b;
-      box-shadow: inset 0 3px 0 color-mix(in srgb, var(--team-color, var(--gold)) 72%, transparent);
-    }
-
-    .candidate-card.eliminated {
-      background: #1b2933;
-      box-shadow: inset 0 3px 0 rgba(240, 91, 73, 0.58);
-    }
-
-    .candidate-card-top {
+    .failed-now {
       display: flex;
-      gap: 10px;
-      align-items: start;
-      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      color: #ffc2bb;
+      background: rgba(240, 91, 73, 0.08);
     }
 
-    .candidate-card h3 {
-      margin: 0;
-      color: var(--ink);
-      font-size: 0.92rem;
-      line-height: 1.2;
+    .failed-now strong {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      border: 1px solid rgba(240, 91, 73, 0.32);
+      border-radius: 999px;
+      color: #ff9588;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .failed-now span {
+      font-size: 0.79rem;
+      line-height: 1.55;
+    }
+
+    .candidate-table-wrap { overflow-x: auto; }
+
+    .candidate-table th:nth-child(1) { width: 37%; }
+    .candidate-table th:nth-child(2) { width: 16%; }
+    .candidate-table th:nth-child(3) { width: 15%; }
+
+    .candidate-table tbody tr.eliminated {
+      background: rgba(240, 91, 73, 0.065);
+    }
+
+    .candidate-table tbody tr.eliminated:hover {
+      background: rgba(240, 91, 73, 0.095);
+    }
+
+    .candidate-table .team-cell {
+      white-space: normal;
     }
 
     .conference {
@@ -485,19 +496,24 @@
     }
 
     .candidate-record {
-      margin: 22px 0 7px;
       color: var(--gold);
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 2rem;
+      font-size: 1.12rem;
+      font-weight: 700;
       line-height: 1;
     }
 
-    .candidate-card.eliminated .candidate-record { color: #ff8f81; }
+    .eliminated .candidate-record { color: #ff8f81; }
 
-    .candidate-reason {
+    .criteria-result {
+      min-width: 260px;
       color: var(--muted);
-      font-size: 0.72rem;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      white-space: normal;
     }
+
+    .criteria-result.failed { color: #ffaaa0; }
 
     .status-badge {
       flex: 0 0 auto;
@@ -782,7 +798,8 @@
     }
 
     @media (max-width: 1000px) {
-      .candidate-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .candidate-table th,
+      .candidate-table td { padding-inline: 15px; }
     }
 
     @media (max-width: 800px) {
@@ -803,8 +820,6 @@
 
       .rule-card { grid-template-columns: 1fr; }
       .rule-never { border-top: 1px solid var(--line); border-left: 0; }
-
-      .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
       .controls {
         grid-template-columns: 1fr 1fr;
@@ -842,20 +857,60 @@
       .candidate-controls { grid-template-columns: 1fr; }
       .filter-group { display: grid; grid-template-columns: repeat(3, 1fr); }
       .filter-btn { padding-inline: 7px; }
+      .failed-now { align-items: flex-start; flex-direction: column; }
 
-      .legend { display: none; }
+      .candidate-table,
+      .candidate-table tbody,
+      .candidate-table tr,
+      .candidate-table td { display: block; }
 
-      table, thead, tbody, tr, td { display: block; }
-      thead { display: none; }
-      .table-wrap { overflow: visible; }
+      .candidate-table thead { display: none; }
+      .candidate-table-wrap { overflow: visible; }
 
-      tbody {
+      .candidate-table tbody {
         display: grid;
         gap: 10px;
         padding: 10px;
       }
 
-      tbody tr {
+      .candidate-table tbody tr {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 9px 12px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(7, 25, 37, 0.58);
+      }
+
+      .candidate-table td {
+        padding: 0;
+        border: 0;
+        white-space: normal;
+      }
+
+      .candidate-table td:nth-child(1) { grid-column: 1; grid-row: 1; }
+      .candidate-table td:nth-child(2) { grid-column: 1; grid-row: 2; }
+      .candidate-table td:nth-child(3) { grid-column: 2; grid-row: 1; }
+      .candidate-table td:nth-child(4) { grid-column: 1 / -1; grid-row: 3; padding-top: 5px; }
+
+      .legend { display: none; }
+
+      .history-table,
+      .history-table thead,
+      .history-table tbody,
+      .history-table tr,
+      .history-table td { display: block; }
+      .history-table thead { display: none; }
+      .table-wrap { overflow: visible; }
+
+      .history-table tbody {
+        display: grid;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .history-table tbody tr {
         display: grid;
         grid-template-columns: 72px 1fr auto;
         gap: 6px 12px;
@@ -865,19 +920,19 @@
         background: rgba(7, 25, 37, 0.58);
       }
 
-      td {
+      .history-table td {
         padding: 0;
         border: 0;
       }
 
-      td:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
-      td:nth-child(2) { grid-column: 2 / -1; grid-row: 1; }
-      td:nth-child(3) { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 0.76rem; }
-      td:nth-child(3)::before { content: "Won: "; color: #708693; }
-      td:nth-child(4) { grid-column: 1 / 3; grid-row: 3; padding-top: 9px; color: var(--muted); font-size: 0.76rem; }
-      td:nth-child(4)::before { content: "Previous season · "; }
-      td:nth-child(5) { grid-column: 3; grid-row: 3; padding-top: 7px; }
-      td:nth-child(6) { display: none; }
+      .history-table td:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
+      .history-table td:nth-child(2) { grid-column: 2 / -1; grid-row: 1; }
+      .history-table td:nth-child(3) { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 0.76rem; }
+      .history-table td:nth-child(3)::before { content: "Won: "; color: #708693; }
+      .history-table td:nth-child(4) { grid-column: 1 / 3; grid-row: 3; padding-top: 9px; color: var(--muted); font-size: 0.76rem; }
+      .history-table td:nth-child(4)::before { content: "Previous season · "; }
+      .history-table td:nth-child(5) { grid-column: 3; grid-row: 3; padding-top: 7px; }
+      .history-table td:nth-child(6) { display: none; }
 
       .team-swatch { height: 24px; }
 
@@ -885,11 +940,6 @@
         align-items: flex-start;
         flex-direction: column;
       }
-    }
-
-    @media (max-width: 420px) {
-      .candidate-grid { grid-template-columns: 1fr; }
-      .candidate-card { min-height: 130px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -985,9 +1035,9 @@
       <div class="section-heading">
         <div>
           <p class="eyebrow">Applying the rule · 2026 season</p>
-          <h2 id="field-title">The field after one cut</h2>
+          <h2 id="field-title">All 32 NFL teams</h2>
         </div>
-        <p>Each team is tested against its final 2025 regular-season win total. Passing means historical eligibility—not a forecast or guarantee.</p>
+        <p>This current-criteria checklist tests every team against its final 2025 regular-season win total. Passing means historical eligibility—not a forecast or guarantee.</p>
       </div>
 
       <div class="candidate-board">
@@ -1002,15 +1052,31 @@
           </label>
           <div class="filter-group" aria-label="Filter candidates">
             <button class="filter-btn" type="button" data-candidate-filter="all" aria-pressed="true">All 32</button>
-            <button class="filter-btn" type="button" data-candidate-filter="eligible" aria-pressed="false">Still alive</button>
-            <button class="filter-btn" type="button" data-candidate-filter="eliminated" aria-pressed="false">Eliminated</button>
+            <button class="filter-btn" type="button" data-candidate-filter="eligible" aria-pressed="false">Meets criteria</button>
+            <button class="filter-btn" type="button" data-candidate-filter="eliminated" aria-pressed="false">Fails criteria</button>
           </div>
         </div>
         <div class="candidate-summary">
           <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
           <span>Rule: 4–15 prior-season wins</span>
         </div>
-        <div class="candidate-grid" id="candidate-grid"></div>
+        <div class="failed-now">
+          <strong>Fails Rule 01</strong>
+          <span id="failed-team-list"></span>
+        </div>
+        <div class="candidate-table-wrap">
+          <table class="candidate-table">
+            <thead>
+              <tr>
+                <th scope="col">Team</th>
+                <th scope="col">2025 record</th>
+                <th scope="col">Current status</th>
+                <th scope="col">Failed criterion</th>
+              </tr>
+            </thead>
+            <tbody id="candidate-body"></tbody>
+          </table>
+        </div>
         <div class="candidate-empty" id="candidate-empty">No teams match this view.</div>
       </div>
     </section>
@@ -1060,7 +1126,7 @@
       </div>
 
       <div class="table-wrap">
-        <table>
+        <table class="history-table">
           <thead>
             <tr>
               <th scope="col">Super Bowl</th>
@@ -1249,10 +1315,11 @@
     const sort = document.querySelector("#sort");
     const resultCount = document.querySelector("#result-count");
     const emptyState = document.querySelector("#empty-state");
-    const candidateGrid = document.querySelector("#candidate-grid");
+    const candidateBody = document.querySelector("#candidate-body");
     const candidateSearch = document.querySelector("#candidate-search");
     const candidateCount = document.querySelector("#candidate-count");
     const candidateEmpty = document.querySelector("#candidate-empty");
+    const failedTeamList = document.querySelector("#failed-team-list");
     const candidateFilterButtons = [...document.querySelectorAll("[data-candidate-filter]")];
     let candidateFilter = "all";
 
@@ -1315,24 +1382,20 @@
         })
         .sort((a, b) => Number(isEligible(a)) - Number(isEligible(b)) || b.w - a.w || a.team.localeCompare(b.team));
 
-      candidateGrid.innerHTML = filtered.map(item => {
+      candidateBody.innerHTML = filtered.map(item => {
         const eligible = isEligible(item);
-        const distance = item.w < activeRule.min ? activeRule.min - item.w : item.w - activeRule.max;
         const reason = eligible
-          ? `Inside the ${activeRule.min}–${activeRule.max} win range`
-          : `${distance} ${distance === 1 ? "win" : "wins"} ${item.w < activeRule.min ? "below the floor" : "above the ceiling"}`;
+          ? "—"
+          : `Rule 01 · ${item.w} wins is ${item.w < activeRule.min ? `below the ${activeRule.min}-win minimum` : `above the ${activeRule.max}-win maximum`}`;
         return `
-          <article class="candidate-card ${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
-            <div class="candidate-card-top">
-              <div>
-                <h3>${escapeHtml(item.team)}</h3>
-                <span class="conference">${item.conference} · 2025 record</span>
-              </div>
-              <span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Still alive" : "Eliminated"}</span>
-            </div>
-            <div class="candidate-record">${record(item)}</div>
-            <div class="candidate-reason">${reason}</div>
-          </article>`;
+          <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
+            <td>
+              <span class="team-cell"><i class="team-swatch" aria-hidden="true"></i><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span></span></span>
+            </td>
+            <td><span class="candidate-record">${record(item)}</span></td>
+            <td><span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Pass" : "Fail"}</span></td>
+            <td class="criteria-result ${eligible ? "" : "failed"}">${reason}</td>
+          </tr>`;
       }).join("");
 
       candidateCount.innerHTML = `<strong>${filtered.length} ${filtered.length === 1 ? "team" : "teams"}</strong> shown`;
@@ -1340,8 +1403,10 @@
     }
 
     const eligibleCount = candidates.filter(isEligible).length;
+    const failedTeams = candidates.filter(item => !isEligible(item)).map(item => item.team);
     document.querySelector("#eligible-total").textContent = eligibleCount;
     document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
+    failedTeamList.textContent = `${failedTeams.join(" · ")} — each finished 3–14, one win below the minimum.`;
     search.addEventListener("input", render);
     recordFilter.addEventListener("change", render);
     sort.addEventListener("change", render);
