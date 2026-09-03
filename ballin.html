@@ -476,6 +476,13 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .accuracy-note {
+      margin: 12px 2px 0;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
     .history-section {
       margin-top: 28px;
     }
@@ -614,6 +621,69 @@
       display: grid;
       gap: 17px;
       padding: 22px 24px 24px;
+    }
+
+    .format-field {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .format-field legend {
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .format-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 4px;
+      border: 1px solid var(--border-bright);
+      border-radius: 15px;
+      background: #11161d;
+    }
+
+    .format-option {
+      position: relative;
+      min-width: 0;
+    }
+
+    .format-option input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .format-option span {
+      display: grid;
+      min-height: 52px;
+      place-items: center;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 800;
+      line-height: 1.25;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .format-option input:checked + span {
+      border-color: rgba(243, 155, 61, 0.45);
+      background: rgba(243, 155, 61, 0.12);
+      color: var(--text);
+    }
+
+    .format-option input:focus-visible + span {
+      outline: 3px solid rgba(243, 155, 61, 0.28);
+      outline-offset: 2px;
     }
 
     .field {
@@ -830,8 +900,8 @@
     <section class="empty-state panel" id="emptyState">
       <div class="empty-state-inner">
         <h2>Bring in your first run</h2>
-        <p>In the app, copy a session as 1s and 0s. Paste it here to start building your performance history.</p>
-        <button class="primary-button" id="emptyImportButton" type="button">Import app data</button>
+        <p>Import exact results from the app, or add an older run using the number made in each set of 10.</p>
+        <button class="primary-button" id="emptyImportButton" type="button">Import a run</button>
       </div>
     </section>
 
@@ -907,7 +977,7 @@
 
         <article class="blocks-panel panel">
           <div class="panel-title">
-            <h2>Shot blocks</h2>
+            <h2>10-shot sets</h2>
             <span>All runs</span>
           </div>
           <ol class="block-list" id="blockList"></ol>
@@ -917,10 +987,11 @@
               <strong id="bestStreak">—</strong>
             </div>
             <div class="streak-stat">
-              <span>Last 10 shots</span>
+              <span>Final 10 per run</span>
               <strong id="finishPercentage">—</strong>
             </div>
           </div>
+          <p class="accuracy-note" id="accuracyNote" hidden>Make streaks use exact shot-by-shot runs only.</p>
         </article>
       </section>
 
@@ -939,16 +1010,29 @@
 
   <dialog id="importDialog" aria-labelledby="importTitle">
     <div class="dialog-header">
-      <h2 id="importTitle">Import an app run</h2>
-      <p>Tap Copy in the app, then paste the 1s and 0s below. One run can contain up to 100 shots.</p>
+      <h2 id="importTitle">Import a run</h2>
+      <p>Choose the kind of record you have. Both formats count toward your totals and trends.</p>
     </div>
     <form class="import-form" id="importForm">
       <div class="field">
         <label for="runDate">Run date</label>
         <input id="runDate" name="runDate" type="date" required>
       </div>
+      <fieldset class="format-field">
+        <legend>Data format</legend>
+        <div class="format-options">
+          <label class="format-option">
+            <input type="radio" name="importFormat" value="exact" checked>
+            <span>Exact 1s &amp; 0s</span>
+          </label>
+          <label class="format-option">
+            <input type="radio" name="importFormat" value="tens">
+            <span>Makes per 10</span>
+          </label>
+        </div>
+      </fieldset>
       <div class="field">
-        <label for="runData">Shot results</label>
+        <label for="runData" id="runDataLabel">Shot results</label>
         <textarea
           id="runData"
           name="runData"
@@ -976,6 +1060,7 @@
       const STORAGE_KEY = "ballin.performance.v1";
       const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
       const MAX_SHOTS = 100;
+      const MAX_TEN_SETS = 10;
       const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
       const elements = {
@@ -1002,13 +1087,17 @@
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
         finishPercentage: document.querySelector("#finishPercentage"),
+        accuracyNote: document.querySelector("#accuracyNote"),
         historyCount: document.querySelector("#historyCount"),
         historyList: document.querySelector("#historyList"),
         emptyHistory: document.querySelector("#emptyHistory"),
         importDialog: document.querySelector("#importDialog"),
         importForm: document.querySelector("#importForm"),
+        importFormats: document.querySelectorAll('input[name="importFormat"]'),
         runDate: document.querySelector("#runDate"),
         runData: document.querySelector("#runData"),
+        runDataLabel: document.querySelector("#runDataLabel"),
+        runDataHint: document.querySelector("#runDataHint"),
         importPreview: document.querySelector("#importPreview"),
         saveImportButton: document.querySelector("#saveImportButton"),
         cancelImportButton: document.querySelector("#cancelImportButton"),
@@ -1016,7 +1105,7 @@
       };
 
       let toastTimer;
-      let importResult = { valid: false, shots: [], message: "" };
+      let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
       let state = loadState();
 
       function makeId() {
@@ -1045,17 +1134,36 @@
           .map((shot) => shot === true || shot === 1);
       }
 
+      function cleanTenCounts(value) {
+        if (!Array.isArray(value)) return [];
+
+        return value
+          .map(Number)
+          .filter((count) => Number.isInteger(count) && count >= 0 && count <= 10)
+          .slice(0, MAX_TEN_SETS);
+      }
+
       function cleanRuns(value) {
         if (!Array.isArray(value)) return [];
 
         return value
-          .map((run) => ({
-            id: String(run?.id || ""),
-            date: /^\d{4}-\d{2}-\d{2}$/.test(String(run?.date || "")) ? run.date : "",
-            importedAt: Number(run?.importedAt) || 0,
-            shots: cleanShots(run?.shots)
-          }))
-          .filter((run) => run.id && run.date && run.shots.length > 0)
+          .map((run) => {
+            const shots = cleanShots(run?.shots);
+            const tenCounts = cleanTenCounts(run?.tenCounts);
+            const format = run?.format === "tens" || (!shots.length && tenCounts.length) ? "tens" : "exact";
+            return {
+              id: String(run?.id || ""),
+              date: /^\d{4}-\d{2}-\d{2}$/.test(String(run?.date || "")) ? run.date : "",
+              importedAt: Number(run?.importedAt) || 0,
+              format,
+              shots,
+              tenCounts
+            };
+          })
+          .filter((run) => {
+            const hasData = run.format === "tens" ? run.tenCounts.length > 0 : run.shots.length > 0;
+            return run.id && run.date && hasData;
+          })
           .sort(sortRunsNewestFirst);
       }
 
@@ -1082,6 +1190,7 @@
                 id: String(session?.id || makeId()),
                 date: dateFromTimestamp(Number(session?.savedAt) || Date.now()),
                 importedAt: Number(session?.savedAt) || Date.now(),
+                format: "exact",
                 shots: cleanShots(session?.shots)
               }))
             : [];
@@ -1092,6 +1201,7 @@
               id: makeId(),
               date: todayForInput(),
               importedAt: Date.now(),
+              format: "exact",
               shots: current
             });
           }
@@ -1120,13 +1230,43 @@
 
       function summarize(shots) {
         const makes = shots.reduce((total, shot) => total + (shot ? 1 : 0), 0);
-        const attempts = shots.length;
+        return summaryFromTotals(makes, shots.length);
+      }
+
+      function summaryFromTotals(makes, attempts) {
         return {
           makes,
           attempts,
           misses: attempts - makes,
           percentage: attempts ? (makes / attempts) * 100 : null
         };
+      }
+
+      function combineSummaries(summaries) {
+        const totals = summaries.reduce(
+          (combined, result) => ({
+            makes: combined.makes + result.makes,
+            attempts: combined.attempts + result.attempts
+          }),
+          { makes: 0, attempts: 0 }
+        );
+        return summaryFromTotals(totals.makes, totals.attempts);
+      }
+
+      function runSummary(run) {
+        if (run.format === "tens") {
+          const makes = run.tenCounts.reduce((total, count) => total + count, 0);
+          return summaryFromTotals(makes, run.tenCounts.length * 10);
+        }
+        return summarize(run.shots);
+      }
+
+      function tenSetSummary(run, index) {
+        if (run.format === "tens") {
+          const makes = run.tenCounts[index];
+          return makes === undefined ? summaryFromTotals(0, 0) : summaryFromTotals(makes, 10);
+        }
+        return summarize(run.shots.slice(index * 10, (index + 1) * 10));
       }
 
       function formatPercentage(value) {
@@ -1144,35 +1284,108 @@
         }).format(new Date(year, month - 1, day));
       }
 
-      function parseImport(value) {
+      function selectedImportFormat() {
+        return Array.from(elements.importFormats).find((input) => input.checked)?.value || "exact";
+      }
+
+      function parseImport(value, format) {
         const trimmed = value.trim();
         if (!trimmed) {
-          return { valid: false, shots: [], message: "Paste a run to preview it.", error: false };
+          const message = format === "tens"
+            ? "Enter the makes from each 10-shot set."
+            : "Paste a run to preview it.";
+          return { valid: false, format, shots: [], tenCounts: [], message, error: false };
         }
 
         const tokens = trimmed.split(/[\s,;]+/).filter(Boolean);
+        if (format === "tens") {
+          const normalized = tokens.map((token) => token.match(/^(10|[0-9])(?:\/10)?$/)?.[1]);
+          const invalidIndex = normalized.findIndex((token) => token === undefined);
+          if (invalidIndex >= 0) {
+            return {
+              valid: false,
+              format,
+              shots: [],
+              tenCounts: [],
+              message: `“${tokens[invalidIndex]}” is not valid. Enter a number from 0 to 10 for each set.`,
+              error: true
+            };
+          }
+          if (tokens.length > MAX_TEN_SETS) {
+            return {
+              valid: false,
+              format,
+              shots: [],
+              tenCounts: [],
+              message: `This contains ${tokens.length} sets. A run can contain up to 10 sets of 10.`,
+              error: true
+            };
+          }
+
+          const tenCounts = normalized.map(Number);
+          const result = summaryFromTotals(
+            tenCounts.reduce((total, count) => total + count, 0),
+            tenCounts.length * 10
+          );
+          return {
+            valid: true,
+            format,
+            shots: [],
+            tenCounts,
+            message: `${result.makes} made · ${result.attempts} shots · ${formatPercentage(result.percentage)} · ${tenCounts.length} ${tenCounts.length === 1 ? "set" : "sets"}`,
+            error: false
+          };
+        }
+
         const invalid = tokens.find((token) => token !== "0" && token !== "1");
         if (invalid) {
-          return { valid: false, shots: [], message: `“${invalid}” is not valid. Use only 1s and 0s.`, error: true };
+          return {
+            valid: false,
+            format,
+            shots: [],
+            tenCounts: [],
+            message: `“${invalid}” is not valid. Use only 1s and 0s.`,
+            error: true
+          };
         }
         if (tokens.length > MAX_SHOTS) {
-          return { valid: false, shots: [], message: `This contains ${tokens.length} shots. A run can contain up to 100.`, error: true };
+          return {
+            valid: false,
+            format,
+            shots: [],
+            tenCounts: [],
+            message: `This contains ${tokens.length} shots. A run can contain up to 100.`,
+            error: true
+          };
         }
 
         const shots = tokens.map((token) => token === "1");
         const result = summarize(shots);
         return {
           valid: true,
+          format,
           shots,
+          tenCounts: [],
           message: `${result.makes} made · ${result.attempts} shots · ${formatPercentage(result.percentage)}`,
           error: false
         };
       }
 
+      function updateImportMode() {
+        const format = selectedImportFormat();
+        const legacy = format === "tens";
+        elements.runDataLabel.textContent = legacy ? "Makes in each set of 10" : "Shot results";
+        elements.runData.placeholder = legacy ? "7\n8\n6\n9\n7" : "1\n0\n1\n1\n0";
+        elements.runDataHint.textContent = legacy
+          ? "Enter 0–10 for each set · not cumulative · up to 10 sets"
+          : "1 = made · 0 = missed · one result per line";
+        updateImportPreview();
+      }
+
       function openImport() {
         elements.importForm.reset();
         elements.runDate.value = todayForInput();
-        updateImportPreview();
+        updateImportMode();
         elements.importDialog.showModal();
         setTimeout(() => elements.runData.focus(), 0);
       }
@@ -1182,7 +1395,7 @@
       }
 
       function updateImportPreview() {
-        importResult = parseImport(elements.runData.value);
+        importResult = parseImport(elements.runData.value, selectedImportFormat());
         elements.importPreview.textContent = importResult.message;
         elements.importPreview.dataset.valid = String(importResult.valid);
         elements.importPreview.dataset.error = String(importResult.error);
@@ -1198,7 +1411,9 @@
           id: makeId(),
           date: elements.runDate.value,
           importedAt: Date.now(),
-          shots: [...importResult.shots]
+          format: importResult.format,
+          shots: [...importResult.shots],
+          tenCounts: [...importResult.tenCounts]
         };
         const nextState = {
           runs: [run, ...state.runs].sort(sortRunsNewestFirst)
@@ -1213,7 +1428,7 @@
       }
 
       function removeRun(run) {
-        const result = summarize(run.shots);
+        const result = runSummary(run);
         const confirmed = window.confirm(
           `Remove the ${formatDate(run.date)} run (${result.makes}/${result.attempts})?`
         );
@@ -1237,17 +1452,16 @@
         return best;
       }
 
-      function allShots() {
-        return state.runs.flatMap((run) => run.shots);
+      function overallSummary() {
+        return combineSummaries(state.runs.map(runSummary));
       }
 
       function runPercentages() {
-        return state.runs.map((run) => summarize(run.shots).percentage);
+        return state.runs.map((run) => runSummary(run).percentage);
       }
 
       function renderOverview() {
-        const shots = allShots();
-        const overall = summarize(shots);
+        const overall = overallSummary();
         const percentages = runPercentages();
         const average = percentages.reduce((total, value) => total + value, 0) / percentages.length;
         const bestValue = Math.max(...percentages);
@@ -1288,7 +1502,7 @@
 
       function renderTrend() {
         const recent = state.runs.slice(0, 12).reverse();
-        const values = recent.map((run) => summarize(run.shots).percentage);
+        const values = recent.map((run) => runSummary(run).percentage);
         const width = 700;
         const height = 260;
         const padding = { top: 16, right: 16, bottom: 28, left: 42 };
@@ -1360,17 +1574,12 @@
       }
 
       function renderBlocks() {
-        const blocks = [
-          { label: "Shots 1–25", start: 0, end: 25 },
-          { label: "Shots 26–50", start: 25, end: 50 },
-          { label: "Shots 51–75", start: 50, end: 75 },
-          { label: "Shots 76–100", start: 75, end: 100 }
-        ];
-
         elements.blockList.replaceChildren();
-        blocks.forEach((block) => {
-          const shots = state.runs.flatMap((run) => run.shots.slice(block.start, block.end));
-          const result = summarize(shots);
+        Array.from({ length: MAX_TEN_SETS }, (_, index) => index).forEach((index) => {
+          const result = combineSummaries(state.runs.map((run) => tenSetSummary(run, index)));
+          const start = index * 10 + 1;
+          const end = start + 9;
+          const blockLabel = `Shots ${start}–${end}`;
           const item = document.createElement("li");
           const topLine = document.createElement("div");
           const label = document.createElement("span");
@@ -1381,13 +1590,13 @@
           topLine.className = "block-topline";
           track.className = "block-track";
           fill.className = "block-fill";
-          label.textContent = block.label;
+          label.textContent = blockLabel;
           value.textContent = result.attempts
             ? `${formatPercentage(result.percentage)} · ${result.makes}/${result.attempts}`
             : "No shots";
           fill.style.width = `${result.percentage || 0}%`;
           track.setAttribute("role", "progressbar");
-          track.setAttribute("aria-label", `${block.label} percentage`);
+          track.setAttribute("aria-label", `${blockLabel} percentage`);
           track.setAttribute("aria-valuemin", "0");
           track.setAttribute("aria-valuemax", "100");
           track.setAttribute("aria-valuenow", String(Math.round(result.percentage || 0)));
@@ -1398,18 +1607,36 @@
           elements.blockList.appendChild(item);
         });
 
-        const bestStreak = Math.max(...state.runs.map((run) => longestMakeStreak(run.shots)));
-        const finishingShots = state.runs.flatMap((run) => run.shots.slice(-10));
-        const finish = summarize(finishingShots);
-        elements.bestStreak.textContent = `${bestStreak} ${bestStreak === 1 ? "make" : "makes"}`;
+        const exactRuns = state.runs.filter((run) => run.format === "exact");
+        const bestStreak = exactRuns.length
+          ? Math.max(...exactRuns.map((run) => longestMakeStreak(run.shots)))
+          : null;
+        const finishingResults = state.runs.map((run) => {
+          if (run.format === "tens") {
+            const makes = run.tenCounts.at(-1);
+            return makes === undefined ? summaryFromTotals(0, 0) : summaryFromTotals(makes, 10);
+          }
+          return summarize(run.shots.slice(-10));
+        });
+        const finish = combineSummaries(finishingResults);
+        elements.bestStreak.textContent = bestStreak === null
+          ? "N/A"
+          : `${bestStreak} ${bestStreak === 1 ? "make" : "makes"}`;
         elements.finishPercentage.textContent = formatPercentage(finish.percentage);
+        elements.accuracyNote.hidden = !state.runs.some((run) => run.format === "tens");
       }
 
-      function splitSummary(shots) {
-        const first = summarize(shots.slice(0, 50));
-        const second = summarize(shots.slice(50, 100));
-        if (!second.attempts) return `First 50: ${formatPercentage(first.percentage)}`;
-        return `First 50: ${formatPercentage(first.percentage)} · Second 50: ${formatPercentage(second.percentage)}`;
+      function splitSummary(run) {
+        const first = combineSummaries(
+          Array.from({ length: 5 }, (_, index) => tenSetSummary(run, index))
+        );
+        const second = combineSummaries(
+          Array.from({ length: 5 }, (_, index) => tenSetSummary(run, index + 5))
+        );
+        const firstLabel = first.attempts === 50 ? "First 50" : `First ${first.attempts}`;
+        if (!second.attempts) return `${firstLabel}: ${formatPercentage(first.percentage)}`;
+        const secondLabel = second.attempts === 50 ? "Second 50" : `Next ${second.attempts}`;
+        return `${firstLabel}: ${formatPercentage(first.percentage)} · ${secondLabel}: ${formatPercentage(second.percentage)}`;
       }
 
       function renderHistory() {
@@ -1418,7 +1645,7 @@
         elements.historyCount.textContent = `${state.runs.length} ${state.runs.length === 1 ? "run" : "runs"} imported`;
 
         state.runs.forEach((run) => {
-          const result = summarize(run.shots);
+          const result = runSummary(run);
           const item = document.createElement("li");
           const date = document.createElement("p");
           const score = document.createElement("p");
@@ -1435,8 +1662,10 @@
 
           date.textContent = formatDate(run.date);
           percentage.textContent = formatPercentage(result.percentage);
-          resultLine.textContent = `${result.makes} made of ${result.attempts}`;
-          detail.textContent = `${splitSummary(run.shots)} · Best streak: ${longestMakeStreak(run.shots)}`;
+          resultLine.textContent = `${result.makes} made of ${result.attempts}${run.format === "tens" ? " · by 10" : ""}`;
+          detail.textContent = run.format === "tens"
+            ? `${splitSummary(run)} · Streak not recorded`
+            : `${splitSummary(run)} · Best streak: ${longestMakeStreak(run.shots)}`;
           remove.type = "button";
           remove.textContent = "Remove";
           remove.setAttribute("aria-label", `Remove run from ${date.textContent}`);
@@ -1475,6 +1704,7 @@
       elements.importForm.addEventListener("submit", importRun);
       elements.runData.addEventListener("input", updateImportPreview);
       elements.runDate.addEventListener("input", updateImportPreview);
+      elements.importFormats.forEach((input) => input.addEventListener("change", updateImportMode));
       elements.importDialog.addEventListener("click", (event) => {
         if (event.target === elements.importDialog) closeImport();
       });
