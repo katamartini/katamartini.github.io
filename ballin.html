@@ -488,7 +488,7 @@
 
     .streak-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       margin-top: 22px;
       padding-top: 18px;
@@ -511,8 +511,18 @@
     .streak-stat strong {
       display: block;
       margin-top: 7px;
-      font-size: 1.45rem;
+      font-size: 1.3rem;
       font-variant-numeric: tabular-nums;
+    }
+
+    .streak-stat small {
+      display: block;
+      min-height: 2.7em;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 650;
+      line-height: 1.35;
     }
 
     .accuracy-note {
@@ -520,6 +530,51 @@
       color: var(--muted);
       font-size: 0.76rem;
       line-height: 1.45;
+    }
+
+    .checkpoint-panel {
+      grid-column: 1 / -1;
+      padding: 22px;
+    }
+
+    .checkpoint-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .checkpoint-card {
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .checkpoint-card span,
+    .checkpoint-card strong,
+    .checkpoint-card small {
+      display: block;
+    }
+
+    .checkpoint-card span {
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 750;
+    }
+
+    .checkpoint-card strong {
+      margin-top: 7px;
+      font-size: 1.12rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .checkpoint-card small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 650;
+      line-height: 1.35;
     }
 
     .history-section {
@@ -1055,6 +1110,10 @@
         align-self: start;
         flex-direction: column;
       }
+
+      .checkpoint-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 560px) {
@@ -1130,6 +1189,14 @@
 
       .history-item {
         gap: 9px 12px;
+      }
+
+      .streak-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .streak-stat:last-child {
+        grid-column: 1 / -1;
       }
     }
 
@@ -1250,13 +1317,28 @@
             <div class="streak-stat">
               <span>Best make streak</span>
               <strong id="bestStreak">—</strong>
+              <small id="bestStreakDetail">Exact runs only</small>
+            </div>
+            <div class="streak-stat">
+              <span>Worst miss streak</span>
+              <strong id="worstStreak">—</strong>
+              <small id="worstStreakDetail">Exact runs only</small>
             </div>
             <div class="streak-stat">
               <span>Final 10 per run</span>
               <strong id="finishPercentage">—</strong>
+              <small>Average across every run</small>
             </div>
           </div>
-          <p class="accuracy-note" id="accuracyNote" hidden>Make streaks use exact shot-by-shot runs only.</p>
+          <p class="accuracy-note" id="accuracyNote" hidden>Make and miss streaks use exact shot-by-shot runs only.</p>
+        </article>
+
+        <article class="checkpoint-panel panel">
+          <div class="panel-title">
+            <h2>Most makes through X shots</h2>
+            <span>Records every 10 shots</span>
+          </div>
+          <div class="checkpoint-grid" id="checkpointGrid"></div>
         </article>
       </section>
 
@@ -1417,8 +1499,12 @@
         chartEmpty: document.querySelector("#chartEmpty"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
+        bestStreakDetail: document.querySelector("#bestStreakDetail"),
+        worstStreak: document.querySelector("#worstStreak"),
+        worstStreakDetail: document.querySelector("#worstStreakDetail"),
         finishPercentage: document.querySelector("#finishPercentage"),
         accuracyNote: document.querySelector("#accuracyNote"),
+        checkpointGrid: document.querySelector("#checkpointGrid"),
         historyCount: document.querySelector("#historyCount"),
         historyList: document.querySelector("#historyList"),
         emptyHistory: document.querySelector("#emptyHistory"),
@@ -2061,14 +2147,48 @@
         }
       }
 
-      function longestMakeStreak(shots) {
+      function longestStreak(shots, targetMade) {
         let current = 0;
-        let best = 0;
-        shots.forEach((made) => {
-          current = made ? current + 1 : 0;
-          best = Math.max(best, current);
+        let currentStart = null;
+        let best = { length: 0, start: null, end: null };
+        shots.forEach((made, index) => {
+          if (made === targetMade) {
+            if (current === 0) currentStart = index;
+            current += 1;
+            if (current > best.length) {
+              best = { length: current, start: currentStart, end: index };
+            }
+          } else {
+            current = 0;
+            currentStart = null;
+          }
         });
         return best;
+      }
+
+      function longestMakeStreak(shots) {
+        return longestStreak(shots, true).length;
+      }
+
+      function streakRecord(targetMade) {
+        let record = null;
+        state.runs
+          .filter((run) => run.format === "exact")
+          .forEach((run) => {
+            const streak = longestStreak(run.shots, targetMade);
+            if (streak.length > 0 && (!record || streak.length > record.length)) {
+              record = { ...streak, run };
+            }
+          });
+        return record;
+      }
+
+      function streakDetail(record, targetMade) {
+        if (!record) return targetMade ? "No make streak recorded" : "No miss streak recorded";
+        const start = record.start + 1;
+        const end = record.end + 1;
+        const shots = start === end ? `Shot ${start}` : `Shots ${start}–${end}`;
+        return `${shots} · ${formatDate(record.run.date)}`;
       }
 
       function overallSummary() {
@@ -2227,9 +2347,8 @@
         });
 
         const exactRuns = state.runs.filter((run) => run.format === "exact");
-        const bestStreak = exactRuns.length
-          ? Math.max(...exactRuns.map((run) => longestMakeStreak(run.shots)))
-          : null;
+        const bestStreak = streakRecord(true);
+        const worstStreak = streakRecord(false);
         const finishingResults = state.runs.map((run) => {
           if (run.format === "tens") {
             const makes = run.tenCounts.at(-1);
@@ -2238,11 +2357,64 @@
           return summarize(run.shots.slice(-10));
         });
         const finish = combineSummaries(finishingResults);
-        elements.bestStreak.textContent = bestStreak === null
+        elements.bestStreak.textContent = !exactRuns.length
           ? "N/A"
-          : `${bestStreak} ${bestStreak === 1 ? "make" : "makes"}`;
+          : `${bestStreak?.length || 0} ${(bestStreak?.length || 0) === 1 ? "make" : "makes"}`;
+        elements.bestStreakDetail.textContent = exactRuns.length
+          ? streakDetail(bestStreak, true)
+          : "Exact runs only";
+        elements.worstStreak.textContent = !exactRuns.length
+          ? "N/A"
+          : `${worstStreak?.length || 0} ${(worstStreak?.length || 0) === 1 ? "miss" : "misses"}`;
+        elements.worstStreakDetail.textContent = exactRuns.length
+          ? streakDetail(worstStreak, false)
+          : "Exact runs only";
         elements.finishPercentage.textContent = formatPercentage(finish.percentage);
         elements.accuracyNote.hidden = !state.runs.some((run) => run.format === "tens");
+      }
+
+      function summaryThrough(run, attempts) {
+        if (runSummary(run).attempts < attempts) return null;
+        if (run.format === "tens") {
+          const setCount = attempts / 10;
+          const makes = run.tenCounts
+            .slice(0, setCount)
+            .reduce((total, count) => total + count, 0);
+          return summaryFromTotals(makes, attempts);
+        }
+        return summarize(run.shots.slice(0, attempts));
+      }
+
+      function recordThrough(attempts) {
+        let record = null;
+        state.runs.forEach((run) => {
+          const result = summaryThrough(run, attempts);
+          if (result && (!record || result.makes > record.makes)) {
+            record = { ...result, run };
+          }
+        });
+        return record;
+      }
+
+      function renderCheckpoints() {
+        elements.checkpointGrid.replaceChildren();
+        Array.from({ length: MAX_TEN_SETS }, (_, index) => (index + 1) * 10).forEach((attempts) => {
+          const record = recordThrough(attempts);
+          const card = document.createElement("div");
+          const label = document.createElement("span");
+          const value = document.createElement("strong");
+          const detail = document.createElement("small");
+
+          card.className = "checkpoint-card";
+          label.textContent = `Through ${attempts}`;
+          value.textContent = record ? `${record.makes} makes` : "—";
+          detail.textContent = record
+            ? `${formatPercentage(record.percentage)} · ${formatDate(record.run.date)}`
+            : "No run this long";
+
+          card.append(label, value, detail);
+          elements.checkpointGrid.appendChild(card);
+        });
       }
 
       function splitSummary(run) {
@@ -2419,6 +2591,7 @@
         renderOverview();
         renderTrend();
         renderBlocks();
+        renderCheckpoints();
         renderHistory();
       }
 
