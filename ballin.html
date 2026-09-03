@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101317">
+  <meta name="description" content="A simple, private free throw tracker for 100-shot sessions.">
+  <title>Ballin' — Free Throw Tracker</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #101317;
+      --surface: #181d23;
+      --surface-raised: #20262e;
+      --surface-soft: #262d36;
+      --border: #343c47;
+      --text: #f8f5ee;
+      --muted: #9ea8b4;
+      --orange: #f29a38;
+      --orange-dark: #b95d12;
+      --green: #36b97a;
+      --green-dark: #167149;
+      --red: #ed6257;
+      --red-dark: #a6332d;
+      --focus: #ffd18a;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--page);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% -8rem, rgba(242, 154, 56, 0.18), transparent 30rem),
+        var(--page);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      filter: saturate(0.35);
+      opacity: 0.42;
+    }
+
+    .app-shell {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: max(22px, env(safe-area-inset-top)) 18px max(36px, env(safe-area-inset-bottom));
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 209, 138, 0.32);
+      border-radius: 15px;
+      background: var(--orange);
+      box-shadow: inset 0 -5px 0 rgba(117, 52, 5, 0.22);
+      color: #20140a;
+      font-size: 25px;
+    }
+
+    .brand-copy p,
+    .brand-copy h1 {
+      margin: 0;
+    }
+
+    .brand-copy p {
+      color: var(--orange);
+      font-size: 0.75rem;
+      font-weight: 850;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .brand-copy h1 {
+      margin-top: 1px;
+      font-size: clamp(1.55rem, 7vw, 2.1rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+    }
+
+    .save-state {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .save-state::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      content: "";
+      box-shadow: 0 0 0 4px rgba(54, 185, 122, 0.12);
+    }
+
+    .save-state[data-error="true"]::before {
+      background: var(--red);
+      box-shadow: 0 0 0 4px rgba(237, 98, 87, 0.12);
+    }
+
+    .session-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(20px, 5vw, 30px);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      background: linear-gradient(145deg, rgba(32, 38, 46, 0.98), rgba(24, 29, 35, 0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .session-card::after {
+      position: absolute;
+      right: -54px;
+      bottom: -92px;
+      width: 210px;
+      height: 210px;
+      border: 2px solid rgba(242, 154, 56, 0.09);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 18px;
+    }
+
+    .section-label {
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .attempts {
+      margin: 0;
+      font-size: clamp(2.25rem, 12vw, 4.2rem);
+      line-height: 0.9;
+      letter-spacing: -0.065em;
+    }
+
+    .attempts span {
+      color: var(--muted);
+      font-size: 0.45em;
+      font-weight: 750;
+      letter-spacing: -0.025em;
+    }
+
+    .percentage-wrap {
+      text-align: right;
+    }
+
+    .percentage {
+      display: block;
+      color: var(--orange);
+      font-size: clamp(2.25rem, 13vw, 4.5rem);
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+      line-height: 0.86;
+      letter-spacing: -0.065em;
+    }
+
+    .percentage-label {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      height: 10px;
+      margin: 24px 0 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #0f1317;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--orange);
+      transition: width 180ms ease-out;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .stat {
+      min-width: 0;
+      padding: 13px 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(13, 17, 21, 0.45);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(1.35rem, 6vw, 1.85rem);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .stat.made strong {
+      color: var(--green);
+    }
+
+    .stat.missed strong {
+      color: var(--red);
+    }
+
+    .complete-message {
+      margin: 16px 0 0;
+      padding: 13px 15px;
+      border: 1px solid rgba(242, 154, 56, 0.36);
+      border-radius: 13px;
+      background: rgba(242, 154, 56, 0.1);
+      color: #ffd59b;
+      font-size: 0.95rem;
+      font-weight: 760;
+      text-align: center;
+    }
+
+    .complete-message[hidden] {
+      display: none;
+    }
+
+    .shot-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .shot-button {
+      min-height: 104px;
+      border: 0;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      font-size: clamp(1.2rem, 5vw, 1.55rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      transition: transform 90ms ease, filter 120ms ease;
+    }
+
+    .shot-button:active:not(:disabled) {
+      transform: scale(0.975);
+    }
+
+    .shot-button.made {
+      border-bottom: 5px solid var(--green-dark);
+      background: var(--green);
+    }
+
+    .shot-button.missed {
+      border-bottom: 5px solid var(--red-dark);
+      background: var(--red);
+    }
+
+    .shot-button .key {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.72rem;
+      font-weight: 750;
+      letter-spacing: 0.06em;
+      opacity: 0.72;
+      text-transform: uppercase;
+    }
+
+    .utility-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .utility-button {
+      min-height: 54px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-raised);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 780;
+      transition: background 120ms ease, transform 90ms ease;
+    }
+
+    .utility-button:hover:not(:disabled) {
+      background: var(--surface-soft);
+    }
+
+    .utility-button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .new-session-button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 5px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .history-section {
+      margin-top: 32px;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .history-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: -0.035em;
+    }
+
+    .history-header span {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .history-item,
+    .empty-history {
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+    }
+
+    .history-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 15px;
+    }
+
+    .history-date {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .history-summary {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+    }
+
+    .copy-history {
+      min-width: 76px;
+      min-height: 44px;
+      border: 1px solid rgba(242, 154, 56, 0.5);
+      border-radius: 12px;
+      background: rgba(242, 154, 56, 0.1);
+      color: #ffc980;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .empty-history {
+      margin: 0;
+      padding: 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .empty-history[hidden] {
+      display: none;
+    }
+
+    dialog {
+      width: min(420px, calc(100% - 32px));
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface-raised);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    dialog::backdrop {
+      background: rgba(4, 7, 10, 0.74);
+      backdrop-filter: blur(3px);
+    }
+
+    .dialog-body {
+      padding: 24px 24px 10px;
+    }
+
+    .dialog-body h2 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
+
+    .dialog-body p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .dialog-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 16px 24px 24px;
+    }
+
+    .dialog-actions button {
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-soft);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .dialog-actions .confirm {
+      border-color: var(--orange-dark);
+      background: var(--orange);
+      color: #241408;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 10;
+      right: 16px;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      left: 16px;
+      width: fit-content;
+      max-width: calc(100% - 32px);
+      margin: auto;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #282f38;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 750;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 140ms ease, transform 140ms ease;
+    }
+
+    .toast[data-visible="true"] {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 520px) {
+      .app-shell {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .save-state {
+        overflow: hidden;
+        max-width: 94px;
+        text-overflow: ellipsis;
+      }
+
+      .session-card {
+        border-radius: 21px;
+      }
+
+      .shot-button {
+        min-height: 96px;
+      }
+
+      .utility-button {
+        padding-right: 8px;
+        padding-left: 8px;
+        font-size: 0.84rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">●</div>
+        <div class="brand-copy">
+          <p>Free throw tracker</p>
+          <h1>Ballin'</h1>
+        </div>
+      </div>
+      <div class="save-state" id="saveState">Saved locally</div>
+    </header>
+
+    <section class="session-card" aria-labelledby="sessionTitle">
+      <div class="scoreboard">
+        <div>
+          <p class="section-label" id="sessionTitle">Current session</p>
+          <p class="attempts"><strong id="attemptCount">0</strong> <span>/ 100</span></p>
+        </div>
+        <div class="percentage-wrap">
+          <strong class="percentage" id="percentage">0%</strong>
+          <span class="percentage-label">shooting</span>
+        </div>
+      </div>
+
+      <div
+        class="progress-track"
+        id="progressTrack"
+        role="progressbar"
+        aria-label="Session progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+      >
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat made">
+          <strong id="madeCount">0</strong>
+          <span>Made</span>
+        </div>
+        <div class="stat missed">
+          <strong id="missedCount">0</strong>
+          <span>Missed</span>
+        </div>
+        <div class="stat">
+          <strong id="remainingCount">100</strong>
+          <span>Left</span>
+        </div>
+      </div>
+
+      <p class="complete-message" id="completeMessage" hidden>
+        Set complete. Start a new session to save it to History.
+      </p>
+    </section>
+
+    <section aria-label="Record a shot">
+      <div class="shot-actions">
+        <button class="shot-button made" id="madeButton" type="button">
+          ✓ Made
+          <span class="key">M or 1</span>
+        </button>
+        <button class="shot-button missed" id="missedButton" type="button">
+          × Miss
+          <span class="key">X or 0</span>
+        </button>
+      </div>
+
+      <div class="utility-actions">
+        <button class="utility-button" id="undoButton" type="button" disabled>↶ Undo</button>
+        <button class="utility-button" id="copyButton" type="button" disabled>Copy 1s &amp; 0s</button>
+      </div>
+
+      <button class="new-session-button" id="newSessionButton" type="button" disabled>
+        Start a new session
+      </button>
+    </section>
+
+    <section class="history-section" aria-labelledby="historyTitle">
+      <div class="history-header">
+        <h2 id="historyTitle">History</h2>
+        <span id="historyCount">0 sessions</span>
+      </div>
+      <p class="empty-history" id="emptyHistory">
+        Start a new session to archive the current result here.
+      </p>
+      <ol class="history-list" id="historyList"></ol>
+    </section>
+  </main>
+
+  <dialog id="newSessionDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-body">
+      <h2 id="dialogTitle">Start a new session?</h2>
+      <p>The current result will be saved to History before the counter returns to zero.</p>
+    </div>
+    <div class="dialog-actions">
+      <button id="cancelNewSession" type="button">Cancel</button>
+      <button class="confirm" id="confirmNewSession" type="button">Save &amp; start over</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "ballin.freeThrowTracker.v1";
+      const SESSION_SIZE = 100;
+
+      const elements = {
+        attemptCount: document.querySelector("#attemptCount"),
+        madeCount: document.querySelector("#madeCount"),
+        missedCount: document.querySelector("#missedCount"),
+        remainingCount: document.querySelector("#remainingCount"),
+        percentage: document.querySelector("#percentage"),
+        progressTrack: document.querySelector("#progressTrack"),
+        progressFill: document.querySelector("#progressFill"),
+        completeMessage: document.querySelector("#completeMessage"),
+        madeButton: document.querySelector("#madeButton"),
+        missedButton: document.querySelector("#missedButton"),
+        undoButton: document.querySelector("#undoButton"),
+        copyButton: document.querySelector("#copyButton"),
+        newSessionButton: document.querySelector("#newSessionButton"),
+        historyCount: document.querySelector("#historyCount"),
+        emptyHistory: document.querySelector("#emptyHistory"),
+        historyList: document.querySelector("#historyList"),
+        saveState: document.querySelector("#saveState"),
+        dialog: document.querySelector("#newSessionDialog"),
+        cancelNewSession: document.querySelector("#cancelNewSession"),
+        confirmNewSession: document.querySelector("#confirmNewSession"),
+        toast: document.querySelector("#toast")
+      };
+
+      let toastTimer;
+      let state = loadState();
+
+      function cleanShots(value) {
+        if (!Array.isArray(value)) return [];
+
+        return value
+          .filter((shot) => shot === true || shot === false || shot === 1 || shot === 0)
+          .slice(0, SESSION_SIZE)
+          .map((shot) => shot === true || shot === 1);
+      }
+
+      function loadState() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!parsed || typeof parsed !== "object") throw new Error("No saved state");
+
+          const sessions = Array.isArray(parsed.sessions)
+            ? parsed.sessions
+                .map((session) => ({
+                  id: String(session?.id || ""),
+                  savedAt: Number(session?.savedAt),
+                  shots: cleanShots(session?.shots)
+                }))
+                .filter((session) => session.id && session.savedAt > 0 && session.shots.length > 0)
+            : [];
+
+          return {
+            current: cleanShots(parsed.current),
+            sessions
+          };
+        } catch {
+          return { current: [], sessions: [] };
+        }
+      }
+
+      function saveState(nextState) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
+          elements.saveState.textContent = "Saved locally";
+          elements.saveState.dataset.error = "false";
+          return true;
+        } catch {
+          elements.saveState.textContent = "Save failed";
+          elements.saveState.dataset.error = "true";
+          showToast("That change could not be saved.");
+          return false;
+        }
+      }
+
+      function counts(shots) {
+        const made = shots.reduce((total, shot) => total + (shot ? 1 : 0), 0);
+        const attempts = shots.length;
+        return {
+          attempts,
+          made,
+          missed: attempts - made,
+          percentage: attempts === 0 ? 0 : Math.round((made / attempts) * 100)
+        };
+      }
+
+      function recordShot(made) {
+        if (state.current.length >= SESSION_SIZE) return;
+
+        const nextState = {
+          ...state,
+          current: [...state.current, made]
+        };
+
+        if (saveState(nextState)) {
+          state = nextState;
+          if (navigator.vibrate) navigator.vibrate(16);
+          renderCurrent();
+        }
+      }
+
+      function undoShot() {
+        if (state.current.length === 0) return;
+
+        const nextState = {
+          ...state,
+          current: state.current.slice(0, -1)
+        };
+
+        if (saveState(nextState)) {
+          state = nextState;
+          if (navigator.vibrate) navigator.vibrate(10);
+          renderCurrent();
+        }
+      }
+
+      function makeId() {
+        if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+        return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      }
+
+      function archiveAndReset() {
+        if (state.current.length === 0) return;
+
+        const archived = {
+          id: makeId(),
+          savedAt: Date.now(),
+          shots: [...state.current]
+        };
+        const nextState = {
+          current: [],
+          sessions: [archived, ...state.sessions]
+        };
+
+        if (saveState(nextState)) {
+          state = nextState;
+          elements.dialog.close();
+          render();
+          showToast("Session saved to History.");
+        }
+      }
+
+      function binaryLines(shots) {
+        return shots.map((shot) => (shot ? "1" : "0")).join("\n");
+      }
+
+      async function copyShots(shots) {
+        if (!shots.length) return;
+        const text = binaryLines(shots);
+
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const helper = document.createElement("textarea");
+          helper.value = text;
+          helper.setAttribute("readonly", "");
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.appendChild(helper);
+          helper.select();
+          const copied = document.execCommand("copy");
+          helper.remove();
+          if (!copied) {
+            showToast("Could not copy these shots.");
+            return;
+          }
+        }
+
+        showToast(`Copied ${shots.length} ${shots.length === 1 ? "shot" : "shots"}.`);
+      }
+
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        elements.toast.textContent = message;
+        elements.toast.dataset.visible = "true";
+        toastTimer = setTimeout(() => {
+          elements.toast.dataset.visible = "false";
+        }, 2200);
+      }
+
+      function renderCurrent() {
+        const current = counts(state.current);
+        const complete = current.attempts >= SESSION_SIZE;
+        const hasShots = current.attempts > 0;
+
+        elements.attemptCount.textContent = current.attempts;
+        elements.madeCount.textContent = current.made;
+        elements.missedCount.textContent = current.missed;
+        elements.remainingCount.textContent = SESSION_SIZE - current.attempts;
+        elements.percentage.textContent = `${current.percentage}%`;
+        elements.progressFill.style.width = `${current.attempts}%`;
+        elements.progressTrack.setAttribute("aria-valuenow", String(current.attempts));
+        elements.completeMessage.hidden = !complete;
+        elements.madeButton.disabled = complete;
+        elements.missedButton.disabled = complete;
+        elements.undoButton.disabled = !hasShots;
+        elements.copyButton.disabled = !hasShots;
+        elements.newSessionButton.disabled = !hasShots;
+      }
+
+      function formatDate(timestamp) {
+        return new Intl.DateTimeFormat(undefined, {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        }).format(new Date(timestamp));
+      }
+
+      function renderHistory() {
+        elements.historyList.replaceChildren();
+        elements.emptyHistory.hidden = state.sessions.length > 0;
+        elements.historyCount.textContent = `${state.sessions.length} ${state.sessions.length === 1 ? "session" : "sessions"}`;
+
+        state.sessions.forEach((session) => {
+          const result = counts(session.shots);
+          const item = document.createElement("li");
+          item.className = "history-item";
+
+          const details = document.createElement("div");
+          const date = document.createElement("p");
+          const summary = document.createElement("p");
+          date.className = "history-date";
+          summary.className = "history-summary";
+          date.textContent = formatDate(session.savedAt);
+          summary.textContent = `${result.made} made · ${result.attempts} shots · ${result.percentage}%`;
+          details.append(date, summary);
+
+          const copy = document.createElement("button");
+          copy.className = "copy-history";
+          copy.type = "button";
+          copy.textContent = "Copy";
+          copy.setAttribute("aria-label", `Copy session from ${date.textContent} as ones and zeros`);
+          copy.addEventListener("click", () => copyShots(session.shots));
+
+          item.append(details, copy);
+          elements.historyList.appendChild(item);
+        });
+      }
+
+      function render() {
+        renderCurrent();
+        renderHistory();
+      }
+
+      elements.madeButton.addEventListener("click", () => recordShot(true));
+      elements.missedButton.addEventListener("click", () => recordShot(false));
+      elements.undoButton.addEventListener("click", undoShot);
+      elements.copyButton.addEventListener("click", () => copyShots(state.current));
+      elements.newSessionButton.addEventListener("click", () => elements.dialog.showModal());
+      elements.cancelNewSession.addEventListener("click", () => elements.dialog.close());
+      elements.confirmNewSession.addEventListener("click", archiveAndReset);
+
+      document.addEventListener("keydown", (event) => {
+        const key = event.key.toLowerCase();
+        const undoShortcut = key === "z" && (event.ctrlKey || event.metaKey);
+        if (elements.dialog.open || event.altKey) return;
+        if ((event.ctrlKey || event.metaKey) && !undoShortcut) return;
+
+        if (key === "m" || key === "1") {
+          event.preventDefault();
+          recordShot(true);
+        } else if (key === "x" || key === "0") {
+          event.preventDefault();
+          recordShot(false);
+        } else if (key === "backspace" || undoShortcut) {
+          event.preventDefault();
+          undoShot();
+        }
+      });
+
+      elements.dialog.addEventListener("click", (event) => {
+        if (event.target === elements.dialog) elements.dialog.close();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
