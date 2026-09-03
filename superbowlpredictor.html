@@ -1,0 +1,1360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Use historical always-and-never rules to see which NFL teams still fit the profile of every Super Bowl champion.">
+  <meta name="theme-color" content="#091b2a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Super Bowl Predictor — The Always & Never Rulebook">
+  <meta property="og:description" content="Eliminate teams that fall outside the historical profile of every Super Bowl champion.">
+  <meta property="og:url" content="https://kmartini.com/superbowlpredictor.html">
+  <meta property="og:image" content="https://kmartini.com/superbowlpredictor-og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Super Bowl Predictor — The Always & Never Rulebook">
+  <meta name="twitter:description" content="Eliminate teams that fall outside the historical profile of every Super Bowl champion.">
+  <meta name="twitter:image" content="https://kmartini.com/superbowlpredictor-og.png">
+  <link rel="canonical" href="https://kmartini.com/superbowlpredictor.html">
+  <title>Super Bowl Predictor — The Always & Never Rulebook</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f5f1e7;
+      --muted: #9cabb5;
+      --navy: #091b2a;
+      --navy-2: #0e2739;
+      --navy-3: #17374d;
+      --red: #f05b49;
+      --gold: #f2c879;
+      --green: #72c7a0;
+      --line: rgba(245, 241, 231, 0.14);
+      --panel: rgba(14, 39, 57, 0.78);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(240, 91, 73, 0.13), transparent 28rem),
+        radial-gradient(circle at 92% 10%, rgba(242, 200, 121, 0.1), transparent 25rem),
+        var(--navy);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-header .shell {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .site-nav a {
+      text-decoration: none;
+      transition: color 150ms ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--ink); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 1px solid rgba(242, 200, 121, 0.4);
+      border-radius: 50%;
+      color: var(--gold);
+      background: rgba(242, 200, 121, 0.08);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+      gap: clamp(30px, 6vw, 76px);
+      align-items: end;
+      padding: clamp(50px, 7vw, 82px) 0 46px;
+    }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3.4rem, 9vw, 7.3rem);
+      font-weight: 400;
+      letter-spacing: -0.065em;
+      line-height: 0.84;
+    }
+
+    h1 em {
+      color: var(--red);
+      font-weight: 400;
+    }
+
+    .intro {
+      max-width: 630px;
+      margin: 30px 0 0;
+      color: #c3ced4;
+      font-size: clamp(1rem, 1.7vw, 1.18rem);
+    }
+
+    .hero-stat {
+      position: relative;
+      padding: 26px 0 8px 28px;
+      border-left: 1px solid var(--line);
+    }
+
+    .hero-stat::before {
+      position: absolute;
+      top: 0;
+      left: -2px;
+      width: 3px;
+      height: 46px;
+      border-radius: 2px;
+      background: var(--red);
+      content: "";
+    }
+
+    .hero-stat strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3.6rem, 8vw, 6.2rem);
+      font-weight: 400;
+      line-height: 0.9;
+    }
+
+    .hero-stat p {
+      max-width: 260px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .snapshot {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 26px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(7, 28, 42, 0.64);
+    }
+
+    .snapshot-item {
+      padding: 18px 22px;
+      border-right: 1px solid var(--line);
+    }
+
+    .snapshot-item:last-child { border-right: 0; }
+
+    .snapshot-item strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.85rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .snapshot-item span {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      display: flex;
+      gap: 24px;
+      align-items: end;
+      justify-content: space-between;
+      margin: 58px 0 18px;
+    }
+
+    .section-heading .eyebrow { margin-bottom: 8px; }
+
+    .section-heading h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      letter-spacing: -0.045em;
+      line-height: 1;
+    }
+
+    .section-heading > p {
+      max-width: 430px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .rule-card {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      overflow: hidden;
+      border: 1px solid rgba(242, 200, 121, 0.3);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(21, 55, 77, 0.94), rgba(8, 28, 42, 0.94));
+      box-shadow: var(--shadow);
+    }
+
+    .rule-main,
+    .rule-never { padding: clamp(24px, 4vw, 40px); }
+
+    .rule-never {
+      border-left: 1px solid var(--line);
+      background: rgba(4, 18, 28, 0.42);
+    }
+
+    .rule-label {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      margin-bottom: 22px;
+      color: var(--green);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .rule-label.never { color: #ff9588; }
+
+    .rule-label::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .rule-main h3,
+    .rule-never h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 4vw, 3.15rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    .rule-never h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+
+    .range {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin: 34px 0 22px;
+    }
+
+    .range-number {
+      display: grid;
+      width: 50px;
+      height: 50px;
+      place-items: center;
+      border: 1px solid rgba(242, 200, 121, 0.48);
+      border-radius: 50%;
+      color: var(--gold);
+      background: #0b2233;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+    }
+
+    .range-line {
+      position: relative;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--green), var(--gold));
+    }
+
+    .range-line::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: #102e43;
+      content: "eligible range";
+      font-size: 0.63rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .evidence-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .evidence-line strong { color: var(--ink); }
+
+    .boundary-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .boundary {
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .boundary strong {
+      display: block;
+      color: var(--red);
+      font-size: 1.2rem;
+    }
+
+    .boundary span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .candidate-board {
+      margin-bottom: 72px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .candidate-controls {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 17, 27, 0.35);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0b2131;
+    }
+
+    .filter-btn {
+      min-height: 36px;
+      padding: 7px 12px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .filter-btn:hover { color: var(--ink); }
+
+    .filter-btn[aria-pressed="true"] {
+      color: var(--navy);
+      background: var(--gold);
+    }
+
+    .filter-btn:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .candidate-summary {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .candidate-summary strong { color: var(--ink); }
+
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .candidate-card {
+      min-height: 150px;
+      padding: 20px;
+      background: #0d283b;
+      box-shadow: inset 0 3px 0 color-mix(in srgb, var(--team-color, var(--gold)) 72%, transparent);
+    }
+
+    .candidate-card.eliminated {
+      background: #1b2933;
+      box-shadow: inset 0 3px 0 rgba(240, 91, 73, 0.58);
+    }
+
+    .candidate-card-top {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      justify-content: space-between;
+    }
+
+    .candidate-card h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 0.92rem;
+      line-height: 1.2;
+    }
+
+    .conference {
+      display: block;
+      margin-top: 4px;
+      color: #78909e;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .candidate-record {
+      margin: 22px 0 7px;
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .candidate-card.eliminated .candidate-record { color: #ff8f81; }
+
+    .candidate-reason {
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .status-badge {
+      flex: 0 0 auto;
+      padding: 4px 7px;
+      border: 1px solid rgba(114, 199, 160, 0.25);
+      border-radius: 999px;
+      color: #9bd9ba;
+      background: rgba(114, 199, 160, 0.07);
+      font-size: 0.6rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .status-badge.out {
+      border-color: rgba(240, 91, 73, 0.3);
+      color: #ff9588;
+      background: rgba(240, 91, 73, 0.09);
+    }
+
+    .candidate-empty {
+      display: none;
+      padding: 48px 20px;
+      color: var(--muted);
+      background: var(--navy-2);
+      text-align: center;
+    }
+
+    .history-intro {
+      padding: 24px 20px 5px;
+    }
+
+    .history-intro h2 {
+      margin: 0 0 7px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: -0.035em;
+    }
+
+    .history-intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .explorer {
+      margin-bottom: 72px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(230px, 1fr) 190px 190px;
+      gap: 12px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 17, 27, 0.35);
+    }
+
+    .field {
+      position: relative;
+    }
+
+    .field svg {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      width: 17px;
+      height: 17px;
+      color: var(--muted);
+      pointer-events: none;
+      transform: translateY(-50%);
+    }
+
+    .field input,
+    .controls select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #0b2131;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .field input {
+      padding: 10px 14px 10px 43px;
+    }
+
+    .controls select {
+      padding: 10px 34px 10px 13px;
+      cursor: pointer;
+    }
+
+    .field input::placeholder { color: #788b98; }
+
+    .field input:focus,
+    .controls select:focus {
+      border-color: rgba(242, 200, 121, 0.78);
+      box-shadow: 0 0 0 3px rgba(242, 200, 121, 0.12);
+    }
+
+    .summary-strip {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 58px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .summary-strip strong { color: var(--ink); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .legend span { white-space: nowrap; }
+
+    .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .dot.even { background: var(--gold); }
+    .dot.losing { background: var(--red); }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 16px 20px;
+      color: #8093a0;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 18px 20px;
+      border-top: 1px solid rgba(245, 241, 231, 0.085);
+      color: #cbd4d9;
+      font-size: 0.89rem;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      transition: background-color 150ms ease;
+    }
+
+    tbody tr:hover { background: rgba(245, 241, 231, 0.035); }
+
+    .bowl-number {
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.04rem;
+    }
+
+    .team-cell {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .team-swatch {
+      width: 5px;
+      height: 30px;
+      border-radius: 6px;
+      background: var(--team-color, var(--red));
+      box-shadow: 0 0 18px color-mix(in srgb, var(--team-color, var(--red)) 36%, transparent);
+    }
+
+    .record {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .signal {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      padding: 5px 9px;
+      border: 1px solid rgba(114, 199, 160, 0.22);
+      border-radius: 999px;
+      color: #9bd9ba;
+      background: rgba(114, 199, 160, 0.07);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .signal.even {
+      border-color: rgba(242, 200, 121, 0.25);
+      color: var(--gold);
+      background: rgba(242, 200, 121, 0.07);
+    }
+
+    .signal.losing {
+      border-color: rgba(240, 91, 73, 0.26);
+      color: #ff9b8e;
+      background: rgba(240, 91, 73, 0.08);
+    }
+
+    .empty {
+      display: none;
+      padding: 70px 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .method {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 0 0 76px;
+    }
+
+    .method h2 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .method p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .method a {
+      color: #dbe4e8;
+      text-underline-offset: 3px;
+    }
+
+    .site-footer {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--line);
+      color: #718692;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 1000px) {
+      .candidate-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .hero-stat {
+        max-width: 340px;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .rule-card { grid-template-columns: 1fr; }
+      .rule-never { border-top: 1px solid var(--line); border-left: 0; }
+
+      .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .field { grid-column: 1 / -1; }
+
+      .summary-strip {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .method { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 22px, 1180px); }
+
+      .site-header { padding-top: 18px; }
+
+      .site-nav { display: none; }
+
+      .hero { padding: 48px 4px 38px; }
+
+      h1 { font-size: clamp(3.25rem, 19vw, 5.4rem); }
+
+      .controls { grid-template-columns: 1fr; }
+      .field { grid-column: auto; }
+
+      .snapshot-item { padding: 15px 12px; }
+      .snapshot-item strong { font-size: 1.55rem; }
+      .snapshot-item span { font-size: 0.62rem; }
+
+      .candidate-controls { grid-template-columns: 1fr; }
+      .filter-group { display: grid; grid-template-columns: repeat(3, 1fr); }
+      .filter-btn { padding-inline: 7px; }
+
+      .legend { display: none; }
+
+      table, thead, tbody, tr, td { display: block; }
+      thead { display: none; }
+      .table-wrap { overflow: visible; }
+
+      tbody {
+        display: grid;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      tbody tr {
+        display: grid;
+        grid-template-columns: 72px 1fr auto;
+        gap: 6px 12px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(7, 25, 37, 0.58);
+      }
+
+      td {
+        padding: 0;
+        border: 0;
+      }
+
+      td:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
+      td:nth-child(2) { grid-column: 2 / -1; grid-row: 1; }
+      td:nth-child(3) { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 0.76rem; }
+      td:nth-child(3)::before { content: "Won: "; color: #708693; }
+      td:nth-child(4) { grid-column: 1 / 3; grid-row: 3; padding-top: 9px; color: var(--muted); font-size: 0.76rem; }
+      td:nth-child(4)::before { content: "Previous season · "; }
+      td:nth-child(5) { grid-column: 3; grid-row: 3; padding-top: 7px; }
+      td:nth-child(6) { display: none; }
+
+      .team-swatch { height: 24px; }
+
+      .site-footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .candidate-grid { grid-template-columns: 1fr; }
+      .candidate-card { min-height: 130px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell">
+      <a class="brand" href="#top" aria-label="Super Bowl Predictor home">
+        <span class="brand-mark">SB</span>
+        <span>Super Bowl Predictor</span>
+      </a>
+      <nav class="site-nav" aria-label="Page sections">
+        <a href="#rulebook">Rulebook</a>
+        <a href="#field">2026 field</a>
+        <a href="#history">History</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">The always &amp; never rulebook · 60 champions</p>
+        <h1 id="page-title">Who still fits the <em>pattern?</em></h1>
+        <p class="intro">Start with every team. Eliminate the ones that fall outside what has always—and never—been true of a Super Bowl winner.</p>
+      </div>
+      <aside class="hero-stat" aria-label="Turnaround statistic">
+        <strong>4–15</strong>
+        <p>wins in the previous regular season. Every Super Bowl champion has landed inside that range.</p>
+      </aside>
+    </section>
+
+    <section class="snapshot" aria-label="2026 prediction snapshot">
+      <div class="snapshot-item">
+        <strong id="eligible-total">28</strong>
+        <span>Teams still alive</span>
+      </div>
+      <div class="snapshot-item">
+        <strong id="eliminated-total">4</strong>
+        <span>Teams eliminated</span>
+      </div>
+      <div class="snapshot-item">
+        <strong>1</strong>
+        <span>Active rule</span>
+      </div>
+    </section>
+
+    <section id="rulebook" aria-labelledby="rulebook-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Rulebook · criterion 01</p>
+          <h2 id="rulebook-title">Previous-season wins</h2>
+        </div>
+        <p>A rule only enters the book if every one of the 60 champions satisfies it. Future rules will stack here; teams must pass every active rule to remain.</p>
+      </div>
+
+      <article class="rule-card">
+        <div class="rule-main">
+          <span class="rule-label">Always</span>
+          <h3>Every champion won between 4 and 15 games the year before.</h3>
+          <div class="range" aria-label="Eligible range from 4 to 15 wins">
+            <span class="range-number">4</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">15</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Previous regular season only</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner entered its title season from outside the range.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>0–3 wins</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>16+ wins</strong>
+              <span>No champions in this zone</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="field" aria-labelledby="field-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Applying the rule · 2026 season</p>
+          <h2 id="field-title">The field after one cut</h2>
+        </div>
+        <p>Each team is tested against its final 2025 regular-season win total. Passing means historical eligibility—not a forecast or guarantee.</p>
+      </div>
+
+      <div class="candidate-board">
+        <div class="candidate-controls">
+          <label class="field">
+            <span hidden>Search 2026 candidate teams</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+            <input id="candidate-search" type="search" placeholder="Find a team…" autocomplete="off">
+          </label>
+          <div class="filter-group" aria-label="Filter candidates">
+            <button class="filter-btn" type="button" data-candidate-filter="all" aria-pressed="true">All 32</button>
+            <button class="filter-btn" type="button" data-candidate-filter="eligible" aria-pressed="false">Still alive</button>
+            <button class="filter-btn" type="button" data-candidate-filter="eliminated" aria-pressed="false">Eliminated</button>
+          </div>
+        </div>
+        <div class="candidate-summary">
+          <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
+          <span>Rule: 4–15 prior-season wins</span>
+        </div>
+        <div class="candidate-grid" id="candidate-grid"></div>
+        <div class="candidate-empty" id="candidate-empty">No teams match this view.</div>
+      </div>
+    </section>
+
+    <section id="history" class="explorer" aria-label="Super Bowl champions explorer">
+      <div class="history-intro">
+        <p class="eyebrow">Historical proof</p>
+        <h2>All 60 winners behind the rule</h2>
+        <p>Search the complete record to see the exact prior season behind every title.</p>
+      </div>
+      <div class="controls">
+        <label class="field">
+          <span hidden>Search champions</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-4-4"></path>
+          </svg>
+          <input id="search" type="search" placeholder="Search team, year, or Super Bowl…" autocomplete="off">
+        </label>
+        <label>
+          <span hidden>Filter by prior record</span>
+          <select id="record-filter">
+            <option value="all">Every prior record</option>
+            <option value="winning">Winning records</option>
+            <option value="even">.500 records</option>
+            <option value="losing">Losing records</option>
+          </select>
+        </label>
+        <label>
+          <span hidden>Sort results</span>
+          <select id="sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="best">Best prior record</option>
+            <option value="worst">Worst prior record</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="summary-strip">
+        <div id="result-count" aria-live="polite"><strong>60 champions</strong> shown</div>
+        <div class="legend" aria-label="Record category legend">
+          <span><i class="dot"></i>Winning</span>
+          <span><i class="dot even"></i>.500</span>
+          <span><i class="dot losing"></i>Losing</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Super Bowl</th>
+              <th scope="col">Champion</th>
+              <th scope="col">Title season</th>
+              <th scope="col">Previous season</th>
+              <th scope="col">Record</th>
+              <th scope="col">Signal</th>
+            </tr>
+          </thead>
+          <tbody id="champions-body"></tbody>
+        </table>
+        <div class="empty" id="empty-state">
+          <strong>No champions found.</strong>
+          Try a different team, year, or record filter.
+        </div>
+      </div>
+    </section>
+
+    <section class="method" aria-label="About the data">
+      <div>
+        <h2>How to read the predictor</h2>
+        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. A team that survives has only avoided a historical disqualifier; the rule does not measure how likely that team is to win.</p>
+      </div>
+      <div>
+        <h2>Sources</h2>
+        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. The 2026 field uses the NFL’s <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <span>Rule 01 · 60 championships tested</span>
+    <span>Last updated September 2026</span>
+  </footer>
+
+  <script>
+    const champions = [
+      { bowl: "I", season: 1966, team: "Green Bay Packers", prior: 1965, w: 10, l: 3, t: 1 },
+      { bowl: "II", season: 1967, team: "Green Bay Packers", prior: 1966, w: 12, l: 2, t: 0 },
+      { bowl: "III", season: 1968, team: "New York Jets", prior: 1967, w: 8, l: 5, t: 1 },
+      { bowl: "IV", season: 1969, team: "Kansas City Chiefs", prior: 1968, w: 12, l: 2, t: 0 },
+      { bowl: "V", season: 1970, team: "Baltimore Colts", prior: 1969, w: 8, l: 5, t: 1 },
+      { bowl: "VI", season: 1971, team: "Dallas Cowboys", prior: 1970, w: 10, l: 4, t: 0 },
+      { bowl: "VII", season: 1972, team: "Miami Dolphins", prior: 1971, w: 10, l: 3, t: 1 },
+      { bowl: "VIII", season: 1973, team: "Miami Dolphins", prior: 1972, w: 14, l: 0, t: 0 },
+      { bowl: "IX", season: 1974, team: "Pittsburgh Steelers", prior: 1973, w: 10, l: 4, t: 0 },
+      { bowl: "X", season: 1975, team: "Pittsburgh Steelers", prior: 1974, w: 10, l: 3, t: 1 },
+      { bowl: "XI", season: 1976, team: "Oakland Raiders", prior: 1975, w: 11, l: 3, t: 0 },
+      { bowl: "XII", season: 1977, team: "Dallas Cowboys", prior: 1976, w: 11, l: 3, t: 0 },
+      { bowl: "XIII", season: 1978, team: "Pittsburgh Steelers", prior: 1977, w: 9, l: 5, t: 0 },
+      { bowl: "XIV", season: 1979, team: "Pittsburgh Steelers", prior: 1978, w: 14, l: 2, t: 0 },
+      { bowl: "XV", season: 1980, team: "Oakland Raiders", prior: 1979, w: 9, l: 7, t: 0 },
+      { bowl: "XVI", season: 1981, team: "San Francisco 49ers", prior: 1980, w: 6, l: 10, t: 0 },
+      { bowl: "XVII", season: 1982, team: "Washington Redskins", prior: 1981, w: 8, l: 8, t: 0 },
+      { bowl: "XVIII", season: 1983, team: "Los Angeles Raiders", prior: 1982, w: 8, l: 1, t: 0 },
+      { bowl: "XIX", season: 1984, team: "San Francisco 49ers", prior: 1983, w: 10, l: 6, t: 0 },
+      { bowl: "XX", season: 1985, team: "Chicago Bears", prior: 1984, w: 10, l: 6, t: 0 },
+      { bowl: "XXI", season: 1986, team: "New York Giants", prior: 1985, w: 10, l: 6, t: 0 },
+      { bowl: "XXII", season: 1987, team: "Washington Redskins", prior: 1986, w: 12, l: 4, t: 0 },
+      { bowl: "XXIII", season: 1988, team: "San Francisco 49ers", prior: 1987, w: 13, l: 2, t: 0 },
+      { bowl: "XXIV", season: 1989, team: "San Francisco 49ers", prior: 1988, w: 10, l: 6, t: 0 },
+      { bowl: "XXV", season: 1990, team: "New York Giants", prior: 1989, w: 12, l: 4, t: 0 },
+      { bowl: "XXVI", season: 1991, team: "Washington Redskins", prior: 1990, w: 10, l: 6, t: 0 },
+      { bowl: "XXVII", season: 1992, team: "Dallas Cowboys", prior: 1991, w: 11, l: 5, t: 0 },
+      { bowl: "XXVIII", season: 1993, team: "Dallas Cowboys", prior: 1992, w: 13, l: 3, t: 0 },
+      { bowl: "XXIX", season: 1994, team: "San Francisco 49ers", prior: 1993, w: 10, l: 6, t: 0 },
+      { bowl: "XXX", season: 1995, team: "Dallas Cowboys", prior: 1994, w: 12, l: 4, t: 0 },
+      { bowl: "XXXI", season: 1996, team: "Green Bay Packers", prior: 1995, w: 11, l: 5, t: 0 },
+      { bowl: "XXXII", season: 1997, team: "Denver Broncos", prior: 1996, w: 13, l: 3, t: 0 },
+      { bowl: "XXXIII", season: 1998, team: "Denver Broncos", prior: 1997, w: 12, l: 4, t: 0 },
+      { bowl: "XXXIV", season: 1999, team: "St. Louis Rams", prior: 1998, w: 4, l: 12, t: 0 },
+      { bowl: "XXXV", season: 2000, team: "Baltimore Ravens", prior: 1999, w: 8, l: 8, t: 0 },
+      { bowl: "XXXVI", season: 2001, team: "New England Patriots", prior: 2000, w: 5, l: 11, t: 0 },
+      { bowl: "XXXVII", season: 2002, team: "Tampa Bay Buccaneers", prior: 2001, w: 9, l: 7, t: 0 },
+      { bowl: "XXXVIII", season: 2003, team: "New England Patriots", prior: 2002, w: 9, l: 7, t: 0 },
+      { bowl: "XXXIX", season: 2004, team: "New England Patriots", prior: 2003, w: 14, l: 2, t: 0 },
+      { bowl: "XL", season: 2005, team: "Pittsburgh Steelers", prior: 2004, w: 15, l: 1, t: 0 },
+      { bowl: "XLI", season: 2006, team: "Indianapolis Colts", prior: 2005, w: 14, l: 2, t: 0 },
+      { bowl: "XLII", season: 2007, team: "New York Giants", prior: 2006, w: 8, l: 8, t: 0 },
+      { bowl: "XLIII", season: 2008, team: "Pittsburgh Steelers", prior: 2007, w: 10, l: 6, t: 0 },
+      { bowl: "XLIV", season: 2009, team: "New Orleans Saints", prior: 2008, w: 8, l: 8, t: 0 },
+      { bowl: "XLV", season: 2010, team: "Green Bay Packers", prior: 2009, w: 11, l: 5, t: 0 },
+      { bowl: "XLVI", season: 2011, team: "New York Giants", prior: 2010, w: 10, l: 6, t: 0 },
+      { bowl: "XLVII", season: 2012, team: "Baltimore Ravens", prior: 2011, w: 12, l: 4, t: 0 },
+      { bowl: "XLVIII", season: 2013, team: "Seattle Seahawks", prior: 2012, w: 11, l: 5, t: 0 },
+      { bowl: "XLIX", season: 2014, team: "New England Patriots", prior: 2013, w: 12, l: 4, t: 0 },
+      { bowl: "50", season: 2015, team: "Denver Broncos", prior: 2014, w: 12, l: 4, t: 0 },
+      { bowl: "LI", season: 2016, team: "New England Patriots", prior: 2015, w: 12, l: 4, t: 0 },
+      { bowl: "LII", season: 2017, team: "Philadelphia Eagles", prior: 2016, w: 7, l: 9, t: 0 },
+      { bowl: "LIII", season: 2018, team: "New England Patriots", prior: 2017, w: 13, l: 3, t: 0 },
+      { bowl: "LIV", season: 2019, team: "Kansas City Chiefs", prior: 2018, w: 12, l: 4, t: 0 },
+      { bowl: "LV", season: 2020, team: "Tampa Bay Buccaneers", prior: 2019, w: 7, l: 9, t: 0 },
+      { bowl: "LVI", season: 2021, team: "Los Angeles Rams", prior: 2020, w: 10, l: 6, t: 0 },
+      { bowl: "LVII", season: 2022, team: "Kansas City Chiefs", prior: 2021, w: 12, l: 5, t: 0 },
+      { bowl: "LVIII", season: 2023, team: "Kansas City Chiefs", prior: 2022, w: 14, l: 3, t: 0 },
+      { bowl: "LIX", season: 2024, team: "Philadelphia Eagles", prior: 2023, w: 11, l: 6, t: 0 },
+      { bowl: "LX", season: 2025, team: "Seattle Seahawks", prior: 2024, w: 10, l: 7, t: 0 }
+    ];
+
+    const candidates = [
+      { team: "Arizona Cardinals", conference: "NFC", w: 3, l: 14, t: 0 },
+      { team: "Atlanta Falcons", conference: "NFC", w: 8, l: 9, t: 0 },
+      { team: "Baltimore Ravens", conference: "AFC", w: 8, l: 9, t: 0 },
+      { team: "Buffalo Bills", conference: "AFC", w: 12, l: 5, t: 0 },
+      { team: "Carolina Panthers", conference: "NFC", w: 8, l: 9, t: 0 },
+      { team: "Chicago Bears", conference: "NFC", w: 11, l: 6, t: 0 },
+      { team: "Cincinnati Bengals", conference: "AFC", w: 6, l: 11, t: 0 },
+      { team: "Cleveland Browns", conference: "AFC", w: 5, l: 12, t: 0 },
+      { team: "Dallas Cowboys", conference: "NFC", w: 7, l: 9, t: 1 },
+      { team: "Denver Broncos", conference: "AFC", w: 14, l: 3, t: 0 },
+      { team: "Detroit Lions", conference: "NFC", w: 9, l: 8, t: 0 },
+      { team: "Green Bay Packers", conference: "NFC", w: 9, l: 7, t: 1 },
+      { team: "Houston Texans", conference: "AFC", w: 12, l: 5, t: 0 },
+      { team: "Indianapolis Colts", conference: "AFC", w: 8, l: 9, t: 0 },
+      { team: "Jacksonville Jaguars", conference: "AFC", w: 13, l: 4, t: 0 },
+      { team: "Kansas City Chiefs", conference: "AFC", w: 6, l: 11, t: 0 },
+      { team: "Las Vegas Raiders", conference: "AFC", w: 3, l: 14, t: 0 },
+      { team: "Los Angeles Chargers", conference: "AFC", w: 11, l: 6, t: 0 },
+      { team: "Los Angeles Rams", conference: "NFC", w: 12, l: 5, t: 0 },
+      { team: "Miami Dolphins", conference: "AFC", w: 7, l: 10, t: 0 },
+      { team: "Minnesota Vikings", conference: "NFC", w: 9, l: 8, t: 0 },
+      { team: "New England Patriots", conference: "AFC", w: 14, l: 3, t: 0 },
+      { team: "New Orleans Saints", conference: "NFC", w: 6, l: 11, t: 0 },
+      { team: "New York Giants", conference: "NFC", w: 4, l: 13, t: 0 },
+      { team: "New York Jets", conference: "AFC", w: 3, l: 14, t: 0 },
+      { team: "Philadelphia Eagles", conference: "NFC", w: 11, l: 6, t: 0 },
+      { team: "Pittsburgh Steelers", conference: "AFC", w: 10, l: 7, t: 0 },
+      { team: "San Francisco 49ers", conference: "NFC", w: 12, l: 5, t: 0 },
+      { team: "Seattle Seahawks", conference: "NFC", w: 14, l: 3, t: 0 },
+      { team: "Tampa Bay Buccaneers", conference: "NFC", w: 8, l: 9, t: 0 },
+      { team: "Tennessee Titans", conference: "AFC", w: 3, l: 14, t: 0 },
+      { team: "Washington Commanders", conference: "NFC", w: 5, l: 12, t: 0 }
+    ];
+
+    const activeRule = {
+      id: "prior-wins",
+      label: "Previous-season wins",
+      min: Math.min(...champions.map(item => item.w)),
+      max: Math.max(...champions.map(item => item.w))
+    };
+
+    const teamColors = {
+      "Green Bay Packers": "#ffb612",
+      "Arizona Cardinals": "#d44d67",
+      "Atlanta Falcons": "#e34b5d",
+      "Buffalo Bills": "#4d83d1",
+      "Carolina Panthers": "#32a8dc",
+      "Cincinnati Bengals": "#fb6a2c",
+      "Cleveland Browns": "#f36c32",
+      "New York Jets": "#4da680",
+      "Kansas City Chiefs": "#e31837",
+      "Baltimore Colts": "#62a8e5",
+      "Indianapolis Colts": "#62a8e5",
+      "Dallas Cowboys": "#8eaac0",
+      "Detroit Lions": "#4daee0",
+      "Houston Texans": "#5d85a4",
+      "Jacksonville Jaguars": "#26a7a2",
+      "Las Vegas Raiders": "#a5acaf",
+      "Los Angeles Chargers": "#ffc94d",
+      "Miami Dolphins": "#00a9a4",
+      "Minnesota Vikings": "#c8a2e8",
+      "Pittsburgh Steelers": "#ffb612",
+      "Oakland Raiders": "#a5acaf",
+      "Los Angeles Raiders": "#a5acaf",
+      "San Francisco 49ers": "#e8b150",
+      "Washington Redskins": "#ffb612",
+      "Chicago Bears": "#e8752b",
+      "New York Giants": "#5b91d6",
+      "Denver Broncos": "#fb4f14",
+      "St. Louis Rams": "#d7b66a",
+      "Los Angeles Rams": "#ffd100",
+      "Baltimore Ravens": "#8a6bc1",
+      "New England Patriots": "#c4d6e4",
+      "Tampa Bay Buccaneers": "#e84a4a",
+      "New Orleans Saints": "#d3bc8d",
+      "Seattle Seahawks": "#69be28",
+      "Philadelphia Eagles": "#5bb4a9"
+      ,"Tennessee Titans": "#6f9fc8"
+      ,"Washington Commanders": "#ffb612"
+    };
+
+    const body = document.querySelector("#champions-body");
+    const search = document.querySelector("#search");
+    const recordFilter = document.querySelector("#record-filter");
+    const sort = document.querySelector("#sort");
+    const resultCount = document.querySelector("#result-count");
+    const emptyState = document.querySelector("#empty-state");
+    const candidateGrid = document.querySelector("#candidate-grid");
+    const candidateSearch = document.querySelector("#candidate-search");
+    const candidateCount = document.querySelector("#candidate-count");
+    const candidateEmpty = document.querySelector("#candidate-empty");
+    const candidateFilterButtons = [...document.querySelectorAll("[data-candidate-filter]")];
+    let candidateFilter = "all";
+
+    const pct = ({ w, l, t }) => (w + t * 0.5) / (w + l + t);
+    const record = ({ w, l, t }) => `${w}-${l}${t ? `-${t}` : ""}`;
+    const category = item => item.w > item.l ? "winning" : item.w < item.l ? "losing" : "even";
+    const signalLabel = item => {
+      const value = pct(item);
+      if (value >= 0.75) return "Powerhouse";
+      if (item.w > item.l) return "Winning form";
+      if (item.w === item.l) return "Even season";
+      return "Turnaround";
+    };
+    const isEligible = item => item.w >= activeRule.min && item.w <= activeRule.max;
+
+    const escapeHtml = value => String(value).replace(/[&<>'"]/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+    })[char]);
+
+    function render() {
+      const query = search.value.trim().toLowerCase();
+      const filter = recordFilter.value;
+      const direction = sort.value;
+
+      const filtered = champions
+        .filter(item => {
+          const haystack = `${item.team} ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)}`.toLowerCase();
+          return (!query || haystack.includes(query)) && (filter === "all" || category(item) === filter);
+        })
+        .sort((a, b) => {
+          if (direction === "oldest") return a.season - b.season;
+          if (direction === "best") return pct(b) - pct(a) || b.season - a.season;
+          if (direction === "worst") return pct(a) - pct(b) || b.season - a.season;
+          return b.season - a.season;
+        });
+
+      body.innerHTML = filtered.map(item => {
+        const type = category(item);
+        return `
+          <tr style="--team-color:${teamColors[item.team] || "#f05b49"}">
+            <td><span class="bowl-number">${escapeHtml(item.bowl)}</span></td>
+            <td><span class="team-cell"><i class="team-swatch" aria-hidden="true"></i>${escapeHtml(item.team)}</span></td>
+            <td>${item.season}</td>
+            <td>${item.prior}</td>
+            <td><span class="record">${record(item)}</span></td>
+            <td><span class="signal ${type}"><i class="dot ${type}" aria-hidden="true"></i>${signalLabel(item)}</span></td>
+          </tr>`;
+      }).join("");
+
+      resultCount.innerHTML = `<strong>${filtered.length} ${filtered.length === 1 ? "champion" : "champions"}</strong> shown`;
+      emptyState.style.display = filtered.length ? "none" : "block";
+    }
+
+    function renderCandidates() {
+      const query = candidateSearch.value.trim().toLowerCase();
+      const filtered = candidates
+        .filter(item => {
+          const status = isEligible(item) ? "eligible" : "eliminated";
+          return (!query || item.team.toLowerCase().includes(query)) && (candidateFilter === "all" || candidateFilter === status);
+        })
+        .sort((a, b) => Number(isEligible(a)) - Number(isEligible(b)) || b.w - a.w || a.team.localeCompare(b.team));
+
+      candidateGrid.innerHTML = filtered.map(item => {
+        const eligible = isEligible(item);
+        const distance = item.w < activeRule.min ? activeRule.min - item.w : item.w - activeRule.max;
+        const reason = eligible
+          ? `Inside the ${activeRule.min}–${activeRule.max} win range`
+          : `${distance} ${distance === 1 ? "win" : "wins"} ${item.w < activeRule.min ? "below the floor" : "above the ceiling"}`;
+        return `
+          <article class="candidate-card ${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
+            <div class="candidate-card-top">
+              <div>
+                <h3>${escapeHtml(item.team)}</h3>
+                <span class="conference">${item.conference} · 2025 record</span>
+              </div>
+              <span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Still alive" : "Eliminated"}</span>
+            </div>
+            <div class="candidate-record">${record(item)}</div>
+            <div class="candidate-reason">${reason}</div>
+          </article>`;
+      }).join("");
+
+      candidateCount.innerHTML = `<strong>${filtered.length} ${filtered.length === 1 ? "team" : "teams"}</strong> shown`;
+      candidateEmpty.style.display = filtered.length ? "none" : "block";
+    }
+
+    const eligibleCount = candidates.filter(isEligible).length;
+    document.querySelector("#eligible-total").textContent = eligibleCount;
+    document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
+    search.addEventListener("input", render);
+    recordFilter.addEventListener("change", render);
+    sort.addEventListener("change", render);
+    candidateSearch.addEventListener("input", renderCandidates);
+    candidateFilterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        candidateFilter = button.dataset.candidateFilter;
+        candidateFilterButtons.forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+        renderCandidates();
+      });
+    });
+    render();
+    renderCandidates();
+  </script>
+</body>
+</html>
