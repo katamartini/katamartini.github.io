@@ -533,6 +533,21 @@
       text-transform: uppercase;
     }
 
+    .coach-meta {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.69rem;
+      font-weight: 650;
+      letter-spacing: 0;
+      line-height: 1.35;
+    }
+
+    .history-table .coach-meta {
+      color: #8397a3;
+      font-size: 0.66rem;
+    }
+
     .candidate-record {
       color: var(--gold);
       font-family: Georgia, "Times New Roman", serif;
@@ -1047,22 +1062,22 @@
         <p class="intro">Start with every team. Eliminate the ones that fall outside what has always—and never—been true of a Super Bowl winner.</p>
       </div>
       <aside class="hero-stat" aria-label="Turnaround statistic">
-        <strong>25</strong>
-        <p>of 32 teams still match every season-before range after three active criteria.</p>
+        <strong id="hero-eligible-total">24</strong>
+        <p>of 32 teams still match every historical boundary after five active criteria.</p>
       </aside>
     </section>
 
     <section class="snapshot" aria-label="2026 prediction snapshot">
       <div class="snapshot-item">
-        <strong id="eligible-total">25</strong>
+        <strong id="eligible-total">24</strong>
         <span>Teams still alive</span>
       </div>
       <div class="snapshot-item">
-        <strong id="eliminated-total">7</strong>
+        <strong id="eliminated-total">8</strong>
         <span>Teams eliminated</span>
       </div>
       <div class="snapshot-item">
-        <strong>3</strong>
+        <strong>5</strong>
         <span>Active criteria</span>
       </div>
     </section>
@@ -1070,10 +1085,10 @@
     <section id="rulebook" aria-labelledby="rulebook-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Rulebook · 3 active criteria</p>
-          <h2 id="rulebook-title">The season-before ranges</h2>
+          <p class="eyebrow">Rulebook · 5 active criteria</p>
+          <h2 id="rulebook-title">The historical winner profile</h2>
         </div>
-        <p>A criterion enters the book only if all 60 champions satisfy it. Points per game are regular-season totals divided by games played and rounded to one decimal.</p>
+        <p>A criterion enters the book only if all 60 champions satisfy it. Team performance comes from the prior regular season; coach age and tenure are measured at the opening of the title season.</p>
       </div>
 
       <article class="rule-card">
@@ -1168,6 +1183,68 @@
           </div>
         </div>
       </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 04 · Head-coach age</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion opened its title season with a head coach age 35 to 67.</h3>
+          <div class="range" aria-label="Eligible head-coach age range from 35 to 67">
+            <span class="range-number">35</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">67</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Youngest: Sean McVay · Oldest: Bruce Arians</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner began its title season with a coach outside this age range.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Under age 35</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Over age 67</strong>
+              <span>No champions in this zone</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 05 · Head-coach tenure</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion opened with a coach in his 1st through 19th consecutive season with that team.</h3>
+          <div class="range" aria-label="Eligible head-coach tenure from first through nineteenth season with the team">
+            <span class="range-number">1st</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">19th</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Longest: Bill Belichick · 2018 Patriots</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner began beyond a 19th consecutive season with the same team.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>20th season or later</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>4 first-year winners</strong>
+              <span>A new hire is still historically eligible</span>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section id="field" aria-labelledby="field-title">
@@ -1176,7 +1253,7 @@
           <p class="eyebrow">Applying all criteria · 2026 season</p>
           <h2 id="field-title">All 32 NFL teams</h2>
         </div>
-        <p>This checklist tests every team’s final 2025 wins, scoring average, and points-allowed average. Passing means historical eligibility—not a forecast or guarantee.</p>
+        <p>This checklist tests every team’s final 2025 performance plus its 2026 head coach’s opening-day age and tenure. Passing means historical eligibility—not a forecast or guarantee.</p>
       </div>
 
       <div class="candidate-board">
@@ -1187,7 +1264,7 @@
               <circle cx="11" cy="11" r="7"></circle>
               <path d="m20 20-4-4"></path>
             </svg>
-            <input id="candidate-search" type="search" placeholder="Find a team…" autocomplete="off">
+            <input id="candidate-search" type="search" placeholder="Find a team or coach…" autocomplete="off">
           </label>
           <div class="filter-group" aria-label="Filter candidates">
             <button class="filter-btn" type="button" data-candidate-filter="all" aria-pressed="true">All 32</button>
@@ -1197,7 +1274,7 @@
         </div>
         <div class="candidate-summary">
           <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
-          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1</span>
+          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1 · coach: age 35–67, 1st–19th season</span>
         </div>
         <div class="failed-now">
           <strong>Fails 1+ criteria</strong>
@@ -1226,7 +1303,7 @@
       <div class="history-intro">
         <p class="eyebrow">Historical proof</p>
         <h2>All 60 winners behind the rules</h2>
-        <p>Search the complete record to see the wins and scoring averages behind every title.</p>
+        <p>Search the complete record to see the team and coach profile behind every title.</p>
       </div>
       <div class="controls">
         <label class="field">
@@ -1290,17 +1367,17 @@
     <section class="method" aria-label="About the data">
       <div>
         <h2>How to read the predictor</h2>
-        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
+        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal. Coach age uses September 1 of the title season as a consistent opening benchmark; tenure counts consecutive seasons with that franchise. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
       </div>
       <div>
         <h2>Sources</h2>
-        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. Regular-season records and scoring totals come from the NFL’s historical standings, including the <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are also checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>. Team marks come from <a href="https://www.espn.com/nfl/teams" target="_blank" rel="noreferrer">ESPN’s NFL team directory</a>.</p>
+        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a> and the <a href="https://en.wikipedia.org/wiki/List_of_Super_Bowl_head_coaches" target="_blank" rel="noreferrer">Super Bowl head-coach record</a>. Regular-season records and scoring totals come from the NFL’s historical standings, including the <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are also checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>. The 2026 coaching field is checked against the <a href="https://profootballmania.com/nfl-head-coaches/" target="_blank" rel="noreferrer">current all-team coach table</a> and the <a href="https://www.nfl.com/news/nfl-coaching-gm-tracker-latest-news-interviews-developments-2026-hiring-cycle" target="_blank" rel="noreferrer">NFL coaching tracker</a>. Team marks come from <a href="https://www.espn.com/nfl/teams" target="_blank" rel="noreferrer">ESPN’s NFL team directory</a>.</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer shell">
-    <span>3 criteria · 60 championships tested</span>
+    <span>5 criteria · 60 championships tested</span>
     <span>Last updated September 2026</span>
   </footer>
 
@@ -1368,39 +1445,104 @@
       { bowl: "LX", season: 2025, team: "Seattle Seahawks", prior: 2024, w: 10, l: 7, t: 0, pf: 375, pa: 368 }
     ];
 
+    const championCoachProfiles = {
+      1966: { coach: "Vince Lombardi", coachAge: 53, coachSeason: 8 },
+      1967: { coach: "Vince Lombardi", coachAge: 54, coachSeason: 9 },
+      1968: { coach: "Weeb Ewbank", coachAge: 61, coachSeason: 6 },
+      1969: { coach: "Hank Stram", coachAge: 46, coachSeason: 10 },
+      1970: { coach: "Don McCafferty", coachAge: 49, coachSeason: 1 },
+      1971: { coach: "Tom Landry", coachAge: 46, coachSeason: 12 },
+      1972: { coach: "Don Shula", coachAge: 42, coachSeason: 3 },
+      1973: { coach: "Don Shula", coachAge: 43, coachSeason: 4 },
+      1974: { coach: "Chuck Noll", coachAge: 42, coachSeason: 6 },
+      1975: { coach: "Chuck Noll", coachAge: 43, coachSeason: 7 },
+      1976: { coach: "John Madden", coachAge: 40, coachSeason: 8 },
+      1977: { coach: "Tom Landry", coachAge: 52, coachSeason: 18 },
+      1978: { coach: "Chuck Noll", coachAge: 46, coachSeason: 10 },
+      1979: { coach: "Chuck Noll", coachAge: 47, coachSeason: 11 },
+      1980: { coach: "Tom Flores", coachAge: 43, coachSeason: 2 },
+      1981: { coach: "Bill Walsh", coachAge: 49, coachSeason: 3 },
+      1982: { coach: "Joe Gibbs", coachAge: 41, coachSeason: 2 },
+      1983: { coach: "Tom Flores", coachAge: 46, coachSeason: 5 },
+      1984: { coach: "Bill Walsh", coachAge: 52, coachSeason: 6 },
+      1985: { coach: "Mike Ditka", coachAge: 45, coachSeason: 4 },
+      1986: { coach: "Bill Parcells", coachAge: 45, coachSeason: 4 },
+      1987: { coach: "Joe Gibbs", coachAge: 46, coachSeason: 7 },
+      1988: { coach: "Bill Walsh", coachAge: 56, coachSeason: 10 },
+      1989: { coach: "George Seifert", coachAge: 49, coachSeason: 1 },
+      1990: { coach: "Bill Parcells", coachAge: 49, coachSeason: 8 },
+      1991: { coach: "Joe Gibbs", coachAge: 50, coachSeason: 11 },
+      1992: { coach: "Jimmy Johnson", coachAge: 49, coachSeason: 4 },
+      1993: { coach: "Jimmy Johnson", coachAge: 50, coachSeason: 5 },
+      1994: { coach: "George Seifert", coachAge: 54, coachSeason: 6 },
+      1995: { coach: "Barry Switzer", coachAge: 57, coachSeason: 2 },
+      1996: { coach: "Mike Holmgren", coachAge: 48, coachSeason: 5 },
+      1997: { coach: "Mike Shanahan", coachAge: 45, coachSeason: 3 },
+      1998: { coach: "Mike Shanahan", coachAge: 46, coachSeason: 4 },
+      1999: { coach: "Dick Vermeil", coachAge: 62, coachSeason: 3 },
+      2000: { coach: "Brian Billick", coachAge: 46, coachSeason: 2 },
+      2001: { coach: "Bill Belichick", coachAge: 49, coachSeason: 2 },
+      2002: { coach: "Jon Gruden", coachAge: 39, coachSeason: 1 },
+      2003: { coach: "Bill Belichick", coachAge: 51, coachSeason: 4 },
+      2004: { coach: "Bill Belichick", coachAge: 52, coachSeason: 5 },
+      2005: { coach: "Bill Cowher", coachAge: 48, coachSeason: 14 },
+      2006: { coach: "Tony Dungy", coachAge: 50, coachSeason: 5 },
+      2007: { coach: "Tom Coughlin", coachAge: 61, coachSeason: 4 },
+      2008: { coach: "Mike Tomlin", coachAge: 36, coachSeason: 2 },
+      2009: { coach: "Sean Payton", coachAge: 45, coachSeason: 4 },
+      2010: { coach: "Mike McCarthy", coachAge: 46, coachSeason: 5 },
+      2011: { coach: "Tom Coughlin", coachAge: 65, coachSeason: 8 },
+      2012: { coach: "John Harbaugh", coachAge: 49, coachSeason: 5 },
+      2013: { coach: "Pete Carroll", coachAge: 61, coachSeason: 4 },
+      2014: { coach: "Bill Belichick", coachAge: 62, coachSeason: 15 },
+      2015: { coach: "Gary Kubiak", coachAge: 54, coachSeason: 1 },
+      2016: { coach: "Bill Belichick", coachAge: 64, coachSeason: 17 },
+      2017: { coach: "Doug Pederson", coachAge: 49, coachSeason: 2 },
+      2018: { coach: "Bill Belichick", coachAge: 66, coachSeason: 19 },
+      2019: { coach: "Andy Reid", coachAge: 61, coachSeason: 7 },
+      2020: { coach: "Bruce Arians", coachAge: 67, coachSeason: 2 },
+      2021: { coach: "Sean McVay", coachAge: 35, coachSeason: 5 },
+      2022: { coach: "Andy Reid", coachAge: 64, coachSeason: 10 },
+      2023: { coach: "Andy Reid", coachAge: 65, coachSeason: 11 },
+      2024: { coach: "Nick Sirianni", coachAge: 43, coachSeason: 4 },
+      2025: { coach: "Mike Macdonald", coachAge: 38, coachSeason: 2 }
+    };
+
+    champions.forEach(item => Object.assign(item, championCoachProfiles[item.season]));
+
     const candidates = [
-      { team: "Arizona Cardinals", conference: "NFC", w: 3, l: 14, t: 0, pf: 355, pa: 488 },
-      { team: "Atlanta Falcons", conference: "NFC", w: 8, l: 9, t: 0, pf: 353, pa: 401 },
-      { team: "Baltimore Ravens", conference: "AFC", w: 8, l: 9, t: 0, pf: 424, pa: 398 },
-      { team: "Buffalo Bills", conference: "AFC", w: 12, l: 5, t: 0, pf: 481, pa: 365 },
-      { team: "Carolina Panthers", conference: "NFC", w: 8, l: 9, t: 0, pf: 311, pa: 380 },
-      { team: "Chicago Bears", conference: "NFC", w: 11, l: 6, t: 0, pf: 441, pa: 415 },
-      { team: "Cincinnati Bengals", conference: "AFC", w: 6, l: 11, t: 0, pf: 414, pa: 492 },
-      { team: "Cleveland Browns", conference: "AFC", w: 5, l: 12, t: 0, pf: 279, pa: 379 },
-      { team: "Dallas Cowboys", conference: "NFC", w: 7, l: 9, t: 1, pf: 471, pa: 511 },
-      { team: "Denver Broncos", conference: "AFC", w: 14, l: 3, t: 0, pf: 401, pa: 311 },
-      { team: "Detroit Lions", conference: "NFC", w: 9, l: 8, t: 0, pf: 481, pa: 413 },
-      { team: "Green Bay Packers", conference: "NFC", w: 9, l: 7, t: 1, pf: 391, pa: 360 },
-      { team: "Houston Texans", conference: "AFC", w: 12, l: 5, t: 0, pf: 404, pa: 295 },
-      { team: "Indianapolis Colts", conference: "AFC", w: 8, l: 9, t: 0, pf: 466, pa: 412 },
-      { team: "Jacksonville Jaguars", conference: "AFC", w: 13, l: 4, t: 0, pf: 474, pa: 336 },
-      { team: "Kansas City Chiefs", conference: "AFC", w: 6, l: 11, t: 0, pf: 362, pa: 328 },
-      { team: "Las Vegas Raiders", conference: "AFC", w: 3, l: 14, t: 0, pf: 241, pa: 432 },
-      { team: "Los Angeles Chargers", conference: "AFC", w: 11, l: 6, t: 0, pf: 368, pa: 340 },
-      { team: "Los Angeles Rams", conference: "NFC", w: 12, l: 5, t: 0, pf: 518, pa: 346 },
-      { team: "Miami Dolphins", conference: "AFC", w: 7, l: 10, t: 0, pf: 347, pa: 424 },
-      { team: "Minnesota Vikings", conference: "NFC", w: 9, l: 8, t: 0, pf: 344, pa: 333 },
-      { team: "New England Patriots", conference: "AFC", w: 14, l: 3, t: 0, pf: 490, pa: 320 },
-      { team: "New Orleans Saints", conference: "NFC", w: 6, l: 11, t: 0, pf: 306, pa: 383 },
-      { team: "New York Giants", conference: "NFC", w: 4, l: 13, t: 0, pf: 381, pa: 439 },
-      { team: "New York Jets", conference: "AFC", w: 3, l: 14, t: 0, pf: 300, pa: 503 },
-      { team: "Philadelphia Eagles", conference: "NFC", w: 11, l: 6, t: 0, pf: 379, pa: 325 },
-      { team: "Pittsburgh Steelers", conference: "AFC", w: 10, l: 7, t: 0, pf: 397, pa: 387 },
-      { team: "San Francisco 49ers", conference: "NFC", w: 12, l: 5, t: 0, pf: 437, pa: 371 },
-      { team: "Seattle Seahawks", conference: "NFC", w: 14, l: 3, t: 0, pf: 483, pa: 292 },
-      { team: "Tampa Bay Buccaneers", conference: "NFC", w: 8, l: 9, t: 0, pf: 380, pa: 411 },
-      { team: "Tennessee Titans", conference: "AFC", w: 3, l: 14, t: 0, pf: 284, pa: 478 },
-      { team: "Washington Commanders", conference: "NFC", w: 5, l: 12, t: 0, pf: 356, pa: 451 }
+      { team: "Arizona Cardinals", conference: "NFC", w: 3, l: 14, t: 0, pf: 355, pa: 488, coach: "Mike LaFleur", coachAge: 39, coachSeason: 1 },
+      { team: "Atlanta Falcons", conference: "NFC", w: 8, l: 9, t: 0, pf: 353, pa: 401, coach: "Kevin Stefanski", coachAge: 44, coachSeason: 1 },
+      { team: "Baltimore Ravens", conference: "AFC", w: 8, l: 9, t: 0, pf: 424, pa: 398, coach: "Jesse Minter", coachAge: 43, coachSeason: 1 },
+      { team: "Buffalo Bills", conference: "AFC", w: 12, l: 5, t: 0, pf: 481, pa: 365, coach: "Joe Brady", coachAge: 36, coachSeason: 1 },
+      { team: "Carolina Panthers", conference: "NFC", w: 8, l: 9, t: 0, pf: 311, pa: 380, coach: "Dave Canales", coachAge: 45, coachSeason: 3 },
+      { team: "Chicago Bears", conference: "NFC", w: 11, l: 6, t: 0, pf: 441, pa: 415, coach: "Ben Johnson", coachAge: 40, coachSeason: 2 },
+      { team: "Cincinnati Bengals", conference: "AFC", w: 6, l: 11, t: 0, pf: 414, pa: 492, coach: "Zac Taylor", coachAge: 43, coachSeason: 8 },
+      { team: "Cleveland Browns", conference: "AFC", w: 5, l: 12, t: 0, pf: 279, pa: 379, coach: "Todd Monken", coachAge: 60, coachSeason: 1 },
+      { team: "Dallas Cowboys", conference: "NFC", w: 7, l: 9, t: 1, pf: 471, pa: 511, coach: "Brian Schottenheimer", coachAge: 52, coachSeason: 2 },
+      { team: "Denver Broncos", conference: "AFC", w: 14, l: 3, t: 0, pf: 401, pa: 311, coach: "Sean Payton", coachAge: 62, coachSeason: 4 },
+      { team: "Detroit Lions", conference: "NFC", w: 9, l: 8, t: 0, pf: 481, pa: 413, coach: "Dan Campbell", coachAge: 50, coachSeason: 6 },
+      { team: "Green Bay Packers", conference: "NFC", w: 9, l: 7, t: 1, pf: 391, pa: 360, coach: "Matt LaFleur", coachAge: 46, coachSeason: 8 },
+      { team: "Houston Texans", conference: "AFC", w: 12, l: 5, t: 0, pf: 404, pa: 295, coach: "DeMeco Ryans", coachAge: 42, coachSeason: 4 },
+      { team: "Indianapolis Colts", conference: "AFC", w: 8, l: 9, t: 0, pf: 466, pa: 412, coach: "Shane Steichen", coachAge: 41, coachSeason: 4 },
+      { team: "Jacksonville Jaguars", conference: "AFC", w: 13, l: 4, t: 0, pf: 474, pa: 336, coach: "Liam Coen", coachAge: 40, coachSeason: 2 },
+      { team: "Kansas City Chiefs", conference: "AFC", w: 6, l: 11, t: 0, pf: 362, pa: 328, coach: "Andy Reid", coachAge: 68, coachSeason: 14 },
+      { team: "Las Vegas Raiders", conference: "AFC", w: 3, l: 14, t: 0, pf: 241, pa: 432, coach: "Klint Kubiak", coachAge: 39, coachSeason: 1 },
+      { team: "Los Angeles Chargers", conference: "AFC", w: 11, l: 6, t: 0, pf: 368, pa: 340, coach: "Jim Harbaugh", coachAge: 62, coachSeason: 3 },
+      { team: "Los Angeles Rams", conference: "NFC", w: 12, l: 5, t: 0, pf: 518, pa: 346, coach: "Sean McVay", coachAge: 40, coachSeason: 10 },
+      { team: "Miami Dolphins", conference: "AFC", w: 7, l: 10, t: 0, pf: 347, pa: 424, coach: "Jeff Hafley", coachAge: 47, coachSeason: 1 },
+      { team: "Minnesota Vikings", conference: "NFC", w: 9, l: 8, t: 0, pf: 344, pa: 333, coach: "Kevin O'Connell", coachAge: 41, coachSeason: 5 },
+      { team: "New England Patriots", conference: "AFC", w: 14, l: 3, t: 0, pf: 490, pa: 320, coach: "Mike Vrabel", coachAge: 51, coachSeason: 2 },
+      { team: "New Orleans Saints", conference: "NFC", w: 6, l: 11, t: 0, pf: 306, pa: 383, coach: "Kellen Moore", coachAge: 38, coachSeason: 2 },
+      { team: "New York Giants", conference: "NFC", w: 4, l: 13, t: 0, pf: 381, pa: 439, coach: "John Harbaugh", coachAge: 63, coachSeason: 1 },
+      { team: "New York Jets", conference: "AFC", w: 3, l: 14, t: 0, pf: 300, pa: 503, coach: "Aaron Glenn", coachAge: 54, coachSeason: 2 },
+      { team: "Philadelphia Eagles", conference: "NFC", w: 11, l: 6, t: 0, pf: 379, pa: 325, coach: "Nick Sirianni", coachAge: 45, coachSeason: 6 },
+      { team: "Pittsburgh Steelers", conference: "AFC", w: 10, l: 7, t: 0, pf: 397, pa: 387, coach: "Mike McCarthy", coachAge: 62, coachSeason: 1 },
+      { team: "San Francisco 49ers", conference: "NFC", w: 12, l: 5, t: 0, pf: 437, pa: 371, coach: "Kyle Shanahan", coachAge: 46, coachSeason: 10 },
+      { team: "Seattle Seahawks", conference: "NFC", w: 14, l: 3, t: 0, pf: 483, pa: 292, coach: "Mike Macdonald", coachAge: 39, coachSeason: 3 },
+      { team: "Tampa Bay Buccaneers", conference: "NFC", w: 8, l: 9, t: 0, pf: 380, pa: 411, coach: "Todd Bowles", coachAge: 62, coachSeason: 5 },
+      { team: "Tennessee Titans", conference: "AFC", w: 3, l: 14, t: 0, pf: 284, pa: 478, coach: "Robert Saleh", coachAge: 47, coachSeason: 1 },
+      { team: "Washington Commanders", conference: "NFC", w: 5, l: 12, t: 0, pf: 356, pa: 451, coach: "Dan Quinn", coachAge: 55, coachSeason: 3 }
     ];
 
     const gamesPlayed = item => item.w + item.l + item.t;
@@ -1420,6 +1562,14 @@
       pointsAgainst: {
         min: Math.min(...champions.map(pointsAgainstPerGame)),
         max: Math.max(...champions.map(pointsAgainstPerGame))
+      },
+      coachAge: {
+        min: Math.min(...champions.map(item => item.coachAge)),
+        max: Math.max(...champions.map(item => item.coachAge))
+      },
+      coachSeason: {
+        min: Math.min(...champions.map(item => item.coachSeason)),
+        max: Math.max(...champions.map(item => item.coachSeason))
       }
     };
 
@@ -1514,6 +1664,11 @@
 
     const pct = ({ w, l, t }) => (w + t * 0.5) / (w + l + t);
     const record = ({ w, l, t }) => `${w}-${l}${t ? `-${t}` : ""}`;
+    const ordinal = value => {
+      const mod100 = value % 100;
+      if (mod100 >= 11 && mod100 <= 13) return `${value}th`;
+      return `${value}${value % 10 === 1 ? "st" : value % 10 === 2 ? "nd" : value % 10 === 3 ? "rd" : "th"}`;
+    };
     const category = item => item.w > item.l ? "winning" : item.w < item.l ? "losing" : "even";
     const failureReasons = item => {
       const failures = [];
@@ -1528,6 +1683,12 @@
       }
       if (allowed < activeRules.pointsAgainst.min || allowed > activeRules.pointsAgainst.max) {
         failures.push(`Rule 03 · ${allowed.toFixed(1)} PA/G is ${allowed < activeRules.pointsAgainst.min ? `below the ${activeRules.pointsAgainst.min.toFixed(1)} minimum` : `above the ${activeRules.pointsAgainst.max.toFixed(1)} maximum`}`);
+      }
+      if (item.coachAge < activeRules.coachAge.min || item.coachAge > activeRules.coachAge.max) {
+        failures.push(`Rule 04 · ${item.coach} is age ${item.coachAge}, ${item.coachAge < activeRules.coachAge.min ? `younger than the age-${activeRules.coachAge.min} minimum` : `older than the age-${activeRules.coachAge.max} maximum`}`);
+      }
+      if (item.coachSeason < activeRules.coachSeason.min || item.coachSeason > activeRules.coachSeason.max) {
+        failures.push(`Rule 05 · ${item.coach} is entering a ${ordinal(item.coachSeason)} season with the team, outside the ${ordinal(activeRules.coachSeason.min)}–${ordinal(activeRules.coachSeason.max)} range`);
       }
       return failures;
     };
@@ -1544,7 +1705,7 @@
 
       const filtered = champions
         .filter(item => {
-          const haystack = `${item.team} ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)} ${pointsForPerGame(item).toFixed(1)} ${pointsAgainstPerGame(item).toFixed(1)}`.toLowerCase();
+          const haystack = `${item.team} ${item.coach} age ${item.coachAge} ${ordinal(item.coachSeason)} season ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)} ${pointsForPerGame(item).toFixed(1)} ${pointsAgainstPerGame(item).toFixed(1)}`.toLowerCase();
           return (!query || haystack.includes(query)) && (filter === "all" || category(item) === filter);
         })
         .sort((a, b) => {
@@ -1558,7 +1719,7 @@
         return `
           <tr style="--team-color:${teamColors[item.team] || "#f05b49"}">
             <td><span class="bowl-number">${escapeHtml(item.bowl)}</span></td>
-            <td><span class="team-cell"><i class="team-swatch" aria-hidden="true"></i>${escapeHtml(item.team)}</span></td>
+            <td><span class="team-cell"><i class="team-swatch" aria-hidden="true"></i><span>${escapeHtml(item.team)}<span class="coach-meta">${escapeHtml(item.coach)} · age ${item.coachAge} · ${ordinal(item.coachSeason)} season</span></span></span></td>
             <td>${item.season}</td>
             <td>${item.prior}</td>
             <td><span class="record">${record(item)}</span></td>
@@ -1576,7 +1737,8 @@
       const filtered = candidates
         .filter(item => {
           const status = isEligible(item) ? "eligible" : "eliminated";
-          return (!query || item.team.toLowerCase().includes(query)) && (candidateFilter === "all" || candidateFilter === status);
+          const haystack = `${item.team} ${item.coach}`.toLowerCase();
+          return (!query || haystack.includes(query)) && (candidateFilter === "all" || candidateFilter === status);
         })
         .sort((a, b) => Number(isEligible(a)) - Number(isEligible(b)) || b.w - a.w || a.team.localeCompare(b.team));
 
@@ -1584,12 +1746,12 @@
         const eligible = isEligible(item);
         const failures = failureReasons(item);
         const reason = eligible
-          ? `<span class="criteria-pass">All 3 criteria satisfied</span>`
+          ? `<span class="criteria-pass">All 5 criteria satisfied</span>`
           : `<ul class="criteria-list">${failures.map(failure => `<li>${failure}</li>`).join("")}</ul>`;
         return `
           <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
             <td>
-              <span class="team-cell"><img class="candidate-team-logo" src="${teamLogos[item.team]}" alt="" width="46" height="46" loading="lazy" decoding="async"><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span></span></span>
+              <span class="team-cell"><img class="candidate-team-logo" src="${teamLogos[item.team]}" alt="" width="46" height="46" loading="lazy" decoding="async"><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span><span class="coach-meta">${escapeHtml(item.coach)} · age ${item.coachAge} · ${ordinal(item.coachSeason)} season</span></span></span>
             </td>
             <td><span class="candidate-record">${record(item)}</span></td>
             <td><span class="metric-value">${pointsForPerGame(item).toFixed(1)}</span></td>
@@ -1605,6 +1767,7 @@
 
     const eligibleCount = candidates.filter(isEligible).length;
     const failedTeams = candidates.filter(item => !isEligible(item)).map(item => item.team);
+    document.querySelector("#hero-eligible-total").textContent = eligibleCount;
     document.querySelector("#eligible-total").textContent = eligibleCount;
     document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
     failedTeamList.textContent = `${failedTeams.length} teams: ${failedTeams.join(" · ")}`;
