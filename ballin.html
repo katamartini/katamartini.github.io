@@ -1740,7 +1740,7 @@
   <dialog id="importDialog" aria-labelledby="importTitle">
     <div class="dialog-header">
       <h2 id="importTitle">Import a run</h2>
-      <p>Choose the kind of record you have. Both formats count toward your totals and trends.</p>
+      <p id="importDescription">Choose the kind of record you have. Both formats count toward your totals and trends.</p>
     </div>
     <form class="import-form" id="importForm">
       <div class="field">
@@ -1910,6 +1910,8 @@
         emptyHistory: document.querySelector("#emptyHistory"),
         importDialog: document.querySelector("#importDialog"),
         importForm: document.querySelector("#importForm"),
+        importTitle: document.querySelector("#importTitle"),
+        importDescription: document.querySelector("#importDescription"),
         importFormats: document.querySelectorAll('input[name="importFormat"]'),
         runDate: document.querySelector("#runDate"),
         runData: document.querySelector("#runData"),
@@ -1938,6 +1940,7 @@
       let backupQueue = Promise.resolve();
       let backupUiState = { status: "disconnected", detail: "Your runs are currently saved only in this browser." };
       let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
+      let pendingTransfer = null;
       let state = loadState();
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
 
@@ -1973,6 +1976,36 @@
         const date = new Date(timestamp);
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
         return date.toISOString().slice(0, 10);
+      }
+
+      function readTransferredRun() {
+        if (!location.hash) return null;
+
+        const payload = new URLSearchParams(location.hash.slice(1)).get("ballin-run");
+        if (payload === null) return null;
+
+        const match = payload.match(/^v1:(\d{12,14}):([MX]{1,100})$/);
+        if (!match) return { error: true };
+
+        const timestamp = Number(match[1]);
+        const date = new Date(timestamp);
+        if (!Number.isSafeInteger(timestamp) || Number.isNaN(date.getTime())) {
+          return { error: true };
+        }
+
+        return {
+          error: false,
+          id: `android-${timestamp}`,
+          timestamp,
+          date: dateFromTimestamp(timestamp),
+          shots: [...match[2]].map((shot) => shot === "M")
+        };
+      }
+
+      function clearTransferredRunHash() {
+        const params = new URLSearchParams(location.hash.slice(1));
+        if (!params.has("ballin-run")) return;
+        window.history.replaceState(null, "", `${location.pathname}${location.search}`);
       }
 
       function cleanShots(value) {
@@ -2499,9 +2532,22 @@
         updateImportPreview();
       }
 
-      function openImport() {
+      function openImport(transfer = null) {
         elements.importForm.reset();
-        elements.runDate.value = todayForInput();
+        pendingTransfer = transfer;
+        elements.importTitle.textContent = transfer ? "Run from Free Throw Tracker" : "Import a run";
+        elements.importDescription.textContent = transfer
+          ? "Review the run sent from your phone, then save it to this dashboard."
+          : "Choose the kind of record you have. Both formats count toward your totals and trends.";
+        elements.saveImportButton.textContent = transfer ? "Save to Ballin" : "Save run";
+        elements.runDate.value = transfer?.date || todayForInput();
+        if (transfer) {
+          const exactOption = [...elements.importFormats].find((input) => input.value === "exact");
+          if (exactOption) exactOption.checked = true;
+          elements.runData.value = transfer.shots.map((shot) => shot ? "1" : "0").join("\n");
+          const existing = state.runs.find((run) => run.id === transfer.id);
+          if (existing) elements.saveImportButton.textContent = "Update run";
+        }
         updateImportMode();
         elements.importDialog.showModal();
         setTimeout(() => elements.runData.focus(), 0);
@@ -2509,6 +2555,8 @@
 
       function closeImport() {
         elements.importDialog.close();
+        pendingTransfer = null;
+        clearTransferredRunHash();
       }
 
       function updateImportPreview() {
@@ -2524,24 +2572,41 @@
         updateImportPreview();
         if (!importResult.valid || !elements.runDate.value) return;
 
+        const transfer = pendingTransfer;
+        const transferredIdWasDeleted = transfer && state.deletedRunIds.includes(transfer.id);
         const run = {
-          id: makeId(),
+          id: transfer
+            ? (transferredIdWasDeleted ? `${transfer.id}-${Date.now()}` : transfer.id)
+            : makeId(),
           date: elements.runDate.value,
-          importedAt: Date.now(),
+          importedAt: transfer?.timestamp || Date.now(),
           format: importResult.format,
           shots: [...importResult.shots],
           tenCounts: [...importResult.tenCounts]
         };
+        const existing = state.runs.find((item) => item.id === run.id);
+        const unchanged = existing
+          && existing.date === run.date
+          && existing.format === run.format
+          && JSON.stringify(existing.shots) === JSON.stringify(run.shots)
+          && JSON.stringify(existing.tenCounts) === JSON.stringify(run.tenCounts);
+
+        if (unchanged) {
+          closeImport();
+          showToast("Run is already in Ballin.");
+          return;
+        }
+
         const nextState = cleanState({
-          runs: [run, ...state.runs].sort(sortRunsNewestFirst),
-          deletedRunIds: state.deletedRunIds
+          runs: [run, ...state.runs.filter((item) => item.id !== run.id)].sort(sortRunsNewestFirst),
+          deletedRunIds: state.deletedRunIds.filter((id) => id !== run.id)
         });
 
         if (saveState(nextState)) {
           state = nextState;
           closeImport();
           render();
-          showToast("Run imported.");
+          showToast(existing ? "Run updated." : "Run imported.");
           queueBackup();
         }
       }
@@ -3469,8 +3534,8 @@
         }, 2200);
       }
 
-      elements.openImportButton.addEventListener("click", openImport);
-      elements.emptyImportButton.addEventListener("click", openImport);
+      elements.openImportButton.addEventListener("click", () => openImport());
+      elements.emptyImportButton.addEventListener("click", () => openImport());
       elements.cancelImportButton.addEventListener("click", closeImport);
       elements.importForm.addEventListener("submit", importRun);
       elements.runData.addEventListener("input", updateImportPreview);
@@ -3496,6 +3561,14 @@
         queueBackup();
       } else {
         setBackupUi("disconnected", "Your runs are currently saved only in this browser.");
+      }
+
+      const transferredRun = readTransferredRun();
+      if (transferredRun?.error) {
+        clearTransferredRunHash();
+        showToast("That run link could not be read.");
+      } else if (transferredRun) {
+        openImport(transferredRun);
       }
     })();
   </script>
