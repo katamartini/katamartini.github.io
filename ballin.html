@@ -1532,7 +1532,7 @@
 
           <section class="theoretical-panel panel">
         <div class="panel-title">
-          <h2>Theoretical best run differential</h2>
+          <h2>Theoretical best cumulative makes</h2>
           <span id="theoreticalChartScope">Best through X</span>
         </div>
         <div class="chart-wrap">
@@ -1543,14 +1543,14 @@
             role="img"
             aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
           >
-            <title id="theoreticalChartTitle">Theoretical best run make-minus-miss differential</title>
-            <desc id="theoreticalChartDescription">A composite differential calculated from the best recorded result through each shot.</desc>
+            <title id="theoreticalChartTitle">Theoretical best run cumulative makes</title>
+            <desc id="theoreticalChartDescription">The highest recorded number of total makes through each shot.</desc>
             <g id="theoreticalChartGrid"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
             <g id="theoreticalChartPoints"></g>
           </svg>
         </div>
-        <p class="chart-note">Starting at 0, the line rises when the next “Best through X” total improves and falls when it does not. This is a composite, not one actual run.</p>
+        <p class="chart-note">Starting at 0, each point is the highest recorded make total through that shot. This is a composite, not one actual run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -2948,32 +2948,12 @@
         return value > 0 ? `+${value}` : String(value);
       }
 
-      function renderTheoreticalDifferential() {
-        let cumulativeDifferential = 0;
-        let previousRecord = null;
+      function renderTheoreticalCumulativeMakes() {
         const records = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
           const record = recordThrough(attempts);
           if (!record) return null;
-
-          if (!previousRecord) {
-            cumulativeDifferential = attempts === 1
-              ? (record.makes ? 1 : -1)
-              : record.makes * 2 - attempts;
-          } else if (attempts === previousRecord.attempts + 1) {
-            cumulativeDifferential += record.makes > previousRecord.makes ? 1 : -1;
-          } else {
-            const attemptChange = attempts - previousRecord.attempts;
-            const makeChange = record.makes - previousRecord.makes;
-            cumulativeDifferential += makeChange * 2 - attemptChange;
-          }
-
-          previousRecord = { attempts, makes: record.makes };
-          return {
-            ...record,
-            attempts,
-            differential: cumulativeDifferential
-          };
+          return { ...record, attempts };
         }).filter(Boolean);
         const width = 700;
         const height = 260;
@@ -2981,14 +2961,18 @@
         const chartWidth = width - padding.left - padding.right;
         const chartHeight = height - padding.top - padding.bottom;
         const maxAttempts = records.at(-1)?.attempts || 1;
-        const axis = differentialAxis(records.map((record) => record.differential));
+        const mostMakes = Math.max(0, ...records.map((record) => record.makes));
+        const tickStep = mostMakes <= 10 ? 2 : mostMakes <= 25 ? 5 : mostMakes <= 60 ? 10 : 20;
+        const yMax = Math.max(tickStep, Math.ceil(mostMakes / tickStep) * tickStep);
+        const yTicks = [];
+        for (let value = yMax; value >= 0; value -= tickStep) yTicks.push(value);
 
         elements.theoreticalChartGrid.replaceChildren();
         elements.theoreticalChartPoints.replaceChildren();
         elements.theoreticalChartLine.setAttribute("points", "");
 
-        axis.ticks.forEach((value) => {
-          const y = padding.top + ((axis.max - value) / (axis.max - axis.min)) * chartHeight;
+        yTicks.forEach((value) => {
+          const y = padding.top + ((yMax - value) / yMax) * chartHeight;
           elements.theoreticalChartGrid.appendChild(svgElement("line", {
             class: `chart-grid-line${value === 0 ? " zero" : ""}`,
             x1: padding.left,
@@ -3002,7 +2986,7 @@
             y: y + 4,
             "text-anchor": "end"
           });
-          label.textContent = formatDifferential(value);
+          label.textContent = value;
           elements.theoreticalChartGrid.appendChild(label);
         });
 
@@ -3023,11 +3007,11 @@
           elements.theoreticalChartGrid.appendChild(label);
         });
 
-        const zeroY = padding.top + (axis.max / (axis.max - axis.min)) * chartHeight;
+        const zeroY = padding.top + chartHeight;
         const positions = records.map((record) => ({
           ...record,
           x: padding.left + (record.attempts / maxAttempts) * chartWidth,
-          y: padding.top + ((axis.max - record.differential) / (axis.max - axis.min)) * chartHeight
+          y: padding.top + ((yMax - record.makes) / yMax) * chartHeight
         }));
         const linePoints = [{ x: padding.left, y: zeroY }, ...positions];
         elements.theoreticalChartLine.setAttribute(
@@ -3042,7 +3026,7 @@
           r: 4.6
         });
         const originTitle = svgElement("title");
-        originTitle.textContent = "Start: cumulative differential 0";
+        originTitle.textContent = "Start: 0 cumulative makes";
         origin.appendChild(originTitle);
         elements.theoreticalChartPoints.appendChild(origin);
 
@@ -3055,14 +3039,17 @@
             r: checkpoint ? 4.6 : 2.2
           });
           const title = svgElement("title");
-          title.textContent = `Through ${point.attempts}: ${point.makes}/${point.attempts} · cumulative differential ${formatDifferential(point.differential)} · ${formatDate(point.run.date)}`;
+          title.textContent = `Through ${point.attempts}: ${point.makes} cumulative makes · ${formatPercentage(point.percentage)} · ${formatDate(point.run.date)}`;
           circle.appendChild(title);
           elements.theoreticalChartPoints.appendChild(circle);
         });
 
-        elements.theoreticalChartScope.textContent = `${records.length} cumulative ${records.length === 1 ? "point" : "points"} · through ${maxAttempts}`;
+        const finalRecord = records.at(-1);
+        elements.theoreticalChartScope.textContent = finalRecord
+          ? `${finalRecord.makes} makes through ${maxAttempts}`
+          : "No best-through values";
         elements.theoreticalChartDescription.textContent = records.length
-          ? `Starting from zero, the theoretical composite rises by one when the next best-through make total improves and falls by one when it does not, ending at ${formatDifferential(records.at(-1).differential)} through ${maxAttempts}.`
+          ? `Starting from zero, the chart plots the highest recorded cumulative make total through each shot and ends at ${finalRecord.makes} makes through ${maxAttempts}.`
           : "No best-through records are available.";
       }
 
@@ -3228,7 +3215,7 @@
         renderTrend();
         renderBlocks();
         renderCheckpoints();
-        renderTheoreticalDifferential();
+        renderTheoreticalCumulativeMakes();
         renderHistory();
       }
 
