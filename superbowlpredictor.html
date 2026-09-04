@@ -491,11 +491,12 @@
 
     .candidate-table-wrap { overflow-x: auto; }
 
-    .candidate-table th:nth-child(1) { width: 28%; }
-    .candidate-table th:nth-child(2) { width: 12%; }
+    .candidate-table th:nth-child(1) { width: 25%; }
+    .candidate-table th:nth-child(2) { width: 11%; }
     .candidate-table th:nth-child(3),
-    .candidate-table th:nth-child(4) { width: 11%; }
-    .candidate-table th:nth-child(5) { width: 12%; }
+    .candidate-table th:nth-child(4),
+    .candidate-table th:nth-child(5) { width: 9%; }
+    .candidate-table th:nth-child(6) { width: 10%; }
 
     .candidate-table tbody tr.eliminated {
       background: rgba(240, 91, 73, 0.065);
@@ -978,8 +979,10 @@
       .candidate-table td:nth-child(3)::before { content: "Scored: "; color: var(--muted); font-size: 0.7rem; }
       .candidate-table td:nth-child(4) { grid-column: 2; grid-row: 3; }
       .candidate-table td:nth-child(4)::before { content: "Allowed: "; color: var(--muted); font-size: 0.7rem; }
-      .candidate-table td:nth-child(5) { grid-column: 2; grid-row: 1; }
-      .candidate-table td:nth-child(6) { grid-column: 1 / -1; grid-row: 4; padding-top: 5px; }
+      .candidate-table td:nth-child(5) { grid-column: 1; grid-row: 4; }
+      .candidate-table td:nth-child(5)::before { content: "Diff: "; color: var(--muted); font-size: 0.7rem; }
+      .candidate-table td:nth-child(6) { grid-column: 2; grid-row: 1; }
+      .candidate-table td:nth-child(7) { grid-column: 1 / -1; grid-row: 5; padding-top: 5px; }
       .candidate-team-logo { width: 36px; height: 32px; flex-basis: 36px; }
 
       .legend { display: none; }
@@ -1020,10 +1023,12 @@
       .history-table td:nth-child(4) { grid-column: 1 / 3; grid-row: 3; padding-top: 9px; color: var(--muted); font-size: 0.76rem; }
       .history-table td:nth-child(4)::before { content: "Previous season · "; }
       .history-table td:nth-child(5) { grid-column: 3; grid-row: 3; padding-top: 7px; }
-      .history-table td:nth-child(6) { grid-column: 1 / 3; grid-row: 4; color: var(--muted); font-size: 0.76rem; }
-      .history-table td:nth-child(6)::before { content: "Scored: "; }
-      .history-table td:nth-child(7) { grid-column: 3; grid-row: 4; color: var(--muted); font-size: 0.76rem; }
-      .history-table td:nth-child(7)::before { content: "Allowed: "; }
+      .history-table td:nth-child(6) { grid-column: 1; grid-row: 4; color: var(--muted); font-size: 0.72rem; }
+      .history-table td:nth-child(6)::before { content: "PF/G: "; }
+      .history-table td:nth-child(7) { grid-column: 2; grid-row: 4; color: var(--muted); font-size: 0.72rem; }
+      .history-table td:nth-child(7)::before { content: "PA/G: "; }
+      .history-table td:nth-child(8) { grid-column: 3; grid-row: 4; color: var(--muted); font-size: 0.72rem; }
+      .history-table td:nth-child(8)::before { content: "Diff: "; }
 
       .team-swatch { height: 24px; }
 
@@ -1063,7 +1068,7 @@
       </div>
       <aside class="hero-stat" aria-label="Turnaround statistic">
         <strong id="hero-eligible-total">24</strong>
-        <p>of 32 teams still match every historical boundary after five active criteria.</p>
+        <p>of 32 teams still match every historical boundary after six active criteria.</p>
       </aside>
     </section>
 
@@ -1077,7 +1082,7 @@
         <span>Teams eliminated</span>
       </div>
       <div class="snapshot-item">
-        <strong>5</strong>
+        <strong>6</strong>
         <span>Active criteria</span>
       </div>
     </section>
@@ -1085,7 +1090,7 @@
     <section id="rulebook" aria-labelledby="rulebook-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Rulebook · 5 active criteria</p>
+          <p class="eyebrow">Rulebook · 6 active criteria</p>
           <h2 id="rulebook-title">The historical winner profile</h2>
         </div>
         <p>A criterion enters the book only if all 60 champions satisfy it. Team performance comes from the prior regular season; coach age and tenure are measured at the opening of the title season.</p>
@@ -1245,6 +1250,38 @@
           </div>
         </div>
       </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 06 · Previous-season point differential</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion finished between −5.9 and +15.3 points per game the year before.</h3>
+          <div class="range" aria-label="Eligible point-differential range from minus 5.9 to plus 15.3 points per game">
+            <span class="range-number">−5.9</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">+15.3</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Floor: 1980 49ers · Ceiling: 1972 Dolphins</span>
+            <span id="point-diff-impact">4 current teams outside · 0 newly out</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner entered its title season from outside this point-differential range.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Under −5.9 Diff/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Over +15.3 Diff/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section id="field" aria-labelledby="field-title">
@@ -1274,7 +1311,7 @@
         </div>
         <div class="candidate-summary">
           <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
-          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1 · coach: age 35–67, 1st–19th season</span>
+          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1 · Diff/G: −5.9 to +15.3 · coach: age 35–67, 1st–19th season</span>
         </div>
         <div class="failed-now">
           <strong>Fails 1+ criteria</strong>
@@ -1288,6 +1325,7 @@
                 <th scope="col">2025 record</th>
                 <th scope="col">Scored / game</th>
                 <th scope="col">Allowed / game</th>
+                <th scope="col">Diff / game</th>
                 <th scope="col">Current status</th>
                 <th scope="col">Criteria result</th>
               </tr>
@@ -1339,6 +1377,7 @@
         <div class="legend" aria-label="Record category legend">
           <span><strong>PF/G</strong> points scored</span>
           <span><strong>PA/G</strong> points allowed</span>
+          <span><strong>Diff/G</strong> point differential</span>
         </div>
       </div>
 
@@ -1353,6 +1392,7 @@
               <th scope="col">Record</th>
               <th scope="col">PF/G</th>
               <th scope="col">PA/G</th>
+              <th scope="col">Diff/G</th>
             </tr>
           </thead>
           <tbody id="champions-body"></tbody>
@@ -1367,7 +1407,7 @@
     <section class="method" aria-label="About the data">
       <div>
         <h2>How to read the predictor</h2>
-        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal. Coach age uses September 1 of the title season as a consistent opening benchmark; tenure counts consecutive seasons with that franchise. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
+        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal; point differential is points scored minus points allowed, divided by games played. Coach age uses September 1 of the title season as a consistent opening benchmark; tenure counts consecutive seasons with that franchise. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
       </div>
       <div>
         <h2>Sources</h2>
@@ -1377,7 +1417,7 @@
   </main>
 
   <footer class="site-footer shell">
-    <span>5 criteria · 60 championships tested</span>
+    <span>6 criteria · 60 championships tested</span>
     <span>Last updated September 2026</span>
   </footer>
 
@@ -1549,6 +1589,7 @@
     const round1 = value => Math.round((value + Number.EPSILON) * 10) / 10;
     const pointsForPerGame = item => round1(item.pf / gamesPlayed(item));
     const pointsAgainstPerGame = item => round1(item.pa / gamesPlayed(item));
+    const pointDifferentialPerGame = item => round1((item.pf - item.pa) / gamesPlayed(item));
 
     const activeRules = {
       wins: {
@@ -1570,6 +1611,10 @@
       coachSeason: {
         min: Math.min(...champions.map(item => item.coachSeason)),
         max: Math.max(...champions.map(item => item.coachSeason))
+      },
+      pointDifferential: {
+        min: Math.min(...champions.map(pointDifferentialPerGame)),
+        max: Math.max(...champions.map(pointDifferentialPerGame))
       }
     };
 
@@ -1664,6 +1709,7 @@
 
     const pct = ({ w, l, t }) => (w + t * 0.5) / (w + l + t);
     const record = ({ w, l, t }) => `${w}-${l}${t ? `-${t}` : ""}`;
+    const signedMetric = value => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(1)}`;
     const ordinal = value => {
       const mod100 = value % 100;
       if (mod100 >= 11 && mod100 <= 13) return `${value}th`;
@@ -1674,6 +1720,7 @@
       const failures = [];
       const scored = pointsForPerGame(item);
       const allowed = pointsAgainstPerGame(item);
+      const differential = pointDifferentialPerGame(item);
 
       if (item.w < activeRules.wins.min || item.w > activeRules.wins.max) {
         failures.push(`Rule 01 · ${item.w} wins is ${item.w < activeRules.wins.min ? `below the ${activeRules.wins.min}-win minimum` : `above the ${activeRules.wins.max}-win maximum`}`);
@@ -1690,6 +1737,9 @@
       if (item.coachSeason < activeRules.coachSeason.min || item.coachSeason > activeRules.coachSeason.max) {
         failures.push(`Rule 05 · ${item.coach} is entering a ${ordinal(item.coachSeason)} season with the team, outside the ${ordinal(activeRules.coachSeason.min)}–${ordinal(activeRules.coachSeason.max)} range`);
       }
+      if (differential < activeRules.pointDifferential.min || differential > activeRules.pointDifferential.max) {
+        failures.push(`Rule 06 · ${signedMetric(differential)} Diff/G is ${differential < activeRules.pointDifferential.min ? `below the ${signedMetric(activeRules.pointDifferential.min)} minimum` : `above the ${signedMetric(activeRules.pointDifferential.max)} maximum`}`);
+      }
       return failures;
     };
     const isEligible = item => failureReasons(item).length === 0;
@@ -1705,7 +1755,7 @@
 
       const filtered = champions
         .filter(item => {
-          const haystack = `${item.team} ${item.coach} age ${item.coachAge} ${ordinal(item.coachSeason)} season ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)} ${pointsForPerGame(item).toFixed(1)} ${pointsAgainstPerGame(item).toFixed(1)}`.toLowerCase();
+          const haystack = `${item.team} ${item.coach} age ${item.coachAge} ${ordinal(item.coachSeason)} season ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)} ${pointsForPerGame(item).toFixed(1)} ${pointsAgainstPerGame(item).toFixed(1)} ${signedMetric(pointDifferentialPerGame(item))}`.toLowerCase();
           return (!query || haystack.includes(query)) && (filter === "all" || category(item) === filter);
         })
         .sort((a, b) => {
@@ -1725,6 +1775,7 @@
             <td><span class="record">${record(item)}</span></td>
             <td><span class="metric-value">${pointsForPerGame(item).toFixed(1)}</span></td>
             <td><span class="metric-value">${pointsAgainstPerGame(item).toFixed(1)}</span></td>
+            <td><span class="metric-value">${signedMetric(pointDifferentialPerGame(item))}</span></td>
           </tr>`;
       }).join("");
 
@@ -1737,7 +1788,7 @@
       const filtered = candidates
         .filter(item => {
           const status = isEligible(item) ? "eligible" : "eliminated";
-          const haystack = `${item.team} ${item.coach}`.toLowerCase();
+          const haystack = `${item.team} ${item.coach} ${signedMetric(pointDifferentialPerGame(item))}`.toLowerCase();
           return (!query || haystack.includes(query)) && (candidateFilter === "all" || candidateFilter === status);
         })
         .sort((a, b) => Number(isEligible(a)) - Number(isEligible(b)) || b.w - a.w || a.team.localeCompare(b.team));
@@ -1746,7 +1797,7 @@
         const eligible = isEligible(item);
         const failures = failureReasons(item);
         const reason = eligible
-          ? `<span class="criteria-pass">All 5 criteria satisfied</span>`
+          ? `<span class="criteria-pass">All 6 criteria satisfied</span>`
           : `<ul class="criteria-list">${failures.map(failure => `<li>${failure}</li>`).join("")}</ul>`;
         return `
           <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
@@ -1756,6 +1807,7 @@
             <td><span class="candidate-record">${record(item)}</span></td>
             <td><span class="metric-value">${pointsForPerGame(item).toFixed(1)}</span></td>
             <td><span class="metric-value">${pointsAgainstPerGame(item).toFixed(1)}</span></td>
+            <td><span class="metric-value">${signedMetric(pointDifferentialPerGame(item))}</span></td>
             <td><span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Pass" : "Fail"}</span></td>
             <td class="criteria-result ${eligible ? "" : "failed"}">${reason}</td>
           </tr>`;
@@ -1767,9 +1819,15 @@
 
     const eligibleCount = candidates.filter(isEligible).length;
     const failedTeams = candidates.filter(item => !isEligible(item)).map(item => item.team);
+    const pointDiffFailures = candidates.filter(item => {
+      const differential = pointDifferentialPerGame(item);
+      return differential < activeRules.pointDifferential.min || differential > activeRules.pointDifferential.max;
+    });
+    const pointDiffOnlyFailures = pointDiffFailures.filter(item => failureReasons(item).length === 1);
     document.querySelector("#hero-eligible-total").textContent = eligibleCount;
     document.querySelector("#eligible-total").textContent = eligibleCount;
     document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
+    document.querySelector("#point-diff-impact").textContent = `${pointDiffFailures.length} current teams outside · ${pointDiffOnlyFailures.length} newly out`;
     failedTeamList.textContent = `${failedTeams.length} teams: ${failedTeams.join(" · ")}`;
     search.addEventListener("input", render);
     recordFilter.addEventListener("change", render);
