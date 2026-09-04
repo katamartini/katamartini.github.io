@@ -372,6 +372,11 @@
       margin-top: 14px;
     }
 
+    .lifetime-panel {
+      margin-top: 14px;
+      padding: 22px;
+    }
+
     .trend-panel,
     .blocks-panel {
       padding: 22px;
@@ -418,7 +423,8 @@
       font-weight: 650;
     }
 
-    .chart-line {
+    .chart-line,
+    .lifetime-chart-line {
       fill: none;
       stroke: var(--orange);
       stroke-linecap: round;
@@ -426,15 +432,39 @@
       stroke-width: 4;
     }
 
-    .chart-area {
+    .chart-area,
+    .lifetime-chart-area {
       fill: url(#areaGradient);
       stroke: none;
     }
 
-    .chart-point {
+    .lifetime-chart-area {
+      fill: url(#lifetimeAreaGradient);
+    }
+
+    .chart-point,
+    .lifetime-chart-point {
       fill: var(--surface);
       stroke: var(--orange);
       stroke-width: 3;
+    }
+
+    .lifetime-chart-point {
+      r: 5px;
+    }
+
+    .chart-axis-label {
+      fill: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .chart-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
     }
 
     .chart-empty {
@@ -1281,6 +1311,36 @@
         </div>
       </section>
 
+      <section class="lifetime-panel panel">
+        <div class="panel-title">
+          <h2>Lifetime percentage</h2>
+          <span id="lifetimeChartScope">Every shot</span>
+        </div>
+        <div class="chart-wrap">
+          <svg
+            class="trend-chart"
+            id="lifetimeChart"
+            viewBox="0 0 700 260"
+            role="img"
+            aria-labelledby="lifetimeChartTitle lifetimeChartDescription"
+          >
+            <title id="lifetimeChartTitle">Lifetime free throw percentage by shot</title>
+            <desc id="lifetimeChartDescription">Your cumulative free throw percentage after each recorded shot.</desc>
+            <defs>
+              <linearGradient id="lifetimeAreaGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#f39b3d" stop-opacity="0.2"></stop>
+                <stop offset="100%" stop-color="#f39b3d" stop-opacity="0"></stop>
+              </linearGradient>
+            </defs>
+            <g id="lifetimeChartGrid"></g>
+            <path class="lifetime-chart-area" id="lifetimeChartArea"></path>
+            <polyline class="lifetime-chart-line" id="lifetimeChartLine"></polyline>
+            <g id="lifetimeChartPoints"></g>
+          </svg>
+        </div>
+        <p class="chart-note" id="lifetimeChartNote">Exact runs plot every shot. Legacy set totals plot a checkpoint every 10 shots.</p>
+      </section>
+
       <section class="analytics-grid">
         <article class="trend-panel panel">
           <div class="panel-title">
@@ -1502,6 +1562,14 @@
         chartLine: document.querySelector("#chartLine"),
         chartPoints: document.querySelector("#chartPoints"),
         chartEmpty: document.querySelector("#chartEmpty"),
+        lifetimeChart: document.querySelector("#lifetimeChart"),
+        lifetimeChartDescription: document.querySelector("#lifetimeChartDescription"),
+        lifetimeChartScope: document.querySelector("#lifetimeChartScope"),
+        lifetimeChartGrid: document.querySelector("#lifetimeChartGrid"),
+        lifetimeChartArea: document.querySelector("#lifetimeChartArea"),
+        lifetimeChartLine: document.querySelector("#lifetimeChartLine"),
+        lifetimeChartPoints: document.querySelector("#lifetimeChartPoints"),
+        lifetimeChartNote: document.querySelector("#lifetimeChartNote"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
         bestStreakDetail: document.querySelector("#bestStreakDetail"),
@@ -2317,6 +2385,151 @@
           : "No imported runs.";
       }
 
+      function lifetimeSeries() {
+        const chronologicalRuns = [...state.runs].reverse();
+        const points = [];
+        const runEnds = [];
+        let makes = 0;
+        let attempts = 0;
+
+        chronologicalRuns.forEach((run) => {
+          if (run.format === "tens") {
+            run.tenCounts.forEach((setMakes, setIndex) => {
+              makes += setMakes;
+              attempts += 10;
+              points.push({
+                attempts,
+                makes,
+                percentage: (makes / attempts) * 100,
+                run,
+                shotInRun: (setIndex + 1) * 10,
+                aggregated: true
+              });
+            });
+          } else {
+            run.shots.forEach((made, shotIndex) => {
+              attempts += 1;
+              if (made) makes += 1;
+              points.push({
+                attempts,
+                makes,
+                percentage: (makes / attempts) * 100,
+                run,
+                shotInRun: shotIndex + 1,
+                aggregated: false
+              });
+            });
+          }
+
+          if (points.length) runEnds.push(points.at(-1));
+        });
+
+        return { points, runEnds };
+      }
+
+      function renderLifetimeTrend() {
+        const { points, runEnds } = lifetimeSeries();
+        const width = 700;
+        const height = 260;
+        const padding = { top: 16, right: 16, bottom: 32, left: 46 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+        const maxAttempts = points.at(-1)?.attempts || 1;
+        const percentages = points.map((point) => point.percentage);
+        const rawMin = Math.min(...percentages);
+        const rawMax = Math.max(...percentages);
+        let yMin = Math.max(0, Math.floor((rawMin - 5) / 5) * 5);
+        let yMax = Math.min(100, Math.ceil((rawMax + 5) / 5) * 5);
+
+        if (yMax - yMin < 20) {
+          const middle = (yMin + yMax) / 2;
+          yMin = Math.max(0, Math.floor((middle - 10) / 5) * 5);
+          yMax = Math.min(100, Math.ceil((middle + 10) / 5) * 5);
+        }
+        if (yMax === yMin) yMax = Math.min(100, yMin + 10);
+
+        const pointPosition = (point) => ({
+          x: padding.left + (point.attempts / maxAttempts) * chartWidth,
+          y: padding.top + ((yMax - point.percentage) / (yMax - yMin)) * chartHeight
+        });
+
+        elements.lifetimeChartGrid.replaceChildren();
+        elements.lifetimeChartPoints.replaceChildren();
+
+        Array.from({ length: 5 }, (_, index) => yMax - (index / 4) * (yMax - yMin)).forEach((value) => {
+          const y = padding.top + ((yMax - value) / (yMax - yMin)) * chartHeight;
+          elements.lifetimeChartGrid.append(
+            svgElement("line", {
+              class: "chart-grid-line",
+              x1: padding.left,
+              x2: width - padding.right,
+              y1: y,
+              y2: y
+            })
+          );
+          const label = svgElement("text", {
+            class: "chart-grid-label",
+            x: padding.left - 9,
+            y: y + 4,
+            "text-anchor": "end"
+          });
+          label.textContent = formatPercentage(value);
+          elements.lifetimeChartGrid.append(label);
+        });
+
+        Array.from({ length: 6 }, (_, index) => Math.round((index / 5) * maxAttempts)).forEach((value, index) => {
+          const x = padding.left + (index / 5) * chartWidth;
+          const label = svgElement("text", {
+            class: "chart-axis-label",
+            x,
+            y: height - 8,
+            "text-anchor": index === 0 ? "start" : index === 5 ? "end" : "middle"
+          });
+          label.textContent = value;
+          elements.lifetimeChartGrid.append(label);
+        });
+
+        const positions = points.map((point) => ({ ...point, ...pointPosition(point) }));
+        const pointString = positions.map((point) => `${point.x},${point.y}`).join(" ");
+        elements.lifetimeChartLine.setAttribute("points", pointString);
+
+        if (positions.length > 1) {
+          const first = positions[0];
+          const last = positions.at(-1);
+          elements.lifetimeChartArea.setAttribute(
+            "d",
+            `M ${first.x} ${padding.top + chartHeight} L ${pointString.replaceAll(" ", " L ")} L ${last.x} ${padding.top + chartHeight} Z`
+          );
+        } else {
+          elements.lifetimeChartArea.setAttribute("d", "");
+        }
+
+        runEnds.forEach((point) => {
+          const position = pointPosition(point);
+          const circle = svgElement("circle", {
+            class: "lifetime-chart-point",
+            cx: position.x,
+            cy: position.y,
+            r: 5
+          });
+          const title = svgElement("title");
+          const source = point.aggregated ? "legacy checkpoint" : `shot ${point.shotInRun}`;
+          title.textContent = `${formatDate(point.run.date)} · ${source} · lifetime ${formatPercentage(point.percentage)} (${point.makes}/${point.attempts})`;
+          circle.appendChild(title);
+          elements.lifetimeChartPoints.appendChild(circle);
+        });
+
+        const hasLegacyRuns = state.runs.some((run) => run.format === "tens");
+        const exactShots = state.runs
+          .filter((run) => run.format === "exact")
+          .reduce((total, run) => total + run.shots.length, 0);
+        elements.lifetimeChartScope.textContent = `${maxAttempts} lifetime ${maxAttempts === 1 ? "shot" : "shots"}`;
+        elements.lifetimeChartNote.hidden = !hasLegacyRuns;
+        elements.lifetimeChartDescription.textContent = hasLegacyRuns
+          ? `Cumulative percentage across ${maxAttempts} shots. ${exactShots} exact shots are plotted individually; legacy runs appear at 10-shot checkpoints.`
+          : `Cumulative percentage after each of ${maxAttempts} recorded shots.`;
+      }
+
       function renderBlocks() {
         elements.blockList.replaceChildren();
         Array.from({ length: MAX_TEN_SETS }, (_, index) => index).forEach((index) => {
@@ -2617,6 +2830,7 @@
         if (!hasRuns) return;
 
         renderOverview();
+        renderLifetimeTrend();
         renderTrend();
         renderBlocks();
         renderCheckpoints();
