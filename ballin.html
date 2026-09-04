@@ -1338,7 +1338,7 @@
             <g id="lifetimeChartPoints"></g>
           </svg>
         </div>
-        <p class="chart-note" id="lifetimeChartNote">Exact runs plot every shot. Legacy set totals plot a checkpoint every 10 shots.</p>
+        <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
       </section>
 
       <section class="analytics-grid">
@@ -2386,55 +2386,62 @@
       }
 
       function lifetimeSeries() {
-        const chronologicalRuns = [...state.runs].reverse();
+        const legacy = combineSummaries(
+          state.runs.filter((run) => run.format === "tens").map(runSummary)
+        );
+        const chronologicalExactRuns = state.runs
+          .filter((run) => run.format === "exact")
+          .reverse();
         const points = [];
         const runEnds = [];
-        let makes = 0;
-        let attempts = 0;
+        let makes = legacy.makes;
+        let attempts = legacy.attempts;
 
-        chronologicalRuns.forEach((run) => {
-          if (run.format === "tens") {
-            run.tenCounts.forEach((setMakes, setIndex) => {
-              makes += setMakes;
-              attempts += 10;
-              points.push({
-                attempts,
-                makes,
-                percentage: (makes / attempts) * 100,
-                run,
-                shotInRun: (setIndex + 1) * 10,
-                aggregated: true
-              });
-            });
-          } else {
-            run.shots.forEach((made, shotIndex) => {
-              attempts += 1;
-              if (made) makes += 1;
-              points.push({
-                attempts,
-                makes,
-                percentage: (makes / attempts) * 100,
-                run,
-                shotInRun: shotIndex + 1,
-                aggregated: false
-              });
-            });
-          }
+        if (legacy.attempts) {
+          const baseline = {
+            attempts,
+            makes,
+            percentage: legacy.percentage,
+            baseline: true
+          };
+          points.push(baseline);
+          runEnds.push(baseline);
+        }
 
-          if (points.length) runEnds.push(points.at(-1));
+        chronologicalExactRuns.forEach((run) => {
+          run.shots.forEach((made, shotIndex) => {
+            attempts += 1;
+            if (made) makes += 1;
+            points.push({
+              attempts,
+              makes,
+              percentage: (makes / attempts) * 100,
+              run,
+              shotInRun: shotIndex + 1,
+              baseline: false
+            });
+          });
+          runEnds.push(points.at(-1));
         });
 
-        return { points, runEnds };
+        return {
+          points,
+          runEnds,
+          legacy,
+          exactShots: chronologicalExactRuns.reduce((total, run) => total + run.shots.length, 0)
+        };
       }
 
       function renderLifetimeTrend() {
-        const { points, runEnds } = lifetimeSeries();
+        const { points, runEnds, legacy, exactShots } = lifetimeSeries();
         const width = 700;
         const height = 260;
         const padding = { top: 16, right: 16, bottom: 32, left: 46 };
         const chartWidth = width - padding.left - padding.right;
         const chartHeight = height - padding.top - padding.bottom;
         const maxAttempts = points.at(-1)?.attempts || 1;
+        const chartStartAttempts = legacy.attempts || 0;
+        const attemptSpan = maxAttempts - chartStartAttempts;
         const percentages = points.map((point) => point.percentage);
         const rawMin = Math.min(...percentages);
         const rawMax = Math.max(...percentages);
@@ -2449,7 +2456,9 @@
         if (yMax === yMin) yMax = Math.min(100, yMin + 10);
 
         const pointPosition = (point) => ({
-          x: padding.left + (point.attempts / maxAttempts) * chartWidth,
+          x: attemptSpan
+            ? padding.left + ((point.attempts - chartStartAttempts) / attemptSpan) * chartWidth
+            : padding.left + chartWidth / 2,
           y: padding.top + ((yMax - point.percentage) / (yMax - yMin)) * chartHeight
         });
 
@@ -2477,13 +2486,22 @@
           elements.lifetimeChartGrid.append(label);
         });
 
-        Array.from({ length: 6 }, (_, index) => Math.round((index / 5) * maxAttempts)).forEach((value, index) => {
-          const x = padding.left + (index / 5) * chartWidth;
+        const xTicks = attemptSpan
+          ? Array.from({ length: 6 }, (_, index) => Math.round(chartStartAttempts + (index / 5) * attemptSpan))
+          : [chartStartAttempts];
+        xTicks.forEach((value, index) => {
+          const x = xTicks.length === 1
+            ? padding.left + chartWidth / 2
+            : padding.left + (index / (xTicks.length - 1)) * chartWidth;
           const label = svgElement("text", {
             class: "chart-axis-label",
             x,
             y: height - 8,
-            "text-anchor": index === 0 ? "start" : index === 5 ? "end" : "middle"
+            "text-anchor": index === 0 && xTicks.length > 1
+              ? "start"
+              : index === xTicks.length - 1 && xTicks.length > 1
+                ? "end"
+                : "middle"
           });
           label.textContent = value;
           elements.lifetimeChartGrid.append(label);
@@ -2513,20 +2531,22 @@
             r: 5
           });
           const title = svgElement("title");
-          const source = point.aggregated ? "legacy checkpoint" : `shot ${point.shotInRun}`;
-          title.textContent = `${formatDate(point.run.date)} · ${source} · lifetime ${formatPercentage(point.percentage)} (${point.makes}/${point.attempts})`;
+          title.textContent = point.baseline
+            ? `Legacy endpoint · lifetime ${formatPercentage(point.percentage)} (${point.makes}/${point.attempts})`
+            : `${formatDate(point.run.date)} · shot ${point.shotInRun} · lifetime ${formatPercentage(point.percentage)} (${point.makes}/${point.attempts})`;
           circle.appendChild(title);
           elements.lifetimeChartPoints.appendChild(circle);
         });
 
-        const hasLegacyRuns = state.runs.some((run) => run.format === "tens");
-        const exactShots = state.runs
-          .filter((run) => run.format === "exact")
-          .reduce((total, run) => total + run.shots.length, 0);
-        elements.lifetimeChartScope.textContent = `${maxAttempts} lifetime ${maxAttempts === 1 ? "shot" : "shots"}`;
-        elements.lifetimeChartNote.hidden = !hasLegacyRuns;
-        elements.lifetimeChartDescription.textContent = hasLegacyRuns
-          ? `Cumulative percentage across ${maxAttempts} shots. ${exactShots} exact shots are plotted individually; legacy runs appear at 10-shot checkpoints.`
+        elements.lifetimeChartScope.textContent = legacy.attempts
+          ? `${exactShots} exact shots · ${maxAttempts} lifetime`
+          : `${maxAttempts} lifetime ${maxAttempts === 1 ? "shot" : "shots"}`;
+        elements.lifetimeChartNote.hidden = !legacy.attempts;
+        elements.lifetimeChartNote.textContent = legacy.attempts
+          ? `Starts at the ${legacy.makes}/${legacy.attempts} legacy endpoint, then plots every fully logged shot.`
+          : "";
+        elements.lifetimeChartDescription.textContent = legacy.attempts
+          ? `The chart starts at the legacy endpoint of ${formatPercentage(legacy.percentage)} after ${legacy.attempts} shots, then plots the cumulative percentage after each of ${exactShots} fully logged shots.`
           : `Cumulative percentage after each of ${maxAttempts} recorded shots.`;
       }
 
