@@ -482,6 +482,107 @@
       stroke-width: 3;
     }
 
+    .theoretical-overlay-line {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2.25;
+      opacity: 0.82;
+    }
+
+    .theoretical-overlay-line.legacy {
+      stroke-dasharray: 8 6;
+    }
+
+    .theoretical-overlay-point {
+      fill: #11161d;
+      stroke-width: 2;
+    }
+
+    .chart-overlay-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -5px 0 14px;
+    }
+
+    .chart-overlay-label {
+      margin-right: 2px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .chart-overlay-option,
+    .chart-overlay-key {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #11161d;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .chart-overlay-option {
+      position: relative;
+      cursor: pointer;
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+
+    .chart-overlay-option:hover,
+    .chart-overlay-option:has(input:checked) {
+      border-color: var(--overlay-color);
+      background: #222a35;
+      color: var(--text);
+    }
+
+    .chart-overlay-option:focus-within {
+      outline: 2px solid var(--overlay-color);
+      outline-offset: 2px;
+    }
+
+    .chart-overlay-option:has(input:checked)::after {
+      color: var(--overlay-color);
+      content: "✓";
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    .chart-overlay-option input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .chart-overlay-swatch {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      border-radius: 50%;
+      background: var(--overlay-color);
+    }
+
+    .chart-overlay-key {
+      color: var(--text-soft);
+    }
+
+    .chart-overlay-option small {
+      color: inherit;
+      font-size: 0.62rem;
+      font-weight: 850;
+      opacity: 0.72;
+      text-transform: uppercase;
+    }
+
     .chart-grid-line.zero {
       stroke: #718094;
       stroke-width: 1.5;
@@ -1535,6 +1636,7 @@
           <h2>Theoretical best cumulative makes</h2>
           <span id="theoreticalChartScope">Best through X</span>
         </div>
+        <div class="chart-overlay-controls" id="theoreticalRunControls" role="group" aria-label="Run overlays"></div>
         <div class="chart-wrap">
           <svg
             class="trend-chart"
@@ -1546,6 +1648,7 @@
             <title id="theoreticalChartTitle">Theoretical best run cumulative makes</title>
             <desc id="theoreticalChartDescription">The highest recorded number of total makes through each shot.</desc>
             <g id="theoreticalChartGrid"></g>
+            <g id="theoreticalChartOverlays"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
             <g id="theoreticalChartPoints"></g>
           </svg>
@@ -1747,11 +1850,13 @@
       const STORAGE_KEY = "ballin.performance.v1";
       const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
       const BACKUP_TOKEN_KEY = "ballin.githubBackupToken.v1";
+      const THEORETICAL_OVERLAYS_KEY = "ballin.theoreticalOverlays.v1";
       const BACKUP_API_URL = "https://api.github.com/repos/katamartini/katamartini.github.io/contents/data/ballin-runs.json";
       const GITHUB_API_VERSION = "2026-03-10";
       const MAX_SHOTS = 100;
       const MAX_TEN_SETS = 10;
       const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+      const RUN_OVERLAY_COLORS = ["#8da2ff", "#52d273", "#ec6aa6", "#58c7d9", "#b68cff", "#ff7b72", "#d7b45a", "#83c57a"];
 
       const elements = {
         emptyState: document.querySelector("#emptyState"),
@@ -1786,7 +1891,9 @@
         lifetimeChartNote: document.querySelector("#lifetimeChartNote"),
         theoreticalChartDescription: document.querySelector("#theoreticalChartDescription"),
         theoreticalChartScope: document.querySelector("#theoreticalChartScope"),
+        theoreticalRunControls: document.querySelector("#theoreticalRunControls"),
         theoreticalChartGrid: document.querySelector("#theoreticalChartGrid"),
+        theoreticalChartOverlays: document.querySelector("#theoreticalChartOverlays"),
         theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
         theoreticalChartPoints: document.querySelector("#theoreticalChartPoints"),
         blockList: document.querySelector("#blockList"),
@@ -1832,6 +1939,24 @@
       let backupUiState = { status: "disconnected", detail: "Your runs are currently saved only in this browser." };
       let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
       let state = loadState();
+      const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
+
+      function loadTheoreticalOverlayIds() {
+        try {
+          const ids = JSON.parse(localStorage.getItem(THEORETICAL_OVERLAYS_KEY) || "[]");
+          return new Set(Array.isArray(ids) ? ids.filter((id) => typeof id === "string") : []);
+        } catch {
+          return new Set();
+        }
+      }
+
+      function saveTheoreticalOverlayIds() {
+        try {
+          localStorage.setItem(THEORETICAL_OVERLAYS_KEY, JSON.stringify([...selectedTheoreticalRunIds]));
+        } catch {
+          // Overlay choices are optional and may be session-only when storage is unavailable.
+        }
+      }
 
       function makeId() {
         if (window.crypto?.randomUUID) return window.crypto.randomUUID();
@@ -2948,6 +3073,81 @@
         return value > 0 ? `+${value}` : String(value);
       }
 
+      function runOverlayColor(run) {
+        const index = Math.max(0, state.runs.findIndex((item) => item.id === run.id));
+        return RUN_OVERLAY_COLORS[index % RUN_OVERLAY_COLORS.length];
+      }
+
+      function runCumulativeMakesSeries(run) {
+        let makes = 0;
+        if (run.format === "tens") {
+          return run.tenCounts.slice(0, MAX_TEN_SETS).map((count, index) => {
+            makes += count;
+            return { attempts: (index + 1) * 10, makes };
+          });
+        }
+
+        return run.shots.slice(0, MAX_SHOTS).map((made, index) => {
+          if (made) makes += 1;
+          return { attempts: index + 1, makes };
+        });
+      }
+
+      function renderTheoreticalRunControls() {
+        const validIds = new Set(state.runs.map((run) => run.id));
+        let selectionChanged = false;
+        [...selectedTheoreticalRunIds].forEach((id) => {
+          if (validIds.has(id)) return;
+          selectedTheoreticalRunIds.delete(id);
+          selectionChanged = true;
+        });
+        if (selectionChanged) saveTheoreticalOverlayIds();
+
+        elements.theoreticalRunControls.replaceChildren();
+        const label = document.createElement("span");
+        label.className = "chart-overlay-label";
+        label.textContent = "Overlay runs";
+        elements.theoreticalRunControls.appendChild(label);
+
+        const key = document.createElement("span");
+        const keySwatch = document.createElement("span");
+        key.className = "chart-overlay-key";
+        keySwatch.className = "chart-overlay-swatch";
+        key.style.setProperty("--overlay-color", "var(--orange)");
+        key.append(keySwatch, "Theoretical best");
+        elements.theoreticalRunControls.appendChild(key);
+
+        state.runs.forEach((run) => {
+          const result = runSummary(run);
+          const color = runOverlayColor(run);
+          const option = document.createElement("label");
+          const input = document.createElement("input");
+          const swatch = document.createElement("span");
+          const text = document.createElement("span");
+          const format = document.createElement("small");
+
+          option.className = "chart-overlay-option";
+          option.style.setProperty("--overlay-color", color);
+          input.type = "checkbox";
+          input.checked = selectedTheoreticalRunIds.has(run.id);
+          swatch.className = "chart-overlay-swatch";
+          text.textContent = `${formatDate(run.date)} · ${formatPercentage(result.percentage)}`;
+          format.textContent = run.format === "tens" ? "Legacy" : "Exact";
+          input.addEventListener("change", () => {
+            if (input.checked) {
+              selectedTheoreticalRunIds.add(run.id);
+            } else {
+              selectedTheoreticalRunIds.delete(run.id);
+            }
+            saveTheoreticalOverlayIds();
+            renderTheoreticalCumulativeMakes();
+          });
+
+          option.append(input, swatch, text, format);
+          elements.theoreticalRunControls.appendChild(option);
+        });
+      }
+
       function renderTheoreticalCumulativeMakes() {
         const records = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
@@ -2968,6 +3168,7 @@
         for (let value = yMax; value >= 0; value -= tickStep) yTicks.push(value);
 
         elements.theoreticalChartGrid.replaceChildren();
+        elements.theoreticalChartOverlays.replaceChildren();
         elements.theoreticalChartPoints.replaceChildren();
         elements.theoreticalChartLine.setAttribute("points", "");
 
@@ -3013,6 +3214,45 @@
           x: padding.left + (record.attempts / maxAttempts) * chartWidth,
           y: padding.top + ((yMax - record.makes) / yMax) * chartHeight
         }));
+        const overlayRuns = state.runs.filter((run) => selectedTheoreticalRunIds.has(run.id));
+        overlayRuns.forEach((run) => {
+          const color = runOverlayColor(run);
+          const series = runCumulativeMakesSeries(run);
+          const overlayPositions = series.map((point) => ({
+            ...point,
+            x: padding.left + (point.attempts / maxAttempts) * chartWidth,
+            y: padding.top + ((yMax - point.makes) / yMax) * chartHeight
+          }));
+          const linePoints = [
+            { x: padding.left, y: zeroY },
+            ...overlayPositions
+          ];
+          const line = svgElement("polyline", {
+            class: `theoretical-overlay-line${run.format === "tens" ? " legacy" : ""}`,
+            points: linePoints.map((point) => `${point.x},${point.y}`).join(" "),
+            stroke: color
+          });
+          const lineTitle = svgElement("title");
+          lineTitle.textContent = `${formatDate(run.date)}: ${runSummary(run).makes} cumulative makes through ${runSummary(run).attempts}`;
+          line.appendChild(lineTitle);
+          elements.theoreticalChartOverlays.appendChild(line);
+
+          overlayPositions.forEach((point, index) => {
+            if (point.attempts % 10 !== 0 && index !== overlayPositions.length - 1) return;
+            const circle = svgElement("circle", {
+              class: "theoretical-overlay-point",
+              cx: point.x,
+              cy: point.y,
+              r: 3.2,
+              stroke: color
+            });
+            const title = svgElement("title");
+            title.textContent = `${formatDate(run.date)} through ${point.attempts}: ${point.makes} cumulative makes`;
+            circle.appendChild(title);
+            elements.theoreticalChartOverlays.appendChild(circle);
+          });
+        });
+
         const linePoints = [{ x: padding.left, y: zeroY }, ...positions];
         elements.theoreticalChartLine.setAttribute(
           "points",
@@ -3049,7 +3289,7 @@
           ? `${finalRecord.makes} makes through ${maxAttempts}`
           : "No best-through values";
         elements.theoreticalChartDescription.textContent = records.length
-          ? `Starting from zero, the chart plots the highest recorded cumulative make total through each shot and ends at ${finalRecord.makes} makes through ${maxAttempts}.`
+          ? `Starting from zero, the chart plots the highest recorded cumulative make total through each shot and ends at ${finalRecord.makes} makes through ${maxAttempts}.${overlayRuns.length ? ` Selected run overlays: ${overlayRuns.map((run) => formatDate(run.date)).join(", ")}.` : ""}`
           : "No best-through records are available.";
       }
 
@@ -3215,6 +3455,7 @@
         renderTrend();
         renderBlocks();
         renderCheckpoints();
+        renderTheoreticalRunControls();
         renderTheoreticalCumulativeMakes();
         renderHistory();
       }
