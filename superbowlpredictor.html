@@ -1096,22 +1096,22 @@
         <p class="intro">Start with every team. Eliminate the ones that fall outside what has always—and never—been true of a Super Bowl winner.</p>
       </div>
       <aside class="hero-stat" aria-label="Turnaround statistic">
-        <strong id="hero-eligible-total">24</strong>
-        <p>of 32 teams still match every historical boundary after six active criteria.</p>
+        <strong id="hero-eligible-total">14</strong>
+        <p>of 32 teams still match every historical boundary after ten active criteria.</p>
       </aside>
     </section>
 
     <section class="snapshot" aria-label="2026 prediction snapshot">
       <div class="snapshot-item">
-        <strong id="eligible-total">24</strong>
+        <strong id="eligible-total">14</strong>
         <span>Teams still alive</span>
       </div>
       <div class="snapshot-item">
-        <strong id="eliminated-total">8</strong>
+        <strong id="eliminated-total">18</strong>
         <span>Teams eliminated</span>
       </div>
       <div class="snapshot-item">
-        <strong>6</strong>
+        <strong>10</strong>
         <span>Active criteria</span>
       </div>
     </section>
@@ -1119,7 +1119,7 @@
     <section id="rulebook" aria-labelledby="rulebook-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Rulebook · 6 active criteria</p>
+          <p class="eyebrow">Rulebook · 10 active criteria</p>
           <h2 id="rulebook-title">The historical winner profile</h2>
         </div>
         <p>A criterion enters the book only if all 60 champions satisfy it. Team performance comes from the prior regular season; coach age and tenure are measured at the opening of the title season.</p>
@@ -1316,6 +1316,134 @@
           </div>
         </div>
       </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 07 · Previous-season win percentage</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion entered its title season with a prior-year win percentage from .250 to 1.000.</h3>
+          <div class="range" aria-label="Eligible win-percentage range from .250 to 1.000">
+            <span class="range-number">.250</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">1.000</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>Floor</strong> · .250 · 1998 Rams</span>
+            <span><strong>Ceiling</strong> · 1.000 · 1972 Dolphins</span>
+            <span class="rule-impact" id="win-percentage-impact" data-empty="false"><strong>5 of 32 fail</strong><span>Arizona Cardinals · Las Vegas Raiders · New York Giants · New York Jets · Tennessee Titans</span></span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner came from a team below a .250 prior-season win rate.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Below .250</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Schedule-adjusted</strong>
+              <span>Comparable across 14-, 16-, and 17-game seasons</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 08 · Relative scoring rank</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion had at least six NFL teams score fewer points the year before.</h3>
+          <div class="range" aria-label="Eligible relative scoring range from six teams below to league leader">
+            <span class="range-number">6+</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">1st</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>Floor</strong> · 6 teams below · 1998 Rams &amp; 2000 Patriots</span>
+            <span><strong>Ceiling</strong> · League-leading offense · multiple champions</span>
+            <span class="rule-impact" id="scoring-rank-impact" data-empty="false"><strong>6 of 32 fail</strong><span>Carolina Panthers · Cleveland Browns · Las Vegas Raiders · New Orleans Saints · New York Jets · Tennessee Titans</span></span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner entered its title season from the league’s bottom six in scoring.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>0–5 teams below</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Era-adjusted</strong>
+              <span>Relative rank accounts for changing league size</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 09 · Losing season + coach tenure · 5-title sample</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion coming off a losing year opened with a coach in his 2nd or 3rd season with the team.</h3>
+          <div class="range" aria-label="Eligible coach tenure after a losing season from second through third season">
+            <span class="range-number">2nd</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">3rd</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>Floor</strong> · 2nd season · 3 of 5 cases</span>
+            <span><strong>Ceiling</strong> · 3rd season · 2 of 5 cases</span>
+            <span class="rule-impact" id="losing-coach-tenure-impact" data-empty="false"><strong>12 of 32 fail</strong><span>Arizona Cardinals · Atlanta Falcons · Baltimore Ravens · Cincinnati Bengals · Cleveland Browns · Indianapolis Colts · Kansas City Chiefs · Las Vegas Raiders · Miami Dolphins · New York Giants · Tampa Bay Buccaneers · Tennessee Titans</span></span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No champion paired a losing prior season with a first-year or 4th-plus-year coach.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>1st or 4th+ season</strong>
+              <span>No champions among the five relevant cases</span>
+            </div>
+            <div class="boundary">
+              <strong>Conditional rule</strong>
+              <span>Winning and .500 teams automatically clear it</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 10 · First-year coach age · 4-title sample</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion with a first-year head coach opened with that coach between age 39 and 54.</h3>
+          <div class="range" aria-label="Eligible first-year head-coach age range from 39 to 54">
+            <span class="range-number">39</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">54</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>Floor</strong> · Age 39 · Jon Gruden, 2002 Buccaneers</span>
+            <span><strong>Ceiling</strong> · Age 54 · Gary Kubiak, 2015 Broncos</span>
+            <span class="rule-impact" id="first-year-coach-age-impact" data-empty="false"><strong>4 of 32 fail</strong><span>Buffalo Bills · Cleveland Browns · New York Giants · Pittsburgh Steelers</span></span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No first-year coach outside the 39–54 age range has won the Super Bowl.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Under 39 or over 54</strong>
+              <span>No champions among the four relevant cases</span>
+            </div>
+            <div class="boundary">
+              <strong>Conditional rule</strong>
+              <span>Returning coaches automatically clear it</span>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section id="field" aria-labelledby="field-title">
@@ -1345,7 +1473,7 @@
         </div>
         <div class="candidate-summary">
           <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
-          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1 · Diff/G: −5.9 to +15.3 · coach: age 35–67, 1st–19th season</span>
+          <span>W: 4–15 · Win%: .250–1.000 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1 · Diff/G: −5.9 to +15.3 · scoring: 6+ teams below · coach: age 35–67, 1st–19th season · 2 conditional coach rules</span>
         </div>
         <div class="failed-now">
           <strong>Fails 1+ criteria</strong>
@@ -1441,7 +1569,7 @@
     <section class="method" aria-label="About the data">
       <div>
         <h2>How to read the predictor</h2>
-        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal; point differential is points scored minus points allowed, divided by games played. Coach age uses September 1 of the title season as a consistent opening benchmark; tenure counts consecutive seasons with that franchise. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
+        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Win percentage counts a tie as half a win. Scoring averages use total points divided by games played, rounded to one decimal; point differential is points scored minus points allowed, divided by games played. Relative scoring counts teams with strictly fewer points, making the rule comparable across different league sizes. Coach age uses September 1 of the title season as a consistent opening benchmark; tenure counts consecutive seasons with that franchise. Criteria 09 and 10 are conditional, small-sample patterns rather than broad league-wide ranges. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
       </div>
       <div>
         <h2>Sources</h2>
@@ -1451,7 +1579,7 @@
   </main>
 
   <footer class="site-footer shell">
-    <span>6 criteria · 60 championships tested</span>
+    <span>10 criteria · 60 championships tested</span>
     <span>Last updated September 2026</span>
   </footer>
 
@@ -1624,6 +1752,9 @@
     const pointsForPerGame = item => round1(item.pf / gamesPlayed(item));
     const pointsAgainstPerGame = item => round1(item.pa / gamesPlayed(item));
     const pointDifferentialPerGame = item => round1((item.pf - item.pa) / gamesPlayed(item));
+    const winPercentage = item => (item.w + item.t * 0.5) / gamesPlayed(item);
+    const teamsScoringBelow = item => candidates.filter(other => other.pf < item.pf).length;
+    const hasLosingRecord = item => item.w < item.l;
 
     const activeRules = {
       wins: {
@@ -1649,6 +1780,21 @@
       pointDifferential: {
         min: Math.min(...champions.map(pointDifferentialPerGame)),
         max: Math.max(...champions.map(pointDifferentialPerGame))
+      },
+      winPercentage: {
+        min: Math.min(...champions.map(winPercentage)),
+        max: Math.max(...champions.map(winPercentage))
+      },
+      scoringRank: {
+        minTeamsBelow: 6
+      },
+      losingCoachSeason: {
+        min: Math.min(...champions.filter(hasLosingRecord).map(item => item.coachSeason)),
+        max: Math.max(...champions.filter(hasLosingRecord).map(item => item.coachSeason))
+      },
+      firstYearCoachAge: {
+        min: Math.min(...champions.filter(item => item.coachSeason === 1).map(item => item.coachAge)),
+        max: Math.max(...champions.filter(item => item.coachSeason === 1).map(item => item.coachAge))
       }
     };
 
@@ -1741,7 +1887,7 @@
     const candidateFilterButtons = [...document.querySelectorAll("[data-candidate-filter]")];
     let candidateFilter = "all";
 
-    const pct = ({ w, l, t }) => (w + t * 0.5) / (w + l + t);
+    const pct = winPercentage;
     const record = ({ w, l, t }) => `${w}-${l}${t ? `-${t}` : ""}`;
     const signedMetric = value => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(1)}`;
     const ordinal = value => {
@@ -1774,6 +1920,20 @@
       if (differential < activeRules.pointDifferential.min || differential > activeRules.pointDifferential.max) {
         failures.push(`Rule 06 · ${signedMetric(differential)} Diff/G is ${differential < activeRules.pointDifferential.min ? `below the ${signedMetric(activeRules.pointDifferential.min)} minimum` : `above the ${signedMetric(activeRules.pointDifferential.max)} maximum`}`);
       }
+      const winningRate = winPercentage(item);
+      if (winningRate < activeRules.winPercentage.min || winningRate > activeRules.winPercentage.max) {
+        failures.push(`Rule 07 · ${winningRate.toFixed(3)} win percentage is below the ${activeRules.winPercentage.min.toFixed(3)} minimum`);
+      }
+      const scoringBelow = teamsScoringBelow(item);
+      if (scoringBelow < activeRules.scoringRank.minTeamsBelow) {
+        failures.push(`Rule 08 · only ${scoringBelow} ${scoringBelow === 1 ? "team scored" : "teams scored"} fewer points; champions always had at least ${activeRules.scoringRank.minTeamsBelow} below them`);
+      }
+      if (hasLosingRecord(item) && (item.coachSeason < activeRules.losingCoachSeason.min || item.coachSeason > activeRules.losingCoachSeason.max)) {
+        failures.push(`Rule 09 · after a losing year, ${item.coach}'s ${ordinal(item.coachSeason)} season falls outside the historical ${ordinal(activeRules.losingCoachSeason.min)}–${ordinal(activeRules.losingCoachSeason.max)} window`);
+      }
+      if (item.coachSeason === 1 && (item.coachAge < activeRules.firstYearCoachAge.min || item.coachAge > activeRules.firstYearCoachAge.max)) {
+        failures.push(`Rule 10 · first-year coach ${item.coach} is age ${item.coachAge}, outside the historical age-${activeRules.firstYearCoachAge.min}–${activeRules.firstYearCoachAge.max} window`);
+      }
       return failures;
     };
     const isEligible = item => failureReasons(item).length === 0;
@@ -1788,12 +1948,16 @@
       { elementId: "points-against-impact", value: pointsAgainstPerGame, range: activeRules.pointsAgainst },
       { elementId: "coach-age-impact", value: item => item.coachAge, range: activeRules.coachAge },
       { elementId: "coach-season-impact", value: item => item.coachSeason, range: activeRules.coachSeason },
-      { elementId: "point-diff-impact", value: pointDifferentialPerGame, range: activeRules.pointDifferential }
+      { elementId: "point-diff-impact", value: pointDifferentialPerGame, range: activeRules.pointDifferential },
+      { elementId: "win-percentage-impact", value: winPercentage, range: activeRules.winPercentage },
+      { elementId: "scoring-rank-impact", fails: item => teamsScoringBelow(item) < activeRules.scoringRank.minTeamsBelow },
+      { elementId: "losing-coach-tenure-impact", fails: item => hasLosingRecord(item) && (item.coachSeason < activeRules.losingCoachSeason.min || item.coachSeason > activeRules.losingCoachSeason.max) },
+      { elementId: "first-year-coach-age-impact", fails: item => item.coachSeason === 1 && (item.coachAge < activeRules.firstYearCoachAge.min || item.coachAge > activeRules.firstYearCoachAge.max) }
     ];
 
     function renderRuleImpacts() {
-      ruleImpactDefinitions.forEach(({ elementId, value, range }) => {
-        const failed = candidates.filter(item => value(item) < range.min || value(item) > range.max);
+      ruleImpactDefinitions.forEach(({ elementId, value, range, fails }) => {
+        const failed = candidates.filter(item => fails ? fails(item) : value(item) < range.min || value(item) > range.max);
         const impact = document.querySelector(`#${elementId}`);
         impact.dataset.empty = String(failed.length === 0);
         impact.innerHTML = `<strong>${failed.length} of ${candidates.length} ${failed.length === 1 ? "fails" : "fail"}</strong><span>${failed.length ? failed.map(item => escapeHtml(item.team)).join(" · ") : "All teams fit this criterion"}</span>`;
@@ -1849,7 +2013,7 @@
         const eligible = isEligible(item);
         const failures = failureReasons(item);
         const reason = eligible
-          ? `<span class="criteria-pass">All 6 criteria satisfied</span>`
+          ? `<span class="criteria-pass">All 10 criteria satisfied</span>`
           : `<ul class="criteria-list">${failures.map(failure => `<li>${failure}</li>`).join("")}</ul>`;
         return `
           <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
