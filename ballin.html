@@ -1550,7 +1550,7 @@
             <g id="theoreticalChartPoints"></g>
           </svg>
         </div>
-        <p class="chart-note">Each point uses that shot's “Best through X” make total. This is a composite of your records, not one actual run.</p>
+        <p class="chart-note">Starting at 0, the line rises when the next “Best through X” total improves and falls when it does not. This is a composite, not one actual run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -2949,16 +2949,31 @@
       }
 
       function renderTheoreticalDifferential() {
+        let cumulativeDifferential = 0;
+        let previousRecord = null;
         const records = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
           const record = recordThrough(attempts);
-          return record
-            ? {
-                ...record,
-                attempts,
-                differential: record.makes * 2 - attempts
-              }
-            : null;
+          if (!record) return null;
+
+          if (!previousRecord) {
+            cumulativeDifferential = attempts === 1
+              ? (record.makes ? 1 : -1)
+              : record.makes * 2 - attempts;
+          } else if (attempts === previousRecord.attempts + 1) {
+            cumulativeDifferential += record.makes > previousRecord.makes ? 1 : -1;
+          } else {
+            const attemptChange = attempts - previousRecord.attempts;
+            const makeChange = record.makes - previousRecord.makes;
+            cumulativeDifferential += makeChange * 2 - attemptChange;
+          }
+
+          previousRecord = { attempts, makes: record.makes };
+          return {
+            ...record,
+            attempts,
+            differential: cumulativeDifferential
+          };
         }).filter(Boolean);
         const width = 700;
         const height = 260;
@@ -3020,6 +3035,17 @@
           linePoints.map((point) => `${point.x},${point.y}`).join(" ")
         );
 
+        const origin = svgElement("circle", {
+          class: "theoretical-chart-point checkpoint",
+          cx: padding.left,
+          cy: zeroY,
+          r: 4.6
+        });
+        const originTitle = svgElement("title");
+        originTitle.textContent = "Start: cumulative differential 0";
+        origin.appendChild(originTitle);
+        elements.theoreticalChartPoints.appendChild(origin);
+
         positions.forEach((point) => {
           const checkpoint = point.attempts % 10 === 0 || point.attempts === maxAttempts;
           const circle = svgElement("circle", {
@@ -3029,14 +3055,14 @@
             r: checkpoint ? 4.6 : 2.2
           });
           const title = svgElement("title");
-          title.textContent = `Through ${point.attempts}: ${point.makes}/${point.attempts} · differential ${formatDifferential(point.differential)} · ${formatDate(point.run.date)}`;
+          title.textContent = `Through ${point.attempts}: ${point.makes}/${point.attempts} · cumulative differential ${formatDifferential(point.differential)} · ${formatDate(point.run.date)}`;
           circle.appendChild(title);
           elements.theoreticalChartPoints.appendChild(circle);
         });
 
-        elements.theoreticalChartScope.textContent = `${records.length} best-through ${records.length === 1 ? "value" : "values"} · through ${maxAttempts}`;
+        elements.theoreticalChartScope.textContent = `${records.length} cumulative ${records.length === 1 ? "point" : "points"} · through ${maxAttempts}`;
         elements.theoreticalChartDescription.textContent = records.length
-          ? `The theoretical composite uses the best recorded make total through each available shot, ending at a differential of ${formatDifferential(records.at(-1).differential)} through ${maxAttempts}.`
+          ? `Starting from zero, the theoretical composite rises by one when the next best-through make total improves and falls by one when it does not, ending at ${formatDifferential(records.at(-1).differential)} through ${maxAttempts}.`
           : "No best-through records are available.";
       }
 
