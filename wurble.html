@@ -1182,7 +1182,7 @@
     let playersById = new Map();
     let playerPatternStats = new Map();
     let playerStats = [];
-    let patternSort = { key: null, direction: null };
+    let patternSort = { key: 'rarity', direction: 'desc' };
     let playerSort = { key: null, direction: null };
 
     function parseCsv(source) {
@@ -2172,6 +2172,7 @@
         renderArchiveRows();
       });
     }
+    updateSortHeaders(patternSortButtons, patternSort, 'patternSort');
 
     for (const button of playerSortButtons) {
       button.addEventListener('click', () => {
