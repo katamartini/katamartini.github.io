@@ -482,7 +482,21 @@
     }
 
     .candidate-table .team-cell {
+      gap: 14px;
       white-space: normal;
+    }
+
+    .candidate-team-logo {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.28));
+    }
+
+    .candidate-table tr.eliminated .candidate-team-logo {
+      opacity: 0.64;
+      filter: grayscale(0.68) drop-shadow(0 4px 7px rgba(0, 0, 0, 0.24));
     }
 
     .conference {
@@ -893,6 +907,7 @@
       .candidate-table td:nth-child(2) { grid-column: 1; grid-row: 2; }
       .candidate-table td:nth-child(3) { grid-column: 2; grid-row: 1; }
       .candidate-table td:nth-child(4) { grid-column: 1 / -1; grid-row: 3; padding-top: 5px; }
+      .candidate-team-logo { width: 40px; height: 40px; flex-basis: 40px; }
 
       .legend { display: none; }
 
@@ -1153,7 +1168,7 @@
       </div>
       <div>
         <h2>Sources</h2>
-        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. The 2026 field uses the NFL’s <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>.</p>
+        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. The 2026 field uses the NFL’s <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>. Team marks come from <a href="https://www.espn.com/nfl/teams" target="_blank" rel="noreferrer">ESPN’s NFL team directory</a>.</p>
       </div>
     </section>
   </main>
@@ -1309,6 +1324,41 @@
       ,"Washington Commanders": "#ffb612"
     };
 
+    const teamLogos = {
+      "Arizona Cardinals": "images/nfl/ari.png",
+      "Atlanta Falcons": "images/nfl/atl.png",
+      "Baltimore Ravens": "images/nfl/bal.png",
+      "Buffalo Bills": "images/nfl/buf.png",
+      "Carolina Panthers": "images/nfl/car.png",
+      "Chicago Bears": "images/nfl/chi.png",
+      "Cincinnati Bengals": "images/nfl/cin.png",
+      "Cleveland Browns": "images/nfl/cle.png",
+      "Dallas Cowboys": "images/nfl/dal.png",
+      "Denver Broncos": "images/nfl/den.png",
+      "Detroit Lions": "images/nfl/det.png",
+      "Green Bay Packers": "images/nfl/gb.png",
+      "Houston Texans": "images/nfl/hou.png",
+      "Indianapolis Colts": "images/nfl/ind.png",
+      "Jacksonville Jaguars": "images/nfl/jax.png",
+      "Kansas City Chiefs": "images/nfl/kc.png",
+      "Las Vegas Raiders": "images/nfl/lv.png",
+      "Los Angeles Chargers": "images/nfl/lac.png",
+      "Los Angeles Rams": "images/nfl/lar.png",
+      "Miami Dolphins": "images/nfl/mia.png",
+      "Minnesota Vikings": "images/nfl/min.png",
+      "New England Patriots": "images/nfl/ne.png",
+      "New Orleans Saints": "images/nfl/no.png",
+      "New York Giants": "images/nfl/nyg.png",
+      "New York Jets": "images/nfl/nyj.png",
+      "Philadelphia Eagles": "images/nfl/phi.png",
+      "Pittsburgh Steelers": "images/nfl/pit.png",
+      "San Francisco 49ers": "images/nfl/sf.png",
+      "Seattle Seahawks": "images/nfl/sea.png",
+      "Tampa Bay Buccaneers": "images/nfl/tb.png",
+      "Tennessee Titans": "images/nfl/ten.png",
+      "Washington Commanders": "images/nfl/wsh.png"
+    };
+
     const body = document.querySelector("#champions-body");
     const search = document.querySelector("#search");
     const recordFilter = document.querySelector("#record-filter");
@@ -1390,7 +1440,7 @@
         return `
           <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
             <td>
-              <span class="team-cell"><i class="team-swatch" aria-hidden="true"></i><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span></span></span>
+              <span class="team-cell"><img class="candidate-team-logo" src="${teamLogos[item.team]}" alt="" width="46" height="46" loading="lazy" decoding="async"><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span></span></span>
             </td>
             <td><span class="candidate-record">${record(item)}</span></td>
             <td><span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Pass" : "Fail"}</span></td>
