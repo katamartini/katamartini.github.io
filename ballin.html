@@ -208,6 +208,22 @@
       gap: 14px;
     }
 
+    .dashboard-layout {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-main {
+      min-width: 0;
+      order: 1;
+    }
+
+    .best-through-panel {
+      order: 2;
+      margin-top: 14px;
+      padding: 22px;
+    }
+
     .panel {
       border: 1px solid var(--border);
       border-radius: 22px;
@@ -670,6 +686,82 @@
       font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
+    }
+
+    @media (min-width: 1180px) {
+      .app-shell {
+        width: min(1500px, 100%);
+      }
+
+      .dashboard-layout {
+        display: grid;
+        grid-template-columns: minmax(365px, 0.8fr) minmax(0, 2.2fr);
+        align-items: start;
+        gap: 14px;
+      }
+
+      .best-through-panel {
+        position: sticky;
+        top: 18px;
+        display: flex;
+        grid-column: 1;
+        grid-row: 1;
+        height: min(760px, calc(100vh - 36px));
+        min-height: 0;
+        flex-direction: column;
+        margin-top: 0;
+        padding: 20px;
+      }
+
+      .best-through-panel .panel-title {
+        align-items: flex-start;
+      }
+
+      .best-through-panel .panel-title span {
+        white-space: nowrap;
+      }
+
+      .best-through-panel .best-through-table-wrap {
+        min-height: 0;
+        flex: 1;
+        margin-top: 0;
+        max-height: none;
+      }
+
+      .best-through-panel .best-through-table th,
+      .best-through-panel .best-through-table td {
+        padding-right: 9px;
+        padding-left: 9px;
+      }
+
+      .dashboard-main {
+        grid-column: 2;
+        grid-row: 1;
+        order: initial;
+      }
+
+      .dashboard-main .overall-panel {
+        padding: 20px;
+      }
+
+      .dashboard-main .overall-layout {
+        grid-template-columns: 110px minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      .dashboard-main .percentage-ring {
+        width: 110px;
+        height: 110px;
+      }
+
+      .dashboard-main .percentage-ring::before {
+        width: 84px;
+        height: 84px;
+      }
+
+      .dashboard-main .percentage-ring strong {
+        font-size: 1.75rem;
+      }
     }
 
     .history-section {
@@ -1338,7 +1430,28 @@
     </section>
 
     <div id="dashboard" hidden>
-      <section class="dashboard-grid" aria-label="Performance overview">
+      <div class="dashboard-layout">
+        <aside class="best-through-panel panel" aria-labelledby="bestThroughTitle">
+          <div class="panel-title">
+            <h2 id="bestThroughTitle">Best through X</h2>
+            <span>Shots 1–100</span>
+          </div>
+          <div class="best-through-table-wrap" role="region" aria-label="Best result through every shot" tabindex="0">
+            <table class="best-through-table">
+              <thead>
+                <tr>
+                  <th scope="col">Through</th>
+                  <th scope="col">Best through X</th>
+                  <th scope="col">Run</th>
+                </tr>
+              </thead>
+              <tbody id="bestThroughTableBody"></tbody>
+            </table>
+          </div>
+        </aside>
+
+        <div class="dashboard-main">
+          <section class="dashboard-grid" aria-label="Performance overview">
         <article class="overall-panel panel">
           <div class="overall-layout">
             <div
@@ -1374,9 +1487,9 @@
             <small id="bestRunDate">No runs yet</small>
           </article>
         </div>
-      </section>
+          </section>
 
-      <section class="lifetime-panel panel">
+          <section class="lifetime-panel panel">
         <div class="panel-title">
           <h2>Lifetime percentage</h2>
           <span id="lifetimeChartScope">Every shot</span>
@@ -1404,9 +1517,9 @@
           </svg>
         </div>
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
-      </section>
+          </section>
 
-      <section class="analytics-grid">
+          <section class="analytics-grid">
         <article class="trend-panel panel">
           <div class="panel-title">
             <h2>Run trend</h2>
@@ -1466,24 +1579,13 @@
         <article class="checkpoint-panel panel">
           <div class="panel-title">
             <h2>Most makes through X shots</h2>
-            <span>Every shot · 1–100</span>
+            <span>10-shot highlights</span>
           </div>
           <div class="checkpoint-grid" id="checkpointGrid"></div>
-          <div class="best-through-table-wrap" role="region" aria-label="Best result through every shot" tabindex="0">
-            <table class="best-through-table">
-              <thead>
-                <tr>
-                  <th scope="col">Through</th>
-                  <th scope="col">Best through X</th>
-                  <th scope="col">Rate</th>
-                  <th scope="col">Run</th>
-                </tr>
-              </thead>
-              <tbody id="bestThroughTableBody"></tbody>
-            </table>
-          </div>
         </article>
-      </section>
+          </section>
+        </div>
+      </div>
 
       <section class="history-section" aria-labelledby="historyTitle">
         <div class="history-heading">
@@ -2722,13 +2824,13 @@
           const row = document.createElement("tr");
           const through = document.createElement("td");
           const best = document.createElement("td");
-          const rate = document.createElement("td");
           const source = document.createElement("td");
 
           through.textContent = attempts;
           best.className = "best-through-value";
-          best.textContent = record ? `${record.makes}/${attempts}` : "—";
-          rate.textContent = record ? formatPercentage(record.percentage) : "—";
+          best.textContent = record
+            ? `${record.makes}/${attempts} · ${formatPercentage(record.percentage)}`
+            : "—";
           source.className = "best-through-source";
 
           if (record) {
@@ -2742,7 +2844,7 @@
             source.textContent = "No exact result";
           }
 
-          row.append(through, best, rate, source);
+          row.append(through, best, source);
           elements.bestThroughTableBody.appendChild(row);
         });
       }
