@@ -388,7 +388,8 @@
       margin-top: 14px;
     }
 
-    .lifetime-panel {
+    .lifetime-panel,
+    .theoretical-panel {
       margin-top: 14px;
       padding: 22px;
     }
@@ -440,7 +441,8 @@
     }
 
     .chart-line,
-    .lifetime-chart-line {
+    .lifetime-chart-line,
+    .theoretical-chart-line {
       fill: none;
       stroke: var(--orange);
       stroke-linecap: round;
@@ -459,7 +461,8 @@
     }
 
     .chart-point,
-    .lifetime-chart-point {
+    .lifetime-chart-point,
+    .theoretical-chart-point {
       fill: var(--surface);
       stroke: var(--orange);
       stroke-width: 3;
@@ -467,6 +470,21 @@
 
     .lifetime-chart-point {
       r: 5px;
+    }
+
+    .theoretical-chart-point {
+      fill: #11161d;
+      stroke-width: 1.5;
+    }
+
+    .theoretical-chart-point.checkpoint {
+      fill: var(--surface);
+      stroke-width: 3;
+    }
+
+    .chart-grid-line.zero {
+      stroke: #718094;
+      stroke-width: 1.5;
     }
 
     .chart-axis-label {
@@ -1512,6 +1530,29 @@
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
           </section>
 
+          <section class="theoretical-panel panel">
+        <div class="panel-title">
+          <h2>Theoretical best run differential</h2>
+          <span id="theoreticalChartScope">Best through X</span>
+        </div>
+        <div class="chart-wrap">
+          <svg
+            class="trend-chart"
+            id="theoreticalChart"
+            viewBox="0 0 700 260"
+            role="img"
+            aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
+          >
+            <title id="theoreticalChartTitle">Theoretical best run make-minus-miss differential</title>
+            <desc id="theoreticalChartDescription">A composite differential calculated from the best recorded result through each shot.</desc>
+            <g id="theoreticalChartGrid"></g>
+            <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
+            <g id="theoreticalChartPoints"></g>
+          </svg>
+        </div>
+        <p class="chart-note">Each point uses that shot's “Best through X” make total. This is a composite of your records, not one actual run.</p>
+          </section>
+
           <section class="analytics-grid">
         <article class="trend-panel panel">
           <div class="panel-title">
@@ -1743,6 +1784,11 @@
         lifetimeChartLine: document.querySelector("#lifetimeChartLine"),
         lifetimeChartPoints: document.querySelector("#lifetimeChartPoints"),
         lifetimeChartNote: document.querySelector("#lifetimeChartNote"),
+        theoreticalChartDescription: document.querySelector("#theoreticalChartDescription"),
+        theoreticalChartScope: document.querySelector("#theoreticalChartScope"),
+        theoreticalChartGrid: document.querySelector("#theoreticalChartGrid"),
+        theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
+        theoreticalChartPoints: document.querySelector("#theoreticalChartPoints"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
         bestStreakDetail: document.querySelector("#bestStreakDetail"),
@@ -2902,6 +2948,98 @@
         return value > 0 ? `+${value}` : String(value);
       }
 
+      function renderTheoreticalDifferential() {
+        const records = Array.from({ length: MAX_SHOTS }, (_, index) => {
+          const attempts = index + 1;
+          const record = recordThrough(attempts);
+          return record
+            ? {
+                ...record,
+                attempts,
+                differential: record.makes * 2 - attempts
+              }
+            : null;
+        }).filter(Boolean);
+        const width = 700;
+        const height = 260;
+        const padding = { top: 16, right: 16, bottom: 32, left: 46 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+        const maxAttempts = records.at(-1)?.attempts || 1;
+        const axis = differentialAxis(records.map((record) => record.differential));
+
+        elements.theoreticalChartGrid.replaceChildren();
+        elements.theoreticalChartPoints.replaceChildren();
+        elements.theoreticalChartLine.setAttribute("points", "");
+
+        axis.ticks.forEach((value) => {
+          const y = padding.top + ((axis.max - value) / (axis.max - axis.min)) * chartHeight;
+          elements.theoreticalChartGrid.appendChild(svgElement("line", {
+            class: `chart-grid-line${value === 0 ? " zero" : ""}`,
+            x1: padding.left,
+            x2: width - padding.right,
+            y1: y,
+            y2: y
+          }));
+          const label = svgElement("text", {
+            class: "chart-grid-label",
+            x: padding.left - 9,
+            y: y + 4,
+            "text-anchor": "end"
+          });
+          label.textContent = formatDifferential(value);
+          elements.theoreticalChartGrid.appendChild(label);
+        });
+
+        const xTicks = [...new Set([0, 25, 50, 75, maxAttempts].filter((value) => value <= maxAttempts))];
+        xTicks.forEach((attempts, index) => {
+          const x = padding.left + (attempts / maxAttempts) * chartWidth;
+          const label = svgElement("text", {
+            class: "chart-axis-label",
+            x,
+            y: height - 8,
+            "text-anchor": index === 0
+              ? "start"
+              : index === xTicks.length - 1
+                ? "end"
+                : "middle"
+          });
+          label.textContent = attempts;
+          elements.theoreticalChartGrid.appendChild(label);
+        });
+
+        const zeroY = padding.top + (axis.max / (axis.max - axis.min)) * chartHeight;
+        const positions = records.map((record) => ({
+          ...record,
+          x: padding.left + (record.attempts / maxAttempts) * chartWidth,
+          y: padding.top + ((axis.max - record.differential) / (axis.max - axis.min)) * chartHeight
+        }));
+        const linePoints = [{ x: padding.left, y: zeroY }, ...positions];
+        elements.theoreticalChartLine.setAttribute(
+          "points",
+          linePoints.map((point) => `${point.x},${point.y}`).join(" ")
+        );
+
+        positions.forEach((point) => {
+          const checkpoint = point.attempts % 10 === 0 || point.attempts === maxAttempts;
+          const circle = svgElement("circle", {
+            class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
+            cx: point.x,
+            cy: point.y,
+            r: checkpoint ? 4.6 : 2.2
+          });
+          const title = svgElement("title");
+          title.textContent = `Through ${point.attempts}: ${point.makes}/${point.attempts} · differential ${formatDifferential(point.differential)} · ${formatDate(point.run.date)}`;
+          circle.appendChild(title);
+          elements.theoreticalChartPoints.appendChild(circle);
+        });
+
+        elements.theoreticalChartScope.textContent = `${records.length} best-through ${records.length === 1 ? "value" : "values"} · through ${maxAttempts}`;
+        elements.theoreticalChartDescription.textContent = records.length
+          ? `The theoretical composite uses the best recorded make total through each available shot, ending at a differential of ${formatDifferential(records.at(-1).differential)} through ${maxAttempts}.`
+          : "No best-through records are available.";
+      }
+
       function createShotChart(run) {
         const details = document.createElement("details");
         const summary = document.createElement("summary");
@@ -3064,6 +3202,7 @@
         renderTrend();
         renderBlocks();
         renderCheckpoints();
+        renderTheoreticalDifferential();
         renderHistory();
       }
 
