@@ -256,6 +256,22 @@
       box-shadow: var(--shadow);
     }
 
+    .rule-card + .rule-card { margin-top: 18px; }
+
+    .rule-card.metric-rule {
+      border-color: rgba(114, 199, 160, 0.24);
+    }
+
+    .criterion-tag {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 0.67rem;
+      font-weight: 850;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
     .rule-main,
     .rule-never { padding: clamp(24px, 4vw, 40px); }
 
@@ -318,6 +334,12 @@
       background: #0b2233;
       font-family: Georgia, "Times New Roman", serif;
       font-size: 1.4rem;
+    }
+
+    .metric-rule .range-number {
+      width: 68px;
+      border-radius: 15px;
+      font-size: 1.15rem;
     }
 
     .range-line {
@@ -469,9 +491,11 @@
 
     .candidate-table-wrap { overflow-x: auto; }
 
-    .candidate-table th:nth-child(1) { width: 37%; }
-    .candidate-table th:nth-child(2) { width: 16%; }
-    .candidate-table th:nth-child(3) { width: 15%; }
+    .candidate-table th:nth-child(1) { width: 28%; }
+    .candidate-table th:nth-child(2) { width: 12%; }
+    .candidate-table th:nth-child(3),
+    .candidate-table th:nth-child(4) { width: 11%; }
+    .candidate-table th:nth-child(5) { width: 12%; }
 
     .candidate-table tbody tr.eliminated {
       background: rgba(240, 91, 73, 0.065);
@@ -517,6 +541,12 @@
       line-height: 1;
     }
 
+    .metric-value {
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+
     .eliminated .candidate-record { color: #ff8f81; }
 
     .criteria-result {
@@ -528,6 +558,25 @@
     }
 
     .criteria-result.failed { color: #ffaaa0; }
+
+    .criteria-list {
+      display: grid;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .criteria-list li::before {
+      margin-right: 7px;
+      color: var(--red);
+      content: "×";
+      font-weight: 900;
+    }
+
+    .criteria-pass {
+      color: #9bd9ba;
+    }
 
     .status-badge {
       flex: 0 0 auto;
@@ -658,6 +707,11 @@
     }
 
     .legend span { white-space: nowrap; }
+
+    .legend strong {
+      margin-right: 5px;
+      color: var(--ink);
+    }
 
     .dot {
       display: inline-block;
@@ -905,8 +959,12 @@
 
       .candidate-table td:nth-child(1) { grid-column: 1; grid-row: 1; }
       .candidate-table td:nth-child(2) { grid-column: 1; grid-row: 2; }
-      .candidate-table td:nth-child(3) { grid-column: 2; grid-row: 1; }
-      .candidate-table td:nth-child(4) { grid-column: 1 / -1; grid-row: 3; padding-top: 5px; }
+      .candidate-table td:nth-child(3) { grid-column: 1; grid-row: 3; }
+      .candidate-table td:nth-child(3)::before { content: "Scored: "; color: var(--muted); font-size: 0.7rem; }
+      .candidate-table td:nth-child(4) { grid-column: 2; grid-row: 3; }
+      .candidate-table td:nth-child(4)::before { content: "Allowed: "; color: var(--muted); font-size: 0.7rem; }
+      .candidate-table td:nth-child(5) { grid-column: 2; grid-row: 1; }
+      .candidate-table td:nth-child(6) { grid-column: 1 / -1; grid-row: 4; padding-top: 5px; }
       .candidate-team-logo { width: 40px; height: 40px; flex-basis: 40px; }
 
       .legend { display: none; }
@@ -947,7 +1005,10 @@
       .history-table td:nth-child(4) { grid-column: 1 / 3; grid-row: 3; padding-top: 9px; color: var(--muted); font-size: 0.76rem; }
       .history-table td:nth-child(4)::before { content: "Previous season · "; }
       .history-table td:nth-child(5) { grid-column: 3; grid-row: 3; padding-top: 7px; }
-      .history-table td:nth-child(6) { display: none; }
+      .history-table td:nth-child(6) { grid-column: 1 / 3; grid-row: 4; color: var(--muted); font-size: 0.76rem; }
+      .history-table td:nth-child(6)::before { content: "Scored: "; }
+      .history-table td:nth-child(7) { grid-column: 3; grid-row: 4; color: var(--muted); font-size: 0.76rem; }
+      .history-table td:nth-child(7)::before { content: "Allowed: "; }
 
       .team-swatch { height: 24px; }
 
@@ -986,37 +1047,38 @@
         <p class="intro">Start with every team. Eliminate the ones that fall outside what has always—and never—been true of a Super Bowl winner.</p>
       </div>
       <aside class="hero-stat" aria-label="Turnaround statistic">
-        <strong>4–15</strong>
-        <p>wins in the previous regular season. Every Super Bowl champion has landed inside that range.</p>
+        <strong>25</strong>
+        <p>of 32 teams still match every season-before range after three active criteria.</p>
       </aside>
     </section>
 
     <section class="snapshot" aria-label="2026 prediction snapshot">
       <div class="snapshot-item">
-        <strong id="eligible-total">28</strong>
+        <strong id="eligible-total">25</strong>
         <span>Teams still alive</span>
       </div>
       <div class="snapshot-item">
-        <strong id="eliminated-total">4</strong>
+        <strong id="eliminated-total">7</strong>
         <span>Teams eliminated</span>
       </div>
       <div class="snapshot-item">
-        <strong>1</strong>
-        <span>Active rule</span>
+        <strong>3</strong>
+        <span>Active criteria</span>
       </div>
     </section>
 
     <section id="rulebook" aria-labelledby="rulebook-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Rulebook · criterion 01</p>
-          <h2 id="rulebook-title">Previous-season wins</h2>
+          <p class="eyebrow">Rulebook · 3 active criteria</p>
+          <h2 id="rulebook-title">The season-before ranges</h2>
         </div>
-        <p>A rule only enters the book if every one of the 60 champions satisfies it. Future rules will stack here; teams must pass every active rule to remain.</p>
+        <p>A criterion enters the book only if all 60 champions satisfy it. Points per game are regular-season totals divided by games played and rounded to one decimal.</p>
       </div>
 
       <article class="rule-card">
         <div class="rule-main">
+          <span class="criterion-tag">Criterion 01 · Previous-season wins</span>
           <span class="rule-label">Always</span>
           <h3>Every champion won between 4 and 15 games the year before.</h3>
           <div class="range" aria-label="Eligible range from 4 to 15 wins">
@@ -1044,15 +1106,77 @@
           </div>
         </div>
       </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 02 · Points scored per game</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion scored between 17.3 and 35.3 points per game the year before.</h3>
+          <div class="range" aria-label="Eligible scoring range from 17.3 to 35.3 points per game">
+            <span class="range-number">17.3</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">35.3</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Floor: 2000 Patriots · Ceiling: 2018 Chiefs</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner entered its title season from outside this scoring range.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Under 17.3 PF/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Over 35.3 PF/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="rule-card metric-rule">
+        <div class="rule-main">
+          <span class="criterion-tag">Criterion 03 · Points allowed per game</span>
+          <span class="rule-label">Always</span>
+          <h3>Every champion allowed between 11.6 and 28.1 points per game the year before.</h3>
+          <div class="range" aria-label="Eligible points-allowed range from 11.6 to 28.1 points per game">
+            <span class="range-number">11.6</span>
+            <span class="range-line" aria-hidden="true"></span>
+            <span class="range-number">28.1</span>
+          </div>
+          <div class="evidence-line">
+            <span><strong>60 of 60</strong> champions fit</span>
+            <span>Floor: 1966 Packers · Ceiling: 2019 Buccaneers</span>
+          </div>
+        </div>
+        <div class="rule-never">
+          <span class="rule-label never">Never</span>
+          <h3>No winner entered its title season from outside this points-allowed range.</h3>
+          <div class="boundary-list">
+            <div class="boundary">
+              <strong>Under 11.6 PA/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+            <div class="boundary">
+              <strong>Over 28.1 PA/G</strong>
+              <span>No champions in this zone</span>
+            </div>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section id="field" aria-labelledby="field-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Applying the rule · 2026 season</p>
+          <p class="eyebrow">Applying all criteria · 2026 season</p>
           <h2 id="field-title">All 32 NFL teams</h2>
         </div>
-        <p>This current-criteria checklist tests every team against its final 2025 regular-season win total. Passing means historical eligibility—not a forecast or guarantee.</p>
+        <p>This checklist tests every team’s final 2025 wins, scoring average, and points-allowed average. Passing means historical eligibility—not a forecast or guarantee.</p>
       </div>
 
       <div class="candidate-board">
@@ -1073,10 +1197,10 @@
         </div>
         <div class="candidate-summary">
           <span id="candidate-count" aria-live="polite"><strong>32 teams</strong> shown</span>
-          <span>Rule: 4–15 prior-season wins</span>
+          <span>W: 4–15 · PF/G: 17.3–35.3 · PA/G: 11.6–28.1</span>
         </div>
         <div class="failed-now">
-          <strong>Fails Rule 01</strong>
+          <strong>Fails 1+ criteria</strong>
           <span id="failed-team-list"></span>
         </div>
         <div class="candidate-table-wrap">
@@ -1085,8 +1209,10 @@
               <tr>
                 <th scope="col">Team</th>
                 <th scope="col">2025 record</th>
+                <th scope="col">Scored / game</th>
+                <th scope="col">Allowed / game</th>
                 <th scope="col">Current status</th>
-                <th scope="col">Failed criterion</th>
+                <th scope="col">Criteria result</th>
               </tr>
             </thead>
             <tbody id="candidate-body"></tbody>
@@ -1099,8 +1225,8 @@
     <section id="history" class="explorer" aria-label="Super Bowl champions explorer">
       <div class="history-intro">
         <p class="eyebrow">Historical proof</p>
-        <h2>All 60 winners behind the rule</h2>
-        <p>Search the complete record to see the exact prior season behind every title.</p>
+        <h2>All 60 winners behind the rules</h2>
+        <p>Search the complete record to see the wins and scoring averages behind every title.</p>
       </div>
       <div class="controls">
         <label class="field">
@@ -1134,9 +1260,8 @@
       <div class="summary-strip">
         <div id="result-count" aria-live="polite"><strong>60 champions</strong> shown</div>
         <div class="legend" aria-label="Record category legend">
-          <span><i class="dot"></i>Winning</span>
-          <span><i class="dot even"></i>.500</span>
-          <span><i class="dot losing"></i>Losing</span>
+          <span><strong>PF/G</strong> points scored</span>
+          <span><strong>PA/G</strong> points allowed</span>
         </div>
       </div>
 
@@ -1149,7 +1274,8 @@
               <th scope="col">Title season</th>
               <th scope="col">Previous season</th>
               <th scope="col">Record</th>
-              <th scope="col">Signal</th>
+              <th scope="col">PF/G</th>
+              <th scope="col">PA/G</th>
             </tr>
           </thead>
           <tbody id="champions-body"></tbody>
@@ -1164,124 +1290,137 @@
     <section class="method" aria-label="About the data">
       <div>
         <h2>How to read the predictor</h2>
-        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. A team that survives has only avoided a historical disqualifier; the rule does not measure how likely that team is to win.</p>
+        <p>“The year before” means the previous NFL regular season—not the previous calendar year and not including playoffs. Scoring averages use total points divided by games played, rounded to one decimal. A team that survives has only avoided a historical disqualifier; the rules do not measure how likely that team is to win.</p>
       </div>
       <div>
         <h2>Sources</h2>
-        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. The 2026 field uses the NFL’s <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>. Team marks come from <a href="https://www.espn.com/nfl/teams" target="_blank" rel="noreferrer">ESPN’s NFL team directory</a>.</p>
+        <p>Champions are cross-checked against the <a href="https://www.nfl.com/super-bowl" target="_blank" rel="noreferrer">NFL’s Super Bowl archive</a>. Regular-season records and scoring totals come from the NFL’s historical standings, including the <a href="https://www.nfl.com/standings/league/2025/REG" target="_blank" rel="noreferrer">final 2025 standings</a>; historical records are also checked against <a href="https://www.pro-football-reference.com/years/" target="_blank" rel="noreferrer">Pro Football Reference</a>. Team marks come from <a href="https://www.espn.com/nfl/teams" target="_blank" rel="noreferrer">ESPN’s NFL team directory</a>.</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer shell">
-    <span>Rule 01 · 60 championships tested</span>
+    <span>3 criteria · 60 championships tested</span>
     <span>Last updated September 2026</span>
   </footer>
 
   <script>
     const champions = [
-      { bowl: "I", season: 1966, team: "Green Bay Packers", prior: 1965, w: 10, l: 3, t: 1 },
-      { bowl: "II", season: 1967, team: "Green Bay Packers", prior: 1966, w: 12, l: 2, t: 0 },
-      { bowl: "III", season: 1968, team: "New York Jets", prior: 1967, w: 8, l: 5, t: 1 },
-      { bowl: "IV", season: 1969, team: "Kansas City Chiefs", prior: 1968, w: 12, l: 2, t: 0 },
-      { bowl: "V", season: 1970, team: "Baltimore Colts", prior: 1969, w: 8, l: 5, t: 1 },
-      { bowl: "VI", season: 1971, team: "Dallas Cowboys", prior: 1970, w: 10, l: 4, t: 0 },
-      { bowl: "VII", season: 1972, team: "Miami Dolphins", prior: 1971, w: 10, l: 3, t: 1 },
-      { bowl: "VIII", season: 1973, team: "Miami Dolphins", prior: 1972, w: 14, l: 0, t: 0 },
-      { bowl: "IX", season: 1974, team: "Pittsburgh Steelers", prior: 1973, w: 10, l: 4, t: 0 },
-      { bowl: "X", season: 1975, team: "Pittsburgh Steelers", prior: 1974, w: 10, l: 3, t: 1 },
-      { bowl: "XI", season: 1976, team: "Oakland Raiders", prior: 1975, w: 11, l: 3, t: 0 },
-      { bowl: "XII", season: 1977, team: "Dallas Cowboys", prior: 1976, w: 11, l: 3, t: 0 },
-      { bowl: "XIII", season: 1978, team: "Pittsburgh Steelers", prior: 1977, w: 9, l: 5, t: 0 },
-      { bowl: "XIV", season: 1979, team: "Pittsburgh Steelers", prior: 1978, w: 14, l: 2, t: 0 },
-      { bowl: "XV", season: 1980, team: "Oakland Raiders", prior: 1979, w: 9, l: 7, t: 0 },
-      { bowl: "XVI", season: 1981, team: "San Francisco 49ers", prior: 1980, w: 6, l: 10, t: 0 },
-      { bowl: "XVII", season: 1982, team: "Washington Redskins", prior: 1981, w: 8, l: 8, t: 0 },
-      { bowl: "XVIII", season: 1983, team: "Los Angeles Raiders", prior: 1982, w: 8, l: 1, t: 0 },
-      { bowl: "XIX", season: 1984, team: "San Francisco 49ers", prior: 1983, w: 10, l: 6, t: 0 },
-      { bowl: "XX", season: 1985, team: "Chicago Bears", prior: 1984, w: 10, l: 6, t: 0 },
-      { bowl: "XXI", season: 1986, team: "New York Giants", prior: 1985, w: 10, l: 6, t: 0 },
-      { bowl: "XXII", season: 1987, team: "Washington Redskins", prior: 1986, w: 12, l: 4, t: 0 },
-      { bowl: "XXIII", season: 1988, team: "San Francisco 49ers", prior: 1987, w: 13, l: 2, t: 0 },
-      { bowl: "XXIV", season: 1989, team: "San Francisco 49ers", prior: 1988, w: 10, l: 6, t: 0 },
-      { bowl: "XXV", season: 1990, team: "New York Giants", prior: 1989, w: 12, l: 4, t: 0 },
-      { bowl: "XXVI", season: 1991, team: "Washington Redskins", prior: 1990, w: 10, l: 6, t: 0 },
-      { bowl: "XXVII", season: 1992, team: "Dallas Cowboys", prior: 1991, w: 11, l: 5, t: 0 },
-      { bowl: "XXVIII", season: 1993, team: "Dallas Cowboys", prior: 1992, w: 13, l: 3, t: 0 },
-      { bowl: "XXIX", season: 1994, team: "San Francisco 49ers", prior: 1993, w: 10, l: 6, t: 0 },
-      { bowl: "XXX", season: 1995, team: "Dallas Cowboys", prior: 1994, w: 12, l: 4, t: 0 },
-      { bowl: "XXXI", season: 1996, team: "Green Bay Packers", prior: 1995, w: 11, l: 5, t: 0 },
-      { bowl: "XXXII", season: 1997, team: "Denver Broncos", prior: 1996, w: 13, l: 3, t: 0 },
-      { bowl: "XXXIII", season: 1998, team: "Denver Broncos", prior: 1997, w: 12, l: 4, t: 0 },
-      { bowl: "XXXIV", season: 1999, team: "St. Louis Rams", prior: 1998, w: 4, l: 12, t: 0 },
-      { bowl: "XXXV", season: 2000, team: "Baltimore Ravens", prior: 1999, w: 8, l: 8, t: 0 },
-      { bowl: "XXXVI", season: 2001, team: "New England Patriots", prior: 2000, w: 5, l: 11, t: 0 },
-      { bowl: "XXXVII", season: 2002, team: "Tampa Bay Buccaneers", prior: 2001, w: 9, l: 7, t: 0 },
-      { bowl: "XXXVIII", season: 2003, team: "New England Patriots", prior: 2002, w: 9, l: 7, t: 0 },
-      { bowl: "XXXIX", season: 2004, team: "New England Patriots", prior: 2003, w: 14, l: 2, t: 0 },
-      { bowl: "XL", season: 2005, team: "Pittsburgh Steelers", prior: 2004, w: 15, l: 1, t: 0 },
-      { bowl: "XLI", season: 2006, team: "Indianapolis Colts", prior: 2005, w: 14, l: 2, t: 0 },
-      { bowl: "XLII", season: 2007, team: "New York Giants", prior: 2006, w: 8, l: 8, t: 0 },
-      { bowl: "XLIII", season: 2008, team: "Pittsburgh Steelers", prior: 2007, w: 10, l: 6, t: 0 },
-      { bowl: "XLIV", season: 2009, team: "New Orleans Saints", prior: 2008, w: 8, l: 8, t: 0 },
-      { bowl: "XLV", season: 2010, team: "Green Bay Packers", prior: 2009, w: 11, l: 5, t: 0 },
-      { bowl: "XLVI", season: 2011, team: "New York Giants", prior: 2010, w: 10, l: 6, t: 0 },
-      { bowl: "XLVII", season: 2012, team: "Baltimore Ravens", prior: 2011, w: 12, l: 4, t: 0 },
-      { bowl: "XLVIII", season: 2013, team: "Seattle Seahawks", prior: 2012, w: 11, l: 5, t: 0 },
-      { bowl: "XLIX", season: 2014, team: "New England Patriots", prior: 2013, w: 12, l: 4, t: 0 },
-      { bowl: "50", season: 2015, team: "Denver Broncos", prior: 2014, w: 12, l: 4, t: 0 },
-      { bowl: "LI", season: 2016, team: "New England Patriots", prior: 2015, w: 12, l: 4, t: 0 },
-      { bowl: "LII", season: 2017, team: "Philadelphia Eagles", prior: 2016, w: 7, l: 9, t: 0 },
-      { bowl: "LIII", season: 2018, team: "New England Patriots", prior: 2017, w: 13, l: 3, t: 0 },
-      { bowl: "LIV", season: 2019, team: "Kansas City Chiefs", prior: 2018, w: 12, l: 4, t: 0 },
-      { bowl: "LV", season: 2020, team: "Tampa Bay Buccaneers", prior: 2019, w: 7, l: 9, t: 0 },
-      { bowl: "LVI", season: 2021, team: "Los Angeles Rams", prior: 2020, w: 10, l: 6, t: 0 },
-      { bowl: "LVII", season: 2022, team: "Kansas City Chiefs", prior: 2021, w: 12, l: 5, t: 0 },
-      { bowl: "LVIII", season: 2023, team: "Kansas City Chiefs", prior: 2022, w: 14, l: 3, t: 0 },
-      { bowl: "LIX", season: 2024, team: "Philadelphia Eagles", prior: 2023, w: 11, l: 6, t: 0 },
-      { bowl: "LX", season: 2025, team: "Seattle Seahawks", prior: 2024, w: 10, l: 7, t: 0 }
+      { bowl: "I", season: 1966, team: "Green Bay Packers", prior: 1965, w: 10, l: 3, t: 1, pf: 316, pa: 224 },
+      { bowl: "II", season: 1967, team: "Green Bay Packers", prior: 1966, w: 12, l: 2, t: 0, pf: 335, pa: 163 },
+      { bowl: "III", season: 1968, team: "New York Jets", prior: 1967, w: 8, l: 5, t: 1, pf: 371, pa: 329 },
+      { bowl: "IV", season: 1969, team: "Kansas City Chiefs", prior: 1968, w: 12, l: 2, t: 0, pf: 371, pa: 170 },
+      { bowl: "V", season: 1970, team: "Baltimore Colts", prior: 1969, w: 8, l: 5, t: 1, pf: 279, pa: 268 },
+      { bowl: "VI", season: 1971, team: "Dallas Cowboys", prior: 1970, w: 10, l: 4, t: 0, pf: 299, pa: 221 },
+      { bowl: "VII", season: 1972, team: "Miami Dolphins", prior: 1971, w: 10, l: 3, t: 1, pf: 315, pa: 174 },
+      { bowl: "VIII", season: 1973, team: "Miami Dolphins", prior: 1972, w: 14, l: 0, t: 0, pf: 385, pa: 171 },
+      { bowl: "IX", season: 1974, team: "Pittsburgh Steelers", prior: 1973, w: 10, l: 4, t: 0, pf: 347, pa: 210 },
+      { bowl: "X", season: 1975, team: "Pittsburgh Steelers", prior: 1974, w: 10, l: 3, t: 1, pf: 305, pa: 189 },
+      { bowl: "XI", season: 1976, team: "Oakland Raiders", prior: 1975, w: 11, l: 3, t: 0, pf: 375, pa: 255 },
+      { bowl: "XII", season: 1977, team: "Dallas Cowboys", prior: 1976, w: 11, l: 3, t: 0, pf: 296, pa: 194 },
+      { bowl: "XIII", season: 1978, team: "Pittsburgh Steelers", prior: 1977, w: 9, l: 5, t: 0, pf: 283, pa: 243 },
+      { bowl: "XIV", season: 1979, team: "Pittsburgh Steelers", prior: 1978, w: 14, l: 2, t: 0, pf: 356, pa: 195 },
+      { bowl: "XV", season: 1980, team: "Oakland Raiders", prior: 1979, w: 9, l: 7, t: 0, pf: 365, pa: 337 },
+      { bowl: "XVI", season: 1981, team: "San Francisco 49ers", prior: 1980, w: 6, l: 10, t: 0, pf: 320, pa: 415 },
+      { bowl: "XVII", season: 1982, team: "Washington Redskins", prior: 1981, w: 8, l: 8, t: 0, pf: 347, pa: 349 },
+      { bowl: "XVIII", season: 1983, team: "Los Angeles Raiders", prior: 1982, w: 8, l: 1, t: 0, pf: 260, pa: 200 },
+      { bowl: "XIX", season: 1984, team: "San Francisco 49ers", prior: 1983, w: 10, l: 6, t: 0, pf: 432, pa: 293 },
+      { bowl: "XX", season: 1985, team: "Chicago Bears", prior: 1984, w: 10, l: 6, t: 0, pf: 325, pa: 248 },
+      { bowl: "XXI", season: 1986, team: "New York Giants", prior: 1985, w: 10, l: 6, t: 0, pf: 399, pa: 283 },
+      { bowl: "XXII", season: 1987, team: "Washington Redskins", prior: 1986, w: 12, l: 4, t: 0, pf: 368, pa: 296 },
+      { bowl: "XXIII", season: 1988, team: "San Francisco 49ers", prior: 1987, w: 13, l: 2, t: 0, pf: 459, pa: 253 },
+      { bowl: "XXIV", season: 1989, team: "San Francisco 49ers", prior: 1988, w: 10, l: 6, t: 0, pf: 369, pa: 294 },
+      { bowl: "XXV", season: 1990, team: "New York Giants", prior: 1989, w: 12, l: 4, t: 0, pf: 348, pa: 252 },
+      { bowl: "XXVI", season: 1991, team: "Washington Redskins", prior: 1990, w: 10, l: 6, t: 0, pf: 381, pa: 301 },
+      { bowl: "XXVII", season: 1992, team: "Dallas Cowboys", prior: 1991, w: 11, l: 5, t: 0, pf: 342, pa: 310 },
+      { bowl: "XXVIII", season: 1993, team: "Dallas Cowboys", prior: 1992, w: 13, l: 3, t: 0, pf: 409, pa: 243 },
+      { bowl: "XXIX", season: 1994, team: "San Francisco 49ers", prior: 1993, w: 10, l: 6, t: 0, pf: 473, pa: 295 },
+      { bowl: "XXX", season: 1995, team: "Dallas Cowboys", prior: 1994, w: 12, l: 4, t: 0, pf: 414, pa: 248 },
+      { bowl: "XXXI", season: 1996, team: "Green Bay Packers", prior: 1995, w: 11, l: 5, t: 0, pf: 404, pa: 314 },
+      { bowl: "XXXII", season: 1997, team: "Denver Broncos", prior: 1996, w: 13, l: 3, t: 0, pf: 391, pa: 275 },
+      { bowl: "XXXIII", season: 1998, team: "Denver Broncos", prior: 1997, w: 12, l: 4, t: 0, pf: 472, pa: 287 },
+      { bowl: "XXXIV", season: 1999, team: "St. Louis Rams", prior: 1998, w: 4, l: 12, t: 0, pf: 285, pa: 378 },
+      { bowl: "XXXV", season: 2000, team: "Baltimore Ravens", prior: 1999, w: 8, l: 8, t: 0, pf: 324, pa: 277 },
+      { bowl: "XXXVI", season: 2001, team: "New England Patriots", prior: 2000, w: 5, l: 11, t: 0, pf: 276, pa: 338 },
+      { bowl: "XXXVII", season: 2002, team: "Tampa Bay Buccaneers", prior: 2001, w: 9, l: 7, t: 0, pf: 324, pa: 280 },
+      { bowl: "XXXVIII", season: 2003, team: "New England Patriots", prior: 2002, w: 9, l: 7, t: 0, pf: 381, pa: 346 },
+      { bowl: "XXXIX", season: 2004, team: "New England Patriots", prior: 2003, w: 14, l: 2, t: 0, pf: 348, pa: 238 },
+      { bowl: "XL", season: 2005, team: "Pittsburgh Steelers", prior: 2004, w: 15, l: 1, t: 0, pf: 372, pa: 251 },
+      { bowl: "XLI", season: 2006, team: "Indianapolis Colts", prior: 2005, w: 14, l: 2, t: 0, pf: 439, pa: 247 },
+      { bowl: "XLII", season: 2007, team: "New York Giants", prior: 2006, w: 8, l: 8, t: 0, pf: 355, pa: 362 },
+      { bowl: "XLIII", season: 2008, team: "Pittsburgh Steelers", prior: 2007, w: 10, l: 6, t: 0, pf: 393, pa: 269 },
+      { bowl: "XLIV", season: 2009, team: "New Orleans Saints", prior: 2008, w: 8, l: 8, t: 0, pf: 463, pa: 393 },
+      { bowl: "XLV", season: 2010, team: "Green Bay Packers", prior: 2009, w: 11, l: 5, t: 0, pf: 461, pa: 297 },
+      { bowl: "XLVI", season: 2011, team: "New York Giants", prior: 2010, w: 10, l: 6, t: 0, pf: 394, pa: 347 },
+      { bowl: "XLVII", season: 2012, team: "Baltimore Ravens", prior: 2011, w: 12, l: 4, t: 0, pf: 378, pa: 266 },
+      { bowl: "XLVIII", season: 2013, team: "Seattle Seahawks", prior: 2012, w: 11, l: 5, t: 0, pf: 412, pa: 245 },
+      { bowl: "XLIX", season: 2014, team: "New England Patriots", prior: 2013, w: 12, l: 4, t: 0, pf: 444, pa: 338 },
+      { bowl: "50", season: 2015, team: "Denver Broncos", prior: 2014, w: 12, l: 4, t: 0, pf: 482, pa: 354 },
+      { bowl: "LI", season: 2016, team: "New England Patriots", prior: 2015, w: 12, l: 4, t: 0, pf: 465, pa: 315 },
+      { bowl: "LII", season: 2017, team: "Philadelphia Eagles", prior: 2016, w: 7, l: 9, t: 0, pf: 367, pa: 331 },
+      { bowl: "LIII", season: 2018, team: "New England Patriots", prior: 2017, w: 13, l: 3, t: 0, pf: 458, pa: 296 },
+      { bowl: "LIV", season: 2019, team: "Kansas City Chiefs", prior: 2018, w: 12, l: 4, t: 0, pf: 565, pa: 421 },
+      { bowl: "LV", season: 2020, team: "Tampa Bay Buccaneers", prior: 2019, w: 7, l: 9, t: 0, pf: 458, pa: 449 },
+      { bowl: "LVI", season: 2021, team: "Los Angeles Rams", prior: 2020, w: 10, l: 6, t: 0, pf: 372, pa: 296 },
+      { bowl: "LVII", season: 2022, team: "Kansas City Chiefs", prior: 2021, w: 12, l: 5, t: 0, pf: 480, pa: 364 },
+      { bowl: "LVIII", season: 2023, team: "Kansas City Chiefs", prior: 2022, w: 14, l: 3, t: 0, pf: 496, pa: 369 },
+      { bowl: "LIX", season: 2024, team: "Philadelphia Eagles", prior: 2023, w: 11, l: 6, t: 0, pf: 433, pa: 428 },
+      { bowl: "LX", season: 2025, team: "Seattle Seahawks", prior: 2024, w: 10, l: 7, t: 0, pf: 375, pa: 368 }
     ];
 
     const candidates = [
-      { team: "Arizona Cardinals", conference: "NFC", w: 3, l: 14, t: 0 },
-      { team: "Atlanta Falcons", conference: "NFC", w: 8, l: 9, t: 0 },
-      { team: "Baltimore Ravens", conference: "AFC", w: 8, l: 9, t: 0 },
-      { team: "Buffalo Bills", conference: "AFC", w: 12, l: 5, t: 0 },
-      { team: "Carolina Panthers", conference: "NFC", w: 8, l: 9, t: 0 },
-      { team: "Chicago Bears", conference: "NFC", w: 11, l: 6, t: 0 },
-      { team: "Cincinnati Bengals", conference: "AFC", w: 6, l: 11, t: 0 },
-      { team: "Cleveland Browns", conference: "AFC", w: 5, l: 12, t: 0 },
-      { team: "Dallas Cowboys", conference: "NFC", w: 7, l: 9, t: 1 },
-      { team: "Denver Broncos", conference: "AFC", w: 14, l: 3, t: 0 },
-      { team: "Detroit Lions", conference: "NFC", w: 9, l: 8, t: 0 },
-      { team: "Green Bay Packers", conference: "NFC", w: 9, l: 7, t: 1 },
-      { team: "Houston Texans", conference: "AFC", w: 12, l: 5, t: 0 },
-      { team: "Indianapolis Colts", conference: "AFC", w: 8, l: 9, t: 0 },
-      { team: "Jacksonville Jaguars", conference: "AFC", w: 13, l: 4, t: 0 },
-      { team: "Kansas City Chiefs", conference: "AFC", w: 6, l: 11, t: 0 },
-      { team: "Las Vegas Raiders", conference: "AFC", w: 3, l: 14, t: 0 },
-      { team: "Los Angeles Chargers", conference: "AFC", w: 11, l: 6, t: 0 },
-      { team: "Los Angeles Rams", conference: "NFC", w: 12, l: 5, t: 0 },
-      { team: "Miami Dolphins", conference: "AFC", w: 7, l: 10, t: 0 },
-      { team: "Minnesota Vikings", conference: "NFC", w: 9, l: 8, t: 0 },
-      { team: "New England Patriots", conference: "AFC", w: 14, l: 3, t: 0 },
-      { team: "New Orleans Saints", conference: "NFC", w: 6, l: 11, t: 0 },
-      { team: "New York Giants", conference: "NFC", w: 4, l: 13, t: 0 },
-      { team: "New York Jets", conference: "AFC", w: 3, l: 14, t: 0 },
-      { team: "Philadelphia Eagles", conference: "NFC", w: 11, l: 6, t: 0 },
-      { team: "Pittsburgh Steelers", conference: "AFC", w: 10, l: 7, t: 0 },
-      { team: "San Francisco 49ers", conference: "NFC", w: 12, l: 5, t: 0 },
-      { team: "Seattle Seahawks", conference: "NFC", w: 14, l: 3, t: 0 },
-      { team: "Tampa Bay Buccaneers", conference: "NFC", w: 8, l: 9, t: 0 },
-      { team: "Tennessee Titans", conference: "AFC", w: 3, l: 14, t: 0 },
-      { team: "Washington Commanders", conference: "NFC", w: 5, l: 12, t: 0 }
+      { team: "Arizona Cardinals", conference: "NFC", w: 3, l: 14, t: 0, pf: 355, pa: 488 },
+      { team: "Atlanta Falcons", conference: "NFC", w: 8, l: 9, t: 0, pf: 353, pa: 401 },
+      { team: "Baltimore Ravens", conference: "AFC", w: 8, l: 9, t: 0, pf: 424, pa: 398 },
+      { team: "Buffalo Bills", conference: "AFC", w: 12, l: 5, t: 0, pf: 481, pa: 365 },
+      { team: "Carolina Panthers", conference: "NFC", w: 8, l: 9, t: 0, pf: 311, pa: 380 },
+      { team: "Chicago Bears", conference: "NFC", w: 11, l: 6, t: 0, pf: 441, pa: 415 },
+      { team: "Cincinnati Bengals", conference: "AFC", w: 6, l: 11, t: 0, pf: 414, pa: 492 },
+      { team: "Cleveland Browns", conference: "AFC", w: 5, l: 12, t: 0, pf: 279, pa: 379 },
+      { team: "Dallas Cowboys", conference: "NFC", w: 7, l: 9, t: 1, pf: 471, pa: 511 },
+      { team: "Denver Broncos", conference: "AFC", w: 14, l: 3, t: 0, pf: 401, pa: 311 },
+      { team: "Detroit Lions", conference: "NFC", w: 9, l: 8, t: 0, pf: 481, pa: 413 },
+      { team: "Green Bay Packers", conference: "NFC", w: 9, l: 7, t: 1, pf: 391, pa: 360 },
+      { team: "Houston Texans", conference: "AFC", w: 12, l: 5, t: 0, pf: 404, pa: 295 },
+      { team: "Indianapolis Colts", conference: "AFC", w: 8, l: 9, t: 0, pf: 466, pa: 412 },
+      { team: "Jacksonville Jaguars", conference: "AFC", w: 13, l: 4, t: 0, pf: 474, pa: 336 },
+      { team: "Kansas City Chiefs", conference: "AFC", w: 6, l: 11, t: 0, pf: 362, pa: 328 },
+      { team: "Las Vegas Raiders", conference: "AFC", w: 3, l: 14, t: 0, pf: 241, pa: 432 },
+      { team: "Los Angeles Chargers", conference: "AFC", w: 11, l: 6, t: 0, pf: 368, pa: 340 },
+      { team: "Los Angeles Rams", conference: "NFC", w: 12, l: 5, t: 0, pf: 518, pa: 346 },
+      { team: "Miami Dolphins", conference: "AFC", w: 7, l: 10, t: 0, pf: 347, pa: 424 },
+      { team: "Minnesota Vikings", conference: "NFC", w: 9, l: 8, t: 0, pf: 344, pa: 333 },
+      { team: "New England Patriots", conference: "AFC", w: 14, l: 3, t: 0, pf: 490, pa: 320 },
+      { team: "New Orleans Saints", conference: "NFC", w: 6, l: 11, t: 0, pf: 306, pa: 383 },
+      { team: "New York Giants", conference: "NFC", w: 4, l: 13, t: 0, pf: 381, pa: 439 },
+      { team: "New York Jets", conference: "AFC", w: 3, l: 14, t: 0, pf: 300, pa: 503 },
+      { team: "Philadelphia Eagles", conference: "NFC", w: 11, l: 6, t: 0, pf: 379, pa: 325 },
+      { team: "Pittsburgh Steelers", conference: "AFC", w: 10, l: 7, t: 0, pf: 397, pa: 387 },
+      { team: "San Francisco 49ers", conference: "NFC", w: 12, l: 5, t: 0, pf: 437, pa: 371 },
+      { team: "Seattle Seahawks", conference: "NFC", w: 14, l: 3, t: 0, pf: 483, pa: 292 },
+      { team: "Tampa Bay Buccaneers", conference: "NFC", w: 8, l: 9, t: 0, pf: 380, pa: 411 },
+      { team: "Tennessee Titans", conference: "AFC", w: 3, l: 14, t: 0, pf: 284, pa: 478 },
+      { team: "Washington Commanders", conference: "NFC", w: 5, l: 12, t: 0, pf: 356, pa: 451 }
     ];
 
-    const activeRule = {
-      id: "prior-wins",
-      label: "Previous-season wins",
-      min: Math.min(...champions.map(item => item.w)),
-      max: Math.max(...champions.map(item => item.w))
+    const gamesPlayed = item => item.w + item.l + item.t;
+    const round1 = value => Math.round((value + Number.EPSILON) * 10) / 10;
+    const pointsForPerGame = item => round1(item.pf / gamesPlayed(item));
+    const pointsAgainstPerGame = item => round1(item.pa / gamesPlayed(item));
+
+    const activeRules = {
+      wins: {
+        min: Math.min(...champions.map(item => item.w)),
+        max: Math.max(...champions.map(item => item.w))
+      },
+      pointsFor: {
+        min: Math.min(...champions.map(pointsForPerGame)),
+        max: Math.max(...champions.map(pointsForPerGame))
+      },
+      pointsAgainst: {
+        min: Math.min(...champions.map(pointsAgainstPerGame)),
+        max: Math.max(...champions.map(pointsAgainstPerGame))
+      }
     };
 
     const teamColors = {
@@ -1376,14 +1515,23 @@
     const pct = ({ w, l, t }) => (w + t * 0.5) / (w + l + t);
     const record = ({ w, l, t }) => `${w}-${l}${t ? `-${t}` : ""}`;
     const category = item => item.w > item.l ? "winning" : item.w < item.l ? "losing" : "even";
-    const signalLabel = item => {
-      const value = pct(item);
-      if (value >= 0.75) return "Powerhouse";
-      if (item.w > item.l) return "Winning form";
-      if (item.w === item.l) return "Even season";
-      return "Turnaround";
+    const failureReasons = item => {
+      const failures = [];
+      const scored = pointsForPerGame(item);
+      const allowed = pointsAgainstPerGame(item);
+
+      if (item.w < activeRules.wins.min || item.w > activeRules.wins.max) {
+        failures.push(`Rule 01 · ${item.w} wins is ${item.w < activeRules.wins.min ? `below the ${activeRules.wins.min}-win minimum` : `above the ${activeRules.wins.max}-win maximum`}`);
+      }
+      if (scored < activeRules.pointsFor.min || scored > activeRules.pointsFor.max) {
+        failures.push(`Rule 02 · ${scored.toFixed(1)} PF/G is ${scored < activeRules.pointsFor.min ? `below the ${activeRules.pointsFor.min.toFixed(1)} minimum` : `above the ${activeRules.pointsFor.max.toFixed(1)} maximum`}`);
+      }
+      if (allowed < activeRules.pointsAgainst.min || allowed > activeRules.pointsAgainst.max) {
+        failures.push(`Rule 03 · ${allowed.toFixed(1)} PA/G is ${allowed < activeRules.pointsAgainst.min ? `below the ${activeRules.pointsAgainst.min.toFixed(1)} minimum` : `above the ${activeRules.pointsAgainst.max.toFixed(1)} maximum`}`);
+      }
+      return failures;
     };
-    const isEligible = item => item.w >= activeRule.min && item.w <= activeRule.max;
+    const isEligible = item => failureReasons(item).length === 0;
 
     const escapeHtml = value => String(value).replace(/[&<>'"]/g, char => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
@@ -1396,7 +1544,7 @@
 
       const filtered = champions
         .filter(item => {
-          const haystack = `${item.team} ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)}`.toLowerCase();
+          const haystack = `${item.team} ${item.season} ${item.prior} ${item.bowl} super bowl ${record(item)} ${pointsForPerGame(item).toFixed(1)} ${pointsAgainstPerGame(item).toFixed(1)}`.toLowerCase();
           return (!query || haystack.includes(query)) && (filter === "all" || category(item) === filter);
         })
         .sort((a, b) => {
@@ -1407,7 +1555,6 @@
         });
 
       body.innerHTML = filtered.map(item => {
-        const type = category(item);
         return `
           <tr style="--team-color:${teamColors[item.team] || "#f05b49"}">
             <td><span class="bowl-number">${escapeHtml(item.bowl)}</span></td>
@@ -1415,7 +1562,8 @@
             <td>${item.season}</td>
             <td>${item.prior}</td>
             <td><span class="record">${record(item)}</span></td>
-            <td><span class="signal ${type}"><i class="dot ${type}" aria-hidden="true"></i>${signalLabel(item)}</span></td>
+            <td><span class="metric-value">${pointsForPerGame(item).toFixed(1)}</span></td>
+            <td><span class="metric-value">${pointsAgainstPerGame(item).toFixed(1)}</span></td>
           </tr>`;
       }).join("");
 
@@ -1434,15 +1582,18 @@
 
       candidateBody.innerHTML = filtered.map(item => {
         const eligible = isEligible(item);
+        const failures = failureReasons(item);
         const reason = eligible
-          ? "—"
-          : `Rule 01 · ${item.w} wins is ${item.w < activeRule.min ? `below the ${activeRule.min}-win minimum` : `above the ${activeRule.max}-win maximum`}`;
+          ? `<span class="criteria-pass">All 3 criteria satisfied</span>`
+          : `<ul class="criteria-list">${failures.map(failure => `<li>${failure}</li>`).join("")}</ul>`;
         return `
           <tr class="${eligible ? "" : "eliminated"}" style="--team-color:${teamColors[item.team] || "#f05b49"}">
             <td>
               <span class="team-cell"><img class="candidate-team-logo" src="${teamLogos[item.team]}" alt="" width="46" height="46" loading="lazy" decoding="async"><span>${escapeHtml(item.team)}<span class="conference">${item.conference}</span></span></span>
             </td>
             <td><span class="candidate-record">${record(item)}</span></td>
+            <td><span class="metric-value">${pointsForPerGame(item).toFixed(1)}</span></td>
+            <td><span class="metric-value">${pointsAgainstPerGame(item).toFixed(1)}</span></td>
             <td><span class="status-badge ${eligible ? "" : "out"}">${eligible ? "Pass" : "Fail"}</span></td>
             <td class="criteria-result ${eligible ? "" : "failed"}">${reason}</td>
           </tr>`;
@@ -1456,7 +1607,7 @@
     const failedTeams = candidates.filter(item => !isEligible(item)).map(item => item.team);
     document.querySelector("#eligible-total").textContent = eligibleCount;
     document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
-    failedTeamList.textContent = `${failedTeams.join(" · ")} — each finished 3–14, one win below the minimum.`;
+    failedTeamList.textContent = `${failedTeams.length} teams: ${failedTeams.join(" · ")}`;
     search.addEventListener("input", render);
     recordFilter.addEventListener("change", render);
     sort.addEventListener("change", render);
