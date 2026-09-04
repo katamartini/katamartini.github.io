@@ -367,14 +367,40 @@
     }
 
     .evidence-line {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px 18px;
       color: var(--muted);
       font-size: 0.82rem;
     }
 
     .evidence-line strong { color: var(--ink); }
+
+    .rule-impact {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 9px 11px;
+      border: 1px solid rgba(240, 91, 73, 0.25);
+      border-radius: 10px;
+      color: #ffc2bb;
+      background: rgba(240, 91, 73, 0.075);
+      line-height: 1.45;
+    }
+
+    .rule-impact strong {
+      flex: 0 0 auto;
+      color: #ff9588;
+    }
+
+    .rule-impact[data-empty="true"] {
+      border-color: rgba(115, 190, 151, 0.24);
+      color: #b9dfca;
+      background: rgba(115, 190, 151, 0.07);
+    }
+
+    .rule-impact[data-empty="true"] strong { color: #83d0a7; }
 
     .boundary-list {
       display: grid;
@@ -903,6 +929,9 @@
       }
 
       .rule-card { grid-template-columns: 1fr; }
+
+      .evidence-line { grid-template-columns: 1fr; }
+      .rule-impact { grid-column: 1; align-items: flex-start; flex-direction: column; gap: 2px; }
       .rule-never { border-top: 1px solid var(--line); border-left: 0; }
 
       .controls {
@@ -1107,8 +1136,9 @@
             <span class="range-number">15</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Previous regular season only</span>
+            <span><strong>Floor</strong> · 4 wins · 1998 Rams</span>
+            <span><strong>Ceiling</strong> · 15 wins · 2004 Steelers</span>
+            <span class="rule-impact" id="wins-impact" data-empty="false"><strong>4 of 32 fail</strong><span>Arizona Cardinals · Las Vegas Raiders · New York Jets · Tennessee Titans</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1138,8 +1168,9 @@
             <span class="range-number">35.3</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Floor: 2000 Patriots · Ceiling: 2018 Chiefs</span>
+            <span><strong>Floor</strong> · 17.3 PF/G · 2000 Patriots</span>
+            <span><strong>Ceiling</strong> · 35.3 PF/G · 2018 Chiefs</span>
+            <span class="rule-impact" id="points-for-impact" data-empty="false"><strong>3 of 32 fail</strong><span>Cleveland Browns · Las Vegas Raiders · Tennessee Titans</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1169,8 +1200,9 @@
             <span class="range-number">28.1</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Floor: 1966 Packers · Ceiling: 2019 Buccaneers</span>
+            <span><strong>Floor</strong> · 11.6 PA/G · 1966 Packers</span>
+            <span><strong>Ceiling</strong> · 28.1 PA/G · 2019 Buccaneers</span>
+            <span class="rule-impact" id="points-against-impact" data-empty="false"><strong>4 of 32 fail</strong><span>Arizona Cardinals · Cincinnati Bengals · Dallas Cowboys · New York Jets</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1200,8 +1232,9 @@
             <span class="range-number">67</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Youngest: Sean McVay · Oldest: Bruce Arians</span>
+            <span><strong>Floor</strong> · Age 35 · Sean McVay, 2021 Rams</span>
+            <span><strong>Ceiling</strong> · Age 67 · Bruce Arians, 2020 Buccaneers</span>
+            <span class="rule-impact" id="coach-age-impact" data-empty="false"><strong>1 of 32 fails</strong><span>Kansas City Chiefs</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1231,8 +1264,9 @@
             <span class="range-number">19th</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Longest: Bill Belichick · 2018 Patriots</span>
+            <span><strong>Floor</strong> · 1st season · 4 champions</span>
+            <span><strong>Ceiling</strong> · 19th season · Bill Belichick, 2018 Patriots</span>
+            <span class="rule-impact" id="coach-season-impact" data-empty="true"><strong>0 of 32 fail</strong><span>All teams fit this criterion</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1262,9 +1296,9 @@
             <span class="range-number">+15.3</span>
           </div>
           <div class="evidence-line">
-            <span><strong>60 of 60</strong> champions fit</span>
-            <span>Floor: 1980 49ers · Ceiling: 1972 Dolphins</span>
-            <span id="point-diff-impact">4 current teams outside · 0 newly out</span>
+            <span><strong>Floor</strong> · −5.9 Diff/G · 1980 49ers</span>
+            <span><strong>Ceiling</strong> · +15.3 Diff/G · 1972 Dolphins</span>
+            <span class="rule-impact" id="point-diff-impact" data-empty="false"><strong>4 of 32 fail</strong><span>Arizona Cardinals · Las Vegas Raiders · New York Jets · Tennessee Titans</span></span>
           </div>
         </div>
         <div class="rule-never">
@@ -1748,6 +1782,24 @@
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
     })[char]);
 
+    const ruleImpactDefinitions = [
+      { elementId: "wins-impact", value: item => item.w, range: activeRules.wins },
+      { elementId: "points-for-impact", value: pointsForPerGame, range: activeRules.pointsFor },
+      { elementId: "points-against-impact", value: pointsAgainstPerGame, range: activeRules.pointsAgainst },
+      { elementId: "coach-age-impact", value: item => item.coachAge, range: activeRules.coachAge },
+      { elementId: "coach-season-impact", value: item => item.coachSeason, range: activeRules.coachSeason },
+      { elementId: "point-diff-impact", value: pointDifferentialPerGame, range: activeRules.pointDifferential }
+    ];
+
+    function renderRuleImpacts() {
+      ruleImpactDefinitions.forEach(({ elementId, value, range }) => {
+        const failed = candidates.filter(item => value(item) < range.min || value(item) > range.max);
+        const impact = document.querySelector(`#${elementId}`);
+        impact.dataset.empty = String(failed.length === 0);
+        impact.innerHTML = `<strong>${failed.length} of ${candidates.length} ${failed.length === 1 ? "fails" : "fail"}</strong><span>${failed.length ? failed.map(item => escapeHtml(item.team)).join(" · ") : "All teams fit this criterion"}</span>`;
+      });
+    }
+
     function render() {
       const query = search.value.trim().toLowerCase();
       const filter = recordFilter.value;
@@ -1819,15 +1871,9 @@
 
     const eligibleCount = candidates.filter(isEligible).length;
     const failedTeams = candidates.filter(item => !isEligible(item)).map(item => item.team);
-    const pointDiffFailures = candidates.filter(item => {
-      const differential = pointDifferentialPerGame(item);
-      return differential < activeRules.pointDifferential.min || differential > activeRules.pointDifferential.max;
-    });
-    const pointDiffOnlyFailures = pointDiffFailures.filter(item => failureReasons(item).length === 1);
     document.querySelector("#hero-eligible-total").textContent = eligibleCount;
     document.querySelector("#eligible-total").textContent = eligibleCount;
     document.querySelector("#eliminated-total").textContent = candidates.length - eligibleCount;
-    document.querySelector("#point-diff-impact").textContent = `${pointDiffFailures.length} current teams outside · ${pointDiffOnlyFailures.length} newly out`;
     failedTeamList.textContent = `${failedTeams.length} teams: ${failedTeams.join(" · ")}`;
     search.addEventListener("input", render);
     recordFilter.addEventListener("change", render);
@@ -1840,6 +1886,7 @@
         renderCandidates();
       });
     });
+    renderRuleImpacts();
     render();
     renderCandidates();
   </script>
