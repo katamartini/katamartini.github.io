@@ -607,6 +607,71 @@
       line-height: 1.35;
     }
 
+    .best-through-table-wrap {
+      max-height: 430px;
+      margin-top: 16px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #11161d;
+    }
+
+    .best-through-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+      text-align: left;
+    }
+
+    .best-through-table th,
+    .best-through-table td {
+      padding: 10px 13px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .best-through-table th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #1a212b;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .best-through-table td {
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    .best-through-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .best-through-table tbody tr:nth-child(10n) {
+      background: rgba(243, 155, 61, 0.045);
+    }
+
+    .best-through-value {
+      color: var(--text);
+      font-weight: 850 !important;
+    }
+
+    .best-through-source {
+      color: var(--muted);
+    }
+
+    .best-through-source small {
+      margin-left: 6px;
+      color: var(--orange-soft);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
     .history-section {
       margin-top: 28px;
     }
@@ -1401,9 +1466,22 @@
         <article class="checkpoint-panel panel">
           <div class="panel-title">
             <h2>Most makes through X shots</h2>
-            <span>Records every 10 shots</span>
+            <span>Every shot · 1–100</span>
           </div>
           <div class="checkpoint-grid" id="checkpointGrid"></div>
+          <div class="best-through-table-wrap" role="region" aria-label="Best result through every shot" tabindex="0">
+            <table class="best-through-table">
+              <thead>
+                <tr>
+                  <th scope="col">Through</th>
+                  <th scope="col">Best through X</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">Run</th>
+                </tr>
+              </thead>
+              <tbody id="bestThroughTableBody"></tbody>
+            </table>
+          </div>
         </article>
       </section>
 
@@ -1578,6 +1656,7 @@
         finishPercentage: document.querySelector("#finishPercentage"),
         accuracyNote: document.querySelector("#accuracyNote"),
         checkpointGrid: document.querySelector("#checkpointGrid"),
+        bestThroughTableBody: document.querySelector("#bestThroughTableBody"),
         historyCount: document.querySelector("#historyCount"),
         historyList: document.querySelector("#historyList"),
         emptyHistory: document.querySelector("#emptyHistory"),
@@ -2614,6 +2693,7 @@
       function summaryThrough(run, attempts) {
         if (runSummary(run).attempts < attempts) return null;
         if (run.format === "tens") {
+          if (attempts % 10 !== 0) return null;
           const setCount = attempts / 10;
           const makes = run.tenCounts
             .slice(0, setCount)
@@ -2632,6 +2712,39 @@
           }
         });
         return record;
+      }
+
+      function renderBestThroughTable() {
+        elements.bestThroughTableBody.replaceChildren();
+
+        Array.from({ length: MAX_SHOTS }, (_, index) => index + 1).forEach((attempts) => {
+          const record = recordThrough(attempts);
+          const row = document.createElement("tr");
+          const through = document.createElement("td");
+          const best = document.createElement("td");
+          const rate = document.createElement("td");
+          const source = document.createElement("td");
+
+          through.textContent = attempts;
+          best.className = "best-through-value";
+          best.textContent = record ? `${record.makes}/${attempts}` : "—";
+          rate.textContent = record ? formatPercentage(record.percentage) : "—";
+          source.className = "best-through-source";
+
+          if (record) {
+            source.append(formatDate(record.run.date));
+            if (record.run.format === "tens") {
+              const legacy = document.createElement("small");
+              legacy.textContent = "Legacy";
+              source.appendChild(legacy);
+            }
+          } else {
+            source.textContent = "No exact result";
+          }
+
+          row.append(through, best, rate, source);
+          elements.bestThroughTableBody.appendChild(row);
+        });
       }
 
       function renderCheckpoints() {
@@ -2653,6 +2766,8 @@
           card.append(label, value, detail);
           elements.checkpointGrid.appendChild(card);
         });
+
+        renderBestThroughTable();
       }
 
       function splitSummary(run) {
