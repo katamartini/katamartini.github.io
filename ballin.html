@@ -2865,30 +2865,21 @@
         const maxAttempts = points.at(-1)?.attempts || 1;
         const chartStartAttempts = legacy.attempts || 0;
         const attemptSpan = maxAttempts - chartStartAttempts;
-        const percentages = points.map((point) => point.percentage);
-        const rawMin = Math.min(...percentages);
-        const rawMax = Math.max(...percentages);
-        let yMin = Math.max(0, Math.floor((rawMin - 5) / 5) * 5);
-        let yMax = Math.min(100, Math.ceil((rawMax + 5) / 5) * 5);
-
-        if (yMax - yMin < 20) {
-          const middle = (yMin + yMax) / 2;
-          yMin = Math.max(0, Math.floor((middle - 10) / 5) * 5);
-          yMax = Math.min(100, Math.ceil((middle + 10) / 5) * 5);
-        }
-        if (yMax === yMin) yMax = Math.min(100, yMin + 10);
+        const yMin = 42;
+        const yMax = 52;
 
         const pointPosition = (point) => ({
           x: attemptSpan
             ? padding.left + ((point.attempts - chartStartAttempts) / attemptSpan) * chartWidth
             : padding.left + chartWidth / 2,
-          y: padding.top + ((yMax - point.percentage) / (yMax - yMin)) * chartHeight
+          y: padding.top
+            + ((yMax - Math.min(yMax, Math.max(yMin, point.percentage))) / (yMax - yMin)) * chartHeight
         });
 
         elements.lifetimeChartGrid.replaceChildren();
         elements.lifetimeChartPoints.replaceChildren();
 
-        Array.from({ length: 5 }, (_, index) => yMax - (index / 4) * (yMax - yMin)).forEach((value) => {
+        Array.from({ length: 6 }, (_, index) => yMax - index * 2).forEach((value) => {
           const y = padding.top + ((yMax - value) / (yMax - yMin)) * chartHeight;
           elements.lifetimeChartGrid.append(
             svgElement("line", {
