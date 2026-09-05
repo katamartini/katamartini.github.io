@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-05T05:16:00.141782+00:00",
+  "data_updated_at": "2026-09-05T08:33:19.524277+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -2367,6 +2367,42 @@
         },
         {
           "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "353fdaeb72f2a7dc",
+      "player_name": "Ryan (Mayan)",
+      "puzzle_number": 1904,
+      "score": 6,
+      "hard_mode": false,
+      "grid_pattern": "XXGXX\nXXGXX\nYXXXX\nXGXXY\nXGXGG\nGGGGG",
+      "posted_at": "2026-09-05T08:33:19.488000+00:00",
+      "tracked_at": "2026-09-05T08:33:19.524277+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXGXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXGXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YXXXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGXXY"
+        },
+        {
+          "row_number": 5,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 6,
           "pattern": "GGGGG"
         }
       ]
