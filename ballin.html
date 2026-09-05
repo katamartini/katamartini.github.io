@@ -473,12 +473,13 @@
     }
 
     .theoretical-chart-point {
-      fill: #11161d;
+      fill: var(--node-color, #11161d);
+      stroke: var(--node-color, var(--orange));
       stroke-width: 1.5;
     }
 
     .theoretical-chart-point.checkpoint {
-      fill: var(--surface);
+      fill: var(--node-color, var(--surface));
       stroke-width: 3;
     }
 
@@ -3452,7 +3453,8 @@
               class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
               cx: point.x,
               cy: point.y,
-              r: checkpoint ? 4.6 : 2.2
+              r: checkpoint ? 4.6 : 2.2,
+              style: `--node-color: ${runOverlayColor(point.run)}`
             });
             const title = svgElement("title");
             title.textContent = `Through ${point.attempts}: ${point.makes} cumulative makes · ${formatPercentage(point.percentage)} · ${formatDate(point.run.date)}`;
