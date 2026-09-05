@@ -779,6 +779,34 @@
       text-transform: uppercase;
     }
 
+    .best-through-sort {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      gap: 5px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      white-space: nowrap;
+    }
+
+    .best-through-sort:hover {
+      color: var(--text);
+    }
+
+    .best-through-sort-indicator {
+      width: 0.8rem;
+      flex: 0 0 0.8rem;
+      color: var(--orange-soft);
+      font-size: 0.68rem;
+      text-align: center;
+    }
+
     .best-through-table td {
       font-size: 0.82rem;
       font-weight: 650;
@@ -788,7 +816,7 @@
       border-bottom: 0;
     }
 
-    .best-through-table tbody tr:nth-child(10n) {
+    .best-through-table tbody tr.checkpoint-row {
       background: rgba(243, 155, 61, 0.045);
     }
 
@@ -816,7 +844,7 @@
 
       .dashboard-layout {
         display: grid;
-        grid-template-columns: minmax(365px, 0.8fr) minmax(0, 2.2fr);
+        grid-template-columns: minmax(440px, 0.9fr) minmax(0, 2.1fr);
         align-items: start;
         gap: 14px;
       }
@@ -1554,9 +1582,26 @@
             <table class="best-through-table">
               <thead>
                 <tr>
-                  <th scope="col">Through</th>
-                  <th scope="col">Best through X</th>
-                  <th scope="col">Run</th>
+                  <th scope="col" aria-sort="ascending">
+                    <button class="best-through-sort" type="button" data-sort-key="through">
+                      Through <span class="best-through-sort-indicator" aria-hidden="true">↑</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="makes">
+                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="percentage">
+                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="run">
+                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody id="bestThroughTableBody"></tbody>
@@ -1908,6 +1953,7 @@
         accuracyNote: document.querySelector("#accuracyNote"),
         checkpointGrid: document.querySelector("#checkpointGrid"),
         bestThroughTableBody: document.querySelector("#bestThroughTableBody"),
+        bestThroughSortButtons: document.querySelectorAll(".best-through-sort"),
         historyCount: document.querySelector("#historyCount"),
         historyList: document.querySelector("#historyList"),
         emptyHistory: document.querySelector("#emptyHistory"),
@@ -1945,6 +1991,7 @@
       let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
       let pendingTransfer = null;
       let state = loadState();
+      let bestThroughSort = { key: "through", direction: "asc" };
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let theoreticalBestVisible = loadTheoreticalVisibility();
 
@@ -3059,18 +3106,60 @@
       function renderBestThroughTable() {
         elements.bestThroughTableBody.replaceChildren();
 
-        Array.from({ length: MAX_SHOTS }, (_, index) => index + 1).forEach((attempts) => {
-          const record = recordThrough(attempts);
+        const rows = Array.from({ length: MAX_SHOTS }, (_, index) => {
+          const attempts = index + 1;
+          return { attempts, record: recordThrough(attempts) };
+        });
+        const direction = bestThroughSort.direction === "asc" ? 1 : -1;
+
+        rows.sort((left, right) => {
+          if (bestThroughSort.key !== "through") {
+            const leftMissing = !left.record;
+            const rightMissing = !right.record;
+            if (leftMissing !== rightMissing) return leftMissing ? 1 : -1;
+            if (leftMissing) return left.attempts - right.attempts;
+          }
+
+          let comparison = 0;
+          if (bestThroughSort.key === "through") {
+            comparison = left.attempts - right.attempts;
+          } else if (bestThroughSort.key === "makes") {
+            comparison = left.record.makes - right.record.makes;
+          } else if (bestThroughSort.key === "percentage") {
+            comparison = left.record.percentage - right.record.percentage;
+          } else if (bestThroughSort.key === "run") {
+            comparison = left.record.run.date.localeCompare(right.record.run.date);
+          }
+
+          return comparison * direction || left.attempts - right.attempts;
+        });
+
+        elements.bestThroughSortButtons.forEach((button) => {
+          const active = button.dataset.sortKey === bestThroughSort.key;
+          const header = button.closest("th");
+          const indicator = button.querySelector(".best-through-sort-indicator");
+          header.setAttribute(
+            "aria-sort",
+            active ? (bestThroughSort.direction === "asc" ? "ascending" : "descending") : "none"
+          );
+          indicator.textContent = active
+            ? (bestThroughSort.direction === "asc" ? "↑" : "↓")
+            : "↕";
+        });
+
+        rows.forEach(({ attempts, record }) => {
           const row = document.createElement("tr");
           const through = document.createElement("td");
-          const best = document.createElement("td");
+          const makes = document.createElement("td");
+          const percentage = document.createElement("td");
           const source = document.createElement("td");
 
+          if (attempts % 10 === 0) row.className = "checkpoint-row";
           through.textContent = attempts;
-          best.className = "best-through-value";
-          best.textContent = record
-            ? `${record.makes} · ${formatPercentage(record.percentage)}`
-            : "—";
+          makes.className = "best-through-value";
+          makes.textContent = record ? record.makes : "—";
+          percentage.className = "best-through-value";
+          percentage.textContent = record ? formatPercentage(record.percentage) : "—";
           source.className = "best-through-source";
 
           if (record) {
@@ -3084,7 +3173,7 @@
             source.textContent = "No exact result";
           }
 
-          row.append(through, best, source);
+          row.append(through, makes, percentage, source);
           elements.bestThroughTableBody.appendChild(row);
         });
       }
@@ -3557,6 +3646,17 @@
         }, 2200);
       }
 
+      elements.bestThroughSortButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const key = button.dataset.sortKey;
+          if (bestThroughSort.key === key) {
+            bestThroughSort.direction = bestThroughSort.direction === "asc" ? "desc" : "asc";
+          } else {
+            bestThroughSort = { key, direction: "asc" };
+          }
+          renderBestThroughTable();
+        });
+      });
       elements.openImportButton.addEventListener("click", () => openImport());
       elements.emptyImportButton.addEventListener("click", () => openImport());
       elements.cancelImportButton.addEventListener("click", closeImport);
