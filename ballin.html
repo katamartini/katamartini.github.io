@@ -548,11 +548,18 @@
       outline-offset: 2px;
     }
 
-    .chart-overlay-option:has(input:checked)::after {
+    .chart-overlay-option::after {
       color: var(--overlay-color);
-      content: "✓";
+      content: "";
+      width: 0.72rem;
+      flex: 0 0 0.72rem;
       font-size: 0.72rem;
       font-weight: 900;
+      text-align: center;
+    }
+
+    .chart-overlay-option:has(input:checked)::after {
+      content: "✓";
     }
 
     .chart-overlay-option input {
