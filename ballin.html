@@ -2446,6 +2446,13 @@
         return second.importedAt - first.importedAt;
       }
 
+      function isRunEarlier(first, second) {
+        const byDate = first.date.localeCompare(second.date);
+        if (byDate !== 0) return byDate < 0;
+        if (first.importedAt !== second.importedAt) return first.importedAt < second.importedAt;
+        return first.id.localeCompare(second.id) < 0;
+      }
+
       function summarize(shots) {
         const makes = shots.reduce((total, shot) => total + (shot ? 1 : 0), 0);
         return summaryFromTotals(makes, shots.length);
@@ -3097,7 +3104,12 @@
         let record = null;
         state.runs.forEach((run) => {
           const result = summaryThrough(run, attempts);
-          if (result && (!record || result.makes > record.makes)) {
+          const takesRecord = result && (
+            !record
+            || result.makes > record.makes
+            || (result.makes === record.makes && isRunEarlier(run, record.run))
+          );
+          if (takesRecord) {
             record = { ...result, run };
           }
         });
