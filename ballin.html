@@ -515,8 +515,7 @@
       text-transform: uppercase;
     }
 
-    .chart-overlay-option,
-    .chart-overlay-key {
+    .chart-overlay-option {
       display: inline-flex;
       min-height: 32px;
       align-items: center;
@@ -569,10 +568,6 @@
       flex: 0 0 9px;
       border-radius: 50%;
       background: var(--overlay-color);
-    }
-
-    .chart-overlay-key {
-      color: var(--text-soft);
     }
 
     .chart-overlay-option small {
@@ -1851,6 +1846,7 @@
       const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
       const BACKUP_TOKEN_KEY = "ballin.githubBackupToken.v1";
       const THEORETICAL_OVERLAYS_KEY = "ballin.theoreticalOverlays.v1";
+      const THEORETICAL_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
       const BACKUP_API_URL = "https://api.github.com/repos/katamartini/katamartini.github.io/contents/data/ballin-runs.json";
       const GITHUB_API_VERSION = "2026-03-10";
       const MAX_SHOTS = 100;
@@ -1943,6 +1939,7 @@
       let pendingTransfer = null;
       let state = loadState();
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
+      let theoreticalBestVisible = loadTheoreticalVisibility();
 
       function loadTheoreticalOverlayIds() {
         try {
@@ -1958,6 +1955,22 @@
           localStorage.setItem(THEORETICAL_OVERLAYS_KEY, JSON.stringify([...selectedTheoreticalRunIds]));
         } catch {
           // Overlay choices are optional and may be session-only when storage is unavailable.
+        }
+      }
+
+      function loadTheoreticalVisibility() {
+        try {
+          return localStorage.getItem(THEORETICAL_VISIBLE_KEY) !== "false";
+        } catch {
+          return true;
+        }
+      }
+
+      function saveTheoreticalVisibility() {
+        try {
+          localStorage.setItem(THEORETICAL_VISIBLE_KEY, String(theoreticalBestVisible));
+        } catch {
+          // The chart still works when this optional preference cannot be saved.
         }
       }
 
@@ -3174,12 +3187,22 @@
         label.textContent = "Overlay runs";
         elements.theoreticalRunControls.appendChild(label);
 
-        const key = document.createElement("span");
+        const key = document.createElement("label");
+        const keyInput = document.createElement("input");
         const keySwatch = document.createElement("span");
-        key.className = "chart-overlay-key";
+        const keyText = document.createElement("span");
+        key.className = "chart-overlay-option";
+        keyInput.type = "checkbox";
+        keyInput.checked = theoreticalBestVisible;
         keySwatch.className = "chart-overlay-swatch";
         key.style.setProperty("--overlay-color", "var(--orange)");
-        key.append(keySwatch, "Theoretical best");
+        keyText.textContent = "Theoretical best";
+        keyInput.addEventListener("change", () => {
+          theoreticalBestVisible = keyInput.checked;
+          saveTheoreticalVisibility();
+          renderTheoreticalCumulativeMakes();
+        });
+        key.append(keyInput, keySwatch, keyText);
         elements.theoreticalRunControls.appendChild(key);
 
         state.runs.forEach((run) => {
@@ -3318,43 +3341,45 @@
           });
         });
 
-        const linePoints = [{ x: padding.left, y: zeroY }, ...positions];
-        elements.theoreticalChartLine.setAttribute(
-          "points",
-          linePoints.map((point) => `${point.x},${point.y}`).join(" ")
-        );
+        if (theoreticalBestVisible) {
+          const linePoints = [{ x: padding.left, y: zeroY }, ...positions];
+          elements.theoreticalChartLine.setAttribute(
+            "points",
+            linePoints.map((point) => `${point.x},${point.y}`).join(" ")
+          );
 
-        const origin = svgElement("circle", {
-          class: "theoretical-chart-point checkpoint",
-          cx: padding.left,
-          cy: zeroY,
-          r: 4.6
-        });
-        const originTitle = svgElement("title");
-        originTitle.textContent = "Start: 0 cumulative makes";
-        origin.appendChild(originTitle);
-        elements.theoreticalChartPoints.appendChild(origin);
-
-        positions.forEach((point) => {
-          const checkpoint = point.attempts % 10 === 0 || point.attempts === maxAttempts;
-          const circle = svgElement("circle", {
-            class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
-            cx: point.x,
-            cy: point.y,
-            r: checkpoint ? 4.6 : 2.2
+          const origin = svgElement("circle", {
+            class: "theoretical-chart-point checkpoint",
+            cx: padding.left,
+            cy: zeroY,
+            r: 4.6
           });
-          const title = svgElement("title");
-          title.textContent = `Through ${point.attempts}: ${point.makes} cumulative makes · ${formatPercentage(point.percentage)} · ${formatDate(point.run.date)}`;
-          circle.appendChild(title);
-          elements.theoreticalChartPoints.appendChild(circle);
-        });
+          const originTitle = svgElement("title");
+          originTitle.textContent = "Start: 0 cumulative makes";
+          origin.appendChild(originTitle);
+          elements.theoreticalChartPoints.appendChild(origin);
+
+          positions.forEach((point) => {
+            const checkpoint = point.attempts % 10 === 0 || point.attempts === maxAttempts;
+            const circle = svgElement("circle", {
+              class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
+              cx: point.x,
+              cy: point.y,
+              r: checkpoint ? 4.6 : 2.2
+            });
+            const title = svgElement("title");
+            title.textContent = `Through ${point.attempts}: ${point.makes} cumulative makes · ${formatPercentage(point.percentage)} · ${formatDate(point.run.date)}`;
+            circle.appendChild(title);
+            elements.theoreticalChartPoints.appendChild(circle);
+          });
+        }
 
         const finalRecord = records.at(-1);
         elements.theoreticalChartScope.textContent = finalRecord
           ? `${finalRecord.makes} makes through ${maxAttempts}`
           : "No best-through values";
         elements.theoreticalChartDescription.textContent = records.length
-          ? `Starting from zero, the chart plots the highest recorded cumulative make total through each shot and ends at ${finalRecord.makes} makes through ${maxAttempts}.${overlayRuns.length ? ` Selected run overlays: ${overlayRuns.map((run) => formatDate(run.date)).join(", ")}.` : ""}`
+          ? `${theoreticalBestVisible ? `Starting from zero, the theoretical best series plots the highest recorded cumulative make total through each shot and ends at ${finalRecord.makes} makes through ${maxAttempts}.` : "The theoretical best series is hidden."}${overlayRuns.length ? ` Selected run overlays: ${overlayRuns.map((run) => formatDate(run.date)).join(", ")}.` : ""}`
           : "No best-through records are available.";
       }
 
