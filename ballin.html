@@ -428,6 +428,29 @@
       overflow: visible;
     }
 
+    .chart-tooltip {
+      position: fixed;
+      z-index: 100;
+      max-width: min(360px, calc(100vw - 24px));
+      padding: 10px 13px;
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      background: #11161d;
+      color: var(--text);
+      box-shadow: 0 6px 24px #0008;
+      pointer-events: none;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .chart-crosshair {
+      stroke: var(--muted);
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+      pointer-events: none;
+    }
+
     .chart-grid-line {
       stroke: #2d3742;
       stroke-width: 1;
@@ -2797,6 +2820,60 @@
         return node;
       }
 
+      const chartTooltip = document.createElement("div");
+      chartTooltip.className = "chart-tooltip";
+      chartTooltip.hidden = true;
+      chartTooltip.setAttribute("role", "tooltip");
+      document.body.appendChild(chartTooltip);
+
+      function attachChartReadout(chart, frames, top, bottom) {
+        if (chart.readoutCleanup) chart.readoutCleanup();
+        const guide = svgElement("line", { class: "chart-crosshair", y1: top, y2: bottom });
+        guide.style.display = "none";
+        chart.appendChild(guide);
+        const hide = () => {
+          chartTooltip.hidden = true;
+          guide.style.display = "none";
+        };
+        const move = (event) => {
+          const matrix = chart.getScreenCTM();
+          if (!matrix || !frames.length) return hide();
+          const local = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
+          if (local.y < top || local.y > bottom || local.x < frames[0].x - 8 || local.x > frames.at(-1).x + 8) return hide();
+          const nearest = frames.reduce((best, frame) =>
+            Math.abs(frame.x - local.x) < Math.abs(best.x - local.x) ? frame : best);
+          guide.setAttribute("x1", nearest.x);
+          guide.setAttribute("x2", nearest.x);
+          guide.style.display = "";
+          chartTooltip.replaceChildren();
+          const heading = document.createElement("strong");
+          heading.textContent = nearest.label;
+          chartTooltip.appendChild(heading);
+          nearest.values.forEach(({ text, color }) => {
+            const row = document.createElement("div");
+            row.textContent = text;
+            if (color) row.style.color = color;
+            chartTooltip.appendChild(row);
+          });
+          chartTooltip.hidden = false;
+          const box = chartTooltip.getBoundingClientRect();
+          chartTooltip.style.left = `${Math.max(12, Math.min(event.clientX + 14, window.innerWidth - box.width - 12))}px`;
+          chartTooltip.style.top = `${Math.max(12, Math.min(event.clientY + 16, window.innerHeight - box.height - 12))}px`;
+        };
+        chart.addEventListener("pointermove", move);
+        chart.addEventListener("pointerdown", move);
+        chart.addEventListener("pointerleave", hide);
+        window.addEventListener("scroll", hide, true);
+        chart.readoutCleanup = () => {
+          hide();
+          guide.remove();
+          chart.removeEventListener("pointermove", move);
+          chart.removeEventListener("pointerdown", move);
+          chart.removeEventListener("pointerleave", hide);
+          window.removeEventListener("scroll", hide, true);
+        };
+      }
+
       function renderTrend() {
         const recent = state.runs.slice(0, 12).reverse();
         const values = recent.map((run) => runSummary(run).percentage);
@@ -2865,6 +2942,11 @@
         });
 
         elements.chartEmpty.hidden = points.length >= 2;
+        attachChartReadout(elements.trendChart, points.map((point) => ({
+          x: point.x,
+          label: formatDate(point.run.date),
+          values: [{ text: `${formatPercentage(point.value)} · ${runSummary(point.run).makes}/${runSummary(point.run).attempts} made` }]
+        })), padding.top, padding.top + chartHeight);
         elements.trendChartDescription.textContent = points.length
           ? recent.map((run, index) => `${formatDate(run.date)} ${formatPercentage(values[index])}`).join(", ")
           : "No imported runs.";
@@ -2986,6 +3068,11 @@
         const positions = points.map((point) => ({ ...point, ...pointPosition(point) }));
         const pointString = positions.map((point) => `${point.x},${point.y}`).join(" ");
         elements.lifetimeChartLine.setAttribute("points", pointString);
+        attachChartReadout(elements.lifetimeChart, positions.map((point) => ({
+          x: point.x,
+          label: `Lifetime shot ${point.attempts}`,
+          values: [{ text: `${formatPercentage(point.percentage)} · ${point.makes}/${point.attempts} made` }]
+        })), padding.top, padding.top + chartHeight);
 
         if (positions.length > 1) {
           const first = positions[0];
@@ -3476,6 +3563,25 @@
         }
 
         const finalRecord = records.at(-1);
+        attachChartReadout(elements.theoreticalChart,
+          Array.from({ length: maxAttempts + 1 }, (_, attempts) => {
+            const values = [];
+            const record = records.find((point) => point.attempts === attempts);
+            if (theoreticalBestVisible) values.push({
+              text: attempts === 0 ? "Theoretical best: 0 makes" : record
+                ? `Theoretical best: ${record.makes} makes · ${formatDate(record.run.date)}`
+                : "Theoretical best: not recorded",
+              color: record ? runOverlayColor(record.run) : "var(--orange)"
+            });
+            overlayRuns.forEach((run) => {
+              const point = runCumulativeMakesSeries(run).find((item) => item.attempts === attempts);
+              values.push({
+                text: `${formatDate(run.date)}: ${attempts === 0 ? "0 makes" : point ? `${point.makes} makes` : "not recorded"}`,
+                color: runOverlayColor(run)
+              });
+            });
+            return { x: padding.left + attempts / maxAttempts * chartWidth, label: `Through shot ${attempts}`, values };
+          }), padding.top, padding.top + chartHeight);
         elements.theoreticalChartScope.textContent = finalRecord
           ? `${finalRecord.makes} makes through ${maxAttempts}`
           : "No best-through values";
@@ -3588,12 +3694,21 @@
         lineKey.textContent = "Orange line = cumulative makes minus misses";
         key.appendChild(lineKey);
 
+        attachChartReadout(chart, [
+          { x: padding.left, label: "Shot 0", values: [{ text: "Differential: 0" }] },
+          ...points.map((point) => ({
+            x: point.x,
+            label: `Shot ${point.shot} · ${point.made ? "Made" : "Missed"}`,
+            values: [{ text: `Differential: ${formatDifferential(point.value)}` }]
+          }))
+        ], padding.top, padding.top + chartHeight);
         chartScroll.appendChild(chart);
         details.append(summary, key, chartScroll);
         return details;
       }
 
       function renderHistory() {
+        elements.historyList.querySelectorAll("svg").forEach((chart) => chart.readoutCleanup?.());
         elements.historyList.replaceChildren();
         elements.emptyHistory.hidden = state.runs.length > 0;
         elements.historyCount.textContent = `${state.runs.length} ${state.runs.length === 1 ? "run" : "runs"} imported`;
