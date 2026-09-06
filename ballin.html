@@ -868,7 +868,7 @@
 
       .dashboard-layout {
         display: grid;
-        grid-template-columns: minmax(440px, 0.9fr) minmax(0, 2.1fr);
+        grid-template-columns: minmax(520px, 1fr) minmax(0, 2fr);
         align-items: start;
         gap: 14px;
       }
@@ -1619,6 +1619,11 @@
                   <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="percentage">
                       % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="runNumber">
+                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
                   <th scope="col" aria-sort="none">
@@ -3207,9 +3212,13 @@
       function renderBestThroughTable() {
         elements.bestThroughTableBody.replaceChildren();
 
+        const runNumbers = new Map([...state.runs]
+          .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id))
+          .map((run, index) => [run.id, index + 1]));
         const rows = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
-          return { attempts, record: recordThrough(attempts) };
+          const record = recordThrough(attempts);
+          return { attempts, record, runNumber: record ? runNumbers.get(record.run.id) : null };
         });
         const direction = bestThroughSort.direction === "asc" ? 1 : -1;
 
@@ -3228,6 +3237,8 @@
             comparison = left.record.makes - right.record.makes;
           } else if (bestThroughSort.key === "percentage") {
             comparison = left.record.percentage - right.record.percentage;
+          } else if (bestThroughSort.key === "runNumber") {
+            comparison = left.runNumber - right.runNumber;
           } else if (bestThroughSort.key === "run") {
             comparison = left.record.run.date.localeCompare(right.record.run.date);
           }
@@ -3248,11 +3259,12 @@
             : "↕";
         });
 
-        rows.forEach(({ attempts, record }) => {
+        rows.forEach(({ attempts, record, runNumber }) => {
           const row = document.createElement("tr");
           const through = document.createElement("td");
           const makes = document.createElement("td");
           const percentage = document.createElement("td");
+          const number = document.createElement("td");
           const source = document.createElement("td");
 
           if (attempts % 10 === 0) row.className = "checkpoint-row";
@@ -3261,6 +3273,7 @@
           makes.textContent = record ? record.makes : "—";
           percentage.className = "best-through-value";
           percentage.textContent = record ? formatPercentage(record.percentage) : "—";
+          number.textContent = runNumber ?? "—";
           source.className = "best-through-source";
 
           if (record) {
@@ -3274,7 +3287,7 @@
             source.textContent = "No exact result";
           }
 
-          row.append(through, makes, percentage, source);
+          row.append(through, makes, percentage, number, source);
           elements.bestThroughTableBody.appendChild(row);
         });
       }
