@@ -506,9 +506,13 @@
       stroke-width: 3;
     }
 
+    .theoretical-panel .panel-title {
+      flex-wrap: wrap;
+    }
+
     .theoretical-chart-line.best-segments {
-      stroke: #55e1d3;
-      stroke-dasharray: 8 5;
+      stroke: var(--series-color);
+      stroke-dasharray: var(--series-dash);
     }
 
     .theoretical-overlay-line {
@@ -1727,16 +1731,15 @@
             aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
           >
             <title id="theoreticalChartTitle">Best through X and theoretical best cumulative makes</title>
-            <desc id="theoreticalChartDescription">Compare best-through records, the best five-shot segments, and individual runs.</desc>
+            <desc id="theoreticalChartDescription">Compare best-through records, the best 5-, 10-, and 20-shot segments, and individual runs.</desc>
             <g id="theoreticalChartGrid"></g>
             <g id="theoreticalChartOverlays"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
             <g id="theoreticalChartPoints"></g>
-            <polyline class="theoretical-chart-line best-segments" id="bestSegmentsChartLine"></polyline>
-            <g id="bestSegmentsChartPoints"></g>
+            <g id="bestSegmentsCharts"></g>
           </svg>
         </div>
-        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Theoretical best (dashed teal) stitches together the best complete five-shot blocks (1–5, 6–10, …) from fully logged runs, preserving their shot order. Ties use the earliest run; node colors identify the source run.</p>
+        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Theoretical best lines stitch together the best complete 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run; node colors identify the source run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -1936,8 +1939,11 @@
       const THEORETICAL_OVERLAYS_KEY = "ballin.theoreticalOverlays.v1";
       // Preserve the existing line's saved visibility under its new name.
       const BEST_THROUGH_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
-      const BEST_SEGMENTS_VISIBLE_KEY = "ballin.bestSegmentsVisible.v1";
-      const BEST_SEGMENTS_COLOR = "#55e1d3";
+      const THEORETICAL_VARIANTS = [
+        { size: 5, color: "#55e1d3", dash: "8 5", storageKey: "ballin.bestSegmentsVisible.v1" },
+        { size: 10, color: "#7db5ff", dash: "12 4 2 4", storageKey: "ballin.bestSegments10Visible.v1" },
+        { size: 20, color: "#e4a0ff", dash: "2 5", storageKey: "ballin.bestSegments20Visible.v1" }
+      ];
       const BACKUP_API_URL = "https://api.github.com/repos/katamartini/katamartini.github.io/contents/data/ballin-runs.json";
       const GITHUB_API_VERSION = "2026-03-10";
       const MAX_SHOTS = 100;
@@ -1984,8 +1990,7 @@
         theoreticalChartOverlays: document.querySelector("#theoreticalChartOverlays"),
         theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
         theoreticalChartPoints: document.querySelector("#theoreticalChartPoints"),
-        bestSegmentsChartLine: document.querySelector("#bestSegmentsChartLine"),
-        bestSegmentsChartPoints: document.querySelector("#bestSegmentsChartPoints"),
+        bestSegmentsCharts: document.querySelector("#bestSegmentsCharts"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
         bestStreakDetail: document.querySelector("#bestStreakDetail"),
@@ -2036,7 +2041,11 @@
       let bestThroughSort = { key: "through", direction: "asc" };
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
-      let theoreticalBestVisible = loadChartVisibility(BEST_SEGMENTS_VISIBLE_KEY);
+      const theoreticalVariants = THEORETICAL_VARIANTS.map((variant) => ({
+        ...variant,
+        label: `Theoretical best · ${variant.size} shots`,
+        visible: loadChartVisibility(variant.storageKey)
+      }));
 
       function loadTheoreticalOverlayIds() {
         try {
@@ -3385,27 +3394,27 @@
         });
       }
 
-      function bestFiveShotSeries() {
+      function bestShotSegmentSeries(segmentSize) {
         const points = [];
         let makes = 0;
-        for (let start = 0; start < MAX_SHOTS; start += 5) {
+        for (let start = 0; start < MAX_SHOTS; start += segmentSize) {
           let best = null;
           state.runs.forEach((run) => {
-            if (run.format !== "exact" || run.shots.length < start + 5) return;
-            const shots = run.shots.slice(start, start + 5);
+            if (run.format !== "exact" || run.shots.length < start + segmentSize) return;
+            const shots = run.shots.slice(start, start + segmentSize);
             const segmentMakes = shots.filter(Boolean).length;
             if (!best || segmentMakes > best.segmentMakes
               || (segmentMakes === best.segmentMakes && isRunEarlier(run, best.run))) {
               best = { run, shots, segmentMakes };
             }
           });
-          // A partial or unrecorded block cannot supply a complete five-shot segment.
+          // Do not infer shots from a partial block or legacy totals.
           if (!best) break;
           best.shots.forEach((made, index) => {
             if (made) makes += 1;
             points.push({
               attempts: start + index + 1, makes, run: best.run,
-              segmentStart: start + 1, segmentEnd: start + 5,
+              segmentStart: start + 1, segmentEnd: start + segmentSize,
               segmentMakes: best.segmentMakes
             });
           });
@@ -3447,23 +3456,25 @@
         key.append(keyInput, keySwatch, keyText);
         elements.theoreticalRunControls.appendChild(key);
 
-        const theoreticalKey = document.createElement("label");
-        const theoreticalInput = document.createElement("input");
-        const theoreticalSwatch = document.createElement("span");
-        const theoreticalText = document.createElement("span");
-        theoreticalKey.className = "chart-overlay-option";
-        theoreticalKey.style.setProperty("--overlay-color", BEST_SEGMENTS_COLOR);
-        theoreticalInput.type = "checkbox";
-        theoreticalInput.checked = theoreticalBestVisible;
-        theoreticalSwatch.className = "chart-overlay-swatch";
-        theoreticalText.textContent = "Theoretical best";
-        theoreticalInput.addEventListener("change", () => {
-          theoreticalBestVisible = theoreticalInput.checked;
-          saveChartVisibility(BEST_SEGMENTS_VISIBLE_KEY, theoreticalBestVisible);
-          renderTheoreticalCumulativeMakes();
+        theoreticalVariants.forEach((variant) => {
+          const theoreticalKey = document.createElement("label");
+          const theoreticalInput = document.createElement("input");
+          const theoreticalSwatch = document.createElement("span");
+          const theoreticalText = document.createElement("span");
+          theoreticalKey.className = "chart-overlay-option";
+          theoreticalKey.style.setProperty("--overlay-color", variant.color);
+          theoreticalInput.type = "checkbox";
+          theoreticalInput.checked = variant.visible;
+          theoreticalSwatch.className = "chart-overlay-swatch";
+          theoreticalText.textContent = variant.label;
+          theoreticalInput.addEventListener("change", () => {
+            variant.visible = theoreticalInput.checked;
+            saveChartVisibility(variant.storageKey, variant.visible);
+            renderTheoreticalCumulativeMakes();
+          });
+          theoreticalKey.append(theoreticalInput, theoreticalSwatch, theoreticalText);
+          elements.theoreticalRunControls.appendChild(theoreticalKey);
         });
-        theoreticalKey.append(theoreticalInput, theoreticalSwatch, theoreticalText);
-        elements.theoreticalRunControls.appendChild(theoreticalKey);
 
         state.runs.forEach((run) => {
           const result = runSummary(run);
@@ -3497,7 +3508,9 @@
       }
 
       function renderTheoreticalCumulativeMakes() {
-        const bestSegments = bestFiveShotSeries();
+        const segmentSeries = theoreticalVariants.filter((variant) => variant.visible).map((variant) => ({
+          ...variant, points: bestShotSegmentSeries(variant.size)
+        }));
         const records = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
           const record = recordThrough(attempts);
@@ -3511,7 +3524,7 @@
         const chartHeight = height - padding.top - padding.bottom;
         const maxAttempts = records.at(-1)?.attempts || 1;
         const mostMakes = Math.max(0, ...records.map((record) => record.makes),
-          theoreticalBestVisible ? bestSegments.at(-1)?.makes || 0 : 0);
+          ...segmentSeries.map((series) => series.points.at(-1)?.makes || 0));
         const tickStep = mostMakes <= 10 ? 2 : mostMakes <= 25 ? 5 : mostMakes <= 60 ? 10 : 20;
         const yMax = Math.max(tickStep, Math.ceil(mostMakes / tickStep) * tickStep);
         const yTicks = [];
@@ -3521,8 +3534,7 @@
         elements.theoreticalChartOverlays.replaceChildren();
         elements.theoreticalChartPoints.replaceChildren();
         elements.theoreticalChartLine.setAttribute("points", "");
-        elements.bestSegmentsChartLine.setAttribute("points", "");
-        elements.bestSegmentsChartPoints.replaceChildren();
+        elements.bestSegmentsCharts.replaceChildren();
 
         yTicks.forEach((value) => {
           const y = padding.top + ((yMax - value) / yMax) * chartHeight;
@@ -3639,38 +3651,44 @@
           });
         }
 
-        if (theoreticalBestVisible && bestSegments.length) {
-          const segmentPositions = bestSegments.map((point) => ({
+        segmentSeries.forEach((series) => {
+          if (!series.points.length) return;
+          const group = svgElement("g", { "data-segment-size": series.size });
+          const segmentPositions = series.points.map((point) => ({
             ...point,
             x: padding.left + point.attempts / maxAttempts * chartWidth,
             y: padding.top + (yMax - point.makes) / yMax * chartHeight
           }));
-          elements.bestSegmentsChartLine.setAttribute("points",
-            [{ x: padding.left, y: zeroY }, ...segmentPositions].map((point) => `${point.x},${point.y}`).join(" "));
+          const line = svgElement("polyline", {
+            class: "theoretical-chart-line best-segments",
+            style: `--series-color: ${series.color}; --series-dash: ${series.dash}`,
+            points: [{ x: padding.left, y: zeroY }, ...segmentPositions].map((point) => `${point.x},${point.y}`).join(" ")
+          });
+          group.appendChild(line);
           const origin = svgElement("circle", {
             class: "theoretical-chart-point checkpoint", cx: padding.left, cy: zeroY,
-            r: 4.6, style: `--node-color: ${BEST_SEGMENTS_COLOR}`
+            r: 4.6, style: `--node-color: ${series.color}`
           });
           const originTitle = svgElement("title");
-          originTitle.textContent = "Theoretical best: 0 cumulative makes";
+          originTitle.textContent = `${series.label}: 0 cumulative makes`;
           origin.appendChild(originTitle);
-          elements.bestSegmentsChartPoints.appendChild(origin);
+          group.appendChild(origin);
           segmentPositions.forEach((point) => {
-            const checkpoint = point.attempts % 5 === 0;
+            const checkpoint = point.attempts % series.size === 0;
             const circle = svgElement("circle", {
               class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
               cx: point.x, cy: point.y, r: checkpoint ? 4.6 : 2.2,
               style: `--node-color: ${runOverlayColor(point.run)}`
             });
             const title = svgElement("title");
-            title.textContent = `Theoretical best · through ${point.attempts}: ${point.makes} cumulative makes · block ${point.segmentStart}–${point.segmentEnd}: ${point.segmentMakes}/5 · ${formatDate(point.run.date)}`;
+            title.textContent = `${series.label} · through ${point.attempts}: ${point.makes} cumulative makes · block ${point.segmentStart}–${point.segmentEnd}: ${point.segmentMakes}/${series.size} · ${formatDate(point.run.date)}`;
             circle.appendChild(title);
-            elements.bestSegmentsChartPoints.appendChild(circle);
+            group.appendChild(circle);
           });
-        }
+          elements.bestSegmentsCharts.appendChild(group);
+        });
 
         const finalRecord = records.at(-1);
-        const finalSegment = bestSegments.at(-1);
         attachChartReadout(elements.theoreticalChart,
           Array.from({ length: maxAttempts + 1 }, (_, attempts) => {
             const values = [];
@@ -3681,15 +3699,15 @@
                 : "Best through X: not recorded",
               color: record ? runOverlayColor(record.run) : "var(--orange)"
             });
-            if (theoreticalBestVisible) {
-              const point = bestSegments[attempts - 1];
+            segmentSeries.forEach((series) => {
+              const point = series.points[attempts - 1];
               values.push({
-                text: attempts === 0 && bestSegments.length ? "Theoretical best: 0 makes" : point
-                  ? `Theoretical best: ${point.makes} makes · block ${point.segmentStart}–${point.segmentEnd}: ${point.segmentMakes}/5 · ${formatDate(point.run.date)}`
-                  : "Theoretical best: no complete five-shot block recorded",
-                color: point ? runOverlayColor(point.run) : BEST_SEGMENTS_COLOR
+                text: attempts === 0 && series.points.length ? `${series.label}: 0 makes` : point
+                  ? `${series.label}: ${point.makes} makes · block ${point.segmentStart}–${point.segmentEnd}: ${point.segmentMakes}/${series.size} · ${formatDate(point.run.date)}`
+                  : `${series.label}: no complete ${series.size}-shot block recorded`,
+                color: point ? runOverlayColor(point.run) : series.color
               });
-            }
+            });
             overlayRuns.forEach((run) => {
               const point = runCumulativeMakesSeries(run).find((item) => item.attempts === attempts);
               values.push({
@@ -3701,17 +3719,22 @@
           }), padding.top, padding.top + chartHeight);
         elements.theoreticalChartScope.textContent = [
           bestThroughVisible && finalRecord ? `Best through X: ${finalRecord.makes}/${finalRecord.attempts}` : "",
-          theoreticalBestVisible ? finalSegment
-            ? `Theoretical: ${finalSegment.makes}/${finalSegment.attempts}`
-            : "Theoretical: no complete 5-shot blocks" : ""
+          ...segmentSeries.map((series) => {
+            const final = series.points.at(-1);
+            return final ? `${series.size}-shot: ${final.makes}/${final.attempts}`
+              : `${series.size}-shot: no complete blocks`;
+          })
         ].filter(Boolean).join(" · ");
         elements.theoreticalChartDescription.textContent = [
           bestThroughVisible && finalRecord
             ? `Best through X plots the highest recorded total through each shot, ending at ${finalRecord.makes} makes through ${finalRecord.attempts}.`
             : "Best through X is hidden or unavailable.",
-          theoreticalBestVisible && finalSegment
-            ? `Theoretical best combines the best complete five-shot blocks from fully logged runs in their original shot order, ending at ${finalSegment.makes} makes through ${finalSegment.attempts}. Ties select the earliest run. Node colors identify each source run.`
-            : "Theoretical best is hidden or has no complete five-shot blocks.",
+          ...segmentSeries.map((series) => {
+            const final = series.points.at(-1);
+            return final
+              ? `${series.label} combines the best complete ${series.size}-shot blocks from fully logged runs in their original shot order, ending at ${final.makes} makes through ${final.attempts}. Ties select the earliest run. Node colors identify each source run.`
+              : `${series.label} has no complete blocks.`;
+          }),
           overlayRuns.length ? `Selected run overlays: ${overlayRuns.map((run) => formatDate(run.date)).join(", ")}.` : ""
         ].filter(Boolean).join(" ");
       }
