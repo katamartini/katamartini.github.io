@@ -3039,7 +3039,7 @@
         const chartStartAttempts = legacy.attempts || 0;
         const attemptSpan = maxAttempts - chartStartAttempts;
         const yMin = 44;
-        const yMax = 50;
+        const yMax = 55;
 
         const pointPosition = (point) => ({
           x: attemptSpan
@@ -3052,7 +3052,10 @@
         elements.lifetimeChartGrid.replaceChildren();
         elements.lifetimeChartPoints.replaceChildren();
 
-        Array.from({ length: ((yMax - yMin) / 2) + 1 }, (_, index) => yMax - index * 2).forEach((value) => {
+        const yTicks = [yMin];
+        for (let value = yMin + 2; value < yMax; value += 2) yTicks.push(value);
+        yTicks.push(yMax);
+        yTicks.reverse().forEach((value) => {
           const y = padding.top + ((yMax - value) / (yMax - yMin)) * chartHeight;
           elements.lifetimeChartGrid.append(
             svgElement("line", {
