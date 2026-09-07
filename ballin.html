@@ -1731,7 +1731,7 @@
             aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
           >
             <title id="theoreticalChartTitle">Best through X and theoretical best cumulative makes</title>
-            <desc id="theoreticalChartDescription">Compare best-through records, the best 5-, 10-, and 20-shot segments, and individual runs.</desc>
+            <desc id="theoreticalChartDescription">Compare best-through records, the best 1-, 5-, 10-, and 20-shot segments, and individual runs.</desc>
             <g id="theoreticalChartGrid"></g>
             <g id="theoreticalChartOverlays"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
@@ -1739,7 +1739,7 @@
             <g id="bestSegmentsCharts"></g>
           </svg>
         </div>
-        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Theoretical best lines stitch together the best complete 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run; node colors identify the source run.</p>
+        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Theoretical best lines stitch together the best complete 1-shot (each position), 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run; node colors identify the source run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -1940,6 +1940,7 @@
       // Preserve the existing line's saved visibility under its new name.
       const BEST_THROUGH_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
       const THEORETICAL_VARIANTS = [
+        { size: 1, color: "#f2dc72", dash: "16 5", storageKey: "ballin.bestSegments1Visible.v1" },
         { size: 5, color: "#55e1d3", dash: "8 5", storageKey: "ballin.bestSegmentsVisible.v1" },
         { size: 10, color: "#7db5ff", dash: "12 4 2 4", storageKey: "ballin.bestSegments10Visible.v1" },
         { size: 20, color: "#e4a0ff", dash: "2 5", storageKey: "ballin.bestSegments20Visible.v1" }
@@ -2043,7 +2044,7 @@
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
       const theoreticalVariants = THEORETICAL_VARIANTS.map((variant) => ({
         ...variant,
-        label: `Theoretical best · ${variant.size} shots`,
+        label: `Theoretical best · ${variant.size} ${variant.size === 1 ? "shot" : "shots"}`,
         visible: loadChartVisibility(variant.storageKey)
       }));
 
