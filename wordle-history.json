@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-08T11:48:23.419464+00:00",
+  "data_updated_at": "2026-09-09T00:28:55.418477+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -2747,6 +2747,34 @@
         },
         {
           "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1907,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXYXY\nXGYYX\nXGGGG\nGGGGG",
+      "posted_at": "2026-09-09T00:28:55.367000+00:00",
+      "tracked_at": "2026-09-09T00:28:55.418477+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXYXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGYYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 4,
           "pattern": "GGGGG"
         }
       ]
