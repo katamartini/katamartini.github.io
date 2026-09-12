@@ -56,6 +56,8 @@
     input:focus-visible,
     textarea:focus-visible,
     summary:focus-visible,
+    [role="tabpanel"]:focus-visible,
+    .best-through-table-wrap:focus-visible,
     a:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 3px;
@@ -209,19 +211,45 @@
     }
 
     .dashboard-layout {
+      min-width: 0;
+    }
+
+    .dashboard-tabs {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-tab {
+      min-height: 44px;
+      padding: 10px 18px;
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .dashboard-tab:hover,
+    .dashboard-tab[aria-selected="true"] {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+      color: var(--text);
     }
 
     .dashboard-main {
       min-width: 0;
-      order: 1;
     }
 
     .best-through-panel {
-      order: 2;
-      margin-top: 14px;
+      min-width: 0;
       padding: 22px;
+    }
+
+    .best-through-panel .panel-title {
+      flex-wrap: wrap;
     }
 
     .panel {
@@ -778,7 +806,6 @@
     }
 
     .best-through-table-wrap {
-      max-height: 430px;
       margin-top: 16px;
       overflow: auto;
       border: 1px solid var(--border);
@@ -801,15 +828,24 @@
     }
 
     .best-through-table th {
-      position: sticky;
-      top: 0;
-      z-index: 1;
       background: #1a212b;
       color: var(--muted);
       font-size: 0.72rem;
       font-weight: 850;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+    }
+
+    .best-through-table .record-group {
+      color: var(--text);
+      font-size: 0.9rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .best-through-table .best-run-divider,
+    .best-through-table tbody td:nth-child(6) {
+      border-left: 2px solid var(--border-bright);
     }
 
     .best-through-sort {
@@ -841,7 +877,7 @@
     }
 
     .best-through-table td {
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 650;
     }
 
@@ -873,69 +909,6 @@
     @media (min-width: 1180px) {
       .app-shell {
         width: min(1500px, 100%);
-      }
-
-      .dashboard-layout {
-        display: grid;
-        grid-template-columns: minmax(520px, 1fr) minmax(0, 2fr);
-        align-items: start;
-        gap: 14px;
-      }
-
-      .best-through-panel {
-        grid-column: 1;
-        grid-row: 1;
-        margin-top: 0;
-        padding: 20px;
-      }
-
-      .best-through-panel .panel-title {
-        align-items: flex-start;
-      }
-
-      .best-through-panel .panel-title span {
-        white-space: nowrap;
-      }
-
-      .best-through-panel .best-through-table-wrap {
-        margin-top: 0;
-        max-height: none;
-        overflow: clip;
-      }
-
-      .best-through-panel .best-through-table th,
-      .best-through-panel .best-through-table td {
-        padding-right: 9px;
-        padding-left: 9px;
-      }
-
-      .dashboard-main {
-        grid-column: 2;
-        grid-row: 1;
-        order: initial;
-      }
-
-      .dashboard-main .overall-panel {
-        padding: 20px;
-      }
-
-      .dashboard-main .overall-layout {
-        grid-template-columns: 110px minmax(0, 1fr);
-        gap: 14px;
-      }
-
-      .dashboard-main .percentage-ring {
-        width: 110px;
-        height: 110px;
-      }
-
-      .dashboard-main .percentage-ring::before {
-        width: 84px;
-        height: 84px;
-      }
-
-      .dashboard-main .percentage-ring strong {
-        font-size: 1.75rem;
       }
     }
 
@@ -1605,21 +1578,30 @@
     </section>
 
     <div id="dashboard" hidden>
+      <div class="dashboard-tabs" role="tablist" aria-label="Statistics views">
+        <button class="dashboard-tab" id="overviewTab" type="button" role="tab" aria-selected="true" aria-controls="overviewPanel" data-dashboard-tab="overview">Overview</button>
+        <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="records" tabindex="-1">Best through X</button>
+      </div>
       <div class="dashboard-layout">
-        <aside class="best-through-panel panel" aria-labelledby="bestThroughTitle">
+        <section class="best-through-panel panel" id="bestThroughPanel" role="tabpanel" aria-labelledby="bestThroughTab" tabindex="0" hidden>
           <div class="panel-title">
             <h2 id="bestThroughTitle">Best through X</h2>
             <span>Shots 1–100</span>
           </div>
-          <div class="best-through-table-wrap" role="region" aria-label="Best result through every shot" tabindex="0">
-            <table class="best-through-table">
+          <p class="chart-note" id="bestThroughNote">Best through X starts at shot 1. Best run of X is the best consecutive X-shot stretch anywhere within one fully logged run. Ties use the earliest run, then the earliest stretch in that run.</p>
+          <div class="best-through-table-wrap" role="region" aria-label="Best through X and best run of X records" tabindex="0">
+            <table class="best-through-table" aria-describedby="bestThroughNote">
               <thead>
                 <tr>
-                  <th scope="col" aria-sort="ascending">
+                  <th scope="col" rowspan="2" aria-sort="ascending">
                     <button class="best-through-sort" type="button" data-sort-key="through">
-                      Through <span class="best-through-sort-indicator" aria-hidden="true">↑</span>
+                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↑</span>
                     </button>
                   </th>
+                  <th class="record-group" scope="colgroup" colspan="4">Best through X</th>
+                  <th class="record-group best-run-divider" scope="colgroup" colspan="5">Best run of X</th>
+                </tr>
+                <tr>
                   <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="makes">
                       Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
@@ -1640,14 +1622,39 @@
                       Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
+                  <th class="best-run-divider" scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchMakes">
+                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchPercentage">
+                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchRunNumber">
+                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchRun">
+                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchStart">
+                      Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody id="bestThroughTableBody"></tbody>
             </table>
           </div>
-        </aside>
+        </section>
 
-        <div class="dashboard-main">
+        <div class="dashboard-main" id="overviewPanel" role="tabpanel" aria-labelledby="overviewTab" tabindex="0">
           <section class="dashboard-grid" aria-label="Performance overview">
         <article class="overall-panel panel">
           <div class="overall-layout">
@@ -1807,9 +1814,6 @@
           <div class="checkpoint-grid" id="checkpointGrid"></div>
         </article>
           </section>
-        </div>
-      </div>
-
       <section class="history-section" aria-labelledby="historyTitle">
         <div class="history-heading">
           <h2 id="historyTitle">Runs</h2>
@@ -1818,6 +1822,8 @@
         <ol class="history-list" id="historyList"></ol>
         <p class="empty-history" id="emptyHistory" hidden>No runs have been imported.</p>
       </section>
+        </div>
+      </div>
     </div>
 
     <p class="data-note">Runs are saved in this browser. GitHub backup stores a public copy in this site's repository.</p>
@@ -1955,6 +1961,9 @@
       const elements = {
         emptyState: document.querySelector("#emptyState"),
         dashboard: document.querySelector("#dashboard"),
+        dashboardTabs: document.querySelectorAll("[data-dashboard-tab]"),
+        overviewPanel: document.querySelector("#overviewPanel"),
+        bestThroughPanel: document.querySelector("#bestThroughPanel"),
         openBackupButton: document.querySelector("#openBackupButton"),
         backupButtonText: document.querySelector("#backupButtonText"),
         openImportButton: document.querySelector("#openImportButton"),
@@ -2040,6 +2049,7 @@
       let pendingTransfer = null;
       let state = loadState();
       let bestThroughSort = { key: "through", direction: "asc" };
+      let activeDashboardTab = "overview";
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
       const theoreticalVariants = THEORETICAL_VARIANTS.map((variant) => ({
@@ -3235,6 +3245,26 @@
         return record;
       }
 
+      function bestRunOf(attempts) {
+        let record = null;
+        state.runs.forEach((run) => {
+          if (run.format !== "exact" || run.shots.length < attempts) return;
+          const shots = run.shots.slice(0, MAX_SHOTS);
+          let makes = shots.slice(0, attempts).filter(Boolean).length;
+          for (let start = 0; start <= shots.length - attempts; start += 1) {
+            if (start > 0) makes += Number(shots[start + attempts - 1]) - Number(shots[start - 1]);
+            if (!record || makes > record.makes
+              || (makes === record.makes && isRunEarlier(run, record.run))) {
+              record = {
+                ...summaryFromTotals(makes, attempts), run,
+                startShot: start + 1, endShot: start + attempts
+              };
+            }
+          }
+        });
+        return record;
+      }
+
       function renderBestThroughTable() {
         elements.bestThroughTableBody.replaceChildren();
 
@@ -3244,31 +3274,34 @@
         const rows = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
           const record = recordThrough(attempts);
-          return { attempts, record, runNumber: record ? runNumbers.get(record.run.id) : null };
+          const batch = bestRunOf(attempts);
+          return {
+            attempts, record, batch,
+            runNumber: record ? runNumbers.get(record.run.id) : null,
+            batchRunNumber: batch ? runNumbers.get(batch.run.id) : null
+          };
         });
         const direction = bestThroughSort.direction === "asc" ? 1 : -1;
+        const sortValue = {
+          through: (row) => row.attempts,
+          makes: (row) => row.record?.makes,
+          percentage: (row) => row.record?.percentage,
+          runNumber: (row) => row.runNumber,
+          run: (row) => row.record?.run.date,
+          batchMakes: (row) => row.batch?.makes,
+          batchPercentage: (row) => row.batch?.percentage,
+          batchRunNumber: (row) => row.batchRunNumber,
+          batchRun: (row) => row.batch?.run.date,
+          batchStart: (row) => row.batch?.startShot
+        }[bestThroughSort.key];
 
         rows.sort((left, right) => {
-          if (bestThroughSort.key !== "through") {
-            const leftMissing = !left.record;
-            const rightMissing = !right.record;
-            if (leftMissing !== rightMissing) return leftMissing ? 1 : -1;
-            if (leftMissing) return left.attempts - right.attempts;
-          }
-
-          let comparison = 0;
-          if (bestThroughSort.key === "through") {
-            comparison = left.attempts - right.attempts;
-          } else if (bestThroughSort.key === "makes") {
-            comparison = left.record.makes - right.record.makes;
-          } else if (bestThroughSort.key === "percentage") {
-            comparison = left.record.percentage - right.record.percentage;
-          } else if (bestThroughSort.key === "runNumber") {
-            comparison = left.runNumber - right.runNumber;
-          } else if (bestThroughSort.key === "run") {
-            comparison = left.record.run.date.localeCompare(right.record.run.date);
-          }
-
+          const leftValue = sortValue(left);
+          const rightValue = sortValue(right);
+          if ((leftValue == null) !== (rightValue == null)) return leftValue == null ? 1 : -1;
+          if (leftValue == null) return left.attempts - right.attempts;
+          const comparison = typeof leftValue === "string"
+            ? leftValue.localeCompare(rightValue) : leftValue - rightValue;
           return comparison * direction || left.attempts - right.attempts;
         });
 
@@ -3285,35 +3318,41 @@
             : "↕";
         });
 
-        rows.forEach(({ attempts, record, runNumber }) => {
+        rows.forEach(({ attempts, record, runNumber, batch, batchRunNumber }) => {
           const row = document.createElement("tr");
           const through = document.createElement("td");
-          const makes = document.createElement("td");
-          const percentage = document.createElement("td");
-          const number = document.createElement("td");
-          const source = document.createElement("td");
-
           if (attempts % 10 === 0) row.className = "checkpoint-row";
           through.textContent = attempts;
-          makes.className = "best-through-value";
-          makes.textContent = record ? record.makes : "—";
-          percentage.className = "best-through-value";
-          percentage.textContent = record ? formatPercentage(record.percentage) : "—";
-          number.textContent = runNumber ?? "—";
-          source.className = "best-through-source";
+          row.appendChild(through);
 
-          if (record) {
-            source.append(formatDate(record.run.date));
-            if (record.run.format === "tens") {
-              const legacy = document.createElement("small");
-              legacy.textContent = "Legacy";
-              source.appendChild(legacy);
+          [[record, runNumber], [batch, batchRunNumber]].forEach(([result, resultNumber]) => {
+            const makes = document.createElement("td");
+            const percentage = document.createElement("td");
+            const number = document.createElement("td");
+            const source = document.createElement("td");
+            makes.className = "best-through-value";
+            makes.textContent = result ? result.makes : "—";
+            percentage.className = "best-through-value";
+            percentage.textContent = result ? formatPercentage(result.percentage) : "—";
+            number.textContent = resultNumber ?? "—";
+            source.className = "best-through-source";
+
+            if (result) {
+              source.append(formatDate(result.run.date));
+              if (result.run.format === "tens") {
+                const legacy = document.createElement("small");
+                legacy.textContent = "Legacy";
+                source.appendChild(legacy);
+              }
+            } else {
+              source.textContent = "No exact result";
             }
-          } else {
-            source.textContent = "No exact result";
-          }
+            row.append(makes, percentage, number, source);
+          });
 
-          row.append(through, makes, percentage, number, source);
+          const range = document.createElement("td");
+          range.textContent = batch ? `${batch.startShot}–${batch.endShot}` : "—";
+          row.appendChild(range);
           elements.bestThroughTableBody.appendChild(row);
         });
       }
@@ -3903,11 +3942,39 @@
         });
       }
 
+      function selectDashboardTab(name, focus = false) {
+        if (name !== "overview" && name !== "records") return;
+        activeDashboardTab = name;
+        elements.dashboardTabs.forEach((tab) => {
+          const selected = tab.dataset.dashboardTab === name;
+          tab.setAttribute("aria-selected", String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          if (selected && focus) tab.focus();
+        });
+        elements.overviewPanel.hidden = name !== "overview";
+        elements.bestThroughPanel.hidden = name !== "records";
+        chartTooltip.hidden = true;
+      }
+
+      function handleDashboardTabKeydown(event) {
+        const tabs = Array.from(elements.dashboardTabs);
+        const current = tabs.indexOf(event.currentTarget);
+        let next;
+        if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
+        else if (event.key === "ArrowLeft") next = (current + tabs.length - 1) % tabs.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectDashboardTab(tabs[next].dataset.dashboardTab, true);
+      }
+
       function render() {
         const hasRuns = state.runs.length > 0;
         elements.emptyState.hidden = hasRuns;
         elements.dashboard.hidden = !hasRuns;
         if (!hasRuns) return;
+        selectDashboardTab(activeDashboardTab);
 
         renderOverview();
         renderLifetimeTrend();
@@ -3928,6 +3995,10 @@
         }, 2200);
       }
 
+      elements.dashboardTabs.forEach((tab) => {
+        tab.addEventListener("click", () => selectDashboardTab(tab.dataset.dashboardTab));
+        tab.addEventListener("keydown", handleDashboardTabKeydown);
+      });
       elements.bestThroughSortButtons.forEach((button) => {
         button.addEventListener("click", () => {
           const key = button.dataset.sortKey;
