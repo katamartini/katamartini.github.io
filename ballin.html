@@ -1737,16 +1737,17 @@
             role="img"
             aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
           >
-            <title id="theoreticalChartTitle">Best through X and theoretical best cumulative makes</title>
-            <desc id="theoreticalChartDescription">Compare best-through records, the best 1-, 5-, 10-, and 20-shot segments, and individual runs.</desc>
+            <title id="theoreticalChartTitle">Best through X, best run of X, and theoretical best cumulative makes</title>
+            <desc id="theoreticalChartDescription">Compare best-through records, best consecutive stretches, the best 1-, 5-, 10-, and 20-shot segments, and individual runs.</desc>
             <g id="theoreticalChartGrid"></g>
             <g id="theoreticalChartOverlays"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
             <g id="theoreticalChartPoints"></g>
+            <g id="bestRunChart"></g>
             <g id="bestSegmentsCharts"></g>
           </svg>
         </div>
-        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Theoretical best lines stitch together the best complete 1-shot (each position), 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run; node colors identify the source run.</p>
+        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Best run of X (solid green) shows the most makes in any consecutive X-shot stretch within one fully logged run. Theoretical best lines stitch together the best complete 1-shot (each position), 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run, then its earliest matching stretch; node colors identify the source run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -1945,6 +1946,8 @@
       const THEORETICAL_OVERLAYS_KEY = "ballin.theoreticalOverlays.v1";
       // Preserve the existing line's saved visibility under its new name.
       const BEST_THROUGH_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
+      const BEST_RUN_VISIBLE_KEY = "ballin.bestRunVisible.v1";
+      const BEST_RUN_COLOR = "var(--green)";
       const THEORETICAL_VARIANTS = [
         { size: 1, color: "#f2dc72", dash: "16 5", storageKey: "ballin.bestSegments1Visible.v1" },
         { size: 5, color: "#55e1d3", dash: "8 5", storageKey: "ballin.bestSegmentsVisible.v1" },
@@ -2000,6 +2003,7 @@
         theoreticalChartOverlays: document.querySelector("#theoreticalChartOverlays"),
         theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
         theoreticalChartPoints: document.querySelector("#theoreticalChartPoints"),
+        bestRunChart: document.querySelector("#bestRunChart"),
         bestSegmentsCharts: document.querySelector("#bestSegmentsCharts"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
@@ -2052,6 +2056,7 @@
       let activeDashboardTab = "overview";
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
+      let bestRunVisible = loadChartVisibility(BEST_RUN_VISIBLE_KEY);
       const theoreticalVariants = THEORETICAL_VARIANTS.map((variant) => ({
         ...variant,
         label: `Theoretical best · ${variant.size} ${variant.size === 1 ? "shot" : "shots"}`,
@@ -3499,6 +3504,24 @@
         key.append(keyInput, keySwatch, keyText);
         elements.theoreticalRunControls.appendChild(key);
 
+        const bestRunKey = document.createElement("label");
+        const bestRunInput = document.createElement("input");
+        const bestRunSwatch = document.createElement("span");
+        const bestRunText = document.createElement("span");
+        bestRunKey.className = "chart-overlay-option";
+        bestRunKey.style.setProperty("--overlay-color", BEST_RUN_COLOR);
+        bestRunInput.type = "checkbox";
+        bestRunInput.checked = bestRunVisible;
+        bestRunSwatch.className = "chart-overlay-swatch";
+        bestRunText.textContent = "Best run of X";
+        bestRunInput.addEventListener("change", () => {
+          bestRunVisible = bestRunInput.checked;
+          saveChartVisibility(BEST_RUN_VISIBLE_KEY, bestRunVisible);
+          renderTheoreticalCumulativeMakes();
+        });
+        bestRunKey.append(bestRunInput, bestRunSwatch, bestRunText);
+        elements.theoreticalRunControls.appendChild(bestRunKey);
+
         theoreticalVariants.forEach((variant) => {
           const theoreticalKey = document.createElement("label");
           const theoreticalInput = document.createElement("input");
@@ -3560,6 +3583,12 @@
           if (!record) return null;
           return { ...record, attempts };
         }).filter(Boolean);
+        const batchRecords = bestRunVisible
+          ? Array.from({ length: MAX_SHOTS }, (_, index) => bestRunOf(index + 1)).filter(Boolean)
+          : [];
+        const runNumbers = new Map([...state.runs]
+          .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id))
+          .map((run, index) => [run.id, index + 1]));
         const width = 700;
         const height = 260;
         const padding = { top: 16, right: 16, bottom: 32, left: 46 };
@@ -3567,6 +3596,7 @@
         const chartHeight = height - padding.top - padding.bottom;
         const maxAttempts = records.at(-1)?.attempts || 1;
         const mostMakes = Math.max(0, ...records.map((record) => record.makes),
+          ...batchRecords.map((record) => record.makes),
           ...segmentSeries.map((series) => series.points.at(-1)?.makes || 0));
         const tickStep = mostMakes <= 10 ? 2 : mostMakes <= 25 ? 5 : mostMakes <= 60 ? 10 : 20;
         const yMax = Math.max(tickStep, Math.ceil(mostMakes / tickStep) * tickStep);
@@ -3577,6 +3607,7 @@
         elements.theoreticalChartOverlays.replaceChildren();
         elements.theoreticalChartPoints.replaceChildren();
         elements.theoreticalChartLine.setAttribute("points", "");
+        elements.bestRunChart.replaceChildren();
         elements.bestSegmentsCharts.replaceChildren();
 
         yTicks.forEach((value) => {
@@ -3694,6 +3725,39 @@
           });
         }
 
+        if (batchRecords.length) {
+          const batchPositions = batchRecords.map((point) => ({
+            ...point,
+            x: padding.left + point.attempts / maxAttempts * chartWidth,
+            y: padding.top + (yMax - point.makes) / yMax * chartHeight
+          }));
+          elements.bestRunChart.appendChild(svgElement("polyline", {
+            class: "theoretical-chart-line",
+            style: `stroke: ${BEST_RUN_COLOR}`,
+            points: [{ x: padding.left, y: zeroY }, ...batchPositions].map((point) => `${point.x},${point.y}`).join(" ")
+          }));
+          const origin = svgElement("circle", {
+            class: "theoretical-chart-point checkpoint", cx: padding.left, cy: zeroY,
+            r: 4.6, style: `--node-color: ${BEST_RUN_COLOR}`
+          });
+          const originTitle = svgElement("title");
+          originTitle.textContent = "Best run of X: 0 makes";
+          origin.appendChild(originTitle);
+          elements.bestRunChart.appendChild(origin);
+          batchPositions.forEach((point) => {
+            const checkpoint = point.attempts % 10 === 0 || point.attempts === batchRecords.at(-1).attempts;
+            const circle = svgElement("circle", {
+              class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
+              cx: point.x, cy: point.y, r: checkpoint ? 4.6 : 2.2,
+              style: `--node-color: ${runOverlayColor(point.run)}`
+            });
+            const title = svgElement("title");
+            title.textContent = `Best run of ${point.attempts}: ${point.makes} makes · ${formatPercentage(point.percentage)} · run #${runNumbers.get(point.run.id)} · ${formatDate(point.run.date)} · shots ${point.startShot}–${point.endShot}`;
+            circle.appendChild(title);
+            elements.bestRunChart.appendChild(circle);
+          });
+        }
+
         segmentSeries.forEach((series) => {
           if (!series.points.length) return;
           const group = svgElement("g", { "data-segment-size": series.size });
@@ -3732,6 +3796,7 @@
         });
 
         const finalRecord = records.at(-1);
+        const finalBatch = batchRecords.at(-1);
         attachChartReadout(elements.theoreticalChart,
           Array.from({ length: maxAttempts + 1 }, (_, attempts) => {
             const values = [];
@@ -3742,6 +3807,15 @@
                 : "Best through X: not recorded",
               color: record ? runOverlayColor(record.run) : "var(--orange)"
             });
+            if (bestRunVisible) {
+              const batch = batchRecords.find((point) => point.attempts === attempts);
+              values.push({
+                text: attempts === 0 && finalBatch ? "Best run of X: 0 makes" : batch
+                  ? `Best run of X: ${batch.makes} makes · ${formatPercentage(batch.percentage)} · run #${runNumbers.get(batch.run.id)} · ${formatDate(batch.run.date)} · shots ${batch.startShot}–${batch.endShot}`
+                  : "Best run of X: no exact stretch recorded",
+                color: batch ? runOverlayColor(batch.run) : BEST_RUN_COLOR
+              });
+            }
             segmentSeries.forEach((series) => {
               const point = series.points[attempts - 1];
               values.push({
@@ -3762,6 +3836,9 @@
           }), padding.top, padding.top + chartHeight);
         elements.theoreticalChartScope.textContent = [
           bestThroughVisible && finalRecord ? `Best through X: ${finalRecord.makes}/${finalRecord.attempts}` : "",
+          bestRunVisible ? finalBatch
+            ? `Best run of X: ${finalBatch.makes}/${finalBatch.attempts}`
+            : "Best run of X: no exact stretches" : "",
           ...segmentSeries.map((series) => {
             const final = series.points.at(-1);
             return final ? `${series.size}-shot: ${final.makes}/${final.attempts}`
@@ -3772,6 +3849,9 @@
           bestThroughVisible && finalRecord
             ? `Best through X plots the highest recorded total through each shot, ending at ${finalRecord.makes} makes through ${finalRecord.attempts}.`
             : "Best through X is hidden or unavailable.",
+          bestRunVisible && finalBatch
+            ? `Best run of X plots the most makes in any consecutive X-shot stretch within one fully logged run, ending at ${finalBatch.makes} makes over ${finalBatch.attempts} shots. Each point uses the same record as the table; ties use the earliest run, then its earliest matching stretch.`
+            : "Best run of X is hidden or unavailable.",
           ...segmentSeries.map((series) => {
             const final = series.points.at(-1);
             return final
