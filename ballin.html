@@ -445,6 +445,72 @@
       font-weight: 700;
     }
 
+    .trend-range-controls {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) auto;
+      align-items: end;
+      gap: 10px 14px;
+      margin: -6px 0 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .trend-range-field {
+      display: grid;
+      grid-template-columns: auto minmax(80px, 1fr) auto;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 750;
+    }
+
+    .trend-range-field input {
+      width: 100%;
+      min-width: 0;
+      accent-color: var(--orange);
+      cursor: pointer;
+    }
+
+    .trend-range-field input:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+
+    .trend-range-field output {
+      min-width: 3.6em;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .trend-range-reset {
+      width: 60px;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      background: #11161d;
+      color: var(--text);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .trend-range-reset:hover {
+      background: #2a3542;
+    }
+
+    .trend-range-reset:focus-visible,
+    .trend-range-field input:focus-visible {
+      outline: 2px solid var(--orange);
+      outline-offset: 2px;
+    }
+
     .chart-wrap {
       min-height: 250px;
     }
@@ -1527,6 +1593,14 @@
         min-height: 190px;
       }
 
+      .trend-range-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .trend-range-reset {
+        width: 100%;
+      }
+
       .history-item {
         gap: 9px 12px;
       }
@@ -1754,7 +1828,20 @@
         <article class="trend-panel panel">
           <div class="panel-title">
             <h2>Run trend</h2>
-            <span>Last 12 runs</span>
+            <span id="trendChartScope">All runs</span>
+          </div>
+          <div class="trend-range-controls" aria-label="Run trend range">
+            <label class="trend-range-field" for="trendStartRange">
+              <span>From</span>
+              <input id="trendStartRange" type="range" min="1" max="1" value="1">
+              <output id="trendStartOutput" for="trendStartRange">Run 1</output>
+            </label>
+            <label class="trend-range-field" for="trendEndRange">
+              <span>To</span>
+              <input id="trendEndRange" type="range" min="1" max="1" value="1">
+              <output id="trendEndOutput" for="trendEndRange">Run 1</output>
+            </label>
+            <button class="trend-range-reset" id="trendRangeReset" type="button">All</button>
           </div>
           <div class="chart-wrap" id="chartWrap">
             <svg
@@ -1765,7 +1852,7 @@
               aria-labelledby="trendChartTitle trendChartDescription"
             >
               <title id="trendChartTitle">Free throw percentage by run</title>
-              <desc id="trendChartDescription">Your free throw percentage over recent imported runs.</desc>
+              <desc id="trendChartDescription">Your free throw percentage across the selected range of imported runs.</desc>
               <defs>
                 <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
                   <stop offset="0%" stop-color="#f39b3d" stop-opacity="0.26"></stop>
@@ -1777,7 +1864,7 @@
               <polyline class="chart-line" id="chartLine"></polyline>
               <g id="chartPoints"></g>
             </svg>
-            <p class="chart-empty" id="chartEmpty" hidden>Import a second run to see a trend line.</p>
+            <p class="chart-empty" id="chartEmpty" hidden>Select at least two runs to see a trend line.</p>
           </div>
         </article>
 
@@ -1982,6 +2069,12 @@
         bestRunDate: document.querySelector("#bestRunDate"),
         trendChart: document.querySelector("#trendChart"),
         trendChartDescription: document.querySelector("#trendChartDescription"),
+        trendChartScope: document.querySelector("#trendChartScope"),
+        trendStartRange: document.querySelector("#trendStartRange"),
+        trendStartOutput: document.querySelector("#trendStartOutput"),
+        trendEndRange: document.querySelector("#trendEndRange"),
+        trendEndOutput: document.querySelector("#trendEndOutput"),
+        trendRangeReset: document.querySelector("#trendRangeReset"),
         chartGrid: document.querySelector("#chartGrid"),
         chartArea: document.querySelector("#chartArea"),
         chartLine: document.querySelector("#chartLine"),
@@ -2054,6 +2147,7 @@
       let state = loadState();
       let bestThroughSort = { key: "through", direction: "asc" };
       let activeDashboardTab = "overview";
+      let trendRange = { start: null, end: null };
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
       let bestRunVisible = loadChartVisibility(BEST_RUN_VISIBLE_KEY);
@@ -2919,13 +3013,30 @@
       }
 
       function renderTrend() {
-        const recent = state.runs.slice(0, 12).reverse();
-        const values = recent.map((run) => runSummary(run).percentage);
+        const allRuns = [...state.runs]
+          .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id));
+        const totalRuns = allRuns.length;
+        const start = Math.max(1, Math.min(Number(trendRange.start) || 1, totalRuns || 1));
+        const end = Math.max(start, Math.min(Number(trendRange.end) || totalRuns || 1, totalRuns || 1));
+        const visibleRuns = allRuns.slice(start - 1, end);
+        const values = visibleRuns.map((run) => runSummary(run).percentage);
         const width = 700;
         const height = 260;
         const padding = { top: 16, right: 16, bottom: 28, left: 42 };
         const chartWidth = width - padding.left - padding.right;
         const chartHeight = height - padding.top - padding.bottom;
+
+        [elements.trendStartRange, elements.trendEndRange].forEach((input) => {
+          input.max = Math.max(1, totalRuns);
+          input.disabled = totalRuns < 2;
+        });
+        elements.trendStartRange.value = start;
+        elements.trendEndRange.value = end;
+        elements.trendStartOutput.value = `Run ${start}`;
+        elements.trendEndOutput.value = `Run ${end}`;
+        elements.trendChartScope.textContent = start === 1 && end === totalRuns
+          ? `All ${totalRuns} ${totalRuns === 1 ? "run" : "runs"}`
+          : `Runs ${start}–${end} of ${totalRuns}`;
 
         elements.chartGrid.replaceChildren();
         elements.chartPoints.replaceChildren();
@@ -2953,12 +3064,29 @@
           elements.chartGrid.append(label);
         });
 
+        const runLabels = start === end
+          ? [{ number: start, x: padding.left + chartWidth / 2, anchor: "middle" }]
+          : [
+              { number: start, x: padding.left, anchor: "start" },
+              { number: end, x: width - padding.right, anchor: "end" }
+            ];
+        runLabels.forEach(({ number, x, anchor }) => {
+          const label = svgElement("text", {
+            class: "chart-grid-label",
+            x,
+            y: padding.top + chartHeight + 21,
+            "text-anchor": anchor
+          });
+          label.textContent = `Run ${number}`;
+          elements.chartGrid.append(label);
+        });
+
         const points = values.map((value, index) => {
           const x = values.length === 1
             ? padding.left + chartWidth / 2
             : padding.left + (index / (values.length - 1)) * chartWidth;
           const y = padding.top + ((100 - value) / 100) * chartHeight;
-          return { x, y, value, run: recent[index] };
+          return { x, y, value, run: visibleRuns[index], runNumber: start + index };
         });
 
         const pointString = points.map((point) => `${point.x},${point.y}`).join(" ");
@@ -2986,13 +3114,16 @@
         });
 
         elements.chartEmpty.hidden = points.length >= 2;
+        elements.chartEmpty.textContent = totalRuns < 2
+          ? "Import a second run to see a trend line."
+          : "Widen the range to at least two runs to see a trend line.";
         attachChartReadout(elements.trendChart, points.map((point) => ({
           x: point.x,
-          label: formatDate(point.run.date),
+          label: `Run ${point.runNumber} · ${formatDate(point.run.date)}`,
           values: [{ text: `${formatPercentage(point.value)} · ${runSummary(point.run).makes}/${runSummary(point.run).attempts} made` }]
         })), padding.top, padding.top + chartHeight);
         elements.trendChartDescription.textContent = points.length
-          ? recent.map((run, index) => `${formatDate(run.date)} ${formatPercentage(values[index])}`).join(", ")
+          ? visibleRuns.map((run, index) => `Run ${start + index}, ${formatDate(run.date)}, ${formatPercentage(values[index])}`).join("; ")
           : "No imported runs.";
       }
 
@@ -4089,6 +4220,24 @@
           }
           renderBestThroughTable();
         });
+      });
+      elements.trendStartRange.addEventListener("input", () => {
+        trendRange.start = Number(elements.trendStartRange.value);
+        const currentEnd = Number(elements.trendEndRange.value);
+        if (trendRange.start > currentEnd) trendRange.end = trendRange.start;
+        else trendRange.end = currentEnd;
+        renderTrend();
+      });
+      elements.trendEndRange.addEventListener("input", () => {
+        trendRange.end = Number(elements.trendEndRange.value);
+        const currentStart = Number(elements.trendStartRange.value);
+        if (trendRange.end < currentStart) trendRange.start = trendRange.end;
+        else trendRange.start = currentStart;
+        renderTrend();
+      });
+      elements.trendRangeReset.addEventListener("click", () => {
+        trendRange = { start: null, end: null };
+        renderTrend();
       });
       elements.openImportButton.addEventListener("click", () => openImport());
       elements.emptyImportButton.addEventListener("click", () => openImport());
