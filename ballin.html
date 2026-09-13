@@ -268,7 +268,7 @@
 
     .breakdown-table {
       width: 100%;
-      min-width: 820px;
+      min-width: 900px;
       border-collapse: separate;
       border-spacing: 0;
       table-layout: fixed;
@@ -338,6 +338,28 @@
       color: var(--text);
       font-size: 1rem;
       font-weight: 850;
+    }
+
+    .breakdown-value.score-low {
+      color: var(--red);
+    }
+
+    .breakdown-value.score-high {
+      color: var(--green);
+    }
+
+    .breakdown-value.score-perfect {
+      color: var(--blue);
+    }
+
+    .breakdown-table .breakdown-total {
+      border-left: 8px solid #11161d;
+    }
+
+    .breakdown-total-value {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 900;
     }
 
     .breakdown-value.partial::after {
@@ -1834,7 +1856,7 @@
             <h2>Breakdown by 10</h2>
             <span id="breakdownCount">0 runs</span>
           </div>
-          <p class="chart-note" id="breakdownNote">Each cell shows the number made in that 10-shot set. Runs are ordered from earliest to latest.</p>
+          <p class="chart-note" id="breakdownNote">Each cell shows the number made in that 10-shot set. Complete sets of 3 or fewer are red, 8–9 are green, and 10 is blue. Runs are ordered from earliest to latest.</p>
           <div class="breakdown-table-wrap" role="region" aria-label="Makes by 10-shot set for every run" tabindex="0">
             <table class="breakdown-table" aria-describedby="breakdownNote">
               <thead>
@@ -1850,6 +1872,7 @@
                   <th scope="col">80</th>
                   <th scope="col">90</th>
                   <th scope="col">100</th>
+                  <th class="breakdown-total" scope="col">Total</th>
                 </tr>
               </thead>
               <tbody id="breakdownTableBody"></tbody>
@@ -3681,6 +3704,9 @@
             } else {
               const value = document.createElement("span");
               value.className = `breakdown-value${result.attempts < 10 ? " partial" : ""}`;
+              if (result.attempts === 10 && result.makes <= 3) value.classList.add("score-low");
+              if (result.attempts === 10 && result.makes >= 8 && result.makes <= 9) value.classList.add("score-high");
+              if (result.attempts === 10 && result.makes === 10) value.classList.add("score-perfect");
               value.textContent = result.makes;
               if (result.attempts < 10) value.dataset.attempts = result.attempts;
               cell.title = `${result.makes} made in ${result.attempts} recorded shots (${setIndex * 10 + 1}–${setIndex * 10 + result.attempts})`;
@@ -3688,6 +3714,16 @@
             }
             row.appendChild(cell);
           });
+
+          const total = runSummary(run);
+          const totalCell = document.createElement("td");
+          const totalValue = document.createElement("span");
+          totalCell.className = "breakdown-total";
+          totalCell.title = `${total.makes} made in ${total.attempts} recorded shots`;
+          totalValue.className = "breakdown-total-value";
+          totalValue.textContent = total.makes;
+          totalCell.appendChild(totalValue);
+          row.appendChild(totalCell);
 
           elements.breakdownTableBody.appendChild(row);
         });
