@@ -2199,6 +2199,11 @@
       const MAX_TEN_SETS = 10;
       const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
       const RUN_OVERLAY_COLORS = ["#8da2ff", "#52d273", "#ec6aa6", "#58c7d9", "#b68cff", "#ff7b72", "#d7b45a", "#83c57a"];
+      const DASHBOARD_TAB_HASHES = {
+        overview: "overview",
+        records: "best-through-x",
+        breakdown: "breakdown-by-10"
+      };
 
       const elements = {
         emptyState: document.querySelector("#emptyState"),
@@ -2301,7 +2306,7 @@
       let pendingTransfer = null;
       let state = loadState();
       let bestThroughSort = { key: "through", direction: "asc" };
-      let activeDashboardTab = "overview";
+      let activeDashboardTab = dashboardTabFromHash(location.hash) || "overview";
       let trendRange = { start: null, end: null };
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
@@ -2390,6 +2395,18 @@
         const params = new URLSearchParams(location.hash.slice(1));
         if (!params.has("ballin-run")) return;
         window.history.replaceState(null, "", `${location.pathname}${location.search}`);
+      }
+
+      function dashboardTabFromHash(hash) {
+        const fragment = String(hash || "").replace(/^#/, "").toLowerCase();
+        return Object.keys(DASHBOARD_TAB_HASHES)
+          .find((name) => DASHBOARD_TAB_HASHES[name] === fragment) || null;
+      }
+
+      function updateDashboardTabHash(name) {
+        const fragment = DASHBOARD_TAB_HASHES[name];
+        if (!fragment || location.hash === `#${fragment}`) return;
+        window.history.pushState(null, "", `${location.pathname}${location.search}#${fragment}`);
       }
 
       function cleanShots(value) {
@@ -4366,7 +4383,7 @@
         });
       }
 
-      function selectDashboardTab(name, focus = false) {
+      function selectDashboardTab(name, focus = false, updateHash = false) {
         if (!["overview", "records", "breakdown"].includes(name)) return;
         activeDashboardTab = name;
         elements.dashboardTabs.forEach((tab) => {
@@ -4379,6 +4396,13 @@
         elements.bestThroughPanel.hidden = name !== "records";
         elements.breakdownPanel.hidden = name !== "breakdown";
         chartTooltip.hidden = true;
+        if (updateHash) updateDashboardTabHash(name);
+      }
+
+      function selectDashboardTabFromLocation() {
+        const name = dashboardTabFromHash(location.hash);
+        if (name) selectDashboardTab(name);
+        else if (!location.hash) selectDashboardTab("overview");
       }
 
       function handleDashboardTabKeydown(event) {
@@ -4391,7 +4415,7 @@
         else if (event.key === "End") next = tabs.length - 1;
         else return;
         event.preventDefault();
-        selectDashboardTab(tabs[next].dataset.dashboardTab, true);
+        selectDashboardTab(tabs[next].dataset.dashboardTab, true, true);
       }
 
       function render() {
@@ -4422,9 +4446,11 @@
       }
 
       elements.dashboardTabs.forEach((tab) => {
-        tab.addEventListener("click", () => selectDashboardTab(tab.dataset.dashboardTab));
+        tab.addEventListener("click", () => selectDashboardTab(tab.dataset.dashboardTab, false, true));
         tab.addEventListener("keydown", handleDashboardTabKeydown);
       });
+      window.addEventListener("hashchange", selectDashboardTabFromLocation);
+      window.addEventListener("popstate", selectDashboardTabFromLocation);
       elements.bestThroughSortButtons.forEach((button) => {
         button.addEventListener("click", () => {
           const key = button.dataset.sortKey;
