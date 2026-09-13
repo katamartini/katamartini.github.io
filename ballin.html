@@ -335,21 +335,64 @@
     }
 
     .breakdown-value {
-      color: var(--text);
+      color: inherit;
       font-size: 1rem;
       font-weight: 850;
     }
 
-    .breakdown-value.score-low {
-      color: var(--red);
+    .breakdown-table td.breakdown-score-0 {
+      background: #05070a;
+      color: #f7f9fb;
     }
 
-    .breakdown-value.score-high {
-      color: var(--green);
+    .breakdown-table td.breakdown-score-1 {
+      background: #9c4a3c;
+      color: #fff;
     }
 
-    .breakdown-value.score-perfect {
-      color: var(--blue);
+    .breakdown-table td.breakdown-score-2 {
+      background: #d52f35;
+      color: #fff;
+    }
+
+    .breakdown-table td.breakdown-score-3 {
+      background: orangered;
+      color: #211408;
+    }
+
+    .breakdown-table td.breakdown-score-4 {
+      background: orange;
+      color: #211408;
+    }
+
+    .breakdown-table td.breakdown-score-5 {
+      background: #f1d54a;
+      color: #171b20;
+    }
+
+    .breakdown-table td.breakdown-score-6 {
+      background: yellowgreen;
+      color: #16200d;
+    }
+
+    .breakdown-table td.breakdown-score-7 {
+      background: lightgreen;
+      color: #102014;
+    }
+
+    .breakdown-table td.breakdown-score-8 {
+      background: green;
+      color: #fff;
+    }
+
+    .breakdown-table td.breakdown-score-9 {
+      background: teal;
+      color: #fff;
+    }
+
+    .breakdown-table td.breakdown-score-10 {
+      background: blue;
+      color: #fff;
     }
 
     .breakdown-table .breakdown-total {
@@ -365,9 +408,10 @@
     .breakdown-value.partial::after {
       content: "/" attr(data-attempts);
       margin-left: 2px;
-      color: var(--muted);
+      color: inherit;
       font-size: 0.68rem;
       font-weight: 700;
+      opacity: 0.72;
     }
 
     .breakdown-empty {
@@ -1856,7 +1900,7 @@
             <h2>Breakdown by 10</h2>
             <span id="breakdownCount">0 runs</span>
           </div>
-          <p class="chart-note" id="breakdownNote">Each cell shows the number made in that 10-shot set. Complete sets of 3 or fewer are red, 8–9 are green, and 10 is blue. Runs are ordered from earliest to latest.</p>
+          <p class="chart-note" id="breakdownNote">Each cell shows the number made in that 10-shot set, with its background colored on the 0–10 scale. Runs are ordered from earliest to latest.</p>
           <div class="breakdown-table-wrap" role="region" aria-label="Makes by 10-shot set for every run" tabindex="0">
             <table class="breakdown-table" aria-describedby="breakdownNote">
               <thead>
@@ -3720,10 +3764,8 @@
               cell.title = `Shots ${setIndex * 10 + 1}–${(setIndex + 1) * 10} were not recorded`;
             } else {
               const value = document.createElement("span");
+              cell.className = `breakdown-score-${result.makes}`;
               value.className = `breakdown-value${result.attempts < 10 ? " partial" : ""}`;
-              if (result.attempts === 10 && result.makes <= 3) value.classList.add("score-low");
-              if (result.attempts === 10 && result.makes >= 8 && result.makes <= 9) value.classList.add("score-high");
-              if (result.attempts === 10 && result.makes === 10) value.classList.add("score-perfect");
               value.textContent = result.makes;
               if (result.attempts < 10) value.dataset.attempts = result.attempts;
               cell.title = `${result.makes} made in ${result.attempts} recorded shots (${setIndex * 10 + 1}–${setIndex * 10 + result.attempts})`;
