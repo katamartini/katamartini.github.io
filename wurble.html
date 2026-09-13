@@ -513,6 +513,16 @@
       outline-offset: 1px;
     }
 
+    .map-cell-rarest::after {
+      position: absolute;
+      z-index: 5;
+      inset: 1px;
+      border: 2px solid #4da3ff;
+      border-radius: 2px;
+      pointer-events: none;
+      content: '';
+    }
+
     .map-legend {
       display: flex;
       flex-wrap: wrap;
@@ -542,6 +552,10 @@
 
     .map-key-locked { opacity: 0.25; }
     .map-key-impossible { background: repeating-linear-gradient(135deg, #242727 0 4px, #363a3a 4px 7px); }
+    .map-key-rarest {
+      border: 2px solid #4da3ff;
+      background: var(--surface-raised);
+    }
 
     .toolbar-wrap {
       position: sticky;
@@ -1048,6 +1062,7 @@
       <div class="map-legend" aria-label="Map legend">
         <span><i class="map-key" aria-hidden="true"></i>Unlocked</span>
         <span><i class="map-key map-key-locked" aria-hidden="true"></i>Not yet unlocked</span>
+        <span><i class="map-key map-key-rarest" aria-hidden="true"></i>Top 50 rarest</span>
         <span><i class="map-key map-key-impossible" aria-hidden="true">×</i>Impossible</span>
       </div>
     </div>
@@ -2059,6 +2074,9 @@
                 ? playerPattern ? 'unlocked' : 'locked'
                 : record?.status === 'unlocked' ? 'unlocked' : 'locked';
             const cell = makeElement('button', `map-cell map-cell-${status}`);
+            if ((rarityByPattern.get(pattern)?.rarity_rank ?? Infinity) <= 50) {
+              cell.classList.add('map-cell-rarest');
+            }
             cell.type = 'button';
             cell.setAttribute('role', 'gridcell');
             cell.setAttribute('aria-pressed', 'false');
