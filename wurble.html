@@ -523,6 +523,15 @@
       content: '';
     }
 
+    .map-cell-unlocked.map-cell-rarest::after {
+      inset: 2px;
+      border-color: #79c5ff;
+      box-shadow:
+        0 0 0 1px rgba(3, 8, 12, 0.96),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+        0 0 7px rgba(77, 163, 255, 0.72);
+    }
+
     .map-legend {
       display: flex;
       flex-wrap: wrap;
@@ -1095,7 +1104,7 @@
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="unlocker" data-sort-default="asc">First unlocker <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="wordle" data-sort-default="desc">Wordle # <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
             <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="date" data-sort-default="desc">Date <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
-            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="rarity" data-sort-default="desc">Rarity <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+            <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-pattern-sort="rarity" data-sort-default="asc">Rarity <span class="sort-indicator" aria-hidden="true">↕</span></button></th>
           </tr>
         </thead>
         <tbody id="gallery" aria-busy="true"></tbody>
@@ -1197,7 +1206,7 @@
     let playersById = new Map();
     let playerPatternStats = new Map();
     let playerStats = [];
-    let patternSort = { key: 'rarity', direction: 'desc' };
+    let patternSort = { key: 'rarity', direction: 'asc' };
     let playerSort = { key: null, direction: null };
 
     function parseCsv(source) {
