@@ -248,8 +248,108 @@
       padding: 22px;
     }
 
-    .best-through-panel .panel-title {
+    .best-through-panel .panel-title,
+    .breakdown-panel .panel-title {
       flex-wrap: wrap;
+    }
+
+    .breakdown-panel {
+      min-width: 0;
+      padding: 22px;
+    }
+
+    .breakdown-table-wrap {
+      margin-top: 16px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #11161d;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: 12px 9px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .breakdown-table tr > :last-child {
+      border-right: 0;
+    }
+
+    .breakdown-table tbody tr:last-child > * {
+      border-bottom: 0;
+    }
+
+    .breakdown-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #202733;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 850;
+    }
+
+    .breakdown-table thead th:first-child {
+      left: 0;
+      z-index: 3;
+      width: 170px;
+      text-align: left;
+    }
+
+    .breakdown-table tbody th {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: #151b23;
+      text-align: left;
+    }
+
+    .breakdown-run-label strong,
+    .breakdown-run-label small {
+      display: block;
+    }
+
+    .breakdown-run-label strong {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .breakdown-run-label small {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .breakdown-value {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 850;
+    }
+
+    .breakdown-value.partial::after {
+      content: "/" attr(data-attempts);
+      margin-left: 2px;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    .breakdown-empty {
+      color: #667383;
     }
 
     .panel {
@@ -1655,6 +1755,7 @@
       <div class="dashboard-tabs" role="tablist" aria-label="Statistics views">
         <button class="dashboard-tab" id="overviewTab" type="button" role="tab" aria-selected="true" aria-controls="overviewPanel" data-dashboard-tab="overview">Overview</button>
         <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="records" tabindex="-1">Best through X</button>
+        <button class="dashboard-tab" id="breakdownTab" type="button" role="tab" aria-selected="false" aria-controls="breakdownPanel" data-dashboard-tab="breakdown" tabindex="-1">Breakdown by 10</button>
       </div>
       <div class="dashboard-layout">
         <section class="best-through-panel panel" id="bestThroughPanel" role="tabpanel" aria-labelledby="bestThroughTab" tabindex="0" hidden>
@@ -1724,6 +1825,34 @@
                 </tr>
               </thead>
               <tbody id="bestThroughTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="breakdown-panel panel" id="breakdownPanel" role="tabpanel" aria-labelledby="breakdownTab" tabindex="0" hidden>
+          <div class="panel-title">
+            <h2>Breakdown by 10</h2>
+            <span id="breakdownCount">0 runs</span>
+          </div>
+          <p class="chart-note" id="breakdownNote">Each cell shows the number made in that 10-shot set. Runs are ordered from earliest to latest.</p>
+          <div class="breakdown-table-wrap" role="region" aria-label="Makes by 10-shot set for every run" tabindex="0">
+            <table class="breakdown-table" aria-describedby="breakdownNote">
+              <thead>
+                <tr>
+                  <th scope="col">Run</th>
+                  <th scope="col">10</th>
+                  <th scope="col">20</th>
+                  <th scope="col">30</th>
+                  <th scope="col">40</th>
+                  <th scope="col">50</th>
+                  <th scope="col">60</th>
+                  <th scope="col">70</th>
+                  <th scope="col">80</th>
+                  <th scope="col">90</th>
+                  <th scope="col">100</th>
+                </tr>
+              </thead>
+              <tbody id="breakdownTableBody"></tbody>
             </table>
           </div>
         </section>
@@ -2054,6 +2183,9 @@
         dashboardTabs: document.querySelectorAll("[data-dashboard-tab]"),
         overviewPanel: document.querySelector("#overviewPanel"),
         bestThroughPanel: document.querySelector("#bestThroughPanel"),
+        breakdownPanel: document.querySelector("#breakdownPanel"),
+        breakdownCount: document.querySelector("#breakdownCount"),
+        breakdownTableBody: document.querySelector("#breakdownTableBody"),
         openBackupButton: document.querySelector("#openBackupButton"),
         backupButtonText: document.querySelector("#backupButtonText"),
         openImportButton: document.querySelector("#openImportButton"),
@@ -2607,6 +2739,11 @@
         return second.importedAt - first.importedAt;
       }
 
+      function chronologicalRuns() {
+        return [...state.runs]
+          .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id));
+      }
+
       function isRunEarlier(first, second) {
         const byDate = first.date.localeCompare(second.date);
         if (byDate !== 0) return byDate < 0;
@@ -3013,8 +3150,7 @@
       }
 
       function renderTrend() {
-        const allRuns = [...state.runs]
-          .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id));
+        const allRuns = chronologicalRuns();
         const totalRuns = allRuns.length;
         const start = Math.max(1, Math.min(Number(trendRange.start) || 1, totalRuns || 1));
         const end = Math.max(start, Math.min(Number(trendRange.end) || totalRuns || 1, totalRuns || 1));
@@ -3514,6 +3650,47 @@
         });
 
         renderBestThroughTable();
+      }
+
+      function renderBreakdown() {
+        const runs = chronologicalRuns();
+        elements.breakdownTableBody.replaceChildren();
+        elements.breakdownCount.textContent = `${runs.length} ${runs.length === 1 ? "run" : "runs"}`;
+
+        runs.forEach((run, runIndex) => {
+          const row = document.createElement("tr");
+          const runHeading = document.createElement("th");
+          const label = document.createElement("span");
+          const number = document.createElement("strong");
+          const detail = document.createElement("small");
+          runHeading.scope = "row";
+          label.className = "breakdown-run-label";
+          number.textContent = `Run ${runIndex + 1}`;
+          detail.textContent = `${formatDate(run.date)} · ${run.format === "tens" ? "Legacy" : "Exact"}`;
+          label.append(number, detail);
+          runHeading.appendChild(label);
+          row.appendChild(runHeading);
+
+          Array.from({ length: MAX_TEN_SETS }, (_, setIndex) => {
+            const result = tenSetSummary(run, setIndex);
+            const cell = document.createElement("td");
+            if (!result.attempts) {
+              cell.className = "breakdown-empty";
+              cell.textContent = "—";
+              cell.title = `Shots ${setIndex * 10 + 1}–${(setIndex + 1) * 10} were not recorded`;
+            } else {
+              const value = document.createElement("span");
+              value.className = `breakdown-value${result.attempts < 10 ? " partial" : ""}`;
+              value.textContent = result.makes;
+              if (result.attempts < 10) value.dataset.attempts = result.attempts;
+              cell.title = `${result.makes} made in ${result.attempts} recorded shots (${setIndex * 10 + 1}–${setIndex * 10 + result.attempts})`;
+              cell.appendChild(value);
+            }
+            row.appendChild(cell);
+          });
+
+          elements.breakdownTableBody.appendChild(row);
+        });
       }
 
       function splitSummary(run) {
@@ -4154,7 +4331,7 @@
       }
 
       function selectDashboardTab(name, focus = false) {
-        if (name !== "overview" && name !== "records") return;
+        if (!["overview", "records", "breakdown"].includes(name)) return;
         activeDashboardTab = name;
         elements.dashboardTabs.forEach((tab) => {
           const selected = tab.dataset.dashboardTab === name;
@@ -4164,6 +4341,7 @@
         });
         elements.overviewPanel.hidden = name !== "overview";
         elements.bestThroughPanel.hidden = name !== "records";
+        elements.breakdownPanel.hidden = name !== "breakdown";
         chartTooltip.hidden = true;
       }
 
@@ -4192,6 +4370,7 @@
         renderTrend();
         renderBlocks();
         renderCheckpoints();
+        renderBreakdown();
         renderTheoreticalRunControls();
         renderTheoreticalCumulativeMakes();
         renderHistory();
