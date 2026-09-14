@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-14T05:03:52.095692+00:00",
+  "data_updated_at": "2026-09-14T10:55:47.199086+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -3351,6 +3351,78 @@
         },
         {
           "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1913,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "YXXXG\nYYXYG\nGGGGG",
+      "posted_at": "2026-09-14T09:17:37.187000+00:00",
+      "tracked_at": "2026-09-14T09:17:37.302649+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "YXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYXYG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1913,
+      "score": 3,
+      "hard_mode": false,
+      "grid_pattern": "XXXXG\nYYYXG\nGGGGG",
+      "posted_at": "2026-09-14T10:19:30.477000+00:00",
+      "tracked_at": "2026-09-14T10:19:30.575189+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYYXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1913,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "XYXYX\nYXYYG\nGGGGG",
+      "posted_at": "2026-09-14T10:55:47.124000+00:00",
+      "tracked_at": "2026-09-14T10:55:47.199086+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXYYG"
+        },
+        {
+          "row_number": 3,
           "pattern": "GGGGG"
         }
       ]

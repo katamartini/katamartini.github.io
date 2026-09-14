@@ -1,7 +1,7 @@
 pattern,status,unlocked_by,wordle_number,seen_count
 XXXXX,unlocked,tb,1880,30
 XXXXY,unlocked,tb,1891,4
-XXXXG,unlocked,tb,1883,5
+XXXXG,unlocked,tb,1883,6
 XXXYX,unlocked,Marty,1879,8
 XXXYY,unlocked,Marty,1896,4
 XXXYG,unlocked,Marty,1879,1
@@ -29,7 +29,7 @@ XXGGG,unlocked,Marty,1879,3
 XYXXX,unlocked,tb,1884,9
 XYXXY,unlocked,tb,1882,6
 XYXXG,unlocked,Marty,1896,2
-XYXYX,locked,,,0
+XYXYX,unlocked,Marty,1913,1
 XYXYY,unlocked,Marty,1898,2
 XYXYG,unlocked,Vruet,1895,2
 XYXGX,locked,,,0
@@ -82,7 +82,7 @@ XGGGY,locked,,,0
 XGGGG,unlocked,tb,1880,29
 YXXXX,unlocked,tb,1879,13
 YXXXY,unlocked,tb,1910,1
-YXXXG,unlocked,Marty,1902,1
+YXXXG,unlocked,Marty,1902,2
 YXXYX,unlocked,Marty,1879,5
 YXXYY,unlocked,Vruet,1908,1
 YXXYG,unlocked,tb,1895,1
@@ -94,7 +94,7 @@ YXYXY,unlocked,Marty,1884,2
 YXYXG,unlocked,Marty,1911,1
 YXYYX,locked,,,0
 YXYYY,unlocked,Vruet,1910,1
-YXYYG,locked,,,0
+YXYYG,unlocked,Marty,1913,1
 YXYGX,locked,,,0
 YXYGY,locked,,,0
 YXYGG,locked,,,0
@@ -112,13 +112,13 @@ YYXXY,locked,,,0
 YYXXG,unlocked,Ryan (Mayan),1906,1
 YYXYX,unlocked,tb,1894,1
 YYXYY,locked,,,0
-YYXYG,locked,,,0
+YYXYG,unlocked,Vruet,1913,1
 YYXGX,locked,,,0
 YYXGY,locked,,,0
 YYXGG,locked,,,0
 YYYXX,unlocked,🪕🦐banjo🦐🪕,1895,1
 YYYXY,unlocked,Marty,1884,1
-YYYXG,unlocked,Ryan (Mayan),1906,1
+YYYXG,unlocked,Ryan (Mayan),1906,2
 YYYYX,unlocked,barney buttloaves,1881,5
 YYYYY,unlocked,Marty,1884,1
 YYYYG,unlocked,tb,1910,1
@@ -236,4 +236,4 @@ GGGXG,unlocked,tb,1885,5
 GGGYX,locked,,,0
 GGGYY,locked,,,0
 GGGGX,unlocked,Marty,1881,12
-GGGGG,unlocked,Marty,1879,111
+GGGGG,unlocked,Marty,1879,114
