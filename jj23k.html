@@ -186,28 +186,50 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
-      gap: 8px 16px;
+      gap: 7px;
+      max-width: 650px;
       color: #d2d8e2;
-      font-size: .78rem;
+      font-size: .875rem;
       font-weight: 750;
     }
 
-    .chart-legend span {
+    .chart-toggle {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      white-space: nowrap;
-    }
-
-    .chart-legend i {
-      width: 22px;
-      height: 3px;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid #3a4657;
       border-radius: 999px;
-      background: var(--gold);
+      background: #0d1219;
+      color: #e3e8f0;
+      cursor: pointer;
+      font: inherit;
+      white-space: nowrap;
+      transition: border-color .15s ease, color .15s ease, opacity .15s ease;
     }
 
-    .chart-legend .jj-line {
-      background: #a977e6;
+    .chart-toggle:hover,
+    .chart-toggle:focus-visible {
+      border-color: var(--series-color);
+      outline: none;
+    }
+
+    .chart-toggle[aria-pressed="false"] {
+      color: #7f8a9a;
+      opacity: .72;
+    }
+
+    .chart-toggle i {
+      width: 19px;
+      height: 4px;
+      border: 1px solid var(--series-color);
+      border-radius: 999px;
+      background: var(--series-color);
+    }
+
+    .chart-toggle[aria-pressed="false"] i {
+      background: transparent;
     }
 
     .chart-scroll {
@@ -260,7 +282,7 @@
       fill: none;
       stroke-linecap: round;
       stroke-linejoin: round;
-      stroke-width: 3;
+      stroke-width: 2.5;
     }
 
     .chart-path--rice {
@@ -270,6 +292,10 @@
     .chart-path--jj {
       stroke: #a977e6;
       stroke-width: 4;
+    }
+
+    .is-hidden {
+      display: none;
     }
 
     .chart-dot {
@@ -637,21 +663,18 @@
       <div class="chart-head">
         <div>
           <p class="chart-kicker">Career pace</p>
-          <h2 class="chart-title" id="chart-heading">Jerry Rice vs. Justin Jefferson</h2>
+          <h2 class="chart-title" id="chart-heading">Career receiving yards, game by game</h2>
           <p class="chart-subtitle">Cumulative regular-season receiving yards after each career game</p>
         </div>
-        <div class="chart-legend" aria-label="Chart legend">
-          <span><i aria-hidden="true"></i>Jerry Rice</span>
-          <span><i class="jj-line" aria-hidden="true"></i>Justin Jefferson</span>
-        </div>
+        <div class="chart-legend" id="chart-legend" aria-label="Toggle player lines"></div>
       </div>
       <div class="chart-scroll" tabindex="0" aria-label="Scrollable receiving yards chart">
         <svg class="career-chart" id="career-chart" viewBox="0 0 1000 460" role="img" aria-labelledby="chart-svg-title chart-svg-desc">
-          <title id="chart-svg-title">Cumulative receiving yards by career game for Jerry Rice and Justin Jefferson</title>
-          <desc id="chart-svg-desc">Jerry Rice reached 22,895 receiving yards in 303 games. Justin Jefferson has 8,572 receiving yards through 95 games.</desc>
+          <title id="chart-svg-title">Cumulative receiving yards by career game for seven NFL receivers</title>
+          <desc id="chart-svg-desc">Toggle and compare Jerry Rice, Justin Jefferson, Julio Jones, Calvin Johnson, Antonio Brown, Torry Holt, and Lance Alworth.</desc>
         </svg>
       </div>
-      <figcaption class="chart-caption">Hover, tap, or focus the chart to compare yardage after the same number of career games.</figcaption>
+      <figcaption class="chart-caption">Use the player buttons to show or hide lines. Hover, tap, or focus the chart to compare the selected careers.</figcaption>
       <noscript>This chart requires JavaScript to display.</noscript>
     </figure>
 
@@ -690,6 +713,24 @@
       jefferson: [0, 26, 70, 245, 348, 371, 537, 563, 627, 762, 848, 918, 1039, 1078, 1182, 1267, 1400, 1471, 1536, 1654, 1738, 1862, 1942, 1963, 2032, 2175, 2344, 2427, 2609, 2688, 2735, 2851, 2909, 3016, 3200, 3248, 3262, 3409, 3563, 3670, 3768, 3883, 4076, 4109, 4248, 4293, 4516, 4639, 4772, 4787, 4825, 4975, 5134, 5283, 5368, 5396, 5423, 5507, 5648, 5707, 5899, 5958, 6091, 6172, 6257, 6349, 6430, 6545, 6682, 6730, 6811, 6838, 6937, 7069, 7142, 7286, 7378, 7432, 7476, 7557, 7632, 7758, 7881, 7960, 8034, 8081, 8118, 8179, 8227, 8231, 8242, 8264, 8349, 8379, 8480, 8572]
     };
 
+    Object.assign(careerYards, {
+      julio: [0, 71, 100, 215, 342, 358, 489, 498, 498, 566, 670, 755, 883, 959, 1067, 1081, 1148, 1178, 1272, 1335, 1458, 1587, 1662, 1695, 1842, 1890, 1956, 2030, 2101, 2157, 2233, 2415, 2530, 2638, 2737, 2853, 2941, 3102, 3184, 3289, 3357, 3413, 3471, 3590, 3649, 3717, 3906, 4165, 4272, 4330, 4471, 4606, 4770, 4808, 4875, 4968, 5060, 5222, 5359, 5519, 5575, 5668, 5756, 5874, 6052, 6201, 6267, 6373, 6389, 6689, 6718, 6857, 7031, 7060, 7171, 7306, 7341, 7454, 7514, 7610, 7676, 7784, 7875, 7905, 7977, 8076, 8150, 8268, 8325, 8396, 8649, 8673, 8771, 8825, 8974, 9054, 9223, 9287, 9383, 9556, 9618, 9762, 9866, 9987, 10094, 10212, 10359, 10377, 10483, 10565, 10593, 10731, 10762, 10868, 10996, 11048, 11090, 11198, 11291, 11443, 11522, 11613, 11681, 11747, 11881, 12047, 12125, 12282, 12306, 12338, 12475, 12572, 12709, 12763, 12802, 12896, 12925, 13053, 13100, 13159, 13197, 13232, 13265, 13265, 13272, 13330, 13399, 13406, 13427, 13455, 13508, 13548, 13576, 13614, 13619, 13629, 13632, 13640, 13640, 13645, 13645, 13645, 13645, 13651, 13656, 13690, 13703],
+      calvin: [0, 70, 131, 189, 192, 229, 273, 320, 357, 402, 485, 502, 553, 655, 702, 756, 863, 992, 1032, 1048, 1133, 1287, 1344, 1438, 1530, 1595, 1661, 1727, 1811, 1921, 1985, 2087, 2177, 2228, 2277, 2410, 2412, 2439, 2523, 2684, 2694, 2817, 2854, 2889, 2985, 3071, 3116, 3166, 3222, 3308, 3362, 3508, 3609, 3622, 3750, 3796, 3877, 3943, 3987, 4139, 4191, 4279, 4308, 4416, 4512, 4642, 4755, 4870, 4995, 5076, 5165, 5214, 5283, 5312, 5526, 5628, 5872, 5983, 6077, 6241, 6295, 6430, 6464, 6510, 6639, 6846, 6989, 7129, 7300, 7418, 7539, 7764, 7836, 7873, 7989, 8104, 8148, 8173, 8328, 8657, 8740, 8919, 9034, 9135, 9187, 9285, 9328, 9492, 9575, 9657, 9669, 9676, 9789, 9848, 9906, 10052, 10210, 10263, 10366, 10405, 10444, 10527, 10604, 10660, 10727, 10893, 10979, 11064, 11145, 11233, 11326, 11370, 11386, 11405, 11482, 11619],
+      brown: [0, 0, 0, 6, 27, 53, 80, 95, 115, 167, 181, 248, 323, 390, 413, 429, 531, 598, 707, 793, 874, 941, 1092, 1151, 1185, 1275, 1349, 1428, 1515, 1601, 1621, 1717, 1755, 1774, 1832, 1867, 1943, 2040, 2062, 2133, 2190, 2386, 2474, 2560, 2610, 2692, 2763, 2867, 3014, 3106, 3165, 3303, 3369, 3474, 3561, 3677, 3767, 3857, 3988, 4072, 4190, 4280, 4413, 4557, 4631, 4722, 4819, 4936, 5059, 5131, 5259, 5392, 5587, 5695, 5737, 5782, 5806, 5930, 5977, 6261, 6400, 6451, 6569, 6656, 6845, 6906, 7093, 7219, 7258, 7398, 7462, 7540, 7579, 7685, 7770, 7924, 8000, 8091, 8145, 8223, 8281, 8377, 8559, 8621, 8731, 8765, 8922, 9077, 9142, 9212, 9259, 9403, 9572, 9673, 9886, 9910, 10003, 10070, 10120, 10182, 10283, 10388, 10462, 10504, 10600, 10717, 10784, 10938, 10973, 11022, 11207, 11263, 11294, 11363, 11420, 11431, 11480, 11573, 11608, 11746, 11867, 11884, 11947, 12071, 12164, 12265, 12291],
+      holt: [0, 36, 83, 141, 208, 208, 232, 287, 318, 334, 359, 446, 450, 563, 633, 666, 788, 891, 992, 1086, 1275, 1309, 1360, 1453, 1517, 1647, 1733, 1858, 1947, 1965, 2137, 2302, 2423, 2508, 2525, 2636, 2710, 2793, 2836, 2908, 2985, 3074, 3213, 3279, 3345, 3400, 3486, 3689, 3786, 3877, 3965, 4104, 4210, 4248, 4328, 4399, 4406, 4524, 4578, 4653, 4733, 4778, 4919, 5011, 5088, 5199, 5263, 5331, 5464, 5625, 5692, 5866, 6066, 6104, 6228, 6373, 6475, 6506, 6606, 6730, 6784, 6880, 7001, 7066, 7094, 7147, 7271, 7275, 7386, 7418, 7508, 7559, 7719, 7870, 7965, 8040, 8156, 8281, 8351, 8514, 8598, 8724, 8794, 8839, 8968, 9098, 9173, 9268, 9284, 9447, 9487, 9567, 9597, 9717, 9819, 9859, 10013, 10061, 10111, 10184, 10252, 10282, 10397, 10472, 10531, 10585, 10675, 10748, 10822, 10885, 10937, 11026, 11059, 11141, 11251, 11375, 11430, 11484, 11619, 11709, 11730, 11771, 11864, 11873, 11949, 11986, 12051, 12074, 12125, 12153, 12211, 12216, 12276, 12360, 12390, 12451, 12515, 12570, 12660, 12707, 12772, 12829, 12871, 12966, 13067, 13084, 13121, 13145, 13176, 13226, 13250, 13321, 13359, 13382],
+      alworth: [0, 17, 107, 160, 226, 261, 337, 353, 467, 521, 753, 803, 983, 1193, 1272, 1328, 1399, 1427, 1431, 1550, 1617, 1741, 1785, 1861, 2064, 2118, 2286, 2471, 2572, 2652, 2666, 2877, 2948, 2969, 3114, 3282, 3391, 3533, 3592, 3639, 3820, 3947, 4094, 4108, 4268, 4314, 4411, 4461, 4580, 4729, 4785, 4962, 5009, 5110, 5221, 5368, 5495, 5651, 5687, 5808, 5907, 5969, 6064, 6206, 6419, 6544, 6546, 6632, 6661, 6719, 6902, 6913, 7050, 7232, 7363, 7532, 7592, 7621, 7650, 7683, 7854, 7893, 7973, 8067, 8085, 8118, 8243, 8298, 8393, 8489, 8502, 8545, 8570, 8622, 8707, 8854, 8976, 8976, 9013, 9013, 9019, 9115, 9239, 9315, 9366, 9417, 9434, 9478, 9528, 9584, 9584, 9608, 9608, 9654, 9692, 9759, 9848, 9907, 9932, 9966, 10020, 10046, 10071, 10117, 10120, 10175, 10175, 10175, 10191, 10191, 10199, 10199, 10199, 10211, 10252, 10266, 10266]
+    });
+
+    const careerSeries = [
+      { key: "rice", name: "Jerry Rice", color: "#ffc62f", values: careerYards.rice },
+      { key: "jefferson", name: "Justin Jefferson", color: "#a977e6", values: careerYards.jefferson },
+      { key: "julio", name: "Julio Jones", color: "#ff6b6b", values: careerYards.julio },
+      { key: "calvin", name: "Calvin Johnson", color: "#5bc0eb", values: careerYards.calvin },
+      { key: "brown", name: "Antonio Brown", color: "#f5f7fb", values: careerYards.brown },
+      { key: "holt", name: "Torry Holt", color: "#4dd599", values: careerYards.holt },
+      { key: "alworth", name: "Lance Alworth", color: "#ff9f43", values: careerYards.alworth }
+    ];
+
     const chart = document.querySelector("#career-chart");
     const plot = { left: 84, right: 952, top: 28, bottom: 390 };
     const xMax = 303;
@@ -717,80 +758,83 @@
         <text class="chart-axis-title" x="${(plot.left + plot.right) / 2}" y="440" text-anchor="middle">Career games played</text>
         <text class="chart-axis-title" x="20" y="${(plot.top + plot.bottom) / 2}" text-anchor="middle" transform="rotate(-90 20 ${(plot.top + plot.bottom) / 2})">Receiving yards</text>
       </g>
-      <path class="chart-path chart-path--rice" d="${pathFor(careerYards.rice)}"></path>
-      <path class="chart-path chart-path--jj" d="${pathFor(careerYards.jefferson)}"></path>
-      <circle class="chart-dot chart-dot--rice" cx="${xScale(riceEnd.game)}" cy="${yScale(riceEnd.yards)}" r="6"></circle>
-      <circle class="chart-dot chart-dot--jj" cx="${xScale(jjEnd.game)}" cy="${yScale(jjEnd.yards)}" r="7"></circle>
-      <text class="chart-end-label" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
-      <text class="chart-end-label" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
+      ${careerSeries.map(series => `
+        <path class="chart-path${series.key === "rice" ? " chart-path--rice" : ""}${series.key === "jefferson" ? " chart-path--jj" : ""}" data-series="${series.key}" style="stroke:${series.color}" d="${pathFor(series.values)}"></path>
+        <circle class="chart-dot" data-series="${series.key}" cx="${xScale(series.values.length - 1)}" cy="${yScale(series.values.at(-1))}" r="${series.key === "jefferson" ? 7 : 5}" style="fill:${series.color}"></circle>
+      `).join("")}
+      <text class="chart-end-label" data-series="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
+      <text class="chart-end-label" data-series="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
       <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
       <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
         <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
-        <circle class="chart-hover-dot chart-dot--rice" id="chart-hover-rice-dot" r="6"></circle>
-        <circle class="chart-hover-dot chart-dot--jj" id="chart-hover-jj-dot" r="6"></circle>
+        <g id="chart-hover-dots"></g>
         <g id="chart-tooltip">
-          <rect class="chart-tooltip-box" id="chart-tooltip-box" width="216" height="84" rx="10"></rect>
+          <rect class="chart-tooltip-box" id="chart-tooltip-box" width="238" height="84" rx="10"></rect>
           <text class="chart-tooltip-title" id="chart-tooltip-game" x="14" y="21"></text>
-          <circle class="chart-dot--rice" cx="15" cy="43" r="4"></circle>
-          <text class="chart-tooltip-row" x="27" y="47">Jerry Rice</text>
-          <text class="chart-tooltip-row" id="chart-tooltip-rice" x="202" y="47" text-anchor="end"></text>
-          <g id="chart-tooltip-jj-row">
-            <circle class="chart-dot--jj" cx="15" cy="68" r="4"></circle>
-            <text class="chart-tooltip-row" x="27" y="72">Justin Jefferson</text>
-            <text class="chart-tooltip-row" id="chart-tooltip-jj" x="202" y="72" text-anchor="end"></text>
-          </g>
+          <g id="chart-tooltip-rows"></g>
         </g>
       </g>
     `;
 
+    const chartLegend = document.querySelector("#chart-legend");
+    const visibleSeries = new Set(careerSeries.map(series => series.key));
+
+    chartLegend.innerHTML = careerSeries.map(series => `
+      <button class="chart-toggle" type="button" data-toggle-series="${series.key}" style="--series-color:${series.color}" aria-pressed="true">
+        <i aria-hidden="true"></i>${series.name}
+      </button>
+    `).join("");
+
     const hoverOverlay = document.querySelector("#chart-hit-area");
     const hoverLayer = document.querySelector("#chart-hover");
     const hoverGuide = document.querySelector("#chart-hover-guide");
-    const hoverRiceDot = document.querySelector("#chart-hover-rice-dot");
-    const hoverJjDot = document.querySelector("#chart-hover-jj-dot");
+    const hoverDots = document.querySelector("#chart-hover-dots");
     const tooltip = document.querySelector("#chart-tooltip");
     const tooltipBox = document.querySelector("#chart-tooltip-box");
     const tooltipGame = document.querySelector("#chart-tooltip-game");
-    const tooltipRice = document.querySelector("#chart-tooltip-rice");
-    const tooltipJj = document.querySelector("#chart-tooltip-jj");
-    const tooltipJjRow = document.querySelector("#chart-tooltip-jj-row");
+    const tooltipRows = document.querySelector("#chart-tooltip-rows");
     let activeGame = jjEnd.game;
     let pointerInsideChart = false;
 
     const showCareerGame = game => {
       activeGame = Math.max(0, Math.min(xMax, Math.round(game)));
       const x = xScale(activeGame);
-      const riceYards = careerYards.rice[activeGame];
-      const jjYards = careerYards.jefferson[activeGame];
-      const hasJeffersonValue = typeof jjYards === "number";
-      const riceY = yScale(riceYards);
-      const tooltipX = x > plot.right - 230 ? x - 228 : x + 12;
-      const tooltipY = riceY < 132 ? plot.bottom - (hasJeffersonValue ? 96 : 72) : plot.top + 12;
+      const values = careerSeries
+        .filter(series => visibleSeries.has(series.key) && activeGame < series.values.length)
+        .map(series => ({ ...series, yards: series.values[activeGame], y: yScale(series.values[activeGame]) }));
+      const tooltipHeight = values.length ? 35 + values.length * 24 : 59;
+      const highestPoint = values.length ? Math.min(...values.map(series => series.y)) : Infinity;
+      const tooltipX = x > plot.right - 252 ? x - 250 : x + 12;
+      const tooltipY = highestPoint < plot.top + tooltipHeight + 20
+        ? plot.bottom - tooltipHeight - 10
+        : plot.top + 12;
 
       hoverLayer.setAttribute("visibility", "visible");
       hoverGuide.setAttribute("x1", x);
       hoverGuide.setAttribute("x2", x);
-      hoverRiceDot.setAttribute("cx", x);
-      hoverRiceDot.setAttribute("cy", riceY);
-      hoverJjDot.setAttribute("visibility", hasJeffersonValue ? "visible" : "hidden");
-      tooltipJjRow.setAttribute("visibility", hasJeffersonValue ? "visible" : "hidden");
-      tooltipBox.setAttribute("height", hasJeffersonValue ? 84 : 59);
+      hoverDots.innerHTML = values.map(series => `
+        <circle class="chart-hover-dot" cx="${x}" cy="${series.y}" r="6" style="fill:${series.color}"></circle>
+      `).join("");
+      tooltipRows.innerHTML = values.length
+        ? values.map((series, index) => {
+            const rowY = 43 + index * 24;
+            return `
+              <circle cx="15" cy="${rowY}" r="4" style="fill:${series.color}"></circle>
+              <text class="chart-tooltip-row" x="27" y="${rowY + 4}">${series.name}</text>
+              <text class="chart-tooltip-row" x="224" y="${rowY + 4}" text-anchor="end">${series.yards.toLocaleString("en-US")}</text>
+            `;
+          }).join("")
+        : `<text class="chart-tooltip-row" x="14" y="46">No selected career at this game</text>`;
+      tooltipBox.setAttribute("height", tooltipHeight);
       tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
       tooltipGame.textContent = `Career game ${activeGame}`;
-      tooltipRice.textContent = riceYards.toLocaleString("en-US");
 
-      if (hasJeffersonValue) {
-        hoverJjDot.setAttribute("cx", x);
-        hoverJjDot.setAttribute("cy", yScale(jjYards));
-        tooltipJj.textContent = jjYards.toLocaleString("en-US");
-      }
-
-      const comparison = hasJeffersonValue
-        ? `Career game ${activeGame}: Jerry Rice ${riceYards.toLocaleString("en-US")} yards; Justin Jefferson ${jjYards.toLocaleString("en-US")} yards.`
-        : `Career game ${activeGame}: Jerry Rice ${riceYards.toLocaleString("en-US")} yards; Justin Jefferson had played 95 games.`;
+      const comparison = values.length
+        ? values.map(series => `${series.name} ${series.yards.toLocaleString("en-US")} yards`).join("; ")
+        : "No selected player has a value at this game";
 
       hoverOverlay.setAttribute("aria-valuenow", activeGame);
-      hoverOverlay.setAttribute("aria-valuetext", comparison);
+      hoverOverlay.setAttribute("aria-valuetext", `Career game ${activeGame}: ${comparison}.`);
     };
 
     const showPointerPosition = event => {
@@ -799,6 +843,23 @@
       const game = ((svgX - plot.left) / (plot.right - plot.left)) * xMax;
       showCareerGame(game);
     };
+
+    chartLegend.querySelectorAll("[data-toggle-series]").forEach(button => {
+      button.addEventListener("click", () => {
+        const key = button.dataset.toggleSeries;
+        const willShow = !visibleSeries.has(key);
+
+        if (willShow) visibleSeries.add(key);
+        else visibleSeries.delete(key);
+
+        button.setAttribute("aria-pressed", willShow);
+        chart.querySelectorAll(`[data-series="${key}"]`).forEach(element => {
+          element.classList.toggle("is-hidden", !willShow);
+        });
+
+        if (hoverLayer.getAttribute("visibility") === "visible") showCareerGame(activeGame);
+      });
+    });
 
     hoverOverlay.addEventListener("pointerenter", event => {
       pointerInsideChart = true;
