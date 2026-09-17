@@ -384,6 +384,14 @@
       touch-action: pan-x pan-y;
     }
 
+    .chart-hit-area.can-pan {
+      cursor: grab;
+    }
+
+    .chart-hit-area.is-dragging {
+      cursor: grabbing;
+    }
+
     .chart-hit-area:focus-visible {
       outline: none;
       stroke: var(--gold);
@@ -743,7 +751,7 @@
           <desc id="chart-svg-desc">Toggle and compare Jerry Rice, Justin Jefferson, Julio Jones, Calvin Johnson, Antonio Brown, Torry Holt, and Lance Alworth.</desc>
         </svg>
       </div>
-      <figcaption class="chart-caption">Toggle player lines, then zoom and pan through career games. Hover, tap, or focus the chart for exact values.</figcaption>
+      <figcaption class="chart-caption">Toggle player lines, then zoom and drag the plot horizontally to pan. Hover, tap, or focus for exact values.</figcaption>
       <noscript>This chart requires JavaScript to display.</noscript>
     </figure>
 
@@ -854,7 +862,7 @@
       `).join("")}
       <text class="chart-end-label" data-series="rice" data-end-label="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
       <text class="chart-end-label" data-series="jefferson" data-end-label="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
-      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
+      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game; drag horizontally to pan when zoomed" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
       <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
         <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
         <g id="chart-hover-dots"></g>
@@ -892,6 +900,7 @@
     const seriesByKey = new Map(careerSeries.map(series => [series.key, series]));
     let activeGame = jjEnd.game;
     let pointerInsideChart = false;
+    let dragState = null;
 
     const renderViewport = () => {
       const ticks = xTicksForView();
@@ -926,6 +935,7 @@
       const zoom = xMax / span;
       const fullView = span >= xMax - .01;
       zoomResetButton.textContent = `${zoom.toFixed(zoom >= 10 ? 0 : 1).replace(".0", "")}×`;
+      hoverOverlay.classList.toggle("can-pan", !fullView);
       zoomInButton.disabled = span <= minViewSpan + .01;
       zoomOutButton.disabled = fullView;
       zoomResetButton.disabled = fullView;
@@ -1012,6 +1022,55 @@
 
     const showPointerPosition = event => showCareerGame(gameFromPointer(event));
 
+    const beginPointerInteraction = event => {
+      pointerInsideChart = true;
+      const canDrag = event.pointerType === "mouse"
+        && event.button === 0
+        && viewEnd - viewStart < xMax - .01;
+
+      if (!canDrag) {
+        showPointerPosition(event);
+        return;
+      }
+
+      dragState = { pointerId: event.pointerId, lastX: event.clientX };
+      hoverOverlay.setPointerCapture?.(event.pointerId);
+      hoverOverlay.classList.add("is-dragging");
+      hoverLayer.setAttribute("visibility", "hidden");
+      event.preventDefault();
+    };
+
+    const movePointerInteraction = event => {
+      if (!dragState) {
+        showPointerPosition(event);
+        return;
+      }
+
+      if (event.pointerId !== dragState.pointerId) return;
+
+      const bounds = chart.getBoundingClientRect();
+      const plotPixelWidth = (plot.right - plot.left) * (bounds.width / 1000);
+      const span = viewEnd - viewStart;
+      const gameDelta = ((event.clientX - dragState.lastX) / plotPixelWidth) * span;
+      dragState.lastX = event.clientX;
+      setViewport(viewStart - gameDelta, viewEnd - gameDelta);
+      event.preventDefault();
+    };
+
+    const finishPointerInteraction = (event, showValues) => {
+      if (!dragState || event.pointerId !== dragState.pointerId) return;
+
+      const pointerId = dragState.pointerId;
+      dragState = null;
+      hoverOverlay.classList.remove("is-dragging");
+
+      if (hoverOverlay.hasPointerCapture?.(pointerId)) {
+        hoverOverlay.releasePointerCapture(pointerId);
+      }
+
+      if (showValues) showPointerPosition(event);
+    };
+
     chartLegend.querySelectorAll("[data-toggle-series]").forEach(button => {
       button.addEventListener("click", () => {
         const key = button.dataset.toggleSeries;
@@ -1039,10 +1098,17 @@
       pointerInsideChart = true;
       showPointerPosition(event);
     });
-    hoverOverlay.addEventListener("pointermove", showPointerPosition);
-    hoverOverlay.addEventListener("pointerdown", showPointerPosition);
+    hoverOverlay.addEventListener("pointermove", movePointerInteraction);
+    hoverOverlay.addEventListener("pointerdown", beginPointerInteraction);
+    hoverOverlay.addEventListener("pointerup", event => finishPointerInteraction(event, true));
+    hoverOverlay.addEventListener("pointercancel", event => finishPointerInteraction(event, false));
+    hoverOverlay.addEventListener("lostpointercapture", () => {
+      dragState = null;
+      hoverOverlay.classList.remove("is-dragging");
+    });
     hoverOverlay.addEventListener("pointerleave", () => {
       pointerInsideChart = false;
+      if (dragState) return;
       if (document.activeElement !== hoverOverlay) hoverLayer.setAttribute("visibility", "hidden");
     });
     hoverOverlay.addEventListener("focus", () => showCareerGame(activeGame));
