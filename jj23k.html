@@ -248,6 +248,15 @@
       font-variant-numeric: tabular-nums;
     }
 
+    #chart-box-zoom {
+      min-width: 62px;
+    }
+
+    #chart-box-zoom[aria-pressed="true"] {
+      background: var(--purple);
+      color: #fff;
+    }
+
     .chart-toggle {
       display: inline-flex;
       align-items: center;
@@ -390,6 +399,20 @@
 
     .chart-hit-area.is-dragging {
       cursor: grabbing;
+    }
+
+    .chart-hit-area.box-zoom-active,
+    .chart-hit-area.box-zoom-active.is-dragging {
+      cursor: crosshair;
+    }
+
+    .chart-selection-box {
+      fill: rgba(169, 119, 230, .2);
+      pointer-events: none;
+      stroke: var(--gold);
+      stroke-dasharray: 7 5;
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
     }
 
     .chart-hit-area:focus-visible {
@@ -737,6 +760,7 @@
         <div class="chart-actions">
           <div class="chart-legend" id="chart-legend" aria-label="Toggle player lines"></div>
           <div class="chart-zoom" aria-label="Chart zoom controls" role="group">
+            <button id="chart-box-zoom" type="button" aria-label="Toggle box zoom" title="Draw a box to zoom" aria-pressed="false">Box</button>
             <button id="chart-pan-left" type="button" aria-label="Pan earlier in career" title="Pan earlier">←</button>
             <button id="chart-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
             <button id="chart-zoom-reset" type="button" aria-label="Reset zoom" title="Reset zoom">1×</button>
@@ -751,7 +775,7 @@
           <desc id="chart-svg-desc">Toggle and compare Jerry Rice, Justin Jefferson, Julio Jones, Calvin Johnson, Antonio Brown, Torry Holt, and Lance Alworth.</desc>
         </svg>
       </div>
-      <figcaption class="chart-caption">Toggle player lines, then zoom and drag the plot horizontally to pan. Hover, tap, or focus for exact values.</figcaption>
+      <figcaption class="chart-caption">Choose Box and drag a rectangle to zoom into a region. Switch Box off to drag-pan; hover, tap, or focus for exact values.</figcaption>
       <noscript>This chart requires JavaScript to display.</noscript>
     </figure>
 
@@ -811,12 +835,15 @@
     const chart = document.querySelector("#career-chart");
     const plot = { left: 84, right: 952, top: 28, bottom: 390 };
     const xMax = 303;
-    const yMax = 24000;
-    const minViewSpan = 25;
+    const yDomainMax = 24000;
+    const minViewSpan = 5;
+    const minYViewSpan = 1000;
     let viewStart = 0;
     let viewEnd = xMax;
+    let viewYMin = 0;
+    let viewYMax = yDomainMax;
     const xScale = game => plot.left + ((game - viewStart) / (viewEnd - viewStart)) * (plot.right - plot.left);
-    const yScale = yards => plot.bottom - (yards / yMax) * (plot.bottom - plot.top);
+    const yScale = yards => plot.bottom - ((yards - viewYMin) / (viewYMax - viewYMin)) * (plot.bottom - plot.top);
     const pathFor = values => values.map((yards, game) => `${game ? "L" : "M"}${xScale(game).toFixed(2)},${yScale(yards).toFixed(2)}`).join(" ");
     const xTicksForView = () => {
       const span = viewEnd - viewStart;
@@ -829,8 +856,20 @@
 
       return ticks;
     };
+    const yTicksForView = () => {
+      const span = viewYMax - viewYMin;
+      const step = [250, 500, 1000, 2000, 4000, 5000, 10000].find(candidate => span / candidate <= 7) || 10000;
+      const ticks = [];
+
+      for (let yards = Math.ceil(viewYMin / step) * step; yards <= viewYMax; yards += step) {
+        ticks.push(yards);
+      }
+
+      return ticks;
+    };
+    const formatYTick = yards => yards === 0 ? "0" : yards >= 1000 ? `${yards / 1000}K` : yards;
     const xTicks = xTicksForView();
-    const yTicks = [0, 4000, 8000, 12000, 16000, 20000, 24000];
+    const yTicks = yTicksForView();
     const riceEnd = { game: careerYards.rice.length - 1, yards: careerYards.rice.at(-1) };
     const jjEnd = { game: careerYards.jefferson.length - 1, yards: careerYards.jefferson.at(-1) };
 
@@ -841,10 +880,12 @@
         </clipPath>
       </defs>
       <g aria-hidden="true">
-        ${yTicks.map(yards => `
-          <line class="chart-grid" x1="${plot.left}" y1="${yScale(yards)}" x2="${plot.right}" y2="${yScale(yards)}"></line>
-          <text class="chart-tick" x="${plot.left - 13}" y="${yScale(yards) + 4}" text-anchor="end">${yards === 0 ? "0" : `${yards / 1000}K`}</text>
-        `).join("")}
+        <g id="chart-y-grid">
+          ${yTicks.map(yards => `
+            <line class="chart-grid" x1="${plot.left}" y1="${yScale(yards)}" x2="${plot.right}" y2="${yScale(yards)}"></line>
+            <text class="chart-tick" x="${plot.left - 13}" y="${yScale(yards) + 4}" text-anchor="end">${formatYTick(yards)}</text>
+          `).join("")}
+        </g>
         <g id="chart-x-grid">
           ${xTicks.map(game => `
             <line class="chart-grid" x1="${xScale(game)}" y1="${plot.top}" x2="${xScale(game)}" y2="${plot.bottom}"></line>
@@ -862,10 +903,11 @@
       `).join("")}
       <text class="chart-end-label" data-series="rice" data-end-label="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
       <text class="chart-end-label" data-series="jefferson" data-end-label="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
-      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game; drag horizontally to pan when zoomed" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
+      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game; use Box to select a zoom region or drag horizontally to pan when zoomed" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
+      <rect class="chart-selection-box" id="chart-selection-box" visibility="hidden"></rect>
       <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
         <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
-        <g id="chart-hover-dots"></g>
+        <g id="chart-hover-dots" clip-path="url(#chart-plot-clip)"></g>
         <g id="chart-tooltip">
           <rect class="chart-tooltip-box" id="chart-tooltip-box" width="238" height="84" rx="10"></rect>
           <text class="chart-tooltip-title" id="chart-tooltip-game" x="14" y="21"></text>
@@ -892,6 +934,9 @@
     const tooltipGame = document.querySelector("#chart-tooltip-game");
     const tooltipRows = document.querySelector("#chart-tooltip-rows");
     const xGrid = document.querySelector("#chart-x-grid");
+    const yGrid = document.querySelector("#chart-y-grid");
+    const selectionBox = document.querySelector("#chart-selection-box");
+    const boxZoomButton = document.querySelector("#chart-box-zoom");
     const zoomInButton = document.querySelector("#chart-zoom-in");
     const zoomOutButton = document.querySelector("#chart-zoom-out");
     const zoomResetButton = document.querySelector("#chart-zoom-reset");
@@ -901,13 +946,20 @@
     let activeGame = jjEnd.game;
     let pointerInsideChart = false;
     let dragState = null;
+    let boxZoomMode = false;
 
     const renderViewport = () => {
-      const ticks = xTicksForView();
+      const xTicks = xTicksForView();
+      const yTicks = yTicksForView();
 
-      xGrid.innerHTML = ticks.map(game => `
+      xGrid.innerHTML = xTicks.map(game => `
         <line class="chart-grid" x1="${xScale(game)}" y1="${plot.top}" x2="${xScale(game)}" y2="${plot.bottom}"></line>
         <text class="chart-tick" x="${xScale(game)}" y="${plot.bottom + 24}" text-anchor="middle">${game}</text>
+      `).join("");
+
+      yGrid.innerHTML = yTicks.map(yards => `
+        <line class="chart-grid" x1="${plot.left}" y1="${yScale(yards)}" x2="${plot.right}" y2="${yScale(yards)}"></line>
+        <text class="chart-tick" x="${plot.left - 13}" y="${yScale(yards) + 4}" text-anchor="end">${formatYTick(yards)}</text>
       `).join("");
 
       chart.querySelectorAll("[data-series-path]").forEach(path => {
@@ -917,8 +969,10 @@
       chart.querySelectorAll("[data-end-marker]").forEach(marker => {
         const series = seriesByKey.get(marker.dataset.series);
         const endGame = series.values.length - 1;
+        const endYards = series.values.at(-1);
         marker.setAttribute("cx", xScale(endGame));
-        marker.setAttribute("visibility", endGame >= viewStart && endGame <= viewEnd ? "visible" : "hidden");
+        marker.setAttribute("cy", yScale(endYards));
+        marker.setAttribute("visibility", endGame >= viewStart && endGame <= viewEnd && endYards >= viewYMin && endYards <= viewYMax ? "visible" : "hidden");
       });
 
       [
@@ -928,16 +982,19 @@
         const label = document.querySelector(`[data-end-label="${item.key}"]`);
         label.setAttribute("x", xScale(item.game) + item.offset);
         label.setAttribute("y", yScale(item.yards) - (item.key === "rice" ? 13 : 14));
-        label.setAttribute("visibility", item.game >= viewStart && item.game <= viewEnd ? "visible" : "hidden");
+        label.setAttribute("visibility", item.game >= viewStart && item.game <= viewEnd && item.yards >= viewYMin && item.yards <= viewYMax ? "visible" : "hidden");
       });
 
       const span = viewEnd - viewStart;
-      const zoom = xMax / span;
-      const fullView = span >= xMax - .01;
+      const ySpan = viewYMax - viewYMin;
+      const zoom = Math.max(xMax / span, yDomainMax / ySpan);
+      const fullXView = span >= xMax - .01;
+      const fullYView = ySpan >= yDomainMax - .01;
+      const fullView = fullXView && fullYView;
       zoomResetButton.textContent = `${zoom.toFixed(zoom >= 10 ? 0 : 1).replace(".0", "")}×`;
-      hoverOverlay.classList.toggle("can-pan", !fullView);
+      hoverOverlay.classList.toggle("can-pan", !fullXView);
       zoomInButton.disabled = span <= minViewSpan + .01;
-      zoomOutButton.disabled = fullView;
+      zoomOutButton.disabled = fullXView;
       zoomResetButton.disabled = fullView;
       panLeftButton.disabled = viewStart <= .01;
       panRightButton.disabled = viewEnd >= xMax - .01;
@@ -945,11 +1002,15 @@
       hoverOverlay.setAttribute("aria-valuemax", Math.floor(viewEnd));
     };
 
-    const setViewport = (start, end) => {
+    const setViewport = (start, end, yMin = viewYMin, yMax = viewYMax) => {
       const requestedSpan = end - start;
       const span = Math.max(minViewSpan, Math.min(xMax, requestedSpan));
+      const requestedYSpan = yMax - yMin;
+      const ySpan = Math.max(minYViewSpan, Math.min(yDomainMax, requestedYSpan));
       viewStart = Math.max(0, Math.min(xMax - span, start));
       viewEnd = viewStart + span;
+      viewYMin = Math.max(0, Math.min(yDomainMax - ySpan, yMin));
+      viewYMax = viewYMin + ySpan;
       activeGame = Math.max(Math.ceil(viewStart), Math.min(Math.floor(viewEnd), activeGame));
       renderViewport();
 
@@ -1013,17 +1074,50 @@
       hoverOverlay.setAttribute("aria-valuetext", `Career game ${activeGame}: ${comparison}.`);
     };
 
-    const gameFromPointer = event => {
+    const svgPointFromPointer = event => {
       const bounds = chart.getBoundingClientRect();
-      const svgX = (event.clientX - bounds.left) * (1000 / bounds.width);
-      const ratio = (svgX - plot.left) / (plot.right - plot.left);
-      return viewStart + ratio * (viewEnd - viewStart);
+      return {
+        x: Math.max(plot.left, Math.min(plot.right, (event.clientX - bounds.left) * (1000 / bounds.width))),
+        y: Math.max(plot.top, Math.min(plot.bottom, (event.clientY - bounds.top) * (460 / bounds.height)))
+      };
     };
+
+    const gameFromSvgX = x => viewStart + ((x - plot.left) / (plot.right - plot.left)) * (viewEnd - viewStart);
+    const yardsFromSvgY = y => viewYMax - ((y - plot.top) / (plot.bottom - plot.top)) * (viewYMax - viewYMin);
+    const gameFromPointer = event => gameFromSvgX(svgPointFromPointer(event).x);
 
     const showPointerPosition = event => showCareerGame(gameFromPointer(event));
 
+    const updateSelectionBox = (start, current) => {
+      selectionBox.setAttribute("x", Math.min(start.x, current.x));
+      selectionBox.setAttribute("y", Math.min(start.y, current.y));
+      selectionBox.setAttribute("width", Math.abs(current.x - start.x));
+      selectionBox.setAttribute("height", Math.abs(current.y - start.y));
+      selectionBox.setAttribute("visibility", "visible");
+    };
+
+    const setBoxZoomMode = enabled => {
+      boxZoomMode = enabled;
+      boxZoomButton.setAttribute("aria-pressed", enabled);
+      hoverOverlay.classList.toggle("box-zoom-active", enabled);
+      if (!enabled) selectionBox.setAttribute("visibility", "hidden");
+    };
+
     const beginPointerInteraction = event => {
       pointerInsideChart = true;
+      const isPrimaryMouseButton = event.pointerType === "mouse" && event.button === 0;
+
+      if (boxZoomMode && isPrimaryMouseButton) {
+        const start = svgPointFromPointer(event);
+        dragState = { mode: "box", pointerId: event.pointerId, start, current: start };
+        updateSelectionBox(start, start);
+        hoverOverlay.setPointerCapture?.(event.pointerId);
+        hoverOverlay.classList.add("is-dragging");
+        hoverLayer.setAttribute("visibility", "hidden");
+        event.preventDefault();
+        return;
+      }
+
       const canDrag = event.pointerType === "mouse"
         && event.button === 0
         && viewEnd - viewStart < xMax - .01;
@@ -1033,7 +1127,7 @@
         return;
       }
 
-      dragState = { pointerId: event.pointerId, lastX: event.clientX };
+      dragState = { mode: "pan", pointerId: event.pointerId, lastX: event.clientX };
       hoverOverlay.setPointerCapture?.(event.pointerId);
       hoverOverlay.classList.add("is-dragging");
       hoverLayer.setAttribute("visibility", "hidden");
@@ -1048,6 +1142,13 @@
 
       if (event.pointerId !== dragState.pointerId) return;
 
+      if (dragState.mode === "box") {
+        dragState.current = svgPointFromPointer(event);
+        updateSelectionBox(dragState.start, dragState.current);
+        event.preventDefault();
+        return;
+      }
+
       const bounds = chart.getBoundingClientRect();
       const plotPixelWidth = (plot.right - plot.left) * (bounds.width / 1000);
       const span = viewEnd - viewStart;
@@ -1060,12 +1161,31 @@
     const finishPointerInteraction = (event, showValues) => {
       if (!dragState || event.pointerId !== dragState.pointerId) return;
 
-      const pointerId = dragState.pointerId;
+      const completedDrag = dragState;
+      const pointerId = completedDrag.pointerId;
       dragState = null;
       hoverOverlay.classList.remove("is-dragging");
+      selectionBox.setAttribute("visibility", "hidden");
 
       if (hoverOverlay.hasPointerCapture?.(pointerId)) {
         hoverOverlay.releasePointerCapture(pointerId);
+      }
+
+      if (completedDrag.mode === "box") {
+        const end = svgPointFromPointer(event);
+        const width = Math.abs(end.x - completedDrag.start.x);
+        const height = Math.abs(end.y - completedDrag.start.y);
+
+        if (width >= 8 && height >= 8) {
+          const nextStart = gameFromSvgX(Math.min(completedDrag.start.x, end.x));
+          const nextEnd = gameFromSvgX(Math.max(completedDrag.start.x, end.x));
+          const nextYMin = yardsFromSvgY(Math.max(completedDrag.start.y, end.y));
+          const nextYMax = yardsFromSvgY(Math.min(completedDrag.start.y, end.y));
+          activeGame = Math.round((nextStart + nextEnd) / 2);
+          setViewport(nextStart, nextEnd, nextYMin, nextYMax);
+        }
+
+        return;
       }
 
       if (showValues) showPointerPosition(event);
@@ -1088,9 +1208,10 @@
       });
     });
 
+    boxZoomButton.addEventListener("click", () => setBoxZoomMode(!boxZoomMode));
     zoomInButton.addEventListener("click", () => zoomAt(1));
     zoomOutButton.addEventListener("click", () => zoomAt(-1));
-    zoomResetButton.addEventListener("click", () => setViewport(0, xMax));
+    zoomResetButton.addEventListener("click", () => setViewport(0, xMax, 0, yDomainMax));
     panLeftButton.addEventListener("click", () => panViewport(-1));
     panRightButton.addEventListener("click", () => panViewport(1));
 
@@ -1105,6 +1226,7 @@
     hoverOverlay.addEventListener("lostpointercapture", () => {
       dragState = null;
       hoverOverlay.classList.remove("is-dragging");
+      selectionBox.setAttribute("visibility", "hidden");
     });
     hoverOverlay.addEventListener("pointerleave", () => {
       pointerInsideChart = false;
@@ -1124,6 +1246,12 @@
       showCareerGame(activeGame);
     }, { passive: false });
     hoverOverlay.addEventListener("keydown", event => {
+      if (event.key === "Escape" && boxZoomMode) {
+        event.preventDefault();
+        setBoxZoomMode(false);
+        return;
+      }
+
       const steps = { ArrowLeft: -1, ArrowRight: 1, PageDown: -10, PageUp: 10 };
       let nextGame = activeGame;
 
