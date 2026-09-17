@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#4f2683">
+  <meta name="description" content="The NFL's top 100 all-time receiving-yard leaders, with Justin Jefferson highlighted.">
+  <title>JJ23K — NFL All-Time Receiving Leaders</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f2683'/%3E%3Cpath d='M7 50h50' stroke='%23ffc62f' stroke-width='5'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial' font-size='30' font-weight='900' fill='white'%3E18%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #080b10;
+      --surface: #10151d;
+      --surface-raised: #151b25;
+      --line: #27303e;
+      --line-soft: #1c2430;
+      --text: #f5f7fb;
+      --muted: #9da8b8;
+      --purple: #4f2683;
+      --purple-bright: #7b45bd;
+      --gold: #ffc62f;
+      --max: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(90deg, transparent 49.9%, rgba(255, 255, 255, .025) 50%, transparent 50.1%),
+        repeating-linear-gradient(0deg, transparent 0 95px, rgba(255, 255, 255, .018) 95px 96px),
+        var(--page);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      padding: 48px 0 36px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 28px;
+      height: 3px;
+      background: var(--gold);
+      content: "";
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-size: clamp(2.45rem, 6vw, 5.7rem);
+      font-weight: 900;
+      letter-spacing: -.065em;
+      line-height: .88;
+      text-wrap: balance;
+    }
+
+    .title-accent {
+      color: transparent;
+      -webkit-text-stroke: 1.5px #c4ccd8;
+    }
+
+    .jj-jump {
+      display: grid;
+      min-width: 225px;
+      padding: 16px 18px;
+      border: 1px solid #7548aa;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #3f1c6c, var(--purple));
+      box-shadow: 0 12px 34px rgba(79, 38, 131, .24);
+      text-decoration: none;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+
+    .jj-jump:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .jj-jump:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .jj-jump__label {
+      color: #d6c2ed;
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .jj-jump__stat {
+      margin-top: 2px;
+      font-size: 1.25rem;
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+
+    .jj-jump__rank {
+      margin-top: 3px;
+      color: var(--gold);
+      font-size: .88rem;
+      font-weight: 750;
+    }
+
+    .table-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .32);
+    }
+
+    .table-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-raised);
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 650;
+    }
+
+    .table-meta strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .legend::before {
+      width: 20px;
+      height: 10px;
+      border: 1px solid #8a56c6;
+      border-radius: 3px;
+      background: var(--purple);
+      content: "";
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+
+    thead {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+    }
+
+    th {
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #0e131b;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    th:nth-child(1),
+    th:nth-child(2) {
+      text-align: left;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--line-soft);
+      transition: background-color .15s ease;
+    }
+
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    tbody tr:not(.is-jj):hover {
+      background: #151c26;
+    }
+
+    td {
+      height: 54px;
+      padding: 10px 18px;
+      color: #c8d0dc;
+      text-align: right;
+    }
+
+    td:first-child,
+    td:nth-child(2) {
+      text-align: left;
+    }
+
+    .rank {
+      width: 72px;
+      color: #768397;
+      font-size: .86rem;
+      font-weight: 800;
+    }
+
+    tr[data-rank="1"] .rank,
+    tr[data-rank="2"] .rank,
+    tr[data-rank="3"] .rank {
+      color: var(--gold);
+    }
+
+    .player {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 740;
+      letter-spacing: -.01em;
+    }
+
+    .yards {
+      color: #fff;
+      font-weight: 850;
+    }
+
+    .is-jj {
+      scroll-margin-top: 54px;
+      background: linear-gradient(90deg, #3d176b 0%, var(--purple) 48%, #32135a 100%);
+      box-shadow: inset 5px 0 0 var(--gold), inset 0 1px 0 #9161c8, inset 0 -1px 0 #9161c8;
+    }
+
+    .is-jj td {
+      color: #eee8f8;
+    }
+
+    .is-jj .rank,
+    .is-jj .yards,
+    .is-jj .player {
+      color: #fff;
+    }
+
+    .player-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .jj-tag {
+      display: inline-grid;
+      place-items: center;
+      min-width: 32px;
+      height: 24px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #26133e;
+      font-size: .7rem;
+      font-weight: 950;
+      letter-spacing: .05em;
+    }
+
+    .source-note {
+      margin: 14px 2px 0;
+      color: #7f8a9a;
+      font-size: .78rem;
+    }
+
+    .source-note a {
+      color: #bac4d3;
+      text-underline-offset: 3px;
+    }
+
+    .source-note a:hover {
+      color: var(--gold);
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(calc(100% - 20px), var(--max));
+        padding-top: 28px;
+      }
+
+      .masthead {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      h1 {
+        max-width: 560px;
+      }
+
+      .jj-jump {
+        min-width: 0;
+      }
+
+      .table-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      th,
+      td {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .title-accent {
+        -webkit-text-stroke-width: 1px;
+      }
+
+      th:nth-child(4),
+      th:nth-child(5),
+      th:nth-child(6),
+      td:nth-child(4),
+      td:nth-child(5),
+      td:nth-child(6) {
+        display: none;
+      }
+
+      th,
+      td {
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+
+      .rank {
+        width: 52px;
+      }
+
+      .player {
+        font-size: .94rem;
+      }
+
+      .source-note {
+        font-size: .75rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .jj-jump {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">JJ23K · NFL record book</p>
+        <h1>All-Time <span class="title-accent">Receiving</span> Leaders</h1>
+      </div>
+      <a class="jj-jump" href="#justin-jefferson" aria-label="Jump to Justin Jefferson at rank 94">
+        <span class="jj-jump__label">Justin Jefferson</span>
+        <span class="jj-jump__stat">8,572 receiving yards</span>
+        <span class="jj-jump__rank">#94 all time ↓</span>
+      </a>
+    </header>
+
+    <section class="table-card" aria-labelledby="leaderboard-heading">
+      <div class="table-meta">
+        <span id="leaderboard-heading"><strong>Top 100</strong> · Regular-season career receiving yards</span>
+        <span class="legend">Jefferson spotlight</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Player</th>
+            <th scope="col">Yards</th>
+            <th scope="col">Rec</th>
+            <th scope="col">Avg</th>
+            <th scope="col">TD</th>
+          </tr>
+        </thead>
+        <tbody id="leaders"></tbody>
+      </table>
+      <noscript>This leaderboard requires JavaScript to display.</noscript>
+    </section>
+
+    <p class="source-note">
+      Totals through Week 1 of the 2026 season. Data sourced from
+      <a href="https://www.statmuse.com/nfl/ask/most-career-receiving-yards" target="_blank" rel="noreferrer">StatMuse</a>
+      and checked against
+      <a href="https://www.pro-football-reference.com/leaders/rec_yds_career.htm" target="_blank" rel="noreferrer">Pro Football Reference</a>.
+    </p>
+  </main>
+
+  <script>
+    const leaders = [
+      [1, "Jerry Rice", 22895, 1549, 14.8, 197],
+      [2, "Larry Fitzgerald", 17492, 1432, 12.2, 121],
+      [3, "Terrell Owens", 15934, 1078, 14.8, 153],
+      [4, "Randy Moss", 15292, 982, 15.6, 156],
+      [5, "Isaac Bruce", 15208, 1024, 14.9, 91],
+      [6, "Tony Gonzalez", 15127, 1325, 11.4, 111],
+      [7, "Tim Brown", 14934, 1094, 13.7, 100],
+      [8, "Steve Smith Sr.", 14731, 1031, 14.3, 81],
+      [9, "Marvin Harrison", 14580, 1102, 13.2, 128],
+      [10, "Reggie Wayne", 14345, 1070, 13.4, 82],
+      [11, "Andre Johnson", 14185, 1062, 13.4, 70],
+      [12, "James Lofton", 14004, 764, 18.3, 75],
+      [13, "Cris Carter", 13899, 1101, 12.6, 130],
+      [14, "Anquan Boldin", 13779, 1076, 12.8, 82],
+      [15, "Henry Ellard", 13777, 814, 16.9, 65],
+      [16, "Julio Jones", 13703, 914, 15, 66],
+      [17, "Torry Holt", 13382, 920, 14.5, 74],
+      [18, "DeAndre Hopkins", 13295, 1006, 13.2, 85],
+      [19, "Andre Reed", 13198, 951, 13.9, 87],
+      [20, "Mike Evans", 13101, 872, 15, 109],
+      [21, "Steve Largent", 13089, 819, 16, 100],
+      [22, "Travis Kelce", 13073, 1083, 12.1, 82],
+      [23, "Jason Witten", 13046, 1228, 10.6, 74],
+      [24, "Irving Fryar", 12785, 851, 15, 84],
+      [25, "Art Monk", 12721, 940, 13.5, 68],
+      [26, "Davante Adams", 12659, 1020, 12.4, 117],
+      [27, "Brandon Marshall", 12351, 970, 12.7, 83],
+      [28, "Antonio Brown", 12291, 928, 13.2, 83],
+      [29, "Jimmy Smith", 12287, 862, 14.3, 67],
+      [30, "Charlie Joiner", 12146, 750, 16.2, 65],
+      [31, "Keenan Allen", 12083, 1061, 11.4, 70],
+      [32, "Hines Ward", 12083, 1000, 12.1, 85],
+      [33, "Derrick Mason", 12061, 943, 12.8, 66],
+      [34, "Michael Irvin", 11904, 750, 15.9, 65],
+      [35, "Antonio Gates", 11841, 955, 12.4, 116],
+      [36, "Don Maynard", 11834, 633, 18.7, 88],
+      [37, "Calvin Johnson", 11619, 731, 15.9, 83],
+      [38, "Stefon Diggs", 11559, 946, 12.2, 75],
+      [39, "Muhsin Muhammad", 11438, 860, 13.3, 62],
+      [40, "Rod Smith", 11389, 849, 13.4, 68],
+      [41, "Keenan McCardell", 11373, 883, 12.9, 63],
+      [42, "Tyreek Hill", 11363, 819, 13.9, 83],
+      [43, "DeSean Jackson", 11263, 641, 17.6, 58],
+      [44, "Chad Johnson", 11059, 766, 14.4, 67],
+      [45, "Joey Galloway", 10950, 701, 15.6, 77],
+      [46, "Roddy White", 10863, 808, 13.4, 63],
+      [47, "Gary Clark", 10856, 699, 15.5, 65],
+      [48, "Stanley Morgan", 10716, 557, 19.2, 72],
+      [49, "Keyshawn Johnson", 10571, 814, 13, 64],
+      [50, "A.J. Green", 10514, 727, 14.5, 70],
+      [51, "Harold Jackson", 10372, 579, 17.9, 76],
+      [52, "Santana Moss", 10283, 732, 14, 66],
+      [53, "Lance Alworth", 10266, 542, 18.9, 85],
+      [54, "Andre Rison", 10205, 743, 13.7, 84],
+      [55, "Donald Driver", 10137, 743, 13.6, 61],
+      [56, "Shannon Sharpe", 10060, 815, 12.3, 62],
+      [57, "Amari Cooper", 10033, 711, 14.1, 64],
+      [58, "Eric Moulds", 9995, 764, 13.1, 49],
+      [59, "Wes Welker", 9924, 903, 11, 50],
+      [60, "Drew Hill", 9831, 634, 15.5, 60],
+      [61, "T.Y. Hilton", 9812, 638, 15.4, 53],
+      [62, "Brandin Cooks", 9811, 734, 13.4, 60],
+      [63, "Demaryius Thomas", 9763, 724, 13.5, 63],
+      [64, "Marques Colston", 9759, 711, 13.7, 72],
+      [65, "Amani Toomer", 9497, 668, 14.2, 54],
+      [66, "Rob Moore", 9368, 628, 14.9, 49],
+      [67, "Rob Gronkowski", 9286, 621, 15, 92],
+      [68, "Raymond Berry", 9275, 631, 14.7, 68],
+      [69, "Emmanuel Sanders", 9245, 704, 13.1, 51],
+      [70, "Herman Moore", 9174, 670, 13.7, 62],
+      [71, "Anthony Miller", 9148, 595, 15.4, 63],
+      [72, "Charley Taylor", 9110, 649, 14, 79],
+      [73, "Vincent Jackson", 9080, 540, 16.8, 57],
+      [74, "Tony Martin", 9065, 593, 15.3, 56],
+      [75, "Harold Carmichael", 8985, 590, 15.2, 79],
+      [76, "Mark Clayton", 8974, 582, 15.4, 84],
+      [77, "Fred Biletnikoff", 8974, 589, 15.2, 76],
+      [78, "Wes Chandler", 8966, 559, 16, 56],
+      [79, "Roy Green", 8965, 559, 16, 66],
+      [80, "Tyler Lockett", 8885, 693, 12.8, 62],
+      [81, "Ricky Proehl", 8878, 669, 13.3, 54],
+      [82, "Mark Duper", 8869, 511, 17.4, 59],
+      [83, "Terry Glenn", 8823, 593, 14.9, 44],
+      [84, "Terance Mathis", 8809, 689, 12.8, 63],
+      [85, "Mark Carrier", 8763, 569, 15.4, 48],
+      [86, "Joe Horn", 8744, 603, 14.5, 58],
+      [87, "John Stallworth", 8723, 537, 16.2, 63],
+      [88, "Johnnie Morton", 8719, 624, 14, 43],
+      [89, "Cliff Branch", 8685, 501, 17.3, 67],
+      [90, "Greg Olsen", 8683, 742, 11.7, 60],
+      [91, "Laveranues Coles", 8609, 674, 12.8, 49],
+      [92, "Zach Ertz", 8592, 825, 10.4, 57],
+      [93, "Jordy Nelson", 8587, 613, 14, 72],
+      [94, "Justin Jefferson", 8572, 587, 14.6, 44],
+      [95, "Paul Warfield", 8565, 427, 20.1, 85],
+      [96, "Jimmy Graham", 8545, 719, 11.9, 89],
+      [97, "Plaxico Burress", 8499, 553, 15.4, 64],
+      [98, "Adam Thielen", 8497, 704, 12.1, 64],
+      [99, "Billy Howton", 8459, 503, 16.8, 61],
+      [100, "Tommy McDonald", 8410, 495, 17, 84]
+    ];
+
+    const number = new Intl.NumberFormat("en-US");
+    const body = document.querySelector("#leaders");
+
+    body.innerHTML = leaders.map(([rank, player, yards, receptions, average, touchdowns]) => {
+      const isJefferson = player === "Justin Jefferson";
+      const playerName = isJefferson
+        ? `<span class="player-wrap"><span>${player}</span><span class="jj-tag" aria-label="Justin Jefferson spotlight">JJ</span></span>`
+        : player;
+
+      return `
+        <tr${isJefferson ? ' class="is-jj" id="justin-jefferson"' : ""} data-rank="${rank}">
+          <td class="rank">${rank}</td>
+          <th class="player" scope="row">${playerName}</th>
+          <td class="yards">${number.format(yards)}</td>
+          <td>${number.format(receptions)}</td>
+          <td>${average.toFixed(1)}</td>
+          <td>${touchdowns}</td>
+        </tr>`;
+    }).join("");
+  </script>
+</body>
+</html>
