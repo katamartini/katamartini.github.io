@@ -297,6 +297,63 @@
       stroke-width: 5px;
     }
 
+    .chart-hit-area {
+      cursor: crosshair;
+      fill: transparent;
+      touch-action: pan-x pan-y;
+    }
+
+    .chart-hit-area:focus-visible {
+      outline: none;
+      stroke: var(--gold);
+      stroke-dasharray: 5 5;
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart-hover {
+      pointer-events: none;
+    }
+
+    .chart-hover-guide {
+      stroke: #c9d1dc;
+      stroke-dasharray: 4 5;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart-hover-dot {
+      stroke: var(--surface);
+      stroke-width: 4;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart-tooltip-box {
+      fill: #090d13;
+      stroke: #485466;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .chart-tooltip-title,
+    .chart-tooltip-row {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .chart-tooltip-title {
+      fill: #9da8b8;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .chart-tooltip-row {
+      fill: #f6f8fb;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
     .chart-caption {
       margin: 0;
       padding: 0 22px 16px;
@@ -594,7 +651,7 @@
           <desc id="chart-svg-desc">Jerry Rice reached 22,895 receiving yards in 303 games. Justin Jefferson has 8,572 receiving yards through 95 games.</desc>
         </svg>
       </div>
-      <figcaption class="chart-caption">Each line starts at zero; Jefferson’s line ends at his latest completed game.</figcaption>
+      <figcaption class="chart-caption">Hover, tap, or focus the chart to compare yardage after the same number of career games.</figcaption>
       <noscript>This chart requires JavaScript to display.</noscript>
     </figure>
 
@@ -666,7 +723,109 @@
       <circle class="chart-dot chart-dot--jj" cx="${xScale(jjEnd.game)}" cy="${yScale(jjEnd.yards)}" r="7"></circle>
       <text class="chart-end-label" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
       <text class="chart-end-label" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
+      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
+      <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
+        <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
+        <circle class="chart-hover-dot chart-dot--rice" id="chart-hover-rice-dot" r="6"></circle>
+        <circle class="chart-hover-dot chart-dot--jj" id="chart-hover-jj-dot" r="6"></circle>
+        <g id="chart-tooltip">
+          <rect class="chart-tooltip-box" id="chart-tooltip-box" width="216" height="84" rx="10"></rect>
+          <text class="chart-tooltip-title" id="chart-tooltip-game" x="14" y="21"></text>
+          <circle class="chart-dot--rice" cx="15" cy="43" r="4"></circle>
+          <text class="chart-tooltip-row" x="27" y="47">Jerry Rice</text>
+          <text class="chart-tooltip-row" id="chart-tooltip-rice" x="202" y="47" text-anchor="end"></text>
+          <g id="chart-tooltip-jj-row">
+            <circle class="chart-dot--jj" cx="15" cy="68" r="4"></circle>
+            <text class="chart-tooltip-row" x="27" y="72">Justin Jefferson</text>
+            <text class="chart-tooltip-row" id="chart-tooltip-jj" x="202" y="72" text-anchor="end"></text>
+          </g>
+        </g>
+      </g>
     `;
+
+    const hoverOverlay = document.querySelector("#chart-hit-area");
+    const hoverLayer = document.querySelector("#chart-hover");
+    const hoverGuide = document.querySelector("#chart-hover-guide");
+    const hoverRiceDot = document.querySelector("#chart-hover-rice-dot");
+    const hoverJjDot = document.querySelector("#chart-hover-jj-dot");
+    const tooltip = document.querySelector("#chart-tooltip");
+    const tooltipBox = document.querySelector("#chart-tooltip-box");
+    const tooltipGame = document.querySelector("#chart-tooltip-game");
+    const tooltipRice = document.querySelector("#chart-tooltip-rice");
+    const tooltipJj = document.querySelector("#chart-tooltip-jj");
+    const tooltipJjRow = document.querySelector("#chart-tooltip-jj-row");
+    let activeGame = jjEnd.game;
+    let pointerInsideChart = false;
+
+    const showCareerGame = game => {
+      activeGame = Math.max(0, Math.min(xMax, Math.round(game)));
+      const x = xScale(activeGame);
+      const riceYards = careerYards.rice[activeGame];
+      const jjYards = careerYards.jefferson[activeGame];
+      const hasJeffersonValue = typeof jjYards === "number";
+      const riceY = yScale(riceYards);
+      const tooltipX = x > plot.right - 230 ? x - 228 : x + 12;
+      const tooltipY = riceY < 132 ? plot.bottom - (hasJeffersonValue ? 96 : 72) : plot.top + 12;
+
+      hoverLayer.setAttribute("visibility", "visible");
+      hoverGuide.setAttribute("x1", x);
+      hoverGuide.setAttribute("x2", x);
+      hoverRiceDot.setAttribute("cx", x);
+      hoverRiceDot.setAttribute("cy", riceY);
+      hoverJjDot.setAttribute("visibility", hasJeffersonValue ? "visible" : "hidden");
+      tooltipJjRow.setAttribute("visibility", hasJeffersonValue ? "visible" : "hidden");
+      tooltipBox.setAttribute("height", hasJeffersonValue ? 84 : 59);
+      tooltip.setAttribute("transform", `translate(${tooltipX} ${tooltipY})`);
+      tooltipGame.textContent = `Career game ${activeGame}`;
+      tooltipRice.textContent = riceYards.toLocaleString("en-US");
+
+      if (hasJeffersonValue) {
+        hoverJjDot.setAttribute("cx", x);
+        hoverJjDot.setAttribute("cy", yScale(jjYards));
+        tooltipJj.textContent = jjYards.toLocaleString("en-US");
+      }
+
+      const comparison = hasJeffersonValue
+        ? `Career game ${activeGame}: Jerry Rice ${riceYards.toLocaleString("en-US")} yards; Justin Jefferson ${jjYards.toLocaleString("en-US")} yards.`
+        : `Career game ${activeGame}: Jerry Rice ${riceYards.toLocaleString("en-US")} yards; Justin Jefferson had played 95 games.`;
+
+      hoverOverlay.setAttribute("aria-valuenow", activeGame);
+      hoverOverlay.setAttribute("aria-valuetext", comparison);
+    };
+
+    const showPointerPosition = event => {
+      const bounds = chart.getBoundingClientRect();
+      const svgX = (event.clientX - bounds.left) * (1000 / bounds.width);
+      const game = ((svgX - plot.left) / (plot.right - plot.left)) * xMax;
+      showCareerGame(game);
+    };
+
+    hoverOverlay.addEventListener("pointerenter", event => {
+      pointerInsideChart = true;
+      showPointerPosition(event);
+    });
+    hoverOverlay.addEventListener("pointermove", showPointerPosition);
+    hoverOverlay.addEventListener("pointerdown", showPointerPosition);
+    hoverOverlay.addEventListener("pointerleave", () => {
+      pointerInsideChart = false;
+      if (document.activeElement !== hoverOverlay) hoverLayer.setAttribute("visibility", "hidden");
+    });
+    hoverOverlay.addEventListener("focus", () => showCareerGame(activeGame));
+    hoverOverlay.addEventListener("blur", () => {
+      if (!pointerInsideChart) hoverLayer.setAttribute("visibility", "hidden");
+    });
+    hoverOverlay.addEventListener("keydown", event => {
+      const steps = { ArrowLeft: -1, ArrowRight: 1, PageDown: -10, PageUp: 10 };
+      let nextGame = activeGame;
+
+      if (event.key in steps) nextGame += steps[event.key];
+      else if (event.key === "Home") nextGame = 0;
+      else if (event.key === "End") nextGame = xMax;
+      else return;
+
+      event.preventDefault();
+      showCareerGame(nextGame);
+    });
 
     const leaders = [
       [1, "Jerry Rice", 22895, 1549, 14.8, 197],
