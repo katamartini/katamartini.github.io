@@ -182,15 +182,70 @@
       font-size: .83rem;
     }
 
+    .chart-actions {
+      display: grid;
+      gap: 10px;
+      max-width: 650px;
+      justify-items: end;
+    }
+
     .chart-legend {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 7px;
-      max-width: 650px;
       color: #d2d8e2;
       font-size: .875rem;
       font-weight: 750;
+    }
+
+    .chart-zoom {
+      display: inline-flex;
+      overflow: hidden;
+      border: 1px solid #3a4657;
+      border-radius: 9px;
+      background: #0d1219;
+    }
+
+    .chart-zoom button {
+      display: grid;
+      min-width: 36px;
+      height: 34px;
+      padding: 0 9px;
+      border: 0;
+      border-right: 1px solid #3a4657;
+      background: transparent;
+      color: #e3e8f0;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 850;
+      place-items: center;
+    }
+
+    .chart-zoom button:last-child {
+      border-right: 0;
+    }
+
+    .chart-zoom button:hover,
+    .chart-zoom button:focus-visible {
+      background: #1c2531;
+      color: var(--gold);
+      outline: none;
+    }
+
+    .chart-zoom button:disabled {
+      color: #596474;
+      cursor: default;
+    }
+
+    .chart-zoom button:disabled:hover {
+      background: transparent;
+    }
+
+    #chart-zoom-reset {
+      min-width: 55px;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
     }
 
     .chart-toggle {
@@ -594,6 +649,11 @@
         justify-content: flex-start;
       }
 
+      .chart-actions {
+        max-width: none;
+        justify-items: start;
+      }
+
       th,
       td {
         padding-right: 12px;
@@ -666,7 +726,16 @@
           <h2 class="chart-title" id="chart-heading">Career receiving yards, game by game</h2>
           <p class="chart-subtitle">Cumulative regular-season receiving yards after each career game</p>
         </div>
-        <div class="chart-legend" id="chart-legend" aria-label="Toggle player lines"></div>
+        <div class="chart-actions">
+          <div class="chart-legend" id="chart-legend" aria-label="Toggle player lines"></div>
+          <div class="chart-zoom" aria-label="Chart zoom controls" role="group">
+            <button id="chart-pan-left" type="button" aria-label="Pan earlier in career" title="Pan earlier">←</button>
+            <button id="chart-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+            <button id="chart-zoom-reset" type="button" aria-label="Reset zoom" title="Reset zoom">1×</button>
+            <button id="chart-zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+            <button id="chart-pan-right" type="button" aria-label="Pan later in career" title="Pan later">→</button>
+          </div>
+        </div>
       </div>
       <div class="chart-scroll" tabindex="0" aria-label="Scrollable receiving yards chart">
         <svg class="career-chart" id="career-chart" viewBox="0 0 1000 460" role="img" aria-labelledby="chart-svg-title chart-svg-desc">
@@ -674,7 +743,7 @@
           <desc id="chart-svg-desc">Toggle and compare Jerry Rice, Justin Jefferson, Julio Jones, Calvin Johnson, Antonio Brown, Torry Holt, and Lance Alworth.</desc>
         </svg>
       </div>
-      <figcaption class="chart-caption">Use the player buttons to show or hide lines. Hover, tap, or focus the chart to compare the selected careers.</figcaption>
+      <figcaption class="chart-caption">Toggle player lines, then zoom and pan through career games. Hover, tap, or focus the chart for exact values.</figcaption>
       <noscript>This chart requires JavaScript to display.</noscript>
     </figure>
 
@@ -735,35 +804,56 @@
     const plot = { left: 84, right: 952, top: 28, bottom: 390 };
     const xMax = 303;
     const yMax = 24000;
-    const xScale = game => plot.left + (game / xMax) * (plot.right - plot.left);
+    const minViewSpan = 25;
+    let viewStart = 0;
+    let viewEnd = xMax;
+    const xScale = game => plot.left + ((game - viewStart) / (viewEnd - viewStart)) * (plot.right - plot.left);
     const yScale = yards => plot.bottom - (yards / yMax) * (plot.bottom - plot.top);
     const pathFor = values => values.map((yards, game) => `${game ? "L" : "M"}${xScale(game).toFixed(2)},${yScale(yards).toFixed(2)}`).join(" ");
-    const xTicks = [0, 50, 100, 150, 200, 250, 300];
+    const xTicksForView = () => {
+      const span = viewEnd - viewStart;
+      const step = [5, 10, 20, 25, 50, 100].find(candidate => span / candidate <= 7) || 100;
+      const ticks = [];
+
+      for (let game = Math.ceil(viewStart / step) * step; game <= viewEnd; game += step) {
+        ticks.push(game);
+      }
+
+      return ticks;
+    };
+    const xTicks = xTicksForView();
     const yTicks = [0, 4000, 8000, 12000, 16000, 20000, 24000];
     const riceEnd = { game: careerYards.rice.length - 1, yards: careerYards.rice.at(-1) };
     const jjEnd = { game: careerYards.jefferson.length - 1, yards: careerYards.jefferson.at(-1) };
 
     chart.innerHTML += `
+      <defs>
+        <clipPath id="chart-plot-clip">
+          <rect x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}"></rect>
+        </clipPath>
+      </defs>
       <g aria-hidden="true">
         ${yTicks.map(yards => `
           <line class="chart-grid" x1="${plot.left}" y1="${yScale(yards)}" x2="${plot.right}" y2="${yScale(yards)}"></line>
           <text class="chart-tick" x="${plot.left - 13}" y="${yScale(yards) + 4}" text-anchor="end">${yards === 0 ? "0" : `${yards / 1000}K`}</text>
         `).join("")}
-        ${xTicks.map(game => `
-          <line class="chart-grid" x1="${xScale(game)}" y1="${plot.top}" x2="${xScale(game)}" y2="${plot.bottom}"></line>
-          <text class="chart-tick" x="${xScale(game)}" y="${plot.bottom + 24}" text-anchor="middle">${game}</text>
-        `).join("")}
+        <g id="chart-x-grid">
+          ${xTicks.map(game => `
+            <line class="chart-grid" x1="${xScale(game)}" y1="${plot.top}" x2="${xScale(game)}" y2="${plot.bottom}"></line>
+            <text class="chart-tick" x="${xScale(game)}" y="${plot.bottom + 24}" text-anchor="middle">${game}</text>
+          `).join("")}
+        </g>
         <line class="chart-axis" x1="${plot.left}" y1="${plot.bottom}" x2="${plot.right}" y2="${plot.bottom}"></line>
         <line class="chart-axis" x1="${plot.left}" y1="${plot.top}" x2="${plot.left}" y2="${plot.bottom}"></line>
         <text class="chart-axis-title" x="${(plot.left + plot.right) / 2}" y="440" text-anchor="middle">Career games played</text>
         <text class="chart-axis-title" x="20" y="${(plot.top + plot.bottom) / 2}" text-anchor="middle" transform="rotate(-90 20 ${(plot.top + plot.bottom) / 2})">Receiving yards</text>
       </g>
       ${careerSeries.map(series => `
-        <path class="chart-path${series.key === "rice" ? " chart-path--rice" : ""}${series.key === "jefferson" ? " chart-path--jj" : ""}" data-series="${series.key}" style="stroke:${series.color}" d="${pathFor(series.values)}"></path>
-        <circle class="chart-dot" data-series="${series.key}" cx="${xScale(series.values.length - 1)}" cy="${yScale(series.values.at(-1))}" r="${series.key === "jefferson" ? 7 : 5}" style="fill:${series.color}"></circle>
+        <path class="chart-path${series.key === "rice" ? " chart-path--rice" : ""}${series.key === "jefferson" ? " chart-path--jj" : ""}" data-series="${series.key}" data-series-path style="stroke:${series.color}" d="${pathFor(series.values)}" clip-path="url(#chart-plot-clip)"></path>
+        <circle class="chart-dot" data-series="${series.key}" data-end-marker cx="${xScale(series.values.length - 1)}" cy="${yScale(series.values.at(-1))}" r="${series.key === "jefferson" ? 7 : 5}" style="fill:${series.color}" clip-path="url(#chart-plot-clip)"></circle>
       `).join("")}
-      <text class="chart-end-label" data-series="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
-      <text class="chart-end-label" data-series="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
+      <text class="chart-end-label" data-series="rice" data-end-label="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
+      <text class="chart-end-label" data-series="jefferson" data-end-label="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
       <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
       <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
         <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
@@ -793,11 +883,87 @@
     const tooltipBox = document.querySelector("#chart-tooltip-box");
     const tooltipGame = document.querySelector("#chart-tooltip-game");
     const tooltipRows = document.querySelector("#chart-tooltip-rows");
+    const xGrid = document.querySelector("#chart-x-grid");
+    const zoomInButton = document.querySelector("#chart-zoom-in");
+    const zoomOutButton = document.querySelector("#chart-zoom-out");
+    const zoomResetButton = document.querySelector("#chart-zoom-reset");
+    const panLeftButton = document.querySelector("#chart-pan-left");
+    const panRightButton = document.querySelector("#chart-pan-right");
+    const seriesByKey = new Map(careerSeries.map(series => [series.key, series]));
     let activeGame = jjEnd.game;
     let pointerInsideChart = false;
 
+    const renderViewport = () => {
+      const ticks = xTicksForView();
+
+      xGrid.innerHTML = ticks.map(game => `
+        <line class="chart-grid" x1="${xScale(game)}" y1="${plot.top}" x2="${xScale(game)}" y2="${plot.bottom}"></line>
+        <text class="chart-tick" x="${xScale(game)}" y="${plot.bottom + 24}" text-anchor="middle">${game}</text>
+      `).join("");
+
+      chart.querySelectorAll("[data-series-path]").forEach(path => {
+        path.setAttribute("d", pathFor(seriesByKey.get(path.dataset.series).values));
+      });
+
+      chart.querySelectorAll("[data-end-marker]").forEach(marker => {
+        const series = seriesByKey.get(marker.dataset.series);
+        const endGame = series.values.length - 1;
+        marker.setAttribute("cx", xScale(endGame));
+        marker.setAttribute("visibility", endGame >= viewStart && endGame <= viewEnd ? "visible" : "hidden");
+      });
+
+      [
+        { key: "rice", game: riceEnd.game, yards: riceEnd.yards, offset: -12 },
+        { key: "jefferson", game: jjEnd.game, yards: jjEnd.yards, offset: 13 }
+      ].forEach(item => {
+        const label = document.querySelector(`[data-end-label="${item.key}"]`);
+        label.setAttribute("x", xScale(item.game) + item.offset);
+        label.setAttribute("y", yScale(item.yards) - (item.key === "rice" ? 13 : 14));
+        label.setAttribute("visibility", item.game >= viewStart && item.game <= viewEnd ? "visible" : "hidden");
+      });
+
+      const span = viewEnd - viewStart;
+      const zoom = xMax / span;
+      const fullView = span >= xMax - .01;
+      zoomResetButton.textContent = `${zoom.toFixed(zoom >= 10 ? 0 : 1).replace(".0", "")}×`;
+      zoomInButton.disabled = span <= minViewSpan + .01;
+      zoomOutButton.disabled = fullView;
+      zoomResetButton.disabled = fullView;
+      panLeftButton.disabled = viewStart <= .01;
+      panRightButton.disabled = viewEnd >= xMax - .01;
+      hoverOverlay.setAttribute("aria-valuemin", Math.ceil(viewStart));
+      hoverOverlay.setAttribute("aria-valuemax", Math.floor(viewEnd));
+    };
+
+    const setViewport = (start, end) => {
+      const requestedSpan = end - start;
+      const span = Math.max(minViewSpan, Math.min(xMax, requestedSpan));
+      viewStart = Math.max(0, Math.min(xMax - span, start));
+      viewEnd = viewStart + span;
+      activeGame = Math.max(Math.ceil(viewStart), Math.min(Math.floor(viewEnd), activeGame));
+      renderViewport();
+
+      if (hoverLayer.getAttribute("visibility") === "visible") showCareerGame(activeGame);
+    };
+
+    const zoomAt = (direction, center = activeGame) => {
+      const span = viewEnd - viewStart;
+      const nextSpan = direction > 0
+        ? Math.max(minViewSpan, span / 2)
+        : Math.min(xMax, span * 2);
+      const anchor = Math.max(viewStart, Math.min(viewEnd, center));
+      const ratio = (anchor - viewStart) / span;
+      setViewport(anchor - ratio * nextSpan, anchor + (1 - ratio) * nextSpan);
+    };
+
+    const panViewport = direction => {
+      const span = viewEnd - viewStart;
+      const shift = span * .45 * direction;
+      setViewport(viewStart + shift, viewEnd + shift);
+    };
+
     const showCareerGame = game => {
-      activeGame = Math.max(0, Math.min(xMax, Math.round(game)));
+      activeGame = Math.max(Math.ceil(viewStart), Math.min(Math.floor(viewEnd), Math.round(game)));
       const x = xScale(activeGame);
       const values = careerSeries
         .filter(series => visibleSeries.has(series.key) && activeGame < series.values.length)
@@ -837,12 +1003,14 @@
       hoverOverlay.setAttribute("aria-valuetext", `Career game ${activeGame}: ${comparison}.`);
     };
 
-    const showPointerPosition = event => {
+    const gameFromPointer = event => {
       const bounds = chart.getBoundingClientRect();
       const svgX = (event.clientX - bounds.left) * (1000 / bounds.width);
-      const game = ((svgX - plot.left) / (plot.right - plot.left)) * xMax;
-      showCareerGame(game);
+      const ratio = (svgX - plot.left) / (plot.right - plot.left);
+      return viewStart + ratio * (viewEnd - viewStart);
     };
+
+    const showPointerPosition = event => showCareerGame(gameFromPointer(event));
 
     chartLegend.querySelectorAll("[data-toggle-series]").forEach(button => {
       button.addEventListener("click", () => {
@@ -861,6 +1029,12 @@
       });
     });
 
+    zoomInButton.addEventListener("click", () => zoomAt(1));
+    zoomOutButton.addEventListener("click", () => zoomAt(-1));
+    zoomResetButton.addEventListener("click", () => setViewport(0, xMax));
+    panLeftButton.addEventListener("click", () => panViewport(-1));
+    panRightButton.addEventListener("click", () => panViewport(1));
+
     hoverOverlay.addEventListener("pointerenter", event => {
       pointerInsideChart = true;
       showPointerPosition(event);
@@ -875,18 +1049,28 @@
     hoverOverlay.addEventListener("blur", () => {
       if (!pointerInsideChart) hoverLayer.setAttribute("visibility", "hidden");
     });
+    hoverOverlay.addEventListener("wheel", event => {
+      if (!event.ctrlKey && !event.metaKey) return;
+      event.preventDefault();
+      const center = gameFromPointer(event);
+      activeGame = Math.round(center);
+      zoomAt(event.deltaY < 0 ? 1 : -1, center);
+      showCareerGame(activeGame);
+    }, { passive: false });
     hoverOverlay.addEventListener("keydown", event => {
       const steps = { ArrowLeft: -1, ArrowRight: 1, PageDown: -10, PageUp: 10 };
       let nextGame = activeGame;
 
       if (event.key in steps) nextGame += steps[event.key];
-      else if (event.key === "Home") nextGame = 0;
-      else if (event.key === "End") nextGame = xMax;
+      else if (event.key === "Home") nextGame = Math.ceil(viewStart);
+      else if (event.key === "End") nextGame = Math.floor(viewEnd);
       else return;
 
       event.preventDefault();
       showCareerGame(nextGame);
     });
+
+    renderViewport();
 
     const leaders = [
       [1, "Jerry Rice", 22895, 1549, 14.8, 197],
