@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-17T11:45:43.780685+00:00",
+  "data_updated_at": "2026-09-18T05:05:20.753240+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -3732,6 +3732,90 @@
         {
           "row_number": 3,
           "pattern": "YYXGY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1916,
+      "score": 3,
+      "hard_mode": false,
+      "grid_pattern": "GXXXY\nGXGGY\nGGGGG",
+      "posted_at": "2026-09-18T04:22:20.823000+00:00",
+      "tracked_at": "2026-09-18T04:22:20.925467+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "GXXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GXGGY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1917,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XYXXX\nYYXYX\nXXGGY\nXGGGY\nGGGGG",
+      "posted_at": "2026-09-18T05:04:57.804000+00:00",
+      "tracked_at": "2026-09-18T05:04:57.897146+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYXYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXGGY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGGGY"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1917,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXXXYX\nGYXYX\nGGGGG",
+      "posted_at": "2026-09-18T05:05:20.651000+00:00",
+      "tracked_at": "2026-09-18T05:05:20.753240+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXXYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GYXYX"
         },
         {
           "row_number": 4,
