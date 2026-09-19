@@ -1671,7 +1671,17 @@
     function calculatePlayerStats(history) {
       const canonicalNames = new Map(history.players.map(player => [player.id, player.name]));
       const groups = new Map();
-      const firstSeenPatterns = new Set();
+      const firstPuzzleByPattern = new Map();
+
+      for (const result of history.results) {
+        for (const row of result.rows) {
+          if (!isValidRowPattern(row.pattern)) continue;
+          const firstPuzzle = firstPuzzleByPattern.get(row.pattern);
+          if (firstPuzzle === undefined || result.puzzle_number < firstPuzzle) {
+            firstPuzzleByPattern.set(row.pattern, result.puzzle_number);
+          }
+        }
+      }
 
       function groupFor(result) {
         let group = groups.get(result.player_id);
@@ -1681,7 +1691,7 @@
             name: canonicalNames.get(result.player_id) || result.player_name,
             days: new Map(),
             patterns: new Set(),
-            firstUnlocks: 0,
+            firstUnlockPatterns: new Set(),
           };
           groups.set(result.player_id, group);
         }
@@ -1704,9 +1714,8 @@
         for (const row of result.rows) {
           if (!isValidRowPattern(row.pattern)) continue;
           group.patterns.add(row.pattern);
-          if (!firstSeenPatterns.has(row.pattern)) {
-            firstSeenPatterns.add(row.pattern);
-            group.firstUnlocks += 1;
+          if (result.puzzle_number === firstPuzzleByPattern.get(row.pattern)) {
+            group.firstUnlockPatterns.add(row.pattern);
           }
         }
       }
@@ -1740,7 +1749,7 @@
           bestStreak: longestStreak(wins),
           averageScore: scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null,
           bestScore: scores.length ? Math.min(...scores) : null,
-          firstUnlocks: group.firstUnlocks,
+          firstUnlocks: group.firstUnlockPatterns.size,
           uniquePatterns: group.patterns.size,
           hardModeCount,
           hardModePercentage: played ? hardModeCount / played * 100 : 0,
