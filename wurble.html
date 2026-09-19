@@ -340,56 +340,108 @@
     }
 
     .map-panels {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      max-height: min(78vh, 980px);
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #0b0d0c;
+      scrollbar-color: var(--border) transparent;
     }
 
-    .map-panel { min-width: 0; }
+    .map-mask-grid {
+      --map-cell-size: clamp(23px, 2.45vw, 31px);
+      display: grid;
+      grid-template-columns: 76px repeat(32, var(--map-cell-size));
+      grid-template-rows: 52px repeat(32, var(--map-cell-size));
+      align-items: stretch;
+      width: max-content;
+      min-width: 100%;
+      gap: 2px;
+      padding: 8px;
+    }
 
-    .map-panel h3 {
-      margin: 0 0 8px;
+    .map-mask-corner,
+    .map-mask-label {
+      position: sticky;
+      display: grid;
+      z-index: 6;
+      place-items: center;
+      min-width: 0;
+      overflow: hidden;
+      background: #0b0d0c;
+    }
+
+    .map-mask-corner {
+      z-index: 8;
+      top: 0;
+      left: 0;
+      padding: 4px 6px;
       color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.08em;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
       text-align: center;
       text-transform: uppercase;
     }
 
-    .map-panel h3 code {
-      color: var(--text);
-      font-size: 14px;
+    .map-mask-label-column { top: 0; }
+    .map-mask-label-row { left: 0; }
+
+    .map-position-mask {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      width: calc(100% - 4px);
+      max-width: 42px;
     }
 
-    .map-matrix {
-      display: grid;
-      grid-template-columns: 30px repeat(9, minmax(0, 1fr));
-      align-items: stretch;
-      gap: 3px;
+    .map-mask-label-column .map-position-mask {
+      width: calc(100% - 3px);
+      max-width: 27px;
     }
 
-    .map-matrix-label {
-      display: grid;
-      place-items: center;
+    .map-mask-tile {
       min-width: 0;
-      overflow: hidden;
-      color: #7e8583;
-      font-size: clamp(7px, 0.75vw, 10px);
-      text-overflow: clip;
+      aspect-ratio: 1;
+      border-radius: 1px;
+      background: #343837;
+    }
+
+    .map-mask-tile-green { background: var(--green); }
+    .map-mask-tile-yellow { background: var(--yellow); }
+
+    .map-mask-count {
+      margin-top: 4px;
+      color: #707775;
+      font-size: 8px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .map-group-start-column { box-shadow: inset 2px 0 rgba(255, 255, 255, 0.16); }
+    .map-group-start-row { box-shadow: inset 0 2px rgba(255, 255, 255, 0.16); }
+
+    .map-mask-label.map-group-start-column {
+      box-shadow: inset 2px 0 rgba(255, 255, 255, 0.24);
+    }
+
+    .map-mask-label.map-group-start-row {
+      box-shadow: inset 0 2px rgba(255, 255, 255, 0.24);
     }
 
     .map-cell {
       position: relative;
       display: block;
       min-width: 0;
-      aspect-ratio: 1;
       overflow: hidden;
       padding: 0;
       border: 1px solid transparent;
       border-radius: 3px;
       background: var(--surface-raised);
       color: var(--text);
-      font-size: clamp(8px, 0.8vw, 11px);
+      font-size: clamp(7px, 0.72vw, 10px);
       font-variant-numeric: tabular-nums;
       font-weight: 800;
       box-shadow: none;
@@ -402,20 +454,10 @@
       filter: brightness(1.16);
     }
 
-    .map-cell-pattern-bar {
-      position: absolute;
-      z-index: 3;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 22%;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-    }
-
     .map-cell-avatars {
       position: absolute;
       z-index: 1;
-      top: 22%;
+      top: 0;
       right: 0;
       bottom: 0;
       left: 0;
@@ -458,12 +500,12 @@
     .map-cell-symbol {
       position: absolute;
       z-index: 4;
-      top: 61%;
+      top: 50%;
       left: 50%;
       display: grid;
-      min-width: 1.65em;
-      min-height: 1.65em;
-      padding: 1px 3px;
+      min-width: 1.55em;
+      min-height: 1.55em;
+      padding: 1px 2px;
       border: 1px solid rgba(255, 255, 255, 0.42);
       border-radius: 999px;
       place-items: center;
@@ -474,20 +516,55 @@
       text-shadow: 0 1px 2px #000;
     }
 
-    .map-cell-locked { color: #858c89; }
+    .map-cell-pattern {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 0;
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      transform: translateY(-50%);
+    }
 
-    .map-cell-locked .map-cell-pattern-bar { opacity: 0.55; }
+    .map-cell-pattern-tile {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 0;
+    }
+
+    .map-cell-pattern-tile-x { background: var(--gray); }
+    .map-cell-pattern-tile-y { background: var(--yellow); }
+    .map-cell-pattern-tile-g { background: var(--green); }
+
+    .map-cell-locked {
+      border-color: rgba(255, 255, 255, 0.12);
+      background: #454a48;
+      color: #aeb5b2;
+    }
 
     .map-cell-locked .map-cell-total {
-      border-color: rgba(133, 140, 137, 0.35);
-      background: rgba(24, 27, 26, 0.88);
-      color: #858c89;
-      text-shadow: none;
+      display: none;
     }
 
     .map-cell-unlocked {
+      background: rgba(82, 128, 77, 0.32);
       border-color: rgba(184, 242, 169, 0.42);
       box-shadow: 0 0 8px rgba(184, 242, 169, 0.08);
+    }
+
+    .map-cell-overlap {
+      border-color: transparent;
+      border-radius: 1px;
+      background: var(--page);
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .map-cell-overlap:hover {
+      border-color: transparent;
+      filter: none;
     }
 
     .map-cell-impossible {
@@ -497,8 +574,6 @@
       opacity: 0.8;
       text-shadow: none;
     }
-
-    .map-cell-impossible .map-cell-pattern-bar { opacity: 0.42; }
 
     .map-cell-impossible .map-cell-symbol {
       border: 0;
@@ -513,23 +588,11 @@
       outline-offset: 1px;
     }
 
-    .map-cell-rarest::after {
-      position: absolute;
-      z-index: 5;
-      inset: 1px;
-      border: 2px solid #4da3ff;
-      border-radius: 2px;
-      pointer-events: none;
-      content: '';
-    }
-
-    .map-cell-unlocked.map-cell-rarest::after {
-      inset: 2px;
-      border-color: #79c5ff;
+    .map-cell-rarest {
+      border: 2px solid #00d9ff;
       box-shadow:
-        0 0 0 1px rgba(3, 8, 12, 0.96),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-        0 0 7px rgba(77, 163, 255, 0.72);
+        0 0 3px rgba(0, 217, 255, 0.95),
+        0 0 8px rgba(0, 217, 255, 0.62);
     }
 
     .map-legend {
@@ -562,8 +625,9 @@
     .map-key-locked { opacity: 0.25; }
     .map-key-impossible { background: repeating-linear-gradient(135deg, #242727 0 4px, #363a3a 4px 7px); }
     .map-key-rarest {
-      border: 2px solid #4da3ff;
+      border: 2px solid #00d9ff;
       background: var(--surface-raised);
+      box-shadow: 0 0 5px rgba(0, 217, 255, 0.72);
     }
 
     .toolbar-wrap {
@@ -979,8 +1043,14 @@
       .map-player-filters { width: 100%; }
       .map-selection { align-items: start; flex-direction: column; }
       .map-selection-copy { margin-left: 0; }
-      .map-matrix { grid-template-columns: 24px repeat(9, minmax(0, 1fr)); gap: 2px; }
-      .map-matrix-label { font-size: 7px; }
+      .map-mask-grid {
+        --map-cell-size: 23px;
+        grid-template-columns: 62px repeat(32, var(--map-cell-size));
+        grid-template-rows: 45px repeat(32, var(--map-cell-size));
+        padding: 6px;
+      }
+      .map-position-mask { max-width: 36px; }
+      .map-mask-label-column .map-position-mask { max-width: 24px; }
       .toolbar { align-items: stretch; flex-direction: column; }
       .filters { display: grid; grid-template-columns: repeat(3, 1fr); }
       .toolbar-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
@@ -1000,12 +1070,6 @@
       .rarity-odds { display: none; }
       .player-intro { align-items: stretch; flex-direction: column; }
       .player-intro-actions { justify-content: space-between; }
-    }
-
-    @media (max-width: 1000px) {
-      .map-panels { grid-template-columns: 1fr; }
-      .map-panel { width: min(100%, 600px); margin: 0 auto; }
-      .map-matrix-label { font-size: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1044,7 +1108,7 @@
       <div class="map-intro">
         <div>
           <h2 id="map-title">Pattern map</h2>
-          <p>Each panel fixes the middle tile. Read tiles 1–2 down the left and tiles 4–5 across the top. Choose the cumulative map or one player; the colors, avatars, and occurrence totals update to match.</p>
+          <p>Columns choose the green positions and rows choose the yellow positions; every remaining tile is gray. Black cells mark positions that cannot be both colors. Choose the cumulative map or one player to update the avatars and occurrence totals.</p>
         </div>
         <strong class="map-count" id="map-count">Loading map…</strong>
       </div>
@@ -1065,8 +1129,8 @@
         <button class="map-selection-copy" id="copy-map-link" type="button">Copy link</button>
       </div>
 
-      <p class="map-axis-label">Columns: tiles 4–5 · Rows: tiles 1–2</p>
-      <div class="map-panels" id="map-panels" aria-label="Map of all 243 Wordlegami rows"></div>
+      <p class="map-axis-label">Columns: green positions · Rows: yellow positions</p>
+      <div class="map-panels" id="map-panels" aria-label="Green-position by yellow-position map of Wordlegami rows"></div>
 
       <div class="map-legend" aria-label="Map legend">
         <span><i class="map-key" aria-hidden="true"></i>Unlocked</span>
@@ -1159,10 +1223,11 @@
     const RARITY_URL = 'wurble-game-rarity.json';
     const WORDLE_EPOCH_UTC = Date.UTC(2021, 5, 19);
     const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
-    const STATES = ['X', 'Y', 'G'];
     const STATE_LABELS = { X: 'gray', Y: 'yellow', G: 'green' };
     const IMPOSSIBLE_PATTERNS = new Set(['YGGGG', 'GYGGG', 'GGYGG', 'GGGYG', 'GGGGY']);
-    const PAIRS = STATES.flatMap(first => STATES.map(second => first + second));
+    const POSITION_COUNT = 5;
+    const POSITION_MASKS = Array.from({ length: 2 ** POSITION_COUNT }, (_, mask) => mask)
+      .sort((first, second) => maskPositionCount(first) - maskPositionCount(second) || second - first);
     const buttons = Array.from(document.querySelectorAll('[data-filter]'));
     const tabButtons = Array.from(document.querySelectorAll('[role="tab"]'));
     const patternSortButtons = Array.from(document.querySelectorAll('[data-pattern-sort]'));
@@ -1912,6 +1977,63 @@
       return `linear-gradient(90deg, ${stops.join(', ')})`;
     }
 
+    function maskPositionCount(mask) {
+      let count = 0;
+      for (let value = mask; value; value >>= 1) count += value & 1;
+      return count;
+    }
+
+    function maskIncludesPosition(mask, position) {
+      return Boolean(mask & (1 << (POSITION_COUNT - position - 1)));
+    }
+
+    function maskPositionDescription(mask) {
+      const positions = Array.from({ length: POSITION_COUNT }, (_, position) => position + 1)
+        .filter(position => maskIncludesPosition(mask, position - 1));
+      return positions.length ? positions.join(', ') : 'none';
+    }
+
+    function patternFromPositionMasks(greenMask, yellowMask) {
+      if (greenMask & yellowMask) return null;
+      return Array.from({ length: POSITION_COUNT }, (_, position) => (
+        maskIncludesPosition(greenMask, position)
+          ? 'G'
+          : maskIncludesPosition(yellowMask, position) ? 'Y' : 'X'
+      )).join('');
+    }
+
+    function isMaskGroupStart(index) {
+      return index > 0
+        && maskPositionCount(POSITION_MASKS[index]) !== maskPositionCount(POSITION_MASKS[index - 1]);
+    }
+
+    function makePositionMaskLabel(mask, state, axis, index) {
+      const colorName = state === 'G' ? 'green' : 'yellow';
+      const label = makeElement('span', `map-mask-label map-mask-label-${axis}`);
+      label.setAttribute('role', axis === 'column' ? 'columnheader' : 'rowheader');
+      label.setAttribute(
+        'aria-label',
+        `${colorName} positions ${maskPositionDescription(mask)}`,
+      );
+      label.title = `${colorName[0].toLocaleUpperCase()}${colorName.slice(1)} positions: ${maskPositionDescription(mask)}`;
+      if (isMaskGroupStart(index)) label.classList.add(`map-group-start-${axis}`);
+
+      const visual = makeElement('span', 'map-position-mask');
+      visual.setAttribute('aria-hidden', 'true');
+      for (let position = 0; position < POSITION_COUNT; position += 1) {
+        const active = maskIncludesPosition(mask, position);
+        visual.append(makeElement(
+          'i',
+          `map-mask-tile${active ? ` map-mask-tile-${colorName}` : ''}`,
+        ));
+      }
+      label.append(
+        visual,
+        makeElement('span', 'map-mask-count', String(maskPositionCount(mask))),
+      );
+      return label;
+    }
+
     function playerInitials(name) {
       const words = name.trim().split(/\s+/).filter(Boolean);
       const initials = words
@@ -2065,87 +2187,112 @@
       const fragment = document.createDocumentFragment();
       let selectedCell = null;
 
-      for (const middle of STATES) {
-        const panel = makeElement('section', 'map-panel');
-        const heading = makeElement('h3');
-        heading.append('Tile 3: ', makeElement('code', '', middle));
-        panel.append(heading);
+      const matrix = makeElement('div', 'map-mask-grid');
+      matrix.setAttribute('role', 'grid');
+      matrix.setAttribute('aria-label', 'Columns choose green positions; rows choose yellow positions');
+      matrix.setAttribute('aria-rowcount', String(POSITION_MASKS.length + 1));
+      matrix.setAttribute('aria-colcount', String(POSITION_MASKS.length + 1));
+      matrix.append(makeElement('span', 'map-mask-corner', 'Yellow ↓\nGreen →'));
 
-        const matrix = makeElement('div', 'map-matrix');
-        matrix.setAttribute('role', 'grid');
-        matrix.setAttribute('aria-label', `Rows with tile 3 ${STATE_LABELS[middle]}`);
-        matrix.append(document.createElement('span'));
+      POSITION_MASKS.forEach((greenMask, columnIndex) => {
+        matrix.append(makePositionMaskLabel(greenMask, 'G', 'column', columnIndex));
+      });
 
-        for (const suffix of PAIRS) {
-          matrix.append(makeElement('code', 'map-matrix-label', suffix));
-        }
-
-        for (const prefix of PAIRS) {
-          matrix.append(makeElement('code', 'map-matrix-label', prefix));
-          for (const suffix of PAIRS) {
-            const pattern = prefix + middle + suffix;
-            const record = recordsByPattern.get(pattern);
-            const playerPattern = activePlayerPatterns?.get(pattern);
-            const status = IMPOSSIBLE_PATTERNS.has(pattern)
-              ? 'impossible'
-              : activePlayer
-                ? playerPattern ? 'unlocked' : 'locked'
-                : record?.status === 'unlocked' ? 'unlocked' : 'locked';
-            const cell = makeElement('button', `map-cell map-cell-${status}`);
-            if ((rarityByPattern.get(pattern)?.rarity_rank ?? Infinity) <= 50) {
-              cell.classList.add('map-cell-rarest');
-            }
-            cell.type = 'button';
-            cell.setAttribute('role', 'gridcell');
-            cell.setAttribute('aria-pressed', 'false');
-
-            const patternBar = makeElement('span', 'map-cell-pattern-bar');
-            patternBar.setAttribute('aria-hidden', 'true');
-            patternBar.style.background = patternBackground(
-              pattern,
-              status !== 'unlocked',
+      POSITION_MASKS.forEach((yellowMask, rowIndex) => {
+        matrix.append(makePositionMaskLabel(yellowMask, 'Y', 'row', rowIndex));
+        POSITION_MASKS.forEach((greenMask, columnIndex) => {
+          const pattern = patternFromPositionMasks(greenMask, yellowMask);
+          if (!pattern) {
+            const overlap = makeElement('span', 'map-cell map-cell-overlap');
+            overlap.setAttribute('role', 'gridcell');
+            overlap.setAttribute(
+              'aria-label',
+              `Impossible overlap: green positions ${maskPositionDescription(greenMask)}; yellow positions ${maskPositionDescription(yellowMask)}`,
             );
-            cell.append(patternBar);
-
-            let description;
-            if (status === 'impossible') {
-              cell.append(makeElement('span', 'map-cell-symbol', '×'));
-              description = `${pattern}: impossible`;
-            } else {
-              const seenCount = activePlayer
-                ? playerPattern?.count || 0
-                : Number(record?.seen_count || 0);
-              const players = activePlayer
-                ? playerPattern ? [activePlayer] : []
-                : patternPlayers.get(pattern) || [];
-              if (players.length) cell.append(mapAvatarsForPlayers(players));
-              cell.append(makeElement('span', 'map-cell-total', String(seenCount)));
-              const playerNames = players.map(player => player.name).join(', ');
-              const playerDescription = playerNames ? `; found by ${playerNames}` : '';
-              if (activePlayer && playerPattern) {
-                description = `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'} by ${activePlayer.name}; first seen on Wordle #${playerPattern.firstPuzzleNumber}; ${rarityDescription(pattern)}`;
-              } else if (activePlayer) {
-                description = `${pattern}: seen 0 times by ${activePlayer.name}; ${rarityDescription(pattern)}`;
-              } else {
-                description = status === 'unlocked'
-                  ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}${playerDescription}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
-                  : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
-              }
-            }
-            cell.setAttribute('aria-label', description);
-            cell.title = description;
-            cell.addEventListener('click', () => showMapPattern(pattern, cell));
-            matrix.append(cell);
-            if (pattern === activeMapPattern) selectedCell = cell;
+            overlap.title = 'Impossible: a tile cannot be both green and yellow';
+            if (isMaskGroupStart(columnIndex)) overlap.classList.add('map-group-start-column');
+            if (isMaskGroupStart(rowIndex)) overlap.classList.add('map-group-start-row');
+            matrix.append(overlap);
+            return;
           }
-        }
 
-        panel.append(matrix);
-        fragment.append(panel);
-      }
+          const record = recordsByPattern.get(pattern);
+          const playerPattern = activePlayerPatterns?.get(pattern);
+          const status = IMPOSSIBLE_PATTERNS.has(pattern)
+            ? 'impossible'
+            : activePlayer
+              ? playerPattern ? 'unlocked' : 'locked'
+              : record?.status === 'unlocked' ? 'unlocked' : 'locked';
+          const cell = makeElement('button', `map-cell map-cell-${status}`);
+          if (isMaskGroupStart(columnIndex)) cell.classList.add('map-group-start-column');
+          if (isMaskGroupStart(rowIndex)) cell.classList.add('map-group-start-row');
+          if ((rarityByPattern.get(pattern)?.rarity_rank ?? Infinity) <= 50) {
+            cell.classList.add('map-cell-rarest');
+          }
+          cell.type = 'button';
+          cell.setAttribute('role', 'gridcell');
+          cell.setAttribute('aria-pressed', 'false');
+
+          let description;
+          if (status === 'impossible') {
+            cell.append(makeElement('span', 'map-cell-symbol', '×'));
+            description = `${pattern}: impossible; four greens and one yellow cannot occur`;
+          } else {
+            const seenCount = activePlayer
+              ? playerPattern?.count || 0
+              : Number(record?.seen_count || 0);
+            const players = activePlayer
+              ? playerPattern ? [activePlayer] : []
+              : patternPlayers.get(pattern) || [];
+            if (players.length) cell.append(mapAvatarsForPlayers(players));
+            if (status === 'unlocked') {
+              cell.append(makeElement('span', 'map-cell-total', String(seenCount)));
+            } else {
+              const patternTiles = makeElement('span', 'map-cell-pattern');
+              patternTiles.setAttribute('aria-hidden', 'true');
+              for (const state of pattern) {
+                patternTiles.append(
+                  makeElement('i', `map-cell-pattern-tile map-cell-pattern-tile-${state.toLocaleLowerCase()}`),
+                );
+              }
+              cell.append(patternTiles);
+            }
+            const playerNames = players.map(player => player.name).join(', ');
+            const playerDescription = playerNames ? `; found by ${playerNames}` : '';
+            if (activePlayer && playerPattern) {
+              description = `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'} by ${activePlayer.name}; first seen on Wordle #${playerPattern.firstPuzzleNumber}; ${rarityDescription(pattern)}`;
+            } else if (activePlayer) {
+              description = `${pattern}: seen 0 times by ${activePlayer.name}; ${rarityDescription(pattern)}`;
+            } else {
+              description = status === 'unlocked'
+                ? `${pattern}: seen ${seenCount} ${seenCount === 1 ? 'time' : 'times'}${playerDescription}; first unlocked by ${record.unlocked_by} on Wordle #${record.wordle_number}; ${rarityDescription(pattern)}`
+                : `${pattern}: seen 0 times; not yet unlocked; ${rarityDescription(pattern)}`;
+            }
+          }
+          cell.setAttribute('aria-label', description);
+          cell.title = description;
+          cell.addEventListener('click', () => showMapPattern(pattern, cell));
+          matrix.append(cell);
+          if (pattern === activeMapPattern) selectedCell = cell;
+        });
+      });
+
+      fragment.append(matrix);
 
       mapPanels.replaceChildren(fragment);
       showMapPattern(activeMapPattern, selectedCell);
+      if (selectedCell && pendingLinkedMapScroll) {
+        window.requestAnimationFrame(() => {
+          mapPanels.scrollLeft = Math.max(
+            0,
+            selectedCell.offsetLeft - mapPanels.clientWidth / 2 + selectedCell.offsetWidth / 2,
+          );
+          mapPanels.scrollTop = Math.max(
+            0,
+            selectedCell.offsetTop - mapPanels.clientHeight / 2 + selectedCell.offsetHeight / 2,
+          );
+        });
+      }
     }
 
     function renderArchiveRows() {
