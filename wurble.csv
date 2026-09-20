@@ -1,13 +1,13 @@
 pattern,status,unlocked_by,wordle_number,seen_count
 XXXXX,unlocked,"tb, Marty",1880,33
 XXXXY,unlocked,tb,1891,5
-XXXXG,unlocked,tb,1883,7
+XXXXG,unlocked,tb,1883,8
 XXXYX,unlocked,Marty,1879,11
 XXXYY,unlocked,"Marty, Vruet",1896,4
 XXXYG,unlocked,Marty,1879,1
-XXXGX,unlocked,tb,1879,9
+XXXGX,unlocked,tb,1879,10
 XXXGY,unlocked,Vruet,1896,3
-XXXGG,unlocked,tb,1879,5
+XXXGG,unlocked,tb,1879,6
 XXYXX,unlocked,tb,1884,6
 XXYXY,unlocked,🪕🦐banjo🦐🪕,1899,6
 XXYXG,unlocked,tb,1913,2
@@ -19,7 +19,7 @@ XXYGY,unlocked,Vruet,1916,1
 XXYGG,unlocked,🪕🦐banjo🦐🪕,1898,2
 XXGXX,unlocked,Marty,1883,8
 XXGXY,locked,,,0
-XXGXG,unlocked,tb,1885,7
+XXGXG,unlocked,tb,1885,9
 XXGYX,unlocked,🪕🦐banjo🦐🪕,1915,1
 XXGYY,locked,,,0
 XXGYG,unlocked,tb,1883,1
@@ -162,7 +162,7 @@ YGGGX,locked,,,0
 YGGGY,locked,,,0
 GXXXX,unlocked,Marty,1897,8
 GXXXY,unlocked,tb,1916,1
-GXXXG,locked,,,0
+GXXXG,unlocked,Vruet,1919,1
 GXXYX,locked,,,0
 GXXYY,locked,,,0
 GXXYG,locked,,,0
@@ -180,7 +180,7 @@ GXYGY,locked,,,0
 GXYGG,locked,,,0
 GXGXX,unlocked,Marty,1893,3
 GXGXY,locked,,,0
-GXGXG,unlocked,Vruet,1905,1
+GXGXG,unlocked,Vruet,1905,2
 GXGYX,locked,,,0
 GXGYY,locked,,,0
 GXGYG,locked,,,0
@@ -207,7 +207,7 @@ GYYGY,locked,,,0
 GYYGG,locked,,,0
 GYGXX,locked,,,0
 GYGXY,locked,,,0
-GYGXG,locked,,,0
+GYGXG,unlocked,Vruet,1919,1
 GYGYX,locked,,,0
 GYGYY,locked,,,0
 GYGYG,locked,,,0
@@ -221,7 +221,7 @@ GGXYY,locked,,,0
 GGXYG,locked,,,0
 GGXGX,unlocked,Marty,1892,4
 GGXGY,locked,,,0
-GGXGG,unlocked,tb,1889,13
+GGXGG,unlocked,tb,1889,14
 GGYXX,unlocked,🪕🦐banjo🦐🪕,1894,2
 GGYXY,locked,,,0
 GGYXG,locked,,,0
@@ -236,4 +236,4 @@ GGGXG,unlocked,tb,1885,5
 GGGYX,locked,,,0
 GGGYY,locked,,,0
 GGGGX,unlocked,Marty,1881,12
-GGGGG,unlocked,"Marty, tb",1879,134
+GGGGG,unlocked,"Marty, tb",1879,137

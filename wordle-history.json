@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-19T15:11:53.748634+00:00",
+  "data_updated_at": "2026-09-20T06:03:33.577971+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -3999,6 +3999,90 @@
         },
         {
           "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1919,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXGX\nXXXGG\nGGXGG\nGGGGG",
+      "posted_at": "2026-09-20T04:02:00.543000+00:00",
+      "tracked_at": "2026-09-20T04:02:00.604869+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXGX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXXGG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGXGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1919,
+      "score": 3,
+      "hard_mode": true,
+      "grid_pattern": "GXXXG\nGYGXG\nGGGGG",
+      "posted_at": "2026-09-20T04:40:05.998000+00:00",
+      "tracked_at": "2026-09-20T04:40:06.036734+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "GXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "GYGXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "c03d5d55866019e7",
+      "player_name": "tb",
+      "puzzle_number": 1919,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XXXXG\nXXGXG\nXXGXG\nGXGXG\nGGGGG",
+      "posted_at": "2026-09-20T06:03:33.524000+00:00",
+      "tracked_at": "2026-09-20T06:03:33.577971+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXGXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXGXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GXGXG"
+        },
+        {
+          "row_number": 5,
           "pattern": "GGGGG"
         }
       ]
