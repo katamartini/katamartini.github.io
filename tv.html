@@ -1393,6 +1393,7 @@
       { mode: "progress", label: "Progress", defaultDirection: "desc" },
       { mode: "next-episode", label: "Next airdate", defaultDirection: "asc" },
       { mode: "status", label: "Status", defaultDirection: "asc" },
+      { mode: "last-watched", label: "Last watched", defaultDirection: "desc" },
       { mode: "updated", label: "Updated", defaultDirection: "desc" },
     ];
 
@@ -1855,6 +1856,9 @@
         }
         if (state.sortMode === "status") {
           comparison = statusSortValue(a) - statusSortValue(b);
+        }
+        if (state.sortMode === "last-watched") {
+          comparison = parseTimestamp(a.lastWatchedAt) - parseTimestamp(b.lastWatchedAt);
         }
         if (state.sortMode === "updated") {
           comparison = parseTimestamp(a.updatedAt || a.addedAt) - parseTimestamp(b.updatedAt || b.addedAt);
