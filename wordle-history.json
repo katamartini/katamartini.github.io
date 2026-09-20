@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-20T06:03:33.577971+00:00",
+  "data_updated_at": "2026-09-20T15:06:42.265173+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -4083,6 +4083,34 @@
         },
         {
           "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1919,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "XXXXG\nXGXXG\nGGXGG\nGGGGG",
+      "posted_at": "2026-09-20T15:06:42.218000+00:00",
+      "tracked_at": "2026-09-20T15:06:42.265173+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXG"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGXXG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGXGG"
+        },
+        {
+          "row_number": 4,
           "pattern": "GGGGG"
         }
       ]
