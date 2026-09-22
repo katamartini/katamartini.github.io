@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "savedAt": "2026-09-22T12:31:06.955Z",
-  "dataUpdatedAt": "2026-09-22T12:31:06.012Z",
+  "savedAt": "2026-09-22T14:36:22.301Z",
+  "dataUpdatedAt": "2026-09-22T14:36:21.362Z",
   "shows": [
     {
       "id": 30770,
@@ -24693,16 +24693,17 @@
         "10218": true,
         "10219": true,
         "10220": true,
-        "10221": true
+        "10221": true,
+        "10222": true
       },
       "autoFinished": false,
       "pinned": true,
       "watchBaseUrl": "https://goku.click/series/lost-38453",
       "imdbId": "",
       "ratingBackfilledAt": "2026-06-23T17:50:10.912Z",
-      "lastWatchedAt": "2026-09-15T18:59:53.100Z",
+      "lastWatchedAt": "2026-09-22T14:36:21.362Z",
       "addedAt": "2026-06-19T18:02:00.234Z",
-      "updatedAt": "2026-09-15T18:59:53.100Z"
+      "updatedAt": "2026-09-22T14:36:21.362Z"
     },
     {
       "id": 179,
@@ -27265,8 +27266,8 @@
   ],
   "selectedId": 527,
   "libraryFilter": "active",
-  "sortMode": "last-watched",
-  "sortDirection": "asc",
+  "sortMode": "remaining-percent",
+  "sortDirection": "desc",
   "hideCompleted": true,
   "viewMode": "list"
 }
