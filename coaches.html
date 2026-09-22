@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Active NFL Head Coaches — Sortable Table</title>
+  <title>Active NFL Head Coaches — 2026 Records</title>
   <style>
     :root {
       --bg: #f6f7fb;
@@ -29,107 +29,132 @@
 
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin: 16px auto; width: min(1200px, 95%); box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08); }
 
-    .toolbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--border); }
     .toolbar .note { color: var(--muted); font-size: 12px; }
-    .toolbar .search { position: relative; display:flex; align-items:center; gap:8px; }
-    .toolbar input[type="search"] { background: var(--input); color: var(--text); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; min-width: 260px; }
+    .toolbar .search { position: relative; display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+    .toolbar input[type="search"], .toolbar select { background: var(--input); color: var(--text); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; min-width: 220px; font: inherit; }
+    .mobile-sort { display: none; }
 
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    thead th:nth-child(2), tbody td:nth-child(2) { width: 88px; }
-    thead th { position: sticky; top: 0; background: var(--header); border-bottom: 1px solid var(--border); text-align: left; padding: 10px 12px; font-size: 13px; letter-spacing: 0.01em; z-index: 2; cursor: pointer; user-select: none; }
-    thead th[data-sortable="false"] { cursor: default; }
+    thead th:nth-child(2), tbody td:nth-child(2) { width: 104px; }
+    thead th { position: sticky; top: 0; background: var(--header); border-bottom: 1px solid var(--border); text-align: left; padding: 10px 8px; font-size: 12px; letter-spacing: 0.01em; z-index: 2; }
+    .sort-button { border: 0; background: none; padding: 4px 0; color: inherit; font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+    .sort-button:focus-visible, .toolbar :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
     tbody td { padding: 12px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tbody tr:nth-child(odd) { background: var(--row-odd); }
     tbody tr:nth-child(even) { background: var(--row-even); }
 
     .team { font-weight: 700; }
-    .headshot { max-width: 80px; width: auto; height: 54px; object-fit: contain; display: block; margin: 0 auto; padding: 2px; border-radius: 10px; border: 1px solid var(--border); background: var(--input); }
+    .headshot { width: 78px; height: 96px; object-fit: cover; object-position: center top; display: block; margin: 0 auto; padding: 0; border-radius: 12px; border: 1px solid var(--border); background: linear-gradient(145deg, #e8edf5, #f8fafc); box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12); }
+    .headshot.is-logo { object-fit: contain; object-position: center; padding: 10px; box-shadow: none; }
     .coach .name { font-weight: 700; }
     .muted { color: var(--muted); font-size: 12px; }
 
     .badge{display:inline-block; font-size:11px; line-height:1; padding:4px 6px; border-radius:999px; margin-left:6px; border:1px solid var(--border); background:var(--input); color:var(--muted); vertical-align:middle}
     .badge.interim{background:#fff5e6; border-color:#ffd9a8; color:#8a5a00; font-weight:600}
 
-    .sorted-asc::after { content: " ▲"; color: var(--accent); }
-    .sorted-desc::after { content: " ▼"; color: var(--accent2); }
+    th[aria-sort="ascending"] .sort-button::after { content: " ▲"; color: var(--accent); }
+    th[aria-sort="descending"] .sort-button::after { content: " ▼"; color: var(--accent2); }
+    .pending { color: var(--muted); font-style: italic; }
+    .mobile-cards { display: none; }
+    .coach-card { padding: 16px; border-bottom: 1px solid var(--border); }
+    .coach-card:nth-child(odd) { background: var(--row-odd); }
+    .coach-card__top { display: flex; gap: 14px; align-items: center; }
+    .coach-card__top .headshot { margin: 0; flex: none; }
+    .coach-card__team { color: var(--muted); font-size: 12px; }
+    .coach-card__name { font-size: 17px; font-weight: 750; }
+    .coach-card__stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0 0; }
+    .coach-card__stats div { border-top: 1px solid var(--border); padding-top: 8px; }
+    .coach-card__stats dt { color: var(--muted); font-size: 11px; }
+    .coach-card__stats dd { margin: 2px 0 0; font-weight: 700; }
+    .credits { width: min(1200px, 95%); margin: 12px auto 24px; color: var(--muted); }
+    .credits ul { columns: 2; padding-left: 20px; }
+    .credits li { break-inside: avoid; margin: 4px 0; }
 
     tfoot { color: var(--muted); font-size: 12px; padding: 8px 12px; }
     tfoot td { padding: 12px; }
 
-    details.tests { width: min(1200px, 95%); margin: 12px auto 24px; }
-    details.tests pre { background: var(--input); border: 1px solid var(--border); padding: 12px; border-radius: 10px; overflow: auto; white-space: pre-wrap; }
+    details.source { width: min(1200px, 95%); margin: 12px auto 24px; }
+    details.source pre { background: var(--input); border: 1px solid var(--border); padding: 12px; border-radius: 10px; overflow: auto; white-space: pre-wrap; }
 
     .err { color: var(--danger); font-weight: 600; }
 
-    @media (max-width: 800px) {
-      .coach .name { display: block; }
-      thead th:nth-child(2), tbody td:nth-child(2) { width: 70px; }
+    @media (max-width: 720px) {
+      .card { width: min(100%, 540px); margin: 12px auto; }
+      .toolbar { align-items: stretch; }
+      .toolbar .search, .toolbar input[type="search"] { width: 100%; }
+      .mobile-sort { display: block; width: 100%; }
+      .mobile-sort select { width: 100%; }
+      .table-wrap { display: none; }
+      .mobile-cards { display: block; }
+      .headshot { width: 68px; height: 84px; border-radius: 10px; }
+      .credits ul { columns: 1; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Active NFL Head Coaches — Sortable Table</h1>
-    <div class="sub">Data shows each coach's <strong>active regular-season record with their current team</strong>. Win% = Wins / (Wins + Losses); ties omitted. 2025 season results are added automatically when current standings load.</div>
+    <h1>Active NFL Head Coaches</h1>
+    <div class="sub">2026 regular-season record and each coach’s active record with their current team. Win% = (wins + ½ ties) ÷ games. Baseline checked September 22, 2026.</div>
   </header>
 
   <section class="card">
     <div class="toolbar">
-      <div class="note">Click headers to sort. Type to filter.</div>
+      <div class="note">Filter by team or coach. Sort with the column headings or mobile menu.</div>
       <div class="search">
         <input id="filter" type="search" placeholder="Filter by team or coach…" aria-label="Filter table" />
-        <span id="ytdStatus" class="note"></span>
-        <span id="coachStatus" class="note"></span>
-        <span id="logoStatus" class="note"></span>
+        <div class="mobile-sort"><label for="mobileSort">Sort coaches</label><select id="mobileSort"><option value="games:-1">Tenure games: most</option><option value="pct:-1">Tenure win%: highest</option><option value="seasonWins:-1">2026 wins: most</option><option value="team:1">Team: A–Z</option><option value="coach:1">Coach: A–Z</option><option value="hired:-1">Hired: newest</option></select></div>
         <button id="btnPayload" type="button" style="padding:6px 10px; border:1px solid var(--border); background:var(--input); border-radius:8px; cursor:pointer;">View coach source JSON</button>
       </div>
+      <div class="note" role="status" aria-live="polite"><span id="ytdStatus">2026 standings: snapshot through Week 2</span> · <span id="coachStatus">Coach list: baseline</span></div>
     </div>
 
-    <div style="overflow:auto; border-radius: 0 0 16px 16px;">
+    <div class="table-wrap" style="overflow:auto; border-radius: 0 0 16px 16px;">
       <table id="coachTable" aria-describedby="tableHelp">
         <thead>
           <tr>
-            <th data-key="team">Team</th>
-            <th data-sortable="false">Picture</th>
-            <th data-key="coach">Head Coach</th>
-            <th data-key="hired" data-type="number">Hired</th>
-            <th data-key="games" data-type="number">Games</th>
-            <th data-key="wins" data-type="number">Wins</th>
-            <th data-key="losses" data-type="number">Losses</th>
-            <th data-key="ties" data-type="number">Ties</th>
-            <th data-key="pct" data-type="number">Win%</th>
+            <th scope="col" data-key="team"><button class="sort-button" type="button">Team</button></th>
+            <th scope="col">Portrait</th>
+            <th scope="col" data-key="coach"><button class="sort-button" type="button">Head Coach</button></th>
+            <th scope="col" data-key="hired" data-type="number"><button class="sort-button" type="button">Hired</button></th>
+            <th scope="col" data-key="seasonWins" data-type="number"><button class="sort-button" type="button" title="Sorts by 2026 wins">2026 W–L–T</button></th>
+            <th scope="col" data-key="games" data-type="number"><button class="sort-button" type="button">Tenure Games</button></th>
+            <th scope="col" data-key="wins" data-type="number"><button class="sort-button" type="button">Wins</button></th>
+            <th scope="col" data-key="losses" data-type="number"><button class="sort-button" type="button">Losses</button></th>
+            <th scope="col" data-key="ties" data-type="number"><button class="sort-button" type="button">Ties</button></th>
+            <th scope="col" data-key="pct" data-type="number"><button class="sort-button" type="button">Win%</button></th>
           </tr>
         </thead>
         <tbody></tbody>
         <tfoot>
           <tr>
-            <td colspan="9" id="tableHelp" class="muted">Coach images are from Wikipedia; if unavailable, we fall back to <strong>NFL.com club logos</strong> first (helmet-style marks), then Wikipedia/Commons (non-wordmark only), then a neutral placeholder. Records shown are the coach's <em>active</em> record with their current team. Ties are excluded when computing Win%.</td>
+            <td colspan="10" id="tableHelp" class="muted">2026 W–L–T is this coach’s current-season record; the remaining numbers are their active tenure with this team. A dash means a new coach’s record awaits verification. Portraits come from each club’s official coaching roster; <a href="images/coaches/sources.json">source manifest</a>.</td>
           </tr>
         </tfoot>
       </table>
     </div>
+    <div id="coachCards" class="mobile-cards" aria-label="Coach cards"></div>
   </section>
 
-  <details class="tests">
-    <summary>Test Results (click to expand)</summary>
-    <pre id="testOutput">(running…)</pre>
-  </details>
+  <details class="credits"><summary>Official portrait sources</summary><ul id="photoCredits"></ul></details>
 
-  <!-- open is boolean; omit it if you want closed by default -->
-  <details id="payloadDetails" class="tests">
+  <details id="payloadDetails" class="source">
     <summary>Wikipedia payload (raw JSON) — current head coaches</summary>
     <pre id="payloadPre">(click the button above to fetch)</pre>
   </details>
 
+  <script src="images/coaches/portraits.js"></script>
   <script>
     // ====== Utilities ======
-    function computePct(w, l) {
-      var denom = w + l; // ties omitted
-      if (!denom) return 0;
-      return (w / denom) * 100; // numeric; format on render
+    function computePct(w, l, t) {
+      var games = w + l + t;
+      if (!games) return null;
+      return ((w + 0.5 * t) / games) * 100;
     }
-    function fmtPct(p) { return (Number(p).toFixed(1)) + '%'; }
+    function fmtPct(p) { return p == null ? '—' : Number(p).toFixed(1) + '%'; }
+    function fmtNum(n) { return n == null ? '—' : n; }
+    function escapeHtml(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
     function firstValue(obj) {
       if (!obj) return null;
       for (var k in obj) {
@@ -211,16 +236,9 @@
     }
 
     // ====== Photo/Logo Loader ======
-    var OVERRIDES = {
-      'New York Giants': { coach: 'Mike Kafka', hired: 2025, interim: true, wikiTitle: 'Mike Kafka (American football coach)' }
-    };
+    var CURRENT_SEASON = 2026;
 
-    var COACH_STARTS_2025 = {
-      'Tennessee Titans': '2025-11-03',
-      'New York Giants': '2025-11-10'
-    };
-
-    var YTD_SINCE = {}; // computed W/L/T since date for the above
+    var OFFICIAL_PORTRAITS = window.COACH_PORTRAITS || {};
 
     var photoCache = new Map();
     var logoCache = new Map();
@@ -349,124 +367,129 @@
       }
     }
 
-    async function loadHeadshot(img, coach) {
-      var key = coach.coach;
-      if (coach.photo) { img.src = coach.photo; photoCache.set(key, coach.photo); return; }
-      if (photoCache.has(key)) { img.src = photoCache.get(key); return; }
-      var titles = candidateTitlesForCoach(coach.coach, coach.wikiTitle);
-      for (var i=0; i<titles.length; i++) {
-        var t = titles[i];
-        try {
-          var enc = encodeURIComponent(t);
-          var url = 'https://en.wikipedia.org/w/api.php?action=query&titles=' + enc + '&prop=pageimages|pageprops&format=json&pithumbsize=160&redirects=1&origin=*';
-          var r = await fetch(url);
-          if (!r.ok) continue;
-          var j = await r.json();
-          var pages = j && j.query && j.query.pages ? j.query.pages : {};
-          var first = firstValue(pages);
-          if (!first) continue;
-          var src = first && first.thumbnail ? first.thumbnail.source : null;
-          if (src) { img.src = src; photoCache.set(key, src); return; }
-          var qid = first && first.pageprops ? first.pageprops.wikibase_item : null;
-          if (qid) {
-            var p18 = await fetchP18(qid);
-            if (p18) { var commons = commonsFromP18(p18, 160); img.src = commons; photoCache.set(key, commons); return; }
-          }
-        } catch (e) {}
-      }
-      try { var logo = await fetchTeamLogo(coach.team); if (logo) { img.src = logo; photoCache.set(key, logo); return; } } catch(e){}
-      img.src = PLACEHOLDER;
+    function loadHeadshot(img, coach) {
+      var portrait = OFFICIAL_PORTRAITS[coach.coach];
+      img.alt = portrait ? 'Official team portrait of ' + coach.coach : 'Portrait unavailable for ' + coach.coach;
+      img.onerror = function(){ img.onerror = null; img.src = PLACEHOLDER; img.alt = 'Portrait unavailable for ' + coach.coach; };
+      img.src = portrait ? 'images/coaches/' + portrait.file : PLACEHOLDER;
     }
 
-    // ====== Data (pre-2025 records) ======
+    // ====== Data (active records through the end of the 2025 season) ======
     var BASE = [
-      { team: 'Arizona Cardinals', coach: 'Jonathan Gannon', wins: 12, losses: 22, hired: 2023 },
-      { team: 'Atlanta Falcons', coach: 'Raheem Morris', wins: 8, losses: 9, hired: 2024 },
-      { team: 'Baltimore Ravens', coach: 'John Harbaugh', wins: 172, losses: 104, hired: 2008 },
-      { team: 'Buffalo Bills', coach: 'Sean McDermott', wins: 86, losses: 45, hired: 2017 },
-      { team: 'Carolina Panthers', coach: 'Dave Canales', wins: 5, losses: 12, hired: 2024 },
-      { team: 'Chicago Bears', coach: 'Ben Johnson', wins: 0, losses: 0, hired: 2025, wikiTitle: 'Ben Johnson (American football coach)' },
-      { team: 'Cincinnati Bengals', coach: 'Zac Taylor', wins: 46, losses: 52, ties: 1, hired: 2019 },
-      { team: 'Cleveland Browns', coach: 'Kevin Stefanski', wins: 40, losses: 44, hired: 2020 },
-      { team: 'Dallas Cowboys', coach: 'Brian Schottenheimer', wins: 0, losses: 0, hired: 2025 },
-      { team: 'Denver Broncos', coach: 'Sean Payton', wins: 18, losses: 16, hired: 2023 },
-      { team: 'Detroit Lions', coach: 'Dan Campbell', wins: 39, losses: 28, hired: 2021 },
-      { team: 'Green Bay Packers', coach: 'Matt LaFleur', wins: 67, losses: 33, hired: 2019 },
-      { team: 'Houston Texans', coach: 'DeMeco Ryans', wins: 20, losses: 14, hired: 2023 },
-      { team: 'Indianapolis Colts', coach: 'Shane Steichen', wins: 17, losses: 17, hired: 2023 },
-      { team: 'Jacksonville Jaguars', coach: 'Liam Coen', wins: 0, losses: 0, hired: 2025 },
-      { team: 'Kansas City Chiefs', coach: 'Andy Reid', wins: 143, losses: 53, hired: 2013 },
-      { team: 'Las Vegas Raiders', coach: 'Pete Carroll', wins: 0, losses: 0, hired: 2025 },
-      { team: 'Los Angeles Chargers', coach: 'Jim Harbaugh', wins: 11, losses: 6, hired: 2024 },
-      { team: 'Los Angeles Rams', coach: 'Sean McVay', coachPhoto: '', wins: 80, losses: 52, hired: 2017 },
-      { team: 'Miami Dolphins', coach: 'Mike McDaniel', wins: 28, losses: 23, hired: 2022 },
-      { team: 'Minnesota Vikings', coach: 'Kevin O\'Connell', wins: 34, losses: 17, hired: 2022 },
-      { team: 'New England Patriots', coach: 'Mike Vrabel', wins: 0, losses: 0, hired: 2025 },
-      { team: 'New Orleans Saints', coach: 'Kellen Moore', wins: 0, losses: 0, hired: 2025 },
-      { team: 'New York Giants', coach: 'Brian Daboll', wins: 18, losses: 32, hired: 2022 },
-      { team: 'New York Jets', coach: 'Aaron Glenn', wins: 0, losses: 0, hired: 2025 },
-      { team: 'Philadelphia Eagles', coach: 'Nick Sirianni', wins: 48, losses: 20, hired: 2021 },
-      { team: 'Pittsburgh Steelers', coach: 'Mike Tomlin', wins: 183, losses: 107, hired: 2007 },
-      { team: 'San Francisco 49ers', coach: 'Kyle Shanahan', wins: 70, losses: 62, hired: 2017 },
-      { team: 'Seattle Seahawks', coach: 'Mike Macdonald', wins: 10, losses: 7, hired: 2024, wikiTitle: 'Mike Macdonald (American football coach)' },
-      { team: 'Tampa Bay Buccaneers', coach: 'Todd Bowles', wins: 27, losses: 24, hired: 2022 },
-      { team: 'Tennessee Titans', coach: 'Mike McCoy', wins: 0, losses: 0, hired: 2025, wikiTitle: 'Mike McCoy (American football coach)', interim: true },
-      { team: 'Washington Commanders', coach: 'Dan Quinn', wins: 12, losses: 5, hired: 2024 }
+      { team: 'Arizona Cardinals', coach: 'Mike LaFleur', wins: 0, losses: 0, hired: 2026, wikiTitle: 'Mike LaFleur' },
+      { team: 'Atlanta Falcons', coach: 'Kevin Stefanski', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Baltimore Ravens', coach: 'Jesse Minter', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Buffalo Bills', coach: 'Joe Brady', wins: 0, losses: 0, hired: 2026, wikiTitle: 'Joe Brady (American football coach)' },
+      { team: 'Carolina Panthers', coach: 'Dave Canales', wins: 13, losses: 21, hired: 2024 },
+      { team: 'Chicago Bears', coach: 'Ben Johnson', wins: 11, losses: 6, hired: 2025, wikiTitle: 'Ben Johnson (American football coach)' },
+      { team: 'Cincinnati Bengals', coach: 'Zac Taylor', wins: 52, losses: 63, ties: 1, hired: 2019 },
+      { team: 'Cleveland Browns', coach: 'Todd Monken', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Dallas Cowboys', coach: 'Brian Schottenheimer', wins: 7, losses: 9, ties: 1, hired: 2025 },
+      { team: 'Denver Broncos', coach: 'Sean Payton', wins: 32, losses: 19, hired: 2023 },
+      { team: 'Detroit Lions', coach: 'Dan Campbell', wins: 48, losses: 36, ties: 1, hired: 2021 },
+      { team: 'Green Bay Packers', coach: 'Matt LaFleur', wins: 76, losses: 40, ties: 1, hired: 2019 },
+      { team: 'Houston Texans', coach: 'DeMeco Ryans', wins: 32, losses: 19, hired: 2023 },
+      { team: 'Indianapolis Colts', coach: 'Shane Steichen', wins: 25, losses: 26, hired: 2023 },
+      { team: 'Jacksonville Jaguars', coach: 'Liam Coen', wins: 13, losses: 4, hired: 2025 },
+      { team: 'Kansas City Chiefs', coach: 'Andy Reid', wins: 149, losses: 64, hired: 2013 },
+      { team: 'Las Vegas Raiders', coach: 'Klint Kubiak', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Los Angeles Chargers', coach: 'Jim Harbaugh', wins: 22, losses: 12, hired: 2024 },
+      { team: 'Los Angeles Rams', coach: 'Sean McVay', wins: 92, losses: 57, hired: 2017 },
+      { team: 'Miami Dolphins', coach: 'Jeff Hafley', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Minnesota Vikings', coach: 'Kevin O\'Connell', wins: 43, losses: 25, hired: 2022 },
+      { team: 'New England Patriots', coach: 'Mike Vrabel', wins: 14, losses: 3, hired: 2025 },
+      { team: 'New Orleans Saints', coach: 'Kellen Moore', wins: 6, losses: 11, hired: 2025 },
+      { team: 'New York Giants', coach: 'John Harbaugh', wins: 0, losses: 0, hired: 2026 },
+      { team: 'New York Jets', coach: 'Aaron Glenn', wins: 3, losses: 14, hired: 2025 },
+      { team: 'Philadelphia Eagles', coach: 'Nick Sirianni', wins: 59, losses: 26, hired: 2021 },
+      { team: 'Pittsburgh Steelers', coach: 'Mike McCarthy', wins: 0, losses: 0, hired: 2026 },
+      { team: 'San Francisco 49ers', coach: 'Kyle Shanahan', wins: 82, losses: 67, hired: 2017 },
+      { team: 'Seattle Seahawks', coach: 'Mike Macdonald', wins: 24, losses: 10, hired: 2024, wikiTitle: 'Mike Macdonald (American football coach)' },
+      { team: 'Tampa Bay Buccaneers', coach: 'Todd Bowles', wins: 35, losses: 33, hired: 2022 },
+      { team: 'Tennessee Titans', coach: 'Robert Saleh', wins: 0, losses: 0, hired: 2026 },
+      { team: 'Washington Commanders', coach: 'Dan Quinn', wins: 17, losses: 17, hired: 2024 }
     ];
 
     function buildRows(base, ytd) {
       return base.map(function(c){
-        var since = YTD_SINCE[c.team];
-        var isInterim = !!c.interim;
-        var teamYTD = ytd[c.team] || { w: 0, l: 0, t: 0 };
-        var y;
-        if (since) { y = since; }
-        else if (isInterim) { y = { w:0, l:0, t:0 }; }
-        else { y = teamYTD; }
-        var wins = (c.wins || 0) + (y.w || 0);
-        var losses = (c.losses || 0) + (y.l || 0);
-        var ties = (c.ties || 0) + (y.t || 0);
+        // A replacement coach cannot inherit the team's earlier games.
+        var y = c.recordPending ? null : ytd[c.team];
+        var wins = y ? (c.wins || 0) + y.w : null;
+        var losses = y ? (c.losses || 0) + y.l : null;
+        var ties = y ? (c.ties || 0) + y.t : null;
         return {
           team: c.team,
           coach: c.coach,
           wikiTitle: c.wikiTitle,
           hired: c.hired,
+          seasonWins: y ? y.w : null,
+          seasonRecord: y ? y.w + '–' + y.l + '–' + y.t : null,
           wins: wins,
           losses: losses,
           ties: ties,
-          games: wins + losses + ties,
-          pct: computePct(wins, losses),
-          interim: !!c.interim
+          games: y ? wins + losses + ties : null,
+          pct: y ? computePct(wins, losses, ties) : null,
+          interim: !!c.interim,
+          recordPending: !!c.recordPending
         };
       });
     }
 
-    var YTD = {}; // filled from ESPN standings (2025 season to date)
+    // Snapshot through Week 2 (September 21, 2026). Replaced by live ESPN data on load.
+    var YTD = {
+      'Arizona Cardinals':{w:1,l:1,t:0},'Atlanta Falcons':{w:0,l:2,t:0},'Baltimore Ravens':{w:1,l:1,t:0},'Buffalo Bills':{w:2,l:0,t:0},
+      'Carolina Panthers':{w:1,l:1,t:0},'Chicago Bears':{w:1,l:1,t:0},'Cincinnati Bengals':{w:2,l:0,t:0},'Cleveland Browns':{w:1,l:1,t:0},
+      'Dallas Cowboys':{w:1,l:1,t:0},'Denver Broncos':{w:1,l:1,t:0},'Detroit Lions':{w:1,l:1,t:0},'Green Bay Packers':{w:1,l:1,t:0},
+      'Houston Texans':{w:0,l:2,t:0},'Indianapolis Colts':{w:0,l:2,t:0},'Jacksonville Jaguars':{w:1,l:1,t:0},'Kansas City Chiefs':{w:2,l:0,t:0},
+      'Las Vegas Raiders':{w:2,l:0,t:0},'Los Angeles Chargers':{w:0,l:2,t:0},'Los Angeles Rams':{w:1,l:1,t:0},'Miami Dolphins':{w:0,l:2,t:0},
+      'Minnesota Vikings':{w:2,l:0,t:0},'New England Patriots':{w:1,l:1,t:0},'New Orleans Saints':{w:1,l:1,t:0},'New York Giants':{w:1,l:1,t:0},
+      'New York Jets':{w:1,l:1,t:0},'Philadelphia Eagles':{w:2,l:0,t:0},'Pittsburgh Steelers':{w:1,l:1,t:0},'San Francisco 49ers':{w:2,l:0,t:0},
+      'Seattle Seahawks':{w:2,l:0,t:0},'Tampa Bay Buccaneers':{w:0,l:2,t:0},'Tennessee Titans':{w:0,l:2,t:0},'Washington Commanders':{w:0,l:2,t:0}
+    };
     var currentData = buildRows(BASE, YTD);
 
     var tbody = document.querySelector('#coachTable tbody');
     var thead = document.querySelector('#coachTable thead');
+    var cards = document.getElementById('coachCards');
+
+    function coachImage(coach) {
+      return '<img class="headshot" alt="" data-coach="' + escapeHtml(coach.coach) + '" width="78" height="96" loading="lazy" decoding="async">';
+    }
+
+    function coachBadge(coach) {
+      return coach.interim ? ' <span class="badge interim">interim</span>' :
+        coach.recordPending ? ' <span class="badge">record pending</span>' : '';
+    }
+
+    function loadImages(container, data) {
+      Array.prototype.forEach.call(container.querySelectorAll('img[data-coach]'), function(img, i){ loadHeadshot(img, data[i]); });
+    }
 
     function render(data) {
       tbody.innerHTML = data.map(function(c){
         return (
           '<tr>' +
-            '<td class="team">' + c.team + '</td>' +
-            '<td><img class="headshot" alt="' + c.coach + '" data-coach="' + c.coach + '" height="54" loading="lazy"/></td>' +
-            '<td class="coach"><span class="name">'+ c.coach +'</span>'+ (c.interim ? ' <span class="badge interim">interim</span>' : '') +'</td>' +
+            '<td class="team">' + escapeHtml(c.team) + '</td>' +
+            '<td>' + coachImage(c) + '</td>' +
+            '<td class="coach"><span class="name">'+ escapeHtml(c.coach) +'</span>'+ coachBadge(c) +'</td>' +
             '<td>' + ((c.hired !== undefined && c.hired !== null) ? c.hired : '') + '</td>' +
-            '<td>' + c.games + '</td>' +
-            '<td>' + c.wins + '</td>' +
-            '<td>' + c.losses + '</td>' +
-            '<td>' + (c.ties || 0) + '</td>' +
+            '<td>' + fmtNum(c.seasonRecord) + '</td>' +
+            '<td>' + fmtNum(c.games) + '</td>' +
+            '<td>' + fmtNum(c.wins) + '</td>' +
+            '<td>' + fmtNum(c.losses) + '</td>' +
+            '<td>' + fmtNum(c.ties) + '</td>' +
             '<td>' + fmtPct(c.pct) + '</td>' +
           '</tr>'
         );
       }).join('');
-      Array.prototype.slice.call(tbody.querySelectorAll('img[data-coach]')).forEach(function(img, i){
-        var coach = data[i];
-        loadHeadshot(img, coach);
-      });
+      cards.innerHTML = data.map(function(c){
+        return '<article class="coach-card">' +
+          '<div class="coach-card__top">' + coachImage(c) + '<div><div class="coach-card__team">' + escapeHtml(c.team) + '</div><div class="coach-card__name">' + escapeHtml(c.coach) + coachBadge(c) + '</div><div class="muted">Hired ' + fmtNum(c.hired) + '</div></div></div>' +
+          '<dl class="coach-card__stats"><div><dt>2026 W–L–T</dt><dd>' + fmtNum(c.seasonRecord) + '</dd></div><div><dt>Tenure W–L–T</dt><dd>' + (c.recordPending ? '—' : c.wins + '–' + c.losses + '–' + c.ties) + '</dd></div><div><dt>Tenure games</dt><dd>' + fmtNum(c.games) + '</dd></div><div><dt>Tenure win%</dt><dd>' + fmtPct(c.pct) + '</dd></div></dl>' +
+          '</article>';
+      }).join('') || '<p class="coach-card">No coaches match this filter.</p>';
+      loadImages(tbody, data);
+      loadImages(cards, data);
     }
 
     // ====== Sorting & filtering ======
@@ -480,19 +503,28 @@
       var type = (th && th.dataset) ? (th.dataset.type || 'string') : 'string';
       base.sort(function(a, b){
         var v1 = a[currentSort.key], v2 = b[currentSort.key];
+        if (v1 == null) return v2 == null ? a.team.localeCompare(b.team) : 1;
+        if (v2 == null) return -1;
         if (type === 'number') { v1 = +v1; v2 = +v2; }
-        return (v1 > v2 ? 1 : v1 < v2 ? -1 : 0) * currentSort.dir;
+        return ((v1 > v2 ? 1 : v1 < v2 ? -1 : 0) * currentSort.dir) || a.team.localeCompare(b.team);
       });
-      Array.prototype.forEach.call(thead.querySelectorAll('th'), function(h){ h.classList.remove('sorted-asc','sorted-desc'); });
-      if (th) th.classList.add(currentSort.dir === 1 ? 'sorted-asc' : 'sorted-desc');
+      Array.prototype.forEach.call(thead.querySelectorAll('th[data-key]'), function(h){ h.removeAttribute('aria-sort'); });
+      if (th) th.setAttribute('aria-sort', currentSort.dir === 1 ? 'ascending' : 'descending');
       render(base);
     }
 
     thead.addEventListener('click', function(e){
-      var th = e.target.closest('th');
-      if (!th || th.getAttribute('data-sortable') === 'false') return;
+      var button = e.target.closest('.sort-button');
+      if (!button) return;
+      var th = button.closest('th');
       var key = th.getAttribute('data-key');
       currentSort = currentSort.key === key ? { key: key, dir: -currentSort.dir } : { key: key, dir: 1 };
+      applyView();
+    });
+
+    document.getElementById('mobileSort').addEventListener('change', function(e){
+      var parts = e.target.value.split(':');
+      currentSort = { key: parts[0], dir: Number(parts[1]) };
       applyView();
     });
 
@@ -505,11 +537,11 @@
       applyView();
     });
 
-    // ====== ESPN Standings (2025) ======
+    // ====== ESPN standings (current season) ======
     async function fetchESPNStandings() {
       var endpoints = [
-        'https://site.web.api.espn.com/apis/v2/sports/football/nfl/standings?season=2025',
-        'https://site.api.espn.com/apis/v2/sports/football/nfl/standings?season=2025'
+        'https://site.web.api.espn.com/apis/v2/sports/football/nfl/standings?season=' + CURRENT_SEASON,
+        'https://site.api.espn.com/apis/v2/sports/football/nfl/standings?season=' + CURRENT_SEASON
       ];
       for (var i=0;i<endpoints.length;i++) {
         var url = endpoints[i];
@@ -532,12 +564,14 @@
                 }
                 return null;
               };
-              var w = get('wins'); if (w == null) w = get('W'); if (w == null) w = get('w'); if (w == null) w = 0;
-              var l = get('losses'); if (l == null) l = get('L'); if (l == null) l = get('l'); if (l == null) l = 0;
+              var w = get('wins'); if (w == null) w = get('W'); if (w == null) w = get('w');
+              var l = get('losses'); if (l == null) l = get('L'); if (l == null) l = get('l');
               var t = get('ties'); if (t == null) t = get('T'); if (t == null) t = get('t'); if (t == null) t = 0;
-              if (name) map[normalizeTeamName(String(name))] = { w: +w || 0, l: +l || 0, t: +t || 0 };
+              if (name && w != null && l != null && [w,l,t].every(function(n){ return Number.isFinite(+n) && +n >= 0; })) {
+                map[normalizeTeamName(String(name))] = { w: +w, l: +l, t: +t };
+              }
             }
-            return map;
+            if (BASE.every(function(c){ return map[c.team]; })) return map;
           }
         } catch (e) {}
       }
@@ -559,7 +593,7 @@
     // ====== Current coach scraper (Wikipedia) ======
     async function fetchCurrentCoaches(){
       try{
-        var url = 'https://en.wikipedia.org/w/api.php?action=parse&format=json&page=' + encodeURIComponent('List of current National Football League head coaches') + '&prop=text&formatversion=2&origin=*';
+        var url = 'https://en.wikipedia.org/w/api.php?action=parse&format=json&page=' + encodeURIComponent('List of current NFL head coaches') + '&prop=text&formatversion=2&origin=*';
         var r = await fetch(url);
         if(!r.ok) throw new Error('wiki parse failed');
         var j = await r.json();
@@ -582,7 +616,7 @@
           var rows = tables[i].querySelectorAll('tr');
           if(!rows || rows.length<2) continue;
           var headerTxt = Array.prototype.map.call(rows[0].querySelectorAll('th'), function(th){ return th.textContent.trim().toLowerCase(); }).join('|');
-          if(headerTxt.indexOf('team')===-1 || headerTxt.indexOf('head coach')===-1) continue;
+          if(headerTxt.indexOf('team')===-1 || headerTxt.indexOf('coach')===-1) continue;
           for(var rIdx=1;rIdx<rows.length;rIdx++){
             var cells = rows[rIdx].children; if(!cells || cells.length<3) continue;
             var teamCell = cells[0];
@@ -590,7 +624,12 @@
             var teamRaw = teamLink ? teamLink.textContent : (teamCell.textContent||'');
             var team = normalizeTeamName(teamRaw);
 
-            var coachCell = cells[1];
+            var coachCell = null;
+            for (var cIdx=1;cIdx<Math.min(cells.length,5);cIdx++) {
+              var candidateLink = cells[cIdx].querySelector('a');
+              if (candidateLink && sanitizeName(candidateLink.textContent||'')) { coachCell = cells[cIdx]; break; }
+            }
+            if (!coachCell) continue;
             var coachLink = coachCell.querySelector('a');
             var coachRaw = coachLink ? coachLink.textContent : (coachCell.textContent||'');
             var coachClean = sanitizeName(coachRaw);
@@ -604,8 +643,11 @@
               coachClean = coachClean.trim(); isInterim = true;
             }
 
-            var hiredStr = (cells[2].textContent||'').trim();
-            var hiredYr = findYear(hiredStr);
+            var hiredYr = null;
+            for (var hIdx=Array.prototype.indexOf.call(cells, coachCell)+1;hIdx<cells.length;hIdx++) {
+              hiredYr = findYear(cells[hIdx].textContent||'');
+              if (hiredYr) break;
+            }
 
             if(team && coachClean){ map[team] = { coach: coachClean, hired: hiredYr, interim: isInterim }; }
           }
@@ -618,141 +660,33 @@
       var status = document.getElementById('coachStatus');
       if(status) status.textContent = 'Coaches: loading…';
       var map = await fetchCurrentCoaches();
-      for (var k in OVERRIDES) { if (Object.prototype.hasOwnProperty.call(OVERRIDES,k)) map[k] = OVERRIDES[k]; }
-
-      var changes = 0, found = 0;
+      if (!BASE.every(function(c){ return map[c.team] && map[c.team].coach; })) {
+        if (status) status.textContent = 'Coach list: baseline (live check unavailable)';
+        return;
+      }
+      var changes = 0, pending = 0;
       for(var i=0;i<BASE.length;i++){
-        var team = BASE[i].team; var rec = map[team]; if(!rec) continue; found++;
+        var team = BASE[i].team; var rec = map[team];
         if(rec.coach && rec.coach !== BASE[i].coach){
           BASE[i].coach = rec.coach;
           BASE[i].wikiTitle = undefined;
           BASE[i].wins = 0; BASE[i].losses = 0; BASE[i].ties = 0;
+          BASE[i].recordPending = true;
           changes++;
         }
+        if (BASE[i].recordPending) pending++;
         if(typeof rec.interim === 'boolean'){ BASE[i].interim = rec.interim; }
         if(rec.hired && rec.hired !== BASE[i].hired){ BASE[i].hired = rec.hired; changes++; }
       }
       currentData = buildRows(BASE, YTD);
       applyView();
-      if(status) status.textContent = 'Coaches: ' + found + ' teams matched' + (changes ? ('; ' + changes + ' updated') : '');
-      applySinceDates();
-    }
-
-    // ====== Since-date computation (ESPN schedules) ======
-    var __espnTeamsIndex = null;
-    async function espnEnsureIndex(){
-      if (__espnTeamsIndex) return __espnTeamsIndex;
-      var url = 'https://site.api.espn.com/apis/v2/sports/football/nfl/teams';
-      try{
-        var r = await fetch(url); if(!r.ok) throw 0;
-        var j = await r.json();
-        var map = {};
-        var teams = (j && j.sports && j.sports[0] && j.sports[0].leagues && j.sports[0].leagues[0] && j.sports[0].leagues[0].teams) || [];
-        for (var i=0;i<teams.length;i++){
-          var t = teams[i] && teams[i].team; if(!t) continue;
-          var id = t.id; var dn = t.displayName; var n = t.name; var sd = t.shortDisplayName; var loc = t.location; var nick = t.nickname;
-          var keys = [dn, n, sd, loc + ' ' + nick].filter(Boolean);
-          for (var k=0;k<keys.length;k++){ map[normalizeTeamName(keys[k])] = id; }
-        }
-        __espnTeamsIndex = map; return map;
-      }catch(e){ __espnTeamsIndex = {}; return __espnTeamsIndex; }
-    }
-
-    async function espnTeamId(team){ var idx = await espnEnsureIndex(); return idx[normalizeTeamName(team)] || null; }
-
-    function resultFromCompetition(comp, teamName){
-      try{
-        var c = comp || {}; var competitors = c.competitors || [];
-        if (!Array.isArray(competitors) || competitors.length < 2) return { final:false, res:null };
-        var st = (c.status && c.status.type) || null;
-        var stState = st && st.state ? String(st.state).toLowerCase() : '';
-        var stName = st && st.name ? String(st.name).toLowerCase() : '';
-        var stDesc = st && st.description ? String(st.description).toLowerCase() : '';
-        var stCompleted = !!(st && st.completed === true);
-        var isFinal = stCompleted || stState === 'post' || stName.indexOf('final') !== -1 || stDesc.indexOf('final') !== -1;
-
-        var you = null, opp = null;
-        for (var i=0;i<competitors.length;i++){
-          var cc = competitors[i]; if (!cc || !cc.team) continue;
-          var dn = cc.team.displayName || cc.team.name || cc.team.shortDisplayName || '';
-          if (normalizeTeamName(dn) === normalizeTeamName(teamName)) { you = cc; } else { opp = cc; }
-        }
-
-        var home = competitors.find(function(x){ return x && x.homeAway==='home'; });
-        var away = competitors.find(function(x){ return x && x.homeAway==='away'; });
-        var hs = (home && home.score != null) ? Number(home.score) : null;
-        var as = (away && away.score != null) ? Number(away.score) : null;
-
-        if (!isFinal) return { final:false, res:null };
-        if (you && you.winner === true) return { final:true, res:'W' };
-        if (opp && opp.winner === true) return { final:true, res:'L' };
-        if (hs!=null && as!=null && hs === as) return { final:true, res:'T' };
-        return { final:true, res:null };
-      }catch(e){ return { final:false, res:null }; }
-    }
-
-    async function fetchRecordSince(team, sinceISO){
-      try{
-        var id = await espnTeamId(team); if(!id) return {w:0,l:0,t:0};
-        var endpoints = [
-          'https://site.api.espn.com/apis/v2/sports/football/nfl/teams/' + id + '/schedule?season=2025',
-          'https://site.web.api.espn.com/apis/v2/sports/football/nfl/teams/' + id + '/schedule?season=2025',
-          'https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/teams/' + id + '/schedule?season=2025'
-        ];
-        var j = null;
-        for (var i=0;i<endpoints.length;i++){
-          try{
-            var r = await fetch(endpoints[i]);
-            if (!r.ok) continue;
-            j = await r.json();
-            if (j && (j.events || (j.items && j.items.length))) break;
-          }catch(_){}
-        }
-        if (!j) return {w:0,l:0,t:0};
-        var evs = (j.events) || (j.items) || [];
-        var since = new Date(sinceISO).getTime();
-        var w=0,l=0,t=0;
-
-        for (var k=0;k<evs.length;k++){
-          var e = evs[k];
-          var dateStr = e.date || (e.event && e.event.date);
-          var dateMs = Date.parse(dateStr);
-          if (isNaN(dateMs) || dateMs < since) continue;
-
-          var comp = (e.competitions && e.competitions[0]) || (e.competition && e.competition);
-          var rr = resultFromCompetition(comp, team);
-          if (!rr.final) continue;
-          if (rr.res === 'T') { t++; continue; }
-          if (rr.res === 'W') { w++; continue; }
-          if (rr.res === 'L') { l++; continue; }
-        }
-        return {w:w,l:l,t:t};
-      }catch(e){ return {w:0,l:0,t:0}; }
-    }
-
-    async function applySinceDates(){
-      var keys = Object.keys(COACH_STARTS_2025);
-      if (!keys.length) return;
-      var status = document.getElementById('ytdStatus');
-      var sinceCount = 0;
-      for (var i=0;i<keys.length;i++){
-        var team = keys[i]; var iso = COACH_STARTS_2025[team];
-        if (!iso) continue;
-        try{
-          var rec = await fetchRecordSince(team, iso);
-          YTD_SINCE[team] = rec;
-          sinceCount++;
-        }catch(e){}
-      }
-      currentData = buildRows(BASE, YTD);
-      applyView();
-      if (status) status.textContent = (status.textContent ? status.textContent + ' · ' : '') + 'since-dates applied: ' + sinceCount;
+      if(status) status.textContent = 'Coaches: 32 teams checked' + (changes ? '; ' + changes + ' updates' : '') + (pending ? '; ' + pending + ' records pending' : '');
     }
 
     // ====== Debug helpers ======
     function coachListApiUrl(){
       return 'https://en.wikipedia.org/w/api.php?action=parse&format=json&page=' +
-        encodeURIComponent('List of current National Football League head coaches') +
+        encodeURIComponent('List of current NFL head coaches') +
         '&prop=text&formatversion=2&origin=*';
     }
 
@@ -790,23 +724,27 @@
     // ====== Add YTD (standings) ======
     async function addYTD(){
       var status = document.getElementById('ytdStatus');
-      if (status) status.textContent = '2025 YTD: loading…';
+      if (status) status.textContent = CURRENT_SEASON + ' standings: loading…';
       try {
         var ytd = await fetchESPNStandings();
         YTD = ytd;
         currentData = buildRows(BASE, YTD);
         applyView();
-        if (status) status.textContent = '2025 YTD added';
-        await applySinceDates();
+        if (status) status.textContent = CURRENT_SEASON + ' standings: ESPN, checked ' + new Date().toLocaleDateString();
       } catch (e) {
         console.error('addYTD error', e);
-        if (status) status.textContent = '2025 YTD: failed to load';
+        if (status) status.textContent = CURRENT_SEASON + ' standings: snapshot through Week 2';
       }
     }
 
     // ====== Initial render + init ======
     currentData = buildRows(BASE, YTD);
     applyView();
+
+    document.getElementById('photoCredits').innerHTML = Object.keys(OFFICIAL_PORTRAITS).sort().map(function(name){
+      var p = OFFICIAL_PORTRAITS[name];
+      return '<li><a href="' + escapeHtml(p.page) + '">' + escapeHtml(name) + '</a> — <a href="' + escapeHtml(p.sourceImage) + '">club photo</a></li>';
+    }).join('');
 
     (function init(){
       addYTD();

@@ -1,0 +1,162 @@
+window.COACH_PORTRAITS = {
+  "Mike LaFleur": {
+    "file": "mike-lafleur.jpg",
+    "page": "https://www.azcardinals.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/cardinals/oslbhmncmtr07ff5mnwu.jpg"
+  },
+  "Kevin Stefanski": {
+    "file": "kevin-stefanski.jpg",
+    "page": "https://www.atlantafalcons.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/falcons/hive6yboznqujosi0t6a.jpg"
+  },
+  "Jesse Minter": {
+    "file": "jesse-minter.jpg",
+    "page": "https://www.baltimoreravens.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/ravens/omofhdjcdppnx8ngmnlh.jpg"
+  },
+  "Joe Brady": {
+    "file": "joe-brady.jpg",
+    "page": "https://www.buffalobills.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/bills/am3magndb9gofrw30jfk.jpg"
+  },
+  "Dave Canales": {
+    "file": "dave-canales.jpg",
+    "page": "https://www.panthers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/panthers/gnjgelxbhaldo4iskf45.jpg"
+  },
+  "Ben Johnson": {
+    "file": "ben-johnson.jpg",
+    "page": "https://www.chicagobears.com/team/coaches/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/bears/bexkjvilhtogegqjqfjx.jpg"
+  },
+  "Zac Taylor": {
+    "file": "zac-taylor.jpg",
+    "page": "https://www.bengals.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/bengals/auyolyq5eqipvfgpeq5h.jpg"
+  },
+  "Todd Monken": {
+    "file": "todd-monken.jpg",
+    "page": "https://www.clevelandbrowns.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/browns/y0rhqhw644qqu6bcxxuc.jpg"
+  },
+  "Brian Schottenheimer": {
+    "file": "brian-schottenheimer.jpg",
+    "page": "https://www.dallascowboys.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/cowboys/x6xkpcqontxqwt8mdyr9.jpg"
+  },
+  "Sean Payton": {
+    "file": "sean-payton.jpg",
+    "page": "https://www.denverbroncos.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/broncos/b1br0juh1rp9krapsae8.jpg"
+  },
+  "Dan Campbell": {
+    "file": "dan-campbell.jpg",
+    "page": "https://www.detroitlions.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/lions/wnlvnnw7pr8bcdf8yt7f.jpg"
+  },
+  "Matt LaFleur": {
+    "file": "matt-lafleur.jpg",
+    "page": "https://www.packers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/packers/xyxyorftpjauf43ogpmv.jpg"
+  },
+  "DeMeco Ryans": {
+    "file": "demeco-ryans.jpg",
+    "page": "https://www.houstontexans.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/texans/gzddlomivbtyuftuzrdi.jpg"
+  },
+  "Shane Steichen": {
+    "file": "shane-steichen.jpg",
+    "page": "https://www.colts.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/colts/ryl3kamnc06bddbsbk6e.jpg"
+  },
+  "Liam Coen": {
+    "file": "liam-coen.jpg",
+    "page": "https://www.jaguars.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/jaguars/flrzd3amfwdd3ga71dag.jpg"
+  },
+  "Andy Reid": {
+    "file": "andy-reid.jpg",
+    "page": "https://www.chiefs.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/chiefs/khzpdwroubzinsqt38fx.jpg"
+  },
+  "Klint Kubiak": {
+    "file": "klint-kubiak.jpg",
+    "page": "https://www.raiders.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/raiders/cemhaxoqp1pajpx8yjp7.jpg"
+  },
+  "Jim Harbaugh": {
+    "file": "jim-harbaugh.jpg",
+    "page": "https://www.chargers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/chargers/mkoyd76svgrapwhpujxp.jpg"
+  },
+  "Sean McVay": {
+    "file": "sean-mcvay.jpg",
+    "page": "https://www.therams.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/rams/nbgiqfbcuss2z5gfdkt0.jpg"
+  },
+  "Jeff Hafley": {
+    "file": "jeff-hafley.jpg",
+    "page": "https://www.miamidolphins.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/dolphins/cgnnqs8d7ngwnmssmhfa.jpg"
+  },
+  "Kevin O'Connell": {
+    "file": "kevin-oconnell.jpg",
+    "page": "https://www.vikings.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/vikings/hozn31ftfmnuslvaojle.jpg"
+  },
+  "Mike Vrabel": {
+    "file": "mike-vrabel.jpg",
+    "page": "https://www.patriots.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/patriots/vyawltlzxdygn1ubmr7c.jpg"
+  },
+  "Kellen Moore": {
+    "file": "kellen-moore.jpg",
+    "page": "https://www.neworleanssaints.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/saints/ahvamdhwedu0nqkumb9h.jpg"
+  },
+  "John Harbaugh": {
+    "file": "john-harbaugh.jpg",
+    "page": "https://www.giants.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/giants/e5xqbb3eaaevzutrzyei.jpg"
+  },
+  "Aaron Glenn": {
+    "file": "aaron-glenn.jpg",
+    "page": "https://www.newyorkjets.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/jets/o9oqdjxllj9fiqdgd1sx.jpg"
+  },
+  "Nick Sirianni": {
+    "file": "nick-sirianni.jpg",
+    "page": "https://www.philadelphiaeagles.com/team/coaches/",
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/eagles/bqj3sr1r5pbs3w6epgrx.jpg"
+  },
+  "Mike McCarthy": {
+    "file": "mike-mccarthy.jpg",
+    "page": "https://www.steelers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/steelers/zpjgzcniseurh5r1yr7o.jpg"
+  },
+  "Kyle Shanahan": {
+    "file": "kyle-shanahan.jpg",
+    "page": "https://www.49ers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/49ers/zeksyg5a7ztaigmqtqxx.jpg"
+  },
+  "Mike Macdonald": {
+    "file": "mike-macdonald.jpg",
+    "page": "https://www.seahawks.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/seahawks/c9c4uivyfdcurorpmprs.jpg"
+  },
+  "Todd Bowles": {
+    "file": "todd-bowles.jpg",
+    "page": "https://www.buccaneers.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/buccaneers/tmuakznphe87i2lz2kdv.jpg"
+  },
+  "Robert Saleh": {
+    "file": "robert-saleh.jpg",
+    "page": "https://www.tennesseetitans.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/titans/fflteh2nl88z9oocmsnj.jpg"
+  },
+  "Dan Quinn": {
+    "file": "dan-quinn.jpg",
+    "page": "https://www.commanders.com/team/coaches-roster/",
+    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/commanders/gsrnytky7zjsvlxyk5gq.jpg"
+  }
+};
