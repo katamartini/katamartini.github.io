@@ -147,7 +147,7 @@ window.COACH_PORTRAITS = {
   "Todd Bowles": {
     "file": "todd-bowles.jpg",
     "page": "https://www.buccaneers.com/team/coaches-roster/",
-    "sourceImage": "https://static.clubs.nfl.com/image/upload/c_fill,g_face,w_320,h_400,q_auto,f_jpg/buccaneers/tmuakznphe87i2lz2kdv.jpg"
+    "sourceImage": "https://static.clubs.nfl.com/image/private/c_fill,g_face,w_320,h_400,q_auto,f_jpg/buccaneers/jpogwxmoztyg1pusjnum.jpg"
   },
   "Robert Saleh": {
     "file": "robert-saleh.jpg",

@@ -59,8 +59,9 @@ function imageCandidatesForCoachCard(html, coach, slug) {
     const aria = /aria-label=["']([^"']+)["']/i.exec(attributes)?.[1];
     const href = /href=["']([^"']+)["']/i.exec(attributes)?.[1] || '';
     const cardName = /d3-o-person-card__name[^>]*>([^<]+)/i.exec(body)?.[1];
+    const profileSlug = href.split(/[?#]/)[0].replace(/\/$/, '').split('/').pop()?.toLowerCase();
     const matchesCoach = [aria, cardName].some((value) => value && normalize(value) === normalize(coach)) ||
-      /\/team\/coaches(?:-roster)?\//i.test(href) && href.toLowerCase().includes(slug);
+      /\/team\/coaches(?:-roster)?\//i.test(href) && profileSlug === slug;
     if (!matchesCoach) continue;
     const image = /<img\b[^>]*?data-src=["']([^"']+)["'][^>]*>/i.exec(body) ||
       /<img\b[^>]*?src=["']([^"']+)["'][^>]*>/i.exec(body);
