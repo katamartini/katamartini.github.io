@@ -594,6 +594,16 @@
       font-weight: 850;
     }
 
+    .season-yards {
+      color: #d4b7f4;
+      font-weight: 750;
+    }
+
+    .season-yards--empty {
+      color: #738096;
+      font-weight: 500;
+    }
+
     .is-jj {
       scroll-margin-top: 54px;
       background: linear-gradient(90deg, #3d176b 0%, var(--purple) 48%, #32135a 100%);
@@ -697,12 +707,12 @@
         -webkit-text-stroke-width: 1px;
       }
 
-      th:nth-child(4),
       th:nth-child(5),
       th:nth-child(6),
-      td:nth-child(4),
+      th:nth-child(7),
       td:nth-child(5),
-      td:nth-child(6) {
+      td:nth-child(6),
+      td:nth-child(7) {
         display: none;
       }
 
@@ -722,6 +732,31 @@
 
       .source-note {
         font-size: .75rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      th,
+      td {
+        padding-right: 6px;
+        padding-left: 6px;
+      }
+
+      th {
+        font-size: .67rem;
+        letter-spacing: .03em;
+      }
+
+      .rank {
+        width: 40px;
+      }
+
+      .player {
+        font-size: .86rem;
+      }
+
+      .jj-tag {
+        display: none;
       }
     }
 
@@ -790,6 +825,7 @@
             <th scope="col">Rank</th>
             <th scope="col">Player</th>
             <th scope="col">Yards</th>
+            <th scope="col" id="season-header" title="2026 regular-season receiving yards">2026</th>
             <th scope="col">Rec</th>
             <th scope="col">Avg</th>
             <th scope="col">TD</th>
@@ -1377,6 +1413,9 @@
     const body = document.querySelector("#leaders");
 
     const displayLeaders = jjData?.leaders ?? leaders;
+    const seasonHeader = document.querySelector("#season-header");
+    seasonHeader.textContent = jjData?.season ?? 2026;
+    seasonHeader.title = `${seasonHeader.textContent} regular-season receiving yards`;
     const jjRank = displayLeaders.find(([, player]) => player === "Justin Jefferson")?.[0];
     const jump = document.querySelector(".jj-jump");
     jump.setAttribute("aria-label", `Jump to Justin Jefferson at rank ${jjRank}`);
@@ -1387,7 +1426,7 @@
     }
 
     const escapeHtml = value => value.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
-    body.innerHTML = displayLeaders.map(([rank, player, yards, receptions, average, touchdowns]) => {
+    body.innerHTML = displayLeaders.map(([rank, player, yards, receptions, average, touchdowns, seasonYards]) => {
       const isJefferson = player === "Justin Jefferson";
       const playerName = isJefferson
         ? `<span class="player-wrap"><span>${escapeHtml(player)}</span><span class="jj-tag" aria-label="Justin Jefferson spotlight">JJ</span></span>`
@@ -1398,6 +1437,7 @@
           <td class="rank">${rank}</td>
           <th class="player" scope="row">${playerName}</th>
           <td class="yards">${number.format(yards)}</td>
+          <td class="season-yards${seasonYards === null || seasonYards === undefined ? " season-yards--empty" : ""}">${seasonYards === null || seasonYards === undefined ? "—" : number.format(seasonYards)}</td>
           <td>${number.format(receptions)}</td>
           <td>${average.toFixed(1)}</td>
           <td>${touchdowns}</td>
