@@ -6,7 +6,7 @@ const outputUrl = new URL('../data/jj23k-data.js', import.meta.url);
 const playerId = '00-0036322'; // Justin Jefferson's stable NFL ID.
 const baselineSeason = 2026;
 const startingWeek = 1;
-const schemaVersion = 2;
+const schemaVersion = 3;
 const releaseRoot = 'https://github.com/nflverse/nflverse-data/releases/download/stats_player';
 
 function parseCsv(csv) {
@@ -81,10 +81,11 @@ function sourceBaseline(html) {
   return { careerYards, leaders };
 }
 
-async function historicalStats(currentPlayers) {
+async function historicalStats() {
   const totals = new Map();
   const years = Array.from({ length: baselineSeason - 1999 }, (_, index) => 1999 + index);
-  // Only players in this season's feed can newly enter the top 100.
+  // Keep the full modern-era field so start-of-season ranks include players
+  // just below the top 100, not only the players who have appeared this year.
   for (let index = 0; index < years.length; index += 5) {
     const batch = await Promise.all(years.slice(index, index + 5).map(async year => {
       const url = `${releaseRoot}/stats_player_reg_${year}.csv`;
@@ -92,8 +93,9 @@ async function historicalStats(currentPlayers) {
     }));
     for (const rows of batch) {
       for (const row of rows) {
-        if (!currentPlayers.has(row.player_id) || row.season_type !== 'REG') continue;
-        const total = totals.get(row.player_id) ?? { yards: 0, receptions: 0, touchdowns: 0 };
+        if (row.season_type !== 'REG') continue;
+        const total = totals.get(row.player_id) ?? { name: row.player_display_name, yards: 0, receptions: 0, touchdowns: 0 };
+        total.name = row.player_display_name;
         addStats(total, row);
         totals.set(row.player_id, total);
       }
@@ -156,11 +158,12 @@ async function update() {
   for (const row of regular) {
     const player = currentPlayers.get(row.player_id) ?? {
       id: row.player_id, name: row.player_display_name, yards: 0, receptions: 0, touchdowns: 0,
-      later: { yards: 0, receptions: 0, touchdowns: 0 }, seasonYards: null
+      later: { yards: 0, receptions: 0, touchdowns: 0 }, seasonYards: null, beforeSeasonYards: 0
     };
     addStats(player, row);
     if (Number(row.season) > baselineSeason || Number(row.week) > startingWeek) addStats(player.later, row);
     if (Number(row.season) === season) player.seasonYards = (player.seasonYards ?? 0) + stat(row, 'receiving_yards');
+    else player.beforeSeasonYards += stat(row, 'receiving_yards');
     currentPlayers.set(row.player_id, player);
   }
   if (currentPlayers.get(playerId)?.yards !== jeffersonGames.reduce((sum, row) => sum + stat(row, 'receiving_yards'), 0)) {
@@ -169,9 +172,31 @@ async function update() {
 
   const originalNames = new Set(baseline.leaders.map(row => row[1]));
   const outsidePlayers = new Map([...currentPlayers].filter(([, player]) => !originalNames.has(player.name)));
-  const past = await historicalStats(outsidePlayers);
+  const past = await historicalStats();
+  const liveByName = new Map([...currentPlayers.values()].map(player => [player.name, player]));
+  const weekOneYards = new Map();
+  for (const row of regular.filter(row => Number(row.season) === baselineSeason && Number(row.week) === startingWeek)) {
+    weekOneYards.set(row.player_display_name, (weekOneYards.get(row.player_display_name) ?? 0) + stat(row, 'receiving_yards'));
+  }
+  const normalizeName = name => name.toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b/g, '').replace(/[^a-z]/g, '');
+  const originalNormalizedNames = new Set([...originalNames].map(normalizeName));
+  const startPopulation = baseline.leaders.map(([originalRank, name, yards]) => ({
+    originalRank, name,
+    yards: yards - (weekOneYards.get(name) ?? 0) + (liveByName.get(name)?.beforeSeasonYards ?? 0)
+  }));
+  for (const [id, previous] of past) {
+    if (originalNormalizedNames.has(normalizeName(previous.name))) continue;
+    const live = currentPlayers.get(id);
+    startPopulation.push({ originalRank: Infinity, name: live?.name ?? previous.name,
+      yards: previous.yards + (live?.beforeSeasonYards ?? 0) });
+  }
+  for (const [id, player] of outsidePlayers) {
+    if (!past.has(id)) startPopulation.push({ originalRank: Infinity, name: player.name, yards: player.beforeSeasonYards });
+  }
+  startPopulation.sort((a, b) => b.yards - a.yards || a.originalRank - b.originalRank || a.name.localeCompare(b.name));
+  const startRanks = new Map(startPopulation.map((player, index) => [player.name, index + 1]));
   const all = baseline.leaders.map(([originalRank, name, yards, receptions, , touchdowns]) => {
-    const live = [...currentPlayers.values()].find(player => player.name === name);
+    const live = liveByName.get(name);
     return { originalRank, name, yards: yards + (live?.later.yards ?? 0),
       receptions: receptions + (live?.later.receptions ?? 0),
       touchdowns: touchdowns + (live?.later.touchdowns ?? 0), seasonYards: live?.seasonYards ?? null };
@@ -184,11 +209,16 @@ async function update() {
       touchdowns: previous.touchdowns + player.touchdowns, seasonYards: player.seasonYards });
   }
   all.sort((a, b) => b.yards - a.yards || a.originalRank - b.originalRank || a.name.localeCompare(b.name));
-  const leaders = all.slice(0, 100).map((player, index) => [
-    index + 1, player.name, player.yards, player.receptions,
-    player.receptions ? Math.round(player.yards / player.receptions * 10) / 10 : 0,
-    player.touchdowns, player.seasonYards
-  ]);
+  const leaders = all.slice(0, 100).map((player, index) => {
+    const rank = index + 1;
+    const movement = player.seasonYards === null ? null : startRanks.get(player.name) - rank;
+    if (player.seasonYards !== null && !Number.isInteger(movement)) {
+      throw new Error(`Missing start-of-season rank for ${player.name}`);
+    }
+    return [rank, player.name, player.yards, player.receptions,
+      player.receptions ? Math.round(player.yards / player.receptions * 10) / 10 : 0,
+      player.touchdowns, player.seasonYards, movement];
+  });
   const jefferson = leaders.find(row => row[1] === 'Justin Jefferson');
   if (!jefferson || jefferson[2] !== careerYards.at(-1)) {
     throw new Error('Jefferson chart and leaderboard totals disagree');

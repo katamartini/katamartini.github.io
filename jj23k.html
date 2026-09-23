@@ -589,6 +589,19 @@
       letter-spacing: -.01em;
     }
 
+    .rank-change {
+      margin-left: 7px;
+      color: #66d99b;
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .rank-change--down {
+      color: #f2a2a2;
+    }
+
     .yards {
       color: #fff;
       font-weight: 850;
@@ -1426,16 +1439,17 @@
     }
 
     const escapeHtml = value => value.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
-    body.innerHTML = displayLeaders.map(([rank, player, yards, receptions, average, touchdowns, seasonYards]) => {
+    body.innerHTML = displayLeaders.map(([rank, player, yards, receptions, average, touchdowns, seasonYards, movement]) => {
       const isJefferson = player === "Justin Jefferson";
       const playerName = isJefferson
         ? `<span class="player-wrap"><span>${escapeHtml(player)}</span><span class="jj-tag" aria-label="Justin Jefferson spotlight">JJ</span></span>`
         : escapeHtml(player);
+      const movementLabel = movement === null || movement === undefined ? "" : `<span class="rank-change${movement < 0 ? " rank-change--down" : ""}" aria-label="${movement > 0 ? `Up ${movement} spots` : movement < 0 ? `Down ${-movement} spots` : "No rank change"} since the start of the ${seasonHeader.textContent} season">(${movement >= 0 ? "+" : ""}${movement})</span>`;
 
       return `
         <tr${isJefferson ? ' class="is-jj" id="justin-jefferson"' : ""} data-rank="${rank}">
           <td class="rank">${rank}</td>
-          <th class="player" scope="row">${playerName}</th>
+          <th class="player" scope="row">${playerName}${movementLabel}</th>
           <td class="yards">${number.format(yards)}</td>
           <td class="season-yards${seasonYards === null || seasonYards === undefined ? " season-yards--empty" : ""}">${seasonYards === null || seasonYards === undefined ? "—" : number.format(seasonYards)}</td>
           <td>${number.format(receptions)}</td>
