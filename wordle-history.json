@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-09-23T04:16:36.229052+00:00",
+  "data_updated_at": "2026-09-23T10:43:13.310924+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -4387,6 +4387,66 @@
         },
         {
           "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1922,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXGX\nXGGGG\nXGGGG\nGGGGG",
+      "posted_at": "2026-09-23T10:03:06.061000+00:00",
+      "tracked_at": "2026-09-23T10:03:06.134442+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXGX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGGGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1922,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nYYXXX\nYGXXY\nGGGGX\nGGGGG",
+      "posted_at": "2026-09-23T10:43:13.144000+00:00",
+      "tracked_at": "2026-09-23T10:43:13.310924+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YGXXY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGX"
+        },
+        {
+          "row_number": 5,
           "pattern": "GGGGG"
         }
       ]
