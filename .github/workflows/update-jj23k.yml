@@ -1,0 +1,50 @@
+name: Update JJ23K receiving leaders
+
+on:
+  workflow_dispatch:
+  schedule:
+    # After Monday Night Football and nflverse's morning data refresh.
+    - cron: "17 16 * * 2"
+    # Retry the next day if Tuesday's data or scheduled job was delayed.
+    - cron: "23 16 * * 3"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-jj23k
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Refresh NFL receiving stats
+        run: node scripts/update-jj23k.mjs
+
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/jj23k-data.js; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/jj23k-data.js
+            git commit -m "Update JJ23K receiving stats"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            echo "JJ23K data is unchanged."
+          fi
+
+          # A GITHUB_TOKEN push does not trigger the branch-based Pages build.
+          # Request it even on a no-op run, so Wednesday can retry a failed Tuesday build.
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"

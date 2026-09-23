@@ -800,7 +800,7 @@
       <noscript>This leaderboard requires JavaScript to display.</noscript>
     </section>
 
-    <p class="source-note">
+    <p class="source-note" id="source-note">
       Totals through Week 1 of the 2026 season. Data sourced from
       <a href="https://www.statmuse.com/nfl/ask/most-career-receiving-yards" target="_blank" rel="noreferrer">StatMuse</a>
       and checked against
@@ -808,6 +808,7 @@
     </p>
   </main>
 
+  <script src="data/jj23k-data.js"></script>
   <script>
     const careerYards = {
       rice: [0, 67, 102, 196, 196, 238, 275, 278, 295, 365, 432, 451, 493, 493, 734, 816, 927, 981, 1138, 1258, 1334, 1506, 1650, 1708, 1757, 1801, 1957, 2161, 2208, 2294, 2391, 2426, 2497, 2603, 2689, 2778, 2848, 2925, 3033, 3136, 3262, 3352, 3427, 3485, 3575, 3616, 3725, 3888, 4051, 4086, 4164, 4229, 4315, 4337, 4374, 4435, 4540, 4711, 4774, 4852, 4881, 5044, 5166, 5330, 5366, 5515, 5543, 5655, 5750, 5843, 5924, 6030, 6147, 6179, 6217, 6263, 6364, 6390, 6464, 6635, 6713, 6938, 6969, 7036, 7223, 7370, 7416, 7488, 7501, 7602, 7706, 7748, 7866, 7939, 8089, 8174, 8273, 8311, 8449, 8484, 8488, 8532, 8556, 8586, 8645, 8799, 8866, 8947, 9072, 9128, 9154, 9227, 9232, 9289, 9349, 9532, 9619, 9664, 9732, 9825, 9958, 10037, 10093, 10211, 10273, 10351, 10433, 10466, 10561, 10621, 10703, 10858, 10921, 11093, 11155, 11321, 11403, 11508, 11640, 11723, 11776, 11945, 12023, 12170, 12233, 12299, 12335, 12400, 12457, 12547, 12640, 12805, 12885, 12977, 13121, 13242, 13275, 13362, 13529, 13616, 13797, 13868, 13911, 13932, 14040, 14151, 14312, 14461, 14528, 14560, 14681, 14970, 15123, 15211, 15310, 15437, 15509, 15617, 15701, 15783, 15819, 15864, 15913, 15971, 16058, 16136, 16265, 16328, 16377, 16415, 16455, 16541, 16623, 16785, 16839, 16918, 16954, 17018, 17078, 17165, 17334, 17361, 17386, 17422, 17448, 17563, 17612, 17629, 17676, 17704, 17760, 17802, 17861, 17906, 17908, 17939, 17962, 18025, 18182, 18199, 18255, 18299, 18442, 18501, 18523, 18567, 18640, 18706, 18752, 18829, 18864, 18917, 18945, 18976, 19007, 19048, 19110, 19186, 19247, 19334, 19341, 19432, 19483, 19527, 19561, 19608, 19693, 19824, 19889, 19986, 20043, 20136, 20220, 20328, 20386, 20411, 20505, 20649, 20726, 20859, 20945, 20990, 21064, 21167, 21232, 21342, 21408, 21521, 21551, 21576, 21597, 21640, 21680, 21741, 21867, 21918, 21937, 22008, 22079, 22120, 22140, 22191, 22218, 22245, 22293, 22452, 22466, 22488, 22488, 22515, 22533, 22533, 22533, 22543, 22549, 22554, 22563, 22649, 22673, 22818, 22870, 22895, 22895, 22895],
@@ -821,6 +822,9 @@
       holt: [0, 36, 83, 141, 208, 208, 232, 287, 318, 334, 359, 446, 450, 563, 633, 666, 788, 891, 992, 1086, 1275, 1309, 1360, 1453, 1517, 1647, 1733, 1858, 1947, 1965, 2137, 2302, 2423, 2508, 2525, 2636, 2710, 2793, 2836, 2908, 2985, 3074, 3213, 3279, 3345, 3400, 3486, 3689, 3786, 3877, 3965, 4104, 4210, 4248, 4328, 4399, 4406, 4524, 4578, 4653, 4733, 4778, 4919, 5011, 5088, 5199, 5263, 5331, 5464, 5625, 5692, 5866, 6066, 6104, 6228, 6373, 6475, 6506, 6606, 6730, 6784, 6880, 7001, 7066, 7094, 7147, 7271, 7275, 7386, 7418, 7508, 7559, 7719, 7870, 7965, 8040, 8156, 8281, 8351, 8514, 8598, 8724, 8794, 8839, 8968, 9098, 9173, 9268, 9284, 9447, 9487, 9567, 9597, 9717, 9819, 9859, 10013, 10061, 10111, 10184, 10252, 10282, 10397, 10472, 10531, 10585, 10675, 10748, 10822, 10885, 10937, 11026, 11059, 11141, 11251, 11375, 11430, 11484, 11619, 11709, 11730, 11771, 11864, 11873, 11949, 11986, 12051, 12074, 12125, 12153, 12211, 12216, 12276, 12360, 12390, 12451, 12515, 12570, 12660, 12707, 12772, 12829, 12871, 12966, 13067, 13084, 13121, 13145, 13176, 13226, 13250, 13321, 13359, 13382],
       alworth: [0, 17, 107, 160, 226, 261, 337, 353, 467, 521, 753, 803, 983, 1193, 1272, 1328, 1399, 1427, 1431, 1550, 1617, 1741, 1785, 1861, 2064, 2118, 2286, 2471, 2572, 2652, 2666, 2877, 2948, 2969, 3114, 3282, 3391, 3533, 3592, 3639, 3820, 3947, 4094, 4108, 4268, 4314, 4411, 4461, 4580, 4729, 4785, 4962, 5009, 5110, 5221, 5368, 5495, 5651, 5687, 5808, 5907, 5969, 6064, 6206, 6419, 6544, 6546, 6632, 6661, 6719, 6902, 6913, 7050, 7232, 7363, 7532, 7592, 7621, 7650, 7683, 7854, 7893, 7973, 8067, 8085, 8118, 8243, 8298, 8393, 8489, 8502, 8545, 8570, 8622, 8707, 8854, 8976, 8976, 9013, 9013, 9019, 9115, 9239, 9315, 9366, 9417, 9434, 9478, 9528, 9584, 9584, 9608, 9608, 9654, 9692, 9759, 9848, 9907, 9932, 9966, 10020, 10046, 10071, 10117, 10120, 10175, 10175, 10175, 10191, 10191, 10199, 10199, 10199, 10211, 10252, 10266, 10266]
     });
+
+    const jjData = window.JJ23K_DATA;
+    if (jjData) careerYards.jefferson = jjData.careerYards;
 
     const careerSeries = [
       { key: "rice", name: "Jerry Rice", color: "#ffc62f", values: careerYards.rice },
@@ -902,8 +906,8 @@
         <circle class="chart-dot" data-series="${series.key}" data-end-marker cx="${xScale(series.values.length - 1)}" cy="${yScale(series.values.at(-1))}" r="${series.key === "jefferson" ? 7 : 5}" style="fill:${series.color}" clip-path="url(#chart-plot-clip)"></circle>
       `).join("")}
       <text class="chart-end-label" data-series="rice" data-end-label="rice" x="${xScale(riceEnd.game) - 12}" y="${yScale(riceEnd.yards) - 13}" text-anchor="end">Rice · 22,895</text>
-      <text class="chart-end-label" data-series="jefferson" data-end-label="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · 8,572</text>
-      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game; use Box to select a zoom region or drag horizontally to pan when zoomed" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="95"></rect>
+      <text class="chart-end-label" data-series="jefferson" data-end-label="jefferson" x="${xScale(jjEnd.game) + 13}" y="${yScale(jjEnd.yards) - 14}">Jefferson · ${jjEnd.yards.toLocaleString("en-US")}</text>
+      <rect class="chart-hit-area" id="chart-hit-area" x="${plot.left}" y="${plot.top}" width="${plot.right - plot.left}" height="${plot.bottom - plot.top}" tabindex="0" role="slider" aria-label="Explore cumulative receiving yards by career game; use Box to select a zoom region or drag horizontally to pan when zoomed" aria-valuemin="0" aria-valuemax="${xMax}" aria-valuenow="${jjEnd.game}"></rect>
       <rect class="chart-selection-box" id="chart-selection-box" visibility="hidden"></rect>
       <g class="chart-hover" id="chart-hover" visibility="hidden" aria-hidden="true">
         <line class="chart-hover-guide" id="chart-hover-guide" y1="${plot.top}" y2="${plot.bottom}"></line>
@@ -1372,11 +1376,22 @@
     const number = new Intl.NumberFormat("en-US");
     const body = document.querySelector("#leaders");
 
-    body.innerHTML = leaders.map(([rank, player, yards, receptions, average, touchdowns]) => {
+    const displayLeaders = jjData?.leaders ?? leaders;
+    const jjRank = displayLeaders.find(([, player]) => player === "Justin Jefferson")?.[0];
+    const jump = document.querySelector(".jj-jump");
+    jump.setAttribute("aria-label", `Jump to Justin Jefferson at rank ${jjRank}`);
+    jump.querySelector(".jj-jump__stat").textContent = `${number.format(jjEnd.yards)} receiving yards`;
+    jump.querySelector(".jj-jump__rank").textContent = `#${jjRank} all time ↓`;
+    if (jjData) {
+      document.querySelector("#source-note").innerHTML = `Totals through Week ${jjData.throughWeek} of the ${jjData.season} season. Receiving stats from <a href="https://github.com/nflverse/nflverse-data/releases/tag/stats_player" target="_blank" rel="noreferrer">nflverse</a>; original all-time leaderboard baseline from <a href="https://www.statmuse.com/nfl/ask/most-career-receiving-yards" target="_blank" rel="noreferrer">StatMuse</a> and <a href="https://www.pro-football-reference.com/leaders/rec_yds_career.htm" target="_blank" rel="noreferrer">Pro Football Reference</a>.`;
+    }
+
+    const escapeHtml = value => value.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    body.innerHTML = displayLeaders.map(([rank, player, yards, receptions, average, touchdowns]) => {
       const isJefferson = player === "Justin Jefferson";
       const playerName = isJefferson
-        ? `<span class="player-wrap"><span>${player}</span><span class="jj-tag" aria-label="Justin Jefferson spotlight">JJ</span></span>`
-        : player;
+        ? `<span class="player-wrap"><span>${escapeHtml(player)}</span><span class="jj-tag" aria-label="Justin Jefferson spotlight">JJ</span></span>`
+        : escapeHtml(player);
 
       return `
         <tr${isJefferson ? ' class="is-jj" id="justin-jefferson"' : ""} data-rank="${rank}">
