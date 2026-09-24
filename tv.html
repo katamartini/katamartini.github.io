@@ -941,19 +941,85 @@
     }
 
     .show-table {
+      --show-grid-columns: 38px 76px minmax(180px, 0.8fr) 82px 132px minmax(240px, 1.6fr) 116px;
+      --show-grid-gap: 12px;
       display: grid;
-      gap: 10px;
+      gap: 0;
+    }
+
+    .show-table-head {
+      display: grid;
+      grid-template-columns: var(--show-grid-columns);
+      gap: var(--show-grid-gap);
+      align-items: end;
+      padding: 0 18px 8px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .show-table-head button {
+      min-width: 0;
+      min-height: 30px;
+      padding: 0 4px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .show-table-head button:hover,
+    .show-table-head button.active {
+      background: var(--wash);
+      color: var(--ink);
     }
 
     .show-row {
       display: grid;
-      grid-template-columns: auto 76px minmax(260px, 0.65fr) minmax(420px, 1.6fr) auto;
-      gap: 18px;
+      grid-template-columns: var(--show-grid-columns);
+      gap: var(--show-grid-gap);
       align-items: start;
       min-height: 154px;
       padding: 18px;
-      border: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
       background: #ffffff;
+    }
+
+    .show-row-progress,
+    .show-row-last-watched {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .show-stat-label {
+      display: none;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .show-stat-value {
+      font-size: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .show-row-last-watched time,
+    .show-row-last-watched .meta {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .show-row-last-watched time {
+      font-weight: 700;
     }
 
     .show-row.stale-pinned {
@@ -1122,6 +1188,49 @@
       border: 0;
     }
 
+    @media (max-width: 1200px) {
+      .show-table {
+        --show-grid-columns: 38px 76px minmax(0, 1fr);
+      }
+
+      .show-table-head {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 0 8px;
+      }
+
+      .show-table-head .show-table-label {
+        display: none;
+      }
+
+      .show-table-head button {
+        padding: 0 8px;
+        border: 1px solid var(--line);
+      }
+
+      .show-stat-label {
+        display: block;
+      }
+
+      .show-row-progress {
+        grid-column: 2;
+      }
+
+      .show-row-last-watched {
+        grid-column: 3;
+      }
+
+      .inline-episodes,
+      .show-row-actions {
+        grid-column: 1 / -1;
+      }
+
+      .show-row-actions {
+        justify-content: start;
+      }
+    }
+
     @media (max-width: 980px) {
       .topbar-inner {
         align-items: start;
@@ -1234,7 +1343,6 @@
       }
 
       .show-row {
-        grid-template-columns: auto 76px minmax(0, 1fr);
         align-items: start;
       }
 
@@ -1393,7 +1501,7 @@
       { mode: "progress", label: "Progress", defaultDirection: "desc" },
       { mode: "next-episode", label: "Next airdate", defaultDirection: "asc" },
       { mode: "status", label: "Status", defaultDirection: "asc" },
-      { mode: "last-watched", label: "Last watched", defaultDirection: "desc" },
+      { mode: "last-watched", label: "Last watched", defaultDirection: "asc" },
       { mode: "updated", label: "Updated", defaultDirection: "desc" },
     ];
 
@@ -1769,9 +1877,13 @@
       return state.shows.reduce((changed, item) => syncAutoCompletion(item) || changed, false);
     }
 
-    function progress(show) {
+    function watchedFraction(show) {
       const total = airedEpisodes(show).length;
-      return total ? Math.round((watchedCount(show) / total) * 100) : 0;
+      return total ? watchedCount(show) / total : 0;
+    }
+
+    function progress(show) {
+      return Math.round(watchedFraction(show) * 100);
     }
 
     function isCompletedShow(show) {
@@ -1849,7 +1961,7 @@
             || unwatchedAiredEpisodes(a).length - unwatchedAiredEpisodes(b).length;
         }
         if (state.sortMode === "progress") {
-          comparison = progress(a) - progress(b);
+          comparison = watchedFraction(a) - watchedFraction(b);
         }
         if (state.sortMode === "next-episode") {
           comparison = nextEpisodeSortValue(a).localeCompare(nextEpisodeSortValue(b));
@@ -1858,7 +1970,12 @@
           comparison = statusSortValue(a) - statusSortValue(b);
         }
         if (state.sortMode === "last-watched") {
-          comparison = parseTimestamp(a.lastWatchedAt) - parseTimestamp(b.lastWatchedAt);
+          const aTimestamp = parseTimestamp(a.lastWatchedAt);
+          const bTimestamp = parseTimestamp(b.lastWatchedAt);
+          if (!aTimestamp || !bTimestamp) {
+            if (aTimestamp !== bTimestamp) return aTimestamp ? -1 : 1;
+          }
+          comparison = aTimestamp - bTimestamp;
         }
         if (state.sortMode === "updated") {
           comparison = parseTimestamp(a.updatedAt || a.addedAt) - parseTimestamp(b.updatedAt || b.addedAt);
@@ -2125,6 +2242,18 @@
       `;
     }
 
+    function renderSortButton(mode, label) {
+      const option = SORT_OPTIONS.find((item) => item.mode === mode);
+      const text = label || option.label;
+      const isActive = state.sortMode === mode;
+      const directionText = state.sortDirection === "asc" ? "ascending" : "descending";
+      const arrow = state.sortDirection === "asc" ? "&uarr;" : "&darr;";
+      const ariaLabel = isActive
+        ? `Sort by ${text}, ${directionText}. Click to reverse.`
+        : `Sort by ${text}`;
+      return `<button type="button" class="${isActive ? "active" : ""}" data-show-sort="${mode}" aria-pressed="${isActive}" aria-label="${ariaLabel}">${text}${isActive ? `<span class="sort-direction" aria-hidden="true">${arrow}</span>` : ""}</button>`;
+    }
+
     function renderAllShowsView() {
       const library = libraryShows();
       const shows = sortedShows(state.hideCompleted ? library.filter((show) => !isCompletedShow(show)) : library);
@@ -2148,15 +2277,8 @@
               <div class="sort-control">
                 <span class="sort-label">Sort</span>
                 <div class="sort-buttons" role="group" aria-label="Sort shows">
-                  ${SORT_OPTIONS.map((option) => {
-                    const isActive = state.sortMode === option.mode;
-                    const directionText = state.sortDirection === "asc" ? "ascending" : "descending";
-                    const arrow = state.sortDirection === "asc" ? "&uarr;" : "&darr;";
-                    const label = isActive
-                      ? `Sort by ${option.label}, ${directionText}. Click to reverse.`
-                      : `Sort by ${option.label}`;
-                    return `<button type="button" class="${isActive ? "active" : ""}" data-show-sort="${option.mode}" aria-pressed="${isActive}" aria-label="${label}">${option.label}${isActive ? `<span class="sort-direction" aria-hidden="true">${arrow}</span>` : ""}</button>`;
-                  }).join("")}
+                  ${SORT_OPTIONS.filter((option) => !["title", "progress", "last-watched"].includes(option.mode))
+                    .map((option) => renderSortButton(option.mode)).join("")}
                 </div>
               </div>
               <label class="hide-completed-control">
@@ -2166,6 +2288,15 @@
             </div>
           </div>
           <div class="show-table">
+            <div class="show-table-head" role="group" aria-label="Sort table columns">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              ${renderSortButton("title", "Show")}
+              ${renderSortButton("progress", "Watched %")}
+              ${renderSortButton("last-watched")}
+              <span class="show-table-label">Episodes</span>
+              <span class="show-table-label">Actions</span>
+            </div>
             ${shows.length ? shows.map(renderShowRow).join("") : `<div class="empty">No shows tracked yet.</div>`}
           </div>
         </section>
@@ -2175,8 +2306,12 @@
     function renderShowRow(show) {
       const watched = watchedCount(show);
       const aired = airedEpisodes(show).length;
-      const watchedPercentage = aired ? ((watched / aired) * 100).toFixed(1) : "0.0";
+      const watchedPercentage = (watchedFraction(show) * 100).toFixed(1);
       const unwatched = unwatchedAiredEpisodes(show);
+      const lastWatchedDate = formatLastWatchedDate(show.lastWatchedAt);
+      const lastWatchedTime = lastWatchedDate
+        ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(show.lastWatchedAt))
+        : "";
       return `
         <article class="show-row${isStalePinnedShow(show) ? " stale-pinned" : ""}">
           <div class="show-row-pin">
@@ -2191,10 +2326,19 @@
               <span class="badge ${show.status}">${escapeAttr(show.status)}</span>
             </div>
             <div class="meta">${escapeAttr(showMeta(show))}</div>
-            <div class="meta">${watched}/${aired} aired watched (${watchedPercentage}%)</div>
+            <div class="meta">${watched}/${aired} aired watched</div>
             <div class="meta">${formatRuntimeMinutes(unwatchedRuntimeMinutes(show, unwatched))} left</div>
-            <div class="meta">${escapeAttr(lastWatchedText(show))}</div>
+          </div>
+          <div class="show-row-progress">
+            <span class="show-stat-label">Watched %</span>
+            <span class="show-stat-value">${watchedPercentage}%</span>
             <div class="progress-bar" aria-hidden="true"><span style="width:${progress(show)}%"></span></div>
+          </div>
+          <div class="show-row-last-watched">
+            <span class="show-stat-label">Last watched</span>
+            ${lastWatchedDate
+              ? `<time datetime="${escapeAttr(show.lastWatchedAt)}">${escapeAttr(lastWatchedDate)}</time><span class="meta">${escapeAttr(lastWatchedTime)}</span>`
+              : `<span class="meta">${watched ? "Not recorded" : "Never"}</span>`}
           </div>
           <div class="inline-episodes">
             ${unwatched.length ? unwatched.map((episode) => renderEpisodeButton(show, episode)).join("") : `<div class="empty">Caught up</div>`}
