@@ -145,6 +145,7 @@ export function calculateStreaks(csv) {
       teams: pair.teams,
       winner: latest.winner,
       count,
+      startDate: count ? pair.games[pair.games.length - count].date : null,
       latest: {
         date: latest.date,
         away: latest.away,
@@ -168,6 +169,7 @@ export function calculateStreaks(csv) {
           team,
           opponent,
           count: wins,
+          startDate: wins ? venueGames[venueGames.length - wins].date : null,
           latest: {
             date: mostRecent.date,
             away: mostRecent.away,

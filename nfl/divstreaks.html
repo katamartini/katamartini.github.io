@@ -279,7 +279,7 @@
 
     <div id="chart" class="chart" role="group" aria-labelledby="chart-title"></div>
 
-    <p class="method">Regular-season games only. Ties reset a winning streak. Home and Away count each team’s own wins at that venue; neutral-site games count only in Overall. Franchise moves and name changes stay with the same team. Results come from the <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results dataset</a>; the page checks for updates when opened.</p>
+    <p class="method">Regular-season games only. Start is the first win in the active streak; Latest is the most recent game. A dash means there is no active winning streak. Ties reset a winning streak. Home and Away count each team’s own wins at that venue; neutral-site games count only in Overall. Franchise moves and name changes stay with the same team. Results come from the <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results dataset</a>; the page checks for updates when opened.</p>
   </main>
 
   <script type="module">
@@ -385,12 +385,15 @@
         const summary = view === 'overall'
           ? `${winner}, ${streak.count} consecutive ${winWord}`
           : `${streak.count} consecutive ${view} ${winWord} by ${winner}`;
-        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${summary}. Last game ${score} on ${formatDate(latest.date)}.${upcoming ? ` Upcoming game ${formatDate(upcoming.date)}.` : ''}`);
-        row.title = `Last game: ${score} · ${formatDate(latest.date)}${upcoming ? ` · Next game: ${formatDate(upcoming.date)}` : ''}`;
+        const start = streak.startDate ? formatDate(streak.startDate) : '—';
+        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${summary}. Start: ${start}. Latest game: ${score} on ${formatDate(latest.date)}.${upcoming ? ` Upcoming game ${formatDate(upcoming.date)}.` : ''}`);
+        row.title = `Start: ${start} · Latest game: ${score} on ${formatDate(latest.date)}${upcoming ? ` · Next game: ${formatDate(upcoming.date)}` : ''}`;
 
         const label = element('div', 'matchup');
         label.append(element('strong', '', rivalry));
-        label.append(element('small', '', `${streak.division} · ${formatDate(latest.date)}${upcoming ? ` · Next ${formatDate(upcoming.date)}` : ''}`));
+        label.append(element('small', '', `${streak.division} · Start ${start}`));
+        label.append(element('small', '', `Latest ${formatDate(latest.date)}`));
+        if (upcoming) label.append(element('small', '', `Next ${formatDate(upcoming.date)}`));
         row.append(label);
 
         const plot = element('div', 'plot');
@@ -435,7 +438,9 @@
       if (!response.ok) throw new Error('Saved data unavailable');
       const saved = await response.json();
       if (saved.streaks?.length !== 48 || saved.homeStreaks?.length !== 96 ||
-          saved.awayStreaks?.length !== 96 || !Array.isArray(saved.schedule)) {
+          saved.awayStreaks?.length !== 96 || !Array.isArray(saved.schedule) ||
+          [saved.streaks, saved.homeStreaks, saved.awayStreaks].some(rows =>
+            rows.some(row => !Object.hasOwn(row, 'startDate')))) {
         throw new Error('Incomplete saved data');
       }
       data = saved;

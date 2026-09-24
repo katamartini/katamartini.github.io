@@ -38,10 +38,19 @@ test('overall and team-specific venue streaks use the right games', () => {
   const pair = data.streaks.find(row => row.teams.join('-') === 'BUF-MIA');
   assert.equal(pair.winner, 'MIA');
   assert.equal(pair.count, 1);
-  assert.equal(data.homeStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA').count, 2);
-  assert.equal(data.awayStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA').count, 1);
-  assert.equal(data.homeStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF').count, 0);
-  assert.equal(data.awayStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF').count, 0);
+  assert.equal(pair.startDate, '2025-11-01');
+  const billsHome = data.homeStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA');
+  assert.equal(billsHome.count, 2);
+  assert.equal(billsHome.startDate, '2024-09-01');
+  const billsAway = data.awayStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA');
+  assert.equal(billsAway.count, 1);
+  assert.equal(billsAway.startDate, '2025-10-01');
+  const dolphinsHome = data.homeStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF');
+  assert.equal(dolphinsHome.count, 0);
+  assert.equal(dolphinsHome.startDate, null);
+  const dolphinsAway = data.awayStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF');
+  assert.equal(dolphinsAway.count, 0);
+  assert.equal(dolphinsAway.startDate, null);
 });
 
 test('only scheduled divisional games in the next league week are marked upcoming', () => {
@@ -57,6 +66,7 @@ test('a tie resets both the overall and venue-specific win streak', () => {
   const csv = `${sampleCsv()}\n${game('BUF_MIA_tie', '2025-12-01', 'BUF', 14, 'MIA', 14)}`;
   const data = calculateStreaks(csv);
   assert.equal(data.streaks.find(row => row.teams.join('-') === 'BUF-MIA').count, 0);
+  assert.equal(data.streaks.find(row => row.teams.join('-') === 'BUF-MIA').startDate, null);
   assert.equal(data.homeStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF').count, 0);
   assert.equal(data.awayStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA').count, 0);
 });
