@@ -52,8 +52,17 @@ function pairKey(a, b) {
   return [a, b].sort().join('-');
 }
 
+export function upcomingDivisionalGames(schedule, today) {
+  const future = schedule.filter(game => game.date >= today)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  const next = future[0];
+  if (!next || Date.parse(`${next.date}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`) > 7 * 86400000) return [];
+  return future.filter(game => game.season === next.season && game.week === next.week && game.divisional);
+}
+
 export function calculateStreaks(csv) {
   const gamesByPair = new Map();
+  const schedule = [];
   let through = '';
 
   for (const division of DIVISIONS) {
@@ -76,18 +85,30 @@ export function calculateStreaks(csv) {
   }
 
   for (const line of lines.slice(1)) {
-    const columns = line.split(',', 11);
-    if (columns.length < 11 || columns[2] !== 'REG') continue;
+    const columns = line.split(',', 12);
+    if (columns.length < 12 || columns[2] !== 'REG') continue;
 
     const away = FORMER_CODES[columns[7]] || columns[7];
     const home = FORMER_CODES[columns[9]] || columns[9];
+    const pair = gamesByPair.get(pairKey(away, home));
+    if (columns[8] === '' || columns[10] === '') {
+      schedule.push({
+        id: columns[0],
+        season: Number(columns[1]),
+        week: Number(columns[3]),
+        date: columns[4],
+        away,
+        home,
+        location: columns[11],
+        divisional: Boolean(pair),
+      });
+      continue;
+    }
     const awayScore = Number(columns[8]);
     const homeScore = Number(columns[10]);
-    if (columns[8] === '' || columns[10] === '' ||
-        !Number.isInteger(awayScore) || !Number.isInteger(homeScore)) continue;
+    if (!Number.isInteger(awayScore) || !Number.isInteger(homeScore)) continue;
     if (columns[4] > through) through = columns[4];
 
-    const pair = gamesByPair.get(pairKey(away, home));
     if (!pair) continue;
 
     pair.games.push({
@@ -95,13 +116,17 @@ export function calculateStreaks(csv) {
       date: columns[4],
       away,
       home,
+      location: columns[11],
       awayScore,
       homeScore,
       winner: awayScore === homeScore ? null : awayScore > homeScore ? away : home,
     });
   }
 
+  schedule.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
   const streaks = [];
+  const homeStreaks = [];
+  const awayStreaks = [];
   for (const pair of gamesByPair.values()) {
     pair.games.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
     const latest = pair.games.at(-1);
@@ -128,8 +153,34 @@ export function calculateStreaks(csv) {
         homeScore: latest.homeScore,
       },
     });
+
+    for (const team of pair.teams) {
+      const opponent = pair.teams.find(other => other !== team);
+      for (const [venue, target] of [['home', homeStreaks], ['away', awayStreaks]]) {
+        const venueGames = pair.games.filter(game => game.location !== 'Neutral' && game[venue] === team);
+        const mostRecent = venueGames.at(-1);
+        if (!mostRecent) throw new Error(`No ${venue} games for ${team} against ${opponent}`);
+        let wins = 0;
+        for (let i = venueGames.length - 1; i >= 0 && venueGames[i].winner === team; i -= 1) wins += 1;
+        target.push({
+          division: pair.division,
+          teams: pair.teams,
+          team,
+          opponent,
+          count: wins,
+          latest: {
+            date: mostRecent.date,
+            away: mostRecent.away,
+            awayScore: mostRecent.awayScore,
+            home: mostRecent.home,
+            homeScore: mostRecent.homeScore,
+          },
+        });
+      }
+    }
   }
 
   if (streaks.length !== 48) throw new Error(`Expected 48 rivalries, found ${streaks.length}`);
-  return { through, streaks };
+  if (homeStreaks.length !== 96 || awayStreaks.length !== 96) throw new Error('Expected 96 team rows per venue');
+  return { through, schedule, streaks, homeStreaks, awayStreaks };
 }

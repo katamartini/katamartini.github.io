@@ -1,5 +1,2407 @@
 {
   "through": "2026-09-21",
+  "schedule": [
+    {
+      "id": "2026_03_ATL_GB",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-24",
+      "away": "ATL",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_ARI_SF",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "ARI",
+      "home": "SF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_03_BAL_DAL",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "BAL",
+      "home": "DAL",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_CAR_CLE",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "CAR",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_CIN_PIT",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "CIN",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_03_HOU_IND",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "HOU",
+      "home": "IND",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_03_KC_MIA",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "KC",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_LA_DEN",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "LA",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_LAC_BUF",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "LAC",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_LV_NO",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "LV",
+      "home": "NO",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_MIN_TB",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "MIN",
+      "home": "TB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_NE_JAX",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "NE",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_NYJ_DET",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "NYJ",
+      "home": "DET",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_SEA_WAS",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "SEA",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_TEN_NYG",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-27",
+      "away": "TEN",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_03_PHI_CHI",
+      "season": 2026,
+      "week": 3,
+      "date": "2026-09-28",
+      "away": "PHI",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_PIT_CLE",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-01",
+      "away": "PIT",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_04_ARI_NYG",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "ARI",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_DAL_HOU",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "DAL",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_DEN_SF",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "DEN",
+      "home": "SF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_DET_CAR",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "DET",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_GB_TB",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "GB",
+      "home": "TB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_IND_WAS",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "IND",
+      "home": "WAS",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_JAX_CIN",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "JAX",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_KC_LV",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "KC",
+      "home": "LV",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_04_LA_PHI",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "LA",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_LAC_SEA",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "LAC",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_MIA_MIN",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "MIA",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_NE_BUF",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "NE",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_04_NYJ_CHI",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "NYJ",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_TEN_BAL",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-04",
+      "away": "TEN",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_04_ATL_NO",
+      "season": 2026,
+      "week": 4,
+      "date": "2026-10-05",
+      "away": "ATL",
+      "home": "NO",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_TB_DAL",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-08",
+      "away": "TB",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_BAL_ATL",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "BAL",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_CHI_GB",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "CHI",
+      "home": "GB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_CIN_MIA",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "CIN",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_CLE_NYJ",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "CLE",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_DEN_LAC",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "DEN",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_DET_ARI",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "DET",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_HOU_TEN",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "HOU",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_IND_PIT",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "IND",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_LV_NE",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "LV",
+      "home": "NE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_MIN_NO",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "MIN",
+      "home": "NO",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_NYG_WAS",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "NYG",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_PHI_JAX",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "PHI",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_05_SF_SEA",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-11",
+      "away": "SF",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_05_BUF_LA",
+      "season": 2026,
+      "week": 5,
+      "date": "2026-10-12",
+      "away": "BUF",
+      "home": "LA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_SEA_DEN",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-15",
+      "away": "SEA",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_ARI_LA",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "ARI",
+      "home": "LA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_BAL_CLE",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "BAL",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_BUF_LV",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "BUF",
+      "home": "LV",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_CAR_PHI",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "CAR",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_CHI_ATL",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "CHI",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_DAL_GB",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "DAL",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_HOU_JAX",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "HOU",
+      "home": "JAX",
+      "location": "Neutral",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_LAC_KC",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "LAC",
+      "home": "KC",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_NO_NYG",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "NO",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_NYJ_NE",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "NYJ",
+      "home": "NE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_PIT_TB",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "PIT",
+      "home": "TB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_06_TEN_IND",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-18",
+      "away": "TEN",
+      "home": "IND",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_06_WAS_SF",
+      "season": 2026,
+      "week": 6,
+      "date": "2026-10-19",
+      "away": "WAS",
+      "home": "SF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_NE_CHI",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-22",
+      "away": "NE",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_CIN_BAL",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "CIN",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_07_CLE_TEN",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "CLE",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_DEN_ARI",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "DEN",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_GB_DET",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "GB",
+      "home": "DET",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_07_IND_MIN",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "IND",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_KC_SEA",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "KC",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_LA_LV",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "LA",
+      "home": "LV",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_MIA_NYJ",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "MIA",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_07_NYG_HOU",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "NYG",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_PIT_NO",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "PIT",
+      "home": "NO",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_SF_ATL",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "SF",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_07_TB_CAR",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-25",
+      "away": "TB",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_07_DAL_PHI",
+      "season": 2026,
+      "week": 7,
+      "date": "2026-10-26",
+      "away": "DAL",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_CAR_GB",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-10-29",
+      "away": "CAR",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_ARI_DAL",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "ARI",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_ATL_TB",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "ATL",
+      "home": "TB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_BAL_BUF",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "BAL",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_CLE_PIT",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "CLE",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_IND_JAX",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "IND",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_KC_DEN",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "KC",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_LAC_LA",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "LAC",
+      "home": "LA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_LV_NYJ",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "LV",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_MIN_DET",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "MIN",
+      "home": "DET",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_NE_MIA",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "NE",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_PHI_WAS",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "PHI",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_08_TEN_CIN",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-01",
+      "away": "TEN",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_08_CHI_SEA",
+      "season": 2026,
+      "week": 8,
+      "date": "2026-11-02",
+      "away": "CHI",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_JAX_BAL",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-05",
+      "away": "JAX",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_ARI_SEA",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "ARI",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_09_CIN_ATL",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "CIN",
+      "home": "ATL",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_CLE_NO",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "CLE",
+      "home": "NO",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_DAL_IND",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "DAL",
+      "home": "IND",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_DEN_CAR",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "DEN",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_DET_MIA",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "DET",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_GB_NE",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "GB",
+      "home": "NE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_HOU_LAC",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "HOU",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_LA_WAS",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "LA",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_LV_SF",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "LV",
+      "home": "SF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_NYG_PHI",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "NYG",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_09_NYJ_KC",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "NYJ",
+      "home": "KC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_TB_CHI",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-08",
+      "away": "TB",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_09_BUF_MIN",
+      "season": 2026,
+      "week": 9,
+      "date": "2026-11-09",
+      "away": "BUF",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_WAS_NYG",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-12",
+      "away": "WAS",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_BUF_NYJ",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "BUF",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_CAR_NO",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "CAR",
+      "home": "NO",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_HOU_CLE",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "HOU",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_JAX_TEN",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "JAX",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_KC_ATL",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "KC",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_LA_ARI",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "LA",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_MIA_IND",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "MIA",
+      "home": "IND",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_MIN_GB",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "MIN",
+      "home": "GB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_NE_DET",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "NE",
+      "home": "DET",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_PIT_CIN",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "PIT",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_10_SEA_LV",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "SEA",
+      "home": "LV",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_SF_DAL",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-15",
+      "away": "SF",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_10_LAC_BAL",
+      "season": 2026,
+      "week": 10,
+      "date": "2026-11-16",
+      "away": "LAC",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_IND_HOU",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-19",
+      "away": "IND",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_11_ARI_KC",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "ARI",
+      "home": "KC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_BAL_CAR",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "BAL",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_JAX_NYG",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "JAX",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_LV_DEN",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "LV",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_11_MIA_BUF",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "MIA",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_11_MIN_SF",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "MIN",
+      "home": "SF",
+      "location": "Neutral",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_NO_CHI",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "NO",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_NYJ_LAC",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "NYJ",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_PIT_PHI",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "PIT",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_TB_DET",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "TB",
+      "home": "DET",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_TEN_DAL",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-22",
+      "away": "TEN",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_11_CIN_WAS",
+      "season": 2026,
+      "week": 11,
+      "date": "2026-11-23",
+      "away": "CIN",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_GB_LA",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-25",
+      "away": "GB",
+      "home": "LA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_CHI_DET",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-26",
+      "away": "CHI",
+      "home": "DET",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_12_KC_BUF",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-26",
+      "away": "KC",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_PHI_DAL",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-26",
+      "away": "PHI",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_12_DEN_PIT",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-27",
+      "away": "DEN",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_ATL_MIN",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "ATL",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_BAL_HOU",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "BAL",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_LV_CLE",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "LV",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_NE_LAC",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "NE",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_NO_CIN",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "NO",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_NYG_IND",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "NYG",
+      "home": "IND",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_NYJ_MIA",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "NYJ",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_12_SEA_SF",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "SEA",
+      "home": "SF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_12_TEN_JAX",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "TEN",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_12_WAS_ARI",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-29",
+      "away": "WAS",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_12_CAR_TB",
+      "season": 2026,
+      "week": 12,
+      "date": "2026-11-30",
+      "away": "CAR",
+      "home": "TB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_13_KC_LA",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-03",
+      "away": "KC",
+      "home": "LA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_BUF_NE",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "BUF",
+      "home": "NE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_13_CAR_MIN",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "CAR",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_CIN_CLE",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "CIN",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_13_DET_ATL",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "DET",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_GB_NO",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "GB",
+      "home": "NO",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_HOU_PIT",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "HOU",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_JAX_CHI",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "JAX",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_LAC_TB",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "LAC",
+      "home": "TB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_MIA_DEN",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "MIA",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_PHI_ARI",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "PHI",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_SF_NYG",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "SF",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_WAS_TEN",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-06",
+      "away": "WAS",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_13_DAL_SEA",
+      "season": 2026,
+      "week": 13,
+      "date": "2026-12-07",
+      "away": "DAL",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_MIN_NE",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-10",
+      "away": "MIN",
+      "home": "NE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_ATL_CLE",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "ATL",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_BUF_GB",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "BUF",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_CHI_MIA",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "CHI",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_DEN_NYJ",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "DEN",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_HOU_WAS",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "HOU",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_IND_PHI",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "IND",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_KC_CIN",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "KC",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_LA_SF",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "LA",
+      "home": "SF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_14_LAC_LV",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "LAC",
+      "home": "LV",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_14_NO_CAR",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "NO",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_14_NYG_SEA",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "NYG",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_TB_BAL",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "TB",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_TEN_DET",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-13",
+      "away": "TEN",
+      "home": "DET",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_14_PIT_JAX",
+      "season": 2026,
+      "week": 14,
+      "date": "2026-12-14",
+      "away": "PIT",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_SF_LAC",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-17",
+      "away": "SF",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_CHI_BUF",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-19",
+      "away": "CHI",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_SEA_PHI",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-19",
+      "away": "SEA",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_ATL_WAS",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "ATL",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_BAL_PIT",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "BAL",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_CIN_CAR",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "CIN",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_CLE_NYG",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "CLE",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_DAL_LA",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "DAL",
+      "home": "LA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_DEN_LV",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "DEN",
+      "home": "LV",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_DET_MIN",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "DET",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_IND_TEN",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "IND",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_JAX_HOU",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "JAX",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_MIA_GB",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "MIA",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_NO_TB",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "NO",
+      "home": "TB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_15_NYJ_ARI",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-20",
+      "away": "NYJ",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_15_NE_KC",
+      "season": 2026,
+      "week": 15,
+      "date": "2026-12-21",
+      "away": "NE",
+      "home": "KC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_HOU_PHI",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-24",
+      "away": "HOU",
+      "home": "PHI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_BUF_DEN",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-25",
+      "away": "BUF",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_GB_CHI",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-25",
+      "away": "GB",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_16_LA_SEA",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-25",
+      "away": "LA",
+      "home": "SEA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_16_ARI_NO",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "ARI",
+      "home": "NO",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_CAR_PIT",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "CAR",
+      "home": "PIT",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_CIN_IND",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "CIN",
+      "home": "IND",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_CLE_BAL",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "CLE",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_16_JAX_DAL",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "JAX",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_LAC_MIA",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "LAC",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_NE_NYJ",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "NE",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_16_SF_KC",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "SF",
+      "home": "KC",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_TB_ATL",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "TB",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_16_TEN_LV",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "TEN",
+      "home": "LV",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_WAS_MIN",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-27",
+      "away": "WAS",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_16_NYG_DET",
+      "season": 2026,
+      "week": 16,
+      "date": "2026-12-28",
+      "away": "NYG",
+      "home": "DET",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_BAL_CIN",
+      "season": 2026,
+      "week": 17,
+      "date": "2026-12-31",
+      "away": "BAL",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_BUF_MIA",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "BUF",
+      "home": "MIA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_DEN_NE",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "DEN",
+      "home": "NE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_DET_CHI",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "DET",
+      "home": "CHI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_IND_CLE",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "IND",
+      "home": "CLE",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_KC_LAC",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "KC",
+      "home": "LAC",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_LA_TB",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "LA",
+      "home": "TB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_LV_ARI",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "LV",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_MIN_NYJ",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "MIN",
+      "home": "NYJ",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_NO_ATL",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "NO",
+      "home": "ATL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_NYG_DAL",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "NYG",
+      "home": "DAL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_17_PHI_SF",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "PHI",
+      "home": "SF",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_PIT_TEN",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "PIT",
+      "home": "TEN",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_SEA_CAR",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "SEA",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_WAS_JAX",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-03",
+      "away": "WAS",
+      "home": "JAX",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_17_HOU_GB",
+      "season": 2026,
+      "week": 17,
+      "date": "2027-01-04",
+      "away": "HOU",
+      "home": "GB",
+      "location": "Home",
+      "divisional": false
+    },
+    {
+      "id": "2026_18_ATL_CAR",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "ATL",
+      "home": "CAR",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_CHI_MIN",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "CHI",
+      "home": "MIN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_CLE_CIN",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "CLE",
+      "home": "CIN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_DAL_WAS",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "DAL",
+      "home": "WAS",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_DET_GB",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "DET",
+      "home": "GB",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_JAX_IND",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "JAX",
+      "home": "IND",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_LAC_DEN",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "LAC",
+      "home": "DEN",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_LV_KC",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "LV",
+      "home": "KC",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_MIA_NE",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "MIA",
+      "home": "NE",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_NYJ_BUF",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "NYJ",
+      "home": "BUF",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_PHI_NYG",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "PHI",
+      "home": "NYG",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_PIT_BAL",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "PIT",
+      "home": "BAL",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_SEA_LA",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "SEA",
+      "home": "LA",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_SF_ARI",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "SF",
+      "home": "ARI",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_TB_NO",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "TB",
+      "home": "NO",
+      "location": "Home",
+      "divisional": true
+    },
+    {
+      "id": "2026_18_TEN_HOU",
+      "season": 2026,
+      "week": 18,
+      "date": "2027-01-10",
+      "away": "TEN",
+      "home": "HOU",
+      "location": "Home",
+      "divisional": true
+    }
+  ],
   "streaks": [
     {
       "division": "AFC East",
@@ -761,6 +3163,3274 @@
       ],
       "winner": "SEA",
       "count": 1,
+      "latest": {
+        "date": "2026-01-03",
+        "away": "SEA",
+        "awayScore": 13,
+        "home": "SF",
+        "homeScore": 3
+      }
+    }
+  ],
+  "homeStreaks": [
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "MIA"
+      ],
+      "team": "BUF",
+      "opponent": "MIA",
+      "count": 9,
+      "latest": {
+        "date": "2025-09-18",
+        "away": "MIA",
+        "awayScore": 21,
+        "home": "BUF",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "MIA"
+      ],
+      "team": "MIA",
+      "opponent": "BUF",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "BUF",
+        "awayScore": 13,
+        "home": "MIA",
+        "homeScore": 30
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NE"
+      ],
+      "team": "BUF",
+      "opponent": "NE",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-05",
+        "away": "NE",
+        "awayScore": 23,
+        "home": "BUF",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NE"
+      ],
+      "team": "NE",
+      "opponent": "BUF",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "BUF",
+        "awayScore": 35,
+        "home": "NE",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NYJ"
+      ],
+      "team": "BUF",
+      "opponent": "NYJ",
+      "count": 6,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "NYJ",
+        "awayScore": 8,
+        "home": "BUF",
+        "homeScore": 35
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "BUF",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "BUF",
+        "awayScore": 30,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NE"
+      ],
+      "team": "MIA",
+      "opponent": "NE",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "NE",
+        "awayScore": 33,
+        "home": "MIA",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NE"
+      ],
+      "team": "NE",
+      "opponent": "MIA",
+      "count": 1,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "MIA",
+        "awayScore": 10,
+        "home": "NE",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NYJ"
+      ],
+      "team": "MIA",
+      "opponent": "NYJ",
+      "count": 10,
+      "latest": {
+        "date": "2025-09-29",
+        "away": "NYJ",
+        "awayScore": 21,
+        "home": "MIA",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "MIA",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "MIA",
+        "awayScore": 34,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "NE",
+        "NYJ"
+      ],
+      "team": "NE",
+      "opponent": "NYJ",
+      "count": 2,
+      "latest": {
+        "date": "2025-11-13",
+        "away": "NYJ",
+        "awayScore": 14,
+        "home": "NE",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "NE",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "NE",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "NE",
+        "awayScore": 42,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CIN"
+      ],
+      "team": "BAL",
+      "opponent": "CIN",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-27",
+        "away": "CIN",
+        "awayScore": 32,
+        "home": "BAL",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CIN"
+      ],
+      "team": "CIN",
+      "opponent": "BAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "BAL",
+        "awayScore": 24,
+        "home": "CIN",
+        "homeScore": 0
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CLE"
+      ],
+      "team": "BAL",
+      "opponent": "CLE",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "CLE",
+        "awayScore": 17,
+        "home": "BAL",
+        "homeScore": 41
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CLE"
+      ],
+      "team": "CLE",
+      "opponent": "BAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "BAL",
+        "awayScore": 23,
+        "home": "CLE",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "PIT"
+      ],
+      "team": "BAL",
+      "opponent": "PIT",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "PIT",
+        "awayScore": 27,
+        "home": "BAL",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "BAL",
+      "count": 3,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "BAL",
+        "awayScore": 24,
+        "home": "PIT",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "CLE"
+      ],
+      "team": "CIN",
+      "opponent": "CLE",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "CLE",
+        "awayScore": 20,
+        "home": "CIN",
+        "homeScore": 18
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "CLE"
+      ],
+      "team": "CLE",
+      "opponent": "CIN",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "CIN",
+        "awayScore": 17,
+        "home": "CLE",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "PIT"
+      ],
+      "team": "CIN",
+      "opponent": "PIT",
+      "count": 1,
+      "latest": {
+        "date": "2025-10-16",
+        "away": "PIT",
+        "awayScore": 31,
+        "home": "CIN",
+        "homeScore": 33
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "CIN",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "CIN",
+        "awayScore": 12,
+        "home": "PIT",
+        "homeScore": 34
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CLE",
+        "PIT"
+      ],
+      "team": "CLE",
+      "opponent": "PIT",
+      "count": 4,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "PIT",
+        "awayScore": 6,
+        "home": "CLE",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CLE",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "CLE",
+      "count": 22,
+      "latest": {
+        "date": "2025-10-12",
+        "away": "CLE",
+        "awayScore": 9,
+        "home": "PIT",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "IND"
+      ],
+      "team": "HOU",
+      "opponent": "IND",
+      "count": 2,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "IND",
+        "awayScore": 30,
+        "home": "HOU",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "IND"
+      ],
+      "team": "IND",
+      "opponent": "HOU",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-30",
+        "away": "HOU",
+        "awayScore": 20,
+        "home": "IND",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "JAX"
+      ],
+      "team": "HOU",
+      "opponent": "JAX",
+      "count": 2,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "JAX",
+        "awayScore": 29,
+        "home": "HOU",
+        "homeScore": 36
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "JAX"
+      ],
+      "team": "JAX",
+      "opponent": "HOU",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "HOU",
+        "awayScore": 10,
+        "home": "JAX",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "TEN"
+      ],
+      "team": "HOU",
+      "opponent": "TEN",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-28",
+        "away": "TEN",
+        "awayScore": 0,
+        "home": "HOU",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "HOU",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "HOU",
+        "awayScore": 16,
+        "home": "TEN",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "JAX"
+      ],
+      "team": "IND",
+      "opponent": "JAX",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "JAX",
+        "awayScore": 23,
+        "home": "IND",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "JAX"
+      ],
+      "team": "JAX",
+      "opponent": "IND",
+      "count": 10,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "IND",
+        "awayScore": 19,
+        "home": "JAX",
+        "homeScore": 36
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "TEN"
+      ],
+      "team": "IND",
+      "opponent": "TEN",
+      "count": 3,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "TEN",
+        "awayScore": 14,
+        "home": "IND",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "IND",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "IND",
+        "awayScore": 41,
+        "home": "TEN",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "JAX",
+        "TEN"
+      ],
+      "team": "JAX",
+      "opponent": "TEN",
+      "count": 4,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "TEN",
+        "awayScore": 7,
+        "home": "JAX",
+        "homeScore": 41
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "JAX",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "JAX",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-30",
+        "away": "JAX",
+        "awayScore": 25,
+        "home": "TEN",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "KC"
+      ],
+      "team": "DEN",
+      "opponent": "KC",
+      "count": 3,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "KC",
+        "awayScore": 19,
+        "home": "DEN",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "KC"
+      ],
+      "team": "KC",
+      "opponent": "DEN",
+      "count": 1,
+      "latest": {
+        "date": "2026-09-14",
+        "away": "DEN",
+        "awayScore": 10,
+        "home": "KC",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LAC"
+      ],
+      "team": "DEN",
+      "opponent": "LAC",
+      "count": 1,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "LAC",
+        "awayScore": 3,
+        "home": "DEN",
+        "homeScore": 19
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LAC"
+      ],
+      "team": "LAC",
+      "opponent": "DEN",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "DEN",
+        "awayScore": 20,
+        "home": "LAC",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LV"
+      ],
+      "team": "DEN",
+      "opponent": "LV",
+      "count": 2,
+      "latest": {
+        "date": "2025-11-06",
+        "away": "LV",
+        "awayScore": 7,
+        "home": "DEN",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "DEN",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "DEN",
+        "awayScore": 24,
+        "home": "LV",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LAC"
+      ],
+      "team": "KC",
+      "opponent": "LAC",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "LAC",
+        "awayScore": 16,
+        "home": "KC",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LAC"
+      ],
+      "team": "LAC",
+      "opponent": "KC",
+      "count": 0,
+      "latest": {
+        "date": "2024-09-29",
+        "away": "KC",
+        "awayScore": 17,
+        "home": "LAC",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LV"
+      ],
+      "team": "KC",
+      "opponent": "LV",
+      "count": 2,
+      "latest": {
+        "date": "2025-10-19",
+        "away": "LV",
+        "awayScore": 0,
+        "home": "KC",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "KC",
+      "count": 1,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "KC",
+        "awayScore": 12,
+        "home": "LV",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "LAC",
+        "LV"
+      ],
+      "team": "LAC",
+      "opponent": "LV",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "LV",
+        "awayScore": 26,
+        "home": "LAC",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "LAC",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "LAC",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-15",
+        "away": "LAC",
+        "awayScore": 20,
+        "home": "LV",
+        "homeScore": 9
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "NYG"
+      ],
+      "team": "DAL",
+      "opponent": "NYG",
+      "count": 9,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "NYG",
+        "awayScore": 37,
+        "home": "DAL",
+        "homeScore": 40
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "NYG"
+      ],
+      "team": "NYG",
+      "opponent": "DAL",
+      "count": 2,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "DAL",
+        "awayScore": 20,
+        "home": "NYG",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "PHI"
+      ],
+      "team": "DAL",
+      "opponent": "PHI",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "PHI",
+        "awayScore": 21,
+        "home": "DAL",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "PHI"
+      ],
+      "team": "PHI",
+      "opponent": "DAL",
+      "count": 4,
+      "latest": {
+        "date": "2025-09-04",
+        "away": "DAL",
+        "awayScore": 20,
+        "home": "PHI",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "WAS"
+      ],
+      "team": "DAL",
+      "opponent": "WAS",
+      "count": 2,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "WAS",
+        "awayScore": 20,
+        "home": "DAL",
+        "homeScore": 37
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "DAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-25",
+        "away": "DAL",
+        "awayScore": 30,
+        "home": "WAS",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "PHI"
+      ],
+      "team": "NYG",
+      "opponent": "PHI",
+      "count": 1,
+      "latest": {
+        "date": "2025-10-09",
+        "away": "PHI",
+        "awayScore": 17,
+        "home": "NYG",
+        "homeScore": 34
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "PHI"
+      ],
+      "team": "PHI",
+      "opponent": "NYG",
+      "count": 12,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "NYG",
+        "awayScore": 20,
+        "home": "PHI",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "WAS"
+      ],
+      "team": "NYG",
+      "opponent": "WAS",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "WAS",
+        "awayScore": 29,
+        "home": "NYG",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "NYG",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "NYG",
+        "awayScore": 6,
+        "home": "WAS",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "PHI",
+        "WAS"
+      ],
+      "team": "PHI",
+      "opponent": "WAS",
+      "count": 1,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "WAS",
+        "awayScore": 22,
+        "home": "PHI",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "PHI",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "PHI",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-20",
+        "away": "PHI",
+        "awayScore": 29,
+        "home": "WAS",
+        "homeScore": 18
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "DET"
+      ],
+      "team": "CHI",
+      "opponent": "DET",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "DET",
+        "awayScore": 19,
+        "home": "CHI",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "DET"
+      ],
+      "team": "DET",
+      "opponent": "CHI",
+      "count": 4,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "CHI",
+        "awayScore": 21,
+        "home": "DET",
+        "homeScore": 52
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "GB"
+      ],
+      "team": "CHI",
+      "opponent": "GB",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-20",
+        "away": "GB",
+        "awayScore": 16,
+        "home": "CHI",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "GB"
+      ],
+      "team": "GB",
+      "opponent": "CHI",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "CHI",
+        "awayScore": 21,
+        "home": "GB",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "MIN"
+      ],
+      "team": "CHI",
+      "opponent": "MIN",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "MIN",
+        "awayScore": 9,
+        "home": "CHI",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "CHI",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "CHI",
+        "awayScore": 19,
+        "home": "MIN",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "GB"
+      ],
+      "team": "DET",
+      "opponent": "GB",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-27",
+        "away": "GB",
+        "awayScore": 31,
+        "home": "DET",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "GB"
+      ],
+      "team": "GB",
+      "opponent": "DET",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "DET",
+        "awayScore": 13,
+        "home": "GB",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "team": "DET",
+      "opponent": "MIN",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-02",
+        "away": "MIN",
+        "awayScore": 27,
+        "home": "DET",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "DET",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-25",
+        "away": "DET",
+        "awayScore": 10,
+        "home": "MIN",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "GB",
+        "MIN"
+      ],
+      "team": "GB",
+      "opponent": "MIN",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "MIN",
+        "awayScore": 6,
+        "home": "GB",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "GB",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "GB",
+      "count": 3,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "GB",
+        "awayScore": 22,
+        "home": "MIN",
+        "homeScore": 39
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "CAR"
+      ],
+      "team": "ATL",
+      "opponent": "CAR",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "CAR",
+        "awayScore": 34,
+        "home": "ATL",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "CAR"
+      ],
+      "team": "CAR",
+      "opponent": "ATL",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "ATL",
+        "awayScore": 0,
+        "home": "CAR",
+        "homeScore": 30
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "NO"
+      ],
+      "team": "ATL",
+      "opponent": "NO",
+      "count": 3,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "NO",
+        "awayScore": 17,
+        "home": "ATL",
+        "homeScore": 19
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "NO"
+      ],
+      "team": "NO",
+      "opponent": "ATL",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "ATL",
+        "awayScore": 24,
+        "home": "NO",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "TB"
+      ],
+      "team": "ATL",
+      "opponent": "TB",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "TB",
+        "awayScore": 23,
+        "home": "ATL",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "ATL",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-11",
+        "away": "ATL",
+        "awayScore": 29,
+        "home": "TB",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "NO"
+      ],
+      "team": "CAR",
+      "opponent": "NO",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "NO",
+        "awayScore": 17,
+        "home": "CAR",
+        "homeScore": 7
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "NO"
+      ],
+      "team": "NO",
+      "opponent": "CAR",
+      "count": 3,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "CAR",
+        "awayScore": 17,
+        "home": "NO",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "TB"
+      ],
+      "team": "CAR",
+      "opponent": "TB",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-21",
+        "away": "TB",
+        "awayScore": 20,
+        "home": "CAR",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "CAR",
+      "count": 7,
+      "latest": {
+        "date": "2026-01-03",
+        "away": "CAR",
+        "awayScore": 14,
+        "home": "TB",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "NO",
+        "TB"
+      ],
+      "team": "NO",
+      "opponent": "TB",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "TB",
+        "awayScore": 23,
+        "home": "NO",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "NO",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "NO",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "NO",
+        "awayScore": 24,
+        "home": "TB",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "LA"
+      ],
+      "team": "ARI",
+      "opponent": "LA",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "LA",
+        "awayScore": 45,
+        "home": "ARI",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "LA"
+      ],
+      "team": "LA",
+      "opponent": "ARI",
+      "count": 3,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "ARI",
+        "awayScore": 20,
+        "home": "LA",
+        "homeScore": 37
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SF"
+      ],
+      "team": "ARI",
+      "opponent": "SF",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "SF",
+        "awayScore": 41,
+        "home": "ARI",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SF"
+      ],
+      "team": "SF",
+      "opponent": "ARI",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "ARI",
+        "awayScore": 15,
+        "home": "SF",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SEA"
+      ],
+      "team": "ARI",
+      "opponent": "SEA",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "SEA",
+        "awayScore": 31,
+        "home": "ARI",
+        "homeScore": 7
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "ARI",
+      "count": 4,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "ARI",
+        "awayScore": 22,
+        "home": "SEA",
+        "homeScore": 44
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SF"
+      ],
+      "team": "LA",
+      "opponent": "SF",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-02",
+        "away": "SF",
+        "awayScore": 26,
+        "home": "LA",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SF"
+      ],
+      "team": "SF",
+      "opponent": "LA",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "LA",
+        "awayScore": 42,
+        "home": "SF",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SEA"
+      ],
+      "team": "LA",
+      "opponent": "SEA",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "SEA",
+        "awayScore": 19,
+        "home": "LA",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "LA",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-18",
+        "away": "LA",
+        "awayScore": 37,
+        "home": "SEA",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "SF",
+        "SEA"
+      ],
+      "team": "SF",
+      "opponent": "SEA",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-03",
+        "away": "SEA",
+        "awayScore": 13,
+        "home": "SF",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "SF",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "SF",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "SF",
+        "awayScore": 17,
+        "home": "SEA",
+        "homeScore": 13
+      }
+    }
+  ],
+  "awayStreaks": [
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "MIA"
+      ],
+      "team": "BUF",
+      "opponent": "MIA",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "BUF",
+        "awayScore": 13,
+        "home": "MIA",
+        "homeScore": 30
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "MIA"
+      ],
+      "team": "MIA",
+      "opponent": "BUF",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-18",
+        "away": "MIA",
+        "awayScore": 21,
+        "home": "BUF",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NE"
+      ],
+      "team": "BUF",
+      "opponent": "NE",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "BUF",
+        "awayScore": 35,
+        "home": "NE",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NE"
+      ],
+      "team": "NE",
+      "opponent": "BUF",
+      "count": 1,
+      "latest": {
+        "date": "2025-10-05",
+        "away": "NE",
+        "awayScore": 23,
+        "home": "BUF",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NYJ"
+      ],
+      "team": "BUF",
+      "opponent": "NYJ",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "BUF",
+        "awayScore": 30,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "BUF",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "BUF",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "NYJ",
+        "awayScore": 8,
+        "home": "BUF",
+        "homeScore": 35
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NE"
+      ],
+      "team": "MIA",
+      "opponent": "NE",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "MIA",
+        "awayScore": 10,
+        "home": "NE",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NE"
+      ],
+      "team": "NE",
+      "opponent": "MIA",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "NE",
+        "awayScore": 33,
+        "home": "MIA",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NYJ"
+      ],
+      "team": "MIA",
+      "opponent": "NYJ",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "MIA",
+        "awayScore": 34,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "MIA",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "MIA",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-29",
+        "away": "NYJ",
+        "awayScore": 21,
+        "home": "MIA",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "NE",
+        "NYJ"
+      ],
+      "team": "NE",
+      "opponent": "NYJ",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "NE",
+        "awayScore": 42,
+        "home": "NYJ",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC East",
+      "teams": [
+        "NE",
+        "NYJ"
+      ],
+      "team": "NYJ",
+      "opponent": "NE",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-13",
+        "away": "NYJ",
+        "awayScore": 14,
+        "home": "NE",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CIN"
+      ],
+      "team": "BAL",
+      "opponent": "CIN",
+      "count": 3,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "BAL",
+        "awayScore": 24,
+        "home": "CIN",
+        "homeScore": 0
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CIN"
+      ],
+      "team": "CIN",
+      "opponent": "BAL",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-27",
+        "away": "CIN",
+        "awayScore": 32,
+        "home": "BAL",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CLE"
+      ],
+      "team": "BAL",
+      "opponent": "CLE",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "BAL",
+        "awayScore": 23,
+        "home": "CLE",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "CLE"
+      ],
+      "team": "CLE",
+      "opponent": "BAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "CLE",
+        "awayScore": 17,
+        "home": "BAL",
+        "homeScore": 41
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "PIT"
+      ],
+      "team": "BAL",
+      "opponent": "PIT",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "BAL",
+        "awayScore": 24,
+        "home": "PIT",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "BAL",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "BAL",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "PIT",
+        "awayScore": 27,
+        "home": "BAL",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "CLE"
+      ],
+      "team": "CIN",
+      "opponent": "CLE",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "CIN",
+        "awayScore": 17,
+        "home": "CLE",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "CLE"
+      ],
+      "team": "CLE",
+      "opponent": "CIN",
+      "count": 1,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "CLE",
+        "awayScore": 20,
+        "home": "CIN",
+        "homeScore": 18
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "PIT"
+      ],
+      "team": "CIN",
+      "opponent": "PIT",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "CIN",
+        "awayScore": 12,
+        "home": "PIT",
+        "homeScore": 34
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CIN",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "CIN",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-16",
+        "away": "PIT",
+        "awayScore": 31,
+        "home": "CIN",
+        "homeScore": 33
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CLE",
+        "PIT"
+      ],
+      "team": "CLE",
+      "opponent": "PIT",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-12",
+        "away": "CLE",
+        "awayScore": 9,
+        "home": "PIT",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "AFC North",
+      "teams": [
+        "CLE",
+        "PIT"
+      ],
+      "team": "PIT",
+      "opponent": "CLE",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "PIT",
+        "awayScore": 6,
+        "home": "CLE",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "IND"
+      ],
+      "team": "HOU",
+      "opponent": "IND",
+      "count": 4,
+      "latest": {
+        "date": "2025-11-30",
+        "away": "HOU",
+        "awayScore": 20,
+        "home": "IND",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "IND"
+      ],
+      "team": "IND",
+      "opponent": "HOU",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "IND",
+        "awayScore": 30,
+        "home": "HOU",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "JAX"
+      ],
+      "team": "HOU",
+      "opponent": "JAX",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "HOU",
+        "awayScore": 10,
+        "home": "JAX",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "JAX"
+      ],
+      "team": "JAX",
+      "opponent": "HOU",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "JAX",
+        "awayScore": 29,
+        "home": "HOU",
+        "homeScore": 36
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "TEN"
+      ],
+      "team": "HOU",
+      "opponent": "TEN",
+      "count": 5,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "HOU",
+        "awayScore": 16,
+        "home": "TEN",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "HOU",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "HOU",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-28",
+        "away": "TEN",
+        "awayScore": 0,
+        "home": "HOU",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "JAX"
+      ],
+      "team": "IND",
+      "opponent": "JAX",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "IND",
+        "awayScore": 19,
+        "home": "JAX",
+        "homeScore": 36
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "JAX"
+      ],
+      "team": "JAX",
+      "opponent": "IND",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-28",
+        "away": "JAX",
+        "awayScore": 23,
+        "home": "IND",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "TEN"
+      ],
+      "team": "IND",
+      "opponent": "TEN",
+      "count": 3,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "IND",
+        "awayScore": 41,
+        "home": "TEN",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "IND",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "IND",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "TEN",
+        "awayScore": 14,
+        "home": "IND",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "JAX",
+        "TEN"
+      ],
+      "team": "JAX",
+      "opponent": "TEN",
+      "count": 2,
+      "latest": {
+        "date": "2025-11-30",
+        "away": "JAX",
+        "awayScore": 25,
+        "home": "TEN",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "AFC South",
+      "teams": [
+        "JAX",
+        "TEN"
+      ],
+      "team": "TEN",
+      "opponent": "JAX",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "TEN",
+        "awayScore": 7,
+        "home": "JAX",
+        "homeScore": 41
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "KC"
+      ],
+      "team": "DEN",
+      "opponent": "KC",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-14",
+        "away": "DEN",
+        "awayScore": 10,
+        "home": "KC",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "KC"
+      ],
+      "team": "KC",
+      "opponent": "DEN",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "KC",
+        "awayScore": 19,
+        "home": "DEN",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LAC"
+      ],
+      "team": "DEN",
+      "opponent": "LAC",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "DEN",
+        "awayScore": 20,
+        "home": "LAC",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LAC"
+      ],
+      "team": "LAC",
+      "opponent": "DEN",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "LAC",
+        "awayScore": 3,
+        "home": "DEN",
+        "homeScore": 19
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LV"
+      ],
+      "team": "DEN",
+      "opponent": "LV",
+      "count": 2,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "DEN",
+        "awayScore": 24,
+        "home": "LV",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "DEN",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "DEN",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-06",
+        "away": "LV",
+        "awayScore": 7,
+        "home": "DEN",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LAC"
+      ],
+      "team": "KC",
+      "opponent": "LAC",
+      "count": 10,
+      "latest": {
+        "date": "2024-09-29",
+        "away": "KC",
+        "awayScore": 17,
+        "home": "LAC",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LAC"
+      ],
+      "team": "LAC",
+      "opponent": "KC",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "LAC",
+        "awayScore": 16,
+        "home": "KC",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LV"
+      ],
+      "team": "KC",
+      "opponent": "LV",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "KC",
+        "awayScore": 12,
+        "home": "LV",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "KC",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "KC",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-19",
+        "away": "LV",
+        "awayScore": 0,
+        "home": "KC",
+        "homeScore": 31
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "LAC",
+        "LV"
+      ],
+      "team": "LAC",
+      "opponent": "LV",
+      "count": 2,
+      "latest": {
+        "date": "2025-09-15",
+        "away": "LAC",
+        "awayScore": 20,
+        "home": "LV",
+        "homeScore": 9
+      }
+    },
+    {
+      "division": "AFC West",
+      "teams": [
+        "LAC",
+        "LV"
+      ],
+      "team": "LV",
+      "opponent": "LAC",
+      "count": 1,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "LV",
+        "awayScore": 26,
+        "home": "LAC",
+        "homeScore": 14
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "NYG"
+      ],
+      "team": "DAL",
+      "opponent": "NYG",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "DAL",
+        "awayScore": 20,
+        "home": "NYG",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "NYG"
+      ],
+      "team": "NYG",
+      "opponent": "DAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "NYG",
+        "awayScore": 37,
+        "home": "DAL",
+        "homeScore": 40
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "PHI"
+      ],
+      "team": "DAL",
+      "opponent": "PHI",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-04",
+        "away": "DAL",
+        "awayScore": 20,
+        "home": "PHI",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "PHI"
+      ],
+      "team": "PHI",
+      "opponent": "DAL",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "PHI",
+        "awayScore": 21,
+        "home": "DAL",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "WAS"
+      ],
+      "team": "DAL",
+      "opponent": "WAS",
+      "count": 3,
+      "latest": {
+        "date": "2025-12-25",
+        "away": "DAL",
+        "awayScore": 30,
+        "home": "WAS",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "DAL",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "DAL",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "WAS",
+        "awayScore": 20,
+        "home": "DAL",
+        "homeScore": 37
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "PHI"
+      ],
+      "team": "NYG",
+      "opponent": "PHI",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "NYG",
+        "awayScore": 20,
+        "home": "PHI",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "PHI"
+      ],
+      "team": "PHI",
+      "opponent": "NYG",
+      "count": 0,
+      "latest": {
+        "date": "2025-10-09",
+        "away": "PHI",
+        "awayScore": 17,
+        "home": "NYG",
+        "homeScore": 34
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "WAS"
+      ],
+      "team": "NYG",
+      "opponent": "WAS",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "NYG",
+        "awayScore": 6,
+        "home": "WAS",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "NYG",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "NYG",
+      "count": 2,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "WAS",
+        "awayScore": 29,
+        "home": "NYG",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "PHI",
+        "WAS"
+      ],
+      "team": "PHI",
+      "opponent": "WAS",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-20",
+        "away": "PHI",
+        "awayScore": 29,
+        "home": "WAS",
+        "homeScore": 18
+      }
+    },
+    {
+      "division": "NFC East",
+      "teams": [
+        "PHI",
+        "WAS"
+      ],
+      "team": "WAS",
+      "opponent": "PHI",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "WAS",
+        "awayScore": 22,
+        "home": "PHI",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "DET"
+      ],
+      "team": "CHI",
+      "opponent": "DET",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-14",
+        "away": "CHI",
+        "awayScore": 21,
+        "home": "DET",
+        "homeScore": 52
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "DET"
+      ],
+      "team": "DET",
+      "opponent": "CHI",
+      "count": 2,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "DET",
+        "awayScore": 19,
+        "home": "CHI",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "GB"
+      ],
+      "team": "CHI",
+      "opponent": "GB",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "CHI",
+        "awayScore": 21,
+        "home": "GB",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "GB"
+      ],
+      "team": "GB",
+      "opponent": "CHI",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-20",
+        "away": "GB",
+        "awayScore": 16,
+        "home": "CHI",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "MIN"
+      ],
+      "team": "CHI",
+      "opponent": "MIN",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "CHI",
+        "awayScore": 19,
+        "home": "MIN",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "CHI",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "CHI",
+      "count": 7,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "MIN",
+        "awayScore": 9,
+        "home": "CHI",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "GB"
+      ],
+      "team": "DET",
+      "opponent": "GB",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "DET",
+        "awayScore": 13,
+        "home": "GB",
+        "homeScore": 27
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "GB"
+      ],
+      "team": "GB",
+      "opponent": "DET",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-27",
+        "away": "GB",
+        "awayScore": 31,
+        "home": "DET",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "team": "DET",
+      "opponent": "MIN",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-25",
+        "away": "DET",
+        "awayScore": 10,
+        "home": "MIN",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "DET",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-02",
+        "away": "MIN",
+        "awayScore": 27,
+        "home": "DET",
+        "homeScore": 24
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "GB",
+        "MIN"
+      ],
+      "team": "GB",
+      "opponent": "MIN",
+      "count": 0,
+      "latest": {
+        "date": "2026-09-13",
+        "away": "GB",
+        "awayScore": 22,
+        "home": "MIN",
+        "homeScore": 39
+      }
+    },
+    {
+      "division": "NFC North",
+      "teams": [
+        "GB",
+        "MIN"
+      ],
+      "team": "MIN",
+      "opponent": "GB",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "MIN",
+        "awayScore": 6,
+        "home": "GB",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "CAR"
+      ],
+      "team": "ATL",
+      "opponent": "CAR",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "ATL",
+        "awayScore": 0,
+        "home": "CAR",
+        "homeScore": 30
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "CAR"
+      ],
+      "team": "CAR",
+      "opponent": "ATL",
+      "count": 3,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "CAR",
+        "awayScore": 34,
+        "home": "ATL",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "NO"
+      ],
+      "team": "ATL",
+      "opponent": "NO",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-23",
+        "away": "ATL",
+        "awayScore": 24,
+        "home": "NO",
+        "homeScore": 10
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "NO"
+      ],
+      "team": "NO",
+      "opponent": "ATL",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "NO",
+        "awayScore": 17,
+        "home": "ATL",
+        "homeScore": 19
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "TB"
+      ],
+      "team": "ATL",
+      "opponent": "TB",
+      "count": 3,
+      "latest": {
+        "date": "2025-12-11",
+        "away": "ATL",
+        "awayScore": 29,
+        "home": "TB",
+        "homeScore": 28
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "ATL",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "ATL",
+      "count": 1,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "TB",
+        "awayScore": 23,
+        "home": "ATL",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "NO"
+      ],
+      "team": "CAR",
+      "opponent": "NO",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-14",
+        "away": "CAR",
+        "awayScore": 17,
+        "home": "NO",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "NO"
+      ],
+      "team": "NO",
+      "opponent": "CAR",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "NO",
+        "awayScore": 17,
+        "home": "CAR",
+        "homeScore": 7
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "TB"
+      ],
+      "team": "CAR",
+      "opponent": "TB",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-03",
+        "away": "CAR",
+        "awayScore": 14,
+        "home": "TB",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "CAR",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "CAR",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-21",
+        "away": "TB",
+        "awayScore": 20,
+        "home": "CAR",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "NO",
+        "TB"
+      ],
+      "team": "NO",
+      "opponent": "TB",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "NO",
+        "awayScore": 24,
+        "home": "TB",
+        "homeScore": 20
+      }
+    },
+    {
+      "division": "NFC South",
+      "teams": [
+        "NO",
+        "TB"
+      ],
+      "team": "TB",
+      "opponent": "NO",
+      "count": 4,
+      "latest": {
+        "date": "2025-10-26",
+        "away": "TB",
+        "awayScore": 23,
+        "home": "NO",
+        "homeScore": 3
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "LA"
+      ],
+      "team": "ARI",
+      "opponent": "LA",
+      "count": 0,
+      "latest": {
+        "date": "2026-01-04",
+        "away": "ARI",
+        "awayScore": 20,
+        "home": "LA",
+        "homeScore": 37
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "LA"
+      ],
+      "team": "LA",
+      "opponent": "ARI",
+      "count": 1,
+      "latest": {
+        "date": "2025-12-07",
+        "away": "LA",
+        "awayScore": 45,
+        "home": "ARI",
+        "homeScore": 17
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SF"
+      ],
+      "team": "ARI",
+      "opponent": "SF",
+      "count": 0,
+      "latest": {
+        "date": "2025-09-21",
+        "away": "ARI",
+        "awayScore": 15,
+        "home": "SF",
+        "homeScore": 16
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SF"
+      ],
+      "team": "SF",
+      "opponent": "ARI",
+      "count": 1,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "SF",
+        "awayScore": 41,
+        "home": "ARI",
+        "homeScore": 22
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SEA"
+      ],
+      "team": "ARI",
+      "opponent": "SEA",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "ARI",
+        "awayScore": 22,
+        "home": "SEA",
+        "homeScore": 44
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "ARI",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "ARI",
+      "count": 6,
+      "latest": {
+        "date": "2026-09-20",
+        "away": "SEA",
+        "awayScore": 31,
+        "home": "ARI",
+        "homeScore": 7
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SF"
+      ],
+      "team": "LA",
+      "opponent": "SF",
+      "count": 3,
+      "latest": {
+        "date": "2025-11-09",
+        "away": "LA",
+        "awayScore": 42,
+        "home": "SF",
+        "homeScore": 26
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SF"
+      ],
+      "team": "SF",
+      "opponent": "LA",
+      "count": 1,
+      "latest": {
+        "date": "2025-10-02",
+        "away": "SF",
+        "awayScore": 26,
+        "home": "LA",
+        "homeScore": 23
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SEA"
+      ],
+      "team": "LA",
+      "opponent": "SEA",
+      "count": 0,
+      "latest": {
+        "date": "2025-12-18",
+        "away": "LA",
+        "awayScore": 37,
+        "home": "SEA",
+        "homeScore": 38
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "LA",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "LA",
+      "count": 0,
+      "latest": {
+        "date": "2025-11-16",
+        "away": "SEA",
+        "awayScore": 19,
+        "home": "LA",
+        "homeScore": 21
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "SF",
+        "SEA"
+      ],
+      "team": "SF",
+      "opponent": "SEA",
+      "count": 4,
+      "latest": {
+        "date": "2025-09-07",
+        "away": "SF",
+        "awayScore": 17,
+        "home": "SEA",
+        "homeScore": 13
+      }
+    },
+    {
+      "division": "NFC West",
+      "teams": [
+        "SF",
+        "SEA"
+      ],
+      "team": "SEA",
+      "opponent": "SF",
+      "count": 2,
       "latest": {
         "date": "2026-01-03",
         "away": "SEA",

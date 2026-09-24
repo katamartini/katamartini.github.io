@@ -59,6 +59,8 @@
 
     .meta strong { color: #20221f; }
 
+    .upcoming-key { color: #267a45; }
+
     .toolbar {
       display: flex;
       gap: 14px;
@@ -71,6 +73,16 @@
     h2 {
       margin: 0;
       font-size: 1.05rem;
+    }
+
+    .view-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+      color: #565c54;
+      font-size: 0.84rem;
     }
 
     .sort {
@@ -146,6 +158,12 @@
       min-height: 56px;
       align-items: center;
       border-bottom: 1px solid #e1e4dd;
+    }
+
+    .chart-row.upcoming {
+      border-radius: 5px;
+      background: #edf7ee;
+      box-shadow: inset 0 0 0 2px #328d54;
     }
 
     .matchup {
@@ -231,11 +249,19 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Divisional streaks</h1>
-    <p class="intro">Who has won the latest run of games in each divisional matchup? Each bar shows consecutive head-to-head wins by the team named on it.</p>
+    <p class="intro" id="view-description">Who has won the latest run of games in each divisional matchup? Each bar shows consecutive head-to-head wins by the team named on it.</p>
 
     <div class="meta">
-      <span><strong>48</strong> rivalries</span>
+      <span id="row-count"><strong>48</strong> rivalries</span>
       <span id="status" role="status">Loading results…</span>
+      <span id="upcoming-key" class="upcoming-key" hidden>Green outline: plays this week</span>
+    </div>
+
+    <div class="view-switch" role="group" aria-label="Streak view">
+      <span>View:</span>
+      <button id="view-overall" type="button" aria-pressed="true">Overall</button>
+      <button id="view-home" type="button" aria-pressed="false">Home</button>
+      <button id="view-away" type="button" aria-pressed="false">Away</button>
     </div>
 
     <div class="toolbar">
@@ -249,14 +275,22 @@
 
     <div id="chart" class="chart" role="group" aria-labelledby="chart-title"></div>
 
-    <p class="method">Regular-season games only. Ties reset a winning streak. Franchise moves and name changes stay with the same team. Results come from the <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results dataset</a>; the page checks for updates when opened.</p>
+    <p class="method">Regular-season games only. Ties reset a winning streak. Home and Away count each team’s own wins at that venue; neutral-site games count only in Overall. Franchise moves and name changes stay with the same team. Results come from the <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results dataset</a>; the page checks for updates when opened.</p>
   </main>
 
   <script type="module">
-    import { calculateStreaks, DIVISIONS, SOURCE_URL, TEAMS } from './divstreaks-data.mjs';
+    import { calculateStreaks, DIVISIONS, SOURCE_URL, TEAMS, upcomingDivisionalGames } from './divstreaks-data.mjs';
 
     const chart = document.getElementById('chart');
     const status = document.getElementById('status');
+    const upcomingKey = document.getElementById('upcoming-key');
+    const rowCount = document.getElementById('row-count');
+    const viewDescription = document.getElementById('view-description');
+    const viewButtons = {
+      overall: document.getElementById('view-overall'),
+      home: document.getElementById('view-home'),
+      away: document.getElementById('view-away'),
+    };
     const sortButtons = {
       longest: document.getElementById('sort-longest'),
       division: document.getElementById('sort-division'),
@@ -264,10 +298,25 @@
     const divisionOrder = new Map(DIVISIONS.map((division, index) => [division.name, index]));
     let data = null;
     let sort = 'longest';
+    let view = 'overall';
 
     const formatDate = (date) => new Intl.DateTimeFormat('en-US', {
       month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC',
     }).format(new Date(`${date}T12:00:00Z`));
+
+    const todayEastern = () => {
+      const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+      }).formatToParts(new Date()).map(({ type, value }) => [type, value]));
+      return `${parts.year}-${parts.month}-${parts.day}`;
+    };
+
+    const pairKey = (a, b) => [a, b].sort().join('-');
+
+    function upcomingGames() {
+      return new Map(upcomingDivisionalGames(data.schedule || [], todayEastern())
+        .map(game => [pairKey(game.away, game.home), game]));
+    }
 
     function element(tag, className, text) {
       const node = document.createElement(tag);
@@ -278,11 +327,19 @@
 
     function render() {
       if (!data) return;
-      const streaks = [...data.streaks];
-      const byName = (a, b) => a.teams.join('-').localeCompare(b.teams.join('-'));
+      const streaks = [...(view === 'overall' ? data.streaks : view === 'home' ? data.homeStreaks : data.awayStreaks)];
+      const thisWeek = upcomingGames();
+      let highlighted = 0;
+      const byName = (a, b) => (a.team || a.teams.join('-')).localeCompare(b.team || b.teams.join('-')) ||
+        (a.opponent || '').localeCompare(b.opponent || '');
       streaks.sort(sort === 'longest'
         ? (a, b) => b.count - a.count || divisionOrder.get(a.division) - divisionOrder.get(b.division) || byName(a, b)
         : (a, b) => divisionOrder.get(a.division) - divisionOrder.get(b.division) || b.count - a.count || byName(a, b));
+
+      rowCount.innerHTML = `<strong>${streaks.length}</strong> ${view === 'overall' ? 'rivalries' : 'team streaks'}`;
+      viewDescription.textContent = view === 'overall'
+        ? 'Who has won the latest run of games in each divisional matchup? Each bar shows consecutive head-to-head wins by the team named on it.'
+        : `Each team gets its own ${view} row against each divisional rival. The bar counts that team’s consecutive ${view} wins against that rival; a loss or tie resets it to zero.`;
 
       const longest = Math.max(...streaks.map((streak) => streak.count));
       const tickStep = longest <= 10 ? 2 : 5;
@@ -304,32 +361,59 @@
       fragment.append(axisRow);
       for (const streak of streaks) {
         const [a, b] = streak.teams;
-        const rivalry = `${TEAMS[a].name} vs ${TEAMS[b].name}`;
+        const rivalry = view === 'overall'
+          ? `${TEAMS[a].name} vs ${TEAMS[b].name}`
+          : view === 'home'
+            ? `${TEAMS[streak.team].name} home vs ${TEAMS[streak.opponent].name}`
+            : `${TEAMS[streak.team].name} away at ${TEAMS[streak.opponent].name}`;
         const latest = streak.latest;
         const score = `${TEAMS[latest.away].name} ${latest.awayScore}, ${TEAMS[latest.home].name} ${latest.homeScore}`;
-        const winner = streak.winner ? TEAMS[streak.winner].name : 'Tied';
+        const winner = view === 'overall' ? (streak.winner ? TEAMS[streak.winner].name : 'Tied') : TEAMS[streak.team].name;
+        const scheduled = thisWeek.get(pairKey(a, b));
+        const upcoming = scheduled && (view === 'overall' ||
+          (scheduled.location !== 'Neutral' && scheduled[view] === streak.team)) ? scheduled : null;
         const row = element('div', 'chart-row');
+        if (upcoming) {
+          row.classList.add('upcoming');
+          highlighted += 1;
+        }
         const winWord = streak.count === 1 ? 'win' : 'wins';
-        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${winner}, ${streak.count} consecutive ${winWord}. Last game ${score} on ${formatDate(latest.date)}.`);
-        row.title = `Last game: ${score} · ${formatDate(latest.date)}`;
+        const summary = view === 'overall'
+          ? `${winner}, ${streak.count} consecutive ${winWord}`
+          : `${streak.count} consecutive ${view} ${winWord} by ${winner}`;
+        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${summary}. Last game ${score} on ${formatDate(latest.date)}.${upcoming ? ` Upcoming game ${formatDate(upcoming.date)}.` : ''}`);
+        row.title = `Last game: ${score} · ${formatDate(latest.date)}${upcoming ? ` · Next game: ${formatDate(upcoming.date)}` : ''}`;
 
         const label = element('div', 'matchup');
         label.append(element('strong', '', rivalry));
-        label.append(element('small', '', `${streak.division} · ${formatDate(latest.date)}`));
+        label.append(element('small', '', `${streak.division} · ${formatDate(latest.date)}${upcoming ? ` · Next ${formatDate(upcoming.date)}` : ''}`));
         row.append(label);
 
         const plot = element('div', 'plot');
         const width = (streak.count / scale) * 100;
         plot.style.setProperty('--bar-width', `${width}%`);
-        plot.style.setProperty('--team-color', streak.winner ? TEAMS[streak.winner].color : '#7a8178');
+        plot.style.setProperty('--team-color', view === 'overall'
+          ? (streak.winner ? TEAMS[streak.winner].color : '#7a8178')
+          : TEAMS[streak.team].color);
         plot.append(element('span', 'bar'));
         const barText = element('span', `bar-text${width < 29 ? ' outside' : ''}`,
-          streak.winner ? `${winner} · ${streak.count}` : 'Tie · 0');
+          view === 'overall' && !streak.winner ? 'Tie · 0' : `${winner} · ${streak.count}`);
         plot.append(barText);
         row.append(plot);
         fragment.append(row);
       }
       chart.replaceChildren(fragment);
+      upcomingKey.hidden = highlighted === 0;
+    }
+
+    for (const [name, button] of Object.entries(viewButtons)) {
+      button.addEventListener('click', () => {
+        view = name;
+        for (const [buttonName, item] of Object.entries(viewButtons)) {
+          item.setAttribute('aria-pressed', String(buttonName === name));
+        }
+        render();
+      });
     }
 
     for (const [order, button] of Object.entries(sortButtons)) {
@@ -345,8 +429,12 @@
     try {
       const response = await fetch('../data/divstreaks.json');
       if (!response.ok) throw new Error('Saved data unavailable');
-      data = await response.json();
-      if (data.streaks.length !== 48) throw new Error('Incomplete saved data');
+      const saved = await response.json();
+      if (saved.streaks?.length !== 48 || saved.homeStreaks?.length !== 96 ||
+          saved.awayStreaks?.length !== 96 || !Array.isArray(saved.schedule)) {
+        throw new Error('Incomplete saved data');
+      }
+      data = saved;
       render();
       status.textContent = `Results through ${formatDate(data.through)} · checking for updates…`;
     } catch {
