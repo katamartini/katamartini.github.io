@@ -775,6 +775,10 @@
       stroke-dasharray: var(--series-dash);
     }
 
+    .theoretical-chart-line.worst-run {
+      stroke-dasharray: 6 5;
+    }
+
     .theoretical-overlay-line {
       fill: none;
       stroke-linecap: round;
@@ -1047,7 +1051,8 @@
 
     .best-through-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       font-variant-numeric: tabular-nums;
       text-align: left;
     }
@@ -1075,9 +1080,23 @@
       text-transform: none;
     }
 
-    .best-through-table .best-run-divider,
-    .best-through-table tbody td:nth-child(6) {
+    .best-through-table .record-divider {
       border-left: 2px solid var(--border-bright);
+    }
+
+    .best-through-table tbody td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      box-shadow: 2px 0 0 var(--border-bright);
+    }
+
+    .best-through-table tbody td:first-child {
+      background: #11161d;
+    }
+
+    .best-through-table tbody tr.checkpoint-row td:first-child {
+      background: #1d2228;
     }
 
     .best-through-sort {
@@ -1820,29 +1839,31 @@
     <div id="dashboard" hidden>
       <div class="dashboard-tabs" role="tablist" aria-label="Statistics views">
         <button class="dashboard-tab" id="overviewTab" type="button" role="tab" aria-selected="true" aria-controls="overviewPanel" data-dashboard-tab="overview">Overview</button>
-        <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="records" tabindex="-1">Best through X</button>
+        <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="records" tabindex="-1">Records by X</button>
         <button class="dashboard-tab" id="breakdownTab" type="button" role="tab" aria-selected="false" aria-controls="breakdownPanel" data-dashboard-tab="breakdown" tabindex="-1">Breakdown by 10</button>
       </div>
       <div class="dashboard-layout">
         <section class="best-through-panel panel" id="bestThroughPanel" role="tabpanel" aria-labelledby="bestThroughTab" tabindex="0" hidden>
           <div class="panel-title">
-            <h2 id="bestThroughTitle">Best through X</h2>
+            <h2 id="bestThroughTitle">Records by X</h2>
             <span>Shots 1–100</span>
           </div>
-          <p class="chart-note" id="bestThroughNote">Best through X starts at shot 1. Best run of X is the best consecutive X-shot stretch anywhere within one fully logged run. Ties use the earliest run, then the earliest stretch in that run.</p>
-          <div class="best-through-table-wrap" role="region" aria-label="Best through X and best run of X records" tabindex="0">
+          <p class="chart-note" id="bestThroughNote">Each record group has its own X shots column. Through X counts makes from shot 1 to X; run of X finds a consecutive X-shot stretch anywhere in a fully logged run, with its positions in the Shots column. Scroll sideways to compare all four record types. Legacy runs contribute through-X records at multiples of 10. Ties use the earliest run, then the earliest stretch in that run.</p>
+          <div class="best-through-table-wrap" role="region" aria-label="Best and worst records through X and over X consecutive shots" tabindex="0">
             <table class="best-through-table" aria-describedby="bestThroughNote">
               <thead>
                 <tr>
-                  <th scope="col" rowspan="2" aria-sort="ascending">
+                  <th class="record-group" scope="colgroup" colspan="5">Best through X</th>
+                  <th class="record-group record-divider" scope="colgroup" colspan="5">Worst through X</th>
+                  <th class="record-group record-divider" scope="colgroup" colspan="6">Best run of X</th>
+                  <th class="record-group record-divider" scope="colgroup" colspan="6">Worst run of X</th>
+                </tr>
+                <tr>
+                  <th scope="col" aria-sort="ascending">
                     <button class="best-through-sort" type="button" data-sort-key="through">
                       X shots <span class="best-through-sort-indicator" aria-hidden="true">↑</span>
                     </button>
                   </th>
-                  <th class="record-group" scope="colgroup" colspan="4">Best through X</th>
-                  <th class="record-group best-run-divider" scope="colgroup" colspan="5">Best run of X</th>
-                </tr>
-                <tr>
                   <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="makes">
                       Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
@@ -1863,7 +1884,37 @@
                       Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
-                  <th class="best-run-divider" scope="col" aria-sort="none">
+                  <th class="record-divider" scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstThrough">
+                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstMakes">
+                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstPercentage">
+                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstRunNumber">
+                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstRun">
+                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th class="record-divider" scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="batchThrough">
+                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="batchMakes">
                       Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
@@ -1885,6 +1936,36 @@
                   </th>
                   <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="batchStart">
+                      Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th class="record-divider" scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchThrough">
+                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchMakes">
+                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchPercentage">
+                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchRunNumber">
+                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchRun">
+                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button class="best-through-sort" type="button" data-sort-key="worstBatchStart">
                       Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
@@ -2007,17 +2088,19 @@
             role="img"
             aria-labelledby="theoreticalChartTitle theoreticalChartDescription"
           >
-            <title id="theoreticalChartTitle">Best through X, best run of X, and theoretical best cumulative makes</title>
-            <desc id="theoreticalChartDescription">Compare best-through records, best consecutive stretches, the best 1-, 5-, 10-, and 20-shot segments, and individual runs.</desc>
+            <title id="theoreticalChartTitle">Best and worst records through X and over X consecutive shots</title>
+            <desc id="theoreticalChartDescription">Compare best and worst through-X records, best and worst consecutive stretches, theoretical best segments, and individual runs.</desc>
             <g id="theoreticalChartGrid"></g>
             <g id="theoreticalChartOverlays"></g>
             <polyline class="theoretical-chart-line" id="theoreticalChartLine"></polyline>
             <g id="theoreticalChartPoints"></g>
             <g id="bestRunChart"></g>
+            <g id="worstThroughChart"></g>
+            <g id="worstRunChart"></g>
             <g id="bestSegmentsCharts"></g>
           </svg>
         </div>
-        <p class="chart-note">Best through X (solid orange) shows the highest recorded total through each shot. Best run of X (solid green) shows the most makes in any consecutive X-shot stretch within one fully logged run. Theoretical best lines stitch together the best complete 1-shot (each position), 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks from fully logged runs, preserving their shot order. Ties use the earliest run, then its earliest matching stretch; node colors identify the source run.</p>
+        <p class="chart-note">Best and worst through X show the highest and lowest totals from shot 1 to X. Best and worst run of X show the most and fewest makes in a consecutive X-shot stretch of a fully logged run. Theoretical best lines stitch together the best complete 1-shot (each position), 5-shot (1–5, 6–10, …), 10-shot (1–10, 11–20, …), or 20-shot (1–20, 21–40, …) blocks. Ties use the earliest run, then its earliest matching stretch; node colors identify the source run.</p>
           </section>
 
           <section class="analytics-grid">
@@ -2230,7 +2313,11 @@
       // Preserve the existing line's saved visibility under its new name.
       const BEST_THROUGH_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
       const BEST_RUN_VISIBLE_KEY = "ballin.bestRunVisible.v1";
+      const WORST_THROUGH_VISIBLE_KEY = "ballin.worstThroughVisible.v1";
+      const WORST_RUN_VISIBLE_KEY = "ballin.worstRunVisible.v1";
       const BEST_RUN_COLOR = "var(--green)";
+      const WORST_THROUGH_COLOR = "var(--red)";
+      const WORST_RUN_COLOR = "#d18dcf";
       const THEORETICAL_VARIANTS = [
         { size: 1, color: "#f2dc72", dash: "16 5", storageKey: "ballin.bestSegments1Visible.v1" },
         { size: 5, color: "#55e1d3", dash: "8 5", storageKey: "ballin.bestSegmentsVisible.v1" },
@@ -2301,6 +2388,8 @@
         theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
         theoreticalChartPoints: document.querySelector("#theoreticalChartPoints"),
         bestRunChart: document.querySelector("#bestRunChart"),
+        worstThroughChart: document.querySelector("#worstThroughChart"),
+        worstRunChart: document.querySelector("#worstRunChart"),
         bestSegmentsCharts: document.querySelector("#bestSegmentsCharts"),
         blockList: document.querySelector("#blockList"),
         bestStreak: document.querySelector("#bestStreak"),
@@ -2355,6 +2444,8 @@
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
       let bestRunVisible = loadChartVisibility(BEST_RUN_VISIBLE_KEY);
+      let worstThroughVisible = loadChartVisibility(WORST_THROUGH_VISIBLE_KEY);
+      let worstRunVisible = loadChartVisibility(WORST_RUN_VISIBLE_KEY);
       const theoreticalVariants = THEORETICAL_VARIANTS.map((variant) => ({
         ...variant,
         label: `Theoretical best · ${variant.size} ${variant.size === 1 ? "shot" : "shots"}`,
@@ -3585,13 +3676,13 @@
         return summarize(run.shots.slice(0, attempts));
       }
 
-      function recordThrough(attempts) {
+      function recordThrough(attempts, worst = false) {
         let record = null;
         state.runs.forEach((run) => {
           const result = summaryThrough(run, attempts);
           const takesRecord = result && (
             !record
-            || result.makes > record.makes
+            || (worst ? result.makes < record.makes : result.makes > record.makes)
             || (result.makes === record.makes && isRunEarlier(run, record.run))
           );
           if (takesRecord) {
@@ -3601,7 +3692,7 @@
         return record;
       }
 
-      function bestRunOf(attempts) {
+      function runOf(attempts, worst = false) {
         let record = null;
         state.runs.forEach((run) => {
           if (run.format !== "exact" || run.shots.length < attempts) return;
@@ -3609,7 +3700,7 @@
           let makes = shots.slice(0, attempts).filter(Boolean).length;
           for (let start = 0; start <= shots.length - attempts; start += 1) {
             if (start > 0) makes += Number(shots[start + attempts - 1]) - Number(shots[start - 1]);
-            if (!record || makes > record.makes
+            if (!record || (worst ? makes < record.makes : makes > record.makes)
               || (makes === record.makes && isRunEarlier(run, record.run))) {
               record = {
                 ...summaryFromTotals(makes, attempts), run,
@@ -3621,6 +3712,14 @@
         return record;
       }
 
+      function bestRunOf(attempts) {
+        return runOf(attempts);
+      }
+
+      function worstRunOf(attempts) {
+        return runOf(attempts, true);
+      }
+
       function renderBestThroughTable() {
         elements.bestThroughTableBody.replaceChildren();
 
@@ -3630,11 +3729,15 @@
         const rows = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
           const record = recordThrough(attempts);
+          const worstRecord = recordThrough(attempts, true);
           const batch = bestRunOf(attempts);
+          const worstBatch = worstRunOf(attempts);
           return {
-            attempts, record, batch,
+            attempts, record, worstRecord, batch, worstBatch,
             runNumber: record ? runNumbers.get(record.run.id) : null,
-            batchRunNumber: batch ? runNumbers.get(batch.run.id) : null
+            worstRunNumber: worstRecord ? runNumbers.get(worstRecord.run.id) : null,
+            batchRunNumber: batch ? runNumbers.get(batch.run.id) : null,
+            worstBatchRunNumber: worstBatch ? runNumbers.get(worstBatch.run.id) : null
           };
         });
         const direction = bestThroughSort.direction === "asc" ? 1 : -1;
@@ -3644,11 +3747,23 @@
           percentage: (row) => row.record?.percentage,
           runNumber: (row) => row.runNumber,
           run: (row) => row.record?.run.date,
+          worstThrough: (row) => row.attempts,
+          worstMakes: (row) => row.worstRecord?.makes,
+          worstPercentage: (row) => row.worstRecord?.percentage,
+          worstRunNumber: (row) => row.worstRunNumber,
+          worstRun: (row) => row.worstRecord?.run.date,
+          batchThrough: (row) => row.attempts,
           batchMakes: (row) => row.batch?.makes,
           batchPercentage: (row) => row.batch?.percentage,
           batchRunNumber: (row) => row.batchRunNumber,
           batchRun: (row) => row.batch?.run.date,
-          batchStart: (row) => row.batch?.startShot
+          batchStart: (row) => row.batch?.startShot,
+          worstBatchThrough: (row) => row.attempts,
+          worstBatchMakes: (row) => row.worstBatch?.makes,
+          worstBatchPercentage: (row) => row.worstBatch?.percentage,
+          worstBatchRunNumber: (row) => row.worstBatchRunNumber,
+          worstBatchRun: (row) => row.worstBatch?.run.date,
+          worstBatchStart: (row) => row.worstBatch?.startShot
         }[bestThroughSort.key];
 
         rows.sort((left, right) => {
@@ -3674,41 +3789,45 @@
             : "↕";
         });
 
-        rows.forEach(({ attempts, record, runNumber, batch, batchRunNumber }) => {
+        rows.forEach(({ attempts, record, runNumber, worstRecord, worstRunNumber,
+          batch, batchRunNumber, worstBatch, worstBatchRunNumber }) => {
           const row = document.createElement("tr");
-          const through = document.createElement("td");
           if (attempts % 10 === 0) row.className = "checkpoint-row";
-          through.textContent = attempts;
-          row.appendChild(through);
 
-          [[record, runNumber], [batch, batchRunNumber]].forEach(([result, resultNumber]) => {
-            const makes = document.createElement("td");
-            const percentage = document.createElement("td");
-            const number = document.createElement("td");
-            const source = document.createElement("td");
-            makes.className = "best-through-value";
-            makes.textContent = result ? result.makes : "—";
-            percentage.className = "best-through-value";
-            percentage.textContent = result ? formatPercentage(result.percentage) : "—";
-            number.textContent = resultNumber ?? "—";
-            source.className = "best-through-source";
+          [[record, runNumber, false], [worstRecord, worstRunNumber, false],
+            [batch, batchRunNumber, true], [worstBatch, worstBatchRunNumber, true]]
+            .forEach(([result, resultNumber, isBatch], groupIndex) => {
+              const through = document.createElement("td");
+              const makes = document.createElement("td");
+              const percentage = document.createElement("td");
+              const number = document.createElement("td");
+              const source = document.createElement("td");
+              through.textContent = attempts;
+              if (groupIndex > 0) through.classList.add("record-divider");
+              makes.className = "best-through-value";
+              makes.textContent = result ? result.makes : "—";
+              percentage.className = "best-through-value";
+              percentage.textContent = result ? formatPercentage(result.percentage) : "—";
+              number.textContent = resultNumber ?? "—";
+              source.className = "best-through-source";
 
-            if (result) {
-              source.append(formatDate(result.run.date));
-              if (result.run.format === "tens") {
-                const legacy = document.createElement("small");
-                legacy.textContent = "Legacy";
-                source.appendChild(legacy);
+              if (result) {
+                source.append(formatDate(result.run.date));
+                if (result.run.format === "tens") {
+                  const legacy = document.createElement("small");
+                  legacy.textContent = "Legacy";
+                  source.appendChild(legacy);
+                }
+              } else {
+                source.textContent = isBatch ? "No exact stretch" : "No result";
               }
-            } else {
-              source.textContent = "No exact result";
-            }
-            row.append(makes, percentage, number, source);
-          });
-
-          const range = document.createElement("td");
-          range.textContent = batch ? `${batch.startShot}–${batch.endShot}` : "—";
-          row.appendChild(range);
+              row.append(through, makes, percentage, number, source);
+              if (isBatch) {
+                const shots = document.createElement("td");
+                shots.textContent = result ? `${result.startShot}–${result.endShot}` : "—";
+                row.appendChild(shots);
+              }
+            });
           elements.bestThroughTableBody.appendChild(row);
         });
       }
@@ -3925,6 +4044,37 @@
         bestRunKey.append(bestRunInput, bestRunSwatch, bestRunText);
         elements.theoreticalRunControls.appendChild(bestRunKey);
 
+        [
+          {
+            label: "Worst through X", color: WORST_THROUGH_COLOR,
+            visible: worstThroughVisible, key: WORST_THROUGH_VISIBLE_KEY,
+            update: (visible) => { worstThroughVisible = visible; }
+          },
+          {
+            label: "Worst run of X", color: WORST_RUN_COLOR,
+            visible: worstRunVisible, key: WORST_RUN_VISIBLE_KEY,
+            update: (visible) => { worstRunVisible = visible; }
+          }
+        ].forEach((series) => {
+          const option = document.createElement("label");
+          const input = document.createElement("input");
+          const swatch = document.createElement("span");
+          const text = document.createElement("span");
+          option.className = "chart-overlay-option";
+          option.style.setProperty("--overlay-color", series.color);
+          input.type = "checkbox";
+          input.checked = series.visible;
+          swatch.className = "chart-overlay-swatch";
+          text.textContent = series.label;
+          input.addEventListener("change", () => {
+            series.update(input.checked);
+            saveChartVisibility(series.key, input.checked);
+            renderTheoreticalCumulativeMakes();
+          });
+          option.append(input, swatch, text);
+          elements.theoreticalRunControls.appendChild(option);
+        });
+
         theoreticalVariants.forEach((variant) => {
           const theoreticalKey = document.createElement("label");
           const theoreticalInput = document.createElement("input");
@@ -3986,8 +4136,18 @@
           if (!record) return null;
           return { ...record, attempts };
         }).filter(Boolean);
+        const worstRecords = worstThroughVisible
+          ? Array.from({ length: MAX_SHOTS }, (_, index) => {
+            const attempts = index + 1;
+            const record = recordThrough(attempts, true);
+            return record ? { ...record, attempts } : null;
+          }).filter(Boolean)
+          : [];
         const batchRecords = bestRunVisible
           ? Array.from({ length: MAX_SHOTS }, (_, index) => bestRunOf(index + 1)).filter(Boolean)
+          : [];
+        const worstBatchRecords = worstRunVisible
+          ? Array.from({ length: MAX_SHOTS }, (_, index) => worstRunOf(index + 1)).filter(Boolean)
           : [];
         const runNumbers = new Map([...state.runs]
           .sort((first, second) => sortRunsNewestFirst(second, first) || first.id.localeCompare(second.id))
@@ -4011,6 +4171,8 @@
         elements.theoreticalChartPoints.replaceChildren();
         elements.theoreticalChartLine.setAttribute("points", "");
         elements.bestRunChart.replaceChildren();
+        elements.worstThroughChart.replaceChildren();
+        elements.worstRunChart.replaceChildren();
         elements.bestSegmentsCharts.replaceChildren();
 
         yTicks.forEach((value) => {
@@ -4161,6 +4323,53 @@
           });
         }
 
+        [
+          {
+            records: worstRecords, group: elements.worstThroughChart,
+            label: "Worst through X", color: WORST_THROUGH_COLOR,
+            title: (point) => `Worst through X · through ${point.attempts}: ${point.makes} cumulative makes · ${formatPercentage(point.percentage)} · run #${runNumbers.get(point.run.id)} · ${formatDate(point.run.date)}`
+          },
+          {
+            records: worstBatchRecords, group: elements.worstRunChart,
+            label: "Worst run of X", color: WORST_RUN_COLOR,
+            title: (point) => `Worst run of ${point.attempts}: ${point.makes} makes · ${formatPercentage(point.percentage)} · run #${runNumbers.get(point.run.id)} · ${formatDate(point.run.date)} · shots ${point.startShot}–${point.endShot}`
+          }
+        ].forEach((series) => {
+          if (!series.records.length) return;
+          const seriesPositions = series.records.map((point) => ({
+            ...point,
+            x: padding.left + point.attempts / maxAttempts * chartWidth,
+            y: padding.top + (yMax - point.makes) / yMax * chartHeight
+          }));
+          series.group.appendChild(svgElement("polyline", {
+            class: `theoretical-chart-line${series.label === "Worst run of X" ? " worst-run" : ""}`,
+            style: `stroke: ${series.color}`,
+            points: [{ x: padding.left, y: zeroY }, ...seriesPositions]
+              .map((point) => `${point.x},${point.y}`).join(" ")
+          }));
+          const origin = svgElement("circle", {
+            class: "theoretical-chart-point checkpoint", cx: padding.left, cy: zeroY,
+            r: 4.6, style: `--node-color: ${series.color}`
+          });
+          const originTitle = svgElement("title");
+          originTitle.textContent = `${series.label}: 0 makes`;
+          origin.appendChild(originTitle);
+          series.group.appendChild(origin);
+          seriesPositions.forEach((point) => {
+            const checkpoint = point.attempts % 10 === 0
+              || point.attempts === series.records.at(-1).attempts;
+            const circle = svgElement("circle", {
+              class: `theoretical-chart-point${checkpoint ? " checkpoint" : ""}`,
+              cx: point.x, cy: point.y, r: checkpoint ? 4.6 : 2.2,
+              style: `--node-color: ${runOverlayColor(point.run)}`
+            });
+            const title = svgElement("title");
+            title.textContent = series.title(point);
+            circle.appendChild(title);
+            series.group.appendChild(circle);
+          });
+        });
+
         segmentSeries.forEach((series) => {
           if (!series.points.length) return;
           const group = svgElement("g", { "data-segment-size": series.size });
@@ -4199,7 +4408,9 @@
         });
 
         const finalRecord = records.at(-1);
+        const finalWorstRecord = worstRecords.at(-1);
         const finalBatch = batchRecords.at(-1);
+        const finalWorstBatch = worstBatchRecords.at(-1);
         attachChartReadout(elements.theoreticalChart,
           Array.from({ length: maxAttempts + 1 }, (_, attempts) => {
             const values = [];
@@ -4210,6 +4421,15 @@
                 : "Best through X: not recorded",
               color: record ? runOverlayColor(record.run) : "var(--orange)"
             });
+            if (worstThroughVisible) {
+              const worstRecord = worstRecords.find((point) => point.attempts === attempts);
+              values.push({
+                text: attempts === 0 && finalWorstRecord ? "Worst through X: 0 makes" : worstRecord
+                  ? `Worst through X: ${worstRecord.makes} makes · ${formatPercentage(worstRecord.percentage)} · run #${runNumbers.get(worstRecord.run.id)} · ${formatDate(worstRecord.run.date)} · shots 1–${attempts}`
+                  : "Worst through X: not recorded",
+                color: worstRecord ? runOverlayColor(worstRecord.run) : WORST_THROUGH_COLOR
+              });
+            }
             if (bestRunVisible) {
               const batch = batchRecords.find((point) => point.attempts === attempts);
               values.push({
@@ -4217,6 +4437,15 @@
                   ? `Best run of X: ${batch.makes} makes · ${formatPercentage(batch.percentage)} · run #${runNumbers.get(batch.run.id)} · ${formatDate(batch.run.date)} · shots ${batch.startShot}–${batch.endShot}`
                   : "Best run of X: no exact stretch recorded",
                 color: batch ? runOverlayColor(batch.run) : BEST_RUN_COLOR
+              });
+            }
+            if (worstRunVisible) {
+              const worstBatch = worstBatchRecords.find((point) => point.attempts === attempts);
+              values.push({
+                text: attempts === 0 && finalWorstBatch ? "Worst run of X: 0 makes" : worstBatch
+                  ? `Worst run of X: ${worstBatch.makes} makes · ${formatPercentage(worstBatch.percentage)} · run #${runNumbers.get(worstBatch.run.id)} · ${formatDate(worstBatch.run.date)} · shots ${worstBatch.startShot}–${worstBatch.endShot}`
+                  : "Worst run of X: no exact stretch recorded",
+                color: worstBatch ? runOverlayColor(worstBatch.run) : WORST_RUN_COLOR
               });
             }
             segmentSeries.forEach((series) => {
@@ -4239,9 +4468,14 @@
           }), padding.top, padding.top + chartHeight);
         elements.theoreticalChartScope.textContent = [
           bestThroughVisible && finalRecord ? `Best through X: ${finalRecord.makes}/${finalRecord.attempts}` : "",
+          worstThroughVisible && finalWorstRecord
+            ? `Worst through X: ${finalWorstRecord.makes}/${finalWorstRecord.attempts}` : "",
           bestRunVisible ? finalBatch
             ? `Best run of X: ${finalBatch.makes}/${finalBatch.attempts}`
             : "Best run of X: no exact stretches" : "",
+          worstRunVisible ? finalWorstBatch
+            ? `Worst run of X: ${finalWorstBatch.makes}/${finalWorstBatch.attempts}`
+            : "Worst run of X: no exact stretches" : "",
           ...segmentSeries.map((series) => {
             const final = series.points.at(-1);
             return final ? `${series.size}-shot: ${final.makes}/${final.attempts}`
@@ -4252,9 +4486,15 @@
           bestThroughVisible && finalRecord
             ? `Best through X plots the highest recorded total through each shot, ending at ${finalRecord.makes} makes through ${finalRecord.attempts}.`
             : "Best through X is hidden or unavailable.",
+          worstThroughVisible && finalWorstRecord
+            ? `Worst through X plots the lowest recorded total through each shot, ending at ${finalWorstRecord.makes} makes through ${finalWorstRecord.attempts}. Ties use the earliest run.`
+            : "Worst through X is hidden or unavailable.",
           bestRunVisible && finalBatch
             ? `Best run of X plots the most makes in any consecutive X-shot stretch within one fully logged run, ending at ${finalBatch.makes} makes over ${finalBatch.attempts} shots. Each point uses the same record as the table; ties use the earliest run, then its earliest matching stretch.`
             : "Best run of X is hidden or unavailable.",
+          worstRunVisible && finalWorstBatch
+            ? `Worst run of X plots the fewest makes in any consecutive X-shot stretch within one fully logged run, ending at ${finalWorstBatch.makes} makes over ${finalWorstBatch.attempts} shots. Each point uses the same record as the table; ties use the earliest run, then its earliest matching stretch.`
+            : "Worst run of X is hidden or unavailable.",
           ...segmentSeries.map((series) => {
             const final = series.points.at(-1);
             return final
