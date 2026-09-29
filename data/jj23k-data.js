@@ -2,8 +2,8 @@
 window.JJ23K_DATA = {
   "schemaVersion": 3,
   "season": 2026,
-  "throughWeek": 2,
-  "sourceHash": "3771b67a1babee269b4753519188115ead911b9ee082cc1815b77608b334b1d0",
+  "throughWeek": 3,
+  "sourceHash": "259330890cbc0844f78d5f403c191ee1e12b6c3a71cfd6b4cd097a52263aa5fc",
   "careerYards": [
     0,
     26,
@@ -101,7 +101,8 @@ window.JJ23K_DATA = {
     8379,
     8480,
     8572,
-    8627
+    8627,
+    8659
   ],
   "leaders": [
     [
@@ -286,6 +287,16 @@ window.JJ23K_DATA = {
     ],
     [
       19,
+      "Travis Kelce",
+      13233,
+      1094,
+      12.1,
+      84,
+      231,
+      4
+    ],
+    [
+      20,
       "Andre Reed",
       13198,
       951,
@@ -295,23 +306,13 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      20,
-      "Travis Kelce",
-      13174,
-      1092,
-      12.1,
-      83,
-      172,
-      3
-    ],
-    [
       21,
       "Mike Evans",
-      13155,
-      875,
+      13189,
+      878,
       15,
-      109,
-      103,
+      110,
+      137,
       0
     ],
     [
@@ -337,11 +338,11 @@ window.JJ23K_DATA = {
     [
       24,
       "Davante Adams",
-      12854,
-      1028,
-      12.5,
+      12991,
+      1035,
+      12.6,
       119,
-      221,
+      358,
       2
     ],
     [
@@ -396,6 +397,16 @@ window.JJ23K_DATA = {
     ],
     [
       30,
+      "Keenan Allen",
+      12151,
+      1068,
+      11.4,
+      71,
+      100,
+      3
+    ],
+    [
+      31,
       "Charlie Joiner",
       12146,
       750,
@@ -403,16 +414,6 @@ window.JJ23K_DATA = {
       65,
       null,
       null
-    ],
-    [
-      31,
-      "Keenan Allen",
-      12088,
-      1062,
-      11.4,
-      70,
-      37,
-      2
     ],
     [
       32,
@@ -466,6 +467,16 @@ window.JJ23K_DATA = {
     ],
     [
       37,
+      "Stefon Diggs",
+      11639,
+      955,
+      12.2,
+      77,
+      135,
+      1
+    ],
+    [
+      38,
       "Calvin Johnson",
       11619,
       731,
@@ -473,16 +484,6 @@ window.JJ23K_DATA = {
       83,
       null,
       null
-    ],
-    [
-      38,
-      "Stefon Diggs",
-      11606,
-      951,
-      12.2,
-      77,
-      102,
-      0
     ],
     [
       39,
@@ -1007,11 +1008,11 @@ window.JJ23K_DATA = {
     [
       91,
       "Justin Jefferson",
-      8627,
-      590,
+      8659,
+      592,
       14.6,
       44,
-      147,
+      179,
       7
     ],
     [
@@ -1027,12 +1028,12 @@ window.JJ23K_DATA = {
     [
       93,
       "Zach Ertz",
-      8592,
-      825,
+      8601,
+      826,
       10.4,
       57,
-      null,
-      null
+      9,
+      -1
     ],
     [
       94,
@@ -1086,6 +1087,16 @@ window.JJ23K_DATA = {
     ],
     [
       99,
+      "Cooper Kupp",
+      8470,
+      689,
+      12.3,
+      60,
+      101,
+      2
+    ],
+    [
+      100,
       "Billy Howton",
       8459,
       503,
@@ -1093,16 +1104,6 @@ window.JJ23K_DATA = {
       61,
       null,
       null
-    ],
-    [
-      100,
-      "Cooper Kupp",
-      8424,
-      685,
-      12.3,
-      59,
-      55,
-      1
     ]
   ]
 };
