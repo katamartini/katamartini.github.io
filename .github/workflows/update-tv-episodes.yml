@@ -1,0 +1,32 @@
+name: Update watching show episodes
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7 8 * * 1"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-tv-episodes
+  cancel-in-progress: false
+
+jobs:
+  update-episodes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test episode update
+        run: python -B -m unittest discover -s scripts -p 'test_update_tv_episodes.py'
+
+      - name: Check watching shows for new episodes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/update-tv-episodes.py
