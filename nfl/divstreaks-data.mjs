@@ -170,13 +170,35 @@ export function calculateStreaks(csv) {
         if (!mostRecent) throw new Error(`No ${venue} games for ${team} against ${opponent}`);
         let wins = 0;
         for (let i = venueGames.length - 1; i >= 0 && venueGames[i].winner === team; i -= 1) wins += 1;
+        const startDate = wins ? venueGames[venueGames.length - wins].date : null;
+        const designatedGames = pair.games.filter(game => game[venue] === team);
+        let designatedWins = 0;
+        for (let i = designatedGames.length - 1; i >= 0 && designatedGames[i].winner === team; i -= 1) designatedWins += 1;
+        const designatedStartDate = designatedWins ? designatedGames[designatedGames.length - designatedWins].date : null;
+        let neutralSiteEffect = null;
+        if (wins !== designatedWins || startDate !== designatedStartDate) {
+          const since = [startDate, designatedStartDate].filter(Boolean).sort()[0];
+          neutralSiteEffect = {
+            count: designatedWins,
+            startDate: designatedStartDate,
+            games: designatedGames.filter(game => game.location === 'Neutral' && game.date >= since)
+              .map(game => ({
+                date: game.date,
+                away: game.away,
+                awayScore: game.awayScore,
+                home: game.home,
+                homeScore: game.homeScore,
+              })),
+          };
+        }
         target.push({
           division: pair.division,
           teams: pair.teams,
           team,
           opponent,
           count: wins,
-          startDate: wins ? venueGames[venueGames.length - wins].date : null,
+          startDate,
+          neutralSiteEffect,
           latest: {
             date: mostRecent.date,
             away: mostRecent.away,

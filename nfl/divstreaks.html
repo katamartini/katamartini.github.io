@@ -188,6 +188,16 @@
       font-size: 0.72rem;
     }
 
+    .neutral-note {
+      margin-top: 5px;
+      color: #61665e;
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .neutral-note summary { cursor: pointer; }
+    .neutral-note p { margin: 4px 0 0; }
+
     .plot {
       position: relative;
       height: 38px;
@@ -397,6 +407,20 @@
         label.append(element('small', '', `${streak.division} · Start ${start}`));
         label.append(element('small', '', `Latest ${formatDate(latest.date)}`));
         label.append(element('small', '', `Next ${nextLabel}`));
+        if (view !== 'overall' && streak.neutralSiteEffect) {
+          const effect = streak.neutralSiteEffect;
+          const note = element('details', 'neutral-note');
+          note.append(element('summary', '', effect.count === streak.count
+            ? 'Neutral-site note: start date changes if included'
+            : `Neutral-site note: ${effect.count} ${effect.count === 1 ? 'win' : 'wins'} if included`));
+          const games = effect.games.map(game => `${formatDate(game.date)}: ${TEAMS[game.away].name} ${game.awayScore}, ${TEAMS[game.home].name} ${game.homeScore}`).join('; ');
+          note.append(element('p', '', `Excluded games with the ${winner} designated as the ${view} team: ${games}.`));
+          note.append(element('p', '', effect.startDate
+            ? `Including these games: ${effect.count} consecutive ${view} ${effect.count === 1 ? 'win' : 'wins'}, starting ${formatDate(effect.startDate)}.`
+            : `Including these games: no active ${view} winning streak.`));
+          label.append(note);
+          row.setAttribute('aria-label', `${row.getAttribute('aria-label')} Neutral-site note: ${effect.count} wins if designated ${view} games are included.`);
+        }
         row.append(label);
 
         const plot = element('div', 'plot');

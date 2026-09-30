@@ -80,6 +80,47 @@ test('next matchup searches all future weeks and respects each team’s venue', 
   assert.equal(nextMatchup(schedule, ['BUF', 'NE'], '2026-09-30'), null);
 });
 
+test('neutral-site notes show the effect only on the designated home and away rows', () => {
+  const data = calculateStreaks(sampleCsv());
+  const billsAway = data.awayStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA');
+  assert.equal(billsAway.count, 1);
+  assert.deepEqual(billsAway.neutralSiteEffect, {
+    count: 0,
+    startDate: null,
+    games: [{ date: '2025-11-01', away: 'BUF', awayScore: 7, home: 'MIA', homeScore: 14 }],
+  });
+  const dolphinsHome = data.homeStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF');
+  assert.equal(dolphinsHome.count, 0);
+  assert.equal(dolphinsHome.neutralSiteEffect.count, 1);
+  assert.equal(dolphinsHome.neutralSiteEffect.startDate, '2025-11-01');
+  assert.equal(data.homeStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA').neutralSiteEffect, null);
+  assert.equal(data.awayStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF').neutralSiteEffect, null);
+});
+
+test('neutral-site notes disappear once later venue games reset the affected streaks', () => {
+  const csv = [sampleCsv(),
+    game('BUF_MIA_reset_1', '2025-12-01', 'BUF', 14, 'MIA', 7),
+    game('BUF_MIA_reset_2', '2025-12-15', 'BUF', 7, 'MIA', 14),
+  ].join('\n');
+  const data = calculateStreaks(csv);
+  assert.equal(data.awayStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA').neutralSiteEffect, null);
+  assert.equal(data.homeStreaks.find(row => row.team === 'MIA' && row.opponent === 'BUF').neutralSiteEffect, null);
+});
+
+test('neutral-site notes also catch a changed start date with the same win count', () => {
+  const csv = [sampleCsv(),
+    game('BUF_MIA_neutral_loss', '2024-11-01', 'MIA', 14, 'BUF', 7, 'Neutral'),
+    game('BUF_MIA_neutral_win', '2025-08-01', 'MIA', 7, 'BUF', 14, 'Neutral'),
+  ].join('\n');
+  const data = calculateStreaks(csv);
+  const billsHome = data.homeStreaks.find(row => row.team === 'BUF' && row.opponent === 'MIA');
+  assert.equal(billsHome.count, 2);
+  assert.equal(billsHome.startDate, '2024-09-01');
+  assert.equal(billsHome.neutralSiteEffect.count, 2);
+  assert.equal(billsHome.neutralSiteEffect.startDate, '2025-08-01');
+  assert.equal(billsHome.neutralSiteEffect.games.length, 2);
+});
+
 test('a tie resets both the overall and venue-specific win streak', () => {
   const csv = `${sampleCsv()}\n${game('BUF_MIA_tie', '2025-12-01', 'BUF', 14, 'MIA', 14)}`;
   const data = calculateStreaks(csv);
