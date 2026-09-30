@@ -440,15 +440,20 @@
       upcomingKey.hidden = highlighted === 0;
     }
 
-    for (const [name, button] of Object.entries(viewButtons)) {
-      button.addEventListener('click', () => {
-        view = name;
-        for (const [buttonName, item] of Object.entries(viewButtons)) {
-          item.setAttribute('aria-pressed', String(buttonName === name));
-        }
-        render();
-      });
+    function selectViewFromHash() {
+      const requested = window.location.hash.slice(1).toLowerCase();
+      view = Object.hasOwn(viewButtons, requested) ? requested : 'overall';
+      for (const [name, button] of Object.entries(viewButtons)) {
+        button.setAttribute('aria-pressed', String(name === view));
+      }
+      render();
     }
+
+    for (const [name, button] of Object.entries(viewButtons)) {
+      button.addEventListener('click', () => { window.location.hash = name; });
+    }
+    window.addEventListener('hashchange', selectViewFromHash);
+    selectViewFromHash();
 
     for (const [order, button] of Object.entries(sortButtons)) {
       button.addEventListener('click', () => {
