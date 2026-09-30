@@ -283,7 +283,7 @@
   </main>
 
   <script type="module">
-    import { calculateStreaks, DIVISIONS, SOURCE_URL, TEAMS, upcomingDivisionalGames } from './divstreaks-data.mjs';
+    import { calculateStreaks, DIVISIONS, nextMatchup, SOURCE_URL, TEAMS, upcomingDivisionalGames } from './divstreaks-data.mjs';
 
     const chart = document.getElementById('chart');
     const status = document.getElementById('status');
@@ -317,8 +317,8 @@
 
     const pairKey = (a, b) => [a, b].sort().join('-');
 
-    function upcomingGames() {
-      return new Map(upcomingDivisionalGames(data.schedule || [], todayEastern())
+    function upcomingGames(today) {
+      return new Map(upcomingDivisionalGames(data.schedule || [], today)
         .map(game => [pairKey(game.away, game.home), game]));
     }
 
@@ -332,7 +332,8 @@
     function render() {
       if (!data) return;
       const streaks = [...(view === 'overall' ? data.streaks : view === 'home' ? data.homeStreaks : data.awayStreaks)];
-      const thisWeek = upcomingGames();
+      const today = todayEastern();
+      const thisWeek = upcomingGames(today);
       let highlighted = 0;
       const byName = (a, b) => (a.team || a.teams.join('-')).localeCompare(b.team || b.teams.join('-')) ||
         (a.opponent || '').localeCompare(b.opponent || '');
@@ -376,6 +377,8 @@
         const scheduled = thisWeek.get(pairKey(a, b));
         const upcoming = scheduled && (view === 'overall' ||
           (scheduled.location !== 'Neutral' && scheduled[view] === streak.team)) ? scheduled : null;
+        const next = nextMatchup(data.schedule || [], streak.teams, today, view, streak.team);
+        const nextLabel = next ? `${formatDate(next.date)} · Week ${next.week}` : 'Not scheduled';
         const row = element('div', 'chart-row');
         if (upcoming) {
           row.classList.add('upcoming');
@@ -386,14 +389,14 @@
           ? `${winner}, ${streak.count} consecutive ${winWord}`
           : `${streak.count} consecutive ${view} ${winWord} by ${winner}`;
         const start = streak.startDate ? formatDate(streak.startDate) : '—';
-        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${summary}. Start: ${start}. Latest game: ${score} on ${formatDate(latest.date)}.${upcoming ? ` Upcoming game ${formatDate(upcoming.date)}.` : ''}`);
-        row.title = `Start: ${start} · Latest game: ${score} on ${formatDate(latest.date)}${upcoming ? ` · Next game: ${formatDate(upcoming.date)}` : ''}`;
+        row.setAttribute('aria-label', `${rivalry}, ${streak.division}: ${summary}. Start: ${start}. Latest game: ${score} on ${formatDate(latest.date)}. Next game: ${next ? `${formatDate(next.date)}, ${next.season} season, Week ${next.week}` : 'not scheduled'}.`);
+        row.title = `Start: ${start} · Latest game: ${score} on ${formatDate(latest.date)} · Next game: ${nextLabel}${next ? ` (${next.season} season)` : ''}`;
 
         const label = element('div', 'matchup');
         label.append(element('strong', '', rivalry));
         label.append(element('small', '', `${streak.division} · Start ${start}`));
         label.append(element('small', '', `Latest ${formatDate(latest.date)}`));
-        if (upcoming) label.append(element('small', '', `Next ${formatDate(upcoming.date)}`));
+        label.append(element('small', '', `Next ${nextLabel}`));
         row.append(label);
 
         const plot = element('div', 'plot');

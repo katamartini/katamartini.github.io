@@ -52,6 +52,13 @@ function pairKey(a, b) {
   return [a, b].sort().join('-');
 }
 
+export function nextMatchup(schedule, teams, today, view = 'overall', team = null) {
+  const key = pairKey(...teams);
+  return schedule.filter(game => game.date >= today && pairKey(game.away, game.home) === key &&
+    (view === 'overall' || (game.location !== 'Neutral' && game[view] === team)))
+    .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id))[0] || null;
+}
+
 export function upcomingDivisionalGames(schedule, today) {
   const future = schedule.filter(game => game.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));

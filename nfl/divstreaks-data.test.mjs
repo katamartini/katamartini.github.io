@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateStreaks, DIVISIONS, upcomingDivisionalGames } from './divstreaks-data.mjs';
+import { calculateStreaks, DIVISIONS, nextMatchup, upcomingDivisionalGames } from './divstreaks-data.mjs';
 
 const header = 'game_id,season,game_type,week,gameday,weekday,gametime,away_team,away_score,home_team,home_score,location';
 const game = (id, date, away, awayScore, home, homeScore, location = 'Home', season = 2025, week = 1) =>
@@ -60,6 +60,24 @@ test('only scheduled divisional games in the next league week are marked upcomin
   assert.deepEqual(upcomingDivisionalGames(schedule, '2026-09-28').map(game => game.id),
     ['2026_04_NYJ_MIA']);
   assert.deepEqual(upcomingDivisionalGames(schedule, '2026-08-01'), []);
+});
+
+test('next matchup searches all future weeks and respects each team’s venue', () => {
+  const csv = [sampleCsv(),
+    game('BUF_MIA_home', '2026-12-06', 'MIA', '', 'BUF', '', 'Home', 2026, 13),
+    game('BUF_MIA_neutral_future', '2026-10-04', 'MIA', '', 'BUF', '', 'Neutral', 2026, 4),
+    game('BUF_MIA_away', '2026-10-18', 'BUF', '', 'MIA', '', 'Home', 2026, 6),
+  ].join('\n');
+  const { schedule } = calculateStreaks(csv);
+  const teams = ['BUF', 'MIA'];
+  const next = nextMatchup(schedule, teams, '2026-09-30');
+  assert.equal(next.id, 'BUF_MIA_neutral_future');
+  assert.equal(next.week, 4);
+  assert.equal(nextMatchup(schedule, teams, '2026-09-30', 'home', 'BUF').id, 'BUF_MIA_home');
+  assert.equal(nextMatchup(schedule, teams, '2026-09-30', 'away', 'BUF').id, 'BUF_MIA_away');
+  assert.equal(nextMatchup(schedule, teams, '2026-09-30', 'home', 'MIA').id, 'BUF_MIA_away');
+  assert.equal(nextMatchup(schedule, teams, '2026-12-07'), null);
+  assert.equal(nextMatchup(schedule, ['BUF', 'NE'], '2026-09-30'), null);
 });
 
 test('a tie resets both the overall and venue-specific win streak', () => {

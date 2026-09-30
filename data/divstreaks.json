@@ -1,166 +1,6 @@
 {
-  "through": "2026-09-21",
+  "through": "2026-09-28",
   "schedule": [
-    {
-      "id": "2026_03_ATL_GB",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-24",
-      "away": "ATL",
-      "home": "GB",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_ARI_SF",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "ARI",
-      "home": "SF",
-      "location": "Home",
-      "divisional": true
-    },
-    {
-      "id": "2026_03_BAL_DAL",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "BAL",
-      "home": "DAL",
-      "location": "Neutral",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_CAR_CLE",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "CAR",
-      "home": "CLE",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_CIN_PIT",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "CIN",
-      "home": "PIT",
-      "location": "Home",
-      "divisional": true
-    },
-    {
-      "id": "2026_03_HOU_IND",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "HOU",
-      "home": "IND",
-      "location": "Home",
-      "divisional": true
-    },
-    {
-      "id": "2026_03_KC_MIA",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "KC",
-      "home": "MIA",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_LA_DEN",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "LA",
-      "home": "DEN",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_LAC_BUF",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "LAC",
-      "home": "BUF",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_LV_NO",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "LV",
-      "home": "NO",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_MIN_TB",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "MIN",
-      "home": "TB",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_NE_JAX",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "NE",
-      "home": "JAX",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_NYJ_DET",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "NYJ",
-      "home": "DET",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_SEA_WAS",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "SEA",
-      "home": "WAS",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_TEN_NYG",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-27",
-      "away": "TEN",
-      "home": "NYG",
-      "location": "Home",
-      "divisional": false
-    },
-    {
-      "id": "2026_03_PHI_CHI",
-      "season": 2026,
-      "week": 3,
-      "date": "2026-09-28",
-      "away": "PHI",
-      "home": "CHI",
-      "location": "Home",
-      "divisional": false
-    },
     {
       "id": "2026_04_PIT_CLE",
       "season": 2026,
@@ -2580,14 +2420,14 @@
         "PIT"
       ],
       "winner": "PIT",
-      "count": 1,
+      "count": 2,
       "startDate": "2025-11-16",
       "latest": {
-        "date": "2025-11-16",
+        "date": "2026-09-27",
         "away": "CIN",
-        "awayScore": 12,
+        "awayScore": 27,
         "home": "PIT",
-        "homeScore": 34
+        "homeScore": 30
       }
     },
     {
@@ -2613,15 +2453,15 @@
         "HOU",
         "IND"
       ],
-      "winner": "HOU",
-      "count": 5,
-      "startDate": "2024-01-06",
+      "winner": "IND",
+      "count": 1,
+      "startDate": "2026-09-27",
       "latest": {
-        "date": "2026-01-04",
-        "away": "IND",
-        "awayScore": 30,
-        "home": "HOU",
-        "homeScore": 38
+        "date": "2026-09-27",
+        "away": "HOU",
+        "awayScore": 17,
+        "home": "IND",
+        "homeScore": 19
       }
     },
     {
@@ -3141,14 +2981,14 @@
         "SF"
       ],
       "winner": "SF",
-      "count": 2,
+      "count": 3,
       "startDate": "2025-09-21",
       "latest": {
-        "date": "2025-11-16",
-        "away": "SF",
-        "awayScore": 41,
-        "home": "ARI",
-        "homeScore": 22
+        "date": "2026-09-27",
+        "away": "ARI",
+        "awayScore": 30,
+        "home": "SF",
+        "homeScore": 36
       }
     },
     {
@@ -3607,14 +3447,14 @@
       ],
       "team": "PIT",
       "opponent": "CIN",
-      "count": 1,
+      "count": 2,
       "startDate": "2025-11-16",
       "latest": {
-        "date": "2025-11-16",
+        "date": "2026-09-27",
         "away": "CIN",
-        "awayScore": 12,
+        "awayScore": 27,
         "home": "PIT",
-        "homeScore": 34
+        "homeScore": 30
       }
     },
     {
@@ -3679,14 +3519,14 @@
       ],
       "team": "IND",
       "opponent": "HOU",
-      "count": 0,
-      "startDate": null,
+      "count": 1,
+      "startDate": "2026-09-27",
       "latest": {
-        "date": "2025-11-30",
+        "date": "2026-09-27",
         "away": "HOU",
-        "awayScore": 20,
+        "awayScore": 17,
         "home": "IND",
-        "homeScore": 16
+        "homeScore": 19
       }
     },
     {
@@ -4795,14 +4635,14 @@
       ],
       "team": "SF",
       "opponent": "ARI",
-      "count": 1,
+      "count": 2,
       "startDate": "2025-09-21",
       "latest": {
-        "date": "2025-09-21",
+        "date": "2026-09-27",
         "away": "ARI",
-        "awayScore": 15,
+        "awayScore": 30,
         "home": "SF",
-        "homeScore": 16
+        "homeScore": 36
       }
     },
     {
@@ -5322,11 +5162,11 @@
       "count": 0,
       "startDate": null,
       "latest": {
-        "date": "2025-11-16",
+        "date": "2026-09-27",
         "away": "CIN",
-        "awayScore": 12,
+        "awayScore": 27,
         "home": "PIT",
-        "homeScore": 34
+        "homeScore": 30
       }
     },
     {
@@ -5391,14 +5231,14 @@
       ],
       "team": "HOU",
       "opponent": "IND",
-      "count": 4,
-      "startDate": "2023-01-08",
+      "count": 0,
+      "startDate": null,
       "latest": {
-        "date": "2025-11-30",
+        "date": "2026-09-27",
         "away": "HOU",
-        "awayScore": 20,
+        "awayScore": 17,
         "home": "IND",
-        "homeScore": 16
+        "homeScore": 19
       }
     },
     {
@@ -6510,11 +6350,11 @@
       "count": 0,
       "startDate": null,
       "latest": {
-        "date": "2025-09-21",
+        "date": "2026-09-27",
         "away": "ARI",
-        "awayScore": 15,
+        "awayScore": 30,
         "home": "SF",
-        "homeScore": 16
+        "homeScore": 36
       }
     },
     {
