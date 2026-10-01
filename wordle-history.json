@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-10-01T05:21:30.602840+00:00",
+  "data_updated_at": "2026-10-01T12:21:16.355698+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -5307,6 +5307,106 @@
         },
         {
           "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1930,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XYXXY\nXXYYG\nGXGXG\nGXGXG\nGGGGG",
+      "posted_at": "2026-10-01T10:25:41.238000+00:00",
+      "tracked_at": "2026-10-01T10:25:41.289656+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXY"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXYYG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GXGXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GXGXG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1930,
+      "score": 5,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXXXXX\nXYXXX\nGGXXY\nGGGGG",
+      "posted_at": "2026-10-01T10:37:35.845000+00:00",
+      "tracked_at": "2026-10-01T10:37:35.983208+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGXXY"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1930,
+      "score": 6,
+      "hard_mode": true,
+      "grid_pattern": "XXXYX\nXXYXY\nYGYXX\nXGGXY\nXGGYG\nGGGGG",
+      "posted_at": "2026-10-01T12:21:16.263000+00:00",
+      "tracked_at": "2026-10-01T12:21:16.355698+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXYX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXYXY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YGYXX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGGXY"
+        },
+        {
+          "row_number": 5,
+          "pattern": "XGGYG"
+        },
+        {
+          "row_number": 6,
           "pattern": "GGGGG"
         }
       ]
