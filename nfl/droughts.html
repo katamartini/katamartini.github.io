@@ -29,7 +29,8 @@
     th:first-child { position: sticky; left: 0; z-index: 1; background: #f4f5f1; min-width: 165px; border-right: 1px solid #dde1d8; }
     tbody th { font-weight: 700; }
     tbody tr:hover th, tbody tr:hover td { background: #edf0e8; }
-    .team-name::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--team-color); margin: 0 7px 1px 0; }
+    .team-identity { display: flex; align-items: center; gap: 8px; }
+    .team-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
     .division { display: block; margin-top: 2px; color: #737a70; font-size: 0.72rem; font-weight: normal; }
     .last-season { display: block; font-weight: 700; }
     .drought { display: block; margin-top: 2px; color: #737a70; font-size: 0.76rem; }
@@ -44,7 +45,8 @@
       main { width: calc(100% - 28px); padding-top: 28px; }
       h1 { margin-top: 28px; }
       th, td { padding-left: 10px; padding-right: 10px; }
-      th:first-child { min-width: 130px; }
+      th:first-child { min-width: 155px; }
+      .team-logo { width: 26px; height: 26px; }
     }
   </style>
 </head>
@@ -82,6 +84,7 @@
     const filter = document.getElementById('division-filter');
     const count = document.getElementById('team-count');
     const headers = new Map();
+    const logoCodes = { LA: 'lar', WAS: 'wsh' };
     let data = null;
     let sortKey = 'team';
     let descending = false;
@@ -118,9 +121,20 @@
         const tr = element('tr');
         const team = element('th');
         team.scope = 'row';
-        team.style.setProperty('--team-color', TEAMS[row.team].color);
-        team.append(element('span', 'team-name', TEAMS[row.team].name));
-        team.append(element('span', 'division', row.division));
+        const identity = element('div', 'team-identity');
+        const logo = element('img', 'team-logo');
+        logo.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[row.team] || row.team.toLowerCase()}.png`;
+        logo.alt = ''; // The adjacent team name already labels the row.
+        logo.width = 30;
+        logo.height = 30;
+        logo.loading = 'lazy';
+        logo.decoding = 'async';
+        logo.addEventListener('error', () => logo.remove(), { once: true });
+        const label = element('div');
+        label.append(element('span', 'team-name', TEAMS[row.team].name));
+        label.append(element('span', 'division', row.division));
+        identity.append(logo, label);
+        team.append(identity);
         tr.append(team);
         for (const category of CATEGORIES) {
           const last = row.last[category.key];
