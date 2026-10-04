@@ -1,0 +1,41 @@
+name: Update NFL droughts
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 16 * * 2"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-droughts
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check drought calculations
+        run: node --test nfl/droughts-data.test.mjs
+      - name: Refresh completed-season records
+        run: node scripts/update-droughts.mjs
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/droughts.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/droughts.json
+            git commit -m "Update NFL drought records"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
