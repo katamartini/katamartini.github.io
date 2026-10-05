@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Players with at least 5,000 receiving yards for one NFL franchise. Sort all-time records and see who is still on the team.">
+  <meta name="theme-color" content="#f4f5f1">
+  <link rel="canonical" href="https://kmartini.com/nfl/franchise-leaders.html">
+  <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
+  <title>Franchise Leaders — kmartini.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #20221f; background: #f4f5f1; font-family: Arial, Helvetica, sans-serif; line-height: 1.45; }
+    main { width: min(1100px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 70px; }
+    a { color: #36534a; }
+    .back { color: #61665e; font-size: 0.88rem; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    h1 { margin: 36px 0 8px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
+    .intro { max-width: 760px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    h2 { margin: 28px 0 8px; font-size: 1.2rem; }
+    .meta, .hint, .method { color: #61665e; font-size: 0.84rem; }
+    .meta { margin: 0 0 22px; }
+    .toolbar { display: flex; gap: 16px; flex-wrap: wrap; margin: 0 0 12px; }
+    label { color: #61665e; font-size: 0.84rem; }
+    select, input { margin-left: 5px; padding: 6px 8px; border: 1px solid #c8cdc5; border-radius: 4px; color: inherit; background: transparent; font: inherit; }
+    input { width: 190px; }
+    .hint { margin: 0 0 12px; }
+    .legend { display: inline-block; width: 10px; height: 10px; margin-right: 5px; background: #d9efdd; border: 1px solid #6f9878; }
+    .table-wrap { overflow-x: auto; border-top: 1px solid #c8cdc5; }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+    caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #dde1d8; vertical-align: middle; }
+    thead th { color: #565c54; font-size: 0.8rem; }
+    tbody th { font-weight: 700; }
+    .number { text-align: right; }
+    .current { background: #e0f1e3; }
+    tbody tr:hover { background: #edf0e8; }
+    tbody tr.current:hover { background: #d2e9d7; }
+    .roster-label { display: block; color: #267a45; font-size: 0.7rem; font-weight: normal; margin-top: 2px; }
+    .franchise { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
+    button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; cursor: pointer; text-align: inherit; }
+    button:hover { text-decoration: underline; }
+    .sort-arrow { white-space: pre; }
+    a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, .table-wrap:focus-visible { outline: 2px solid #20221f; outline-offset: 3px; }
+    .method { max-width: 940px; margin: 24px 0 0; }
+    .method p { margin: 0 0 10px; }
+    #empty { margin: 16px 0; }
+    @media (max-width: 680px) {
+      main { width: calc(100% - 28px); padding-top: 28px; }
+      h1 { margin-top: 28px; }
+      th, td { padding-left: 10px; padding-right: 10px; }
+      .toolbar { gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/nfl">← NFL index</a>
+    <h1>Franchise leaders</h1>
+    <p class="intro">Players with at least 5,000 receiving yards for a single franchise. A player can appear once for each franchise where they qualify.</p>
+    <h2>Receiving yards</h2>
+    <p id="status" class="meta" role="status">Loading records…</p>
+    <div class="toolbar">
+      <label for="franchise-filter">Franchise <select id="franchise-filter"><option value="all">All franchises</option></select></label>
+      <label for="player-search">Player <input id="player-search" type="search" placeholder="Search players" autocomplete="off"></label>
+    </div>
+    <p class="hint"><span class="legend" aria-hidden="true"></span>Green rows: currently on that franchise’s roster. Click a column to sort. <span id="row-count"></span></p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Franchise receiving leaders; scroll horizontally for more columns">
+      <table>
+        <caption>All-time franchise receiving leaders with at least 5,000 regular-season yards</caption>
+        <thead><tr id="table-head"></tr></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <p id="empty" hidden>No players match these filters.</p>
+    <noscript><p>Enable JavaScript to display the franchise records.</p></noscript>
+    <div class="method">
+      <p>Regular-season stats only; all positions are eligible. Rank is the overall receiving-yardage rank, even when filtering or sorting. Franchise relocations and name changes are combined, including the Oilers/Titans, Baltimore/Indianapolis Colts, and all Rams, Raiders, and Chargers locations. The Browns’ AAFC receiving records are included. The Ravens have their own history.</p>
+      <p>Current roster membership includes inactive players, injured/reserve lists, and practice squads. Players who have left the franchise are not highlighted, even if they are still playing elsewhere. Roster status comes from the latest available nflverse weekly snapshot.</p>
+      <p>Records are checked every Tuesday, with a Wednesday retry. Receiving totals and rosters may refresh at different times. Sources: <a id="stats-source" href="https://www.statmuse.com/nfl">StatMuse franchise receiving leaders</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse rosters</a>, and <a href="https://www.pro-football-reference.com/teams/cle/career-receiving.htm">historical Browns records</a>.</p>
+    </div>
+  </main>
+  <script type="module">
+    import { TEAMS } from './divstreaks-data.mjs';
+    import { MIN_YARDS, normalizeName } from './franchise-leaders-data.mjs';
+    const status = document.getElementById('status');
+    const filter = document.getElementById('franchise-filter');
+    const search = document.getElementById('player-search');
+    const head = document.getElementById('table-head');
+    const body = document.getElementById('table-body');
+    const count = document.getElementById('row-count');
+    const empty = document.getElementById('empty');
+    const source = document.getElementById('stats-source');
+    const columns = [
+      { key: 'rank', label: 'Rank', number: true },
+      { key: 'name', label: 'Player' },
+      { key: 'team', label: 'Franchise' },
+      { key: 'yards', label: 'Receiving yards', number: true },
+      { key: 'receptions', label: 'Receptions', number: true },
+      { key: 'touchdowns', label: 'Receiving TDs', number: true },
+    ];
+    const headers = new Map();
+    const logoCodes = { LA: 'lar', WAS: 'wsh' };
+    let data, sortKey = 'yards', descending = true;
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+    for (const [team, details] of Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))) {
+      const option = element('option', '', details.name);
+      option.value = team; filter.append(option);
+    }
+    function render() {
+      if (!data) return;
+      const query = normalizeName(search.value);
+      const rows = data.leaders.map((row, i) => ({ ...row, rank: i + 1 }))
+        .filter(row => (filter.value === 'all' || row.team === filter.value) && normalizeName(row.name).includes(query));
+      rows.sort((a, b) => {
+        const value = sortKey === 'name' ? a.name.localeCompare(b.name) : sortKey === 'team' ? TEAMS[a.team].name.localeCompare(TEAMS[b.team].name) : a[sortKey] - b[sortKey];
+        return (descending ? -value : value) || a.rank - b.rank;
+      });
+      for (const [key, { th, arrow }] of headers) {
+        th.setAttribute('aria-sort', key === sortKey ? (descending ? 'descending' : 'ascending') : 'none');
+        arrow.textContent = key === sortKey ? (descending ? ' ↓' : ' ↑') : '';
+      }
+      const fragment = document.createDocumentFragment();
+      for (const row of rows) {
+        const tr = element('tr', row.current ? 'current' : '');
+        tr.append(element('td', 'number', row.rank));
+        const player = element('th', '', row.name); player.scope = 'row';
+        if (row.current) player.append(element('span', 'roster-label', 'On roster'));
+        tr.append(player);
+        const team = element('td');
+        const identity = element('div', 'franchise');
+        const logo = element('img', 'team-logo');
+        logo.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[row.team] || row.team.toLowerCase()}.png`;
+        logo.alt = ''; logo.width = 26; logo.height = 26; logo.loading = 'lazy'; logo.decoding = 'async';
+        logo.addEventListener('error', () => logo.remove(), { once: true });
+        identity.append(logo, element('span', '', TEAMS[row.team].name)); team.append(identity); tr.append(team);
+        for (const key of ['yards', 'receptions', 'touchdowns']) tr.append(element('td', 'number', row[key].toLocaleString('en-US')));
+        fragment.append(tr);
+      }
+      body.replaceChildren(fragment);
+      count.textContent = `${rows.length} player–franchise pairs.`;
+      empty.hidden = rows.length !== 0;
+      source.href = data.sources.find(item => item.team === filter.value)?.url || 'https://www.statmuse.com/nfl';
+    }
+    for (const column of columns) {
+      const th = element('th', column.number ? 'number' : ''); th.scope = 'col';
+      const button = element('button', '', column.label); button.type = 'button';
+      const arrow = element('span', 'sort-arrow'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow);
+      button.addEventListener('click', () => {
+        descending = sortKey === column.key ? !descending : column.number && column.key !== 'rank';
+        sortKey = column.key; render();
+      });
+      th.append(button); head.append(th); headers.set(column.key, { th, arrow });
+    }
+    filter.addEventListener('change', render); search.addEventListener('input', render);
+    try {
+      const response = await fetch('../data/franchise-leaders.json');
+      if (!response.ok) throw new Error('Records unavailable');
+      const saved = await response.json();
+      if (saved.schemaVersion !== 1 || !Array.isArray(saved.leaders) || !saved.leaders.length || !Array.isArray(saved.sources) ||
+          new Set(saved.leaders.map(row => `${row.team}:${normalizeName(row.name)}`)).size !== saved.leaders.length ||
+          saved.leaders.some(row => !TEAMS[row.team] || typeof row.name !== 'string' || typeof row.current !== 'boolean' ||
+            !Number.isSafeInteger(row.yards) || row.yards < MIN_YARDS || !Number.isSafeInteger(row.receptions) || row.receptions < 1 ||
+            !Number.isSafeInteger(row.touchdowns) || row.touchdowns < 0)) throw new Error('Incomplete records');
+      data = saved; render();
+      const date = new Date(data.checkedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
+      status.textContent = `Records updated ${date} · Rosters: ${data.season}${data.rosterWeek ? ` Week ${data.rosterWeek}` : ' preseason'}`;
+    } catch { status.textContent = 'Records could not be loaded. Please refresh to try again.'; }
+  </script>
+</body>
+</html>

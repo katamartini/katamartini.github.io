@@ -1,0 +1,1851 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-05T15:09:36.225Z",
+  "season": 2026,
+  "rosterWeek": 4,
+  "sourceHash": "4c8f27606d3b6ad3a68f3744f4f51f36a5193cad4ea05c270dbd876e544b1a01",
+  "sources": [
+    {
+      "team": "ARI",
+      "url": "https://www.statmuse.com/nfl/ask/cardinals-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "ATL",
+      "url": "https://www.statmuse.com/nfl/ask/falcons-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "BAL",
+      "url": "https://www.statmuse.com/nfl/ask/ravens-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "BUF",
+      "url": "https://www.statmuse.com/nfl/ask/bills-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "CAR",
+      "url": "https://www.statmuse.com/nfl/ask/panthers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "CHI",
+      "url": "https://www.statmuse.com/nfl/ask/bears-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "CIN",
+      "url": "https://www.statmuse.com/nfl/ask/bengals-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "CLE",
+      "url": "https://www.statmuse.com/nfl/ask/browns-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "DAL",
+      "url": "https://www.statmuse.com/nfl/ask/cowboys-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "DEN",
+      "url": "https://www.statmuse.com/nfl/ask/broncos-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "DET",
+      "url": "https://www.statmuse.com/nfl/ask/lions-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "GB",
+      "url": "https://www.statmuse.com/nfl/ask/packers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "HOU",
+      "url": "https://www.statmuse.com/nfl/ask/texans-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "IND",
+      "url": "https://www.statmuse.com/nfl/ask/colts-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "JAX",
+      "url": "https://www.statmuse.com/nfl/ask/jaguars-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "KC",
+      "url": "https://www.statmuse.com/nfl/ask/chiefs-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "LA",
+      "url": "https://www.statmuse.com/nfl/ask/rams-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "LAC",
+      "url": "https://www.statmuse.com/nfl/ask/chargers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "LV",
+      "url": "https://www.statmuse.com/nfl/ask/raiders-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "MIA",
+      "url": "https://www.statmuse.com/nfl/ask/dolphins-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "MIN",
+      "url": "https://www.statmuse.com/nfl/ask/vikings-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "NE",
+      "url": "https://www.statmuse.com/nfl/ask/patriots-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "NO",
+      "url": "https://www.statmuse.com/nfl/ask/saints-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "NYG",
+      "url": "https://www.statmuse.com/nfl/ask/giants-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "NYJ",
+      "url": "https://www.statmuse.com/nfl/ask/jets-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "PHI",
+      "url": "https://www.statmuse.com/nfl/ask/eagles-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "PIT",
+      "url": "https://www.statmuse.com/nfl/ask/steelers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "SEA",
+      "url": "https://www.statmuse.com/nfl/ask/seahawks-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "SF",
+      "url": "https://www.statmuse.com/nfl/ask/49ers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "TB",
+      "url": "https://www.statmuse.com/nfl/ask/buccaneers-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "TEN",
+      "url": "https://www.statmuse.com/nfl/ask/titans-all-time-receiving-yards-leaders"
+    },
+    {
+      "team": "WAS",
+      "url": "https://www.statmuse.com/nfl/ask/commanders-all-time-receiving-yards-leaders"
+    }
+  ],
+  "leaders": [
+    {
+      "team": "SF",
+      "name": "Jerry Rice",
+      "yards": 19247,
+      "receptions": 1281,
+      "touchdowns": 176,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Larry Fitzgerald",
+      "yards": 17492,
+      "receptions": 1432,
+      "touchdowns": 121,
+      "current": false
+    },
+    {
+      "team": "LV",
+      "name": "Tim Brown",
+      "yards": 14734,
+      "receptions": 1070,
+      "touchdowns": 99,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "Marvin Harrison",
+      "yards": 14580,
+      "receptions": 1102,
+      "touchdowns": 128,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "Reggie Wayne",
+      "yards": 14345,
+      "receptions": 1070,
+      "touchdowns": 82,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Isaac Bruce",
+      "yards": 14109,
+      "receptions": 942,
+      "touchdowns": 84,
+      "current": false
+    },
+    {
+      "team": "HOU",
+      "name": "Andre Johnson",
+      "yards": 13597,
+      "receptions": 1012,
+      "touchdowns": 64,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Travis Kelce",
+      "yards": 13248,
+      "receptions": 1096,
+      "touchdowns": 84,
+      "current": true
+    },
+    {
+      "team": "BUF",
+      "name": "Andre Reed",
+      "yards": 13095,
+      "receptions": 941,
+      "touchdowns": 86,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "Steve Largent",
+      "yards": 13089,
+      "receptions": 819,
+      "touchdowns": 100,
+      "current": false
+    },
+    {
+      "team": "TB",
+      "name": "Mike Evans",
+      "yards": 13052,
+      "receptions": 866,
+      "touchdowns": 108,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Jason Witten",
+      "yards": 12977,
+      "receptions": 1215,
+      "touchdowns": 72,
+      "current": false
+    },
+    {
+      "team": "ATL",
+      "name": "Julio Jones",
+      "yards": 12896,
+      "receptions": 848,
+      "touchdowns": 60,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Torry Holt",
+      "yards": 12660,
+      "receptions": 869,
+      "touchdowns": 74,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Cris Carter",
+      "yards": 12383,
+      "receptions": 1004,
+      "touchdowns": 110,
+      "current": false
+    },
+    {
+      "team": "JAX",
+      "name": "Jimmy Smith",
+      "yards": 12287,
+      "receptions": 862,
+      "touchdowns": 67,
+      "current": false
+    },
+    {
+      "team": "CAR",
+      "name": "Steve Smith Sr.",
+      "yards": 12197,
+      "receptions": 836,
+      "touchdowns": 67,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Hines Ward",
+      "yards": 12083,
+      "receptions": 1000,
+      "touchdowns": 85,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Art Monk",
+      "yards": 12026,
+      "receptions": 888,
+      "touchdowns": 65,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Michael Irvin",
+      "yards": 11904,
+      "receptions": 750,
+      "touchdowns": 65,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Antonio Gates",
+      "yards": 11841,
+      "receptions": 955,
+      "touchdowns": 116,
+      "current": false
+    },
+    {
+      "team": "NYJ",
+      "name": "Don Maynard",
+      "yards": 11732,
+      "receptions": 627,
+      "touchdowns": 88,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Calvin Johnson",
+      "yards": 11619,
+      "receptions": 731,
+      "touchdowns": 83,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Rod Smith",
+      "yards": 11389,
+      "receptions": 849,
+      "touchdowns": 68,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Keenan Allen",
+      "yards": 11307,
+      "receptions": 985,
+      "touchdowns": 63,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Antonio Brown",
+      "yards": 11207,
+      "receptions": 837,
+      "touchdowns": 74,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Tony Gonzalez",
+      "yards": 10940,
+      "receptions": 916,
+      "touchdowns": 76,
+      "current": false
+    },
+    {
+      "team": "ATL",
+      "name": "Roddy White",
+      "yards": 10863,
+      "receptions": 808,
+      "touchdowns": 63,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Chad Johnson",
+      "yards": 10783,
+      "receptions": 751,
+      "touchdowns": 66,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Stanley Morgan",
+      "yards": 10352,
+      "receptions": 534,
+      "touchdowns": 67,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Donald Driver",
+      "yards": 10137,
+      "receptions": 743,
+      "touchdowns": 61,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Henry Ellard",
+      "yards": 9761,
+      "receptions": 593,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "NO",
+      "name": "Marques Colston",
+      "yards": 9759,
+      "receptions": 711,
+      "touchdowns": 72,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "T.Y. Hilton",
+      "yards": 9691,
+      "receptions": 631,
+      "touchdowns": 53,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "James Lofton",
+      "yards": 9656,
+      "receptions": 530,
+      "touchdowns": 49,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Lance Alworth",
+      "yards": 9584,
+      "receptions": 493,
+      "touchdowns": 81,
+      "current": false
+    },
+    {
+      "team": "NYG",
+      "name": "Amani Toomer",
+      "yards": 9497,
+      "receptions": 668,
+      "touchdowns": 54,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "A.J. Green",
+      "yards": 9430,
+      "receptions": 649,
+      "touchdowns": 65,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Randy Moss",
+      "yards": 9316,
+      "receptions": 587,
+      "touchdowns": 92,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "Raymond Berry",
+      "yards": 9275,
+      "receptions": 631,
+      "touchdowns": 68,
+      "current": false
+    },
+    {
+      "team": "CAR",
+      "name": "Muhsin Muhammad",
+      "yards": 9255,
+      "receptions": 696,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Charlie Joiner",
+      "yards": 9203,
+      "receptions": 586,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Herman Moore",
+      "yards": 9174,
+      "receptions": 670,
+      "touchdowns": 62,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Charley Taylor",
+      "yards": 9110,
+      "receptions": 649,
+      "touchdowns": 79,
+      "current": false
+    },
+    {
+      "team": "BUF",
+      "name": "Eric Moulds",
+      "yards": 9096,
+      "receptions": 675,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Demaryius Thomas",
+      "yards": 9055,
+      "receptions": 665,
+      "touchdowns": 60,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Harold Carmichael",
+      "yards": 8978,
+      "receptions": 589,
+      "touchdowns": 79,
+      "current": false
+    },
+    {
+      "team": "LV",
+      "name": "Fred Biletnikoff",
+      "yards": 8974,
+      "receptions": 589,
+      "touchdowns": 76,
+      "current": false
+    },
+    {
+      "team": "MIA",
+      "name": "Mark Duper",
+      "yards": 8869,
+      "receptions": 511,
+      "touchdowns": 59,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Gary Clark",
+      "yards": 8742,
+      "receptions": 549,
+      "touchdowns": 58,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "John Stallworth",
+      "yards": 8723,
+      "receptions": 537,
+      "touchdowns": 63,
+      "current": false
+    },
+    {
+      "team": "LV",
+      "name": "Cliff Branch",
+      "yards": 8685,
+      "receptions": 501,
+      "touchdowns": 67,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Justin Jefferson",
+      "yards": 8659,
+      "receptions": 592,
+      "touchdowns": 44,
+      "current": true
+    },
+    {
+      "team": "MIA",
+      "name": "Mark Clayton",
+      "yards": 8643,
+      "receptions": 550,
+      "touchdowns": 81,
+      "current": false
+    },
+    {
+      "team": "HOU",
+      "name": "DeAndre Hopkins",
+      "yards": 8602,
+      "receptions": 632,
+      "touchdowns": 54,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "Tyler Lockett",
+      "yards": 8594,
+      "receptions": 661,
+      "touchdowns": 61,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Terrell Owens",
+      "yards": 8572,
+      "receptions": 592,
+      "touchdowns": 81,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Roy Green",
+      "yards": 8496,
+      "receptions": 522,
+      "touchdowns": 66,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Shannon Sharpe",
+      "yards": 8439,
+      "receptions": 675,
+      "touchdowns": 55,
+      "current": false
+    },
+    {
+      "team": "NYJ",
+      "name": "Wesley Walker",
+      "yards": 8306,
+      "receptions": 438,
+      "touchdowns": 71,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "George Kittle",
+      "yards": 8252,
+      "receptions": 611,
+      "touchdowns": 56,
+      "current": true
+    },
+    {
+      "team": "GB",
+      "name": "Sterling Sharpe",
+      "yards": 8134,
+      "receptions": 595,
+      "touchdowns": 65,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Davante Adams",
+      "yards": 8121,
+      "receptions": 669,
+      "touchdowns": 73,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Don Hutson",
+      "yards": 7991,
+      "receptions": 488,
+      "touchdowns": 99,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Tony Hill",
+      "yards": 7988,
+      "receptions": 479,
+      "touchdowns": 51,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Ozzie Newsome",
+      "yards": 7980,
+      "receptions": 662,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Ernest Givins",
+      "yards": 7935,
+      "receptions": 542,
+      "touchdowns": 46,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Jackie Smith",
+      "yards": 7918,
+      "receptions": 480,
+      "touchdowns": 40,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "CeeDee Lamb",
+      "yards": 7914,
+      "receptions": 608,
+      "touchdowns": 45,
+      "current": true
+    },
+    {
+      "team": "WAS",
+      "name": "Santana Moss",
+      "yards": 7867,
+      "receptions": 581,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Rob Gronkowski",
+      "yards": 7861,
+      "receptions": 521,
+      "touchdowns": 79,
+      "current": false
+    },
+    {
+      "team": "NO",
+      "name": "Eric Martin",
+      "yards": 7854,
+      "receptions": 532,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Jordy Nelson",
+      "yards": 7848,
+      "receptions": 550,
+      "touchdowns": 69,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Drew Pearson",
+      "yards": 7822,
+      "receptions": 489,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Cooper Kupp",
+      "yards": 7776,
+      "receptions": 634,
+      "touchdowns": 57,
+      "current": false
+    },
+    {
+      "team": "TB",
+      "name": "Chris Godwin Jr.",
+      "yards": 7768,
+      "receptions": 628,
+      "touchdowns": 41,
+      "current": true
+    },
+    {
+      "team": "MIN",
+      "name": "Anthony Carter",
+      "yards": 7636,
+      "receptions": 478,
+      "touchdowns": 52,
+      "current": false
+    },
+    {
+      "team": "NO",
+      "name": "Joe Horn",
+      "yards": 7622,
+      "receptions": 523,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "Brian Blades",
+      "yards": 7620,
+      "receptions": 581,
+      "touchdowns": 34,
+      "current": false
+    },
+    {
+      "team": "MIA",
+      "name": "Nat Moore",
+      "yards": 7546,
+      "receptions": 510,
+      "touchdowns": 74,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Gary Garrison",
+      "yards": 7533,
+      "receptions": 404,
+      "touchdowns": 58,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Anquan Boldin",
+      "yards": 7520,
+      "receptions": 586,
+      "touchdowns": 44,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Drew Hill",
+      "yards": 7477,
+      "receptions": 480,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Dez Bryant",
+      "yards": 7459,
+      "receptions": 531,
+      "touchdowns": 73,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Wes Welker",
+      "yards": 7459,
+      "receptions": 672,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Pete Retzlaff",
+      "yards": 7412,
+      "receptions": 452,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "NYJ",
+      "name": "Wayne Chrebet",
+      "yards": 7365,
+      "receptions": 580,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "ATL",
+      "name": "Terance Mathis",
+      "yards": 7349,
+      "receptions": 573,
+      "touchdowns": 57,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Otis Taylor",
+      "yards": 7306,
+      "receptions": 410,
+      "touchdowns": 57,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Bob Hayes",
+      "yards": 7295,
+      "receptions": 365,
+      "touchdowns": 71,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Dwayne Bowe",
+      "yards": 7155,
+      "receptions": 532,
+      "touchdowns": 44,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Terry McLaurin",
+      "yards": 7102,
+      "receptions": 508,
+      "touchdowns": 42,
+      "current": true
+    },
+    {
+      "team": "CIN",
+      "name": "Isaac Curtis",
+      "yards": 7101,
+      "receptions": 416,
+      "touchdowns": 53,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Ja'Marr Chase",
+      "yards": 7049,
+      "receptions": 541,
+      "touchdowns": 57,
+      "current": true
+    },
+    {
+      "team": "ARI",
+      "name": "Pat Tilley",
+      "yards": 7005,
+      "receptions": 468,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Boyd Dowler",
+      "yards": 6918,
+      "receptions": 448,
+      "touchdowns": 40,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Ken Burrough",
+      "yards": 6906,
+      "receptions": 408,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Carl Pickens",
+      "yards": 6887,
+      "receptions": 530,
+      "touchdowns": 63,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Lionel Taylor",
+      "yards": 6872,
+      "receptions": 543,
+      "touchdowns": 44,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Charley Hennigan",
+      "yards": 6823,
+      "receptions": 410,
+      "touchdowns": 51,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Julian Edelman",
+      "yards": 6822,
+      "receptions": 620,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Adam Thielen",
+      "yards": 6751,
+      "receptions": 542,
+      "touchdowns": 55,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Dwight Clark",
+      "yards": 6750,
+      "receptions": 506,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Kellen Winslow",
+      "yards": 6741,
+      "receptions": 541,
+      "touchdowns": 45,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Cris Collinsworth",
+      "yards": 6698,
+      "receptions": 417,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Gene Washington",
+      "yards": 6664,
+      "receptions": 371,
+      "touchdowns": 59,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Antonio Freeman",
+      "yards": 6651,
+      "receptions": 431,
+      "touchdowns": 57,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Mel Gray",
+      "yards": 6644,
+      "receptions": 351,
+      "touchdowns": 45,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Tyreek Hill",
+      "yards": 6630,
+      "receptions": 479,
+      "touchdowns": 56,
+      "current": false
+    },
+    {
+      "team": "NYJ",
+      "name": "Al Toon",
+      "yards": 6605,
+      "receptions": 517,
+      "touchdowns": 31,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Frank Sanders",
+      "yards": 6579,
+      "receptions": 493,
+      "touchdowns": 24,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Heath Miller",
+      "yards": 6569,
+      "receptions": 592,
+      "touchdowns": 45,
+      "current": false
+    },
+    {
+      "team": "NO",
+      "name": "Michael Thomas",
+      "yards": 6569,
+      "receptions": 565,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "Doug Baldwin",
+      "yards": 6563,
+      "receptions": 493,
+      "touchdowns": 49,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Amon-Ra St. Brown",
+      "yards": 6555,
+      "receptions": 578,
+      "touchdowns": 49,
+      "current": true
+    },
+    {
+      "team": "KC",
+      "name": "Henry Marshall",
+      "yards": 6545,
+      "receptions": 416,
+      "touchdowns": 33,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Greg Jennings",
+      "yards": 6537,
+      "receptions": 425,
+      "touchdowns": 53,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "DeSean Jackson",
+      "yards": 6512,
+      "receptions": 379,
+      "touchdowns": 35,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Johnnie Morton",
+      "yards": 6499,
+      "receptions": 469,
+      "touchdowns": 35,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Bobby Mitchell",
+      "yards": 6492,
+      "receptions": 393,
+      "touchdowns": 49,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Dante Lavelli",
+      "yards": 6488,
+      "receptions": 386,
+      "touchdowns": 62,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Mike Quick",
+      "yards": 6464,
+      "receptions": 363,
+      "touchdowns": 61,
+      "current": false
+    },
+    {
+      "team": "CAR",
+      "name": "Greg Olsen",
+      "yards": 6463,
+      "receptions": 524,
+      "touchdowns": 39,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "Darrell Jackson",
+      "yards": 6445,
+      "receptions": 441,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Courtland Sutton",
+      "yards": 6443,
+      "receptions": 462,
+      "touchdowns": 39,
+      "current": true
+    },
+    {
+      "team": "MIN",
+      "name": "Jake Reed",
+      "yards": 6433,
+      "receptions": 413,
+      "touchdowns": 33,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Sammy White",
+      "yards": 6400,
+      "receptions": 393,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "JAX",
+      "name": "Keenan McCardell",
+      "yards": 6393,
+      "receptions": 499,
+      "touchdowns": 30,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Troy Brown",
+      "yards": 6366,
+      "receptions": 557,
+      "touchdowns": 31,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Carlos Carson",
+      "yards": 6360,
+      "receptions": 352,
+      "touchdowns": 33,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Max McGee",
+      "yards": 6346,
+      "receptions": 345,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Stephone Paige",
+      "yards": 6341,
+      "receptions": 377,
+      "touchdowns": 49,
+      "current": false
+    },
+    {
+      "team": "SEA",
+      "name": "DK Metcalf",
+      "yards": 6324,
+      "receptions": 438,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Randall Cobb",
+      "yards": 6316,
+      "receptions": 532,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Steve Jordan",
+      "yards": 6307,
+      "receptions": 498,
+      "touchdowns": 28,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Elroy Hirsch",
+      "yards": 6299,
+      "receptions": 343,
+      "touchdowns": 53,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Zach Ertz",
+      "yards": 6289,
+      "receptions": 582,
+      "touchdowns": 38,
+      "current": true
+    },
+    {
+      "team": "ATL",
+      "name": "Alfred Jenkins",
+      "yards": 6267,
+      "receptions": 360,
+      "touchdowns": 40,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Ed McCaffrey",
+      "yards": 6200,
+      "receptions": 462,
+      "touchdowns": 46,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Eddie Brown",
+      "yards": 6134,
+      "receptions": 363,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Wes Chandler",
+      "yards": 6132,
+      "receptions": 373,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Haywood Jeffires",
+      "yards": 6119,
+      "receptions": 515,
+      "touchdowns": 47,
+      "current": false
+    },
+    {
+      "team": "TEN",
+      "name": "Derrick Mason",
+      "yards": 6114,
+      "receptions": 453,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Steve Watson",
+      "yards": 6112,
+      "receptions": 353,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "BAL",
+      "name": "Mark Andrews",
+      "yards": 6101,
+      "receptions": 502,
+      "touchdowns": 57,
+      "current": true
+    },
+    {
+      "team": "IND",
+      "name": "Lenny Moore",
+      "yards": 6039,
+      "receptions": 363,
+      "touchdowns": 48,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Louis Lipps",
+      "yards": 6018,
+      "receptions": 358,
+      "touchdowns": 39,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Jack Snow",
+      "yards": 6012,
+      "receptions": 340,
+      "touchdowns": 45,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Tyler Boyd",
+      "yards": 6000,
+      "receptions": 513,
+      "touchdowns": 31,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Darnay Scott",
+      "yards": 5975,
+      "receptions": 386,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "NYJ",
+      "name": "Laveranues Coles",
+      "yards": 5941,
+      "receptions": 459,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "BUF",
+      "name": "Lee Evans",
+      "yards": 5934,
+      "receptions": 377,
+      "touchdowns": 43,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Billy Wilson",
+      "yards": 5902,
+      "receptions": 407,
+      "touchdowns": 49,
+      "current": false
+    },
+    {
+      "team": "LV",
+      "name": "Todd Christensen",
+      "yards": 5872,
+      "receptions": 461,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "Jimmy Orr",
+      "yards": 5859,
+      "receptions": 303,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Ricky Sanders",
+      "yards": 5854,
+      "receptions": 414,
+      "touchdowns": 36,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "Tee Higgins",
+      "yards": 5842,
+      "receptions": 414,
+      "touchdowns": 46,
+      "current": true
+    },
+    {
+      "team": "ARI",
+      "name": "Bobby Joe Conrad",
+      "yards": 5828,
+      "receptions": 418,
+      "touchdowns": 38,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "Bill Brooks",
+      "yards": 5818,
+      "receptions": 411,
+      "touchdowns": 28,
+      "current": false
+    },
+    {
+      "team": "CIN",
+      "name": "T.J. Houshmandzadeh",
+      "yards": 5782,
+      "receptions": 507,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "BAL",
+      "name": "Derrick Mason",
+      "yards": 5777,
+      "receptions": 471,
+      "touchdowns": 29,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Riley Odoms",
+      "yards": 5755,
+      "receptions": 396,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Irving Fryar",
+      "yards": 5726,
+      "receptions": 363,
+      "touchdowns": 38,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Vance Johnson",
+      "yards": 5695,
+      "receptions": 415,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "MIA",
+      "name": "Chris Chambers",
+      "yards": 5688,
+      "receptions": 405,
+      "touchdowns": 43,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Vernon Davis",
+      "yards": 5640,
+      "receptions": 441,
+      "touchdowns": 55,
+      "current": false
+    },
+    {
+      "team": "ATL",
+      "name": "Andre Rison",
+      "yards": 5633,
+      "receptions": 423,
+      "touchdowns": 56,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Pete Pihos",
+      "yards": 5619,
+      "receptions": 373,
+      "touchdowns": 61,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Mac Speedie",
+      "yards": 5602,
+      "receptions": 349,
+      "touchdowns": 33,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "John Taylor",
+      "yards": 5598,
+      "receptions": 347,
+      "touchdowns": 43,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Anthony Miller",
+      "yards": 5582,
+      "receptions": 374,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Billy Howton",
+      "yards": 5581,
+      "receptions": 303,
+      "touchdowns": 43,
+      "current": false
+    },
+    {
+      "team": "LAC",
+      "name": "Malcom Floyd",
+      "yards": 5550,
+      "receptions": 321,
+      "touchdowns": 34,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Ray Renfro",
+      "yards": 5508,
+      "receptions": 281,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Chris Burford",
+      "yards": 5505,
+      "receptions": 391,
+      "touchdowns": 55,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Tommy McDonald",
+      "yards": 5499,
+      "receptions": 287,
+      "touchdowns": 66,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Jerry Smith",
+      "yards": 5496,
+      "receptions": 421,
+      "touchdowns": 60,
+      "current": false
+    },
+    {
+      "team": "BAL",
+      "name": "Todd Heap",
+      "yards": 5492,
+      "receptions": 467,
+      "touchdowns": 41,
+      "current": false
+    },
+    {
+      "team": "MIN",
+      "name": "Ahmad Rashad",
+      "yards": 5489,
+      "receptions": 400,
+      "touchdowns": 34,
+      "current": false
+    },
+    {
+      "team": "NYG",
+      "name": "Odell Beckham Jr.",
+      "yards": 5476,
+      "receptions": 390,
+      "touchdowns": 44,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Ben Coates",
+      "yards": 5471,
+      "receptions": 490,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Lynn Swann",
+      "yards": 5462,
+      "receptions": 336,
+      "touchdowns": 51,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Haven Moses",
+      "yards": 5450,
+      "receptions": 302,
+      "touchdowns": 44,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Sonny Randle",
+      "yards": 5438,
+      "receptions": 328,
+      "touchdowns": 60,
+      "current": false
+    },
+    {
+      "team": "NYG",
+      "name": "Frank Gifford",
+      "yards": 5434,
+      "receptions": 367,
+      "touchdowns": 43,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "Carroll Dale",
+      "yards": 5422,
+      "receptions": 275,
+      "touchdowns": 35,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Tom Fears",
+      "yards": 5397,
+      "receptions": 400,
+      "touchdowns": 38,
+      "current": false
+    },
+    {
+      "team": "BUF",
+      "name": "Stefon Diggs",
+      "yards": 5372,
+      "receptions": 445,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "Bobby Walston",
+      "yards": 5363,
+      "receptions": 311,
+      "touchdowns": 46,
+      "current": false
+    },
+    {
+      "team": "DEN",
+      "name": "Emmanuel Sanders",
+      "yards": 5361,
+      "receptions": 404,
+      "touchdowns": 28,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Gary Collins",
+      "yards": 5299,
+      "receptions": 331,
+      "touchdowns": 70,
+      "current": false
+    },
+    {
+      "team": "BUF",
+      "name": "Elbert Dubenion",
+      "yards": 5294,
+      "receptions": 294,
+      "touchdowns": 35,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "DeVonta Smith",
+      "yards": 5254,
+      "receptions": 404,
+      "touchdowns": 32,
+      "current": true
+    },
+    {
+      "team": "IND",
+      "name": "Michael Pittman Jr.",
+      "yards": 5254,
+      "receptions": 485,
+      "touchdowns": 25,
+      "current": false
+    },
+    {
+      "team": "LA",
+      "name": "Flipper Anderson",
+      "yards": 5246,
+      "receptions": 259,
+      "touchdowns": 26,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Brett Perriman",
+      "yards": 5244,
+      "receptions": 428,
+      "touchdowns": 25,
+      "current": false
+    },
+    {
+      "team": "WAS",
+      "name": "Hugh Taylor",
+      "yards": 5233,
+      "receptions": 272,
+      "touchdowns": 58,
+      "current": false
+    },
+    {
+      "team": "KC",
+      "name": "Eddie Kennison",
+      "yards": 5230,
+      "receptions": 321,
+      "touchdowns": 25,
+      "current": false
+    },
+    {
+      "team": "DET",
+      "name": "Gail Cogdill",
+      "yards": 5221,
+      "receptions": 325,
+      "touchdowns": 28,
+      "current": false
+    },
+    {
+      "team": "DAL",
+      "name": "Frank Clarke",
+      "yards": 5214,
+      "receptions": 281,
+      "touchdowns": 50,
+      "current": false
+    },
+    {
+      "team": "CLE",
+      "name": "Paul Warfield",
+      "yards": 5210,
+      "receptions": 271,
+      "touchdowns": 52,
+      "current": false
+    },
+    {
+      "team": "CAR",
+      "name": "DJ Moore",
+      "yards": 5201,
+      "receptions": 364,
+      "touchdowns": 21,
+      "current": false
+    },
+    {
+      "team": "SF",
+      "name": "Brent Jones",
+      "yards": 5195,
+      "receptions": 417,
+      "touchdowns": 33,
+      "current": false
+    },
+    {
+      "team": "GB",
+      "name": "James Jones",
+      "yards": 5195,
+      "receptions": 360,
+      "touchdowns": 45,
+      "current": false
+    },
+    {
+      "team": "NYG",
+      "name": "Tiki Barber",
+      "yards": 5183,
+      "receptions": 586,
+      "touchdowns": 12,
+      "current": false
+    },
+    {
+      "team": "PIT",
+      "name": "Elbie Nickel",
+      "yards": 5131,
+      "receptions": 329,
+      "touchdowns": 37,
+      "current": false
+    },
+    {
+      "team": "IND",
+      "name": "John Mackey",
+      "yards": 5126,
+      "receptions": 320,
+      "touchdowns": 38,
+      "current": false
+    },
+    {
+      "team": "ARI",
+      "name": "Rob Moore",
+      "yards": 5110,
+      "receptions": 322,
+      "touchdowns": 27,
+      "current": false
+    },
+    {
+      "team": "MIA",
+      "name": "O.J. McDuffie",
+      "yards": 5074,
+      "receptions": 415,
+      "touchdowns": 29,
+      "current": false
+    },
+    {
+      "team": "CHI",
+      "name": "Johnny Morris",
+      "yards": 5059,
+      "receptions": 356,
+      "touchdowns": 31,
+      "current": false
+    },
+    {
+      "team": "MIA",
+      "name": "Jaylen Waddle",
+      "yards": 5039,
+      "receptions": 373,
+      "touchdowns": 26,
+      "current": false
+    },
+    {
+      "team": "PHI",
+      "name": "A.J. Brown",
+      "yards": 5034,
+      "receptions": 339,
+      "touchdowns": 32,
+      "current": false
+    },
+    {
+      "team": "TB",
+      "name": "Mark Carrier",
+      "yards": 5018,
+      "receptions": 321,
+      "touchdowns": 27,
+      "current": false
+    },
+    {
+      "team": "NE",
+      "name": "Jim Colclough",
+      "yards": 5001,
+      "receptions": 283,
+      "touchdowns": 39,
+      "current": false
+    }
+  ]
+}
