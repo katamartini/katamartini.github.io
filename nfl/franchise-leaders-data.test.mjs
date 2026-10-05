@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TEAMS } from './divstreaks-data.mjs';
-import { buildLeaders, currentRoster, normalizeName, normalizeTeam, parseCsv, parseReceivingTable } from './franchise-leaders-data.mjs';
+import { buildLeaders, currentRoster, franchiseHighs, normalizeName, normalizeTeam, parseCsv, parseReceivingTable } from './franchise-leaders-data.mjs';
 
 function table(rows, headers = ['', '', 'NAME', 'REC YDS', 'GP', 'REC', 'REC TD']) {
   return `<table><thead><tr>${headers.map(label => `<th>${label}</th>`).join('')}</tr></thead><tbody>${rows.map(([name, yards, rec = 400, td = 30], i) =>
@@ -9,6 +9,18 @@ function table(rows, headers = ['', '', 'NAME', 'REC YDS', 'GP', 'REC', 'REC TD'
     <tr>${headers.map(() => '<td><!-- placeholder --></td>').join('')}</tr></tbody></table>`;
 }
 const record = (team, name, yards) => ({ team, name, yards, receptions: 400, touchdowns: 30 });
+
+test('franchise leaders follow yardage, independent of sort order, with tied leaders sharing first place', () => {
+  const rows = [record('MIN', 'Justin Jefferson', 8659), record('SF', 'Jerry Rice', 19247),
+    record('MIN', 'Cris Carter', 12383), record('SF', 'Terrell Owens', 8572),
+    record('MIN', 'Tied Leader', 12383)];
+  const highs = franchiseHighs(rows);
+  assert.equal(highs.get('MIN'), 12383);
+  assert.equal(highs.get('SF'), 19247);
+  assert.deepEqual(rows.filter(row => row.yards === highs.get(row.team)).map(row => row.name),
+    ['Jerry Rice', 'Cris Carter', 'Tied Leader']);
+  assert.deepEqual([...franchiseHighs([...rows].reverse())].sort(), [...highs].sort());
+});
 
 test('receiving parser includes exactly 5,000 and ignores empty placeholders and abbreviated names', () => {
   const parsed = parseReceivingTable(table([['Jerry Rice', 19247], ['Test &amp; Receiver', 5000], ['Below Threshold', 4999]]), 'SF');

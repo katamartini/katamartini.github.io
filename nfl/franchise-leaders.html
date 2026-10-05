@@ -38,6 +38,7 @@
     tbody tr.current:hover { background: #d2e9d7; }
     .roster-label { display: block; color: #267a45; font-size: 0.7rem; font-weight: normal; margin-top: 2px; }
     .franchise { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .trophy { font-size: 1rem; line-height: 1; flex-shrink: 0; }
     .team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
     button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; cursor: pointer; text-align: inherit; }
     button:hover { text-decoration: underline; }
@@ -65,7 +66,7 @@
       <label for="franchise-filter">Franchise <select id="franchise-filter"><option value="all">All franchises</option></select></label>
       <label for="player-search">Player <input id="player-search" type="search" placeholder="Search players" autocomplete="off"></label>
     </div>
-    <p class="hint"><span class="legend" aria-hidden="true"></span>Green rows: currently on that franchise’s roster. Click a column to sort. <span id="row-count"></span></p>
+    <p class="hint"><span class="legend" aria-hidden="true"></span>Green rows: currently on that franchise’s roster. 🏆 = franchise receiving-yards leader. Click a column to sort. <span id="row-count"></span></p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="Franchise receiving leaders; scroll horizontally for more columns">
       <table>
         <caption>All-time franchise receiving leaders with at least 5,000 regular-season yards</caption>
@@ -83,7 +84,7 @@
   </main>
   <script type="module">
     import { TEAMS } from './divstreaks-data.mjs';
-    import { MIN_YARDS, normalizeName } from './franchise-leaders-data.mjs';
+    import { MIN_YARDS, normalizeName, franchiseHighs } from './franchise-leaders-data.mjs';
     const status = document.getElementById('status');
     const filter = document.getElementById('franchise-filter');
     const search = document.getElementById('player-search');
@@ -102,7 +103,7 @@
     ];
     const headers = new Map();
     const logoCodes = { LA: 'lar', WAS: 'wsh' };
-    let data, sortKey = 'yards', descending = true;
+    let data, franchiseLeaders, sortKey = 'yards', descending = true;
     function element(tag, className, text) {
       const node = document.createElement(tag);
       if (className) node.className = className;
@@ -135,6 +136,13 @@
         tr.append(player);
         const team = element('td');
         const identity = element('div', 'franchise');
+        if (row.yards === franchiseLeaders.get(row.team)) {
+          const trophy = element('span', 'trophy', '🏆');
+          trophy.setAttribute('role', 'img');
+          trophy.setAttribute('aria-label', 'Franchise receiving-yards leader');
+          trophy.title = 'Franchise #1 in receiving yards';
+          identity.append(trophy);
+        }
         const logo = element('img', 'team-logo');
         logo.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[row.team] || row.team.toLowerCase()}.png`;
         logo.alt = ''; logo.width = 26; logo.height = 26; logo.loading = 'lazy'; logo.decoding = 'async';
@@ -168,7 +176,7 @@
           saved.leaders.some(row => !TEAMS[row.team] || typeof row.name !== 'string' || typeof row.current !== 'boolean' ||
             !Number.isSafeInteger(row.yards) || row.yards < MIN_YARDS || !Number.isSafeInteger(row.receptions) || row.receptions < 1 ||
             !Number.isSafeInteger(row.touchdowns) || row.touchdowns < 0)) throw new Error('Incomplete records');
-      data = saved; render();
+      data = saved; franchiseLeaders = franchiseHighs(data.leaders); render();
       const date = new Date(data.checkedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
       status.textContent = `Records updated ${date} · Rosters: ${data.season}${data.rosterWeek ? ` Week ${data.rosterWeek}` : ' preseason'}`;
     } catch { status.textContent = 'Records could not be loaded. Please refresh to try again.'; }

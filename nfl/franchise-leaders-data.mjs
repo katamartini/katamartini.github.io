@@ -4,6 +4,12 @@ export const MIN_YARDS = 5000;
 export const normalizeTeam = team => ({ OAK: 'LV', SD: 'LAC', STL: 'LA', LAR: 'LA', WSH: 'WAS' })[team] || team;
 export const normalizeName = name => name.toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b/g, '').replace(/[^a-z]/g, '');
 
+export function franchiseHighs(records) {
+  const highs = new Map();
+  for (const row of records) highs.set(row.team, Math.max(highs.get(row.team) ?? 0, row.yards));
+  return highs;
+}
+
 export function parseCsv(csv) {
   const values = [];
   let row = [], field = '', quoted = false;
