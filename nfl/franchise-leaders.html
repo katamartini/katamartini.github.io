@@ -37,9 +37,10 @@
     tbody tr:hover { background: #edf0e8; }
     tbody tr.current:hover { background: #d2e9d7; }
     .roster-label { display: block; color: #267a45; font-size: 0.7rem; font-weight: normal; margin-top: 2px; }
-    .franchise { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .trophy { font-size: 1rem; line-height: 1; flex-shrink: 0; }
-    .team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
+    .franchise { display: grid; grid-template-columns: 20px 26px auto; align-items: center; justify-content: start; gap: 8px; white-space: nowrap; }
+    .trophy { grid-column: 1; font-size: 1rem; line-height: 1; }
+    .team-logo { grid-column: 2; width: 26px; height: 26px; object-fit: contain; }
+    .franchise-name { grid-column: 3; }
     button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; cursor: pointer; text-align: inherit; }
     button:hover { text-decoration: underline; }
     .sort-arrow { white-space: pre; }
@@ -147,7 +148,7 @@
         logo.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[row.team] || row.team.toLowerCase()}.png`;
         logo.alt = ''; logo.width = 26; logo.height = 26; logo.loading = 'lazy'; logo.decoding = 'async';
         logo.addEventListener('error', () => logo.remove(), { once: true });
-        identity.append(logo, element('span', '', TEAMS[row.team].name)); team.append(identity); tr.append(team);
+        identity.append(logo, element('span', 'franchise-name', TEAMS[row.team].name)); team.append(identity); tr.append(team);
         for (const key of ['yards', 'receptions', 'touchdowns']) tr.append(element('td', 'number', row[key].toLocaleString('en-US')));
         fragment.append(tr);
       }
