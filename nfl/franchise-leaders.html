@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Players with at least 5,000 receiving yards for one NFL franchise. Sort all-time records and see who is still on the team.">
+  <meta name="description" content="NFL franchise receiving, passing, rushing, and sack leaders. Sort all-time records and see who is still on the team.">
   <meta name="theme-color" content="#f4f5f1">
   <link rel="canonical" href="https://kmartini.com/nfl/franchise-leaders.html">
   <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
@@ -18,6 +18,9 @@
     h1 { margin: 36px 0 8px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
     .intro { max-width: 760px; margin: 0; color: #565c54; font-size: 1.03rem; }
     h2 { margin: 28px 0 8px; font-size: 1.2rem; }
+    .views { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+    .views a { padding: 6px 10px; border: 1px solid #c8cdc5; border-radius: 4px; font-size: 0.88rem; text-decoration: none; }
+    .views a[aria-current="page"] { color: #fff; background: #36534a; border-color: #36534a; }
     .meta, .hint, .method { color: #61665e; font-size: 0.84rem; }
     .meta { margin: 0 0 22px; }
     .toolbar { display: flex; gap: 16px; flex-wrap: wrap; margin: 0 0 12px; }
@@ -60,17 +63,20 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Franchise leaders</h1>
-    <p class="intro">Players with at least 5,000 receiving yards for a single franchise. A player can appear once for each franchise where they qualify.</p>
-    <h2>Receiving yards</h2>
+    <p id="intro" class="intro">Players with at least 5,000 yards or 50 sacks for a single franchise. A player can appear once for each franchise where they qualify.</p>
+    <nav class="views" aria-label="Stat views">
+      <a href="#receiving">Receiving</a><a href="#passing">Passing</a><a href="#rushing">Rushing</a><a href="#sacks">Sacks</a>
+    </nav>
+    <h2 id="view-heading">Receiving yards</h2>
     <p id="status" class="meta" role="status">Loading records…</p>
     <div class="toolbar">
       <label for="franchise-filter">Franchise <select id="franchise-filter"><option value="all">All franchises</option></select></label>
       <label for="player-search">Player <input id="player-search" type="search" placeholder="Search players" autocomplete="off"></label>
     </div>
-    <p class="hint"><span class="legend" aria-hidden="true"></span>Green rows: currently on that franchise’s roster. 🏆 = franchise receiving-yards leader. Click a column to sort. <span id="row-count"></span></p>
+    <p class="hint"><span class="legend" aria-hidden="true"></span>Green rows: currently on that franchise’s roster. <span id="trophy-legend">🏆 = franchise leader in this stat.</span> Click a column to sort. <span id="row-count"></span></p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="Franchise receiving leaders; scroll horizontally for more columns">
       <table>
-        <caption>All-time franchise receiving leaders with at least 5,000 regular-season yards</caption>
+        <caption id="table-caption">All-time franchise leaders</caption>
         <thead><tr id="table-head"></tr></thead>
         <tbody id="table-body"></tbody>
       </table>
@@ -78,14 +84,15 @@
     <p id="empty" hidden>No players match these filters.</p>
     <noscript><p>Enable JavaScript to display the franchise records.</p></noscript>
     <div class="method">
-      <p>Regular-season stats only; all positions are eligible. Rank is the overall receiving-yardage rank, even when filtering or sorting. Franchise relocations and name changes are combined, including the Oilers/Titans, Baltimore/Indianapolis Colts, and all Rams, Raiders, and Chargers locations. The Browns’ AAFC receiving records are included. The Ravens have their own history.</p>
+      <p>Regular-season stats only; all positions are eligible. Rank is the overall rank in the selected stat, even when filtering or sorting. Franchise relocations and name changes are combined, including the Oilers/Titans, Baltimore/Indianapolis Colts, and all Rams, Raiders, and Chargers locations. The Ravens have their own history.</p>
+      <p id="coverage-note"></p>
       <p>Current roster membership includes inactive players, injured/reserve lists, and practice squads. Players who have left the franchise are not highlighted, even if they are still playing elsewhere. Roster status comes from the latest available nflverse weekly snapshot.</p>
-      <p>Records are checked every Tuesday, with a Wednesday retry. Receiving totals and rosters may refresh at different times. Sources: <a id="stats-source" href="https://www.statmuse.com/nfl">StatMuse franchise receiving leaders</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse rosters</a>, and <a href="https://www.pro-football-reference.com/teams/cle/career-receiving.htm">historical Browns records</a>.</p>
+      <p>All four views are checked every Tuesday, with a Wednesday retry. Stats and rosters may refresh at different times. Sources: <a id="stats-source" href="https://www.statmuse.com/nfl">StatMuse franchise leaders</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse rosters</a>, <a href="https://www.pro-football-reference.com/teams/cle/career-receiving.htm">historical Browns receiving records</a>, <a href="https://www.profootballhof.com/players/otto-graham">Otto Graham</a>, <a href="https://www.profootballhof.com/players/joe-perry">Joe Perry</a>, and <a href="https://profootballresearchers.com/archives/Website_Files/Coffin_Corner/07-05-236.pdf">Frankie Albert</a>.</p>
     </div>
   </main>
   <script type="module">
     import { TEAMS } from './divstreaks-data.mjs';
-    import { MIN_YARDS, normalizeName, franchiseHighs } from './franchise-leaders-data.mjs';
+    import { VIEWS, normalizeName, franchiseHighs, validRecord, viewFromHash } from './franchise-leaders-data.mjs';
     const status = document.getElementById('status');
     const filter = document.getElementById('franchise-filter');
     const search = document.getElementById('player-search');
@@ -94,17 +101,14 @@
     const count = document.getElementById('row-count');
     const empty = document.getElementById('empty');
     const source = document.getElementById('stats-source');
-    const columns = [
+    const commonColumns = [
       { key: 'rank', label: 'Rank', number: true },
       { key: 'name', label: 'Player' },
       { key: 'team', label: 'Franchise' },
-      { key: 'yards', label: 'Receiving yards', number: true },
-      { key: 'receptions', label: 'Receptions', number: true },
-      { key: 'touchdowns', label: 'Receiving TDs', number: true },
     ];
     const headers = new Map();
     const logoCodes = { LA: 'lar', WAS: 'wsh' };
-    let data, franchiseLeaders, sortKey = 'yards', descending = true;
+    let data, view = viewFromHash(location.hash), sortKey = VIEWS[view].metric, descending = true;
     function element(tag, className, text) {
       const node = document.createElement(tag);
       if (className) node.className = className;
@@ -117,8 +121,11 @@
     }
     function render() {
       if (!data) return;
+      const config = VIEWS[view];
+      const selected = data.views[view];
+      const franchiseLeaders = franchiseHighs(selected.leaders, config.metric);
       const query = normalizeName(search.value);
-      const rows = data.leaders.map((row, i) => ({ ...row, rank: i + 1 }))
+      const rows = selected.leaders.map((row, i) => ({ ...row, rank: i + 1 }))
         .filter(row => (filter.value === 'all' || row.team === filter.value) && normalizeName(row.name).includes(query));
       rows.sort((a, b) => {
         const value = sortKey === 'name' ? a.name.localeCompare(b.name) : sortKey === 'team' ? TEAMS[a.team].name.localeCompare(TEAMS[b.team].name) : a[sortKey] - b[sortKey];
@@ -137,11 +144,11 @@
         tr.append(player);
         const team = element('td');
         const identity = element('div', 'franchise');
-        if (row.yards === franchiseLeaders.get(row.team)) {
+        if (row[config.metric] === franchiseLeaders.get(row.team)) {
           const trophy = element('span', 'trophy', '🏆');
           trophy.setAttribute('role', 'img');
-          trophy.setAttribute('aria-label', 'Franchise receiving-yards leader');
-          trophy.title = 'Franchise #1 in receiving yards';
+          trophy.setAttribute('aria-label', `Franchise ${config.label.toLowerCase()} leader`);
+          trophy.title = `Franchise #1 in ${config.label.toLowerCase()}`;
           identity.append(trophy);
         }
         const logo = element('img', 'team-logo');
@@ -149,35 +156,63 @@
         logo.alt = ''; logo.width = 26; logo.height = 26; logo.loading = 'lazy'; logo.decoding = 'async';
         logo.addEventListener('error', () => logo.remove(), { once: true });
         identity.append(logo, element('span', 'franchise-name', TEAMS[row.team].name)); team.append(identity); tr.append(team);
-        for (const key of ['yards', 'receptions', 'touchdowns']) tr.append(element('td', 'number', row[key].toLocaleString('en-US')));
+        for (const { key } of config.stats) tr.append(element('td', 'number', row[key].toLocaleString('en-US')));
         fragment.append(tr);
       }
       body.replaceChildren(fragment);
       count.textContent = `${rows.length} player–franchise pairs.`;
       empty.hidden = rows.length !== 0;
-      source.href = data.sources.find(item => item.team === filter.value)?.url || 'https://www.statmuse.com/nfl';
+      source.href = selected.sources.find(item => item.team === filter.value)?.url || 'https://www.statmuse.com/nfl';
+      source.textContent = `StatMuse franchise ${config.label.toLowerCase()} leaders`;
     }
-    for (const column of columns) {
-      const th = element('th', column.number ? 'number' : ''); th.scope = 'col';
-      const button = element('button', '', column.label); button.type = 'button';
-      const arrow = element('span', 'sort-arrow'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow);
-      button.addEventListener('click', () => {
-        descending = sortKey === column.key ? !descending : column.number && column.key !== 'rank';
-        sortKey = column.key; render();
-      });
-      th.append(button); head.append(th); headers.set(column.key, { th, arrow });
+    function selectView() {
+      view = viewFromHash(location.hash);
+      const config = VIEWS[view];
+      sortKey = config.metric; descending = true;
+      const minimum = `${config.minimum.toLocaleString('en-US')} ${config.metric === 'sacks' ? 'sacks' : config.label.toLowerCase()}`;
+      document.getElementById('intro').textContent = `Players with at least ${minimum} for a single franchise. A player can appear once for each franchise where they qualify.`;
+      document.getElementById('view-heading').textContent = config.label;
+      document.getElementById('table-caption').textContent = `All-time franchise ${config.label.toLowerCase()} leaders with at least ${minimum} (regular season)`;
+      document.getElementById('trophy-legend').textContent = `🏆 = franchise ${config.label.toLowerCase()} leader.`;
+      document.querySelector('.table-wrap').setAttribute('aria-label', `Franchise ${config.label.toLowerCase()} leaders; scroll horizontally for more columns`);
+      for (const link of document.querySelectorAll('.views a')) {
+        if (link.hash === `#${view}`) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      }
+      document.getElementById('coverage-note').textContent = {
+        receiving: 'The Browns’ AAFC receiving records are included.',
+        passing: 'AAFC passing yards, touchdowns, and interceptions are included for Otto Graham and Frankie Albert.',
+        rushing: 'Joe Perry’s 49ers totals include his AAFC seasons.',
+        sacks: 'Official player sacks from 1982 onward only; pre-1982 unofficial totals are not included. Fractional sacks are preserved, including half sacks and rare historical third-sack credits. Games include each player’s games with the franchise during the official sack era.',
+      }[view];
+      head.replaceChildren(); headers.clear();
+      const columns = [...commonColumns, ...config.stats.map(stat => ({ ...stat, number: true }))];
+      for (const column of columns) {
+        const th = element('th', column.number ? 'number' : ''); th.scope = 'col';
+        const button = element('button', '', column.label); button.type = 'button';
+        const arrow = element('span', 'sort-arrow'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow);
+        button.addEventListener('click', () => {
+          descending = sortKey === column.key ? !descending : column.number && column.key !== 'rank';
+          sortKey = column.key; render();
+        });
+        th.append(button); head.append(th); headers.set(column.key, { th, arrow });
+      }
+      render();
     }
+    window.addEventListener('hashchange', selectView);
+    selectView();
     filter.addEventListener('change', render); search.addEventListener('input', render);
     try {
       const response = await fetch('../data/franchise-leaders.json');
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
-      if (saved.schemaVersion !== 1 || !Array.isArray(saved.leaders) || !saved.leaders.length || !Array.isArray(saved.sources) ||
-          new Set(saved.leaders.map(row => `${row.team}:${normalizeName(row.name)}`)).size !== saved.leaders.length ||
-          saved.leaders.some(row => !TEAMS[row.team] || typeof row.name !== 'string' || typeof row.current !== 'boolean' ||
-            !Number.isSafeInteger(row.yards) || row.yards < MIN_YARDS || !Number.isSafeInteger(row.receptions) || row.receptions < 1 ||
-            !Number.isSafeInteger(row.touchdowns) || row.touchdowns < 0)) throw new Error('Incomplete records');
-      data = saved; franchiseLeaders = franchiseHighs(data.leaders); render();
+      if (saved.schemaVersion !== 2 || Object.keys(VIEWS).some(key => {
+        const selected = saved.views?.[key];
+        return !selected || !Array.isArray(selected.leaders) || !selected.leaders.length || !Array.isArray(selected.sources) ||
+          new Set(selected.leaders.map(row => `${row.team}:${normalizeName(row.name)}`)).size !== selected.leaders.length ||
+          selected.leaders.some(row => !validRecord(row, key) || typeof row.current !== 'boolean');
+      })) throw new Error('Incomplete records');
+      data = saved; render();
       const date = new Date(data.checkedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
       status.textContent = `Records updated ${date} · Rosters: ${data.season}${data.rosterWeek ? ` Week ${data.rosterWeek}` : ' preseason'}`;
     } catch { status.textContent = 'Records could not be loaded. Please refresh to try again.'; }

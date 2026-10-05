@@ -19,7 +19,7 @@ jobs:
   update:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,7 +27,7 @@ jobs:
           node-version: "22"
       - name: Check franchise leader calculations
         run: node --test nfl/franchise-leaders-data.test.mjs
-      - name: Refresh receiving totals and current rosters
+      - name: Refresh receiving, passing, rushing, sacks, and current rosters
         run: node scripts/update-franchise-leaders.mjs
       - name: Commit data and request a Pages build
         env:
@@ -37,7 +37,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/franchise-leaders.json
-            git commit -m "Update NFL franchise receiving leaders"
+            git commit -m "Update NFL franchise leaders"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
