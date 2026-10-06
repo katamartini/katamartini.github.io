@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-10-06T05:06:57.908327+00:00",
+  "data_updated_at": "2026-10-06T11:12:37.133324+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -5907,6 +5907,90 @@
         },
         {
           "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1935,
+      "score": 4,
+      "hard_mode": false,
+      "grid_pattern": "YXXXX\nXYXYY\nYGYXG\nGGGGG",
+      "posted_at": "2026-10-06T10:32:35.210000+00:00",
+      "tracked_at": "2026-10-06T10:32:35.291299+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "YXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYXYY"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YGYXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "d0f706b6011ce0a9",
+      "player_name": "Vruet",
+      "puzzle_number": 1935,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XYXXX\nYXXYG\nGGXGG\nGGGGG",
+      "posted_at": "2026-10-06T10:43:37.088000+00:00",
+      "tracked_at": "2026-10-06T10:43:37.143448+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YXXYG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "GGXGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1935,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XXXXX\nXXYYX\nYGYXG\nGGGGG",
+      "posted_at": "2026-10-06T11:12:37.003000+00:00",
+      "tracked_at": "2026-10-06T11:12:37.133324+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XXYYX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YGYXG"
+        },
+        {
+          "row_number": 4,
           "pattern": "GGGGG"
         }
       ]
