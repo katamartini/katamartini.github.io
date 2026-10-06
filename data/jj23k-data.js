@@ -2,8 +2,8 @@
 window.JJ23K_DATA = {
   "schemaVersion": 3,
   "season": 2026,
-  "throughWeek": 3,
-  "sourceHash": "2ea0f0b2dcd0aadc86d04d1027263a06ee7ffb4cab2e9a06446892a2653f784a",
+  "throughWeek": 4,
+  "sourceHash": "29710866e45b6660b50df455a84f327de845c7f9d817f588fa7742cff7db1996",
   "careerYards": [
     0,
     26,
@@ -287,16 +287,26 @@ window.JJ23K_DATA = {
     ],
     [
       19,
-      "Travis Kelce",
-      13233,
-      1094,
-      12.1,
-      84,
-      231,
-      4
+      "Mike Evans",
+      13265,
+      883,
+      15,
+      110,
+      213,
+      2
     ],
     [
       20,
+      "Travis Kelce",
+      13248,
+      1096,
+      12.1,
+      84,
+      246,
+      3
+    ],
+    [
+      21,
       "Andre Reed",
       13198,
       951,
@@ -304,16 +314,6 @@ window.JJ23K_DATA = {
       87,
       null,
       null
-    ],
-    [
-      21,
-      "Mike Evans",
-      13189,
-      878,
-      15,
-      110,
-      137,
-      0
     ],
     [
       22,
@@ -338,11 +338,11 @@ window.JJ23K_DATA = {
     [
       24,
       "Davante Adams",
-      12991,
-      1035,
-      12.6,
+      13023,
+      1039,
+      12.5,
       119,
-      358,
+      390,
       2
     ],
     [
@@ -468,11 +468,11 @@ window.JJ23K_DATA = {
     [
       37,
       "Stefon Diggs",
-      11639,
-      955,
+      11674,
+      960,
       12.2,
       77,
-      135,
+      170,
       1
     ],
     [
@@ -722,8 +722,8 @@ window.JJ23K_DATA = {
       734,
       13.4,
       60,
-      null,
-      null
+      0,
+      0
     ],
     [
       63,
@@ -1017,6 +1017,16 @@ window.JJ23K_DATA = {
     ],
     [
       92,
+      "Zach Ertz",
+      8614,
+      828,
+      10.4,
+      57,
+      22,
+      0
+    ],
+    [
+      93,
       "Laveranues Coles",
       8609,
       674,
@@ -1024,16 +1034,6 @@ window.JJ23K_DATA = {
       49,
       null,
       null
-    ],
-    [
-      93,
-      "Zach Ertz",
-      8601,
-      826,
-      10.4,
-      57,
-      9,
-      -1
     ],
     [
       94,
@@ -1088,11 +1088,11 @@ window.JJ23K_DATA = {
     [
       99,
       "Cooper Kupp",
-      8470,
-      689,
+      8483,
+      690,
       12.3,
       60,
-      101,
+      114,
       2
     ],
     [
