@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-07T14:04:38.219Z",
+  "checkedAt": "2026-10-07T15:11:16.186Z",
   "firstSeason": 1999,
   "season": 2026,
   "through": "2026-10-05",
   "latestWeek": 4,
   "rosterWeek": 5,
-  "sourceHash": "c6f100413419d69e4fe956c3ac418c0a88624eb06795d450f8721179a74c5f4f",
+  "sourceHash": "375577190bda46d12603f087a62053602377685337aad5aa801f49102d2ce221",
   "sources": [
     {
       "season": 1999,
@@ -327,6 +327,37 @@
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
+      },
+      {
+        "id": "archive:gary-anderson-1997-98",
+        "playerId": null,
+        "name": "Gary Anderson",
+        "teams": [
+          "SF",
+          "MIN"
+        ],
+        "length": 40,
+        "fieldGoals": 40,
+        "extraPoints": 0,
+        "period": "1997–1998",
+        "source": "https://operations.nfl.com/media/4414/2020-nfl-record-and-fact-book-1.pdf",
+        "archive": true,
+        "segment": false,
+        "start": {
+          "date": null
+        },
+        "last": {
+          "date": "1998-12-26"
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "note": "NFL Record & Fact Book, regular-season scoring records (printed page 541). The final make is verified by the Vikings’ 1998 season-finale recap.",
+        "additionalSources": [
+          "https://www.vikings.com/news/throwin-it-back-to-98-vikings-have-record-day-in-music-city"
+        ]
       },
       {
         "id": "fg:00-0031492:2019_10_SEA_SF:4080",
@@ -802,6 +833,33 @@
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
+      },
+      {
+        "id": "archive:fuad-reveiz-1994-95",
+        "playerId": null,
+        "name": "Fuad Reveiz",
+        "teams": [
+          "MIN"
+        ],
+        "length": 31,
+        "fieldGoals": 31,
+        "extraPoints": 0,
+        "period": "1994–1995",
+        "source": "https://www.vikings.com/news/will-reichard-5-field-goals-creative-kickoffs-help-drop-dolphins",
+        "archive": true,
+        "segment": false,
+        "start": {
+          "date": "1994-10-10"
+        },
+        "last": {
+          "date": "1995-09-17"
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "note": "The Vikings identify this 31-attempt run and its first and last made-field-goal dates."
       },
       {
         "id": "fg:00-0019676:2005_01_ARI_NYG:1019",
@@ -1442,6 +1500,33 @@
         "gapAfter": null
       },
       {
+        "id": "archive:john-carney-1992-93",
+        "playerId": null,
+        "name": "John Carney",
+        "teams": [
+          "LAC"
+        ],
+        "length": 29,
+        "fieldGoals": 29,
+        "extraPoints": 0,
+        "period": "1992–1993",
+        "source": "https://www.chargers.com/news/bolts-to-induct-john-carney-and-anthony-miller-into-chargers-hall-of-fame-2026",
+        "archive": true,
+        "segment": false,
+        "start": {
+          "date": null
+        },
+        "last": {
+          "date": null
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "note": "Chargers Hall of Fame announcement confirms 29 straight in 1992–93. Exact first/last make and subsequent miss dates are not entered without verification."
+      },
+      {
         "id": "fg:00-0016830:1999_08_DAL_IND:712",
         "playerId": "00-0016830",
         "name": "Mike Vanderjagt",
@@ -1918,6 +2003,33 @@
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
+      },
+      {
+        "id": "archive:chris-boniol-1996",
+        "playerId": null,
+        "name": "Chris Boniol",
+        "teams": [
+          "DAL"
+        ],
+        "length": 27,
+        "fieldGoals": 27,
+        "extraPoints": 0,
+        "period": "1996",
+        "source": "https://www.dallascowboys.com/news/mick-shots-kicking-the-ball-around-full-circle",
+        "archive": true,
+        "segment": false,
+        "start": {
+          "date": null
+        },
+        "last": {
+          "date": null
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "note": "Cowboys franchise-history article identifies 27 consecutive made field goals in 1996. Exact attempt dates are not verified."
       },
       {
         "id": "fg:00-0023252:2005_16_CHI_GB:2354",
@@ -4230,6 +4342,33 @@
         "gapAfter": null
       },
       {
+        "id": "archive:john-carney-1994",
+        "playerId": null,
+        "name": "John Carney",
+        "teams": [
+          "LAC"
+        ],
+        "length": 21,
+        "fieldGoals": 21,
+        "extraPoints": 0,
+        "period": "1994",
+        "source": "https://library.sfo2.cdn.digitaloceanspaces.com/publications/football/yearbooks/FSDCHMG-1996-los-angeles-chargers-media-guide.pdf#page=199",
+        "archive": true,
+        "segment": false,
+        "start": {
+          "date": null
+        },
+        "last": {
+          "date": null
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "note": "1996 Chargers Media Guide, Individual Records, printed page 196: 21 consecutive field goals in 1994. This is separate from his 1992–93 run."
+      },
+      {
         "id": "fg:00-0004091:2004_17_CLE_HOU:263",
         "playerId": "00-0004091",
         "name": "Phil Dawson",
@@ -5135,6 +5274,33 @@
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
+      },
+      {
+        "id": "archive:gary-anderson-1998-segment",
+        "playerId": null,
+        "name": "Gary Anderson",
+        "teams": [
+          "MIN"
+        ],
+        "length": 94,
+        "fieldGoals": 35,
+        "extraPoints": 59,
+        "period": "1998 season",
+        "source": "https://www.vikings.com/news/throwin-it-back-to-98-vikings-have-record-day-in-music-city",
+        "archive": true,
+        "segment": true,
+        "start": {
+          "date": null
+        },
+        "last": {
+          "date": "1998-12-26"
+        },
+        "endedBy": null,
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": true,
+        "gapAfter": null,
+        "note": "All 35 field goals and 59 extra points were made during the 1998 regular season: at least 94 consecutive kicks. This is a verified season-long segment, not the reconstructed full multi-season run. Playoff kicks are excluded."
       },
       {
         "id": "all:00-0016919:2013_16_IND_KC:1191",

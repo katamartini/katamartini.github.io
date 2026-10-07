@@ -5,6 +5,7 @@ import { createGunzip } from 'node:zlib';
 import { parseCsv, currentRoster, normalizeName, normalizeTeam } from '../nfl/franchise-leaders-data.mjs';
 import { FIRST_SEASON, KICK_COLUMNS, readProjectedCsv, kickFromPlay, calculateKickingStreaks } from '../nfl/kicking-data.mjs';
 import { historicalKicks } from '../nfl/kicking-history.mjs';
+import { mergeHistoricalStreaks } from '../nfl/kicking-archive.mjs';
 
 const now = new Date();
 const season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
@@ -64,7 +65,7 @@ const coveredGames = new Set([...attempts, ...history.gaps].map(kick => kick.gam
 const missingGames = schedule.filter(game => Number(game.season) >= FIRST_SEASON && Number(game.season) <= season &&
   game.game_type === 'REG' && game.gameday <= latestDate && game.home_score !== '' && game.away_score !== '' && !coveredGames.has(game.game_id));
 if (missingGames.length) throw new Error(`Uncovered games; retaining saved data: ${missingGames.map(game => game.game_id).join(', ')}`);
-const views = calculateKickingStreaks(attempts, players, currentIds, history.gaps);
+const views = mergeHistoricalStreaks(calculateKickingStreaks(attempts, players, currentIds, history.gaps));
 const sourceHash = createHash('sha256').update(JSON.stringify({ season, rosterWeek: roster.week, through: latestDate, historicalSources: history.sources, gaps: history.gaps, views })).digest('hex');
 let saved = null;
 try { saved = JSON.parse(await readFile(destination, 'utf8')); }

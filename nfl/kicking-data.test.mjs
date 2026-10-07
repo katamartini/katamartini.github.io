@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { calculateKickingStreaks, kickingView, kickFromPlay, readProjectedCsv } from './kicking-data.mjs';
 import { HISTORICAL_GAMES, historicalKicks } from './kicking-history.mjs';
+import { HISTORICAL_STREAKS, mergeHistoricalStreaks } from './kicking-archive.mjs';
 
 async function* chunks(text, size = 3) { for (let i = 0; i < text.length; i += size) yield text.slice(i, i + size); }
 const kick = (i, type = 'FG', made = true, extra = {}) => ({ id: 'kicker', shortName: 'T.Kicker', season: 2025, week: 1,
@@ -104,11 +105,60 @@ test('saved history retains known record streaks and internally consistent dates
     for (const row of rows) {
       assert.ok(row.length >= (view === 'fg' ? 20 : 40));
       assert.equal(row.fieldGoals + row.extraPoints, row.length);
-      assert.ok(row.start.date <= row.last.date);
-      assert.ok(row.last.date <= data.through);
+      if (row.start.date && row.last.date) assert.ok(row.start.date <= row.last.date);
+      if (row.last.date) assert.ok(row.last.date <= data.through);
+      if (row.archive) {
+        assert.equal(row.active, false);
+        assert.ok(row.source.startsWith('https://'));
+        assert.ok(row.period && row.note);
+      } else { assert.ok(row.start.date && row.last.date); }
       if (row.endedBy) { assert.ok(row.last.date <= row.endedBy.date); assert.equal(row.active, false); }
     }
   }
+});
+
+test('partial older archive preserves sourced counts without inventing dates or attempt sequences', () => {
+  assert.equal(HISTORICAL_STREAKS.fg.length, 5);
+  const fg = new Map(HISTORICAL_STREAKS.fg.map(row => [row.id, row]));
+  assert.equal(fg.get('archive:gary-anderson-1997-98').length, 40);
+  assert.deepEqual(fg.get('archive:gary-anderson-1997-98').teams, ['SF', 'MIN']);
+  assert.equal(fg.get('archive:gary-anderson-1997-98').start.date, null);
+  assert.equal(fg.get('archive:fuad-reveiz-1994-95').start.date, '1994-10-10');
+  assert.equal(fg.get('archive:fuad-reveiz-1994-95').last.date, '1995-09-17');
+  assert.equal(fg.get('archive:john-carney-1992-93').length, 29);
+  assert.equal(fg.get('archive:john-carney-1994').length, 21);
+  assert.equal(fg.get('archive:chris-boniol-1996').length, 27);
+  const segment = HISTORICAL_STREAKS.all[0];
+  assert.equal(segment.length, 94);
+  assert.equal(segment.fieldGoals, 35);
+  assert.equal(segment.extraPoints, 59);
+  assert.equal(segment.lowerBound, true);
+  assert.equal(segment.segment, true);
+  assert.equal(segment.start.date, null);
+  for (const [view, rows] of Object.entries(HISTORICAL_STREAKS)) for (const row of rows) {
+    assert.equal(row.fieldGoals + row.extraPoints, row.length);
+    assert.ok(row.length >= (view === 'fg' ? 20 : 40));
+    assert.equal(row.archive, true);
+    assert.equal(row.active, false);
+    assert.equal(row.endedBy, null); // Unknown is not an invented missed kick.
+    assert.ok(row.source.startsWith('https://'));
+    assert.ok(row.note && row.period);
+  }
+});
+
+test('weekly regeneration retains older records once and does not change or join modern runs', () => {
+  const modern = calculateKickingStreaks(Array.from({ length: 40 }, (_, i) => kick(i)), player, new Set(['kicker']));
+  const saved = structuredClone(modern);
+  const merged = mergeHistoricalStreaks(modern);
+  assert.deepEqual(modern, saved);
+  assert.equal(merged.fg.length, modern.fg.length + 5);
+  assert.equal(merged.all.length, modern.all.length + 1);
+  assert.deepEqual(merged.fg.find(row => row.playerId === 'kicker'), modern.fg[0]);
+  assert.ok(merged.fg.every((row, i, rows) => !i || rows[i - 1].length >= row.length));
+  assert.deepEqual(mergeHistoricalStreaks(merged), merged);
+  merged.fg.find(row => row.archive).teams.push('KC');
+  assert.ok(HISTORICAL_STREAKS.fg.every(row => !row.teams.includes('KC')));
+  assert.throws(() => mergeHistoricalStreaks({ fg: [] }), /Missing/);
 });
 
 test('missing attempt sequences censor both sides of a gap rather than creating a false streak', () => {
