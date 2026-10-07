@@ -107,7 +107,7 @@
         const tr = make('tr', row.active ? 'active' : '');
         tr.append(make('td', 'number', row.rank));
         const name = make('th', '', row.name); name.scope = 'row';
-        if (row.archive) { const source = make('a', 'detail', 'Historical source'); source.href = row.source; source.title = row.note; name.append(source); for (const url of row.additionalSources || []) { const link = make('a', 'detail', 'Date source'); link.href = url; name.append(link); } if (row.segment) name.append(make('span', 'detail', 'Verified season-long segment')); }
+        if (row.archive) { const source = make('a', 'detail', 'Historical source'); source.href = row.source; source.title = row.note; name.append(source); for (const url of row.additionalSources || []) { const link = make('a', 'detail', 'Additional source'); link.href = url; name.append(link); } if (row.segment) name.append(make('span', 'detail', 'Verified season-long segment')); }
         tr.append(name);
         const teams = make('td');
         for (const code of row.teams) { const identity = make('div', 'team'); const img = make('img'); img.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[code] || code.toLowerCase()}.png`; img.alt = ''; img.width = 23; img.height = 23; img.loading = 'lazy'; identity.append(img, make('span', '', TEAMS[code].name)); teams.append(identity); }
@@ -118,7 +118,7 @@
         const ended = make('td', 'date', row.endedBy ? dateText(row.endedBy.date) : '—');
         if (row.endedBy) { const miss = row.endedBy; ended.append(make('span', 'detail', `${miss.result === 'blocked' ? 'Blocked' : 'Missed'} ${miss.distance && miss.type === 'FG' ? `${miss.distance}-yd ` : ''}${miss.type} vs ${TEAMS[miss.opponent].name}`)); }
         if (row.gapAfter) { ended.textContent = dateText(row.gapAfter.date); ended.append(make('span', 'detail', 'Attempt order unavailable')); }
-        if (row.archive) ended.append(make('span', 'detail', row.segment ? 'Full run not reconstructed' : 'Date unverified'));
+        if (row.archive && !row.endedBy) ended.append(make('span', 'detail', row.segment ? 'Full run not reconstructed' : 'Date unverified'));
         tr.append(ended, make('td', row.active ? 'active-label' : '', statusText(row))); fragment.append(tr);
       }
       body.replaceChildren(fragment); document.getElementById('empty').hidden = rows.length > 0;

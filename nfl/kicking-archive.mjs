@@ -26,9 +26,12 @@ export const HISTORICAL_STREAKS = {
       'https://www.chargers.com/news/bolts-to-induct-john-carney-and-anthony-miller-into-chargers-hall-of-fame-2026', {
         note: 'Chargers Hall of Fame announcement confirms 29 straight in 1992–93. Exact first/last make and subsequent miss dates are not entered without verification.',
       }),
-    record('chris-boniol-1996', 'Chris Boniol', ['DAL'], 27, '1996',
-      'https://www.dallascowboys.com/news/mick-shots-kicking-the-ball-around-full-circle', {
-        note: 'Cowboys franchise-history article identifies 27 consecutive made field goals in 1996. Exact attempt dates are not verified.',
+    record('chris-boniol-1996-97', 'Chris Boniol', ['DAL', 'PHI'], 28, '1996–1997',
+      'https://media.eagles.1rmg.com/wp-content/uploads/2020/03/28191544/1997_game-summaries.pdf#page=2', {
+        last: { date: '1997-08-31' },
+        endedBy: { date: '1997-09-07', result: 'missed', type: 'FG', distance: 48, opponent: 'GB' },
+        note: 'Boniol’s 27-make Dallas run continued with Philadelphia. The Eagles’ 1997 game summaries record his opening-day make on August 31, then his first miss in 29 attempts (28 makes) on September 7. The Colts’ 2003 Media Guide also lists 28, Dallas/Philadelphia, 1996–97. The exact first make remains unverified.',
+        additionalSources: ['https://static.clubs.nfl.com/image/upload/colts/vbzepvnqezdkrkudbdmg.pdf'],
       }),
     record('john-carney-1994', 'John Carney', ['LAC'], 21, '1994', chargersGuide, {
       note: '1996 Chargers Media Guide, Individual Records, printed page 196: 21 consecutive field goals in 1994. This is separate from his 1992–93 run.',

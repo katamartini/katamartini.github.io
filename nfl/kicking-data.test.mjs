@@ -127,7 +127,11 @@ test('partial older archive preserves sourced counts without inventing dates or 
   assert.equal(fg.get('archive:fuad-reveiz-1994-95').last.date, '1995-09-17');
   assert.equal(fg.get('archive:john-carney-1992-93').length, 29);
   assert.equal(fg.get('archive:john-carney-1994').length, 21);
-  assert.equal(fg.get('archive:chris-boniol-1996').length, 27);
+  const boniol = fg.get('archive:chris-boniol-1996-97');
+  assert.equal(boniol.length, 28);
+  assert.deepEqual(boniol.teams, ['DAL', 'PHI']);
+  assert.equal(boniol.last.date, '1997-08-31');
+  assert.equal(boniol.endedBy.date, '1997-09-07');
   const segment = HISTORICAL_STREAKS.all[0];
   assert.equal(segment.length, 94);
   assert.equal(segment.fieldGoals, 35);
@@ -140,7 +144,8 @@ test('partial older archive preserves sourced counts without inventing dates or 
     assert.ok(row.length >= (view === 'fg' ? 20 : 40));
     assert.equal(row.archive, true);
     assert.equal(row.active, false);
-    assert.equal(row.endedBy, null); // Unknown is not an invented missed kick.
+    if (row.endedBy) assert.ok(row.endedBy.date >= row.last.date);
+    else assert.equal(row.endedBy, null); // Unknown is not an invented missed kick.
     assert.ok(row.source.startsWith('https://'));
     assert.ok(row.note && row.period);
   }
