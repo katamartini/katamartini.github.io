@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NFL kicking streaks since 1999: every run of 20+ made field goals or 40+ made field goals and extra points.">
+  <meta name="theme-color" content="#f4f5f1">
+  <link rel="canonical" href="https://kmartini.com/nfl/kicking.html">
+  <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
+  <title>Kicking Streaks — kmartini.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #20221f; background: #f4f5f1; font-family: Arial, Helvetica, sans-serif; line-height: 1.45; }
+    main { width: min(1200px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 70px; }
+    a { color: #36534a; }
+    .back { color: #61665e; font-size: 0.88rem; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    h1 { margin: 36px 0 8px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
+    .intro { max-width: 820px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    h2 { margin: 28px 0 8px; font-size: 1.2rem; }
+    .meta, .hint, .method { color: #61665e; font-size: 0.84rem; }
+    .meta { margin: 0 0 22px; }
+    .views { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 24px; }
+    .views a { padding: 6px 10px; border: 1px solid #c8cdc5; border-radius: 4px; font-size: 0.88rem; text-decoration: none; }
+    .views a[aria-current="page"] { color: #fff; background: #36534a; border-color: #36534a; }
+    .toolbar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+    label { color: #61665e; font-size: 0.84rem; }
+    select, input[type="search"] { margin-left: 5px; padding: 6px 8px; border: 1px solid #c8cdc5; border-radius: 4px; color: inherit; background: transparent; font: inherit; }
+    input[type="search"] { width: 190px; }
+    .hint { margin: 0 0 12px; }
+    .table-wrap { overflow-x: auto; border-top: 1px solid #c8cdc5; }
+    table { width: 100%; min-width: 1020px; border-collapse: collapse; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    table.combined { min-width: 1120px; }
+    caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #dde1d8; vertical-align: middle; }
+    thead th { color: #565c54; font-size: 0.8rem; }
+    .number { text-align: right; }
+    .date { white-space: nowrap; }
+    .detail { display: block; color: #61665e; font-size: 0.73rem; font-weight: normal; }
+    .team { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.8rem; }
+    .team img { width: 23px; height: 23px; object-fit: contain; }
+    tr.active { background: #e0f1e3; }
+    tbody tr:hover { background: #edf0e8; }
+    tbody tr.active:hover { background: #d2e9d7; }
+    .active-label { color: #267a45; }
+    button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; cursor: pointer; text-align: inherit; }
+    button:hover { text-decoration: underline; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .table-wrap:focus-visible { outline: 2px solid #20221f; outline-offset: 3px; }
+    .method { max-width: 1020px; margin-top: 24px; }
+    .method p { margin: 0 0 10px; }
+    @media (max-width: 680px) { main { width: calc(100% - 28px); padding-top: 28px; } h1 { margin-top: 28px; } .toolbar { gap: 10px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/nfl">← NFL index</a>
+    <h1>Kicking streaks</h1>
+    <p class="intro">Recorded runs of made kicks without a miss, from the 1999 season onward. Every qualifying run in the available data is listed—not just each kicker’s personal best.</p>
+    <nav class="views" aria-label="Kicking views"><a href="#fg">20+ field goals</a><a href="#all">40+ FG + extra points</a></nav>
+    <h2 id="view-heading">Consecutive made field goals</h2>
+    <p id="status" class="meta" role="status">Loading streaks…</p>
+    <div class="toolbar">
+      <label for="team-filter">Team <select id="team-filter"><option value="all">All teams</option></select></label>
+      <label for="kicker-search">Kicker <input type="search" id="kicker-search" placeholder="Search kickers" autocomplete="off"></label>
+      <label><input type="checkbox" id="active-only"> Active streaks only</label>
+    </div>
+    <p class="hint">Green rows: unbroken streaks by kickers currently on an NFL roster. Click a column to sort; scroll sideways for more columns. <span id="row-count"></span></p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Kicking streaks; scroll horizontally for more columns">
+      <table><caption id="table-caption">Historical NFL kicking streaks since 1999</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
+    </div>
+    <p id="empty" hidden>No streaks match these filters.</p>
+    <noscript><p>Enable JavaScript to display the kicking streaks.</p></noscript>
+    <div class="method">
+      <p id="view-note">Only field-goal attempts count in this view; an extra-point miss does not end a field-goal streak.</p>
+      <p>Regular-season attempts only; postseason and preseason games are excluded. Streaks carry across seasons and team changes. A miss or blocked kick ends a streak. Two-point tries, fake/aborted tries with no kick, and plays nullified by penalty do not count.</p>
+      <p>Start and most recent dates are the first and last made kicks in the run. “Ended by” is the next missed or blocked attempt. “Unbroken · inactive” means no later miss is recorded, but the kicker is not on a current roster. Active roster status includes injured/reserve and practice-squad players.</p>
+      <p>Coverage starts in 1999, not the beginning of NFL history. A ≥ total is a lower bound where a start or end crosses missing attempt data. These rows show recorded makes, not an exact full-run total. Rank is based on recorded makes and stays the same when filtering.</p>
+      <p id="gap-note"></p>
+      <p>Checked weekly on Tuesday, with a Wednesday retry. Play-by-play and roster feeds may refresh at different times; bye-week teams use their latest roster. Data: <a href="https://github.com/nflverse/nflverse-data/releases/tag/pbp">nflverse play-by-play</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/players">player names</a>, and <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">weekly rosters</a>. <a href="https://nflreadr.nflverse.com/reference/load_pbp.html">Coverage documentation</a>. Play-by-play attribution: nflverse/nflfastR, <a href="https://github.com/nflverse/nflverse-pbp/blob/master/LICENSE.md">CC BY 4.0</a>.</p>
+    </div>
+  </main>
+  <script type="module">
+    import { TEAMS } from './divstreaks-data.mjs';
+    import { normalizeName } from './franchise-leaders-data.mjs';
+    import { KICKING_VIEWS, kickingView } from './kicking-data.mjs';
+    const head = document.getElementById('table-head'), body = document.getElementById('table-body');
+    const filter = document.getElementById('team-filter'), search = document.getElementById('kicker-search'), activeOnly = document.getElementById('active-only');
+    const status = document.getElementById('status'), headers = new Map();
+    let data, view = kickingView(location.hash), sortKey = 'length', descending = true;
+    const logoCodes = { LA: 'lar', WAS: 'wsh' };
+    const make = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text != null) node.textContent = text; return node; };
+    const dateText = date => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
+    const statusText = row => row.gapAfter ? 'Data gap' : row.active ? 'Active' : row.endedBy ? 'Ended' : 'Unbroken · inactive';
+    for (const [code, team] of Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))) { const option = make('option', '', team.name); option.value = code; filter.append(option); }
+    function render() {
+      if (!data) return;
+      const query = normalizeName(search.value);
+      const rows = data.views[view].map((row, i) => ({ ...row, rank: i + 1 })).filter(row =>
+        (filter.value === 'all' || row.teams.includes(filter.value)) && normalizeName(row.name).includes(query) && (!activeOnly.checked || row.active));
+      const value = (row, key) => ['start', 'last'].includes(key) ? row[key].date : key === 'endedBy' ? row.endedBy?.date || '9999' :
+        key === 'teams' ? row.teams.map(team => TEAMS[team].name).join(', ') : key === 'status' ? statusText(row) : row[key];
+      rows.sort((a, b) => { const x = value(a, sortKey), y = value(b, sortKey); const order = typeof x === 'number' ? x - y : x.localeCompare(y); return (descending ? -order : order) || a.rank - b.rank; });
+      for (const [key, { th, arrow }] of headers) { th.setAttribute('aria-sort', key === sortKey ? descending ? 'descending' : 'ascending' : 'none'); arrow.textContent = key === sortKey ? descending ? ' ↓' : ' ↑' : ''; }
+      const fragment = document.createDocumentFragment();
+      for (const row of rows) {
+        const tr = make('tr', row.active ? 'active' : '');
+        tr.append(make('td', 'number', row.rank));
+        const name = make('th', '', row.name); name.scope = 'row'; tr.append(name);
+        const teams = make('td');
+        for (const code of row.teams) { const identity = make('div', 'team'); const img = make('img'); img.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[code] || code.toLowerCase()}.png`; img.alt = ''; img.width = 23; img.height = 23; img.loading = 'lazy'; identity.append(img, make('span', '', TEAMS[code].name)); teams.append(identity); }
+        tr.append(teams);
+        const length = make('td', 'number', `${row.lowerBound ? '≥' : ''}${row.length}`); if (row.lowerBound) length.title = 'Minimum recorded length; part of the run is outside available attempt data'; tr.append(length);
+        if (view === 'all') tr.append(make('td', 'number', row.fieldGoals), make('td', 'number', row.extraPoints));
+        for (const key of ['start', 'last']) { const cell = make('td', 'date', dateText(row[key].date)); if (key === 'start' && row.startUnknown) cell.append(make('span', 'detail', 'Observed start')); tr.append(cell); }
+        const ended = make('td', 'date', row.endedBy ? dateText(row.endedBy.date) : '—');
+        if (row.endedBy) { const miss = row.endedBy; ended.append(make('span', 'detail', `${miss.result === 'blocked' ? 'Blocked' : 'Missed'} ${miss.distance && miss.type === 'FG' ? `${miss.distance}-yd ` : ''}${miss.type} vs ${TEAMS[miss.opponent].name}`)); }
+        if (row.gapAfter) { ended.textContent = dateText(row.gapAfter.date); ended.append(make('span', 'detail', 'Attempt order unavailable')); }
+        tr.append(ended, make('td', row.active ? 'active-label' : '', statusText(row))); fragment.append(tr);
+      }
+      body.replaceChildren(fragment); document.getElementById('empty').hidden = rows.length > 0;
+      document.getElementById('row-count').textContent = `${rows.length} streak${rows.length === 1 ? '' : 's'}.`;
+    }
+    function selectView() {
+      view = kickingView(location.hash); sortKey = 'length'; descending = true;
+      document.getElementById('view-heading').textContent = view === 'fg' ? 'Consecutive made field goals' : 'Consecutive made kicks: FG + extra points';
+      document.getElementById('view-note').textContent = view === 'fg' ? 'Only field-goal attempts count in this view; an extra-point miss does not end a field-goal streak.' : 'Every field goal and extra point is one attempt, in game order. A miss of either kind ends the combined streak. These are consecutive kicks, not a point total.';
+      document.getElementById('table-caption').textContent = `${KICKING_VIEWS[view].minimum}+ consecutive made ${view === 'fg' ? 'field goals' : 'field goals and extra points'}, regular season since 1999`;
+      document.querySelector('table').classList.toggle('combined', view === 'all');
+      for (const link of document.querySelectorAll('.views a')) { if (link.hash === `#${view}`) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current'); }
+      head.replaceChildren(); headers.clear();
+      const columns = [{ key: 'rank', label: 'Rank', number: true }, { key: 'name', label: 'Kicker' }, { key: 'teams', label: 'Team(s)' }, { key: 'length', label: 'Streak', number: true },
+        ...(view === 'all' ? [{ key: 'fieldGoals', label: 'FG', number: true }, { key: 'extraPoints', label: 'XP', number: true }] : []),
+        { key: 'start', label: 'Start' }, { key: 'last', label: 'Most recent make' }, { key: 'endedBy', label: 'Ended by' }, { key: 'status', label: 'Status' }];
+      for (const column of columns) { const th = make('th', column.number ? 'number' : ''); th.scope = 'col'; const button = make('button', '', column.label); button.type = 'button'; const arrow = make('span'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow); button.addEventListener('click', () => { descending = sortKey === column.key ? !descending : !!column.number && column.key !== 'rank'; sortKey = column.key; render(); }); th.append(button); head.append(th); headers.set(column.key, { th, arrow }); }
+      render();
+    }
+    filter.addEventListener('change', render); search.addEventListener('input', render); activeOnly.addEventListener('change', render);
+    window.addEventListener('hashchange', selectView); selectView();
+    try {
+      const response = await fetch('../data/kicking.json'); if (!response.ok) throw new Error('Data unavailable');
+      const saved = await response.json();
+      if (saved.schemaVersion !== 1 || saved.firstSeason !== 1999 || Object.entries(KICKING_VIEWS).some(([key, config]) =>
+        !Array.isArray(saved.views?.[key]) || saved.views[key].some(row => typeof row.name !== 'string' || !Number.isInteger(row.length) || row.length < config.minimum ||
+          row.fieldGoals + row.extraPoints !== row.length || !row.teams.length || row.teams.some(team => !TEAMS[team]) || !row.start?.date || !row.last?.date || typeof row.active !== 'boolean'))) throw new Error('Incomplete data');
+      data = saved; render();
+      const gapNote = document.getElementById('gap-note');
+      gapNote.hidden = !data.historicalSources?.length;
+      gapNote.append(document.createTextNode(`${data.historicalSources?.length || 0} games absent from early play-by-play are supplemented with box scores: `));
+      for (const [i, source] of (data.historicalSources || []).entries()) { if (i) gapNote.append(document.createTextNode(', ')); const link = make('a', '', dateText(source.date)); link.href = source.url; gapNote.append(link); }
+      gapNote.append(document.createTextNode('. Miss-free kicker totals are restored.'));
+      if (data.gaps?.length) gapNote.append(document.createTextNode(` Attempt order remains unavailable for ${data.gaps.map(gap => `${gap.name} (${dateText(gap.date)})`).join(' and ')}; their runs are not joined across those gaps. A qualifying run crossing a gap may be incomplete or absent.`));
+      status.textContent = `Regular season · 1999–${data.season} · Games through ${dateText(data.through)} · Rosters: ${data.season} Week ${data.rosterWeek}`;
+    } catch { status.textContent = 'Streaks could not be loaded. Please refresh to try again.'; }
+  </script>
+</body>
+</html>

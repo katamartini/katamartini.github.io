@@ -104,7 +104,15 @@ export function currentRoster(rosterRows, season) {
   const memberships = new Set();
   const teams = new Set();
   const eligible = new Set(['ACT', 'INA', 'RES', 'DEV', 'EXE']);
-  for (const row of rows.filter(row => Number(row.week || 0) === week)) {
+  // Bye-week teams may not have a row in the latest league-wide snapshot.
+  const teamWeeks = new Map();
+  for (const row of rows) {
+    const team = normalizeTeam(row.team);
+    if (!TEAMS[team]) throw new Error(`Unknown roster team: ${row.team}`);
+    teamWeeks.set(team, Math.max(teamWeeks.get(team) ?? 0, Number(row.week || 0)));
+  }
+  const snapshot = rows.filter(row => Number(row.week || 0) === teamWeeks.get(normalizeTeam(row.team)));
+  for (const row of snapshot) {
     const team = normalizeTeam(row.team);
     if (!TEAMS[team]) throw new Error(`Unknown roster team: ${row.team}`);
     teams.add(team);
@@ -115,7 +123,7 @@ export function currentRoster(rosterRows, season) {
     }
   }
   if (teams.size !== 32) throw new Error(`Incomplete current roster feed: ${teams.size} teams`);
-  return { week, memberships };
+  return { week, memberships, rows: snapshot };
 }
 
 export function validRecord(row, view = 'receiving') {

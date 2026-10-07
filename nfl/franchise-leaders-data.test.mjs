@@ -78,6 +78,15 @@ test('names normalize punctuation and suffixes; franchise aliases retain team co
   assert.equal(normalizeTeam('SD'), 'LAC');
 });
 
+test('bye-week teams retain their most recent roster rather than making the feed incomplete', () => {
+  const rows = rosterFixture();
+  rows.find(row => row.team === 'KC').week = '3';
+  const snapshot = currentRoster(rows, 2026);
+  assert.equal(snapshot.week, 4);
+  assert.ok(snapshot.memberships.has('KC:playerkc'));
+  assert.equal(snapshot.rows.length, 32);
+});
+
 test('one player may qualify for two franchises, but only their current franchise is green', () => {
   const leaders = buildLeaders([record('GB', 'Davante Adams', 8121), record('LA', 'Davante Adams', 5000), record('SF', 'Jerry Rice', 19247)], new Set(['LA:davanteadams']));
   assert.equal(leaders[0].name, 'Jerry Rice');

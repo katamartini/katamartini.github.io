@@ -1,0 +1,48 @@
+name: Update NFL kicking streaks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 17 * * 2"
+    - cron: "23 17 * * 3"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-kicking
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/kicking
+          key: kicking-pbp-v1-${{ github.run_id }}
+          restore-keys: kicking-pbp-v1-
+      - name: Test kicking calculations and roster snapshots
+        run: node --test nfl/kicking-data.test.mjs nfl/franchise-leaders-data.test.mjs
+      - name: Refresh historical streaks and current rosters
+        run: node scripts/update-kicking.mjs
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/kicking.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/kicking.json
+            git commit -m "Update NFL kicking streaks"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
