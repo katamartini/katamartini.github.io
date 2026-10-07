@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The longest-tenured current player for every NFL team, ranked by consecutive seasons with the franchise.">
+  <meta name="theme-color" content="#f4f5f1">
+  <link rel="canonical" href="https://kmartini.com/nfl/longest-tenure.html">
+  <title>Longest Tenure — kmartini.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #20221f; background: #f4f5f1; font-family: Arial, Helvetica, sans-serif; line-height: 1.45; }
+    main { width: min(1060px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 70px; }
+    a { color: #36534a; }
+    .back { color: #61665e; font-size: .88rem; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    h1 { margin: 36px 0 12px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; letter-spacing: -.035em; }
+    .intro { max-width: 710px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 26px 0 32px; color: #61665e; font-size: .85rem; }
+    .meta strong { color: #20221f; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 16px; }
+    .toolbar[hidden] { display: none; }
+    .sort { display: flex; align-items: center; gap: 6px; font-size: .84rem; color: #565c54; }
+    button, input { font: inherit; }
+    button { padding: 7px 11px; border: 1px solid #c8cdc5; border-radius: 5px; color: #434942; background: transparent; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: #36473c; color: white; background: #36473c; }
+    .search { display: flex; align-items: center; gap: 10px; color: #565c54; font-size: .84rem; }
+    input { width: 220px; max-width: 100%; padding: 8px 10px; border: 1px solid #c8cdc5; border-radius: 5px; color: #20221f; background: #fff; }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #20221f; outline-offset: 3px; }
+    .table-head, .team-row { display: grid; grid-template-columns: minmax(190px, 1fr) minmax(250px, 1.35fr) minmax(170px, 1fr); gap: 22px; align-items: center; }
+    .table-head { padding: 13px 0; border-top: 1px solid #c8cdc5; border-bottom: 1px solid #c8cdc5; color: #61665e; font-size: .73rem; text-transform: uppercase; letter-spacing: .07em; }
+    .team-row { min-height: 83px; padding: 15px 0; border-bottom: 1px solid #dce0d7; }
+    .team-row[hidden] { display: none; }
+    .team-name { display: block; font-size: .95rem; }
+    .division, .since { display: block; margin-top: 4px; color: #737a70; font-size: .76rem; }
+    .player { display: block; font-size: .92rem; }
+    .player + .player { margin-top: 5px; }
+    .position { margin-left: 8px; color: #737a70; font-size: .73rem; font-weight: 400; white-space: nowrap; }
+    .tenure-label { display: flex; align-items: baseline; gap: 7px; }
+    .tenure-label strong { font-size: 1.28rem; line-height: 1; font-variant-numeric: tabular-nums; }
+    .tenure-label span { color: #61665e; font-size: .78rem; }
+    .track { height: 5px; margin-top: 10px; border-radius: 3px; background: #e2e6dd; overflow: hidden; }
+    .bar { display: block; height: 100%; width: var(--width); background: var(--team-color); border-radius: 3px; }
+    .method { max-width: 850px; margin: 30px 0 0; color: #61665e; font-size: .82rem; }
+    .method p { margin: 0 0 10px; }
+    .empty { padding: 25px 0; color: #61665e; }
+    .result-count { margin: 12px 0 0; color: #737a70; font-size: .76rem; }
+    @media (max-width: 720px) {
+      main { width: calc(100% - 28px); padding-top: 28px; }
+      h1 { margin-top: 28px; }
+      .table-head { display: none; }
+      .teams { border-top: 1px solid #c8cdc5; }
+      .team-row { grid-template-columns: minmax(0, 1fr) 105px; gap: 9px 18px; padding: 18px 0; }
+      .team { grid-column: 1; }
+      .players { grid-column: 1; }
+      .tenure { grid-column: 2; grid-row: 1 / 3; }
+      .team-name { font-size: .9rem; }
+      .player { font-size: .86rem; }
+      .tenure-label { gap: 5px; }
+      .search { width: 100%; }
+      input { flex: 1; width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/nfl">← NFL index</a>
+    <h1>Longest tenure</h1>
+    <p class="intro">The players who have been with their team the longest. Every franchise’s longest current stay, counted in seasons.</p>
+    <!-- tenure-meta:start -->
+    <div class="meta"><span><strong>32</strong> teams</span><span><strong>2026</strong> season · roster data through Week 5</span><span>Updated <time datetime="2026-10-07">Oct 7, 2026</time></span></div>
+      <!-- tenure-meta:end -->
+    <div class="toolbar" id="controls" hidden>
+      <div class="sort" aria-label="Team order">
+        <span>Sort:</span>
+        <button type="button" data-sort="longest" aria-pressed="true">Longest first</button>
+        <button type="button" data-sort="division" aria-pressed="false">By division</button>
+      </div>
+      <label class="search" for="search">Find a team or player <input id="search" type="search" placeholder="e.g. Panthers or Jansen"></label>
+    </div>
+    <div class="table-head" aria-hidden="true"><span>Team</span><span>Longest-tenured player · position</span><span>Seasons with team</span></div>
+    <section class="teams" id="teams" aria-label="Longest-tenured players for all 32 NFL teams">
+      <!-- tenure-rows:start -->
+      <article class="team-row" data-team="Carolina Panthers" data-since="2009" data-division="6">
+        <div class="team"><strong class="team-name">Carolina Panthers</strong><span class="division">NFC South</span></div>
+        <div class="players"><span class="player"><strong>J.J. Jansen</strong><span class="position">LS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>18</strong><span>seasons</span></div><span class="since">Since 2009</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 100.00%; --team-color: #0075aa"></span></div></div>
+      </article>
+      <article class="team-row" data-team="New Orleans Saints" data-since="2011" data-division="6">
+        <div class="team"><strong class="team-name">New Orleans Saints</strong><span class="division">NFC South</span></div>
+        <div class="players"><span class="player"><strong>Cameron Jordan</strong><span class="position">OLB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>16</strong><span>seasons</span></div><span class="since">Since 2011</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 88.89%; --team-color: #75613c"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Pittsburgh Steelers" data-since="2011" data-division="1">
+        <div class="team"><strong class="team-name">Pittsburgh Steelers</strong><span class="division">AFC North</span></div>
+        <div class="players"><span class="player"><strong>Cameron Heyward</strong><span class="position">DT</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>16</strong><span>seasons</span></div><span class="since">Since 2011</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 88.89%; --team-color: #2b2b2b"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Minnesota Vikings" data-since="2012" data-division="5">
+        <div class="team"><strong class="team-name">Minnesota Vikings</strong><span class="division">NFC North</span></div>
+        <div class="players"><span class="player"><strong>Harrison Smith</strong><span class="position">FS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>15</strong><span>seasons</span></div><span class="since">Since 2012</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 83.33%; --team-color: #4f2683"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Kansas City Chiefs" data-since="2013" data-division="3">
+        <div class="team"><strong class="team-name">Kansas City Chiefs</strong><span class="division">AFC West</span></div>
+        <div class="players"><span class="player"><strong>Travis Kelce</strong><span class="position">TE</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>14</strong><span>seasons</span></div><span class="since">Since 2013</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 77.78%; --team-color: #a41220"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Philadelphia Eagles" data-since="2013" data-division="4">
+        <div class="team"><strong class="team-name">Philadelphia Eagles</strong><span class="division">NFC East</span></div>
+        <div class="players"><span class="player"><strong>Lane Johnson</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>14</strong><span>seasons</span></div><span class="since">Since 2013</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 77.78%; --team-color: #004c54"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Atlanta Falcons" data-since="2014" data-division="6">
+        <div class="team"><strong class="team-name">Atlanta Falcons</strong><span class="division">NFC South</span></div>
+        <div class="players"><span class="player"><strong>Jake Matthews</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>13</strong><span>seasons</span></div><span class="since">Since 2014</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 72.22%; --team-color: #a71930"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Washington Commanders" data-since="2014" data-division="4">
+        <div class="team"><strong class="team-name">Washington Commanders</strong><span class="division">NFC East</span></div>
+        <div class="players"><span class="player"><strong>Tress Way</strong><span class="position">P</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>13</strong><span>seasons</span></div><span class="since">Since 2014</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 72.22%; --team-color: #5a1414"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Baltimore Ravens" data-since="2016" data-division="1">
+        <div class="team"><strong class="team-name">Baltimore Ravens</strong><span class="division">AFC North</span></div>
+        <div class="players"><span class="player"><strong>Ronnie Stanley</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #241773"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Buffalo Bills" data-since="2016" data-division="0">
+        <div class="team"><strong class="team-name">Buffalo Bills</strong><span class="division">AFC East</span></div>
+        <div class="players"><span class="player"><strong>Reid Ferguson</strong><span class="position">LS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #00338d"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Dallas Cowboys" data-since="2016" data-division="4">
+        <div class="team"><strong class="team-name">Dallas Cowboys</strong><span class="division">NFC East</span></div>
+        <div class="players"><span class="player"><strong>Dak Prescott</strong><span class="position">QB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #003594"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Houston Texans" data-since="2016" data-division="2">
+        <div class="team"><strong class="team-name">Houston Texans</strong><span class="division">AFC South</span></div>
+        <div class="players"><span class="player"><strong>Ka&#39;imi Fairbairn</strong><span class="position">K</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #03202f"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Indianapolis Colts" data-since="2016" data-division="2">
+        <div class="team"><strong class="team-name">Indianapolis Colts</strong><span class="division">AFC South</span></div>
+        <div class="players"><span class="player"><strong>Luke Rhodes</strong><span class="position">LS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #002c5f"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Los Angeles Rams" data-since="2016" data-division="7">
+        <div class="team"><strong class="team-name">Los Angeles Rams</strong><span class="division">NFC West</span></div>
+        <div class="players"><span class="player"><strong>Tyler Higbee</strong><span class="position">TE</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>11</strong><span>seasons</span></div><span class="since">Since 2016</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 61.11%; --team-color: #003f86"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Arizona Cardinals" data-since="2017" data-division="7">
+        <div class="team"><strong class="team-name">Arizona Cardinals</strong><span class="division">NFC West</span></div>
+        <div class="players"><span class="player"><strong>Budda Baker</strong><span class="position">SS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>10</strong><span>seasons</span></div><span class="since">Since 2017</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 55.56%; --team-color: #97233f"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Denver Broncos" data-since="2017" data-division="3">
+        <div class="team"><strong class="team-name">Denver Broncos</strong><span class="division">AFC West</span></div>
+        <div class="players"><span class="player"><strong>Garett Bolles</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>10</strong><span>seasons</span></div><span class="since">Since 2017</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 55.56%; --team-color: #b8490b"></span></div></div>
+      </article>
+      <article class="team-row" data-team="New York Jets" data-since="2017" data-division="0">
+        <div class="team"><strong class="team-name">New York Jets</strong><span class="division">AFC East</span></div>
+        <div class="players"><span class="player"><strong>Thomas Hennessy</strong><span class="position">LS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>10</strong><span>seasons</span></div><span class="since">Since 2017</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 55.56%; --team-color: #125740"></span></div></div>
+      </article>
+      <article class="team-row" data-team="San Francisco 49ers" data-since="2017" data-division="7">
+        <div class="team"><strong class="team-name">San Francisco 49ers</strong><span class="division">NFC West · Tied</span></div>
+        <div class="players"><span class="player"><strong>George Kittle</strong><span class="position">TE</span></span><span class="player"><strong>Kyle Juszczyk</strong><span class="position">FB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>10</strong><span>seasons</span></div><span class="since">Since 2017</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 55.56%; --team-color: #aa0000"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Tampa Bay Buccaneers" data-since="2017" data-division="6">
+        <div class="team"><strong class="team-name">Tampa Bay Buccaneers</strong><span class="division">NFC South</span></div>
+        <div class="players"><span class="player"><strong>Chris Godwin Jr.</strong><span class="position">WR</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>10</strong><span>seasons</span></div><span class="since">Since 2017</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 55.56%; --team-color: #b20d19"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Cleveland Browns" data-since="2018" data-division="1">
+        <div class="team"><strong class="team-name">Cleveland Browns</strong><span class="division">AFC North</span></div>
+        <div class="players"><span class="player"><strong>Denzel Ward</strong><span class="position">CB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>9</strong><span>seasons</span></div><span class="since">Since 2018</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 50.00%; --team-color: #6c3516"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Jacksonville Jaguars" data-since="2018" data-division="2">
+        <div class="team"><strong class="team-name">Jacksonville Jaguars</strong><span class="division">AFC South</span></div>
+        <div class="players"><span class="player"><strong>Logan Cooke</strong><span class="position">P</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>9</strong><span>seasons</span></div><span class="since">Since 2018</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 50.00%; --team-color: #006778"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Las Vegas Raiders" data-since="2018" data-division="3">
+        <div class="team"><strong class="team-name">Las Vegas Raiders</strong><span class="division">AFC West</span></div>
+        <div class="players"><span class="player"><strong>Kolton Miller</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>9</strong><span>seasons</span></div><span class="since">Since 2018</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 50.00%; --team-color: #303030"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Los Angeles Chargers" data-since="2018" data-division="3">
+        <div class="team"><strong class="team-name">Los Angeles Chargers</strong><span class="division">AFC West</span></div>
+        <div class="players"><span class="player"><strong>Derwin James</strong><span class="position">SS</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>9</strong><span>seasons</span></div><span class="since">Since 2018</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 50.00%; --team-color: #006a99"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Seattle Seahawks" data-since="2018" data-division="7">
+        <div class="team"><strong class="team-name">Seattle Seahawks</strong><span class="division">NFC West</span></div>
+        <div class="players"><span class="player"><strong>Michael Dickson</strong><span class="position">P</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>9</strong><span>seasons</span></div><span class="since">Since 2018</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 50.00%; --team-color: #002244"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Cincinnati Bengals" data-since="2019" data-division="1">
+        <div class="team"><strong class="team-name">Cincinnati Bengals</strong><span class="division">AFC North</span></div>
+        <div class="players"><span class="player"><strong>Drew Sample</strong><span class="position">TE</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>8</strong><span>seasons</span></div><span class="since">Since 2019</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 44.44%; --team-color: #c94e00"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Detroit Lions" data-since="2019" data-division="5">
+        <div class="team"><strong class="team-name">Detroit Lions</strong><span class="division">NFC North · Tied</span></div>
+        <div class="players"><span class="player"><strong>Jack Fox</strong><span class="position">P</span></span><span class="player"><strong>Tom Kennedy</strong><span class="position">WR</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>8</strong><span>seasons</span></div><span class="since">Since 2019</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 44.44%; --team-color: #006b9e"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Miami Dolphins" data-since="2019" data-division="0">
+        <div class="team"><strong class="team-name">Miami Dolphins</strong><span class="division">AFC East</span></div>
+        <div class="players"><span class="player"><strong>Zach Sieler</strong><span class="position">DT</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>8</strong><span>seasons</span></div><span class="since">Since 2019</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 44.44%; --team-color: #00797c"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Tennessee Titans" data-since="2019" data-division="2">
+        <div class="team"><strong class="team-name">Tennessee Titans</strong><span class="division">AFC South · Tied</span></div>
+        <div class="players"><span class="player"><strong>Amani Hooker</strong><span class="position">FS</span></span><span class="player"><strong>Jeffery Simmons</strong><span class="position">DT</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>8</strong><span>seasons</span></div><span class="since">Since 2019</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 44.44%; --team-color: #3b4a73"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Chicago Bears" data-since="2020" data-division="5">
+        <div class="team"><strong class="team-name">Chicago Bears</strong><span class="division">NFC North · Tied</span></div>
+        <div class="players"><span class="player"><strong>Cairo Santos</strong><span class="position">K</span></span><span class="player"><strong>Cole Kmet</strong><span class="position">TE</span></span><span class="player"><strong>Jaylon Johnson</strong><span class="position">CB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>7</strong><span>seasons</span></div><span class="since">Since 2020</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 38.89%; --team-color: #0b162a"></span></div></div>
+      </article>
+      <article class="team-row" data-team="Green Bay Packers" data-since="2020" data-division="5">
+        <div class="team"><strong class="team-name">Green Bay Packers</strong><span class="division">NFC North</span></div>
+        <div class="players"><span class="player"><strong>Jordan Love</strong><span class="position">QB</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>7</strong><span>seasons</span></div><span class="since">Since 2020</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 38.89%; --team-color: #203731"></span></div></div>
+      </article>
+      <article class="team-row" data-team="New England Patriots" data-since="2020" data-division="0">
+        <div class="team"><strong class="team-name">New England Patriots</strong><span class="division">AFC East</span></div>
+        <div class="players"><span class="player"><strong>Mike Onwenu</strong><span class="position">G</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>7</strong><span>seasons</span></div><span class="since">Since 2020</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 38.89%; --team-color: #002244"></span></div></div>
+      </article>
+      <article class="team-row" data-team="New York Giants" data-since="2020" data-division="4">
+        <div class="team"><strong class="team-name">New York Giants</strong><span class="division">NFC East</span></div>
+        <div class="players"><span class="player"><strong>Andrew Thomas</strong><span class="position">T</span></span></div>
+        <div class="tenure"><div class="tenure-label"><strong>7</strong><span>seasons</span></div><span class="since">Since 2020</span><div class="track" aria-hidden="true"><span class="bar" style="--width: 38.89%; --team-color: #0b2265"></span></div></div>
+      </article>
+      <!-- tenure-rows:end -->
+    </section>
+    <p class="empty" id="empty" hidden>No teams or players match your search.</p>
+    <p class="result-count" id="result-count" role="status" hidden></p>
+    <div class="method">
+      <p>Tenure is measured by consecutive seasons listed with the current franchise, including the current season. Active, practice-squad and reserve players are eligible; retired and released players are excluded from the current roster. Reserve and practice-squad seasons count toward tenure.</p>
+      <p>A missing season or a season with another franchise resets the count. Brief releases and re-signings within the same franchise do not. Players with the same starting season share the lead; this is a season-based comparison, so exact signing dates do not break ties. Franchise moves stay with the same team.</p>
+      <p>Source: <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse roster data</a>. Each team uses its latest available roster week; teams on a bye may have an earlier snapshot. The date above identifies the saved snapshot.</p>
+    </div>
+  </main>
+  <script>
+    const teams = document.getElementById('teams');
+    const rows = [...teams.querySelectorAll('.team-row')];
+    const search = document.getElementById('search');
+    const buttons = [...document.querySelectorAll('[data-sort]')];
+    const count = document.getElementById('result-count');
+    let sort = 'longest';
+    function render() {
+      const query = search.value.trim().toLocaleLowerCase();
+      rows.sort(sort === 'longest'
+        ? (a, b) => Number(a.dataset.since) - Number(b.dataset.since) || a.dataset.team.localeCompare(b.dataset.team)
+        : (a, b) => Number(a.dataset.division) - Number(b.dataset.division) || a.dataset.team.localeCompare(b.dataset.team));
+      let visible = 0;
+      for (const row of rows) {
+        row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
+        if (!row.hidden) visible += 1;
+        teams.append(row);
+      }
+      document.getElementById('empty').hidden = visible !== 0;
+      count.textContent = `Showing ${visible} of ${rows.length} teams`;
+    }
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        sort = button.dataset.sort;
+        for (const item of buttons) item.setAttribute('aria-pressed', String(item === button));
+        render();
+      });
+    }
+    search.addEventListener('input', render);
+    document.getElementById('controls').hidden = false;
+    count.hidden = false;
+    render();
+  </script>
+</body>
+</html>
