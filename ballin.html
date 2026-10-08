@@ -1865,27 +1865,26 @@
     <div id="dashboard" hidden>
       <div class="dashboard-tabs" role="tablist" aria-label="Statistics views">
         <button class="dashboard-tab" id="overviewTab" type="button" role="tab" aria-selected="true" aria-controls="overviewPanel" data-dashboard-tab="overview">Overview</button>
-        <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="records" tabindex="-1">Records by X</button>
+        <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="best" tabindex="-1">Best of</button>
+        <button class="dashboard-tab" id="worstThroughTab" type="button" role="tab" aria-selected="false" aria-controls="worstThroughPanel" data-dashboard-tab="worst" tabindex="-1">Worst of</button>
         <button class="dashboard-tab" id="breakdownTab" type="button" role="tab" aria-selected="false" aria-controls="breakdownPanel" data-dashboard-tab="breakdown" tabindex="-1">Breakdown by 10</button>
       </div>
       <div class="dashboard-layout">
         <section class="best-through-panel panel" id="bestThroughPanel" role="tabpanel" aria-labelledby="bestThroughTab" tabindex="0" hidden>
           <div class="panel-title">
-            <h2 id="bestThroughTitle">Records by X</h2>
+            <h2 id="bestThroughTitle">Best of</h2>
             <span>Shots 1–100</span>
           </div>
-          <p class="chart-note" id="bestThroughNote">Each record group has its own X shots column. Through X counts makes from shot 1 to X; run of X finds a consecutive X-shot stretch anywhere in a fully logged run, with its positions in the Shots column. Scroll sideways to compare all four record types. Legacy runs contribute through-X records at multiples of 10. Ties use the earliest run, then the earliest stretch in that run.</p>
+          <p class="chart-note" id="bestThroughNote">Best through X counts makes from shot 1 to X; best run of X finds a consecutive X-shot stretch anywhere in a fully logged run, with its positions in the Shots column. Legacy runs contribute through-X records at multiples of 10. Ties use the earliest run, then the earliest stretch in that run.</p>
           <div class="record-age-legend" aria-label="Record cell colors show the source run date, from oldest in red to newest in green">
             <span>Older run</span><span class="record-age-legend-bar" aria-hidden="true"></span><span>Newer run</span>
           </div>
-          <div class="best-through-table-wrap" role="region" aria-label="Best and worst records through X and over X consecutive shots" tabindex="0">
-            <table class="best-through-table" aria-describedby="bestThroughNote">
+          <div class="best-through-table-wrap" role="region" aria-label="Best records through X and over X consecutive shots" tabindex="0">
+            <table class="best-through-table" data-record-view="best" aria-describedby="bestThroughNote">
               <thead>
                 <tr>
                   <th class="record-group" scope="colgroup" colspan="5">Best through X</th>
-                  <th class="record-group record-divider" scope="colgroup" colspan="5">Worst through X</th>
                   <th class="record-group record-divider" scope="colgroup" colspan="6">Best run of X</th>
-                  <th class="record-group record-divider" scope="colgroup" colspan="6">Worst run of X</th>
                 </tr>
                 <tr>
                   <th scope="col" aria-sort="ascending">
@@ -1910,31 +1909,6 @@
                   </th>
                   <th scope="col" aria-sort="none">
                     <button class="best-through-sort" type="button" data-sort-key="run">
-                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th class="record-divider" scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstThrough">
-                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstMakes">
-                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstPercentage">
-                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstRunNumber">
-                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstRun">
                       Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
@@ -1968,39 +1942,44 @@
                       Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
                     </button>
                   </th>
-                  <th class="record-divider" scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchThrough">
-                      X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchMakes">
-                      Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchPercentage">
-                      % <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchRunNumber">
-                      Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchRun">
-                      Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
-                  <th scope="col" aria-sort="none">
-                    <button class="best-through-sort" type="button" data-sort-key="worstBatchStart">
-                      Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span>
-                    </button>
-                  </th>
                 </tr>
               </thead>
               <tbody id="bestThroughTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="best-through-panel panel" id="worstThroughPanel" role="tabpanel" aria-labelledby="worstThroughTab" tabindex="0" hidden>
+          <div class="panel-title">
+            <h2>Worst of</h2>
+            <span>Shots 1–100</span>
+          </div>
+          <p class="chart-note" id="worstThroughNote">Worst through X counts makes from shot 1 to X; worst run of X finds a consecutive X-shot stretch anywhere in a fully logged run, with its positions in the Shots column. Legacy runs contribute through-X records at multiples of 10. Ties use the earliest run, then the earliest stretch in that run.</p>
+          <div class="record-age-legend" aria-label="Record cell colors show the source run date, from oldest in red to newest in green">
+            <span>Older run</span><span class="record-age-legend-bar" aria-hidden="true"></span><span>Newer run</span>
+          </div>
+          <div class="best-through-table-wrap" role="region" aria-label="Worst records through X and over X consecutive shots" tabindex="0">
+            <table class="best-through-table" data-record-view="worst" aria-describedby="worstThroughNote">
+              <thead>
+                <tr>
+                  <th class="record-group" scope="colgroup" colspan="5">Worst through X</th>
+                  <th class="record-group record-divider" scope="colgroup" colspan="6">Worst run of X</th>
+                </tr>
+                <tr>
+                  <th scope="col" aria-sort="ascending"><button class="best-through-sort" type="button" data-sort-key="through">X shots <span class="best-through-sort-indicator" aria-hidden="true">↑</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="makes">Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="percentage">% <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="runNumber">Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="run">Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th class="record-divider" scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchThrough">X shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchMakes">Makes <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchPercentage">% <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchRunNumber">Run # <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchRun">Run <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="none"><button class="best-through-sort" type="button" data-sort-key="batchStart">Shots <span class="best-through-sort-indicator" aria-hidden="true">↕</span></button></th>
+                </tr>
+              </thead>
+              <tbody id="worstThroughTableBody"></tbody>
             </table>
           </div>
         </section>
@@ -2361,7 +2340,8 @@
       const RUN_OVERLAY_COLORS = ["#8da2ff", "#52d273", "#ec6aa6", "#58c7d9", "#b68cff", "#ff7b72", "#d7b45a", "#83c57a"];
       const DASHBOARD_TAB_HASHES = {
         overview: "overview",
-        records: "best-through-x",
+        best: "best-through-x",
+        worst: "worst-through-x",
         breakdown: "breakdown-by-10"
       };
 
@@ -2371,6 +2351,7 @@
         dashboardTabs: document.querySelectorAll("[data-dashboard-tab]"),
         overviewPanel: document.querySelector("#overviewPanel"),
         bestThroughPanel: document.querySelector("#bestThroughPanel"),
+        worstThroughPanel: document.querySelector("#worstThroughPanel"),
         breakdownPanel: document.querySelector("#breakdownPanel"),
         breakdownCount: document.querySelector("#breakdownCount"),
         breakdownTableBody: document.querySelector("#breakdownTableBody"),
@@ -2429,7 +2410,8 @@
         accuracyNote: document.querySelector("#accuracyNote"),
         checkpointGrid: document.querySelector("#checkpointGrid"),
         bestThroughTableBody: document.querySelector("#bestThroughTableBody"),
-        bestThroughSortButtons: document.querySelectorAll(".best-through-sort"),
+        worstThroughTableBody: document.querySelector("#worstThroughTableBody"),
+        recordSortButtons: document.querySelectorAll(".best-through-sort"),
         historyCount: document.querySelector("#historyCount"),
         historyList: document.querySelector("#historyList"),
         emptyHistory: document.querySelector("#emptyHistory"),
@@ -2467,7 +2449,10 @@
       let importResult = { valid: false, format: "exact", shots: [], tenCounts: [], message: "" };
       let pendingTransfer = null;
       let state = loadState();
-      let bestThroughSort = { key: "through", direction: "asc" };
+      const recordSorts = {
+        best: { key: "through", direction: "asc" },
+        worst: { key: "through", direction: "asc" }
+      };
       let activeDashboardTab = dashboardTabFromHash(location.hash) || "overview";
       let trendRange = { start: null, end: null };
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
@@ -3749,8 +3734,11 @@
         return runOf(attempts, true);
       }
 
-      function renderBestThroughTable() {
-        elements.bestThroughTableBody.replaceChildren();
+      function renderRecordsTable(view) {
+        const worst = view === "worst";
+        const tableBody = worst ? elements.worstThroughTableBody : elements.bestThroughTableBody;
+        const sort = recordSorts[view];
+        tableBody.replaceChildren();
 
         const runTimes = state.runs
           .map((run) => Date.parse(`${run.date}T00:00:00Z`))
@@ -3770,43 +3758,28 @@
           .map((run, index) => [run.id, index + 1]));
         const rows = Array.from({ length: MAX_SHOTS }, (_, index) => {
           const attempts = index + 1;
-          const record = recordThrough(attempts);
-          const worstRecord = recordThrough(attempts, true);
-          const batch = bestRunOf(attempts);
-          const worstBatch = worstRunOf(attempts);
+          const record = recordThrough(attempts, worst);
+          const batch = runOf(attempts, worst);
           return {
-            attempts, record, worstRecord, batch, worstBatch,
+            attempts, record, batch,
             runNumber: record ? runNumbers.get(record.run.id) : null,
-            worstRunNumber: worstRecord ? runNumbers.get(worstRecord.run.id) : null,
-            batchRunNumber: batch ? runNumbers.get(batch.run.id) : null,
-            worstBatchRunNumber: worstBatch ? runNumbers.get(worstBatch.run.id) : null
+            batchRunNumber: batch ? runNumbers.get(batch.run.id) : null
           };
         });
-        const direction = bestThroughSort.direction === "asc" ? 1 : -1;
+        const direction = sort.direction === "asc" ? 1 : -1;
         const sortValue = {
           through: (row) => row.attempts,
           makes: (row) => row.record?.makes,
           percentage: (row) => row.record?.percentage,
           runNumber: (row) => row.runNumber,
           run: (row) => row.record?.run.date,
-          worstThrough: (row) => row.attempts,
-          worstMakes: (row) => row.worstRecord?.makes,
-          worstPercentage: (row) => row.worstRecord?.percentage,
-          worstRunNumber: (row) => row.worstRunNumber,
-          worstRun: (row) => row.worstRecord?.run.date,
           batchThrough: (row) => row.attempts,
           batchMakes: (row) => row.batch?.makes,
           batchPercentage: (row) => row.batch?.percentage,
           batchRunNumber: (row) => row.batchRunNumber,
           batchRun: (row) => row.batch?.run.date,
-          batchStart: (row) => row.batch?.startShot,
-          worstBatchThrough: (row) => row.attempts,
-          worstBatchMakes: (row) => row.worstBatch?.makes,
-          worstBatchPercentage: (row) => row.worstBatch?.percentage,
-          worstBatchRunNumber: (row) => row.worstBatchRunNumber,
-          worstBatchRun: (row) => row.worstBatch?.run.date,
-          worstBatchStart: (row) => row.worstBatch?.startShot
-        }[bestThroughSort.key];
+          batchStart: (row) => row.batch?.startShot
+        }[sort.key];
 
         rows.sort((left, right) => {
           const leftValue = sortValue(left);
@@ -3818,26 +3791,24 @@
           return comparison * direction || left.attempts - right.attempts;
         });
 
-        elements.bestThroughSortButtons.forEach((button) => {
-          const active = button.dataset.sortKey === bestThroughSort.key;
+        tableBody.closest("table").querySelectorAll(".best-through-sort").forEach((button) => {
+          const active = button.dataset.sortKey === sort.key;
           const header = button.closest("th");
           const indicator = button.querySelector(".best-through-sort-indicator");
           header.setAttribute(
             "aria-sort",
-            active ? (bestThroughSort.direction === "asc" ? "ascending" : "descending") : "none"
+            active ? (sort.direction === "asc" ? "ascending" : "descending") : "none"
           );
           indicator.textContent = active
-            ? (bestThroughSort.direction === "asc" ? "↑" : "↓")
+            ? (sort.direction === "asc" ? "↑" : "↓")
             : "↕";
         });
 
-        rows.forEach(({ attempts, record, runNumber, worstRecord, worstRunNumber,
-          batch, batchRunNumber, worstBatch, worstBatchRunNumber }) => {
+        rows.forEach(({ attempts, record, runNumber, batch, batchRunNumber }) => {
           const row = document.createElement("tr");
           if (attempts % 10 === 0) row.className = "checkpoint-row";
 
-          [[record, runNumber, false], [worstRecord, worstRunNumber, false],
-            [batch, batchRunNumber, true], [worstBatch, worstBatchRunNumber, true]]
+          [[record, runNumber, false], [batch, batchRunNumber, true]]
             .forEach(([result, resultNumber, isBatch], groupIndex) => {
               const through = document.createElement("td");
               const makes = document.createElement("td");
@@ -3877,7 +3848,7 @@
               }
               row.append(...groupCells);
             });
-          elements.bestThroughTableBody.appendChild(row);
+          tableBody.appendChild(row);
         });
       }
 
@@ -3901,7 +3872,8 @@
           elements.checkpointGrid.appendChild(card);
         });
 
-        renderBestThroughTable();
+        renderRecordsTable("best");
+        renderRecordsTable("worst");
       }
 
       function renderBreakdown() {
@@ -4715,7 +4687,7 @@
       }
 
       function selectDashboardTab(name, focus = false, updateHash = false) {
-        if (!["overview", "records", "breakdown"].includes(name)) return;
+        if (!["overview", "best", "worst", "breakdown"].includes(name)) return;
         activeDashboardTab = name;
         elements.dashboardTabs.forEach((tab) => {
           const selected = tab.dataset.dashboardTab === name;
@@ -4724,7 +4696,8 @@
           if (selected && focus) tab.focus();
         });
         elements.overviewPanel.hidden = name !== "overview";
-        elements.bestThroughPanel.hidden = name !== "records";
+        elements.bestThroughPanel.hidden = name !== "best";
+        elements.worstThroughPanel.hidden = name !== "worst";
         elements.breakdownPanel.hidden = name !== "breakdown";
         chartTooltip.hidden = true;
         if (updateHash) updateDashboardTabHash(name);
@@ -4782,15 +4755,17 @@
       });
       window.addEventListener("hashchange", selectDashboardTabFromLocation);
       window.addEventListener("popstate", selectDashboardTabFromLocation);
-      elements.bestThroughSortButtons.forEach((button) => {
+      elements.recordSortButtons.forEach((button) => {
         button.addEventListener("click", () => {
+          const view = button.closest("table").dataset.recordView;
           const key = button.dataset.sortKey;
-          if (bestThroughSort.key === key) {
-            bestThroughSort.direction = bestThroughSort.direction === "asc" ? "desc" : "asc";
+          const sort = recordSorts[view];
+          if (sort.key === key) {
+            sort.direction = sort.direction === "asc" ? "desc" : "asc";
           } else {
-            bestThroughSort = { key, direction: "asc" };
+            recordSorts[view] = { key, direction: "asc" };
           }
-          renderBestThroughTable();
+          renderRecordsTable(view);
         });
       });
       elements.trendStartRange.addEventListener("input", () => {
