@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-10-08T12:04:59.172129+00:00",
+  "data_updated_at": "2026-10-09T14:28:53.524588+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -6243,6 +6243,78 @@
         },
         {
           "row_number": 4,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "0f3b21b1bb2a4cef",
+      "player_name": "🪕🦐banjo🦐🪕",
+      "puzzle_number": 1938,
+      "score": 6,
+      "hard_mode": false,
+      "grid_pattern": "XXXXX\nXYYXX\nXXYYX\nXGXGG\nGGXGG\nGGGGG",
+      "posted_at": "2026-10-09T14:23:45.812000+00:00",
+      "tracked_at": "2026-10-09T14:23:45.947142+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XXXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XYYXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XXYYX"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGXGG"
+        },
+        {
+          "row_number": 6,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1938,
+      "score": 6,
+      "hard_mode": true,
+      "grid_pattern": "XYXXX\nYYYXX\nYGXXG\nXGXGG\nXGXGG\nGGGGG",
+      "posted_at": "2026-10-09T14:28:53.274000+00:00",
+      "tracked_at": "2026-10-09T14:28:53.524588+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XYXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "YYYXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "YGXXG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 6,
           "pattern": "GGGGG"
         }
       ]
