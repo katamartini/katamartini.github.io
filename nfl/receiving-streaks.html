@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The top 100 recorded NFL streaks of consecutive games played with a catch, with active streaks and clearly labeled partial historical coverage.">
+  <meta name="theme-color" content="#f4f5f1">
+  <link rel="canonical" href="https://kmartini.com/nfl/receiving-streaks.html">
+  <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
+  <title>Receiving Streaks — kmartini.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #20221f; background: #f4f5f1; font-family: Arial, Helvetica, sans-serif; line-height: 1.45; }
+    main { width: min(1200px, calc(100% - 40px)); margin: 0 auto; padding: 42px 0 70px; }
+    a { color: #36534a; }
+    .back { color: #61665e; font-size: 0.88rem; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    h1 { margin: 36px 0 8px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
+    .intro { max-width: 830px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    .coverage { margin: 18px 0 24px; padding-left: 12px; border-left: 3px solid #9c8050; color: #61665e; font-size: 0.88rem; }
+    h2 { margin: 28px 0 8px; font-size: 1.2rem; }
+    .meta, .hint, .method { color: #61665e; font-size: 0.84rem; }
+    .meta { margin: 0 0 22px; }
+    .toolbar { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+    label { color: #61665e; font-size: 0.84rem; }
+    select, input[type="search"] { margin-left: 5px; padding: 6px 8px; border: 1px solid #c8cdc5; border-radius: 4px; color: inherit; background: transparent; font: inherit; }
+    input[type="search"] { width: 190px; }
+    .hint { margin: 0 0 12px; }
+    .table-wrap { overflow-x: auto; border-top: 1px solid #c8cdc5; }
+    table { width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #dde1d8; vertical-align: middle; }
+    thead th { color: #565c54; font-size: 0.8rem; }
+    .number { text-align: right; }
+    .date { white-space: nowrap; }
+    .detail { display: block; color: #61665e; font-size: 0.73rem; font-weight: normal; }
+    .team { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.8rem; }
+    .team img { width: 23px; height: 23px; object-fit: contain; }
+    tr.active { background: #e0f1e3; }
+    tbody tr:hover { background: #edf0e8; }
+    tbody tr.active:hover { background: #d2e9d7; }
+    .active-label { color: #267a45; }
+    button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; cursor: pointer; text-align: inherit; }
+    button:hover { text-decoration: underline; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .table-wrap:focus-visible { outline: 2px solid #20221f; outline-offset: 3px; }
+    .method { max-width: 1000px; margin-top: 24px; }
+    .method p { margin: 0 0 10px; }
+    @media (max-width: 680px) { main { width: calc(100% - 28px); padding-top: 28px; } h1 { margin-top: 28px; } .toolbar { gap: 10px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/nfl">← NFL index</a>
+    <h1>Receiving streaks</h1>
+    <p class="intro">Consecutive regular-season games played with at least one catch. Games missed do not break a streak; a game played with zero catches does. Streaks carry across seasons and team changes.</p>
+    <p class="coverage">Partial historical coverage: these are the top 100 within the available data, not a verified complete all-time top 100. Older published records supplement weekly box scores from 1999 onward; participation data begins in 2013.</p>
+    <h2>Top 100 recorded streaks</h2>
+    <p id="status" class="meta" role="status">Loading streaks…</p>
+    <div class="toolbar">
+      <label for="team-filter">Team <select id="team-filter"><option value="all">All teams</option></select></label>
+      <label for="player-search">Player <input id="player-search" type="search" placeholder="Search players" autocomplete="off"></label>
+      <label><input id="active-only" type="checkbox"> Active streaks only</label>
+    </div>
+    <p class="hint">Green rows: unbroken streaks by players currently on an NFL roster. ≥ means a verified minimum, not an exact full-run total. Click a column to sort; scroll sideways for more columns. <span id="row-count"></span></p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Receiving streaks; scroll horizontally for more columns">
+      <table><caption>Top 100 recorded regular-season receiving streaks; partial historical coverage</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
+    </div>
+    <p id="empty" hidden>No streaks match these filters.</p>
+    <noscript><p>Enable JavaScript to display the receiving streaks.</p></noscript>
+    <div class="method">
+      <p>Every separate run can qualify, so one player may have multiple rows. Rank is the rank in the unfiltered top 100 and stays the same when sorting or filtering. Tied counts use the verified start date, then player name; unknown dates sort last. Filtering does not pull additional rows into the top 100.</p>
+      <p>Regular season only; preseason and playoff games are excluded. A catch counts regardless of receiving yards. Participation includes offense, defense, or special-teams snaps. Injuries, byes, suspensions, and other games not played do not reset a streak.</p>
+      <p>Before 2013, a missing box-score row cannot reliably distinguish a missed game from a zero-catch appearance. Those gaps split runs conservatively and produce ≥ minimums; multiple recorded segments may belong to one longer historical run. “Coverage gap” is not a confirmed zero-catch game. “Observed start” means the full streak may have begun earlier. Missing older records and incomplete runs may change the true all-time ordering.</p>
+      <p id="source-gaps"></p>
+      <p>“Documented” rows have independently verified published totals, with a source link under the player’s name. Unverified dates stay blank; season ranges are not exact start dates. These records replace covered, truncated data fragments so the same historical run is not counted twice.</p>
+      <p>“Unbroken · inactive” means no later zero-catch appearance is recorded, but the player is not on a current roster. Active status includes injured/reserve and practice-squad players. Data and rosters may refresh at different times; participation can delay the newest game appearing here.</p>
+      <p>Checked weekly on Tuesday, with a Wednesday retry. Sources: <a href="https://github.com/nflverse/nflverse-data/releases/tag/stats_player">nflverse weekly player box scores</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/snap_counts">nflverse participation / snap counts</a>, <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">game dates</a>, and <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">current rosters</a>. Historical sources are linked on their rows.</p>
+    </div>
+  </main>
+  <script type="module">
+    import { TEAMS } from './divstreaks-data.mjs';
+    import { normalizeName } from './franchise-leaders-data.mjs';
+    const status = document.getElementById('status'), body = document.getElementById('table-body'), head = document.getElementById('table-head');
+    const search = document.getElementById('player-search'), filter = document.getElementById('team-filter'), activeOnly = document.getElementById('active-only');
+    const headers = new Map(), logoCodes = { LA: 'lar', WAS: 'wsh' };
+    let data, sortKey = 'length', descending = true;
+    const make = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text != null) node.textContent = text; return node; };
+    const dateText = date => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
+    const statusText = row => row.archive ? 'Documented' : row.gapAfter ? 'Coverage gap' : row.active ? 'Active' : row.endedBy ? 'Ended' : 'Unbroken · inactive';
+    for (const [code, team] of Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))) { const option = make('option', '', team.name); option.value = code; filter.append(option); }
+    const columns = [{ key: 'rank', label: 'Rank', number: true }, { key: 'name', label: 'Player' }, { key: 'teams', label: 'Team(s)' }, { key: 'length', label: 'Games', number: true },
+      { key: 'start', label: 'Start' }, { key: 'last', label: 'Last catch game' }, { key: 'endedBy', label: 'Ended by' }, { key: 'status', label: 'Status' }];
+    for (const column of columns) {
+      const th = make('th', column.number ? 'number' : ''); th.scope = 'col'; const button = make('button', '', column.label); button.type = 'button';
+      const arrow = make('span'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow);
+      button.addEventListener('click', () => { descending = sortKey === column.key ? !descending : !!column.number && column.key !== 'rank'; sortKey = column.key; render(); });
+      th.append(button); head.append(th); headers.set(column.key, { th, arrow });
+    }
+    function render() {
+      if (!data) return;
+      const query = normalizeName(search.value);
+      const rows = data.leaders.filter(row => (filter.value === 'all' || row.teams.includes(filter.value)) &&
+        normalizeName(row.name).includes(query) && (!activeOnly.checked || row.active));
+      const value = (row, key) => ['start', 'last', 'endedBy'].includes(key) ? row[key]?.date || null :
+        key === 'teams' ? row.teams.map(team => TEAMS[team].name).join(', ') : key === 'status' ? statusText(row) : row[key];
+      rows.sort((a, b) => { const x = value(a, sortKey), y = value(b, sortKey); if (x == null || y == null) return x == null && y == null ? a.rank - b.rank : x == null ? 1 : -1;
+        const order = typeof x === 'number' ? x - y : x.localeCompare(y); return (descending ? -order : order) || a.rank - b.rank; });
+      for (const [key, { th, arrow }] of headers) { th.setAttribute('aria-sort', key === sortKey ? descending ? 'descending' : 'ascending' : 'none'); arrow.textContent = key === sortKey ? descending ? ' ↓' : ' ↑' : ''; }
+      const fragment = document.createDocumentFragment();
+      for (const row of rows) {
+        const tr = make('tr', row.active ? 'active' : ''); tr.append(make('td', 'number', row.rank));
+        const name = make('th', '', row.name); name.scope = 'row';
+        if (row.source) { const source = make('a', 'detail', row.archive ? 'Historical source' : 'Record source'); source.href = row.source; name.append(source); }
+        tr.append(name); const teams = make('td');
+        for (const code of row.teams) { const team = make('div', 'team'), img = make('img'); img.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[code] || code.toLowerCase()}.png`; img.alt = ''; img.width = 23; img.height = 23; img.loading = 'lazy'; team.append(img, make('span', '', TEAMS[code].name)); teams.append(team); }
+        tr.append(teams); const games = make('td', 'number', `${row.lowerBound ? '≥' : ''}${row.length}`); if (row.lowerBound) games.title = 'Recorded minimum; the complete run may be longer'; tr.append(games);
+        for (const key of ['start', 'last']) { const date = row[key].date, cell = make('td', 'date', date ? dateText(date) : key === 'start' ? row.period : '—');
+          if (!date) cell.append(make('span', 'detail', 'Exact date unverified')); else if (key === 'start' && row.startUnknown) cell.append(make('span', 'detail', 'Observed start')); tr.append(cell); }
+        const ended = make('td', 'date', row.endedBy ? dateText(row.endedBy.date) : '—');
+        if (row.endedBy) ended.append(make('span', 'detail', `0 catches vs ${TEAMS[row.endedBy.opponent].name}`));
+        else if (row.gapAfter) { ended.textContent = row.gapAfter.date ? dateText(row.gapAfter.date) : '—'; ended.append(make('span', 'detail', 'Participation unknown')); }
+        else if (row.archive) ended.append(make('span', 'detail', 'Not verified here'));
+        tr.append(ended, make('td', row.active ? 'active-label' : '', statusText(row))); fragment.append(tr);
+      }
+      body.replaceChildren(fragment); document.getElementById('empty').hidden = rows.length > 0;
+      document.getElementById('row-count').textContent = `${rows.length} of ${data.leaders.length} streaks.`;
+    }
+    filter.addEventListener('change', render); search.addEventListener('input', render); activeOnly.addEventListener('change', render);
+    try {
+      const response = await fetch('../data/receiving-streaks.json'); if (!response.ok) throw new Error('Data unavailable'); const saved = await response.json();
+      if (saved.schemaVersion !== 1 || saved.historicalCoverage !== 'partial' || !Array.isArray(saved.leaders) || saved.leaders.length !== 100 ||
+        saved.leaders.some((row, i) => row.rank !== i + 1 || typeof row.name !== 'string' || !Number.isInteger(row.length) || row.length < 1 ||
+          !row.teams?.length || row.teams.some(code => !TEAMS[code]) || !row.start || !row.last || !row.archive && (!row.start.date || !row.last.date) ||
+          row.archive && (!row.period || !row.source?.startsWith('https://') || row.active) || typeof row.active !== 'boolean')) throw new Error('Incomplete data');
+      data = saved; render(); status.textContent = `Regular season · Games through ${dateText(data.through)} · Rosters: ${data.season} Week ${data.rosterWeek} · Partial historical coverage`;
+      document.getElementById('source-gaps').textContent = data.missingGames?.length ? `Known historical box-score gaps: ${data.missingGames.map(game => `${game.away} at ${game.home} (${dateText(game.date)}; ${game.reason.toLowerCase()})`).join('; ')}. No catches or appearances are invented for these games.` : '';
+    } catch { status.textContent = 'Streaks could not be loaded. Please refresh to try again.'; }
+  </script>
+</body>
+</html>

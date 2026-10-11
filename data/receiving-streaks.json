@@ -1,0 +1,3621 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-11T01:17:40.385Z",
+  "season": 2026,
+  "through": "2026-10-08",
+  "latestWeek": 5,
+  "rosterWeek": 5,
+  "firstStatsSeason": 1999,
+  "firstParticipationSeason": 2013,
+  "historicalCoverage": "partial",
+  "missingGames": [
+    {
+      "game": "1999_01_BAL_STL",
+      "date": "1999-09-12",
+      "home": "STL",
+      "away": "BAL",
+      "reason": "Missing box score"
+    },
+    {
+      "game": "2000_03_SD_KC",
+      "date": "2000-09-17",
+      "home": "KC",
+      "away": "SD",
+      "reason": "Missing box score"
+    },
+    {
+      "game": "2000_06_BUF_MIA",
+      "date": "2000-10-08",
+      "home": "MIA",
+      "away": "BUF",
+      "reason": "Missing box score"
+    },
+    {
+      "game": "2012_06_PIT_TEN",
+      "date": "2012-10-11",
+      "home": "TEN",
+      "away": "PIT",
+      "reason": "Unassigned catches; game excluded conservatively"
+    }
+  ],
+  "sourceHash": "76561114661d3979cf9b47f8d78c6f16ca7c1dc59b561c1eab33f165894c32a7",
+  "sources": [
+    {
+      "kind": "stats",
+      "season": 1999,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_1999.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2000,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2000.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2001,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2001.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2002,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2002.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2003,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2003.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2004,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2004.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2005,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2005.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2006,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2006.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2007,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2007.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2008,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2008.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2009,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2009.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2010,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2010.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2011,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2011.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2012,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2012.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2013,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2013.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2013,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2013.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2014,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2014.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2014,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2014.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2015,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2015.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2015,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2015.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2016,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2016.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2016,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2016.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2017,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2017.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2017,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2017.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2018,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2018.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2018,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2018.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2019,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2019.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2019,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2019.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2020,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2020.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2020,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2020.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2021,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2021.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2021,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2021.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2022,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2022.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2022,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2022.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2023,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2023.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2023,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2023.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2024,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2024.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2024,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2024.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2025,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2025,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2025.csv.gz"
+    },
+    {
+      "kind": "stats",
+      "season": 2026,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv.gz"
+    },
+    {
+      "kind": "participation",
+      "season": 2026,
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2026.csv.gz"
+    }
+  ],
+  "scheduleSource": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+  "rosterSource": "https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_2026.csv",
+  "leaders": [
+    {
+      "id": "archive:00-0013639:274",
+      "playerId": "00-0013639",
+      "name": "Jerry Rice",
+      "length": 274,
+      "teams": [
+        "SF",
+        "LV"
+      ],
+      "source": "https://www.colts.com/news/honor-nears-for-harrison-6354461",
+      "period": "1985–2004",
+      "start": {
+        "date": null,
+        "season": 1985
+      },
+      "last": {
+        "date": null,
+        "season": 2004
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 1
+    },
+    {
+      "id": "archive:00-0022921:256",
+      "playerId": "00-0022921",
+      "name": "Larry Fitzgerald",
+      "length": 256,
+      "teams": [
+        "ARI"
+      ],
+      "source": "https://www.azcardinals.com/news/a-number-forever-cardinals-to-retire-larry-fitzgerald-s-11-ring-of-honor",
+      "period": "2004–2020",
+      "start": {
+        "date": null,
+        "season": 2004
+      },
+      "last": {
+        "date": null,
+        "season": 2020
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 2
+    },
+    {
+      "id": "archive:00-0006101:211",
+      "playerId": "00-0006101",
+      "name": "Tony Gonzalez",
+      "length": 211,
+      "teams": [
+        "KC",
+        "ATL"
+      ],
+      "source": "https://www.profootballhof.com/players/tony-gonzalez",
+      "period": "Dates unverified",
+      "start": {
+        "date": null,
+        "season": 2000
+      },
+      "last": {
+        "date": null,
+        "season": 2013
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 3
+    },
+    {
+      "id": "00-0030506:2014_01_TEN_KC",
+      "playerId": "00-0030506",
+      "name": "Travis Kelce",
+      "length": 195,
+      "start": {
+        "date": "2014-09-07",
+        "season": 2014,
+        "game": "2014_01_TEN_KC",
+        "team": "KC",
+        "opponent": "TEN"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_KC_LV",
+        "team": "KC",
+        "opponent": "LV"
+      },
+      "teams": [
+        "KC"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 4
+    },
+    {
+      "id": "archive:00-0007024:190",
+      "playerId": "00-0007024",
+      "name": "Marvin Harrison",
+      "length": 190,
+      "teams": [
+        "IND"
+      ],
+      "source": "https://www.profootballhof.com/players/marvin-harrison",
+      "period": "1996–2008",
+      "start": {
+        "date": null,
+        "season": 1996
+      },
+      "last": {
+        "date": null,
+        "season": 2008
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 5
+    },
+    {
+      "id": "archive:00-0017162:186",
+      "playerId": "00-0017162",
+      "name": "Hines Ward",
+      "length": 186,
+      "teams": [
+        "PIT"
+      ],
+      "source": "https://www.steelers.com/museum/stats/individual-receiving",
+      "period": "1998–2010",
+      "start": {
+        "date": "1998-11-09",
+        "season": 1998
+      },
+      "last": {
+        "date": "2010-11-08",
+        "season": 2010
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 6
+    },
+    {
+      "id": "archive:00-0012478:185",
+      "playerId": "00-0012478",
+      "name": "Terrell Owens",
+      "length": 185,
+      "teams": [
+        "SF",
+        "PHI",
+        "DAL",
+        "BUF"
+      ],
+      "source": "https://www.buffalobills.com/news/bills-offense-stalls-in-loss-to-saints-790833",
+      "period": "1996–2009",
+      "start": {
+        "date": null,
+        "season": 1996
+      },
+      "last": {
+        "date": null,
+        "season": 2009
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 7
+    },
+    {
+      "id": "archive:00-0011483:183",
+      "playerId": "00-0011483",
+      "name": "Art Monk",
+      "length": 183,
+      "teams": [
+        "WAS",
+        "NYJ",
+        "PHI"
+      ],
+      "source": "https://www.profootballhof.com/players/art-monk",
+      "period": "Dates unverified",
+      "start": {
+        "date": null,
+        "season": 1980
+      },
+      "last": {
+        "date": null,
+        "season": 1995
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 8
+    },
+    {
+      "id": "00-0030564:2013_01_HOU_SD",
+      "playerId": "00-0030564",
+      "name": "DeAndre Hopkins",
+      "length": 181,
+      "start": {
+        "date": "2013-09-09",
+        "season": 2013,
+        "game": "2013_01_HOU_SD",
+        "team": "HOU",
+        "opponent": "LAC"
+      },
+      "last": {
+        "date": "2025-09-22",
+        "season": 2025,
+        "game": "2025_03_DET_BAL",
+        "team": "BAL",
+        "opponent": "DET"
+      },
+      "teams": [
+        "HOU",
+        "ARI",
+        "TEN",
+        "KC",
+        "BAL"
+      ],
+      "endedBy": {
+        "date": "2025-09-28",
+        "season": 2025,
+        "game": "2025_04_BAL_KC",
+        "team": "BAL",
+        "opponent": "KC"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 9
+    },
+    {
+      "id": "archive:00-0002058:179",
+      "playerId": "00-0002058",
+      "name": "Tim Brown",
+      "length": 179,
+      "teams": [
+        "LV",
+        "TB"
+      ],
+      "source": "https://www.buccaneers.com/news/shootout-kc-corralled-2159379",
+      "period": "1993–2004",
+      "start": {
+        "date": null,
+        "season": 1993
+      },
+      "last": {
+        "date": null,
+        "season": 2004
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 10
+    },
+    {
+      "id": "archive:LAR118653:177",
+      "playerId": "LAR118653",
+      "name": "Steve Largent",
+      "length": 177,
+      "teams": [
+        "SEA"
+      ],
+      "source": "https://www.profootballhof.com/players/steve-largent",
+      "period": "Dates unverified",
+      "start": {
+        "date": null,
+        "season": 1976
+      },
+      "last": {
+        "date": null,
+        "season": 1989
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 11
+    },
+    {
+      "id": "00-0031588:2015_04_MIN_DEN",
+      "playerId": "00-0031588",
+      "name": "Stefon Diggs",
+      "length": 165,
+      "start": {
+        "date": "2015-10-04",
+        "season": 2015,
+        "game": "2015_04_MIN_DEN",
+        "team": "MIN",
+        "opponent": "DEN"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_IND_WAS",
+        "team": "WAS",
+        "opponent": "IND"
+      },
+      "teams": [
+        "MIN",
+        "BUF",
+        "HOU",
+        "NE",
+        "WAS"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 12
+    },
+    {
+      "id": "00-0031381:2015_08_GB_DEN",
+      "playerId": "00-0031381",
+      "name": "Davante Adams",
+      "length": 163,
+      "start": {
+        "date": "2015-11-01",
+        "season": 2015,
+        "game": "2015_08_GB_DEN",
+        "team": "GB",
+        "opponent": "DEN"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_LA_PHI",
+        "team": "LA",
+        "opponent": "PHI"
+      },
+      "teams": [
+        "GB",
+        "LV",
+        "NYJ",
+        "LA"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 13
+    },
+    {
+      "id": "archive:NEW589446:150",
+      "playerId": "NEW589446",
+      "name": "Ozzie Newsome",
+      "length": 150,
+      "teams": [
+        "CLE"
+      ],
+      "source": "https://www.clevelandbrowns.com/news/ozzie-newsome-a-browns-leader-for-decades-16435246",
+      "period": "Dates unverified",
+      "start": {
+        "date": null,
+        "season": 1978
+      },
+      "last": {
+        "date": null,
+        "season": 1989
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 14
+    },
+    {
+      "id": "00-0030061:2014_14_SEA_PHI",
+      "playerId": "00-0030061",
+      "name": "Zach Ertz",
+      "length": 144,
+      "start": {
+        "date": "2014-12-07",
+        "season": 2014,
+        "game": "2014_14_SEA_PHI",
+        "team": "PHI",
+        "opponent": "SEA"
+      },
+      "last": {
+        "date": "2025-09-28",
+        "season": 2025,
+        "game": "2025_04_WAS_ATL",
+        "team": "WAS",
+        "opponent": "ATL"
+      },
+      "teams": [
+        "PHI",
+        "ARI",
+        "WAS"
+      ],
+      "endedBy": {
+        "date": "2025-10-05",
+        "season": 2025,
+        "game": "2025_05_WAS_LAC",
+        "team": "WAS",
+        "opponent": "LAC"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 15
+    },
+    {
+      "id": "00-0020498:2006_01_IND_NYG",
+      "playerId": "00-0020498",
+      "name": "Reggie Wayne",
+      "length": 134,
+      "start": {
+        "date": "2006-09-10",
+        "season": 2006,
+        "game": "2006_01_IND_NYG",
+        "team": "IND",
+        "opponent": "NYG"
+      },
+      "last": {
+        "date": "2014-12-28",
+        "season": 2014,
+        "game": "2014_17_IND_TEN",
+        "team": "IND",
+        "opponent": "TEN"
+      },
+      "teams": [
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 16
+    },
+    {
+      "id": "00-0027944:2011_13_ATL_HOU",
+      "playerId": "00-0027944",
+      "name": "Julio Jones",
+      "length": 134,
+      "start": {
+        "date": "2011-12-04",
+        "season": 2011,
+        "game": "2011_13_ATL_HOU",
+        "team": "ATL",
+        "opponent": "HOU"
+      },
+      "last": {
+        "date": "2021-12-12",
+        "season": 2021,
+        "game": "2021_14_JAX_TEN",
+        "team": "TEN",
+        "opponent": "JAX"
+      },
+      "teams": [
+        "ATL",
+        "TEN"
+      ],
+      "endedBy": {
+        "date": "2021-12-19",
+        "season": 2021,
+        "game": "2021_15_TEN_PIT",
+        "team": "TEN",
+        "opponent": "PIT"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 17
+    },
+    {
+      "id": "00-0022127:2008_11_DAL_WAS",
+      "playerId": "00-0022127",
+      "name": "Jason Witten",
+      "length": 130,
+      "start": {
+        "date": "2008-11-16",
+        "season": 2008,
+        "game": "2008_11_DAL_WAS",
+        "team": "DAL",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2016-11-24",
+        "season": 2016,
+        "game": "2016_12_WAS_DAL",
+        "team": "DAL",
+        "opponent": "WAS"
+      },
+      "teams": [
+        "DAL"
+      ],
+      "endedBy": {
+        "date": "2016-12-01",
+        "season": 2016,
+        "game": "2016_13_DAL_MIN",
+        "team": "DAL",
+        "opponent": "MIN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 18
+    },
+    {
+      "id": "00-0031382:2014_02_MIA_BUF",
+      "playerId": "00-0031382",
+      "name": "Jarvis Landry",
+      "length": 130,
+      "start": {
+        "date": "2014-09-14",
+        "season": 2014,
+        "game": "2014_02_MIA_BUF",
+        "team": "MIA",
+        "opponent": "BUF"
+      },
+      "last": {
+        "date": "2022-12-05",
+        "season": 2022,
+        "game": "2022_13_NO_TB",
+        "team": "NO",
+        "opponent": "TB"
+      },
+      "teams": [
+        "MIA",
+        "CLE",
+        "NO"
+      ],
+      "endedBy": {
+        "date": "2022-12-18",
+        "season": 2022,
+        "game": "2022_15_ATL_NO",
+        "team": "NO",
+        "opponent": "ATL"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 19
+    },
+    {
+      "id": "00-0023462:2006_14_ATL_TB",
+      "playerId": "00-0023462",
+      "name": "Roddy White",
+      "length": 128,
+      "start": {
+        "date": "2006-12-10",
+        "season": 2006,
+        "game": "2006_14_ATL_TB",
+        "team": "ATL",
+        "opponent": "TB"
+      },
+      "last": {
+        "date": "2015-09-14",
+        "season": 2015,
+        "game": "2015_01_PHI_ATL",
+        "team": "ATL",
+        "opponent": "PHI"
+      },
+      "teams": [
+        "ATL"
+      ],
+      "endedBy": {
+        "date": "2015-09-20",
+        "season": 2015,
+        "game": "2015_02_ATL_NYG",
+        "team": "ATL",
+        "opponent": "NYG"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 20
+    },
+    {
+      "id": "00-0027891:2012_08_SEA_DET",
+      "playerId": "00-0027891",
+      "name": "Golden Tate",
+      "length": 127,
+      "start": {
+        "date": "2012-10-28",
+        "season": 2012,
+        "game": "2012_08_SEA_DET",
+        "team": "SEA",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2020-12-20",
+        "season": 2020,
+        "game": "2020_15_CLE_NYG",
+        "team": "NYG",
+        "opponent": "CLE"
+      },
+      "teams": [
+        "SEA",
+        "DET",
+        "PHI",
+        "NYG"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 21
+    },
+    {
+      "id": "archive:CAR217503:127",
+      "playerId": "CAR217503",
+      "name": "Harold Carmichael",
+      "length": 127,
+      "teams": [
+        "PHI"
+      ],
+      "source": "https://www.profootballhof.com/players/harold-carmichael",
+      "period": "1972–1980",
+      "start": {
+        "date": null,
+        "season": 1972
+      },
+      "last": {
+        "date": null,
+        "season": 1980
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 22
+    },
+    {
+      "id": "00-0029293:2013_05_NE_CIN",
+      "playerId": "00-0029293",
+      "name": "Marvin Jones",
+      "length": 117,
+      "start": {
+        "date": "2013-10-06",
+        "season": 2013,
+        "game": "2013_05_NE_CIN",
+        "team": "CIN",
+        "opponent": "NE"
+      },
+      "last": {
+        "date": "2022-09-25",
+        "season": 2022,
+        "game": "2022_03_JAX_LAC",
+        "team": "JAX",
+        "opponent": "LAC"
+      },
+      "teams": [
+        "CIN",
+        "DET",
+        "JAX"
+      ],
+      "endedBy": {
+        "date": "2022-10-02",
+        "season": 2022,
+        "game": "2022_04_JAX_PHI",
+        "team": "JAX",
+        "opponent": "PHI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 23
+    },
+    {
+      "id": "00-0031428:2014_01_JAX_PHI",
+      "playerId": "00-0031428",
+      "name": "Allen Robinson",
+      "length": 116,
+      "start": {
+        "date": "2014-09-07",
+        "season": 2014,
+        "game": "2014_01_JAX_PHI",
+        "team": "JAX",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2023-10-22",
+        "season": 2023,
+        "game": "2023_07_PIT_LA",
+        "team": "PIT",
+        "opponent": "LA"
+      },
+      "teams": [
+        "JAX",
+        "CHI",
+        "LA",
+        "PIT"
+      ],
+      "endedBy": {
+        "date": "2023-10-29",
+        "season": 2023,
+        "game": "2023_08_JAX_PIT",
+        "team": "PIT",
+        "opponent": "JAX"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 24
+    },
+    {
+      "id": "00-0033288:2017_01_CAR_SF",
+      "playerId": "00-0033288",
+      "name": "George Kittle",
+      "length": 114,
+      "start": {
+        "date": "2017-09-10",
+        "season": 2017,
+        "game": "2017_01_CAR_SF",
+        "team": "SF",
+        "opponent": "CAR"
+      },
+      "last": {
+        "date": "2025-09-07",
+        "season": 2025,
+        "game": "2025_01_SF_SEA",
+        "team": "SF",
+        "opponent": "SEA"
+      },
+      "teams": [
+        "SF"
+      ],
+      "endedBy": {
+        "date": "2025-10-19",
+        "season": 2025,
+        "game": "2025_07_ATL_SF",
+        "team": "SF",
+        "opponent": "ATL"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 25
+    },
+    {
+      "id": "00-0027793:2012_13_PIT_BAL",
+      "playerId": "00-0027793",
+      "name": "Antonio Brown",
+      "length": 113,
+      "start": {
+        "date": "2012-12-02",
+        "season": 2012,
+        "game": "2012_13_PIT_BAL",
+        "team": "PIT",
+        "opponent": "BAL"
+      },
+      "last": {
+        "date": "2022-01-02",
+        "season": 2021,
+        "game": "2021_17_TB_NYJ",
+        "team": "TB",
+        "opponent": "NYJ"
+      },
+      "teams": [
+        "PIT",
+        "NE",
+        "TB"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 26
+    },
+    {
+      "id": "00-0027874:2011_13_DEN_MIN",
+      "playerId": "00-0027874",
+      "name": "Demaryius Thomas",
+      "length": 110,
+      "start": {
+        "date": "2011-12-04",
+        "season": 2011,
+        "game": "2011_13_DEN_MIN",
+        "team": "DEN",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2018-11-04",
+        "season": 2018,
+        "game": "2018_09_HOU_DEN",
+        "team": "HOU",
+        "opponent": "DEN"
+      },
+      "teams": [
+        "DEN",
+        "HOU"
+      ],
+      "endedBy": {
+        "date": "2018-11-18",
+        "season": 2018,
+        "game": "2018_11_HOU_WAS",
+        "team": "HOU",
+        "opponent": "WAS"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 27
+    },
+    {
+      "id": "00-0033881:2017_06_NYG_DEN",
+      "playerId": "00-0033881",
+      "name": "Evan Engram",
+      "length": 110,
+      "start": {
+        "date": "2017-10-15",
+        "season": 2017,
+        "game": "2017_06_NYG_DEN",
+        "team": "NYG",
+        "opponent": "DEN"
+      },
+      "last": {
+        "date": "2025-10-26",
+        "season": 2025,
+        "game": "2025_08_DAL_DEN",
+        "team": "DEN",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "NYG",
+        "JAX",
+        "DEN"
+      ],
+      "endedBy": {
+        "date": "2025-11-02",
+        "season": 2025,
+        "game": "2025_09_DEN_HOU",
+        "team": "DEN",
+        "opponent": "HOU"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 28
+    },
+    {
+      "id": "00-0030279:2018_16_BAL_LAC",
+      "playerId": "00-0030279",
+      "name": "Keenan Allen",
+      "length": 106,
+      "start": {
+        "date": "2018-12-22",
+        "season": 2018,
+        "game": "2018_16_BAL_LAC",
+        "team": "LAC",
+        "opponent": "BAL"
+      },
+      "last": {
+        "date": "2026-09-27",
+        "season": 2026,
+        "game": "2026_03_HOU_IND",
+        "team": "IND",
+        "opponent": "HOU"
+      },
+      "teams": [
+        "LAC",
+        "CHI",
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 29
+    },
+    {
+      "id": "00-0024334:2010_14_MIA_NYJ",
+      "playerId": "00-0024334",
+      "name": "Brandon Marshall",
+      "length": 105,
+      "start": {
+        "date": "2010-12-12",
+        "season": 2010,
+        "game": "2010_14_MIA_NYJ",
+        "team": "MIA",
+        "opponent": "NYJ"
+      },
+      "last": {
+        "date": "2018-09-30",
+        "season": 2018,
+        "game": "2018_04_SEA_ARI",
+        "team": "SEA",
+        "opponent": "ARI"
+      },
+      "teams": [
+        "MIA",
+        "CHI",
+        "NYJ",
+        "NYG",
+        "SEA"
+      ],
+      "endedBy": {
+        "date": "2018-10-07",
+        "season": 2018,
+        "game": "2018_05_LA_SEA",
+        "team": "SEA",
+        "opponent": "LA"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 30
+    },
+    {
+      "id": "00-0020397:2002_05_CIN_IND",
+      "playerId": "00-0020397",
+      "name": "Chad Johnson",
+      "length": 102,
+      "start": {
+        "date": "2002-10-06",
+        "season": 2002,
+        "game": "2002_05_CIN_IND",
+        "team": "CIN",
+        "opponent": "IND"
+      },
+      "last": {
+        "date": "2008-11-16",
+        "season": 2008,
+        "game": "2008_11_PHI_CIN",
+        "team": "CIN",
+        "opponent": "PHI"
+      },
+      "teams": [
+        "CIN"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2008-11-20",
+        "game": "2008_12_CIN_PIT"
+      },
+      "lowerBound": true,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 31
+    },
+    {
+      "id": "00-0029000:2015_14_DAL_GB",
+      "playerId": "00-0029000",
+      "name": "Cole Beasley",
+      "length": 101,
+      "start": {
+        "date": "2015-12-13",
+        "season": 2015,
+        "game": "2015_14_DAL_GB",
+        "team": "DAL",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2022-12-24",
+        "season": 2022,
+        "game": "2022_16_BUF_CHI",
+        "team": "BUF",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "DAL",
+        "BUF",
+        "TB"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 32
+    },
+    {
+      "id": "00-0035640:2019_17_SF_SEA",
+      "playerId": "00-0035640",
+      "name": "DK Metcalf",
+      "length": 101,
+      "start": {
+        "date": "2019-12-29",
+        "season": 2019,
+        "game": "2019_17_SF_SEA",
+        "team": "SEA",
+        "opponent": "SF"
+      },
+      "last": {
+        "date": "2026-10-01",
+        "season": 2026,
+        "game": "2026_04_PIT_CLE",
+        "team": "PIT",
+        "opponent": "CLE"
+      },
+      "teams": [
+        "SEA",
+        "PIT"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 33
+    },
+    {
+      "id": "00-0031941:2015_01_MIA_WAS",
+      "playerId": "00-0031941",
+      "name": "Jamison Crowder",
+      "length": 100,
+      "start": {
+        "date": "2015-09-13",
+        "season": 2015,
+        "game": "2015_01_MIA_WAS",
+        "team": "WAS",
+        "opponent": "MIA"
+      },
+      "last": {
+        "date": "2022-10-02",
+        "season": 2022,
+        "game": "2022_04_BUF_BAL",
+        "team": "BUF",
+        "opponent": "BAL"
+      },
+      "teams": [
+        "WAS",
+        "NYJ",
+        "BUF"
+      ],
+      "endedBy": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_ARI_WAS",
+        "team": "WAS",
+        "opponent": "ARI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 34
+    },
+    {
+      "id": "00-0029608:2015_01_IND_BUF",
+      "playerId": "00-0029608",
+      "name": "T.Y. Hilton",
+      "length": 100,
+      "start": {
+        "date": "2015-09-13",
+        "season": 2015,
+        "game": "2015_01_IND_BUF",
+        "team": "IND",
+        "opponent": "BUF"
+      },
+      "last": {
+        "date": "2023-01-08",
+        "season": 2022,
+        "game": "2022_18_DAL_WAS",
+        "team": "DAL",
+        "opponent": "WAS"
+      },
+      "teams": [
+        "IND",
+        "DAL"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 35
+    },
+    {
+      "id": "00-0036252:2020_01_IND_JAX",
+      "playerId": "00-0036252",
+      "name": "Michael Pittman",
+      "length": 98,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_IND_JAX",
+        "team": "IND",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-10-01",
+        "season": 2026,
+        "game": "2026_04_PIT_CLE",
+        "team": "PIT",
+        "opponent": "CLE"
+      },
+      "teams": [
+        "IND",
+        "PIT"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 36
+    },
+    {
+      "id": "00-0007681:1999_07_CLE_STL",
+      "playerId": "00-0007681",
+      "name": "Torry Holt",
+      "length": 97,
+      "start": {
+        "date": "1999-10-24",
+        "season": 1999,
+        "game": "1999_07_CLE_STL",
+        "team": "LA",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2005-10-17",
+        "season": 2005,
+        "game": "2005_06_STL_IND",
+        "team": "LA",
+        "opponent": "IND"
+      },
+      "teams": [
+        "LA"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2005-10-23",
+        "game": "2005_07_NO_STL"
+      },
+      "lowerBound": true,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 37
+    },
+    {
+      "id": "00-0036322:2020_01_GB_MIN",
+      "playerId": "00-0036322",
+      "name": "Justin Jefferson",
+      "length": 97,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_GB_MIN",
+        "team": "MIN",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2026-09-27",
+        "season": 2026,
+        "game": "2026_03_MIN_TB",
+        "team": "MIN",
+        "opponent": "TB"
+      },
+      "teams": [
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 38
+    },
+    {
+      "id": "00-0016550:1999_01_NYG_TB",
+      "playerId": "00-0016550",
+      "name": "Amani Toomer",
+      "length": 95,
+      "start": {
+        "date": "1999-09-12",
+        "season": 1999,
+        "game": "1999_01_NYG_TB",
+        "team": "NYG",
+        "opponent": "TB"
+      },
+      "last": {
+        "date": "2004-12-26",
+        "season": 2004,
+        "game": "2004_16_NYG_CIN",
+        "team": "NYG",
+        "opponent": "CIN"
+      },
+      "teams": [
+        "NYG"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2005-01-02",
+        "game": "2004_17_DAL_NYG"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 39
+    },
+    {
+      "id": "00-0026986:2011_03_SF_CIN",
+      "playerId": "00-0026986",
+      "name": "Michael Crabtree",
+      "length": 92,
+      "start": {
+        "date": "2011-09-25",
+        "season": 2011,
+        "game": "2011_03_SF_CIN",
+        "team": "SF",
+        "opponent": "CIN"
+      },
+      "last": {
+        "date": "2017-11-19",
+        "season": 2017,
+        "game": "2017_11_NE_OAK",
+        "team": "LV",
+        "opponent": "NE"
+      },
+      "teams": [
+        "SF",
+        "LV"
+      ],
+      "endedBy": {
+        "date": "2017-11-26",
+        "season": 2017,
+        "game": "2017_12_DEN_OAK",
+        "team": "LV",
+        "opponent": "DEN"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 40
+    },
+    {
+      "id": "00-0033040:2019_13_OAK_KC",
+      "playerId": "00-0033040",
+      "name": "Tyreek Hill",
+      "length": 91,
+      "start": {
+        "date": "2019-12-01",
+        "season": 2019,
+        "game": "2019_13_OAK_KC",
+        "team": "KC",
+        "opponent": "LV"
+      },
+      "last": {
+        "date": "2025-09-29",
+        "season": 2025,
+        "game": "2025_04_NYJ_MIA",
+        "team": "MIA",
+        "opponent": "NYJ"
+      },
+      "teams": [
+        "KC",
+        "MIA"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 41
+    },
+    {
+      "id": "00-0024389:2012_11_CHI_SF",
+      "playerId": "00-0024389",
+      "name": "Delanie Walker",
+      "length": 90,
+      "start": {
+        "date": "2012-11-19",
+        "season": 2012,
+        "game": "2012_11_CHI_SF",
+        "team": "SF",
+        "opponent": "CHI"
+      },
+      "last": {
+        "date": "2019-10-13",
+        "season": 2019,
+        "game": "2019_06_TEN_DEN",
+        "team": "TEN",
+        "opponent": "DEN"
+      },
+      "teams": [
+        "SF",
+        "TEN"
+      ],
+      "endedBy": {
+        "date": "2019-10-20",
+        "season": 2019,
+        "game": "2019_07_LAC_TEN",
+        "team": "TEN",
+        "opponent": "LAC"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 42
+    },
+    {
+      "id": "00-0027150:2013_01_NE_BUF",
+      "playerId": "00-0027150",
+      "name": "Julian Edelman",
+      "length": 89,
+      "start": {
+        "date": "2013-09-08",
+        "season": 2013,
+        "game": "2013_01_NE_BUF",
+        "team": "NE",
+        "opponent": "BUF"
+      },
+      "last": {
+        "date": "2020-10-25",
+        "season": 2020,
+        "game": "2020_07_SF_NE",
+        "team": "NE",
+        "opponent": "SF"
+      },
+      "teams": [
+        "NE"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 43
+    },
+    {
+      "id": "00-0031408:2019_06_CAR_TB",
+      "playerId": "00-0031408",
+      "name": "Mike Evans",
+      "length": 89,
+      "start": {
+        "date": "2019-10-13",
+        "season": 2019,
+        "game": "2019_06_CAR_TB",
+        "team": "TB",
+        "opponent": "CAR"
+      },
+      "last": {
+        "date": "2025-09-21",
+        "season": 2025,
+        "game": "2025_03_NYJ_TB",
+        "team": "TB",
+        "opponent": "NYJ"
+      },
+      "teams": [
+        "TB"
+      ],
+      "endedBy": {
+        "date": "2025-10-20",
+        "season": 2025,
+        "game": "2025_07_TB_DET",
+        "team": "TB",
+        "opponent": "DET"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 44
+    },
+    {
+      "id": "00-0026201:2011_15_DAL_TB",
+      "playerId": "00-0026201",
+      "name": "Martellus Bennett",
+      "length": 87,
+      "start": {
+        "date": "2011-12-17",
+        "season": 2011,
+        "game": "2011_15_DAL_TB",
+        "team": "DAL",
+        "opponent": "TB"
+      },
+      "last": {
+        "date": "2017-11-19",
+        "season": 2017,
+        "game": "2017_11_NE_OAK",
+        "team": "NE",
+        "opponent": "LV"
+      },
+      "teams": [
+        "DAL",
+        "NYG",
+        "CHI",
+        "NE",
+        "GB"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 45
+    },
+    {
+      "id": "00-0026345:2012_11_PHI_WAS",
+      "playerId": "00-0026345",
+      "name": "Pierre Garcon",
+      "length": 87,
+      "start": {
+        "date": "2012-11-18",
+        "season": 2012,
+        "game": "2012_11_PHI_WAS",
+        "team": "WAS",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2018-11-01",
+        "season": 2018,
+        "game": "2018_09_OAK_SF",
+        "team": "SF",
+        "opponent": "LV"
+      },
+      "teams": [
+        "WAS",
+        "SF"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 46
+    },
+    {
+      "id": "archive:00-0015218:86",
+      "playerId": "00-0015218",
+      "name": "Jimmy Smith",
+      "length": 86,
+      "teams": [
+        "JAX"
+      ],
+      "source": "https://www.jaguars.com/news/those-first-jaguars-smith-catches-on-5843218",
+      "period": "1995–2000",
+      "start": {
+        "date": null,
+        "season": 1995
+      },
+      "last": {
+        "date": null,
+        "season": 2000
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 47
+    },
+    {
+      "id": "00-0011754:1999_01_MIN_ATL",
+      "playerId": "00-0011754",
+      "name": "Randy Moss",
+      "length": 85,
+      "start": {
+        "date": "1999-09-12",
+        "season": 1999,
+        "game": "1999_01_MIN_ATL",
+        "team": "MIN",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2004-10-17",
+        "season": 2004,
+        "game": "2004_06_MIN_NO",
+        "team": "MIN",
+        "opponent": "NO"
+      },
+      "teams": [
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2004-10-24",
+        "game": "2004_07_TEN_MIN"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 48
+    },
+    {
+      "id": "00-0020337:2011_01_CAR_ARI",
+      "playerId": "00-0020337",
+      "name": "Steve Smith",
+      "length": 84,
+      "start": {
+        "date": "2011-09-11",
+        "season": 2011,
+        "game": "2011_01_CAR_ARI",
+        "team": "CAR",
+        "opponent": "ARI"
+      },
+      "last": {
+        "date": "2017-01-01",
+        "season": 2016,
+        "game": "2016_17_BAL_CIN",
+        "team": "BAL",
+        "opponent": "CIN"
+      },
+      "teams": [
+        "CAR",
+        "BAL"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 49
+    },
+    {
+      "id": "00-0023496:2010_14_KC_SD",
+      "playerId": "00-0023496",
+      "name": "Vincent Jackson",
+      "length": 83,
+      "start": {
+        "date": "2010-12-12",
+        "season": 2010,
+        "game": "2010_14_KC_SD",
+        "team": "LAC",
+        "opponent": "KC"
+      },
+      "last": {
+        "date": "2016-10-10",
+        "season": 2016,
+        "game": "2016_05_TB_CAR",
+        "team": "TB",
+        "opponent": "CAR"
+      },
+      "teams": [
+        "LAC",
+        "TB"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 50
+    },
+    {
+      "id": "00-0027902:2011_03_WAS_DAL",
+      "playerId": "00-0027902",
+      "name": "Dez Bryant",
+      "length": 83,
+      "start": {
+        "date": "2011-09-26",
+        "season": 2011,
+        "game": "2011_03_WAS_DAL",
+        "team": "DAL",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2016-12-26",
+        "season": 2016,
+        "game": "2016_16_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
+      },
+      "teams": [
+        "DAL"
+      ],
+      "endedBy": {
+        "date": "2017-01-01",
+        "season": 2016,
+        "game": "2016_17_DAL_PHI",
+        "team": "DAL",
+        "opponent": "PHI"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 51
+    },
+    {
+      "id": "00-0025418:2012_01_CAR_TB",
+      "playerId": "00-0025418",
+      "name": "Greg Olsen",
+      "length": 83,
+      "start": {
+        "date": "2012-09-09",
+        "season": 2012,
+        "game": "2012_01_CAR_TB",
+        "team": "CAR",
+        "opponent": "TB"
+      },
+      "last": {
+        "date": "2017-11-26",
+        "season": 2017,
+        "game": "2017_12_CAR_NYJ",
+        "team": "CAR",
+        "opponent": "NYJ"
+      },
+      "teams": [
+        "CAR"
+      ],
+      "endedBy": {
+        "date": "2017-12-10",
+        "season": 2017,
+        "game": "2017_14_MIN_CAR",
+        "team": "CAR",
+        "opponent": "MIN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 52
+    },
+    {
+      "id": "00-0036900:2021_01_MIN_CIN",
+      "playerId": "00-0036900",
+      "name": "Ja'Marr Chase",
+      "length": 82,
+      "start": {
+        "date": "2021-09-12",
+        "season": 2021,
+        "game": "2021_01_MIN_CIN",
+        "team": "CIN",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_JAX_CIN",
+        "team": "CIN",
+        "opponent": "JAX"
+      },
+      "teams": [
+        "CIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 53
+    },
+    {
+      "id": "00-0031235:2014_05_ATL_NYG",
+      "playerId": "00-0031235",
+      "name": "Odell Beckham Jr.",
+      "length": 81,
+      "start": {
+        "date": "2014-10-05",
+        "season": 2014,
+        "game": "2014_05_ATL_NYG",
+        "team": "NYG",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2020-10-18",
+        "season": 2020,
+        "game": "2020_06_CLE_PIT",
+        "team": "CLE",
+        "opponent": "PIT"
+      },
+      "teams": [
+        "NYG",
+        "CLE"
+      ],
+      "endedBy": {
+        "date": "2020-10-25",
+        "season": 2020,
+        "game": "2020_07_CLE_CIN",
+        "team": "CLE",
+        "opponent": "CIN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 54
+    },
+    {
+      "id": "00-0032765:2016_01_OAK_NO",
+      "playerId": "00-0032765",
+      "name": "Michael Thomas",
+      "length": 81,
+      "start": {
+        "date": "2016-09-11",
+        "season": 2016,
+        "game": "2016_01_OAK_NO",
+        "team": "NO",
+        "opponent": "LV"
+      },
+      "last": {
+        "date": "2023-10-29",
+        "season": 2023,
+        "game": "2023_08_NO_IND",
+        "team": "NO",
+        "opponent": "IND"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": {
+        "date": "2023-11-05",
+        "season": 2023,
+        "game": "2023_09_CHI_NO",
+        "team": "NO",
+        "opponent": "CHI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 55
+    },
+    {
+      "id": "00-0032211:2019_14_SEA_LA",
+      "playerId": "00-0032211",
+      "name": "Tyler Lockett",
+      "length": 81,
+      "start": {
+        "date": "2019-12-08",
+        "season": 2019,
+        "game": "2019_14_SEA_LA",
+        "team": "SEA",
+        "opponent": "LA"
+      },
+      "last": {
+        "date": "2024-12-01",
+        "season": 2024,
+        "game": "2024_13_SEA_NYJ",
+        "team": "SEA",
+        "opponent": "NYJ"
+      },
+      "teams": [
+        "SEA"
+      ],
+      "endedBy": {
+        "date": "2024-12-08",
+        "season": 2024,
+        "game": "2024_14_SEA_ARI",
+        "team": "SEA",
+        "opponent": "ARI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 56
+    },
+    {
+      "id": "00-0031544:2019_13_BUF_DAL",
+      "playerId": "00-0031544",
+      "name": "Amari Cooper",
+      "length": 79,
+      "start": {
+        "date": "2019-11-28",
+        "season": 2019,
+        "game": "2019_13_BUF_DAL",
+        "team": "DAL",
+        "opponent": "BUF"
+      },
+      "last": {
+        "date": "2024-12-08",
+        "season": 2024,
+        "game": "2024_14_BUF_LA",
+        "team": "BUF",
+        "opponent": "LA"
+      },
+      "teams": [
+        "DAL",
+        "CLE",
+        "BUF"
+      ],
+      "endedBy": {
+        "date": "2024-12-15",
+        "season": 2024,
+        "game": "2024_15_BUF_DET",
+        "team": "BUF",
+        "opponent": "DET"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 57
+    },
+    {
+      "id": "00-0007744:1999_03_DET_KC",
+      "playerId": "00-0007744",
+      "name": "Joe Horn",
+      "length": 77,
+      "start": {
+        "date": "1999-09-26",
+        "season": 1999,
+        "game": "1999_03_DET_KC",
+        "team": "KC",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2003-12-21",
+        "season": 2003,
+        "game": "2003_16_NO_JAX",
+        "team": "NO",
+        "opponent": "JAX"
+      },
+      "teams": [
+        "KC",
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2003-12-28",
+        "game": "2003_17_DAL_NO"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 58
+    },
+    {
+      "id": "00-0004541:2003_03_GB_ARI",
+      "playerId": "00-0004541",
+      "name": "Donald Driver",
+      "length": 77,
+      "start": {
+        "date": "2003-09-21",
+        "season": 2003,
+        "game": "2003_03_GB_ARI",
+        "team": "GB",
+        "opponent": "ARI"
+      },
+      "last": {
+        "date": "2007-12-23",
+        "season": 2007,
+        "game": "2007_16_GB_CHI",
+        "team": "GB",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "GB"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2007-12-30",
+        "game": "2007_17_DET_GB"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 59
+    },
+    {
+      "id": "00-0022738:2004_10_CIN_WAS",
+      "playerId": "00-0022738",
+      "name": "Chris Cooley",
+      "length": 76,
+      "start": {
+        "date": "2004-11-14",
+        "season": 2004,
+        "game": "2004_10_CIN_WAS",
+        "team": "WAS",
+        "opponent": "CIN"
+      },
+      "last": {
+        "date": "2009-10-04",
+        "season": 2009,
+        "game": "2009_04_TB_WAS",
+        "team": "WAS",
+        "opponent": "TB"
+      },
+      "teams": [
+        "WAS"
+      ],
+      "endedBy": {
+        "date": "2009-10-11",
+        "season": 2009,
+        "game": "2009_05_WAS_CAR",
+        "team": "WAS",
+        "opponent": "CAR"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 60
+    },
+    {
+      "id": "00-0034775:2019_17_ARI_LA",
+      "playerId": "00-0034775",
+      "name": "Christian Kirk",
+      "length": 76,
+      "start": {
+        "date": "2019-12-29",
+        "season": 2019,
+        "game": "2019_17_ARI_LA",
+        "team": "ARI",
+        "opponent": "LA"
+      },
+      "last": {
+        "date": "2025-11-20",
+        "season": 2025,
+        "game": "2025_12_BUF_HOU",
+        "team": "HOU",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "ARI",
+        "JAX",
+        "HOU"
+      ],
+      "endedBy": {
+        "date": "2025-11-30",
+        "season": 2025,
+        "game": "2025_13_HOU_IND",
+        "team": "HOU",
+        "opponent": "IND"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 61
+    },
+    {
+      "id": "00-0036358:2020_08_DAL_PHI",
+      "playerId": "00-0036358",
+      "name": "CeeDee Lamb",
+      "length": 76,
+      "start": {
+        "date": "2020-11-01",
+        "season": 2020,
+        "game": "2020_08_DAL_PHI",
+        "team": "DAL",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2025-09-14",
+        "season": 2025,
+        "game": "2025_02_NYG_DAL",
+        "team": "DAL",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "DAL"
+      ],
+      "endedBy": {
+        "date": "2025-09-21",
+        "season": 2025,
+        "game": "2025_03_DAL_CHI",
+        "team": "DAL",
+        "opponent": "CHI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 62
+    },
+    {
+      "id": "00-0025389:2011_01_DET_TB",
+      "playerId": "00-0025389",
+      "name": "Calvin Johnson",
+      "length": 75,
+      "start": {
+        "date": "2011-09-11",
+        "season": 2011,
+        "game": "2011_01_DET_TB",
+        "team": "DET",
+        "opponent": "TB"
+      },
+      "last": {
+        "date": "2016-01-03",
+        "season": 2015,
+        "game": "2015_17_DET_CHI",
+        "team": "DET",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "DET"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 63
+    },
+    {
+      "id": "00-0031236:2020_05_JAX_HOU",
+      "playerId": "00-0031236",
+      "name": "Brandin Cooks",
+      "length": 75,
+      "start": {
+        "date": "2020-10-11",
+        "season": 2020,
+        "game": "2020_05_JAX_HOU",
+        "team": "HOU",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2025-11-02",
+        "season": 2025,
+        "game": "2025_09_NO_LA",
+        "team": "NO",
+        "opponent": "LA"
+      },
+      "teams": [
+        "HOU",
+        "DAL",
+        "NO"
+      ],
+      "endedBy": {
+        "date": "2025-11-09",
+        "season": 2025,
+        "game": "2025_10_NO_CAR",
+        "team": "NO",
+        "opponent": "CAR"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 64
+    },
+    {
+      "id": "00-0022127:2003_16_NYG_DAL",
+      "playerId": "00-0022127",
+      "name": "Jason Witten",
+      "length": 74,
+      "start": {
+        "date": "2003-12-21",
+        "season": 2003,
+        "game": "2003_16_NYG_DAL",
+        "team": "DAL",
+        "opponent": "NYG"
+      },
+      "last": {
+        "date": "2008-10-26",
+        "season": 2008,
+        "game": "2008_08_TB_DAL",
+        "team": "DAL",
+        "opponent": "TB"
+      },
+      "teams": [
+        "DAL"
+      ],
+      "endedBy": {
+        "date": "2008-11-02",
+        "season": 2008,
+        "game": "2008_09_DAL_NYG",
+        "team": "DAL",
+        "opponent": "NYG"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 65
+    },
+    {
+      "id": "00-0034827:2018_02_CAR_ATL",
+      "playerId": "00-0034827",
+      "name": "DJ Moore",
+      "length": 74,
+      "start": {
+        "date": "2018-09-16",
+        "season": 2018,
+        "game": "2018_02_CAR_ATL",
+        "team": "CAR",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2022-11-27",
+        "season": 2022,
+        "game": "2022_12_DEN_CAR",
+        "team": "CAR",
+        "opponent": "DEN"
+      },
+      "teams": [
+        "CAR"
+      ],
+      "endedBy": {
+        "date": "2022-12-11",
+        "season": 2022,
+        "game": "2022_14_CAR_SEA",
+        "team": "CAR",
+        "opponent": "SEA"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 66
+    },
+    {
+      "id": "00-0008560:1999_01_PIT_CLE",
+      "playerId": "00-0008560",
+      "name": "Kevin Johnson",
+      "length": 73,
+      "start": {
+        "date": "1999-09-12",
+        "season": 1999,
+        "game": "1999_01_PIT_CLE",
+        "team": "CLE",
+        "opponent": "PIT"
+      },
+      "last": {
+        "date": "2003-11-09",
+        "season": 2003,
+        "game": "2003_10_CLE_KC",
+        "team": "CLE",
+        "opponent": "KC"
+      },
+      "teams": [
+        "CLE"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2003-11-16",
+        "game": "2003_11_ARI_CLE"
+      },
+      "lowerBound": true,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 67
+    },
+    {
+      "id": "00-0035676:2021_05_TEN_JAX",
+      "playerId": "00-0035676",
+      "name": "A.J. Brown",
+      "length": 73,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_TEN_JAX",
+        "team": "TEN",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-09-09",
+        "season": 2026,
+        "game": "2026_01_NE_SEA",
+        "team": "NE",
+        "opponent": "SEA"
+      },
+      "teams": [
+        "TEN",
+        "PHI",
+        "NE"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 68
+    },
+    {
+      "id": "00-0027690:2011_17_KC_DEN",
+      "playerId": "00-0027690",
+      "name": "Eric Decker",
+      "length": 72,
+      "start": {
+        "date": "2012-01-01",
+        "season": 2011,
+        "game": "2011_17_KC_DEN",
+        "team": "DEN",
+        "opponent": "KC"
+      },
+      "last": {
+        "date": "2017-10-16",
+        "season": 2017,
+        "game": "2017_06_IND_TEN",
+        "team": "TEN",
+        "opponent": "IND"
+      },
+      "teams": [
+        "DEN",
+        "NYJ",
+        "TEN"
+      ],
+      "endedBy": {
+        "date": "2017-10-22",
+        "season": 2017,
+        "game": "2017_07_TEN_CLE",
+        "team": "TEN",
+        "opponent": "CLE"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 69
+    },
+    {
+      "id": "00-0030035:2020_01_GB_MIN",
+      "playerId": "00-0030035",
+      "name": "Adam Thielen",
+      "length": 72,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_GB_MIN",
+        "team": "MIN",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2025-01-05",
+        "season": 2024,
+        "game": "2024_18_CAR_ATL",
+        "team": "CAR",
+        "opponent": "ATL"
+      },
+      "teams": [
+        "MIN",
+        "CAR"
+      ],
+      "endedBy": {
+        "date": "2025-09-08",
+        "season": 2025,
+        "game": "2025_01_MIN_CHI",
+        "team": "MIN",
+        "opponent": "CHI"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 70
+    },
+    {
+      "id": "00-0007681:2005_10_STL_SEA",
+      "playerId": "00-0007681",
+      "name": "Torry Holt",
+      "length": 71,
+      "start": {
+        "date": "2005-11-13",
+        "season": 2005,
+        "game": "2005_10_STL_SEA",
+        "team": "LA",
+        "opponent": "SEA"
+      },
+      "last": {
+        "date": "2009-12-27",
+        "season": 2009,
+        "game": "2009_16_JAX_NE",
+        "team": "JAX",
+        "opponent": "NE"
+      },
+      "teams": [
+        "LA",
+        "JAX"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": null,
+        "game": null
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 71
+    },
+    {
+      "id": "00-0026364:2010_01_MIA_BUF",
+      "playerId": "00-0026364",
+      "name": "Steve Johnson",
+      "length": 70,
+      "start": {
+        "date": "2010-09-12",
+        "season": 2010,
+        "game": "2010_01_MIA_BUF",
+        "team": "BUF",
+        "opponent": "MIA"
+      },
+      "last": {
+        "date": "2014-11-16",
+        "season": 2014,
+        "game": "2014_11_SF_NYG",
+        "team": "SF",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "BUF",
+        "SF"
+      ],
+      "endedBy": {
+        "date": "2014-11-23",
+        "season": 2014,
+        "game": "2014_12_WAS_SF",
+        "team": "SF",
+        "opponent": "WAS"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 72
+    },
+    {
+      "id": "00-0032688:2016_17_BUF_NYJ",
+      "playerId": "00-0032688",
+      "name": "Robbie Chosen",
+      "length": 70,
+      "start": {
+        "date": "2017-01-01",
+        "season": 2016,
+        "game": "2016_17_BUF_NYJ",
+        "team": "NYJ",
+        "opponent": "BUF"
+      },
+      "last": {
+        "date": "2021-10-24",
+        "season": 2021,
+        "game": "2021_07_CAR_NYG",
+        "team": "CAR",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "NYJ",
+        "CAR"
+      ],
+      "endedBy": {
+        "date": "2021-10-31",
+        "season": 2021,
+        "game": "2021_08_CAR_ATL",
+        "team": "CAR",
+        "opponent": "ATL"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 73
+    },
+    {
+      "id": "00-0036963:2021_08_PHI_DET",
+      "playerId": "00-0036963",
+      "name": "Amon-Ra St. Brown",
+      "length": 70,
+      "start": {
+        "date": "2021-10-31",
+        "season": 2021,
+        "game": "2021_08_PHI_DET",
+        "team": "DET",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2025-11-23",
+        "season": 2025,
+        "game": "2025_12_NYG_DET",
+        "team": "DET",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "DET"
+      ],
+      "endedBy": {
+        "date": "2025-11-27",
+        "season": 2025,
+        "game": "2025_13_GB_DET",
+        "team": "DET",
+        "opponent": "GB"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 74
+    },
+    {
+      "id": "00-0029137:2012_16_CHI_ARI",
+      "playerId": "00-0029137",
+      "name": "Alshon Jeffery",
+      "length": 69,
+      "start": {
+        "date": "2012-12-23",
+        "season": 2012,
+        "game": "2012_16_CHI_ARI",
+        "team": "CHI",
+        "opponent": "ARI"
+      },
+      "last": {
+        "date": "2017-12-17",
+        "season": 2017,
+        "game": "2017_15_PHI_NYG",
+        "team": "PHI",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "CHI",
+        "PHI"
+      ],
+      "endedBy": {
+        "date": "2017-12-25",
+        "season": 2017,
+        "game": "2017_16_OAK_PHI",
+        "team": "PHI",
+        "opponent": "LV"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 75
+    },
+    {
+      "id": "00-0033009:2016_01_CIN_NYJ",
+      "playerId": "00-0033009",
+      "name": "Tyler Boyd",
+      "length": 69,
+      "start": {
+        "date": "2016-09-11",
+        "season": 2016,
+        "game": "2016_01_CIN_NYJ",
+        "team": "CIN",
+        "opponent": "NYJ"
+      },
+      "last": {
+        "date": "2020-12-13",
+        "season": 2020,
+        "game": "2020_14_DAL_CIN",
+        "team": "CIN",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "CIN"
+      ],
+      "endedBy": {
+        "date": "2020-12-21",
+        "season": 2020,
+        "game": "2020_15_PIT_CIN",
+        "team": "CIN",
+        "opponent": "PIT"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 76
+    },
+    {
+      "id": "00-0033908:2019_11_CHI_LA",
+      "playerId": "00-0033908",
+      "name": "Cooper Kupp",
+      "length": 69,
+      "start": {
+        "date": "2019-11-17",
+        "season": 2019,
+        "game": "2019_11_CHI_LA",
+        "team": "LA",
+        "opponent": "CHI"
+      },
+      "last": {
+        "date": "2024-12-08",
+        "season": 2024,
+        "game": "2024_14_BUF_LA",
+        "team": "LA",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "LA"
+      ],
+      "endedBy": {
+        "date": "2024-12-12",
+        "season": 2024,
+        "game": "2024_15_LA_SF",
+        "team": "LA",
+        "opponent": "SF"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 77
+    },
+    {
+      "id": "00-0034960:2021_15_NE_IND",
+      "playerId": "00-0034960",
+      "name": "Jakobi Meyers",
+      "length": 69,
+      "start": {
+        "date": "2021-12-18",
+        "season": 2021,
+        "game": "2021_15_NE_IND",
+        "team": "NE",
+        "opponent": "IND"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_JAX_CIN",
+        "team": "JAX",
+        "opponent": "CIN"
+      },
+      "teams": [
+        "NE",
+        "LV",
+        "JAX"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 78
+    },
+    {
+      "id": "archive:historical:elbie-nickel:68",
+      "playerId": "historical:elbie-nickel",
+      "name": "Elbie Nickel",
+      "length": 68,
+      "teams": [
+        "PIT"
+      ],
+      "source": "https://www.steelers.com/museum/stats/individual-receiving",
+      "period": "1951–1957",
+      "start": {
+        "date": "1951-10-14",
+        "season": 1951
+      },
+      "last": {
+        "date": "1957-12-22",
+        "season": 1957
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 79
+    },
+    {
+      "id": "00-0013232:2000_07_SD_BUF",
+      "playerId": "00-0013232",
+      "name": "Peerless Price",
+      "length": 68,
+      "start": {
+        "date": "2000-10-15",
+        "season": 2000,
+        "game": "2000_07_SD_BUF",
+        "team": "BUF",
+        "opponent": "LAC"
+      },
+      "last": {
+        "date": "2004-11-14",
+        "season": 2004,
+        "game": "2004_10_TB_ATL",
+        "team": "ATL",
+        "opponent": "TB"
+      },
+      "teams": [
+        "BUF",
+        "ATL"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2004-11-21",
+        "game": "2004_11_ATL_NYG"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 80
+    },
+    {
+      "id": "00-0033921:2018_16_TB_DAL",
+      "playerId": "00-0033921",
+      "name": "Chris Godwin Jr.",
+      "length": 68,
+      "start": {
+        "date": "2018-12-23",
+        "season": 2018,
+        "game": "2018_16_TB_DAL",
+        "team": "TB",
+        "opponent": "DAL"
+      },
+      "last": {
+        "date": "2023-11-26",
+        "season": 2023,
+        "game": "2023_12_TB_IND",
+        "team": "TB",
+        "opponent": "IND"
+      },
+      "teams": [
+        "TB"
+      ],
+      "endedBy": {
+        "date": "2023-12-03",
+        "season": 2023,
+        "game": "2023_13_CAR_TB",
+        "team": "TB",
+        "opponent": "CAR"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 81
+    },
+    {
+      "id": "archive:STA285936:67",
+      "playerId": "STA285936",
+      "name": "John Stallworth",
+      "length": 67,
+      "teams": [
+        "PIT"
+      ],
+      "source": "https://www.steelers.com/museum/stats/individual-receiving",
+      "period": "1977–1982",
+      "start": {
+        "date": "1977-10-09",
+        "season": 1977
+      },
+      "last": {
+        "date": "1982-12-05",
+        "season": 1982
+      },
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": true,
+      "rank": 82
+    },
+    {
+      "id": "00-0022910:2004_08_ARI_BUF",
+      "playerId": "00-0022910",
+      "name": "Lee Evans",
+      "length": 67,
+      "start": {
+        "date": "2004-10-31",
+        "season": 2004,
+        "game": "2004_08_ARI_BUF",
+        "team": "BUF",
+        "opponent": "ARI"
+      },
+      "last": {
+        "date": "2008-11-09",
+        "season": 2008,
+        "game": "2008_10_BUF_NE",
+        "team": "BUF",
+        "opponent": "NE"
+      },
+      "teams": [
+        "BUF"
+      ],
+      "endedBy": {
+        "date": "2008-11-17",
+        "season": 2008,
+        "game": "2008_11_CLE_BUF",
+        "team": "BUF",
+        "opponent": "CLE"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 83
+    },
+    {
+      "id": "00-0023367:2008_03_PIT_PHI",
+      "playerId": "00-0023367",
+      "name": "Nate Washington",
+      "length": 67,
+      "start": {
+        "date": "2008-09-21",
+        "season": 2008,
+        "game": "2008_03_PIT_PHI",
+        "team": "PIT",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2012-10-07",
+        "season": 2012,
+        "game": "2012_05_TEN_MIN",
+        "team": "TEN",
+        "opponent": "MIN"
+      },
+      "teams": [
+        "PIT",
+        "TEN"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2012-10-11",
+        "game": "2012_06_PIT_TEN"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 84
+    },
+    {
+      "id": "00-0030279:2013_02_SD_PHI",
+      "playerId": "00-0030279",
+      "name": "Keenan Allen",
+      "length": 67,
+      "start": {
+        "date": "2013-09-15",
+        "season": 2013,
+        "game": "2013_02_SD_PHI",
+        "team": "LAC",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2018-12-09",
+        "season": 2018,
+        "game": "2018_14_CIN_LAC",
+        "team": "LAC",
+        "opponent": "CIN"
+      },
+      "teams": [
+        "LAC"
+      ],
+      "endedBy": {
+        "date": "2018-12-13",
+        "season": 2018,
+        "game": "2018_15_LAC_KC",
+        "team": "LAC",
+        "opponent": "KC"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 85
+    },
+    {
+      "id": "00-0021547:2012_03_ATL_SD",
+      "playerId": "00-0021547",
+      "name": "Antonio Gates",
+      "length": 65,
+      "start": {
+        "date": "2012-09-23",
+        "season": 2012,
+        "game": "2012_03_ATL_SD",
+        "team": "LAC",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2016-11-13",
+        "season": 2016,
+        "game": "2016_10_MIA_SD",
+        "team": "LAC",
+        "opponent": "MIA"
+      },
+      "teams": [
+        "LAC"
+      ],
+      "endedBy": {
+        "date": "2016-11-27",
+        "season": 2016,
+        "game": "2016_12_SD_HOU",
+        "team": "LAC",
+        "opponent": "HOU"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 86
+    },
+    {
+      "id": "00-0031408:2015_03_TB_HOU",
+      "playerId": "00-0031408",
+      "name": "Mike Evans",
+      "length": 65,
+      "start": {
+        "date": "2015-09-27",
+        "season": 2015,
+        "game": "2015_03_TB_HOU",
+        "team": "TB",
+        "opponent": "HOU"
+      },
+      "last": {
+        "date": "2019-09-29",
+        "season": 2019,
+        "game": "2019_04_TB_LA",
+        "team": "TB",
+        "opponent": "LA"
+      },
+      "teams": [
+        "TB"
+      ],
+      "endedBy": {
+        "date": "2019-10-06",
+        "season": 2019,
+        "game": "2019_05_TB_NO",
+        "team": "TB",
+        "opponent": "NO"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 87
+    },
+    {
+      "id": "00-0029632:2015_14_PIT_CIN",
+      "playerId": "00-0029632",
+      "name": "Mohamed Sanu",
+      "length": 65,
+      "start": {
+        "date": "2015-12-13",
+        "season": 2015,
+        "game": "2015_14_PIT_CIN",
+        "team": "CIN",
+        "opponent": "PIT"
+      },
+      "last": {
+        "date": "2019-12-29",
+        "season": 2019,
+        "game": "2019_17_MIA_NE",
+        "team": "NE",
+        "opponent": "MIA"
+      },
+      "teams": [
+        "CIN",
+        "ATL",
+        "NE"
+      ],
+      "endedBy": {
+        "date": "2020-09-20",
+        "season": 2020,
+        "game": "2020_02_SF_NYJ",
+        "team": "SF",
+        "opponent": "NYJ"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 88
+    },
+    {
+      "id": "00-0035216:2020_05_PHI_PIT",
+      "playerId": "00-0035216",
+      "name": "Diontae Johnson",
+      "length": 65,
+      "start": {
+        "date": "2020-10-11",
+        "season": 2020,
+        "game": "2020_05_PHI_PIT",
+        "team": "PIT",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2024-10-20",
+        "season": 2024,
+        "game": "2024_07_CAR_WAS",
+        "team": "CAR",
+        "opponent": "WAS"
+      },
+      "teams": [
+        "PIT",
+        "CAR"
+      ],
+      "endedBy": {
+        "date": "2024-11-03",
+        "season": 2024,
+        "game": "2024_09_DEN_BAL",
+        "team": "BAL",
+        "opponent": "DEN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 89
+    },
+    {
+      "id": "00-0033906:2021_05_NO_WAS",
+      "playerId": "00-0033906",
+      "name": "Alvin Kamara",
+      "length": 65,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_NO_WAS",
+        "team": "NO",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2026-10-05",
+        "season": 2026,
+        "game": "2026_04_ATL_NO",
+        "team": "NO",
+        "opponent": "ATL"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 90
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI",
+      "playerId": "00-0036912",
+      "name": "DeVonta Smith",
+      "length": 65,
+      "start": {
+        "date": "2022-09-19",
+        "season": 2022,
+        "game": "2022_02_MIN_PHI",
+        "team": "PHI",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-09-28",
+        "season": 2026,
+        "game": "2026_03_PHI_CHI",
+        "team": "PHI",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "PHI"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 91
+    },
+    {
+      "id": "00-0000339:1999_01_NE_NYJ",
+      "playerId": "00-0000339",
+      "name": "Richie Anderson",
+      "length": 64,
+      "start": {
+        "date": "1999-09-12",
+        "season": 1999,
+        "game": "1999_01_NE_NYJ",
+        "team": "NYJ",
+        "opponent": "NE"
+      },
+      "last": {
+        "date": "2002-12-29",
+        "season": 2002,
+        "game": "2002_17_GB_NYJ",
+        "team": "NYJ",
+        "opponent": "GB"
+      },
+      "teams": [
+        "NYJ"
+      ],
+      "endedBy": null,
+      "gapAfter": {
+        "date": "2003-09-04",
+        "game": "2003_01_NYJ_WAS"
+      },
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 92
+    },
+    {
+      "id": "00-0022427:2011_01_NE_MIA",
+      "playerId": "00-0022427",
+      "name": "Wes Welker",
+      "length": 64,
+      "start": {
+        "date": "2011-09-12",
+        "season": 2011,
+        "game": "2011_01_NE_MIA",
+        "team": "NE",
+        "opponent": "MIA"
+      },
+      "last": {
+        "date": "2015-12-13",
+        "season": 2015,
+        "game": "2015_14_DET_STL",
+        "team": "LA",
+        "opponent": "DET"
+      },
+      "teams": [
+        "NE",
+        "DEN",
+        "LA"
+      ],
+      "endedBy": {
+        "date": "2015-12-17",
+        "season": 2015,
+        "game": "2015_15_TB_STL",
+        "team": "LA",
+        "opponent": "TB"
+      },
+      "gapAfter": null,
+      "lowerBound": true,
+      "startUnknown": true,
+      "active": false,
+      "archive": false,
+      "rank": 93
+    },
+    {
+      "id": "00-0029664:2012_01_PHI_CLE",
+      "playerId": "00-0029664",
+      "name": "Josh Gordon",
+      "length": 64,
+      "start": {
+        "date": "2012-09-09",
+        "season": 2012,
+        "game": "2012_01_PHI_CLE",
+        "team": "CLE",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_BUF_KC",
+        "team": "KC",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "CLE",
+        "NE",
+        "SEA",
+        "KC"
+      ],
+      "endedBy": {
+        "date": "2021-10-17",
+        "season": 2021,
+        "game": "2021_06_KC_WAS",
+        "team": "KC",
+        "opponent": "WAS"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 94
+    },
+    {
+      "id": "00-0030472:2013_01_PHI_WAS",
+      "playerId": "00-0030472",
+      "name": "Jordan Reed",
+      "length": 64,
+      "start": {
+        "date": "2013-09-09",
+        "season": 2013,
+        "game": "2013_01_PHI_WAS",
+        "team": "WAS",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2018-12-03",
+        "season": 2018,
+        "game": "2018_13_WAS_PHI",
+        "team": "WAS",
+        "opponent": "PHI"
+      },
+      "teams": [
+        "WAS"
+      ],
+      "endedBy": {
+        "date": "2018-12-09",
+        "season": 2018,
+        "game": "2018_14_NYG_WAS",
+        "team": "WAS",
+        "opponent": "NYG"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 95
+    },
+    {
+      "id": "00-0028434:2014_01_GB_SEA",
+      "playerId": "00-0028434",
+      "name": "Doug Baldwin",
+      "length": 64,
+      "start": {
+        "date": "2014-09-04",
+        "season": 2014,
+        "game": "2014_01_GB_SEA",
+        "team": "SEA",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2017-12-31",
+        "season": 2017,
+        "game": "2017_17_ARI_SEA",
+        "team": "SEA",
+        "opponent": "ARI"
+      },
+      "teams": [
+        "SEA"
+      ],
+      "endedBy": {
+        "date": "2018-09-09",
+        "season": 2018,
+        "game": "2018_01_SEA_DEN",
+        "team": "SEA",
+        "opponent": "DEN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 96
+    },
+    {
+      "id": "00-0032009:2016_01_TB_ATL",
+      "playerId": "00-0032009",
+      "name": "Adam Humphries",
+      "length": 64,
+      "start": {
+        "date": "2016-09-11",
+        "season": 2016,
+        "game": "2016_01_TB_ATL",
+        "team": "TB",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2020-10-25",
+        "season": 2020,
+        "game": "2020_07_PIT_TEN",
+        "team": "TEN",
+        "opponent": "PIT"
+      },
+      "teams": [
+        "TB",
+        "TEN"
+      ],
+      "endedBy": {
+        "date": "2020-11-01",
+        "season": 2020,
+        "game": "2020_08_TEN_CIN",
+        "team": "TEN",
+        "opponent": "CIN"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 97
+    },
+    {
+      "id": "00-0032385:2016_13_NYG_PIT",
+      "playerId": "00-0032385",
+      "name": "Sterling Shepard",
+      "length": 64,
+      "start": {
+        "date": "2016-12-04",
+        "season": 2016,
+        "game": "2016_13_NYG_PIT",
+        "team": "NYG",
+        "opponent": "PIT"
+      },
+      "last": {
+        "date": "2022-09-26",
+        "season": 2022,
+        "game": "2022_03_DAL_NYG",
+        "team": "NYG",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "NYG"
+      ],
+      "endedBy": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_DAL_NYG",
+        "team": "NYG",
+        "opponent": "DAL"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "rank": 98
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE",
+      "playerId": "00-0035229",
+      "name": "T.J. Hockenson",
+      "length": 64,
+      "start": {
+        "date": "2021-11-21",
+        "season": 2021,
+        "game": "2021_11_DET_CLE",
+        "team": "DET",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_MIA_MIN",
+        "team": "MIN",
+        "opponent": "MIA"
+      },
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 99
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL",
+      "playerId": "00-0034383",
+      "name": "Dalton Schultz",
+      "length": 64,
+      "start": {
+        "date": "2022-10-23",
+        "season": 2022,
+        "game": "2022_07_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2026-10-04",
+        "season": 2026,
+        "game": "2026_04_DAL_HOU",
+        "team": "HOU",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "DAL",
+        "HOU"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 100
+    }
+  ]
+}

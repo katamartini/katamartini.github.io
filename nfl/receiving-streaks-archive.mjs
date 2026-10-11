@@ -1,0 +1,37 @@
+// Independently documented regular-season records, not fabricated game logs.
+// Null dates mean the exact first/last catch date has not been verified here.
+const record = (id, name, length, teams, firstSeason, lastSeason, source, period = 'Dates unverified', dates = {}) => ({
+  id: `archive:${id}:${length}`, playerId: id, name, length, teams, source, period,
+  start: { date: dates.start || null, season: firstSeason }, last: { date: dates.last || null, season: lastSeason },
+  endedBy: null, gapAfter: null, lowerBound: false, startUnknown: false, active: false, archive: true,
+});
+export const RECEIVING_ARCHIVE = [
+  record('00-0013639', 'Jerry Rice', 274, ['SF', 'LV'], 1985, 2004,
+    'https://www.colts.com/news/honor-nears-for-harrison-6354461', '1985–2004'),
+  record('00-0022921', 'Larry Fitzgerald', 256, ['ARI'], 2004, 2020,
+    'https://www.azcardinals.com/news/a-number-forever-cardinals-to-retire-larry-fitzgerald-s-11-ring-of-honor', '2004–2020'),
+  record('00-0006101', 'Tony Gonzalez', 211, ['KC', 'ATL'], 2000, 2013,
+    'https://www.profootballhof.com/players/tony-gonzalez'),
+  record('00-0007024', 'Marvin Harrison', 190, ['IND'], 1996, 2008,
+    'https://www.profootballhof.com/players/marvin-harrison', '1996–2008'),
+  record('00-0017162', 'Hines Ward', 186, ['PIT'], 1998, 2010,
+    'https://www.steelers.com/museum/stats/individual-receiving', '1998–2010', { start: '1998-11-09', last: '2010-11-08' }),
+  record('00-0012478', 'Terrell Owens', 185, ['SF', 'PHI', 'DAL', 'BUF'], 1996, 2009,
+    'https://www.buffalobills.com/news/bills-offense-stalls-in-loss-to-saints-790833', '1996–2009'),
+  record('00-0011483', 'Art Monk', 183, ['WAS', 'NYJ', 'PHI'], 1980, 1995,
+    'https://www.profootballhof.com/players/art-monk'),
+  record('00-0002058', 'Tim Brown', 179, ['LV', 'TB'], 1993, 2004,
+    'https://www.buccaneers.com/news/shootout-kc-corralled-2159379', '1993–2004'),
+  record('LAR118653', 'Steve Largent', 177, ['SEA'], 1976, 1989,
+    'https://www.profootballhof.com/players/steve-largent'),
+  record('NEW589446', 'Ozzie Newsome', 150, ['CLE'], 1978, 1989,
+    'https://www.clevelandbrowns.com/news/ozzie-newsome-a-browns-leader-for-decades-16435246'),
+  record('CAR217503', 'Harold Carmichael', 127, ['PHI'], 1972, 1980,
+    'https://www.profootballhof.com/players/harold-carmichael', '1972–1980'),
+  record('00-0015218', 'Jimmy Smith', 86, ['JAX'], 1995, 2000,
+    'https://www.jaguars.com/news/those-first-jaguars-smith-catches-on-5843218', '1995–2000'),
+  record('historical:elbie-nickel', 'Elbie Nickel', 68, ['PIT'], 1951, 1957,
+    'https://www.steelers.com/museum/stats/individual-receiving', '1951–1957', { start: '1951-10-14', last: '1957-12-22' }),
+  record('STA285936', 'John Stallworth', 67, ['PIT'], 1977, 1982,
+    'https://www.steelers.com/museum/stats/individual-receiving', '1977–1982', { start: '1977-10-09', last: '1982-12-05' }),
+];

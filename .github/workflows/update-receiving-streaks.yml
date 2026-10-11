@@ -1,0 +1,48 @@
+name: Update NFL receiving streaks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 17 * * 2"
+    - cron: "43 17 * * 3"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-receiving-streaks
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/receiving-streaks
+          key: receiving-v1-${{ github.run_id }}
+          restore-keys: receiving-v1-
+      - name: Test receiving calculations and roster snapshots
+        run: node --test nfl/receiving-streaks-data.test.mjs nfl/franchise-leaders-data.test.mjs
+      - name: Refresh receiving streaks and current rosters
+        run: node scripts/update-receiving-streaks.mjs
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/receiving-streaks.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/receiving-streaks.json
+            git commit -m "Update NFL receiving streaks"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
