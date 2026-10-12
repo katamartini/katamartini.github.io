@@ -1,9 +1,10 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { SOURCE_URL } from '../nfl/divstreaks-data.mjs';
 import { calculateDroughts, DIVISION_BASELINE_SEASON, DIVISION_TITLES,
   divisionWinners, latestCompletedSeason, readGames, calculateWinStreakDroughts,
   WIN_STREAK_THRESHOLDS, validWinStreakView } from '../nfl/droughts-data.mjs';
-import { WIN_STREAK_HISTORY, WIN_STREAK_HISTORY_SOURCES } from '../nfl/droughts-history.mjs';
+import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, ARCHIVE_FIRST_SEASON, ARCHIVE_LAST_SEASON } from '../nfl/droughts-archive.mjs';
 
 async function download(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
@@ -26,8 +27,13 @@ for (let season = DIVISION_BASELINE_SEASON; season <= throughSeason; season += 1
   for (const team of winners) divisionTitles[team] = season;
 }
 const data = calculateDroughts(games, divisionTitles);
-const views = WIN_STREAK_THRESHOLDS.map(threshold => calculateWinStreakDroughts(games, WIN_STREAK_HISTORY, threshold));
-data.winStreaks = { ...views[0], historicalSources: WIN_STREAK_HISTORY_SOURCES,
+const archive = JSON.parse(await readFile(new URL('../data/droughts-history.json', import.meta.url), 'utf8'));
+if (archive.source !== ARCHIVE_SOURCE || archive.sha256 !== ARCHIVE_SHA256 ||
+    archive.firstSeason !== ARCHIVE_FIRST_SEASON || archive.lastSeason !== ARCHIVE_LAST_SEASON) throw new Error('Unexpected historical snapshot');
+if (createHash('sha256').update(JSON.stringify(archive.rows)).digest('hex') !== ARCHIVE_ROWS_SHA256) throw new Error('Historical snapshot checksum changed');
+const history = archiveByTeam(archive.rows);
+const views = WIN_STREAK_THRESHOLDS.map(threshold => calculateWinStreakDroughts(games, history, threshold));
+data.winStreaks = { ...views[0], historicalSources: [ARCHIVE_SOURCE, archive.license],
   thresholds: Object.fromEntries(views.slice(1).map(view => [view.threshold, view])) };
 if (views.some(view => !validWinStreakView(view)) || data.winStreaks.teams.some(row => !row.last)) {
   throw new Error('Incomplete win-streak history; keeping saved data');

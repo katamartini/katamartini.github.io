@@ -104,8 +104,8 @@
     <div id="win-streak-method" class="method" hidden>
       <p>Regular season only. Wins carry across seasons, byes, and franchise moves; losses and ties reset the current winning streak. Playoff and preseason games are excluded. Select a threshold from 5+ to 10+. Every further win in a qualifying run resets its game drought to 0. Green rows have an active streak at or above the selected threshold; yellow rows have exactly one fewer win and are one victory away.</p>
       <p>“Last N+ win” is the most recent victory that left the team on a streak of at least N wins, not the first win of the run or the following loss. Games since counts only that franchise’s completed regular-season games after that victory. Time since is calendar time through the latest game date in the feed; it still passes during offseasons and inactive years. Calendar durations show whole years and months, or days for less than a month.</p>
-      <p>Historical coverage is incomplete for longer streaks. “Not found in covered history” means a qualifying run may predate the available results, or may never have occurred; it does not mean “never.” Those rows show no exact drought length or last date and sort after known droughts. Their current streak and green/yellow status are still tracked.</p>
-      <p>The current season is included. All six thresholds are checked weekly by the existing Tuesday drought updater. Sources: <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results from 1999 onward</a>, plus the Browns’ <a href="https://www.clevelandbrowns.com/schedule/1994/">1994</a> and <a href="https://www.clevelandbrowns.com/schedule/1995/">1995</a> schedules to cover their earlier most recent five-win run. Cleveland played no games in 1996–98. The Oilers’ history belongs to the Titans, not the Texans.</p>
+      <p>Coverage begins in 1946 or the franchise’s first season if later, and includes AFL and AAFC regular-season games. The historical archive is checked against every current franchise’s expected season schedule length, including strike-shortened seasons. Games before 1946 are not included. “Not found in covered history” does not claim “never”; those rows show no exact drought length or last date and sort after known droughts. Current streaks and green/yellow status are still tracked.</p>
+      <p>The current season is included. All six thresholds are checked weekly by the existing Tuesday drought updater. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1946–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct clubs remain separate opponents. Cleveland played no games in 1996–98, and the Ravens have their own history.</p>
     </div>
   </main>
   <script type="module">
@@ -193,12 +193,12 @@
           const active = state === 'active-streak';
           const games = element('td');
           games.append(element('span', `last-season${active ? ' ended' : ''}`, row.last ? row.gamesSince.toLocaleString('en-US') : '—'));
-          games.append(element('span', 'drought', row.last ? 'regular-season games' : 'Last streak unverified'));
+          games.append(element('span', 'drought', row.last ? 'regular-season games' : 'No qualifying run in coverage'));
           const time = element('td'), elapsed = row.last ? elapsedTime(row.last.date, wins.throughDate) : '—';
           time.append(element('span', 'last-season', elapsed));
           if (row.last && !elapsed.includes('day')) time.append(element('span', 'drought', `${row.daysSince.toLocaleString('en-US')} days`));
           const last = element('td'); last.append(element('span', 'last-season', row.last ? dateText(row.last.date) : 'Not found in covered history'));
-          last.append(element('span', 'drought', row.last ? `${row.last.season} · Week ${row.last.week} · ${row.last.wins}-win run` : `Coverage from ${dateText(row.coverageStart)}`));
+          last.append(element('span', 'drought', row.last ? `${row.last.season} · ${row.last.week === null ? `Game ${row.last.gameNumber}` : `Week ${row.last.week}`} · ${row.last.wins}-win run` : `Coverage from ${dateText(row.coverageStart)}`));
           const current = element('td'); current.append(element('span', `last-season${active ? ' ended' : ''}`, `${row.currentWins} ${row.currentWins === 1 ? 'win' : 'wins'}`));
           if (active) current.append(element('span', 'drought ended', `${threshold}+ streak active`));
           else if (state === 'one-away') current.append(element('span', 'drought near-label', 'One win away'));
@@ -257,7 +257,7 @@
         if (winThresholdFromHash(link.hash) === threshold) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
       }
       buildHeaders(); render();
-      if (data) status.textContent = winsView ? `Regular season · Games through ${dateText(streakData().throughDate)} · ${threshold}+ consecutive wins${streakData().teams.some(row => !row.last) ? ' · Some historical dates unverified' : ''}` : `Through the ${data.throughSeason} season${data.currentSeason > data.throughSeason ? ` · ${data.currentSeason} season in progress` : ''}`;
+      if (data) status.textContent = winsView ? `Regular season · Games through ${dateText(streakData().throughDate)} · ${threshold}+ consecutive wins · Results from ${streakData().firstResultsSeason}${streakData().teams.some(row => !row.last) ? ' · Some teams have no qualifying run in covered history' : ''}` : `Through the ${data.throughSeason} season${data.currentSeason > data.throughSeason ? ` · ${data.currentSeason} season in progress` : ''}`;
     }
     window.addEventListener('hashchange', selectView);
     selectView();
