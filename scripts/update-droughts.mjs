@@ -1,7 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { SOURCE_URL } from '../nfl/divstreaks-data.mjs';
 import { calculateDroughts, DIVISION_BASELINE_SEASON, DIVISION_TITLES,
-  divisionWinners, latestCompletedSeason, readGames, calculateWinStreakDroughts } from '../nfl/droughts-data.mjs';
+  divisionWinners, latestCompletedSeason, readGames, calculateWinStreakDroughts,
+  WIN_STREAK_THRESHOLDS, validWinStreakView } from '../nfl/droughts-data.mjs';
 import { WIN_STREAK_HISTORY, WIN_STREAK_HISTORY_SOURCES } from '../nfl/droughts-history.mjs';
 
 async function download(url) {
@@ -25,9 +26,10 @@ for (let season = DIVISION_BASELINE_SEASON; season <= throughSeason; season += 1
   for (const team of winners) divisionTitles[team] = season;
 }
 const data = calculateDroughts(games, divisionTitles);
-data.winStreaks = { ...calculateWinStreakDroughts(games, WIN_STREAK_HISTORY), historicalSources: WIN_STREAK_HISTORY_SOURCES };
-if (data.winStreaks.teams.length !== 32 || data.winStreaks.teams.some(row => !row.last ||
-  row.gamesSince < 0 || row.daysSince < 0 || row.last.wins < data.winStreaks.threshold)) {
+const views = WIN_STREAK_THRESHOLDS.map(threshold => calculateWinStreakDroughts(games, WIN_STREAK_HISTORY, threshold));
+data.winStreaks = { ...views[0], historicalSources: WIN_STREAK_HISTORY_SOURCES,
+  thresholds: Object.fromEntries(views.slice(1).map(view => [view.threshold, view])) };
+if (views.some(view => !validWinStreakView(view)) || data.winStreaks.teams.some(row => !row.last)) {
   throw new Error('Incomplete win-streak history; keeping saved data');
 }
 for (let season = 1999; season <= throughSeason; season++) {
