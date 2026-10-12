@@ -4,7 +4,7 @@ import { DIVISIONS } from './divstreaks-data.mjs';
 import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
   calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
   WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView,
-  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS } from './droughts-data.mjs';
+  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
   ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256 } from './droughts-archive.mjs';
@@ -364,4 +364,15 @@ test('known droughts keep numeric and date ordering with no mutation of saved re
     for (let i = 1; i < values.length; i++) assert.ok(descending ? values[i - 1] >= values[i] : values[i - 1] <= values[i]);
   }
   assert.equal(JSON.stringify(view), saved);
+});
+
+test('pink highlights only confirmed never teams, with active and one-away status taking priority', () => {
+  const view = { firstResultsSeason: 1946, threshold: 10 };
+  const never = { team: 'HOU', coverageStart: '2002-09-08', last: null, currentWins: 1 };
+  assert.equal(winStreakRowClass(never, view), 'never-streak');
+  assert.equal(winStreakRowClass({ ...never, currentWins: 9 }, view), 'one-away');
+  assert.equal(winStreakRowClass({ ...never, currentWins: 10, last: { date: '2026-10-11' } }, view), 'active-streak');
+  assert.equal(winStreakRowClass({ ...never, last: { date: '2025-10-11' } }, view), '');
+  assert.equal(winStreakRowClass({ ...never, coverageStart: '2003-09-07' }, view), '');
+  assert.equal(winStreakRowClass({ ...never, team: 'ARI', coverageStart: '1946-09-22' }, view), '');
 });

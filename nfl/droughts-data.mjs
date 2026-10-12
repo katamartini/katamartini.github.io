@@ -88,6 +88,11 @@ export function winStreakHistoryStatus(row, view) {
     Number(row.coverageStart?.slice(0, 4)) === debut ? 'never' : 'unknown';
 }
 
+export function winStreakRowClass(row, view) {
+  return winStreakState(row.currentWins, view.threshold) ||
+    (winStreakHistoryStatus(row, view) === 'never' ? 'never-streak' : '');
+}
+
 export function compareWinStreakRows(a, b, key, descending, view) {
   const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
   if (key === 'team') return descending ? -names : names;
