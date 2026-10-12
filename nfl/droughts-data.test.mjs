@@ -1,7 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DIVISIONS } from './divstreaks-data.mjs';
-import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince } from './droughts-data.mjs';
+import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
+  calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime } from './droughts-data.mjs';
+import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
+import { readFileSync } from 'node:fs';
 
 const header = 'game_id,season,game_type,week,gameday,weekday,gametime,away_team,away_score,home_team,home_score,location';
 const game = (season, type, date, away, awayScore, home, homeScore) =>
@@ -94,4 +97,77 @@ test('malformed or unfinished championship data fails rather than inventing a co
   assert.throws(() => calculateDroughts(readGames([header,
     game(2025, 'SB', '2026-02-08', 'SEA', 13, 'NE', 13),
   ].join('\n'))), /Tied postseason/);
+});
+
+function winningGames(count = 5) {
+  return Array.from({ length: count }, (_, i) => ({ id: `g${i}`, season: 2026, type: 'REG', week: i + 1,
+    date: `2026-09-${String(i * 3 + 1).padStart(2, '0')}`, away: 'GB', home: 'MIN', awayScore: 10, homeScore: 20, completed: true }));
+}
+const streakFor = (games, team = 'MIN', history = {}) => calculateWinStreakDroughts(games, history).teams.find(r => r.team === team);
+
+test('five wins qualify exactly; longer runs keep resetting the drought', () => {
+  assert.equal(streakFor(winningGames(4)).last, null);
+  const five = streakFor(winningGames(5)); assert.equal(five.last.date, '2026-09-13'); assert.equal(five.gamesSince, 0); assert.equal(five.currentWins, 5);
+  const seven = streakFor(winningGames(7)); assert.equal(seven.last.date, '2026-09-19'); assert.equal(seven.last.wins, 7); assert.equal(seven.gamesSince, 0);
+});
+test('losses and ties break runs and count as games since the last qualifying win', () => {
+  const games = winningGames(7); games[5].homeScore = 5; games[6].homeScore = 10;
+  const row = streakFor(games); assert.equal(row.gamesSince, 2); assert.equal(row.currentWins, 0); assert.equal(row.daysSince, 6); assert.equal(row.last.date, games[4].date);
+});
+test('offseasons and byes do not reset regular-season streaks, and playoffs do not count', () => {
+  const games = winningGames(4).map(g => ({ ...g, season: 2025, date: g.date.replace('2026-09', '2025-12') }));
+  games.push({ ...winningGames(1)[0], id: 'playoff-loss', type: 'WC', season: 2025, date: '2026-01-11', homeScore: 0 },
+    { ...winningGames(1)[0], id: 'next-season', date: '2026-09-20', week: 2 });
+  const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.last.startDate, '2025-12-01'); assert.equal(row.last.season, 2026);
+});
+test('home and away wins are treated equally; unfinished games are excluded', () => {
+  const games = winningGames(5); games[2] = { ...games[2], home: 'GB', away: 'MIN', homeScore: 10, awayScore: 20 };
+  games.push({ ...games[0], id: 'future', date: '2026-10-01', completed: false, homeScore: null, awayScore: null });
+  const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.gamesSince, 0); assert.equal(row.last.date, '2026-09-13');
+});
+test('game drought counts only the franchise games, while calendar time uses the league as-of date', () => {
+  const games = winningGames(5); games.push({ ...games[0], id: 'other', date: '2026-09-20', home: 'KC', away: 'SF' });
+  const row = streakFor(games); assert.equal(row.gamesSince, 0); assert.equal(row.daysSince, 7);
+});
+test('separate runs restart the drought when the newer run reaches five', () => {
+  const games = winningGames(7); games[5].homeScore = 0;
+  for (let i = 0; i < 4; i++) games.push({ ...games[0], id: `oct${i}`, date: `2026-10-${String(i + 1).padStart(2, '0')}`, week: i + 8 });
+  const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.last.startDate, '2026-09-19'); assert.equal(row.gamesSince, 0);
+});
+test('Browns archive has their last five-win run and exactly 25 games afterward before the hiatus', () => {
+  assert.equal(WIN_STREAK_HISTORY.CLE.length, 32);
+  const [sample] = winningGames(1); const row = streakFor([{ ...sample, home: 'CLE', date: '1999-09-12', season: 1999, homeScore: 0 }], 'CLE', WIN_STREAK_HISTORY);
+  assert.equal(row.last.date, '1994-10-23'); assert.equal(row.last.week, 8); assert.equal(row.last.wins, 5); assert.equal(row.gamesSince, 26); assert.equal(row.currentWins, 0);
+});
+test('historical opponent games are not silently added to their incomplete histories', () => {
+  const [sample] = winningGames(1); const row = streakFor([{ ...sample, home: 'CIN' }], 'CIN', WIN_STREAK_HISTORY);
+  assert.equal(row.currentWins, 1); assert.equal(row.gamesSince, 1); assert.equal(row.last, null);
+});
+test('invalid results, duplicate games, mixed historical schedules and empty feeds fail closed', () => {
+  assert.throws(() => calculateWinStreakDroughts([]), /No completed/);
+  assert.throws(() => calculateWinStreakDroughts(winningGames(), {}, 0), /threshold/);
+  assert.throws(() => calculateWinStreakDroughts([...winningGames(), winningGames()[0]]), /Duplicate/);
+  assert.throws(() => calculateWinStreakDroughts([{ ...winningGames()[0], homeScore: -1 }]), /Invalid/);
+  assert.throws(() => calculateWinStreakDroughts(winningGames(), { MIN: WIN_STREAK_HISTORY.CLE }), /historical/);
+});
+test('view hashes are linkable and unknown values fall back to milestones', () => {
+  assert.equal(droughtViewFromHash('#win-streaks'), 'win-streaks');
+  for (const hash of ['', '#milestones', '#unknown']) assert.equal(droughtViewFromHash(hash), 'milestones');
+});
+test('calendar durations use UTC days and whole calendar months across leap years', () => {
+  assert.equal(daysBetween('2024-02-28', '2024-03-01'), 2);
+  assert.equal(daysBetween('2026-03-07', '2026-03-09'), 2);
+  assert.equal(elapsedTime('2026-10-11', '2026-10-11'), '0 days');
+  assert.equal(elapsedTime('2026-10-10', '2026-10-11'), '1 day');
+  assert.equal(elapsedTime('2025-09-15', '2026-10-14'), '1 year');
+  assert.equal(elapsedTime('1994-10-23', '2026-10-11'), '31 years, 11 months');
+});
+test('saved data includes all 32 win-streak droughts without changing the milestone schema', () => {
+  const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  assert.equal(data.teams.length, 32); assert.equal(data.winStreaks.teams.length, 32); assert.equal(data.winStreaks.threshold, 5);
+  assert.equal(new Set(data.winStreaks.teams.map(r => r.team)).size, 32);
+  for (const row of data.winStreaks.teams) {
+    assert.ok(row.last); assert.ok(row.last.wins >= 5); assert.equal(row.daysSince, daysBetween(row.last.date, data.winStreaks.throughDate));
+    if (row.currentWins >= 5) assert.equal(row.gamesSince, 0);
+  }
 });

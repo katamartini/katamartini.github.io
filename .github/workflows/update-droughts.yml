@@ -24,7 +24,7 @@ jobs:
           node-version: "22"
       - name: Check drought calculations
         run: node --test nfl/droughts-data.test.mjs
-      - name: Refresh completed-season records
+      - name: Refresh milestones and regular-season win-streak droughts
         run: node scripts/update-droughts.mjs
       - name: Commit data and request a Pages build
         env:

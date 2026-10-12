@@ -354,5 +354,529 @@
         "playoffs": 2025
       }
     }
-  ]
+  ],
+  "winStreaks": {
+    "threshold": 5,
+    "scope": "REG",
+    "throughDate": "2026-10-11",
+    "firstResultsSeason": 1999,
+    "teams": [
+      {
+        "team": "BUF",
+        "division": "AFC East",
+        "last": {
+          "date": "2024-12-01",
+          "season": 2024,
+          "week": 13,
+          "game": "2024_13_SF_BUF",
+          "startDate": "2024-10-14",
+          "wins": 7
+        },
+        "gamesSince": 26,
+        "daysSince": 679,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "MIA",
+        "division": "AFC East",
+        "last": {
+          "date": "2022-11-27",
+          "season": 2022,
+          "week": 12,
+          "game": "2022_12_HOU_MIA",
+          "startDate": "2022-10-23",
+          "wins": 5
+        },
+        "gamesSince": 62,
+        "daysSince": 1414,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "NE",
+        "division": "AFC East",
+        "last": {
+          "date": "2025-12-01",
+          "season": 2025,
+          "week": 13,
+          "game": "2025_13_NYG_NE",
+          "startDate": "2025-09-28",
+          "wins": 10
+        },
+        "gamesSince": 9,
+        "daysSince": 314,
+        "currentWins": 2,
+        "currentStart": "2026-10-04"
+      },
+      {
+        "team": "NYJ",
+        "division": "AFC East",
+        "last": {
+          "date": "2015-12-27",
+          "season": 2015,
+          "week": 16,
+          "game": "2015_16_NE_NYJ",
+          "startDate": "2015-11-29",
+          "wins": 5
+        },
+        "gamesSince": 171,
+        "daysSince": 3941,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "BAL",
+        "division": "AFC North",
+        "last": {
+          "date": "2025-11-23",
+          "season": 2025,
+          "week": 12,
+          "game": "2025_12_NYJ_BAL",
+          "startDate": "2025-10-26",
+          "wins": 5
+        },
+        "gamesSince": 11,
+        "daysSince": 322,
+        "currentWins": 3,
+        "currentStart": "2026-09-27"
+      },
+      {
+        "team": "CIN",
+        "division": "AFC North",
+        "last": {
+          "date": "2025-09-14",
+          "season": 2025,
+          "week": 2,
+          "game": "2025_02_JAX_CIN",
+          "startDate": "2024-12-09",
+          "wins": 7
+        },
+        "gamesSince": 20,
+        "daysSince": 392,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "CLE",
+        "division": "AFC North",
+        "last": {
+          "date": "1994-10-23",
+          "season": 1994,
+          "week": 8,
+          "game": "historical:1994-10-23:CIN:CLE",
+          "startDate": "1994-09-18",
+          "wins": 5
+        },
+        "gamesSince": 467,
+        "daysSince": 11676,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "PIT",
+        "division": "AFC North",
+        "last": {
+          "date": "2024-11-17",
+          "season": 2024,
+          "week": 11,
+          "game": "2024_11_BAL_PIT",
+          "startDate": "2024-10-13",
+          "wins": 5
+        },
+        "gamesSince": 29,
+        "daysSince": 693,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "HOU",
+        "division": "AFC South",
+        "last": {
+          "date": "2026-01-04",
+          "season": 2025,
+          "week": 18,
+          "game": "2025_18_IND_HOU",
+          "startDate": "2025-11-09",
+          "wins": 9
+        },
+        "gamesSince": 5,
+        "daysSince": 280,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "IND",
+        "division": "AFC South",
+        "last": {
+          "date": "2018-11-25",
+          "season": 2018,
+          "week": 12,
+          "game": "2018_12_MIA_IND",
+          "startDate": "2018-10-21",
+          "wins": 5
+        },
+        "gamesSince": 127,
+        "daysSince": 2877,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "JAX",
+        "division": "AFC South",
+        "last": {
+          "date": "2026-09-13",
+          "season": 2026,
+          "week": 1,
+          "game": "2026_01_CLE_JAX",
+          "startDate": "2025-11-16",
+          "wins": 9
+        },
+        "gamesSince": 4,
+        "daysSince": 28,
+        "currentWins": 3,
+        "currentStart": "2026-09-27"
+      },
+      {
+        "team": "TEN",
+        "division": "AFC South",
+        "last": {
+          "date": "2022-10-30",
+          "season": 2022,
+          "week": 8,
+          "game": "2022_08_TEN_HOU",
+          "startDate": "2022-09-25",
+          "wins": 5
+        },
+        "gamesSince": 66,
+        "daysSince": 1442,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "DEN",
+        "division": "AFC West",
+        "last": {
+          "date": "2025-12-14",
+          "season": 2025,
+          "week": 15,
+          "game": "2025_15_GB_DEN",
+          "startDate": "2025-09-29",
+          "wins": 11
+        },
+        "gamesSince": 8,
+        "daysSince": 301,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "KC",
+        "division": "AFC West",
+        "last": {
+          "date": "2024-12-25",
+          "season": 2024,
+          "week": 17,
+          "game": "2024_17_KC_PIT",
+          "startDate": "2024-11-24",
+          "wins": 6
+        },
+        "gamesSince": 22,
+        "daysSince": 655,
+        "currentWins": 4,
+        "currentStart": "2026-09-14"
+      },
+      {
+        "team": "LAC",
+        "division": "AFC West",
+        "last": {
+          "date": "2025-09-21",
+          "season": 2025,
+          "week": 3,
+          "game": "2025_03_DEN_LAC",
+          "startDate": "2024-12-19",
+          "wins": 6
+        },
+        "gamesSince": 19,
+        "daysSince": 385,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "LV",
+        "division": "AFC West",
+        "last": {
+          "date": "2016-12-04",
+          "season": 2016,
+          "week": 13,
+          "game": "2016_13_BUF_OAK",
+          "startDate": "2016-10-23",
+          "wins": 6
+        },
+        "gamesSince": 158,
+        "daysSince": 3598,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "DAL",
+        "division": "NFC East",
+        "last": {
+          "date": "2023-12-10",
+          "season": 2023,
+          "week": 14,
+          "game": "2023_14_PHI_DAL",
+          "startDate": "2023-11-12",
+          "wins": 5
+        },
+        "gamesSince": 43,
+        "daysSince": 1036,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "NYG",
+        "division": "NFC East",
+        "last": {
+          "date": "2016-11-27",
+          "season": 2016,
+          "week": 12,
+          "game": "2016_12_NYG_CLE",
+          "startDate": "2016-10-16",
+          "wins": 6
+        },
+        "gamesSince": 159,
+        "daysSince": 3605,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "PHI",
+        "division": "NFC East",
+        "last": {
+          "date": "2025-09-28",
+          "season": 2025,
+          "week": 4,
+          "game": "2025_04_PHI_TB",
+          "startDate": "2024-12-29",
+          "wins": 6
+        },
+        "gamesSince": 18,
+        "daysSince": 378,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "WAS",
+        "division": "NFC East",
+        "last": {
+          "date": "2025-09-07",
+          "season": 2025,
+          "week": 1,
+          "game": "2025_01_NYG_WAS",
+          "startDate": "2024-12-01",
+          "wins": 6
+        },
+        "gamesSince": 21,
+        "daysSince": 399,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "CHI",
+        "division": "NFC North",
+        "last": {
+          "date": "2025-11-28",
+          "season": 2025,
+          "week": 13,
+          "game": "2025_13_CHI_PHI",
+          "startDate": "2025-11-02",
+          "wins": 5
+        },
+        "gamesSince": 10,
+        "daysSince": 317,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "DET",
+        "division": "NFC North",
+        "last": {
+          "date": "2024-12-05",
+          "season": 2024,
+          "week": 14,
+          "game": "2024_14_GB_DET",
+          "startDate": "2024-09-22",
+          "wins": 11
+        },
+        "gamesSince": 26,
+        "daysSince": 675,
+        "currentWins": 1,
+        "currentStart": "2026-10-11"
+      },
+      {
+        "team": "GB",
+        "division": "NFC North",
+        "last": {
+          "date": "2022-01-02",
+          "season": 2021,
+          "week": 17,
+          "game": "2021_17_MIN_GB",
+          "startDate": "2021-11-28",
+          "wins": 5
+        },
+        "gamesSince": 74,
+        "daysSince": 1743,
+        "currentWins": 2,
+        "currentStart": "2026-10-04"
+      },
+      {
+        "team": "MIN",
+        "division": "NFC North",
+        "last": {
+          "date": "2026-10-11",
+          "season": 2026,
+          "week": 5,
+          "game": "2026_05_MIN_NO",
+          "startDate": "2025-12-07",
+          "wins": 10
+        },
+        "gamesSince": 0,
+        "daysSince": 0,
+        "currentWins": 10,
+        "currentStart": "2025-12-07"
+      },
+      {
+        "team": "ATL",
+        "division": "NFC South",
+        "last": {
+          "date": "2017-09-24",
+          "season": 2017,
+          "week": 3,
+          "game": "2017_03_ATL_DET",
+          "startDate": "2016-12-11",
+          "wins": 7
+        },
+        "gamesSince": 151,
+        "daysSince": 3304,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "CAR",
+        "division": "NFC South",
+        "last": {
+          "date": "2015-12-20",
+          "season": 2015,
+          "week": 15,
+          "game": "2015_15_CAR_NYG",
+          "startDate": "2014-12-07",
+          "wins": 18
+        },
+        "gamesSince": 171,
+        "daysSince": 3948,
+        "currentWins": 1,
+        "currentStart": "2026-10-04"
+      },
+      {
+        "team": "NO",
+        "division": "NFC South",
+        "last": {
+          "date": "2020-12-06",
+          "season": 2020,
+          "week": 13,
+          "game": "2020_13_NO_ATL",
+          "startDate": "2020-10-04",
+          "wins": 9
+        },
+        "gamesSince": 94,
+        "daysSince": 2135,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "TB",
+        "division": "NFC South",
+        "last": {
+          "date": "2025-09-21",
+          "season": 2025,
+          "week": 3,
+          "game": "2025_03_NYJ_TB",
+          "startDate": "2024-12-29",
+          "wins": 5
+        },
+        "gamesSince": 19,
+        "daysSince": 385,
+        "currentWins": 1,
+        "currentStart": "2026-10-08"
+      },
+      {
+        "team": "ARI",
+        "division": "NFC West",
+        "last": {
+          "date": "2021-10-24",
+          "season": 2021,
+          "week": 7,
+          "game": "2021_07_HOU_ARI",
+          "startDate": "2021-09-12",
+          "wins": 7
+        },
+        "gamesSince": 83,
+        "daysSince": 1813,
+        "currentWins": 0,
+        "currentStart": null
+      },
+      {
+        "team": "LA",
+        "division": "NFC West",
+        "last": {
+          "date": "2025-11-23",
+          "season": 2025,
+          "week": 12,
+          "game": "2025_12_TB_LA",
+          "startDate": "2025-10-12",
+          "wins": 6
+        },
+        "gamesSince": 10,
+        "daysSince": 322,
+        "currentWins": 1,
+        "currentStart": "2026-10-04"
+      },
+      {
+        "team": "SF",
+        "division": "NFC West",
+        "last": {
+          "date": "2026-10-11",
+          "season": 2026,
+          "week": 5,
+          "game": "2026_05_SF_SEA",
+          "startDate": "2026-09-10",
+          "wins": 5
+        },
+        "gamesSince": 0,
+        "daysSince": 0,
+        "currentWins": 5,
+        "currentStart": "2026-09-10"
+      },
+      {
+        "team": "SEA",
+        "division": "NFC West",
+        "last": {
+          "date": "2026-09-20",
+          "season": 2026,
+          "week": 2,
+          "game": "2026_02_SEA_ARI",
+          "startDate": "2025-11-23",
+          "wins": 9
+        },
+        "gamesSince": 3,
+        "daysSince": 21,
+        "currentWins": 0,
+        "currentStart": null
+      }
+    ],
+    "historicalSources": [
+      "https://www.clevelandbrowns.com/schedule/1994/",
+      "https://www.clevelandbrowns.com/schedule/1995/"
+    ]
+  }
 }
