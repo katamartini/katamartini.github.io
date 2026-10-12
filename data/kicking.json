@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-07T15:20:00.711Z",
+  "checkedAt": "2026-10-12T19:56:37.486Z",
   "firstSeason": 1999,
   "season": 2026,
-  "through": "2026-10-05",
-  "latestWeek": 4,
+  "through": "2026-10-11",
+  "latestWeek": 5,
   "rosterWeek": 5,
-  "sourceHash": "75332bef0021bc7adaf1bff82e74ccf28f1845611ae7306e906b39d2920d030d",
+  "sourceHash": "68f01f9316b66e39d08e13c99ecaeaae0cc616de21cc19f2f2a8f47c3c2799e6",
   "sources": [
     {
       "season": 1999,
@@ -661,6 +661,40 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0039404:2025_09_MIN_DET:1528",
+        "playerId": "00-0039404",
+        "name": "Will Reichard",
+        "length": 34,
+        "fieldGoals": 34,
+        "extraPoints": 0,
+        "teams": [
+          "MIN"
+        ],
+        "start": {
+          "date": "2025-11-02",
+          "team": "MIN",
+          "opponent": "DET",
+          "game": "2025_09_MIN_DET",
+          "play": 1528,
+          "type": "FG",
+          "distance": 50
+        },
+        "last": {
+          "date": "2026-10-11",
+          "team": "MIN",
+          "opponent": "NO",
+          "game": "2026_05_MIN_NO",
+          "play": 3320,
+          "type": "FG",
+          "distance": 55
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "fg:00-0029597:2013_03_HOU_BAL:1767",
         "playerId": "00-0029597",
         "name": "Justin Tucker",
@@ -943,40 +977,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "fg:00-0039404:2025_09_MIN_DET:1528",
-        "playerId": "00-0039404",
-        "name": "Will Reichard",
-        "length": 31,
-        "fieldGoals": 31,
-        "extraPoints": 0,
-        "teams": [
-          "MIN"
-        ],
-        "start": {
-          "date": "2025-11-02",
-          "team": "MIN",
-          "opponent": "DET",
-          "game": "2025_09_MIN_DET",
-          "play": 1528,
-          "type": "FG",
-          "distance": 50
-        },
-        "last": {
-          "date": "2026-10-04",
-          "team": "MIN",
-          "opponent": "MIA",
-          "game": "2026_04_MIA_MIN",
-          "play": 3556,
-          "type": "FG",
-          "distance": 29
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -2819,6 +2819,40 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
+        "playerId": "00-0038428",
+        "name": "Andre Szmyt",
+        "length": 24,
+        "fieldGoals": 24,
+        "extraPoints": 0,
+        "teams": [
+          "CLE"
+        ],
+        "start": {
+          "date": "2025-11-09",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2025_10_CLE_NYJ",
+          "play": 2309,
+          "type": "FG",
+          "distance": 45
+        },
+        "last": {
+          "date": "2026-10-11",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2026_05_CLE_NYJ",
+          "play": 1422,
+          "type": "FG",
+          "distance": 41
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "fg:00-0016919:2004_06_SEA_NE:682",
         "playerId": "00-0016919",
         "name": "Adam Vinatieri",
@@ -3681,32 +3715,32 @@
         "gapAfter": null
       },
       {
-        "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
-        "playerId": "00-0038428",
-        "name": "Andre Szmyt",
+        "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+        "playerId": "00-0036854",
+        "name": "Evan McPherson",
         "length": 22,
         "fieldGoals": 22,
         "extraPoints": 0,
         "teams": [
-          "CLE"
+          "CIN"
         ],
         "start": {
-          "date": "2025-11-09",
-          "team": "CLE",
-          "opponent": "NYJ",
-          "game": "2025_10_CLE_NYJ",
-          "play": 2309,
+          "date": "2025-11-16",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2025_11_CIN_PIT",
+          "play": 2467,
           "type": "FG",
-          "distance": 45
+          "distance": 43
         },
         "last": {
-          "date": "2026-10-01",
-          "team": "CLE",
-          "opponent": "PIT",
-          "game": "2026_04_PIT_CLE",
-          "play": 4636,
+          "date": "2026-10-11",
+          "team": "CIN",
+          "opponent": "MIA",
+          "game": "2026_05_CIN_MIA",
+          "play": 3976,
           "type": "FG",
-          "distance": 56
+          "distance": 26
         },
         "endedBy": null,
         "active": true,
@@ -4313,40 +4347,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
-        "playerId": "00-0036854",
-        "name": "Evan McPherson",
-        "length": 21,
-        "fieldGoals": 21,
-        "extraPoints": 0,
-        "teams": [
-          "CIN"
-        ],
-        "start": {
-          "date": "2025-11-16",
-          "team": "CIN",
-          "opponent": "PIT",
-          "game": "2025_11_CIN_PIT",
-          "play": 2467,
-          "type": "FG",
-          "distance": 43
-        },
-        "last": {
-          "date": "2026-10-04",
-          "team": "CIN",
-          "opponent": "JAX",
-          "game": "2026_04_JAX_CIN",
-          "play": 1180,
-          "type": "FG",
-          "distance": 29
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -6089,6 +6089,40 @@
         "gapAfter": null
       },
       {
+        "id": "all:00-0039404:2025_08_MIN_LAC:2884",
+        "playerId": "00-0039404",
+        "name": "Will Reichard",
+        "length": 61,
+        "fieldGoals": 34,
+        "extraPoints": 27,
+        "teams": [
+          "MIN"
+        ],
+        "start": {
+          "date": "2025-10-23",
+          "team": "MIN",
+          "opponent": "LAC",
+          "game": "2025_08_MIN_LAC",
+          "play": 2884,
+          "type": "XP",
+          "distance": 33
+        },
+        "last": {
+          "date": "2026-10-11",
+          "team": "MIN",
+          "opponent": "NO",
+          "game": "2026_05_MIN_NO",
+          "play": 3320,
+          "type": "FG",
+          "distance": 55
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "all:00-0023252:2005_16_CHI_GB:518",
         "playerId": "00-0023252",
         "name": "Robbie Gould",
@@ -6603,40 +6637,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "all:00-0039404:2025_08_MIN_LAC:2884",
-        "playerId": "00-0039404",
-        "name": "Will Reichard",
-        "length": 56,
-        "fieldGoals": 31,
-        "extraPoints": 25,
-        "teams": [
-          "MIN"
-        ],
-        "start": {
-          "date": "2025-10-23",
-          "team": "MIN",
-          "opponent": "LAC",
-          "game": "2025_08_MIN_LAC",
-          "play": 2884,
-          "type": "XP",
-          "distance": 33
-        },
-        "last": {
-          "date": "2026-10-04",
-          "team": "MIN",
-          "opponent": "MIA",
-          "game": "2026_04_MIA_MIN",
-          "play": 3556,
-          "type": "FG",
-          "distance": 29
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -9138,6 +9138,49 @@
         "gapAfter": null
       },
       {
+        "id": "all:00-0038428:2025_10_CLE_NYJ:570",
+        "playerId": "00-0038428",
+        "name": "Andre Szmyt",
+        "length": 44,
+        "fieldGoals": 24,
+        "extraPoints": 20,
+        "teams": [
+          "CLE"
+        ],
+        "start": {
+          "date": "2025-11-09",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2025_10_CLE_NYJ",
+          "play": 570,
+          "type": "XP",
+          "distance": 33
+        },
+        "last": {
+          "date": "2026-10-11",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2026_05_CLE_NYJ",
+          "play": 1422,
+          "type": "FG",
+          "distance": 41
+        },
+        "endedBy": {
+          "date": "2026-10-11",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2026_05_CLE_NYJ",
+          "play": 3836,
+          "type": "XP",
+          "distance": 33,
+          "result": "failed"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "all:00-0016830:2000_02_OAK_IND:1904",
         "playerId": "00-0016830",
         "name": "Mike Vanderjagt",
@@ -9865,40 +9908,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "all:00-0038428:2025_10_CLE_NYJ:570",
-        "playerId": "00-0038428",
-        "name": "Andre Szmyt",
-        "length": 42,
-        "fieldGoals": 22,
-        "extraPoints": 20,
-        "teams": [
-          "CLE"
-        ],
-        "start": {
-          "date": "2025-11-09",
-          "team": "CLE",
-          "opponent": "NYJ",
-          "game": "2025_10_CLE_NYJ",
-          "play": 570,
-          "type": "XP",
-          "distance": 33
-        },
-        "last": {
-          "date": "2026-10-01",
-          "team": "CLE",
-          "opponent": "PIT",
-          "game": "2026_04_PIT_CLE",
-          "play": 4636,
-          "type": "FG",
-          "distance": 56
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
