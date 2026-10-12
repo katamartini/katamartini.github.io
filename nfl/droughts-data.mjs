@@ -1,5 +1,5 @@
 import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
-import { isHistoricalOpponent, FRANCHISE_DEBUTS } from './droughts-archive.mjs';
+import { isHistoricalOpponent, FRANCHISE_DEBUTS, ARCHIVE_FIRST_SEASON, ARCHIVE_LAST_SEASON } from './droughts-archive.mjs';
 export { FRANCHISE_DEBUTS } from './droughts-archive.mjs';
 
 export const CATEGORIES = [
@@ -146,7 +146,7 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
   if (!regular.length) throw new Error('No completed regular-season games');
   const valid = game => /^\d{4}-\d{2}-\d{2}$/.test(game.date) && Number.isFinite(Date.parse(game.date)) &&
     Number.isInteger(game.season) && (Number.isInteger(game.week) && game.week > 0 ||
-      game.week === null && game.id?.startsWith('archive:') && game.season >= 1946 && game.season <= 1998) &&
+      game.week === null && game.id?.startsWith('archive:') && game.season >= ARCHIVE_FIRST_SEASON && game.season <= ARCHIVE_LAST_SEASON) &&
     [game.home, game.away].every(t => TEAMS[t] || isHistoricalOpponent(t)) && game.home !== game.away &&
     Number.isInteger(game.homeScore) && game.homeScore >= 0 && Number.isInteger(game.awayScore) && game.awayScore >= 0;
   if (regular.some(g => !valid(g))) throw new Error('Invalid regular-season result');
