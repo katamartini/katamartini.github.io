@@ -4,7 +4,7 @@ import { SOURCE_URL } from '../nfl/divstreaks-data.mjs';
 import { calculateDroughts, DIVISION_BASELINE_SEASON, DIVISION_TITLES,
   divisionWinners, latestCompletedSeason, readGames, calculateWinStreakDroughts,
   WIN_STREAK_THRESHOLDS, WIN_STREAK_TARGET, validWinStreakView } from '../nfl/droughts-data.mjs';
-import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, ARCHIVE_FIRST_SEASON, ARCHIVE_LAST_SEASON } from '../nfl/droughts-archive.mjs';
+import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, ARCHIVE_FIRST_SEASON, ARCHIVE_LAST_SEASON, FRANCHISE_DEBUTS } from '../nfl/droughts-archive.mjs';
 
 async function download(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
@@ -35,7 +35,8 @@ const history = archiveByTeam(archive.rows);
 const views = WIN_STREAK_THRESHOLDS.map(threshold => calculateWinStreakDroughts(games, history, threshold));
 data.winStreaks = { ...views.find(view => view.threshold === WIN_STREAK_TARGET), historicalSources: [ARCHIVE_SOURCE, archive.license],
   thresholds: Object.fromEntries(views.filter(view => view.threshold !== WIN_STREAK_TARGET).map(view => [view.threshold, view])) };
-if (views.some(view => !validWinStreakView(view)) || data.winStreaks.teams.some(row => !row.last)) {
+if (views.some(view => !validWinStreakView(view) || view.teams.some(row =>
+    Number(row.coverageStart.slice(0, 4)) !== FRANCHISE_DEBUTS[row.team])) || data.winStreaks.teams.some(row => !row.last)) {
   throw new Error('Incomplete win-streak history; keeping saved data');
 }
 for (let season = 1999; season <= throughSeason; season++) {

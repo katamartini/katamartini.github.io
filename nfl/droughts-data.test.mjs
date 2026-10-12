@@ -7,7 +7,7 @@ import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, s
   winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
-  ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256 } from './droughts-archive.mjs';
+  ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, historicalClubFranchises } from './droughts-archive.mjs';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 
@@ -244,14 +244,14 @@ test('shared view validation rejects incomplete snapshots and impossible active 
 });
 
 const archiveFixture = () => JSON.parse(readFileSync(new URL('../data/droughts-history.json', import.meta.url)));
-test('pinned archive covers all franchise schedules from 1946 through 1998', () => {
+test('pinned archive covers all franchise schedules from 1920 through 1998', () => {
   const archive = archiveFixture();
   assert.equal(archive.source, ARCHIVE_SOURCE); assert.equal(archive.sha256, ARCHIVE_SHA256);
   assert.equal(createHash('sha256').update(JSON.stringify(archive.rows)).digest('hex'), ARCHIVE_ROWS_SHA256);
-  assert.equal(archive.firstSeason, 1946); assert.equal(archive.lastSeason, 1998);
-  assert.equal(archive.rows.length, 8922); assert.equal(validateArchive(archive.rows), true);
+  assert.equal(archive.firstSeason, 1920); assert.equal(archive.lastSeason, 1998);
+  assert.equal(archive.rows.length, 10612); assert.equal(validateArchive(archive.rows), true);
   const history = archiveByTeam(archive.rows);
-  for (const team of Object.keys(history)) for (let year = 1946; year <= 1998; year++) {
+  for (const team of Object.keys(history)) for (let year = 1920; year <= 1998; year++) {
     assert.equal(history[team].filter(g => g.season === year).length, expectedHistoricalGames(team, year), `${team} ${year}`);
   }
 });
@@ -295,7 +295,7 @@ test('historical backfill preserves verified Browns records and resolves older l
   }
   const modern = { ...winningGames(1)[0], season: 1999, date: '1999-09-12' };
   const five = calculateWinStreakDroughts([modern], archive, 5);
-  assert.equal(five.firstResultsSeason, 1946);
+  assert.equal(five.firstResultsSeason, 1920);
   assert.equal(five.teams.find(r => r.team === 'CLE').last.date, '1994-10-23');
   const six = calculateWinStreakDroughts([modern], archive, 6).teams.find(r => r.team === 'CLE');
   assert.equal(six.last.date, '1972-11-26'); assert.equal(six.last.gameNumber, 11);
@@ -338,6 +338,7 @@ test('longest drought sorts put never teams first, older franchises before newer
 test('shortest drought sorts move never teams below known streaks and unknown history stays last', () => {
   const view = sortingFixture();
   const ari = view.teams.find(r => r.team === 'ARI'); ari.last = null; ari.daysSince = null;
+  ari.coverageStart = '1946-09-20'; // Deliberately incomplete early history.
   for (const [key, descending] of [['gamesSince', false], ['daysSince', false], ['last', true]]) {
     const rows = [...view.teams].sort((a, b) => compareWinStreakRows(a, b, key, descending, view));
     assert.equal(winStreakHistoryStatus(rows[0], view), 'recorded');
@@ -401,15 +402,81 @@ test('1+ tracks the latest win and one loss is one game since that win', () => {
   assert.equal(resumed.gamesSince, 0); assert.equal(winStreakRowClass(resumed, view), 'active-streak');
 });
 
-test('the 23+ view retains a qualifying Colts record and keeps unverified early careers unknown', () => {
+test('the 23+ view retains a qualifying Colts record and now covers all franchise debuts', () => {
   const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
   const view = saved.winStreaks.thresholds[23];
   const colts = view.teams.find(r => r.team === 'IND');
   assert.ok(colts.last); assert.ok(colts.last.wins >= 23);
   for (const row of view.teams) {
-    if (!row.last && !FRANCHISE_DEBUTS[row.team]) {
-      assert.equal(winStreakHistoryStatus(row, view), 'unknown');
-      assert.notEqual(winStreakRowClass(row, view), 'never-streak');
+    assert.equal(Number(row.coverageStart.slice(0, 4)), FRANCHISE_DEBUTS[row.team]);
+    if (!row.last) assert.equal(winStreakHistoryStatus(row, view), 'never');
+  }
+});
+
+test('all 32 franchise debuts and every saved threshold have full first-season coverage', () => {
+  assert.equal(Object.keys(FRANCHISE_DEBUTS).length, 32);
+  assert.deepEqual(Object.keys(FRANCHISE_DEBUTS).sort(), DIVISIONS.flatMap(d => d.teams).sort());
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  for (const n of WIN_STREAK_THRESHOLDS) {
+    const view = n === 5 ? saved.winStreaks : saved.winStreaks.thresholds[n];
+    assert.equal(view.firstResultsSeason, 1920);
+    for (const row of view.teams) {
+      assert.equal(Number(row.coverageStart.slice(0, 4)), FRANCHISE_DEBUTS[row.team]);
+      assert.notEqual(winStreakHistoryStatus(row, view), 'unknown');
     }
   }
+});
+
+test('wartime games are shared by both franchises while their opponents see a single combined club', () => {
+  const rows = archiveFixture().rows, history = archiveByTeam(rows);
+  for (const [club, year, teams, wins, ties] of [
+    ['historical:STG', 1943, ['PHI', 'PIT'], 5, 1],
+    ['historical:CRP', 1944, ['ARI', 'PIT'], 0, 0],
+  ]) {
+    assert.deepEqual(historicalClubFranchises(club, year), teams);
+    for (const team of teams) {
+      const games = history[team].filter(g => g.season === year);
+      assert.equal(games.length, 10); assert.ok(games.every(g => g.mergedClub === club));
+      assert.equal(games.filter(g => g.home === team ? g.homeScore > g.awayScore : g.awayScore > g.homeScore).length, wins);
+      assert.equal(games.filter(g => g.homeScore === g.awayScore).length, ties);
+    }
+    const sample = rows.find(r => [r[2], r[4]].includes(club) && [r[2], r[4]].some(t => history[t]));
+    const opponent = sample[2] === club ? sample[4] : sample[2];
+    const opponentGames = history[opponent].filter(g => g.date === sample[0]);
+    assert.equal(opponentGames.length, 1);
+    assert.ok([opponentGames[0].home, opponentGames[0].away].includes(club));
+    for (const team of teams) assert.equal(history[team].filter(g => g.id === opponentGames[0].id).length, 1);
+  }
+  assert.throws(() => historicalClubFranchises('historical:STG', 1944), /Invalid Steagles/);
+  assert.throws(() => historicalClubFranchises('historical:CRP', 1943), /Invalid Card-Pitt/);
+});
+
+test('early names, pre-league seasons and suspensions cannot leak into other franchise histories', () => {
+  const history = archiveByTeam(archiveFixture().rows);
+  assert.equal(history.GB[0].season, 1921); assert.ok(history.GB.every(g => g.season >= 1921));
+  assert.equal(history.NYG[0].season, 1925); assert.deepEqual(historicalClubFranchises('historical:NG1', 1921), []);
+  assert.equal(history.DET[0].season, 1930); assert.deepEqual(historicalClubFranchises('historical:DTM', 1925), []);
+  assert.equal(history.LA[0].season, 1937); assert.equal(history.LA.filter(g => g.season === 1943).length, 0);
+  assert.equal(history.BUF[0].season, 1960); assert.deepEqual(historicalClubFranchises('historical:BFF', 1920), []);
+  assert.equal(history.CHI[0].date, '1920-10-03'); assert.equal(history.CHI[0].away, 'historical:MUT');
+  assert.equal(history.CHI[0].homeScore, 20); assert.equal(history.CHI[0].awayScore, 0);
+  assert.equal(history.CLE.filter(g => g.season >= 1996).length, 0);
+});
+
+test('the 1932 standings tiebreaker is retained and prewar qualifying runs are calculable', () => {
+  const history = archiveByTeam(archiveFixture().rows);
+  const tiebreaker = history.CHI.find(g => g.date === '1932-12-18');
+  assert.ok(tiebreaker); assert.equal(tiebreaker.away, 'DET'); assert.equal(tiebreaker.homeScore, 9);
+  const modern = { ...winningGames(1)[0], season: 1999, date: '1999-09-12' };
+  assert.equal(calculateWinStreakDroughts([modern], history, 17).teams.find(r => r.team === 'CHI').last.date, '1934-12-02');
+  assert.equal(calculateWinStreakDroughts([modern], history, 13).teams.find(r => r.team === 'WAS').last.date, '1943-10-31');
+});
+
+test('old never franchises sort first by their league debut, with name ties deterministic', () => {
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  const view = saved.winStreaks.thresholds[23];
+  const oldTeams = ['ARI', 'CHI', 'GB', 'NYG', 'DET', 'WAS', 'PHI', 'PIT', 'LA'];
+  const rows = view.teams.filter(r => oldTeams.includes(r.team)).map(r => ({ ...r, last: null, daysSince: null }));
+  assert.deepEqual(rows.sort((a,b) => compareWinStreakRows(a,b,'gamesSince',true,view)).map(r => r.team),
+    ['CHI', 'ARI', 'GB', 'NYG', 'DET', 'WAS', 'PHI', 'PIT', 'LA']);
 });
