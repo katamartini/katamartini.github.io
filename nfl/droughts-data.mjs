@@ -69,7 +69,29 @@ export function readGames(csv) {
 }
 
 export const WIN_STREAK_TARGET = 5;
-export const droughtViewFromHash = hash => hash === '#win-streaks' ? 'win-streaks' : 'milestones';
+export const WIN_STREAK_THRESHOLDS = [5, 6, 7, 8, 9, 10];
+export const droughtViewFromHash = hash => /^#win-streaks(?:-(?:5|6|7|8|9|10))?$/.test(hash) ? 'win-streaks' : 'milestones';
+export const winThresholdFromHash = hash => {
+  const match = /^#win-streaks-(5|6|7|8|9|10)$/.exec(hash);
+  return match ? Number(match[1]) : WIN_STREAK_TARGET;
+};
+export function winStreakState(currentWins, threshold) {
+  if (!Number.isInteger(currentWins) || currentWins < 0 || !WIN_STREAK_THRESHOLDS.includes(threshold)) throw new Error('Invalid win-streak status');
+  return currentWins >= threshold ? 'active-streak' : currentWins === threshold - 1 ? 'one-away' : '';
+}
+export function validWinStreakView(wins) {
+  const date = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value));
+  return !!wins && WIN_STREAK_THRESHOLDS.includes(wins.threshold) && wins.scope === 'REG' && date(wins.throughDate) &&
+    wins.teams?.length === 32 && new Set(wins.teams.map(row => row.team)).size === 32 && wins.teams.every(row =>
+      TEAMS[row.team] && DIVISIONS.some(d => d.name === row.division && d.teams.includes(row.team)) &&
+      date(row.coverageStart) && row.coverageStart <= wins.throughDate &&
+      ['gamesSince', 'currentWins'].every(key => Number.isInteger(row[key]) && row[key] >= 0) &&
+      (row.last === null ? row.daysSince === null && row.currentWins < wins.threshold :
+        date(row.last.date) && row.last.date <= wins.throughDate && Number.isInteger(row.last.season) &&
+        Number.isInteger(row.last.week) && row.last.week >= 1 && Number.isInteger(row.last.wins) && row.last.wins >= wins.threshold &&
+        row.daysSince === daysBetween(row.last.date, wins.throughDate) &&
+        (row.currentWins >= wins.threshold ? row.gamesSince === 0 : row.gamesSince > 0)));
+}
 export const daysBetween = (first, last) => Math.round((Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / 86400000);
 export function elapsedTime(first, last) {
   const a = new Date(`${first}T00:00:00Z`), b = new Date(`${last}T00:00:00Z`);
@@ -107,7 +129,8 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
         gamesSince = 0;
       }
     }
-    return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, currentStart };
+    return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, currentStart,
+      coverageStart: rows[0]?.date ?? null };
   }));
   return { threshold, scope: 'REG', throughDate, firstResultsSeason: Math.min(...regular.map(g => g.season)), teams };
 }

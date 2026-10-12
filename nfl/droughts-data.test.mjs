@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DIVISIONS } from './divstreaks-data.mjs';
 import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
-  calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime } from './droughts-data.mjs';
+  calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
+  WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { readFileSync } from 'node:fs';
 
@@ -170,4 +171,66 @@ test('saved data includes all 32 win-streak droughts without changing the milest
     assert.ok(row.last); assert.ok(row.last.wins >= 5); assert.equal(row.daysSince, daysBetween(row.last.date, data.winStreaks.throughDate));
     if (row.currentWins >= 5) assert.equal(row.gamesSince, 0);
   }
+});
+
+test('each threshold from 5 to 10 qualifies at exactly its own number of wins', () => {
+  for (const threshold of WIN_STREAK_THRESHOLDS) {
+    const before = calculateWinStreakDroughts(winningGames(threshold - 1), {}, threshold).teams.find(r => r.team === 'MIN');
+    assert.equal(before.last, null); assert.equal(winStreakState(before.currentWins, threshold), 'one-away');
+    const at = calculateWinStreakDroughts(winningGames(threshold), {}, threshold).teams.find(r => r.team === 'MIN');
+    assert.equal(at.last.wins, threshold); assert.equal(at.gamesSince, 0); assert.equal(winStreakState(at.currentWins, threshold), 'active-streak');
+  }
+});
+test('green qualifying streaks take priority; yellow is exactly one win away', () => {
+  for (const threshold of WIN_STREAK_THRESHOLDS) {
+    assert.equal(winStreakState(threshold + 1, threshold), 'active-streak');
+    assert.equal(winStreakState(threshold, threshold), 'active-streak');
+    assert.equal(winStreakState(threshold - 1, threshold), 'one-away');
+    assert.equal(winStreakState(threshold - 2, threshold), '');
+    assert.equal(winStreakState(0, threshold), '');
+  }
+  assert.throws(() => winStreakState(-1, 5), /Invalid/);
+  assert.throws(() => winStreakState(5, 11), /Invalid/);
+});
+test('a loss or tie removes qualifying and one-away highlights', () => {
+  for (const score of [0, 10]) {
+    const games = winningGames(7); games[6].homeScore = score;
+    const row = calculateWinStreakDroughts(games, {}, 6).teams.find(r => r.team === 'MIN');
+    assert.equal(row.currentWins, 0); assert.equal(row.gamesSince, 1); assert.equal(winStreakState(row.currentWins, 6), '');
+  }
+});
+test('each threshold is independently linkable and existing links keep selecting 5+', () => {
+  for (const threshold of WIN_STREAK_THRESHOLDS) {
+    assert.equal(droughtViewFromHash(`#win-streaks-${threshold}`), 'win-streaks');
+    assert.equal(winThresholdFromHash(`#win-streaks-${threshold}`), threshold);
+  }
+  assert.equal(winThresholdFromHash('#win-streaks'), 5);
+  for (const hash of ['#win-streaks-11', '#win-streaks-6junk', '#win-streaks-06', '#unknown']) {
+    assert.equal(droughtViewFromHash(hash), 'milestones'); assert.equal(winThresholdFromHash(hash), 5);
+  }
+});
+test('missing older qualifying runs remain unknown, not invented dates or never claims', () => {
+  const games = winningGames(4);
+  const row = calculateWinStreakDroughts(games, {}, 10).teams.find(r => r.team === 'MIN');
+  assert.equal(row.last, null); assert.equal(row.daysSince, null); assert.equal(row.coverageStart, games[0].date);
+});
+test('all six saved views validate, share current streaks, and retain their correct threshold', () => {
+  const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  for (const threshold of WIN_STREAK_THRESHOLDS) {
+    const view = threshold === 5 ? data.winStreaks : data.winStreaks.thresholds[threshold];
+    assert.equal(view.threshold, threshold); assert.equal(view.throughDate, data.winStreaks.throughDate);
+    assert.equal(validWinStreakView(view), true);
+    for (const row of view.teams) assert.equal(row.currentWins, data.winStreaks.teams.find(r => r.team === row.team).currentWins);
+  }
+  const cle = data.winStreaks.thresholds[6].teams.find(r => r.team === 'CLE');
+  assert.equal(cle.last, null); assert.equal(cle.daysSince, null); assert.equal(cle.coverageStart, '1994-09-04');
+});
+test('shared view validation rejects incomplete snapshots and impossible active states', () => {
+  const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  assert.equal(validWinStreakView(null), false);
+  const broken = structuredClone(data.winStreaks); broken.teams.pop(); assert.equal(validWinStreakView(broken), false);
+  const duplicate = structuredClone(data.winStreaks); duplicate.teams[1] = duplicate.teams[0]; assert.equal(validWinStreakView(duplicate), false);
+  const unknown = structuredClone(data.winStreaks.thresholds[6]); const row = unknown.teams.find(r => r.last === null);
+  row.currentWins = 6; assert.equal(validWinStreakView(unknown), false);
+  row.currentWins = 0; row.daysSince = 100; assert.equal(validWinStreakView(unknown), false);
 });
