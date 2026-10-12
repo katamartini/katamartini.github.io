@@ -106,7 +106,7 @@ test('malformed or unfinished championship data fails rather than inventing a co
 
 function winningGames(count = 5) {
   return Array.from({ length: count }, (_, i) => ({ id: `g${i}`, season: 2026, type: 'REG', week: i + 1,
-    date: `2026-09-${String(i * 3 + 1).padStart(2, '0')}`, away: 'GB', home: 'MIN', awayScore: 10, homeScore: 20, completed: true }));
+    date: new Date(Date.UTC(2026, 8, 1 + i * 3)).toISOString().slice(0, 10), away: 'GB', home: 'MIN', awayScore: 10, homeScore: 20, completed: true }));
 }
 const streakFor = (games, team = 'MIN', history = {}) => calculateWinStreakDroughts(games, history).teams.find(r => r.team === team);
 
@@ -177,9 +177,10 @@ test('saved data includes all 32 win-streak droughts without changing the milest
   }
 });
 
-test('each threshold from 5 to 10 qualifies at exactly its own number of wins', () => {
+test('each threshold from 1 to 23 qualifies at exactly its own number of wins', () => {
   for (const threshold of WIN_STREAK_THRESHOLDS) {
-    const before = calculateWinStreakDroughts(winningGames(threshold - 1), {}, threshold).teams.find(r => r.team === 'MIN');
+    const beforeGames = threshold === 1 ? [{ ...winningGames(1)[0], homeScore: 0 }] : winningGames(threshold - 1);
+    const before = calculateWinStreakDroughts(beforeGames, {}, threshold).teams.find(r => r.team === 'MIN');
     assert.equal(before.last, null); assert.equal(winStreakState(before.currentWins, threshold), 'one-away');
     const at = calculateWinStreakDroughts(winningGames(threshold), {}, threshold).teams.find(r => r.team === 'MIN');
     assert.equal(at.last.wins, threshold); assert.equal(at.gamesSince, 0); assert.equal(winStreakState(at.currentWins, threshold), 'active-streak');
@@ -190,11 +191,11 @@ test('green qualifying streaks take priority; yellow is exactly one win away', (
     assert.equal(winStreakState(threshold + 1, threshold), 'active-streak');
     assert.equal(winStreakState(threshold, threshold), 'active-streak');
     assert.equal(winStreakState(threshold - 1, threshold), 'one-away');
-    assert.equal(winStreakState(threshold - 2, threshold), '');
-    assert.equal(winStreakState(0, threshold), '');
+    if (threshold > 1) assert.equal(winStreakState(threshold - 2, threshold), '');
+    assert.equal(winStreakState(0, threshold), threshold === 1 ? 'one-away' : '');
   }
   assert.throws(() => winStreakState(-1, 5), /Invalid/);
-  assert.throws(() => winStreakState(5, 11), /Invalid/);
+  assert.throws(() => winStreakState(5, 24), /Invalid/);
 });
 test('a loss or tie removes qualifying and one-away highlights', () => {
   for (const score of [0, 10]) {
@@ -209,7 +210,7 @@ test('each threshold is independently linkable and existing links keep selecting
     assert.equal(winThresholdFromHash(`#win-streaks-${threshold}`), threshold);
   }
   assert.equal(winThresholdFromHash('#win-streaks'), 5);
-  for (const hash of ['#win-streaks-11', '#win-streaks-6junk', '#win-streaks-06', '#unknown']) {
+  for (const hash of ['#win-streaks-0', '#win-streaks-24', '#win-streaks-6junk', '#win-streaks-06', '#unknown']) {
     assert.equal(droughtViewFromHash(hash), 'milestones'); assert.equal(winThresholdFromHash(hash), 5);
   }
 });
@@ -218,7 +219,7 @@ test('missing older qualifying runs remain unknown, not invented dates or never 
   const row = calculateWinStreakDroughts(games, {}, 10).teams.find(r => r.team === 'MIN');
   assert.equal(row.last, null); assert.equal(row.daysSince, null); assert.equal(row.coverageStart, games[0].date);
 });
-test('all six saved views validate, share current streaks, and retain their correct threshold', () => {
+test('all 23 saved views validate, share current streaks, and retain their correct threshold', () => {
   const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
   for (const threshold of WIN_STREAK_THRESHOLDS) {
     const view = threshold === 5 ? data.winStreaks : data.winStreaks.thresholds[threshold];
@@ -375,4 +376,40 @@ test('pink highlights only confirmed never teams, with active and one-away statu
   assert.equal(winStreakRowClass({ ...never, last: { date: '2025-10-11' } }, view), '');
   assert.equal(winStreakRowClass({ ...never, coverageStart: '2003-09-07' }, view), '');
   assert.equal(winStreakRowClass({ ...never, team: 'ARI', coverageStart: '1946-09-22' }, view), '');
+});
+
+test('supported range and saved schema cover 1 through 23 without replacing the legacy 5+ root', () => {
+  assert.deepEqual(WIN_STREAK_THRESHOLDS, Array.from({ length: 23 }, (_, i) => i + 1));
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  assert.equal(saved.winStreaks.threshold, 5);
+  assert.deepEqual(Object.keys(saved.winStreaks.thresholds).map(Number), WIN_STREAK_THRESHOLDS.filter(n => n !== 5));
+  for (const n of [1, 4, 11, 22, 23]) {
+    assert.equal(winThresholdFromHash(`#win-streaks-${n}`), n);
+    assert.equal(saved.winStreaks.thresholds[n].threshold, n);
+  }
+  assert.equal(validWinStreakView({ ...saved.winStreaks, threshold: 24 }), false);
+});
+
+test('1+ tracks the latest win and one loss is one game since that win', () => {
+  const games = winningGames(4); games[3].homeScore = 0;
+  const view = calculateWinStreakDroughts(games, {}, 1);
+  const row = view.teams.find(r => r.team === 'MIN');
+  assert.equal(row.last.date, games[2].date); assert.equal(row.gamesSince, 1);
+  assert.equal(row.currentWins, 0); assert.equal(winStreakRowClass(row, view), 'one-away');
+  games[3].homeScore = 20;
+  const resumed = calculateWinStreakDroughts(games, {}, 1).teams.find(r => r.team === 'MIN');
+  assert.equal(resumed.gamesSince, 0); assert.equal(winStreakRowClass(resumed, view), 'active-streak');
+});
+
+test('the 23+ view retains a qualifying Colts record and keeps unverified early careers unknown', () => {
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  const view = saved.winStreaks.thresholds[23];
+  const colts = view.teams.find(r => r.team === 'IND');
+  assert.ok(colts.last); assert.ok(colts.last.wins >= 23);
+  for (const row of view.teams) {
+    if (!row.last && !FRANCHISE_DEBUTS[row.team]) {
+      assert.equal(winStreakHistoryStatus(row, view), 'unknown');
+      assert.notEqual(winStreakRowClass(row, view), 'never-streak');
+    }
+  }
 });

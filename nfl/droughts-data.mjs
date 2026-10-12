@@ -71,10 +71,11 @@ export function readGames(csv) {
 }
 
 export const WIN_STREAK_TARGET = 5;
-export const WIN_STREAK_THRESHOLDS = [5, 6, 7, 8, 9, 10];
-export const droughtViewFromHash = hash => /^#win-streaks(?:-(?:5|6|7|8|9|10))?$/.test(hash) ? 'win-streaks' : 'milestones';
+export const WIN_STREAK_THRESHOLDS = Array.from({ length: 23 }, (_, i) => i + 1);
+const winThresholdPattern = /^#win-streaks-([1-9]|1[0-9]|2[0-3])$/;
+export const droughtViewFromHash = hash => hash === '#win-streaks' || winThresholdPattern.test(hash) ? 'win-streaks' : 'milestones';
 export const winThresholdFromHash = hash => {
-  const match = /^#win-streaks-(5|6|7|8|9|10)$/.exec(hash);
+  const match = winThresholdPattern.exec(hash);
   return match ? Number(match[1]) : WIN_STREAK_TARGET;
 };
 export function winStreakState(currentWins, threshold) {
