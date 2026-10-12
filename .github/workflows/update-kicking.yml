@@ -3,8 +3,7 @@ name: Update NFL kicking streaks
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 17 * * 2"
-    - cron: "23 17 * * 3"
+    - cron: "17 17 * * *"
 
 permissions:
   contents: write
