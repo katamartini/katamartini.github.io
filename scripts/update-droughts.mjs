@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { SOURCE_URL } from '../nfl/divstreaks-data.mjs';
 import { calculateDroughts, DIVISION_BASELINE_SEASON, DIVISION_TITLES,
   divisionWinners, latestCompletedSeason, readGames, calculateWinStreakDroughts,
-  WIN_STREAK_THRESHOLDS, validWinStreakView } from '../nfl/droughts-data.mjs';
+  WIN_STREAK_THRESHOLDS, WIN_STREAK_TARGET, validWinStreakView } from '../nfl/droughts-data.mjs';
 import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, ARCHIVE_FIRST_SEASON, ARCHIVE_LAST_SEASON } from '../nfl/droughts-archive.mjs';
 
 async function download(url) {
@@ -33,8 +33,8 @@ if (archive.source !== ARCHIVE_SOURCE || archive.sha256 !== ARCHIVE_SHA256 ||
 if (createHash('sha256').update(JSON.stringify(archive.rows)).digest('hex') !== ARCHIVE_ROWS_SHA256) throw new Error('Historical snapshot checksum changed');
 const history = archiveByTeam(archive.rows);
 const views = WIN_STREAK_THRESHOLDS.map(threshold => calculateWinStreakDroughts(games, history, threshold));
-data.winStreaks = { ...views[0], historicalSources: [ARCHIVE_SOURCE, archive.license],
-  thresholds: Object.fromEntries(views.slice(1).map(view => [view.threshold, view])) };
+data.winStreaks = { ...views.find(view => view.threshold === WIN_STREAK_TARGET), historicalSources: [ARCHIVE_SOURCE, archive.license],
+  thresholds: Object.fromEntries(views.filter(view => view.threshold !== WIN_STREAK_TARGET).map(view => [view.threshold, view])) };
 if (views.some(view => !validWinStreakView(view)) || data.winStreaks.teams.some(row => !row.last)) {
   throw new Error('Incomplete win-streak history; keeping saved data');
 }
