@@ -24,6 +24,10 @@
     .thresholds[hidden] { display: none; }
     h2 { margin: 24px 0 8px; font-size: 1.2rem; }
     .meta { margin: 22px 0 28px; color: #61665e; font-size: 0.86rem; }
+    .refresh-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -12px 0 24px; }
+    .refresh-button { padding: 6px 10px; border: 1px solid #c8cdc5; border-radius: 4px; font-weight: normal; }
+    .refresh-button:disabled { opacity: 0.6; cursor: wait; }
+    .refresh-note { flex-basis: 100%; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
     .toolbar label, .hint { color: #61665e; font-size: 0.84rem; }
     select { margin-left: 5px; padding: 6px 8px; border: 1px solid #c8cdc5; border-radius: 4px; color: inherit; background: transparent; font: inherit; }
@@ -79,6 +83,11 @@
     <nav id="streak-thresholds" class="views thresholds" aria-label="Win streak length" hidden></nav>
     <h2 id="view-heading">Milestones</h2>
     <p id="status" class="meta" role="status">Loading records…</p>
+    <div class="refresh-controls">
+      <button id="refresh-data" class="refresh-button" type="button" disabled>Refresh data</button>
+      <span id="last-updated" class="hint">Last updated: loading…</span>
+      <span id="refresh-status" class="hint refresh-note" role="status">Fetches current results for this browser. The shared site snapshot updates weekly.</span>
+    </div>
     <div class="toolbar">
       <label>Division <select id="division-filter"><option value="all">All divisions</option></select></label>
       <p class="hint"><span id="sort-hint">Click a milestone to sort by longest drought.</span> <span id="team-count"></span></p>
@@ -115,8 +124,9 @@
     import { CATEGORIES, seasonsSince, droughtViewFromHash, elapsedTime, WIN_STREAK_THRESHOLDS, WIN_STREAK_TARGET,
       winThresholdFromHash, winStreakRowClass, validWinStreakView, winStreakHistoryStatus,
       compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears,
-      LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView } from './droughts-data.mjs?v=loss-streaks';
+      LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView } from './droughts-data.mjs?v=manual-refresh';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
+    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=manual-refresh';
 
     const status = document.getElementById('status');
     const head = document.getElementById('table-head');
@@ -126,6 +136,10 @@
     const headers = new Map();
     const logoCodes = { LA: 'lar', WAS: 'wsh' };
     let data = null;
+    const refreshButton = document.getElementById('refresh-data');
+    const refreshStatus = document.getElementById('refresh-status');
+    const updated = document.getElementById('last-updated');
+    let dataOrigin = 'Published snapshot';
     let sortKey = 'team';
     let descending = false;
     let view = droughtViewFromHash(location.hash);
@@ -295,13 +309,14 @@
       if (winsView) buildThresholds();
       buildHeaders(); render();
       if (data) status.textContent = winsView ? `Regular season · Games through ${dateText(streakData().throughDate)} · ${threshold}+ consecutive ${losses ? 'losses' : 'wins'} · Results from ${streakData().firstResultsSeason}${streakData().teams.some(row => !row.last) ? ' · Some teams have no qualifying run in covered history' : ''}` : `Through the ${data.throughSeason} season${data.currentSeason > data.throughSeason ? ` · ${data.currentSeason} season in progress` : ''}`;
+      if (data) updated.textContent = `Last updated: ${updateTimeText(data.updatedAt)} · ${dataOrigin}`;
     }
     window.addEventListener('hashchange', selectView);
     selectView();
     filter.addEventListener('change', render);
 
-    try {
-      const response = await fetch('../data/droughts.json?v=loss-streaks');
+    async function loadSnapshot() {
+      const response = await fetch('../data/droughts.json?v=manual-refresh', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
       if (!Number.isInteger(saved.throughSeason) || saved.teams?.length !== 32 ||
@@ -319,10 +334,39 @@
         const losses = n === WIN_STREAK_TARGET ? saved.lossStreaks : saved.lossStreaks?.thresholds?.[n];
         return !validLossStreakView(losses) || losses.threshold !== n || losses.throughDate !== saved.winStreaks.throughDate;
       })) throw new Error('Incomplete loss-streak records');
-      data = saved;
+      return saved;
+    }
+
+    refreshButton.addEventListener('click', async () => {
+      refreshButton.disabled = true;
+      refreshButton.textContent = 'Refreshing…';
+      refreshStatus.textContent = 'Fetching current game results and checking historical records…';
+      try {
+        // Refresh the published baseline too, so new division-title history is
+        // used when available. Keep the current table if either request fails.
+        const published = await loadSnapshot();
+        const baseline = data && data.winStreaks.throughDate > published.winStreaks.throughDate ? data : published;
+        const fresh = await refreshDroughts(baseline);
+        data = fresh;
+        dataOrigin = 'Live refresh in this browser';
+        selectView();
+        refreshStatus.textContent = 'Refreshed from current results. This refresh affects this browser only; the shared snapshot updates weekly.';
+      } catch {
+        refreshStatus.textContent = data ? 'Refresh failed or results were incomplete. Previous records and their update time are unchanged. Please try again.' : 'Records could not be refreshed. Please try again.';
+      } finally {
+        refreshButton.disabled = false;
+        refreshButton.textContent = 'Refresh data';
+      }
+    });
+
+    try {
+      data = await loadSnapshot();
       selectView();
     } catch {
       status.textContent = 'Records could not be loaded. Please refresh to try again.';
+      updated.textContent = 'Last updated: unavailable';
+    } finally {
+      refreshButton.disabled = false;
     }
   </script>
 </body>
