@@ -1,5 +1,6 @@
 import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
-import { isHistoricalOpponent } from './droughts-archive.mjs';
+import { isHistoricalOpponent, FRANCHISE_DEBUTS } from './droughts-archive.mjs';
+export { FRANCHISE_DEBUTS } from './droughts-archive.mjs';
 
 export const CATEGORIES = [
   { key: 'superBowl', label: 'Super Bowl win' },
@@ -79,6 +80,36 @@ export const winThresholdFromHash = hash => {
 export function winStreakState(currentWins, threshold) {
   if (!Number.isInteger(currentWins) || currentWins < 0 || !WIN_STREAK_THRESHOLDS.includes(threshold)) throw new Error('Invalid win-streak status');
   return currentWins >= threshold ? 'active-streak' : currentWins === threshold - 1 ? 'one-away' : '';
+}
+export function winStreakHistoryStatus(row, view) {
+  if (row.last) return 'recorded';
+  const debut = FRANCHISE_DEBUTS[row.team];
+  return Number.isInteger(debut) && Number.isInteger(view.firstResultsSeason) && view.firstResultsSeason <= debut &&
+    Number(row.coverageStart?.slice(0, 4)) === debut ? 'never' : 'unknown';
+}
+
+export function compareWinStreakRows(a, b, key, descending, view) {
+  const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
+  if (key === 'team') return descending ? -names : names;
+  if (key !== 'currentWins') {
+    const aStatus = winStreakHistoryStatus(a, view), bStatus = winStreakHistoryStatus(b, view);
+    // Unknown history stays last; it must not be promoted into a "never" claim.
+    if (aStatus === 'unknown' || bStatus === 'unknown') {
+      return aStatus === bStatus ? names : aStatus === 'unknown' ? 1 : -1;
+    }
+    const longestFirst = key === 'last' ? !descending : descending;
+    if (aStatus === 'never' || bStatus === 'never') {
+      if (aStatus === bStatus) {
+        const age = FRANCHISE_DEBUTS[a.team] - FRANCHISE_DEBUTS[b.team];
+        return (longestFirst ? age : -age) || names;
+      }
+      return (aStatus === 'never' ? -1 : 1) * (longestFirst ? 1 : -1);
+    }
+  }
+  const value = row => key === 'last' ? row.last.date : row[key];
+  const aValue = value(a), bValue = value(b);
+  const difference = typeof aValue === 'string' ? aValue.localeCompare(bValue) : aValue - bValue;
+  return (descending ? -difference : difference) || names;
 }
 export function validWinStreakView(wins) {
   const date = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value));

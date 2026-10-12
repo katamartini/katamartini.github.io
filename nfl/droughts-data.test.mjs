@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { DIVISIONS } from './divstreaks-data.mjs';
 import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
   calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
-  WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView } from './droughts-data.mjs';
+  WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView,
+  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
   ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256 } from './droughts-archive.mjs';
@@ -300,4 +301,67 @@ test('historical backfill preserves verified Browns records and resolves older l
   assert.equal(calculateWinStreakDroughts([modern], archive, 9).teams.find(r => r.team === 'CLE').last.date, '1953-12-06');
   assert.equal(calculateWinStreakDroughts([modern], archive, 10).teams.find(r => r.team === 'ARI').last.date, '1949-09-26');
   assert.equal(calculateWinStreakDroughts([modern], archive, 10).teams.find(r => r.team === 'HOU').last, null);
+});
+
+test('never requires coverage back to the franchise debut, not merely a missing last date', () => {
+  const view = { firstResultsSeason: 1946 };
+  const row = { team: 'NYJ', last: null, coverageStart: '1960-09-11' };
+  assert.equal(winStreakHistoryStatus(row, view), 'never');
+  assert.equal(winStreakHistoryStatus({ ...row, last: { date: '2026-10-11' } }, view), 'recorded');
+  assert.equal(winStreakHistoryStatus({ ...row, coverageStart: '1999-09-12' }, view), 'unknown');
+  assert.equal(winStreakHistoryStatus(row, { firstResultsSeason: 1999 }), 'unknown');
+  assert.equal(winStreakHistoryStatus(row, {}), 'unknown');
+  assert.equal(winStreakHistoryStatus({ team: 'ARI', last: null, coverageStart: '1946-09-22' }, view), 'unknown');
+  assert.equal(FRANCHISE_DEBUTS.NYJ, 1960); assert.equal(FRANCHISE_DEBUTS.HOU, 2002);
+});
+
+const sortingFixture = () => {
+  const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  // Synthetic no-streak rows avoid making future weekly tests depend on a
+  // franchise still never having a qualifying streak at that future date.
+  const view = structuredClone(data.winStreaks.thresholds[10]);
+  for (const team of ['NYJ', 'ATL', 'CIN', 'TB', 'HOU']) {
+    const row = view.teams.find(r => r.team === team);
+    row.last = null; row.daysSince = null;
+  }
+  return view;
+};
+test('longest drought sorts put never teams first, older franchises before newer ones', () => {
+  const view = sortingFixture();
+  for (const [key, descending] of [['gamesSince', true], ['daysSince', true], ['last', false]]) {
+    const rows = [...view.teams].sort((a, b) => compareWinStreakRows(a, b, key, descending, view));
+    assert.deepEqual(rows.slice(0, 5).map(r => r.team), ['NYJ', 'ATL', 'CIN', 'TB', 'HOU']);
+    assert.ok(rows[5].last);
+  }
+});
+test('shortest drought sorts move never teams below known streaks and unknown history stays last', () => {
+  const view = sortingFixture();
+  const ari = view.teams.find(r => r.team === 'ARI'); ari.last = null; ari.daysSince = null;
+  for (const [key, descending] of [['gamesSince', false], ['daysSince', false], ['last', true]]) {
+    const rows = [...view.teams].sort((a, b) => compareWinStreakRows(a, b, key, descending, view));
+    assert.equal(winStreakHistoryStatus(rows[0], view), 'recorded');
+    assert.deepEqual(rows.slice(-6, -1).map(r => r.team), ['HOU', 'TB', 'CIN', 'ATL', 'NYJ']);
+    assert.equal(rows.at(-1).team, 'ARI');
+  }
+  const longest = [...view.teams].sort((a, b) => compareWinStreakRows(a, b, 'gamesSince', true, view));
+  assert.equal(longest.at(-1).team, 'ARI');
+});
+test('same-debut never teams have deterministic name ties and normal column sorts stay normal', () => {
+  const view = { firstResultsSeason: 1946 };
+  const bills = { team: 'BUF', last: null, coverageStart: '1960-09-11', currentWins: 2 };
+  const patriots = { team: 'NE', last: null, coverageStart: '1960-09-09', currentWins: 4 };
+  assert.ok(compareWinStreakRows(bills, patriots, 'gamesSince', true, view) < 0);
+  assert.ok(compareWinStreakRows(bills, patriots, 'team', true, view) > 0);
+  assert.ok(compareWinStreakRows(bills, patriots, 'currentWins', true, view) > 0);
+  assert.ok(compareWinStreakRows(bills, patriots, 'currentWins', false, view) < 0);
+});
+test('known droughts keep numeric and date ordering with no mutation of saved records', () => {
+  const view = sortingFixture(), rows = view.teams.filter(r => r.last);
+  const saved = JSON.stringify(view);
+  for (const [key, descending] of [['gamesSince', true], ['daysSince', false], ['last', true]]) {
+    const result = [...rows].sort((a, b) => compareWinStreakRows(a, b, key, descending, view));
+    const values = result.map(r => key === 'last' ? r.last.date : r[key]);
+    for (let i = 1; i < values.length; i++) assert.ok(descending ? values[i - 1] >= values[i] : values[i - 1] <= values[i]);
+  }
+  assert.equal(JSON.stringify(view), saved);
 });
