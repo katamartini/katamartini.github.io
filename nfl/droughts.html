@@ -107,7 +107,7 @@
   <script type="module">
     import { CATEGORIES, seasonsSince, droughtViewFromHash, elapsedTime, WIN_STREAK_THRESHOLDS, WIN_STREAK_TARGET,
       winThresholdFromHash, winStreakRowClass, validWinStreakView, winStreakHistoryStatus,
-      compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears } from './droughts-data.mjs';
+      compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears } from './droughts-data.mjs?v=record-years';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
 
     const status = document.getElementById('status');
@@ -272,7 +272,7 @@
     filter.addEventListener('change', render);
 
     try {
-      const response = await fetch('../data/droughts.json');
+      const response = await fetch('../data/droughts.json?v=record-years');
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
       if (!Number.isInteger(saved.throughSeason) || saved.teams?.length !== 32 ||
