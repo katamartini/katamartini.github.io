@@ -119,11 +119,25 @@ test('losses and ties break runs and count as games since the last qualifying wi
   const games = winningGames(7); games[5].homeScore = 5; games[6].homeScore = 10;
   const row = streakFor(games); assert.equal(row.gamesSince, 2); assert.equal(row.currentWins, 0); assert.equal(row.daysSince, 6); assert.equal(row.last.date, games[4].date);
 });
+
+test('Best retains ended records, includes current runs and ignores postseason games', () => {
+  const games = winningGames(12);
+  games[7].homeScore = 0;
+  const row = streakFor(games);
+  assert.equal(row.bestWins, 7); assert.equal(row.currentWins, 4);
+  games[7].homeScore = 10;
+  assert.equal(streakFor(games).bestWins, 7);
+  games[7].type = 'WC';
+  assert.equal(streakFor(games).bestWins, 11);
+  games[7].type = 'REG'; games[7].homeScore = 20;
+  assert.equal(streakFor(games).bestWins, 12);
+  assert.equal(streakFor(games, 'GB').bestWins, 0);
+});
 test('offseasons and byes do not reset regular-season streaks, and playoffs do not count', () => {
   const games = winningGames(4).map(g => ({ ...g, season: 2025, date: g.date.replace('2026-09', '2025-12') }));
   games.push({ ...winningGames(1)[0], id: 'playoff-loss', type: 'WC', season: 2025, date: '2026-01-11', homeScore: 0 },
     { ...winningGames(1)[0], id: 'next-season', date: '2026-09-20', week: 2 });
-  const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.last.startDate, '2025-12-01'); assert.equal(row.last.season, 2026);
+  const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.bestWins, 5); assert.equal(row.last.startDate, '2025-12-01'); assert.equal(row.last.season, 2026);
 });
 test('home and away wins are treated equally; unfinished games are excluded', () => {
   const games = winningGames(5); games[2] = { ...games[2], home: 'GB', away: 'MIN', homeScore: 10, awayScore: 20 };
@@ -225,7 +239,14 @@ test('all 23 saved views validate, share current streaks, and retain their corre
     const view = threshold === 5 ? data.winStreaks : data.winStreaks.thresholds[threshold];
     assert.equal(view.threshold, threshold); assert.equal(view.throughDate, data.winStreaks.throughDate);
     assert.equal(validWinStreakView(view), true);
-    for (const row of view.teams) assert.equal(row.currentWins, data.winStreaks.teams.find(r => r.team === row.team).currentWins);
+    for (const row of view.teams) {
+      const baseline = data.winStreaks.teams.find(r => r.team === row.team);
+      assert.equal(row.currentWins, baseline.currentWins);
+      assert.equal(row.bestWins, baseline.bestWins);
+      assert.ok(row.bestWins >= row.currentWins);
+      if (row.last) assert.ok(row.bestWins >= threshold && row.bestWins >= row.last.wins);
+      else assert.ok(row.bestWins < threshold);
+    }
   }
   const cle = data.winStreaks.thresholds[6].teams.find(r => r.team === 'CLE');
   assert.ok(cle.last);
@@ -241,6 +262,21 @@ test('shared view validation rejects incomplete snapshots and impossible active 
   row.last = null; row.daysSince = null;
   row.currentWins = 10; assert.equal(validWinStreakView(unknown), false);
   row.currentWins = 0; row.daysSince = 100; assert.equal(validWinStreakView(unknown), false);
+});
+
+test('view validation rejects missing or contradictory franchise records', () => {
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  for (const best of [undefined, -1, 1.5, 0]) {
+    const view = structuredClone(saved.winStreaks);
+    view.teams[0].bestWins = best;
+    assert.equal(validWinStreakView(view), false);
+  }
+  const current = structuredClone(saved.winStreaks);
+  current.teams[0].currentWins = current.teams[0].bestWins + 1;
+  assert.equal(validWinStreakView(current), false);
+  const missing = structuredClone(saved.winStreaks);
+  missing.teams[0].last = null; missing.teams[0].daysSince = null;
+  assert.equal(validWinStreakView(missing), false);
 });
 
 const archiveFixture = () => JSON.parse(readFileSync(new URL('../data/droughts-history.json', import.meta.url)));
@@ -282,10 +318,10 @@ test('historical season game numbers are not fabricated NFL weeks and runs carry
   const earlier = winningGames(9).map((g, i) => ({ ...g, id: `archive:${i}`, season: 1998, week: null, date: g.date.replace('2026', '1998') }));
   const view = calculateWinStreakDroughts([modern], { MIN: earlier }, 9);
   const row = view.teams.find(r => r.team === 'MIN');
-  assert.equal(row.last.week, 1); assert.equal(row.last.wins, 10); assert.equal(row.currentStart, '1998-09-01');
+  assert.equal(row.last.week, 1); assert.equal(row.last.wins, 10); assert.equal(row.bestWins, 10); assert.equal(row.currentStart, '1998-09-01');
   assert.equal(view.firstResultsSeason, 1998);
   const historical = calculateWinStreakDroughts([{ ...modern, homeScore: 0, awayScore: 20 }], { MIN: earlier }, 9).teams.find(r => r.team === 'MIN');
-  assert.equal(historical.last.week, null); assert.equal(historical.last.gameNumber, 9); assert.equal(historical.gamesSince, 1);
+  assert.equal(historical.last.week, null); assert.equal(historical.last.gameNumber, 9); assert.equal(historical.bestWins, 9); assert.equal(historical.gamesSince, 1);
 });
 test('historical backfill preserves verified Browns records and resolves older longer runs', () => {
   const archive = archiveByTeam(archiveFixture().rows);
@@ -366,6 +402,17 @@ test('known droughts keep numeric and date ordering with no mutation of saved re
     for (let i = 1; i < values.length; i++) assert.ok(descending ? values[i - 1] >= values[i] : values[i - 1] <= values[i]);
   }
   assert.equal(JSON.stringify(view), saved);
+});
+
+test('Best sorts numerically in both directions, without promoting Never or unknown teams', () => {
+  const view = { firstResultsSeason: 1920, threshold: 23 };
+  const rows = [
+    { team: 'HOU', last: null, coverageStart: '2002-09-08', bestWins: 9 },
+    { team: 'IND', last: { date: '2009-12-17' }, coverageStart: '1953-09-27', bestWins: 23 },
+    { team: 'ARI', last: null, coverageStart: '1946-09-22', bestWins: 10 },
+  ];
+  assert.deepEqual([...rows].sort((a,b) => compareWinStreakRows(a,b,'bestWins',true,view)).map(r => r.team), ['IND','ARI','HOU']);
+  assert.deepEqual([...rows].sort((a,b) => compareWinStreakRows(a,b,'bestWins',false,view)).map(r => r.team), ['HOU','ARI','IND']);
 });
 
 test('pink highlights only confirmed never teams, with active and one-away status taking priority', () => {

@@ -97,7 +97,7 @@ export function winStreakRowClass(row, view) {
 export function compareWinStreakRows(a, b, key, descending, view) {
   const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
   if (key === 'team') return descending ? -names : names;
-  if (key !== 'currentWins') {
+  if (key !== 'currentWins' && key !== 'bestWins') {
     const aStatus = winStreakHistoryStatus(a, view), bStatus = winStreakHistoryStatus(b, view);
     // Unknown history stays last; it must not be promoted into a "never" claim.
     if (aStatus === 'unknown' || bStatus === 'unknown') {
@@ -123,11 +123,12 @@ export function validWinStreakView(wins) {
     wins.teams?.length === 32 && new Set(wins.teams.map(row => row.team)).size === 32 && wins.teams.every(row =>
       TEAMS[row.team] && DIVISIONS.some(d => d.name === row.division && d.teams.includes(row.team)) &&
       date(row.coverageStart) && row.coverageStart <= wins.throughDate &&
-      ['gamesSince', 'currentWins'].every(key => Number.isInteger(row[key]) && row[key] >= 0) &&
-      (row.last === null ? row.daysSince === null && row.currentWins < wins.threshold :
+      ['gamesSince', 'currentWins', 'bestWins'].every(key => Number.isInteger(row[key]) && row[key] >= 0) &&
+      row.bestWins >= row.currentWins &&
+      (row.last === null ? row.daysSince === null && row.bestWins < wins.threshold :
         date(row.last.date) && row.last.date <= wins.throughDate && Number.isInteger(row.last.season) &&
         (Number.isInteger(row.last.week) && row.last.week >= 1 || row.last.week === null && Number.isInteger(row.last.gameNumber) && row.last.gameNumber >= 1) &&
-        Number.isInteger(row.last.wins) && row.last.wins >= wins.threshold &&
+        Number.isInteger(row.last.wins) && row.last.wins >= wins.threshold && row.last.wins <= row.bestWins &&
         row.daysSince === daysBetween(row.last.date, wins.throughDate) &&
         (row.currentWins >= wins.threshold ? row.gamesSince === 0 : row.gamesSince > 0)));
 }
@@ -158,7 +159,7 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
       throw new Error(`Invalid historical schedule: ${team}`);
     const rows = [...earlier, ...modern].sort((a, b) => a.date.localeCompare(b.date));
     if (new Set(rows.map(g => g.date)).size !== rows.length) throw new Error(`Duplicate game: ${team}`);
-    let currentWins = 0, currentStart = null, last = null, gamesSince = 0, season = null, gameNumber = 0;
+    let currentWins = 0, bestWins = 0, currentStart = null, last = null, gamesSince = 0, season = null, gameNumber = 0;
     for (const game of rows) {
       if (season !== game.season) { season = game.season; gameNumber = 0; }
       gameNumber++;
@@ -166,13 +167,14 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
       gamesSince++;
       if (win) { if (!currentWins) currentStart = game.date; currentWins++; }
       else { currentWins = 0; currentStart = null; }
+      bestWins = Math.max(bestWins, currentWins);
       if (currentWins >= threshold) {
         last = { date: game.date, season: game.season, week: game.week, game: game.id, startDate: currentStart, wins: currentWins };
         if (game.week === null) last.gameNumber = gameNumber;
         gamesSince = 0;
       }
     }
-    return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, currentStart,
+    return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, bestWins, currentStart,
       coverageStart: rows[0]?.date ?? null };
   }));
   return { threshold, scope: 'REG', throughDate,
