@@ -72,10 +72,17 @@ export function readGames(csv) {
 
 export const WIN_STREAK_TARGET = 5;
 export const WIN_STREAK_THRESHOLDS = Array.from({ length: 23 }, (_, i) => i + 1);
+export const LOSS_STREAK_THRESHOLDS = Array.from({ length: 29 }, (_, i) => i + 1);
 const winThresholdPattern = /^#win-streaks-([1-9]|1[0-9]|2[0-3])$/;
-export const droughtViewFromHash = hash => hash === '#win-streaks' || winThresholdPattern.test(hash) ? 'win-streaks' : 'milestones';
+const lossThresholdPattern = /^#loss-streaks-([1-9]|[12][0-9])$/;
+export const droughtViewFromHash = hash => hash === '#win-streaks' || winThresholdPattern.test(hash) ? 'win-streaks' :
+  hash === '#loss-streaks' || lossThresholdPattern.test(hash) ? 'loss-streaks' : 'milestones';
 export const winThresholdFromHash = hash => {
   const match = winThresholdPattern.exec(hash);
+  return match ? Number(match[1]) : WIN_STREAK_TARGET;
+};
+export const lossThresholdFromHash = hash => {
+  const match = lossThresholdPattern.exec(hash);
   return match ? Number(match[1]) : WIN_STREAK_TARGET;
 };
 export function winStreakState(currentWins, threshold) {
@@ -93,6 +100,14 @@ export function winStreakRowClass(row, view) {
   return winStreakState(row.currentWins, view.threshold) ||
     (winStreakHistoryStatus(row, view) === 'never' ? 'never-streak' : '');
 }
+export function lossStreakState(currentLosses, threshold) {
+  if (!Number.isInteger(currentLosses) || currentLosses < 0 || !LOSS_STREAK_THRESHOLDS.includes(threshold)) throw new Error('Invalid loss-streak status');
+  return currentLosses >= threshold ? 'active-streak' : currentLosses === threshold - 1 ? 'one-away' : '';
+}
+export function lossStreakRowClass(row, view) {
+  return lossStreakState(row.currentLosses, view.threshold) ||
+    (winStreakHistoryStatus(row, view) === 'never' ? 'never-streak' : '');
+}
 
 export function bestStreakYears(runs) {
   return [...new Set(runs.map(run => run.startSeason === run.endSeason ? String(run.startSeason) : `${run.startSeason}–${run.endSeason}`))].join(', ') || '—';
@@ -101,7 +116,7 @@ export function bestStreakYears(runs) {
 export function compareWinStreakRows(a, b, key, descending, view) {
   const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
   if (key === 'team') return descending ? -names : names;
-  if (key !== 'currentWins' && key !== 'bestWins') {
+  if (!['currentWins', 'bestWins', 'currentLosses', 'bestLosses'].includes(key)) {
     const aStatus = winStreakHistoryStatus(a, view), bStatus = winStreakHistoryStatus(b, view);
     // Unknown history stays last; it must not be promoted into a "never" claim.
     if (aStatus === 'unknown' || bStatus === 'unknown') {
@@ -122,8 +137,18 @@ export function compareWinStreakRows(a, b, key, descending, view) {
   return (descending ? -difference : difference) || names;
 }
 export function validWinStreakView(wins) {
+  return validStreakView(wins, WIN_STREAK_THRESHOLDS);
+}
+export function validLossStreakView(losses) {
+  if (!losses || !Array.isArray(losses.teams)) return false;
+  return validStreakView({ ...losses, teams: losses.teams.map(row => ({ ...row,
+    currentWins: row.currentLosses, bestWins: row.bestLosses,
+    last: row.last === null ? null : { ...row.last, wins: row.last?.losses },
+  })) }, LOSS_STREAK_THRESHOLDS);
+}
+function validStreakView(wins, thresholds) {
   const date = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value));
-  return !!wins && WIN_STREAK_THRESHOLDS.includes(wins.threshold) && wins.scope === 'REG' && date(wins.throughDate) &&
+  return !!wins && thresholds.includes(wins.threshold) && wins.scope === 'REG' && date(wins.throughDate) &&
     wins.teams?.length === 32 && new Set(wins.teams.map(row => row.team)).size === 32 && wins.teams.every(row =>
       TEAMS[row.team] && DIVISIONS.some(d => d.name === row.division && d.teams.includes(row.team)) &&
       date(row.coverageStart) && row.coverageStart <= wins.throughDate &&
@@ -150,6 +175,18 @@ export function elapsedTime(first, last) {
 }
 
 export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold = WIN_STREAK_TARGET) {
+  return calculateResultStreakDroughts(games, earlierByTeam, threshold, 'win');
+}
+export function calculateLossStreakDroughts(games, earlierByTeam = {}, threshold = WIN_STREAK_TARGET) {
+  const result = calculateResultStreakDroughts(games, earlierByTeam, threshold, 'loss');
+  // Keep the established win snapshot unchanged; expose explicit loss fields
+  // from the same schedule/record engine, with no inverted source scores.
+  return { ...result, teams: result.teams.map(({ currentWins, bestWins, last, ...row }) => ({ ...row,
+    currentLosses: currentWins, bestLosses: bestWins,
+    last: last ? (({ wins, ...game }) => ({ ...game, losses: wins }))(last) : null,
+  })) };
+}
+function calculateResultStreakDroughts(games, earlierByTeam, threshold, outcome) {
   if (!Number.isInteger(threshold) || threshold < 1) throw new Error('Invalid win-streak threshold');
   const regular = games.filter(g => g.type === 'REG' && g.completed).sort((a, b) => a.date.localeCompare(b.date));
   if (!regular.length) throw new Error('No completed regular-season games');
@@ -171,7 +208,9 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
     for (const game of rows) {
       if (season !== game.season) { season = game.season; gameNumber = 0; }
       gameNumber++;
-      const win = game.home === team ? game.homeScore > game.awayScore : game.awayScore > game.homeScore;
+      const ownScore = game.home === team ? game.homeScore : game.awayScore;
+      const otherScore = game.home === team ? game.awayScore : game.homeScore;
+      const win = outcome === 'loss' ? ownScore < otherScore : ownScore > otherScore;
       gamesSince++;
       if (win) { if (!currentWins) { currentStart = game.date; currentStartSeason = game.season; } currentWins++; }
       else { currentWins = 0; currentStart = null; currentStartSeason = null; }
