@@ -5,6 +5,9 @@ import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, s
   calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
   WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
+import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
+  ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256 } from './droughts-archive.mjs';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 
 const header = 'game_id,season,game_type,week,gameday,weekday,gametime,away_team,away_score,home_team,home_score,location';
@@ -223,14 +226,78 @@ test('all six saved views validate, share current streaks, and retain their corr
     for (const row of view.teams) assert.equal(row.currentWins, data.winStreaks.teams.find(r => r.team === row.team).currentWins);
   }
   const cle = data.winStreaks.thresholds[6].teams.find(r => r.team === 'CLE');
-  assert.equal(cle.last, null); assert.equal(cle.daysSince, null); assert.equal(cle.coverageStart, '1994-09-04');
+  assert.ok(cle.last);
+  if (cle.last.season < 1999) { assert.equal(cle.last.week, null); assert.ok(cle.last.gameNumber >= 1); }
+  assert.equal(cle.coverageStart, '1946-09-06');
 });
 test('shared view validation rejects incomplete snapshots and impossible active states', () => {
   const data = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
   assert.equal(validWinStreakView(null), false);
   const broken = structuredClone(data.winStreaks); broken.teams.pop(); assert.equal(validWinStreakView(broken), false);
   const duplicate = structuredClone(data.winStreaks); duplicate.teams[1] = duplicate.teams[0]; assert.equal(validWinStreakView(duplicate), false);
-  const unknown = structuredClone(data.winStreaks.thresholds[6]); const row = unknown.teams.find(r => r.last === null);
-  row.currentWins = 6; assert.equal(validWinStreakView(unknown), false);
+  const unknown = structuredClone(data.winStreaks.thresholds[10]); const row = unknown.teams[0];
+  row.last = null; row.daysSince = null;
+  row.currentWins = 10; assert.equal(validWinStreakView(unknown), false);
   row.currentWins = 0; row.daysSince = 100; assert.equal(validWinStreakView(unknown), false);
+});
+
+const archiveFixture = () => JSON.parse(readFileSync(new URL('../data/droughts-history.json', import.meta.url)));
+test('pinned archive covers all franchise schedules from 1946 through 1998', () => {
+  const archive = archiveFixture();
+  assert.equal(archive.source, ARCHIVE_SOURCE); assert.equal(archive.sha256, ARCHIVE_SHA256);
+  assert.equal(createHash('sha256').update(JSON.stringify(archive.rows)).digest('hex'), ARCHIVE_ROWS_SHA256);
+  assert.equal(archive.firstSeason, 1946); assert.equal(archive.lastSeason, 1998);
+  assert.equal(archive.rows.length, 8922); assert.equal(validateArchive(archive.rows), true);
+  const history = archiveByTeam(archive.rows);
+  for (const team of Object.keys(history)) for (let year = 1946; year <= 1998; year++) {
+    assert.equal(history[team].filter(g => g.season === year).length, expectedHistoricalGames(team, year), `${team} ${year}`);
+  }
+});
+test('archive validation fails on missing, duplicated, unplayed or malformed historical games', () => {
+  const rows = archiveFixture().rows;
+  assert.throws(() => validateArchive(rows.slice(1)), /Incomplete/);
+  assert.throws(() => validateArchive([...rows, rows[0]]), /Duplicate/);
+  for (const [index, value] of [[3, -1], [3, null], [2, 'unknown'], [0, 'bad-date'], [1, 1999]]) {
+    const broken = structuredClone(rows); broken[0][index] = value;
+    assert.throws(() => validateArchive(broken), /Invalid/);
+  }
+  assert.throws(() => readArchive('bad,format'), /Unexpected/);
+  assert.throws(() => readArchive('date,season,playoff,team1,team2,score1,score2\n1946-09-06,1946,0,CLE,SF,,0'), /Missing/);
+});
+test('defunct clubs and historical relocations retain distinct franchise identities', () => {
+  const history = archiveByTeam(archiveFixture().rows);
+  assert.equal(isHistoricalOpponent('historical:BCL'), true);
+  assert.equal(isHistoricalOpponent('historical:BAL'), false);
+  assert.equal(history.BAL[0].season, 1996); assert.equal(history.IND[0].season, 1953);
+  assert.equal(history.SEA[0].season, 1976); assert.equal(history.MIA[0].season, 1966);
+  assert.equal(history.TEN[0].season, 1960); assert.equal(history.HOU.length, 0);
+  assert.ok(history.SF.some(g => g.home === 'historical:BCL' || g.away === 'historical:BCL'));
+  assert.ok(history.LV.some(g => g.season === 1960)); assert.ok(history.LA.some(g => g.season === 1946));
+  assert.equal(history.CLE.filter(g => g.season >= 1996).length, 0);
+});
+test('historical season game numbers are not fabricated NFL weeks and runs carry across 1999', () => {
+  const modern = { id: 'modern', season: 1999, type: 'REG', week: 1, date: '1999-09-12', away: 'GB', home: 'MIN', awayScore: 0, homeScore: 20, completed: true };
+  const earlier = winningGames(9).map((g, i) => ({ ...g, id: `archive:${i}`, season: 1998, week: null, date: g.date.replace('2026', '1998') }));
+  const view = calculateWinStreakDroughts([modern], { MIN: earlier }, 9);
+  const row = view.teams.find(r => r.team === 'MIN');
+  assert.equal(row.last.week, 1); assert.equal(row.last.wins, 10); assert.equal(row.currentStart, '1998-09-01');
+  assert.equal(view.firstResultsSeason, 1998);
+  const historical = calculateWinStreakDroughts([{ ...modern, homeScore: 0, awayScore: 20 }], { MIN: earlier }, 9).teams.find(r => r.team === 'MIN');
+  assert.equal(historical.last.week, null); assert.equal(historical.last.gameNumber, 9); assert.equal(historical.gamesSince, 1);
+});
+test('historical backfill preserves verified Browns records and resolves older longer runs', () => {
+  const archive = archiveByTeam(archiveFixture().rows);
+  for (const fixture of WIN_STREAK_HISTORY.CLE) {
+    const found = archive.CLE.find(g => g.date === fixture.date);
+    for (const key of ['home', 'away', 'homeScore', 'awayScore']) assert.equal(found[key], fixture[key]);
+  }
+  const modern = { ...winningGames(1)[0], season: 1999, date: '1999-09-12' };
+  const five = calculateWinStreakDroughts([modern], archive, 5);
+  assert.equal(five.firstResultsSeason, 1946);
+  assert.equal(five.teams.find(r => r.team === 'CLE').last.date, '1994-10-23');
+  const six = calculateWinStreakDroughts([modern], archive, 6).teams.find(r => r.team === 'CLE');
+  assert.equal(six.last.date, '1972-11-26'); assert.equal(six.last.gameNumber, 11);
+  assert.equal(calculateWinStreakDroughts([modern], archive, 9).teams.find(r => r.team === 'CLE').last.date, '1953-12-06');
+  assert.equal(calculateWinStreakDroughts([modern], archive, 10).teams.find(r => r.team === 'ARI').last.date, '1949-09-26');
+  assert.equal(calculateWinStreakDroughts([modern], archive, 10).teams.find(r => r.team === 'HOU').last, null);
 });

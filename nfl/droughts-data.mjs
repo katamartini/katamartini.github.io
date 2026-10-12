@@ -1,4 +1,5 @@
 import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
+import { isHistoricalOpponent } from './droughts-archive.mjs';
 
 export const CATEGORIES = [
   { key: 'superBowl', label: 'Super Bowl win' },
@@ -88,7 +89,8 @@ export function validWinStreakView(wins) {
       ['gamesSince', 'currentWins'].every(key => Number.isInteger(row[key]) && row[key] >= 0) &&
       (row.last === null ? row.daysSince === null && row.currentWins < wins.threshold :
         date(row.last.date) && row.last.date <= wins.throughDate && Number.isInteger(row.last.season) &&
-        Number.isInteger(row.last.week) && row.last.week >= 1 && Number.isInteger(row.last.wins) && row.last.wins >= wins.threshold &&
+        (Number.isInteger(row.last.week) && row.last.week >= 1 || row.last.week === null && Number.isInteger(row.last.gameNumber) && row.last.gameNumber >= 1) &&
+        Number.isInteger(row.last.wins) && row.last.wins >= wins.threshold &&
         row.daysSince === daysBetween(row.last.date, wins.throughDate) &&
         (row.currentWins >= wins.threshold ? row.gamesSince === 0 : row.gamesSince > 0)));
 }
@@ -106,8 +108,9 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
   const regular = games.filter(g => g.type === 'REG' && g.completed).sort((a, b) => a.date.localeCompare(b.date));
   if (!regular.length) throw new Error('No completed regular-season games');
   const valid = game => /^\d{4}-\d{2}-\d{2}$/.test(game.date) && Number.isFinite(Date.parse(game.date)) &&
-    Number.isInteger(game.season) && Number.isInteger(game.week) && game.week > 0 &&
-    TEAMS[game.home] && TEAMS[game.away] && game.home !== game.away &&
+    Number.isInteger(game.season) && (Number.isInteger(game.week) && game.week > 0 ||
+      game.week === null && game.id?.startsWith('archive:') && game.season >= 1946 && game.season <= 1998) &&
+    [game.home, game.away].every(t => TEAMS[t] || isHistoricalOpponent(t)) && game.home !== game.away &&
     Number.isInteger(game.homeScore) && game.homeScore >= 0 && Number.isInteger(game.awayScore) && game.awayScore >= 0;
   if (regular.some(g => !valid(g))) throw new Error('Invalid regular-season result');
   const throughDate = regular.at(-1).date;
@@ -118,21 +121,25 @@ export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold 
       throw new Error(`Invalid historical schedule: ${team}`);
     const rows = [...earlier, ...modern].sort((a, b) => a.date.localeCompare(b.date));
     if (new Set(rows.map(g => g.date)).size !== rows.length) throw new Error(`Duplicate game: ${team}`);
-    let currentWins = 0, currentStart = null, last = null, gamesSince = 0;
+    let currentWins = 0, currentStart = null, last = null, gamesSince = 0, season = null, gameNumber = 0;
     for (const game of rows) {
+      if (season !== game.season) { season = game.season; gameNumber = 0; }
+      gameNumber++;
       const win = game.home === team ? game.homeScore > game.awayScore : game.awayScore > game.homeScore;
       gamesSince++;
       if (win) { if (!currentWins) currentStart = game.date; currentWins++; }
       else { currentWins = 0; currentStart = null; }
       if (currentWins >= threshold) {
         last = { date: game.date, season: game.season, week: game.week, game: game.id, startDate: currentStart, wins: currentWins };
+        if (game.week === null) last.gameNumber = gameNumber;
         gamesSince = 0;
       }
     }
     return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, currentStart,
       coverageStart: rows[0]?.date ?? null };
   }));
-  return { threshold, scope: 'REG', throughDate, firstResultsSeason: Math.min(...regular.map(g => g.season)), teams };
+  return { threshold, scope: 'REG', throughDate,
+    firstResultsSeason: Math.min(...regular.map(g => g.season), ...Object.values(earlierByTeam).flatMap(rows => rows.map(g => g.season))), teams };
 }
 
 export function latestCompletedSeason(games) {
