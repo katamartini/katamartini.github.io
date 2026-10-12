@@ -4,7 +4,7 @@ import { DIVISIONS } from './divstreaks-data.mjs';
 import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
   calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
   WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView,
-  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass } from './droughts-data.mjs';
+  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass, bestStreakYears } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
   ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, historicalClubFranchises } from './droughts-archive.mjs';
@@ -133,11 +133,30 @@ test('Best retains ended records, includes current runs and ignores postseason g
   assert.equal(streakFor(games).bestWins, 12);
   assert.equal(streakFor(games, 'GB').bestWins, 0);
 });
+
+test('record years retain separate tied runs and replace them when a new record is set', () => {
+  const games = winningGames(11);
+  games[3].homeScore = 0; games[7].homeScore = 10;
+  for (const g of games.slice(4, 8)) { g.season = 2027; g.date = g.date.replace('2026', '2027'); }
+  for (const g of games.slice(8)) { g.season = 2028; g.date = g.date.replace('2026', '2028'); }
+  const tied = streakFor(games);
+  assert.equal(tied.bestWins, 3);
+  assert.deepEqual(tied.bestRuns, [2026, 2027, 2028].map(year => ({ startSeason: year, endSeason: year })));
+  assert.equal(bestStreakYears(tied.bestRuns), '2026, 2027, 2028');
+  games.push({ ...games.at(-1), id: 'new-record', date: '2028-10-10' });
+  const record = streakFor(games);
+  assert.equal(record.bestWins, 4);
+  assert.deepEqual(record.bestRuns, [{ startSeason: 2028, endSeason: 2028 }]);
+  assert.deepEqual(streakFor(games, 'GB').bestRuns, [{ startSeason: 2026, endSeason: 2026 }]);
+  assert.equal(bestStreakYears([]), '—');
+  assert.equal(bestStreakYears([{ startSeason: 2025, endSeason: 2026 }, { startSeason: 2025, endSeason: 2026 }]), '2025–2026');
+});
 test('offseasons and byes do not reset regular-season streaks, and playoffs do not count', () => {
   const games = winningGames(4).map(g => ({ ...g, season: 2025, date: g.date.replace('2026-09', '2025-12') }));
   games.push({ ...winningGames(1)[0], id: 'playoff-loss', type: 'WC', season: 2025, date: '2026-01-11', homeScore: 0 },
     { ...winningGames(1)[0], id: 'next-season', date: '2026-09-20', week: 2 });
   const row = streakFor(games); assert.equal(row.currentWins, 5); assert.equal(row.bestWins, 5); assert.equal(row.last.startDate, '2025-12-01'); assert.equal(row.last.season, 2026);
+  assert.equal(bestStreakYears(row.bestRuns), '2025–2026');
 });
 test('home and away wins are treated equally; unfinished games are excluded', () => {
   const games = winningGames(5); games[2] = { ...games[2], home: 'GB', away: 'MIN', homeScore: 10, awayScore: 20 };
@@ -243,6 +262,7 @@ test('all 23 saved views validate, share current streaks, and retain their corre
       const baseline = data.winStreaks.teams.find(r => r.team === row.team);
       assert.equal(row.currentWins, baseline.currentWins);
       assert.equal(row.bestWins, baseline.bestWins);
+      assert.deepEqual(row.bestRuns, baseline.bestRuns);
       assert.ok(row.bestWins >= row.currentWins);
       if (row.last) assert.ok(row.bestWins >= threshold && row.bestWins >= row.last.wins);
       else assert.ok(row.bestWins < threshold);
@@ -277,6 +297,11 @@ test('view validation rejects missing or contradictory franchise records', () =>
   const missing = structuredClone(saved.winStreaks);
   missing.teams[0].last = null; missing.teams[0].daysSince = null;
   assert.equal(validWinStreakView(missing), false);
+  for (const runs of [undefined, [], [{ startSeason: 2026, endSeason: 2025 }], [{ startSeason: 1800, endSeason: 1801 }], [{ startSeason: 2025, endSeason: 3000 }]]) {
+    const view = structuredClone(saved.winStreaks);
+    view.teams[0].bestRuns = runs;
+    assert.equal(validWinStreakView(view), false);
+  }
 });
 
 const archiveFixture = () => JSON.parse(readFileSync(new URL('../data/droughts-history.json', import.meta.url)));
@@ -319,6 +344,7 @@ test('historical season game numbers are not fabricated NFL weeks and runs carry
   const view = calculateWinStreakDroughts([modern], { MIN: earlier }, 9);
   const row = view.teams.find(r => r.team === 'MIN');
   assert.equal(row.last.week, 1); assert.equal(row.last.wins, 10); assert.equal(row.bestWins, 10); assert.equal(row.currentStart, '1998-09-01');
+  assert.equal(bestStreakYears(row.bestRuns), '1998–1999');
   assert.equal(view.firstResultsSeason, 1998);
   const historical = calculateWinStreakDroughts([{ ...modern, homeScore: 0, awayScore: 20 }], { MIN: earlier }, 9).teams.find(r => r.team === 'MIN');
   assert.equal(historical.last.week, null); assert.equal(historical.last.gameNumber, 9); assert.equal(historical.bestWins, 9); assert.equal(historical.gamesSince, 1);
