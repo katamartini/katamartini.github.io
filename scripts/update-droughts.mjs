@@ -66,5 +66,6 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
+data.updatedAt = new Date().toISOString();
 await writeFile(destination, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 console.log(`Saved ${data.teams.length} teams: milestones through ${data.throughSeason}, win streaks through ${data.winStreaks.throughDate}`);
