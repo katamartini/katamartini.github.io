@@ -60,12 +60,56 @@ export function readGames(csv) {
     const awayScore = c[8] === '' ? null : Number(c[8]);
     const homeScore = c[10] === '' ? null : Number(c[10]);
     return {
-      season: Number(c[1]), type: c[2], date: c[4],
+      id: c[0], season: Number(c[1]), type: c[2], week: Number(c[3]), date: c[4],
       away: normalizeTeam(c[7]), home: normalizeTeam(c[9]),
       awayScore, homeScore,
       completed: Number.isInteger(awayScore) && Number.isInteger(homeScore),
     };
   }).filter(game => Number.isInteger(game.season) && TEAMS[game.away] && TEAMS[game.home]);
+}
+
+export const WIN_STREAK_TARGET = 5;
+export const droughtViewFromHash = hash => hash === '#win-streaks' ? 'win-streaks' : 'milestones';
+export const daysBetween = (first, last) => Math.round((Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / 86400000);
+export function elapsedTime(first, last) {
+  const a = new Date(`${first}T00:00:00Z`), b = new Date(`${last}T00:00:00Z`);
+  const months = (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + b.getUTCMonth() - a.getUTCMonth() - (b.getUTCDate() < a.getUTCDate() ? 1 : 0);
+  if (months <= 0) { const days = daysBetween(first, last); return `${days} ${days === 1 ? 'day' : 'days'}`; }
+  const years = Math.floor(months / 12), rest = months % 12;
+  return [years ? `${years} ${years === 1 ? 'year' : 'years'}` : '', rest ? `${rest} ${rest === 1 ? 'month' : 'months'}` : ''].filter(Boolean).join(', ');
+}
+
+export function calculateWinStreakDroughts(games, earlierByTeam = {}, threshold = WIN_STREAK_TARGET) {
+  if (!Number.isInteger(threshold) || threshold < 1) throw new Error('Invalid win-streak threshold');
+  const regular = games.filter(g => g.type === 'REG' && g.completed).sort((a, b) => a.date.localeCompare(b.date));
+  if (!regular.length) throw new Error('No completed regular-season games');
+  const valid = game => /^\d{4}-\d{2}-\d{2}$/.test(game.date) && Number.isFinite(Date.parse(game.date)) &&
+    Number.isInteger(game.season) && Number.isInteger(game.week) && game.week > 0 &&
+    TEAMS[game.home] && TEAMS[game.away] && game.home !== game.away &&
+    Number.isInteger(game.homeScore) && game.homeScore >= 0 && Number.isInteger(game.awayScore) && game.awayScore >= 0;
+  if (regular.some(g => !valid(g))) throw new Error('Invalid regular-season result');
+  const throughDate = regular.at(-1).date;
+  const teams = DIVISIONS.flatMap(division => division.teams.map(team => {
+    const modern = regular.filter(g => g.home === team || g.away === team);
+    const earlier = earlierByTeam[team] || [];
+    if (earlier.some(g => !valid(g) || !g.completed || g.type !== 'REG' || (g.home !== team && g.away !== team) || modern[0] && g.date >= modern[0].date))
+      throw new Error(`Invalid historical schedule: ${team}`);
+    const rows = [...earlier, ...modern].sort((a, b) => a.date.localeCompare(b.date));
+    if (new Set(rows.map(g => g.date)).size !== rows.length) throw new Error(`Duplicate game: ${team}`);
+    let currentWins = 0, currentStart = null, last = null, gamesSince = 0;
+    for (const game of rows) {
+      const win = game.home === team ? game.homeScore > game.awayScore : game.awayScore > game.homeScore;
+      gamesSince++;
+      if (win) { if (!currentWins) currentStart = game.date; currentWins++; }
+      else { currentWins = 0; currentStart = null; }
+      if (currentWins >= threshold) {
+        last = { date: game.date, season: game.season, week: game.week, game: game.id, startDate: currentStart, wins: currentWins };
+        gamesSince = 0;
+      }
+    }
+    return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, currentStart };
+  }));
+  return { threshold, scope: 'REG', throughDate, firstResultsSeason: Math.min(...regular.map(g => g.season)), teams };
 }
 
 export function latestCompletedSeason(games) {

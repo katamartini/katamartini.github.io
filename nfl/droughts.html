@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="The last Super Bowl win, conference title, division title, playoff win, and playoff appearance for every NFL team.">
+  <meta name="description" content="NFL milestone droughts and how long each team has gone without a five-game regular-season winning streak.">
   <meta name="theme-color" content="#f4f5f1">
   <link rel="canonical" href="https://kmartini.com/nfl/droughts.html">
   <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
@@ -17,6 +17,10 @@
     .back:hover { text-decoration: underline; }
     h1 { margin: 36px 0 8px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
     .intro { max-width: 760px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    .views { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+    .views a { padding: 6px 10px; border: 1px solid #c8cdc5; border-radius: 4px; font-size: 0.88rem; text-decoration: none; }
+    .views a[aria-current="page"] { color: #fff; background: #36534a; border-color: #36534a; }
+    h2 { margin: 24px 0 8px; font-size: 1.2rem; }
     .meta { margin: 22px 0 28px; color: #61665e; font-size: 0.86rem; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
     .toolbar label, .hint { color: #61665e; font-size: 0.84rem; }
@@ -36,6 +40,7 @@
     .last-season { display: block; font-weight: 700; }
     .drought { display: block; margin-top: 2px; color: #737a70; font-size: 0.76rem; }
     .drought.ended { color: #267a45; }
+    .last-season.ended { color: #267a45; }
     button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
     button:hover { text-decoration: underline; }
     .sort-arrow { display: inline-block; min-width: 0.8em; }
@@ -55,28 +60,38 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>NFL droughts</h1>
-    <p class="intro">When did each team last reach these milestones? Each cell shows the last season and the number of completed seasons since.</p>
+    <p id="intro" class="intro">When did each team last reach these milestones? Each cell shows the last season and the number of completed seasons since.</p>
+    <nav class="views" aria-label="Drought views">
+      <a href="#milestones" aria-current="page">Milestones</a>
+      <a href="#win-streaks">Win streak droughts</a>
+    </nav>
+    <h2 id="view-heading">Milestones</h2>
     <p id="status" class="meta" role="status">Loading records…</p>
     <div class="toolbar">
       <label>Division <select id="division-filter"><option value="all">All divisions</option></select></label>
-      <p class="hint">Click a milestone to sort by longest drought. <span id="team-count"></span></p>
+      <p class="hint"><span id="sort-hint">Click a milestone to sort by longest drought.</span> <span id="team-count"></span></p>
     </div>
     <div class="table-wrap" tabindex="0" role="region" aria-label="NFL drought table; scroll horizontally for more columns">
       <table>
-        <caption>NFL droughts: last season and completed seasons without each milestone</caption>
+        <caption id="table-caption">NFL droughts: last season and completed seasons without each milestone</caption>
         <thead><tr id="table-head"></tr></thead>
         <tbody id="table-body"></tbody>
       </table>
     </div>
     <noscript><p>Enable JavaScript to display the drought records.</p></noscript>
-    <div class="method">
+    <div id="milestone-method" class="method">
       <p>Seasons use the NFL season year: a Super Bowl played in February 2026 belongs to the 2025 season. The ongoing season is not counted until its Super Bowl is complete. A result in the latest completed season has a drought of 0.</p>
       <p>“Never” counts active seasons in the Super Bowl era, starting in 1966 or the franchise’s first season. Conference titles mean a Super Bowl berth, including the NFL/AFL champions in 1966–69. Earlier league championships are not Super Bowl wins. Division titles include former divisions. Franchise moves and name changes stay with the same team; the Browns’ 1996–98 suspension is excluded, and the Ravens have their own history.</p>
       <p>Sources: <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results</a>, <a href="https://www.espn.com/nfl/standings/_/season/2025">ESPN standings</a>, and <a href="https://en.wikipedia.org/wiki/List_of_NFL_franchise_post-season_droughts">historical title records</a>. Records are checked weekly and advance after a season finishes.</p>
     </div>
+    <div id="win-streak-method" class="method" hidden>
+      <p>Regular season only. Wins carry across seasons, byes, and franchise moves; losses and ties reset the current winning streak. Playoff and preseason games are excluded. A run qualifies at five wins. Every further win in a longer run also qualifies, so a current streak of five or more has a game drought of 0.</p>
+      <p>“Last 5+ win” is the most recent victory that left the team on a streak of at least five wins, not the first win of the run or the following loss. Games since counts only that franchise’s completed regular-season games after that victory. Time since is calendar time through the latest game date in the feed; it still passes during offseasons and inactive years. Calendar durations show whole years and months, or days for less than a month.</p>
+      <p>The current season is included. Results are checked weekly by the existing Tuesday drought updater. Sources: <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results from 1999 onward</a>, plus the Browns’ <a href="https://www.clevelandbrowns.com/schedule/1994/">1994</a> and <a href="https://www.clevelandbrowns.com/schedule/1995/">1995</a> schedules to cover their earlier most recent five-win run. Cleveland played no games in 1996–98. The Oilers’ history belongs to the Titans, not the Texans.</p>
+    </div>
   </main>
   <script type="module">
-    import { CATEGORIES, seasonsSince } from './droughts-data.mjs';
+    import { CATEGORIES, seasonsSince, droughtViewFromHash, elapsedTime } from './droughts-data.mjs';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
 
     const status = document.getElementById('status');
@@ -89,6 +104,12 @@
     let data = null;
     let sortKey = 'team';
     let descending = false;
+    let view = droughtViewFromHash(location.hash);
+    const winColumns = [
+      { key: 'gamesSince', label: 'Games since' }, { key: 'daysSince', label: 'Time since' },
+      { key: 'last', label: 'Last 5+ win' }, { key: 'currentWins', label: 'Current win streak' },
+    ];
+    const dateText = date => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
 
     function element(tag, className, text) {
       const node = document.createElement(tag);
@@ -105,10 +126,17 @@
 
     function render() {
       if (!data) return;
-      const rows = data.teams.filter(row => filter.value === 'all' || row.division === filter.value);
+      const winsView = view === 'win-streaks';
+      const rows = (winsView ? data.winStreaks.teams : data.teams).filter(row => filter.value === 'all' || row.division === filter.value);
       rows.sort((a, b) => {
         const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
         if (sortKey === 'team') return descending ? -names : names;
+        if (winsView) {
+          const aValue = sortKey === 'last' ? a.last.date : a[sortKey];
+          const bValue = sortKey === 'last' ? b.last.date : b[sortKey];
+          const difference = typeof aValue === 'string' ? aValue.localeCompare(bValue) : aValue - bValue;
+          return (descending ? -difference : difference) || names;
+        }
         const difference = seasonsSince(a.team, a.last[sortKey], data.throughSeason) -
           seasonsSince(b.team, b.last[sortKey], data.throughSeason);
         return (descending ? -difference : difference) || names;
@@ -137,7 +165,20 @@
         identity.append(logo, label);
         team.append(identity);
         tr.append(team);
-        for (const category of CATEGORIES) {
+        if (winsView) {
+          const active = row.currentWins >= data.winStreaks.threshold;
+          const games = element('td');
+          games.append(element('span', `last-season${row.gamesSince === 0 ? ' ended' : ''}`, row.gamesSince.toLocaleString('en-US')));
+          games.append(element('span', 'drought', 'regular-season games'));
+          const time = element('td'), elapsed = elapsedTime(row.last.date, data.winStreaks.throughDate);
+          time.append(element('span', 'last-season', elapsed));
+          if (!elapsed.includes('day')) time.append(element('span', 'drought', `${row.daysSince.toLocaleString('en-US')} days`));
+          const last = element('td'); last.append(element('span', 'last-season', dateText(row.last.date)));
+          last.append(element('span', 'drought', `${row.last.season} · Week ${row.last.week} · ${row.last.wins}-win run`));
+          const current = element('td'); current.append(element('span', `last-season${active ? ' ended' : ''}`, `${row.currentWins} ${row.currentWins === 1 ? 'win' : 'wins'}`));
+          if (active) current.append(element('span', 'drought ended', '5+ streak active'));
+          tr.append(games, time, last, current);
+        } else for (const category of CATEGORIES) {
           const last = row.last[category.key];
           const drought = seasonsSince(row.team, last, data.throughSeason);
           const cell = element('td');
@@ -151,7 +192,9 @@
       count.textContent = `${rows.length} teams.`;
     }
 
-    for (const category of [{ key: 'team', label: 'Team' }, ...CATEGORIES]) {
+    function buildHeaders() {
+      head.replaceChildren(); headers.clear();
+      for (const category of [{ key: 'team', label: 'Team' }, ...(view === 'win-streaks' ? winColumns : CATEGORIES)]) {
       const th = element('th');
       th.scope = 'col';
       const button = element('button', '', category.label);
@@ -160,14 +203,33 @@
       arrow.setAttribute('aria-hidden', 'true');
       button.append(arrow);
       button.addEventListener('click', () => {
-        descending = sortKey === category.key ? !descending : category.key !== 'team';
+        descending = sortKey === category.key ? !descending : category.key !== 'team' && category.key !== 'last';
         sortKey = category.key;
         render();
       });
       th.append(button);
       head.append(th);
       headers.set(category.key, { th, arrow });
+      }
     }
+    function selectView() {
+      view = droughtViewFromHash(location.hash);
+      const winsView = view === 'win-streaks';
+      sortKey = winsView ? 'gamesSince' : 'team'; descending = winsView;
+      document.getElementById('intro').textContent = winsView ? 'How long has each team gone without winning five straight regular-season games? Includes this season, with streaks carrying across season boundaries.' : 'When did each team last reach these milestones? Each cell shows the last season and the number of completed seasons since.';
+      document.getElementById('view-heading').textContent = winsView ? 'Five-win streak droughts' : 'Milestones';
+      document.getElementById('sort-hint').textContent = winsView ? 'Longest game drought first. Click a column to sort.' : 'Click a milestone to sort by longest drought.';
+      document.getElementById('table-caption').textContent = winsView ? 'NFL droughts since the last five-game regular-season winning streak' : 'NFL droughts: last season and completed seasons without each milestone';
+      document.getElementById('milestone-method').hidden = winsView;
+      document.getElementById('win-streak-method').hidden = !winsView;
+      for (const link of document.querySelectorAll('.views a')) {
+        if (link.hash === `#${view}`) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+      }
+      buildHeaders(); render();
+      if (data) status.textContent = winsView ? `Regular season · Games through ${dateText(data.winStreaks.throughDate)} · ${data.winStreaks.threshold}+ consecutive wins` : `Through the ${data.throughSeason} season${data.currentSeason > data.throughSeason ? ` · ${data.currentSeason} season in progress` : ''}`;
+    }
+    window.addEventListener('hashchange', selectView);
+    selectView();
     filter.addEventListener('change', render);
 
     try {
@@ -181,9 +243,16 @@
               (row.last[category.key] !== null && (!Number.isInteger(row.last[category.key]) || row.last[category.key] > saved.throughSeason))))) {
         throw new Error('Incomplete records');
       }
+      const wins = saved.winStreaks;
+      if (wins?.threshold !== 5 || wins.scope !== 'REG' || !/^\d{4}-\d{2}-\d{2}$/.test(wins.throughDate) || wins.teams?.length !== 32 ||
+        new Set(wins.teams.map(row => row.team)).size !== 32 || wins.teams.some(row => !TEAMS[row.team] ||
+          !DIVISIONS.some(d => d.name === row.division && d.teams.includes(row.team)) ||
+          !row.last || !/^\d{4}-\d{2}-\d{2}$/.test(row.last.date) || row.last.date > wins.throughDate ||
+          !Number.isInteger(row.last.season) || !Number.isInteger(row.last.week) || row.last.week < 1 ||
+          !Number.isInteger(row.last.wins) || row.last.wins < wins.threshold ||
+          ['gamesSince', 'daysSince', 'currentWins'].some(key => !Number.isInteger(row[key]) || row[key] < 0))) throw new Error('Incomplete win-streak records');
       data = saved;
-      render();
-      status.textContent = `Through the ${data.throughSeason} season${data.currentSeason > data.throughSeason ? ` · ${data.currentSeason} season in progress` : ''}`;
+      selectView();
     } catch {
       status.textContent = 'Records could not be loaded. Please refresh to try again.';
     }
