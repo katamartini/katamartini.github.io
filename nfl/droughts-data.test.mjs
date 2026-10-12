@@ -4,7 +4,9 @@ import { DIVISIONS } from './divstreaks-data.mjs';
 import { calculateDroughts, divisionWinners, latestCompletedSeason, readGames, seasonsSince,
   calculateWinStreakDroughts, droughtViewFromHash, daysBetween, elapsedTime,
   WIN_STREAK_THRESHOLDS, winThresholdFromHash, winStreakState, validWinStreakView,
-  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass, bestStreakYears } from './droughts-data.mjs';
+  winStreakHistoryStatus, compareWinStreakRows, FRANCHISE_DEBUTS, winStreakRowClass, bestStreakYears,
+  LOSS_STREAK_THRESHOLDS, calculateLossStreakDroughts, validLossStreakView,
+  lossThresholdFromHash, lossStreakState, lossStreakRowClass } from './droughts-data.mjs';
 import { WIN_STREAK_HISTORY } from './droughts-history.mjs';
 import { archiveByTeam, validateArchive, readArchive, expectedHistoricalGames, isHistoricalOpponent,
   ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, historicalClubFranchises } from './droughts-archive.mjs';
@@ -552,4 +554,110 @@ test('old never franchises sort first by their league debut, with name ties dete
   const rows = view.teams.filter(r => oldTeams.includes(r.team)).map(r => ({ ...r, last: null, daysSince: null }));
   assert.deepEqual(rows.sort((a,b) => compareWinStreakRows(a,b,'gamesSince',true,view)).map(r => r.team),
     ['CHI', 'ARI', 'GB', 'NYG', 'DET', 'WAS', 'PHI', 'PIT', 'LA']);
+});
+
+const losingGames = count => winningGames(count).map(g => ({ ...g, homeScore: 0 }));
+const lossesFor = (games, threshold = 5, history = {}) => calculateLossStreakDroughts(games, history, threshold).teams.find(r => r.team === 'MIN');
+
+test('loss streaks qualify exactly, extend drought resets and expose explicit loss fields', () => {
+  assert.equal(lossesFor(losingGames(4)).last, null);
+  const row = lossesFor(losingGames(7));
+  assert.equal(row.currentLosses, 7); assert.equal(row.bestLosses, 7);
+  assert.equal(row.gamesSince, 0); assert.equal(row.last.losses, 7);
+  assert.equal(row.last.date, losingGames(7).at(-1).date);
+  assert.equal(Object.hasOwn(row, 'currentWins'), false); assert.equal(Object.hasOwn(row.last, 'wins'), false);
+  const snapshot = calculateLossStreakDroughts(losingGames(7));
+  assert.equal(snapshot.teams.find(r => r.team === 'GB').currentLosses, 0);
+  assert.equal(bestStreakYears(row.bestRuns), '2026');
+});
+
+test('wins and ties break losing streaks, while postseason and unfinished games are excluded', () => {
+  for (const homeScore of [10, 20]) {
+    const games = losingGames(6); games[5].homeScore = homeScore;
+    const row = lossesFor(games);
+    assert.equal(row.currentLosses, 0); assert.equal(row.bestLosses, 5);
+    assert.equal(row.gamesSince, 1); assert.equal(row.last.date, games[4].date);
+    games[5].type = 'WC';
+    games.push({ ...games[5], type: 'REG', date: '2026-10-01', completed: false, homeScore: null });
+    assert.equal(lossesFor(games).currentLosses, 5);
+  }
+  const away = losingGames(5); away[2] = { ...away[2], home: 'GB', away: 'MIN', homeScore: 10, awayScore: 0 };
+  assert.equal(lossesFor(away).currentLosses, 5);
+});
+
+test('loss records span seasons and the historical/modern boundary without mutating source results', () => {
+  const earlier = losingGames(4).map((g,i) => ({ ...g, id: `archive:loss${i}`, season: 1998, week: null, date: g.date.replace('2026', '1998') }));
+  const modern = { ...losingGames(1)[0], season: 1999, date: '1999-09-12' };
+  const before = JSON.stringify({ earlier, modern });
+  const row = lossesFor([modern], 5, { MIN: earlier });
+  assert.equal(row.currentLosses, 5); assert.equal(bestStreakYears(row.bestRuns), '1998–1999');
+  assert.equal(row.currentStart, '1998-09-01'); assert.equal(row.last.week, 1);
+  assert.equal(JSON.stringify({ earlier, modern }), before);
+  assert.throws(() => calculateLossStreakDroughts([]), /No completed/);
+  assert.throws(() => calculateLossStreakDroughts(losingGames(5), {}, 0), /threshold/);
+  assert.throws(() => calculateLossStreakDroughts([...losingGames(5), losingGames(1)[0]]), /Duplicate/);
+});
+
+test('loss thresholds are linkable from 1 through 29, defaulting to 5 without altering win links', () => {
+  assert.deepEqual(LOSS_STREAK_THRESHOLDS, Array.from({ length: 29 }, (_, i) => i + 1));
+  assert.equal(droughtViewFromHash('#loss-streaks'), 'loss-streaks');
+  assert.equal(lossThresholdFromHash('#loss-streaks'), 5);
+  for (const n of LOSS_STREAK_THRESHOLDS) {
+    assert.equal(droughtViewFromHash(`#loss-streaks-${n}`), 'loss-streaks');
+    assert.equal(lossThresholdFromHash(`#loss-streaks-${n}`), n);
+    assert.equal(lossStreakState(n, n), 'active-streak');
+    assert.equal(lossStreakState(n-1, n), 'one-away');
+    if (n > 1) assert.equal(lossStreakState(n-2, n), '');
+  }
+  for (const hash of ['#loss-streaks-0', '#loss-streaks-30', '#loss-streaks-05', '#loss-streaks-9junk']) assert.equal(droughtViewFromHash(hash), 'milestones');
+  assert.throws(() => lossStreakState(-1, 5), /Invalid/); assert.throws(() => lossStreakState(5, 30), /Invalid/);
+  assert.equal(droughtViewFromHash('#win-streaks-23'), 'win-streaks');
+  assert.equal(droughtViewFromHash('#win-streaks-24'), 'milestones');
+  const row = lossesFor(losingGames(29), 29);
+  assert.equal(row.last.losses, 29); assert.equal(row.gamesSince, 0);
+});
+
+test('every saved loss threshold validates and shares current streaks, records, years and full coverage', () => {
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  assert.equal(saved.lossStreaks.threshold, 5);
+  assert.deepEqual(Object.keys(saved.lossStreaks.thresholds).map(Number), LOSS_STREAK_THRESHOLDS.filter(n => n !== 5));
+  for (const n of LOSS_STREAK_THRESHOLDS) {
+    const view = n === 5 ? saved.lossStreaks : saved.lossStreaks.thresholds[n];
+    assert.equal(view.threshold, n); assert.equal(view.throughDate, saved.winStreaks.throughDate);
+    assert.equal(view.firstResultsSeason, 1920); assert.equal(validLossStreakView(view), true);
+    for (const row of view.teams) {
+      const base = saved.lossStreaks.teams.find(r => r.team === row.team);
+      assert.equal(row.currentLosses, base.currentLosses); assert.equal(row.bestLosses, base.bestLosses);
+      assert.deepEqual(row.bestRuns, base.bestRuns);
+      assert.equal(Number(row.coverageStart.slice(0,4)), FRANCHISE_DEBUTS[row.team]);
+      assert.notEqual(winStreakHistoryStatus(row, view), 'unknown');
+      assert.ok(row.last ? row.last.losses >= n && row.bestLosses >= row.last.losses : row.bestLosses < n);
+    }
+  }
+});
+
+test('loss validation rejects incomplete snapshots and impossible streak/record metadata', () => {
+  const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
+  assert.equal(validLossStreakView(null), false);
+  for (const change of [
+    view => view.teams.pop(), view => { view.teams[0].currentLosses = -1; },
+    view => { view.teams[0].bestLosses = 0; }, view => { view.teams[0].bestRuns = []; },
+    view => { view.teams[0].last.losses = 0; }, view => { view.threshold = 30; },
+  ]) {
+    const view = structuredClone(saved.lossStreaks); change(view);
+    assert.equal(validLossStreakView(view), false);
+  }
+});
+
+test('loss Never sorts and highlights match win-view conventions, while Best stays numeric', () => {
+  const view = { threshold: 29, firstResultsSeason: 1920 };
+  const ari = { team: 'ARI', coverageStart: '1920-10-10', last: { date: '1945-01-01' }, currentLosses: 0, bestLosses: 29 };
+  const jets = { team: 'NYJ', coverageStart: '1960-09-11', last: null, currentLosses: 0, bestLosses: 13 };
+  const hou = { team: 'HOU', coverageStart: '2002-09-08', last: null, currentLosses: 0, bestLosses: 14 };
+  assert.ok(compareWinStreakRows(jets, ari, 'gamesSince', true, view) < 0);
+  assert.ok(compareWinStreakRows(jets, hou, 'gamesSince', true, view) < 0);
+  assert.ok(compareWinStreakRows(jets, ari, 'bestLosses', true, view) > 0);
+  assert.equal(lossStreakRowClass(jets, view), 'never-streak');
+  assert.equal(lossStreakRowClass({ ...jets, currentLosses: 28 }, view), 'one-away');
+  assert.equal(lossStreakRowClass({ ...ari, currentLosses: 29 }, view), 'active-streak');
 });
