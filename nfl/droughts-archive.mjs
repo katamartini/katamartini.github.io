@@ -10,6 +10,12 @@ const aliases = { LAR: 'LA', OAK: 'LV', WSH: 'WAS' };
 const defunct = new Set(['BBA', 'BCL', 'BDA', 'BYK', 'CRA', 'DTX', 'LDA', 'MSA', 'NAA', 'NYY']);
 export const isHistoricalOpponent = code => typeof code === 'string' && code.startsWith('historical:') && defunct.has(code.slice(11));
 const normalize = code => aliases[code] || (defunct.has(code) ? `historical:${code}` : code);
+// First playing seasons for franchises whose entire careers fit in the archive
+// plus modern results. Earlier franchises deliberately have no entry here.
+export const FRANCHISE_DEBUTS = Object.freeze({ CLE: 1946, SF: 1946, IND: 1953,
+  DAL: 1960, BUF: 1960, DEN: 1960, KC: 1960, LAC: 1960, NE: 1960,
+  NYJ: 1960, LV: 1960, TEN: 1960, MIN: 1961, ATL: 1966, MIA: 1966,
+  NO: 1967, CIN: 1968, SEA: 1976, TB: 1976, CAR: 1995, JAX: 1995, BAL: 1996, HOU: 2002 });
 
 export function readArchive(csv) {
   const lines = csv.trim().split(/\r?\n/);
@@ -31,10 +37,7 @@ export function readArchive(csv) {
 }
 
 export function expectedHistoricalGames(team, season) {
-  const starts = { IND: 1953, DAL: 1960, BUF: 1960, DEN: 1960, KC: 1960, LAC: 1960, NE: 1960,
-    NYJ: 1960, LV: 1960, TEN: 1960, MIN: 1961, ATL: 1966, MIA: 1966, NO: 1967, CIN: 1968,
-    SEA: 1976, TB: 1976, CAR: 1995, JAX: 1995, BAL: 1996, HOU: 2002 };
-  if (season < (starts[team] || ARCHIVE_FIRST_SEASON) || team === 'CLE' && season >= 1996) return 0;
+  if (season < (FRANCHISE_DEBUTS[team] || ARCHIVE_FIRST_SEASON) || team === 'CLE' && season >= 1996) return 0;
   if (season <= 1948 && ['CLE', 'SF'].includes(team)) return 14; // AAFC
   if (season === 1946) return 11; // NFL expanded to twelve games in 1947.
   if (season <= 1960 && !['BUF', 'DEN', 'KC', 'LAC', 'NE', 'NYJ', 'LV', 'TEN'].includes(team)) return 12;
