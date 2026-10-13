@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-11T01:17:40.385Z",
+  "checkedAt": "2026-10-13T21:56:01.363Z",
   "season": 2026,
-  "through": "2026-10-08",
+  "through": "2026-10-12",
   "latestWeek": 5,
-  "rosterWeek": 5,
+  "rosterWeek": 6,
   "firstStatsSeason": 1999,
   "firstParticipationSeason": 2013,
   "historicalCoverage": "partial",
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "76561114661d3979cf9b47f8d78c6f16ca7c1dc59b561c1eab33f165894c32a7",
+  "sourceHash": "d96469414db82083e8e1570a897fcca206c6774332902e29b23113d62b073a52",
   "sources": [
     {
       "kind": "stats",
@@ -604,7 +604,7 @@
       "id": "00-0031381:2015_08_GB_DEN",
       "playerId": "00-0031381",
       "name": "Davante Adams",
-      "length": 163,
+      "length": 164,
       "start": {
         "date": "2015-11-01",
         "season": 2015,
@@ -613,11 +613,11 @@
         "opponent": "DEN"
       },
       "last": {
-        "date": "2026-10-04",
+        "date": "2026-10-12",
         "season": 2026,
-        "game": "2026_04_LA_PHI",
+        "game": "2026_05_BUF_LA",
         "team": "LA",
-        "opponent": "PHI"
+        "opponent": "BUF"
       },
       "teams": [
         "GB",
@@ -1157,7 +1157,7 @@
       "id": "00-0030279:2018_16_BAL_LAC",
       "playerId": "00-0030279",
       "name": "Keenan Allen",
-      "length": 106,
+      "length": 107,
       "start": {
         "date": "2018-12-22",
         "season": 2018,
@@ -1166,11 +1166,11 @@
         "opponent": "BAL"
       },
       "last": {
-        "date": "2026-09-27",
+        "date": "2026-10-11",
         "season": 2026,
-        "game": "2026_03_HOU_IND",
+        "game": "2026_05_IND_PIT",
         "team": "IND",
-        "opponent": "HOU"
+        "opponent": "PIT"
       },
       "teams": [
         "LAC",
@@ -1259,6 +1259,37 @@
       "rank": 31
     },
     {
+      "id": "00-0035640:2019_17_SF_SEA",
+      "playerId": "00-0035640",
+      "name": "DK Metcalf",
+      "length": 102,
+      "start": {
+        "date": "2019-12-29",
+        "season": 2019,
+        "game": "2019_17_SF_SEA",
+        "team": "SEA",
+        "opponent": "SF"
+      },
+      "last": {
+        "date": "2026-10-11",
+        "season": 2026,
+        "game": "2026_05_IND_PIT",
+        "team": "PIT",
+        "opponent": "IND"
+      },
+      "teams": [
+        "SEA",
+        "PIT"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 32
+    },
+    {
       "id": "00-0029000:2015_14_DAL_GB",
       "playerId": "00-0029000",
       "name": "Cole Beasley",
@@ -1287,37 +1318,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 32
-    },
-    {
-      "id": "00-0035640:2019_17_SF_SEA",
-      "playerId": "00-0035640",
-      "name": "DK Metcalf",
-      "length": 101,
-      "start": {
-        "date": "2019-12-29",
-        "season": 2019,
-        "game": "2019_17_SF_SEA",
-        "team": "SEA",
-        "opponent": "SF"
-      },
-      "last": {
-        "date": "2026-10-01",
-        "season": 2026,
-        "game": "2026_04_PIT_CLE",
-        "team": "PIT",
-        "opponent": "CLE"
-      },
-      "teams": [
-        "SEA",
-        "PIT"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 33
     },
@@ -1391,6 +1391,36 @@
       "rank": 35
     },
     {
+      "id": "00-0036322:2020_01_GB_MIN",
+      "playerId": "00-0036322",
+      "name": "Justin Jefferson",
+      "length": 98,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_GB_MIN",
+        "team": "MIN",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2026-10-11",
+        "season": 2026,
+        "game": "2026_05_MIN_NO",
+        "team": "MIN",
+        "opponent": "NO"
+      },
+      "teams": [
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 36
+    },
+    {
       "id": "00-0036252:2020_01_IND_JAX",
       "playerId": "00-0036252",
       "name": "Michael Pittman",
@@ -1419,7 +1449,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 36
+      "rank": 37
     },
     {
       "id": "00-0007681:1999_07_CLE_STL",
@@ -1451,36 +1481,6 @@
       "lowerBound": true,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 37
-    },
-    {
-      "id": "00-0036322:2020_01_GB_MIN",
-      "playerId": "00-0036322",
-      "name": "Justin Jefferson",
-      "length": 97,
-      "start": {
-        "date": "2020-09-13",
-        "season": 2020,
-        "game": "2020_01_GB_MIN",
-        "team": "MIN",
-        "opponent": "GB"
-      },
-      "last": {
-        "date": "2026-09-27",
-        "season": 2026,
-        "game": "2026_03_MIN_TB",
-        "team": "MIN",
-        "opponent": "TB"
-      },
-      "teams": [
-        "MIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 38
     },
@@ -1950,7 +1950,7 @@
       "id": "00-0036900:2021_01_MIN_CIN",
       "playerId": "00-0036900",
       "name": "Ja'Marr Chase",
-      "length": 82,
+      "length": 83,
       "start": {
         "date": "2021-09-12",
         "season": 2021,
@@ -1959,11 +1959,11 @@
         "opponent": "MIN"
       },
       "last": {
-        "date": "2026-10-04",
+        "date": "2026-10-11",
         "season": 2026,
-        "game": "2026_04_JAX_CIN",
+        "game": "2026_05_CIN_MIA",
         "team": "CIN",
-        "opponent": "JAX"
+        "opponent": "MIA"
       },
       "teams": [
         "CIN"
@@ -2725,6 +2725,38 @@
       "rank": 74
     },
     {
+      "id": "00-0034960:2021_15_NE_IND",
+      "playerId": "00-0034960",
+      "name": "Jakobi Meyers",
+      "length": 70,
+      "start": {
+        "date": "2021-12-18",
+        "season": 2021,
+        "game": "2021_15_NE_IND",
+        "team": "NE",
+        "opponent": "IND"
+      },
+      "last": {
+        "date": "2026-10-11",
+        "season": 2026,
+        "game": "2026_05_PHI_JAX",
+        "team": "JAX",
+        "opponent": "PHI"
+      },
+      "teams": [
+        "NE",
+        "LV",
+        "JAX"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 75
+    },
+    {
       "id": "00-0029137:2012_16_CHI_ARI",
       "playerId": "00-0029137",
       "name": "Alshon Jeffery",
@@ -2759,7 +2791,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 75
+      "rank": 76
     },
     {
       "id": "00-0033009:2016_01_CIN_NYJ",
@@ -2795,7 +2827,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 76
+      "rank": 77
     },
     {
       "id": "00-0033908:2019_11_CHI_LA",
@@ -2830,38 +2862,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 77
-    },
-    {
-      "id": "00-0034960:2021_15_NE_IND",
-      "playerId": "00-0034960",
-      "name": "Jakobi Meyers",
-      "length": 69,
-      "start": {
-        "date": "2021-12-18",
-        "season": 2021,
-        "game": "2021_15_NE_IND",
-        "team": "NE",
-        "opponent": "IND"
-      },
-      "last": {
-        "date": "2026-10-04",
-        "season": 2026,
-        "game": "2026_04_JAX_CIN",
-        "team": "JAX",
-        "opponent": "CIN"
-      },
-      "teams": [
-        "NE",
-        "LV",
-        "JAX"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 78
     },
@@ -3094,6 +3094,36 @@
       "rank": 85
     },
     {
+      "id": "00-0033906:2021_05_NO_WAS",
+      "playerId": "00-0033906",
+      "name": "Alvin Kamara",
+      "length": 66,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_NO_WAS",
+        "team": "NO",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2026-10-11",
+        "season": 2026,
+        "game": "2026_05_MIN_NO",
+        "team": "NO",
+        "opponent": "MIN"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 86
+    },
+    {
       "id": "00-0021547:2012_03_ATL_SD",
       "playerId": "00-0021547",
       "name": "Antonio Gates",
@@ -3127,7 +3157,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 86
+      "rank": 87
     },
     {
       "id": "00-0031408:2015_03_TB_HOU",
@@ -3163,7 +3193,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 87
+      "rank": 88
     },
     {
       "id": "00-0029632:2015_14_PIT_CIN",
@@ -3201,7 +3231,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 88
+      "rank": 89
     },
     {
       "id": "00-0035216:2020_05_PHI_PIT",
@@ -3238,29 +3268,30 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 89
+      "rank": 90
     },
     {
-      "id": "00-0033906:2021_05_NO_WAS",
-      "playerId": "00-0033906",
-      "name": "Alvin Kamara",
+      "id": "00-0035229:2021_11_DET_CLE",
+      "playerId": "00-0035229",
+      "name": "T.J. Hockenson",
       "length": 65,
       "start": {
-        "date": "2021-10-10",
+        "date": "2021-11-21",
         "season": 2021,
-        "game": "2021_05_NO_WAS",
-        "team": "NO",
-        "opponent": "WAS"
+        "game": "2021_11_DET_CLE",
+        "team": "DET",
+        "opponent": "CLE"
       },
       "last": {
-        "date": "2026-10-05",
+        "date": "2026-10-11",
         "season": 2026,
-        "game": "2026_04_ATL_NO",
-        "team": "NO",
-        "opponent": "ATL"
+        "game": "2026_05_MIN_NO",
+        "team": "MIN",
+        "opponent": "NO"
       },
       "teams": [
-        "NO"
+        "DET",
+        "MIN"
       ],
       "endedBy": null,
       "gapAfter": null,
@@ -3268,7 +3299,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 90
+      "rank": 91
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI",
@@ -3298,7 +3329,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 91
+      "rank": 92
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL",
+      "playerId": "00-0034383",
+      "name": "Dalton Schultz",
+      "length": 65,
+      "start": {
+        "date": "2022-10-23",
+        "season": 2022,
+        "game": "2022_07_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2026-10-11",
+        "season": 2026,
+        "game": "2026_05_HOU_TEN",
+        "team": "HOU",
+        "opponent": "TEN"
+      },
+      "teams": [
+        "DAL",
+        "HOU"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 93
     },
     {
       "id": "00-0000339:1999_01_NE_NYJ",
@@ -3331,7 +3393,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 92
+      "rank": 94
     },
     {
       "id": "00-0022427:2011_01_NE_MIA",
@@ -3369,7 +3431,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 93
+      "rank": 95
     },
     {
       "id": "00-0029664:2012_01_PHI_CLE",
@@ -3408,7 +3470,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 94
+      "rank": 96
     },
     {
       "id": "00-0030472:2013_01_PHI_WAS",
@@ -3444,7 +3506,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 95
+      "rank": 97
     },
     {
       "id": "00-0028434:2014_01_GB_SEA",
@@ -3480,7 +3542,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 96
+      "rank": 98
     },
     {
       "id": "00-0032009:2016_01_TB_ATL",
@@ -3517,7 +3579,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 97
+      "rank": 99
     },
     {
       "id": "00-0032385:2016_13_NYG_PIT",
@@ -3552,68 +3614,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 98
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE",
-      "playerId": "00-0035229",
-      "name": "T.J. Hockenson",
-      "length": 64,
-      "start": {
-        "date": "2021-11-21",
-        "season": 2021,
-        "game": "2021_11_DET_CLE",
-        "team": "DET",
-        "opponent": "CLE"
-      },
-      "last": {
-        "date": "2026-10-04",
-        "season": 2026,
-        "game": "2026_04_MIA_MIN",
-        "team": "MIN",
-        "opponent": "MIA"
-      },
-      "teams": [
-        "DET",
-        "MIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "rank": 99
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL",
-      "playerId": "00-0034383",
-      "name": "Dalton Schultz",
-      "length": 64,
-      "start": {
-        "date": "2022-10-23",
-        "season": 2022,
-        "game": "2022_07_DET_DAL",
-        "team": "DAL",
-        "opponent": "DET"
-      },
-      "last": {
-        "date": "2026-10-04",
-        "season": 2026,
-        "game": "2026_04_DAL_HOU",
-        "team": "HOU",
-        "opponent": "DAL"
-      },
-      "teams": [
-        "DAL",
-        "HOU"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 100
     }
