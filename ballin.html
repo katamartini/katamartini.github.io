@@ -653,6 +653,46 @@
       text-align: right;
     }
 
+    .lifetime-range-controls {
+      display: flex;
+      align-items: end;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      margin: -6px 0 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .lifetime-range-field {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 750;
+    }
+
+    .lifetime-range-field input {
+      width: 78px;
+      min-height: 34px;
+      padding: 5px 8px;
+      border: 1px solid var(--border-bright);
+      border-radius: 9px;
+      background: #11161d;
+      color: var(--text);
+      font: inherit;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lifetime-range-error {
+      flex-basis: 100%;
+      margin: 0;
+      color: var(--red);
+      font-size: 0.78rem;
+    }
+
     .trend-range-reset {
       width: 60px;
       min-height: 34px;
@@ -672,7 +712,8 @@
     }
 
     .trend-range-reset:focus-visible,
-    .trend-range-field input:focus-visible {
+    .trend-range-field input:focus-visible,
+    .lifetime-range-field input:focus-visible {
       outline: 2px solid var(--orange);
       outline-offset: 2px;
     }
@@ -2057,6 +2098,19 @@
           <h2>Lifetime percentage</h2>
           <span id="lifetimeChartScope">Every shot</span>
         </div>
+        <form class="lifetime-range-controls" id="lifetimeRangeForm" aria-label="Lifetime percentage Y-axis range">
+          <label class="lifetime-range-field" for="lifetimeYMin">From
+            <input id="lifetimeYMin" type="number" min="0" max="100" step="0.1" value="44" required>
+            <span>%</span>
+          </label>
+          <label class="lifetime-range-field" for="lifetimeYMax">To
+            <input id="lifetimeYMax" type="number" min="0" max="100" step="0.1" value="55" required>
+            <span>%</span>
+          </label>
+          <button class="trend-range-reset" type="submit">Apply</button>
+          <button class="trend-range-reset" id="lifetimeRangeReset" type="button">Reset</button>
+          <p class="lifetime-range-error" id="lifetimeRangeError" role="alert" hidden>Choose 0–100%, with From lower than To.</p>
+        </form>
         <div class="chart-wrap">
           <svg
             class="trend-chart"
@@ -2079,6 +2133,7 @@
             <g id="lifetimeChartPoints"></g>
           </svg>
         </div>
+        <p class="chart-note">Values outside the selected Y-axis range sit at the chart edge; hover for the exact percentage.</p>
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
           </section>
 
@@ -2318,6 +2373,8 @@
       const LEGACY_STORAGE_KEY = "ballin.freeThrowTracker.v1";
       const BACKUP_TOKEN_KEY = "ballin.githubBackupToken.v1";
       const THEORETICAL_OVERLAYS_KEY = "ballin.theoreticalOverlays.v1";
+      const LIFETIME_Y_RANGE_KEY = "ballin.lifetimeYRange.v1";
+      const DEFAULT_LIFETIME_Y_RANGE = { min: 44, max: 55 };
       // Preserve the existing line's saved visibility under its new name.
       const BEST_THROUGH_VISIBLE_KEY = "ballin.theoreticalVisible.v1";
       const BEST_RUN_VISIBLE_KEY = "ballin.bestRunVisible.v1";
@@ -2389,6 +2446,11 @@
         lifetimeChartLine: document.querySelector("#lifetimeChartLine"),
         lifetimeChartPoints: document.querySelector("#lifetimeChartPoints"),
         lifetimeChartNote: document.querySelector("#lifetimeChartNote"),
+        lifetimeRangeForm: document.querySelector("#lifetimeRangeForm"),
+        lifetimeYMin: document.querySelector("#lifetimeYMin"),
+        lifetimeYMax: document.querySelector("#lifetimeYMax"),
+        lifetimeRangeReset: document.querySelector("#lifetimeRangeReset"),
+        lifetimeRangeError: document.querySelector("#lifetimeRangeError"),
         theoreticalChart: document.querySelector("#theoreticalChart"),
         theoreticalChartDescription: document.querySelector("#theoreticalChartDescription"),
         theoreticalChartScope: document.querySelector("#theoreticalChartScope"),
@@ -2455,6 +2517,7 @@
       };
       let activeDashboardTab = dashboardTabFromHash(location.hash) || "overview";
       let trendRange = { start: null, end: null };
+      let lifetimeYRange = loadLifetimeYRange();
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
       let bestRunVisible = loadChartVisibility(BEST_RUN_VISIBLE_KEY);
@@ -2496,6 +2559,29 @@
           localStorage.setItem(key, String(visible));
         } catch {
           // The chart still works when this optional preference cannot be saved.
+        }
+      }
+
+      function validLifetimeYRange(range) {
+        return Number.isFinite(range?.min) && Number.isFinite(range?.max)
+          && range.min >= 0 && range.max <= 100 && range.min < range.max;
+      }
+
+      function loadLifetimeYRange() {
+        try {
+          const range = JSON.parse(localStorage.getItem(LIFETIME_Y_RANGE_KEY));
+          if (validLifetimeYRange(range)) return range;
+        } catch {
+          // An invalid or unavailable preference falls back to the default range.
+        }
+        return { ...DEFAULT_LIFETIME_Y_RANGE };
+      }
+
+      function saveLifetimeYRange() {
+        try {
+          localStorage.setItem(LIFETIME_Y_RANGE_KEY, JSON.stringify(lifetimeYRange));
+        } catch {
+          // The controls still work for this session when storage is unavailable.
         }
       }
 
@@ -3509,8 +3595,7 @@
         const maxAttempts = points.at(-1)?.attempts || 1;
         const chartStartAttempts = legacy.attempts || 0;
         const attemptSpan = maxAttempts - chartStartAttempts;
-        const yMin = 44;
-        const yMax = 55;
+        const { min: yMin, max: yMax } = lifetimeYRange;
 
         const pointPosition = (point) => ({
           x: attemptSpan
@@ -3523,8 +3608,16 @@
         elements.lifetimeChartGrid.replaceChildren();
         elements.lifetimeChartPoints.replaceChildren();
 
+        const targetStep = (yMax - yMin) / 5;
+        const magnitude = 10 ** Math.floor(Math.log10(targetStep));
+        const tickStep = [1, 2, 2.5, 5, 10]
+          .map((step) => step * magnitude)
+          .reduce((best, step) => Math.abs(step - targetStep) < Math.abs(best - targetStep) ? step : best);
         const yTicks = [yMin];
-        for (let value = yMin + 2; value < yMax; value += 2) yTicks.push(value);
+        for (let value = Math.ceil((yMin + tickStep / 1000) / tickStep) * tickStep;
+          value < yMax - tickStep / 1000; value += tickStep) {
+          yTicks.push(value);
+        }
         yTicks.push(yMax);
         yTicks.reverse().forEach((value) => {
           const y = padding.top + ((yMax - value) / (yMax - yMin)) * chartHeight;
@@ -3543,7 +3636,7 @@
             y: y + 4,
             "text-anchor": "end"
           });
-          label.textContent = formatPercentage(value);
+          label.textContent = `${Number(value.toFixed(2))}%`;
           elements.lifetimeChartGrid.append(label);
         });
 
@@ -3611,9 +3704,10 @@
         elements.lifetimeChartNote.textContent = legacy.attempts
           ? `Starts at the ${legacy.makes}/${legacy.attempts} legacy endpoint, then plots every fully logged shot.`
           : "";
-        elements.lifetimeChartDescription.textContent = legacy.attempts
+        const seriesDescription = legacy.attempts
           ? `The chart starts at the legacy endpoint of ${formatPercentage(legacy.percentage)} after ${legacy.attempts} shots, then plots the cumulative percentage after each of ${exactShots} fully logged shots.`
           : `Cumulative percentage after each of ${maxAttempts} recorded shots.`;
+        elements.lifetimeChartDescription.textContent = `${seriesDescription} The Y axis runs from ${formatPercentage(yMin)} to ${formatPercentage(yMax)}; values outside that range appear at the chart edge.`;
       }
 
       function renderBlocks() {
@@ -4786,6 +4880,29 @@
         trendRange = { start: null, end: null };
         renderTrend();
       });
+      elements.lifetimeRangeForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const nextRange = {
+          min: Number(elements.lifetimeYMin.value),
+          max: Number(elements.lifetimeYMax.value)
+        };
+        if (!validLifetimeYRange(nextRange)) {
+          elements.lifetimeRangeError.hidden = false;
+          return;
+        }
+        lifetimeYRange = nextRange;
+        elements.lifetimeRangeError.hidden = true;
+        saveLifetimeYRange();
+        renderLifetimeTrend();
+      });
+      elements.lifetimeRangeReset.addEventListener("click", () => {
+        lifetimeYRange = { ...DEFAULT_LIFETIME_Y_RANGE };
+        elements.lifetimeYMin.value = lifetimeYRange.min;
+        elements.lifetimeYMax.value = lifetimeYRange.max;
+        elements.lifetimeRangeError.hidden = true;
+        saveLifetimeYRange();
+        renderLifetimeTrend();
+      });
       elements.openImportButton.addEventListener("click", () => openImport());
       elements.emptyImportButton.addEventListener("click", () => openImport());
       elements.cancelImportButton.addEventListener("click", closeImport);
@@ -4806,6 +4923,8 @@
         if (event.target === elements.backupDialog) closeBackup();
       });
 
+      elements.lifetimeYMin.value = lifetimeYRange.min;
+      elements.lifetimeYMax.value = lifetimeYRange.max;
       saveState(state);
       render();
       if (getBackupToken()) {
