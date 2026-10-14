@@ -2247,7 +2247,7 @@
             </div>
           </div>
         </div>
-        <p class="chart-note">Pink nodes mark new lifetime percentage highs. Values outside the selected Y-axis range sit at the chart edge; hover for the exact percentage.</p>
+        <p class="chart-note">Pink nodes mark new lifetime percentage bests at the end of a 100-shot run. Values outside the selected Y-axis range sit at the chart edge; hover for the exact percentage.</p>
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
           </section>
 
@@ -3745,7 +3745,7 @@
         const recordHighAttempts = new Set();
         const recordHighPoints = [];
         let highestPercentage = legacy.attempts ? legacy.percentage : 0;
-        points.forEach((point) => {
+        runEnds.forEach((point) => {
           if (!point.baseline && point.percentage > highestPercentage) {
             recordHighAttempts.add(point.attempts);
             recordHighPoints.push(point);
@@ -3838,10 +3838,7 @@
           elements.lifetimeChartArea.setAttribute("d", "");
         }
 
-        const nodePoints = new Map(runEnds.map((point) => [point.attempts, point]));
-        points.filter((point) => recordHighAttempts.has(point.attempts))
-          .forEach((point) => nodePoints.set(point.attempts, point));
-        [...nodePoints.values()].sort((a, b) => a.attempts - b.attempts).forEach((point) => {
+        runEnds.forEach((point) => {
           const position = pointPosition(point);
           const isRecordHigh = recordHighAttempts.has(point.attempts);
           const circle = svgElement("circle", {
@@ -3869,7 +3866,7 @@
         const seriesDescription = legacy.attempts
           ? `The chart starts at the legacy endpoint of ${formatPercentage(legacy.percentage)} after ${legacy.attempts} shots, then plots the cumulative percentage after each of ${exactShots} fully logged shots.`
           : `Cumulative percentage after each of ${maxAttempts} recorded shots.`;
-        elements.lifetimeChartDescription.textContent = `${seriesDescription} The Y axis runs from ${formatPercentage(yMin)} to ${formatPercentage(yMax)}; values outside that range appear at the chart edge.`;
+        elements.lifetimeChartDescription.textContent = `${seriesDescription} Pink nodes mark new best percentages at 100-shot run endpoints. The Y axis runs from ${formatPercentage(yMin)} to ${formatPercentage(yMax)}; values outside that range appear at the chart edge.`;
       }
 
       function renderBlocks() {
