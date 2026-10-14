@@ -713,9 +713,102 @@
 
     .trend-range-reset:focus-visible,
     .trend-range-field input:focus-visible,
-    .lifetime-range-field input:focus-visible {
+    .lifetime-range-field input:focus-visible,
+    .lifetime-records-scroll:focus-visible {
       outline: 2px solid var(--orange);
       outline-offset: 2px;
+    }
+
+    .lifetime-chart-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(235px, 280px);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .lifetime-records {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #11161d;
+      overflow: hidden;
+    }
+
+    .lifetime-records-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lifetime-records-title h3 {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .lifetime-records-title span {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .lifetime-records-scroll {
+      max-height: 290px;
+      overflow-y: auto;
+    }
+
+    .lifetime-records-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+      text-align: left;
+    }
+
+    .lifetime-records-table th,
+    .lifetime-records-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lifetime-records-table th {
+      position: sticky;
+      top: 0;
+      background: #1a212b;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .lifetime-records-table th:last-child,
+    .lifetime-records-table td:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .lifetime-records-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .lifetime-records-table td small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .lifetime-records-table .record-percentage {
+      color: #ec6aa6;
+      font-weight: 800;
+    }
+
+    .lifetime-records-empty {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
     }
 
     .chart-wrap {
@@ -1751,7 +1844,8 @@
 
     @media (max-width: 850px) {
       .dashboard-grid,
-      .analytics-grid {
+      .analytics-grid,
+      .lifetime-chart-layout {
         grid-template-columns: 1fr;
       }
 
@@ -2117,7 +2211,8 @@
           <button class="trend-range-reset" id="lifetimeRangeReset" type="button">Reset</button>
           <p class="lifetime-range-error" id="lifetimeRangeError" role="alert" hidden>Choose 0–100%, with From lower than To.</p>
         </form>
-        <div class="chart-wrap">
+        <div class="lifetime-chart-layout">
+          <div class="chart-wrap">
           <svg
             class="trend-chart"
             id="lifetimeChart"
@@ -2138,6 +2233,19 @@
             <polyline class="lifetime-chart-line" id="lifetimeChartLine"></polyline>
             <g id="lifetimeChartPoints"></g>
           </svg>
+          </div>
+          <div class="lifetime-records">
+            <div class="lifetime-records-title">
+              <h3>New lifetime highs</h3>
+              <span id="lifetimeRecordsCount">0 records</span>
+            </div>
+            <div class="lifetime-records-scroll" role="region" aria-label="New lifetime percentage highs" tabindex="0">
+              <table class="lifetime-records-table">
+                <thead><tr><th scope="col">Lifetime shot</th><th scope="col">Best %</th></tr></thead>
+                <tbody id="lifetimeRecordsBody"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <p class="chart-note">Pink nodes mark new lifetime percentage highs. Values outside the selected Y-axis range sit at the chart edge; hover for the exact percentage.</p>
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
@@ -2451,6 +2559,8 @@
         lifetimeChartArea: document.querySelector("#lifetimeChartArea"),
         lifetimeChartLine: document.querySelector("#lifetimeChartLine"),
         lifetimeChartPoints: document.querySelector("#lifetimeChartPoints"),
+        lifetimeRecordsCount: document.querySelector("#lifetimeRecordsCount"),
+        lifetimeRecordsBody: document.querySelector("#lifetimeRecordsBody"),
         lifetimeChartNote: document.querySelector("#lifetimeChartNote"),
         lifetimeRangeForm: document.querySelector("#lifetimeRangeForm"),
         lifetimeYMin: document.querySelector("#lifetimeYMin"),
@@ -3591,6 +3701,36 @@
         };
       }
 
+      function renderLifetimeRecords(recordHighPoints, legacy) {
+        elements.lifetimeRecordsCount.textContent = `${recordHighPoints.length} ${recordHighPoints.length === 1 ? "record" : "records"}`;
+        const rows = document.createDocumentFragment();
+        [...recordHighPoints].reverse().forEach((point) => {
+          const row = document.createElement("tr");
+          const shot = document.createElement("td");
+          const date = document.createElement("small");
+          const percentage = document.createElement("td");
+          shot.textContent = `#${point.attempts.toLocaleString()}`;
+          date.textContent = formatDate(point.run.date);
+          shot.appendChild(date);
+          percentage.className = "record-percentage";
+          percentage.textContent = `${point.percentage.toFixed(2)}%`;
+          row.append(shot, percentage);
+          rows.appendChild(row);
+        });
+        if (!recordHighPoints.length) {
+          const row = document.createElement("tr");
+          const empty = document.createElement("td");
+          empty.className = "lifetime-records-empty";
+          empty.colSpan = 2;
+          empty.textContent = legacy.attempts
+            ? "No new high beyond the legacy endpoint yet."
+            : "No new lifetime percentage highs yet.";
+          row.appendChild(empty);
+          rows.appendChild(row);
+        }
+        elements.lifetimeRecordsBody.replaceChildren(rows);
+      }
+
       function renderLifetimeTrend() {
         const { points, runEnds, legacy, exactShots } = lifetimeSeries();
         const width = 700;
@@ -3603,13 +3743,16 @@
         const attemptSpan = maxAttempts - chartStartAttempts;
         const { min: yMin, max: yMax } = lifetimeYRange;
         const recordHighAttempts = new Set();
+        const recordHighPoints = [];
         let highestPercentage = legacy.attempts ? legacy.percentage : 0;
         points.forEach((point) => {
           if (!point.baseline && point.percentage > highestPercentage) {
             recordHighAttempts.add(point.attempts);
+            recordHighPoints.push(point);
             highestPercentage = point.percentage;
           }
         });
+        renderLifetimeRecords(recordHighPoints, legacy);
 
         const pointPosition = (point) => ({
           x: attemptSpan
