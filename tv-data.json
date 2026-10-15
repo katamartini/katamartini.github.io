@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "savedAt": "2026-10-14T22:34:38.185Z",
-  "dataUpdatedAt": "2026-10-14T22:34:36.872Z",
+  "savedAt": "2026-10-15T02:06:40.452Z",
+  "dataUpdatedAt": "2026-10-15T02:06:39.511Z",
   "shows": [
     {
       "id": 73519,
@@ -320,15 +320,17 @@
           "summary": ""
         }
       ],
-      "watched": {},
+      "watched": {
+        "2734427": true
+      },
       "autoFinished": false,
       "pinned": true,
       "watchBaseUrl": "https://goku.click/series/vivant-71810",
       "imdbId": "tt28314144",
       "ratingBackfilledAt": "2026-10-13T14:47:49.468Z",
-      "lastWatchedAt": "",
+      "lastWatchedAt": "2026-10-15T02:06:39.511Z",
       "addedAt": "2026-10-13T14:47:49.468Z",
-      "updatedAt": "2026-10-14T00:45:20.508Z"
+      "updatedAt": "2026-10-15T02:06:39.511Z"
     },
     {
       "id": 30770,
@@ -27744,7 +27746,7 @@
   ],
   "selectedId": 73519,
   "libraryFilter": "active",
-  "sortMode": "progress",
+  "sortMode": "last-watched",
   "sortDirection": "asc",
   "hideCompleted": true,
   "viewMode": "list"
