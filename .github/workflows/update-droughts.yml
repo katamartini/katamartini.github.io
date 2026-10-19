@@ -3,7 +3,7 @@ name: Update NFL droughts
 on:
   workflow_dispatch:
   schedule:
-    - cron: "41 16 * * 2"
+    - cron: "41 16 * * *"
 
 permissions:
   contents: write
