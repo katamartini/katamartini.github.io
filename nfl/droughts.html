@@ -86,7 +86,7 @@
     <div class="refresh-controls">
       <button id="refresh-data" class="refresh-button" type="button" disabled>Refresh data</button>
       <span id="last-updated" class="hint">Last updated: loading…</span>
-      <span id="refresh-status" class="hint refresh-note" role="status">Fetches current results for this browser. The shared site snapshot updates weekly.</span>
+      <span id="refresh-status" class="hint refresh-note" role="status">Fetches current results for this browser. The shared site snapshot updates daily.</span>
     </div>
     <div class="toolbar">
       <label>Division <select id="division-filter"><option value="all">All divisions</option></select></label>
@@ -104,7 +104,7 @@
     <div id="milestone-method" class="method">
       <p>Seasons use the NFL season year: a Super Bowl played in February 2026 belongs to the 2025 season. The ongoing season is not counted until its Super Bowl is complete. A result in the latest completed season has a drought of 0.</p>
       <p>“Never” counts active seasons in the Super Bowl era, starting in 1966 or the franchise’s first season. Conference titles mean a Super Bowl berth, including the NFL/AFL champions in 1966–69. Earlier league championships are not Super Bowl wins. Division titles include former divisions. Franchise moves and name changes stay with the same team; the Browns’ 1996–98 suspension is excluded, and the Ravens have their own history.</p>
-      <p>Sources: <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results</a>, <a href="https://www.espn.com/nfl/standings/_/season/2025">ESPN standings</a>, and <a href="https://en.wikipedia.org/wiki/List_of_NFL_franchise_post-season_droughts">historical title records</a>. Records are checked weekly and advance after a season finishes.</p>
+      <p>Sources: <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game results</a>, <a href="https://www.espn.com/nfl/standings/_/season/2025">ESPN standings</a>, and <a href="https://en.wikipedia.org/wiki/List_of_NFL_franchise_post-season_droughts">historical title records</a>. Records are checked daily and advance after a season finishes.</p>
     </div>
     <div id="win-streak-method" class="method" hidden>
       <p>Regular-season records only. Wins carry across seasons, byes, and franchise moves; losses and ties reset the current winning streak. Preseason and postseason games are excluded, with the historical standings exception noted below. Select any threshold from 1+ to 23+. The upper limit is the <a href="https://www.colts.com/news/release-titans-at-colts-5351658">Colts’ NFL record of 23 consecutive regular-season wins in 2008–09</a>. Every further win in a qualifying run resets its game drought to 0. Green rows have an active streak at or above the selected threshold; yellow rows have exactly one fewer win and are one victory away. Pink rows have never had a qualifying streak; current green/yellow status takes priority.</p>
@@ -117,7 +117,7 @@
     <div id="streak-history-method" class="method" hidden>
       <p>Coverage reaches all 32 franchises’ first APFA/NFL, AAFC or 1960 AFL seasons, starting in 1920. Earlier club founding dates and pre-league seasons are not used. The archive is checked against each franchise’s fixed early-season schedule totals and later expected season lengths, including strike-shortened seasons and inactive years. “Never” is used only when covered results extend back to the first league season. In longest-drought sorts, these teams come first, ordered by first league season (oldest first). Their game and time droughts run from their first recorded league-season game. An incomplete history would remain “Not found in covered history” and sort last. Team-name, current-streak and Best/Worst sorts follow their selected columns normally.</p>
       <p>Early APFA season records include some games against non-league opponents; these are retained when classified as regular season in the archive, following historical season records. The <a href="https://www.profootballhof.com/news/playoff-results-1930s">1932 Bears–Spartans tiebreaker counted in the regular standings</a> and is included. The <a href="https://www.profootballhof.com/teams/pittsburgh-steelers/team-history">1943 Steagles games are credited to both the Eagles and Steelers, and 1944 Card-Pitt games to both the Cardinals and Steelers</a>. Their opponents see one game against the combined club, not two. The Rams’ 1943 suspension and Browns’ 1996–98 suspension add no games and do not reset streaks.</p>
-      <p>The current season is included. All win and loss thresholds are checked weekly by the existing Tuesday drought updater. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1920–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct and non-league clubs remain separate opponents, and the Ravens have their own history.</p>
+      <p>The current season is included. All win and loss thresholds are checked daily. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1920–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct and non-league clubs remain separate opponents, and the Ravens have their own history.</p>
     </div>
   </main>
   <script type="module">
@@ -350,7 +350,7 @@
         data = fresh;
         dataOrigin = 'Live refresh in this browser';
         selectView();
-        refreshStatus.textContent = 'Refreshed from current results. This refresh affects this browser only; the shared snapshot updates weekly.';
+        refreshStatus.textContent = 'Refreshed from current results. This refresh affects this browser only; the shared snapshot updates daily.';
       } catch {
         refreshStatus.textContent = data ? 'Refresh failed or results were incomplete. Previous records and their update time are unchanged. Please try again.' : 'Records could not be refreshed. Please try again.';
       } finally {
