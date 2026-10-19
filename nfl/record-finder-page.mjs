@@ -6,6 +6,7 @@ const pct = value => value == null ? '—' : `${value.toFixed(1)}%`;
 const fields = ['wins', 'losses', 'ties', 'era', 'format', 'team-filter', 'from', 'to'];
 let data, state, view, page = 0, sortKey = 'season', descending = true;
 const sorts = { finder: { key: 'season', descending: true }, current: { key: 'team', descending: false } };
+const expandedTeams = new Set();
 for (const [code, team] of Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))) { const option = make('option', team.name); option.value = code; $('team-filter').append(option); }
 function teamCell(code) {
   const cell = make('td'), wrap = make('span', null, 'team'), img = make('img'); img.alt = ''; img.width = 25; img.height = 25; img.loading = 'lazy';
@@ -17,6 +18,49 @@ function historyUrl(row) {
   return `?${params}#finder`;
 }
 function rateCell(rate) { const cell = make('td', pct(rate.percent), 'number'); cell.append(make('span', `${rate.count} / ${rate.total}`, 'detail')); return cell; }
+function seasonRow(row, includeTeam = true) {
+  const tr = make('tr', null, !row.complete ? 'ongoing' : row.superBowlWin ? 'champion' : '');
+  const season = make('th', row.season, 'number'); season.scope = 'row'; tr.append(season);
+  if (includeTeam) tr.append(teamCell(row.team));
+  const finish = make('td', recordText(row.wins, row.losses, row.ties), 'number');
+  if (!row.complete) finish.append(make('span', 'Record so far', 'detail'));
+  tr.append(finish, make('td', row.games ? pct((row.wins + row.ties / 2) / row.games * 100) : '—', 'number'), make('td', row.playoffWins ?? '—', 'number'), make('td', row.outcome));
+  return tr;
+}
+function historyPanel(row) {
+  const panel = make('div', null, 'history-panel');
+  const title = `${TEAMS[row.team].name} past seasons starting ${recordText(row.wins, row.losses, row.ties)}`;
+  panel.setAttribute('role', 'region'); panel.setAttribute('aria-label', title);
+  if (!row.matches.length) {
+    panel.append(make('p', 'No prior completed seasons match this team’s current record under the selected filters.', 'hint'));
+    return panel;
+  }
+  const table = make('table', null, 'history-table');
+  table.append(make('caption', `${title} · ${row.matches.length} matching season${row.matches.length === 1 ? '' : 's'}`));
+  const head = make('thead'), header = make('tr');
+  for (const [text, numeric] of [['Season', true], ['Final record', true], ['Final win %', true], ['Playoff wins', true], ['Season result', false]]) {
+    const th = make('th', text, numeric ? 'number' : ''); th.scope = 'col'; header.append(th);
+  }
+  head.append(header); const body = make('tbody');
+  for (const prior of [...row.matches].sort((a, b) => b.season - a.season)) body.append(seasonRow(prior, false));
+  table.append(head, body); panel.append(table); return panel;
+}
+function attachHistory(row, tr, columnCount) {
+  const details = make('tr', null, 'history-row'); details.id = `history-${row.team}`;
+  const cell = make('td'); cell.colSpan = columnCount; details.append(cell);
+  const toggle = make('button', null, 'history-toggle'); toggle.type = 'button';
+  toggle.setAttribute('aria-controls', details.id);
+  const refresh = () => {
+    const open = expandedTeams.has(row.team);
+    details.hidden = !open; toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} past seasons for ${TEAMS[row.team].name}`);
+    toggle.textContent = open ? '▾' : '▸';
+    if (open && !cell.firstChild) cell.append(historyPanel(row));
+  };
+  toggle.addEventListener('click', () => { if (expandedTeams.has(row.team)) expandedTeams.delete(row.team); else expandedTeams.add(row.team); refresh(); });
+  tr.querySelector('.team').prepend(toggle); refresh();
+  return details;
+}
 function setUrl() {
   const params = new URLSearchParams(Object.entries(state).map(([key, value]) => [key, String(value)]));
   history.pushState(null, '', `?${params}#${view}`);
@@ -46,7 +90,7 @@ function render() {
   if (current) {
     rows = currentComparisons(data, state);
     $('stats').hidden = true;
-    $('summary-note').textContent = `${rows.length} current team${rows.length === 1 ? '' : 's'}. Historical rates use the filters above and exclude ${data.activeSeason}. Select a record to see every matching prior season. Teams on byes may have played fewer games.`;
+    $('summary-note').textContent = `${rows.length} current team${rows.length === 1 ? '' : 's'}. Historical rates use the filters above and exclude ${data.activeSeason}. Expand a team to see its matching prior seasons here, or select its record to open the finder. Teams on byes may have played fewer games.`;
     $('table-note').textContent = 'Click a column to sort. Counts are prior completed seasons for that franchise, not league-wide samples. A dash means no eligible historical sample.';
   } else {
     rows = filterSeasons(data.seasons, state, state);
@@ -75,20 +119,16 @@ function render() {
   const pages = Math.max(1, Math.ceil(rows.length / 50)); page = Math.min(page, pages - 1);
   $('table-body').replaceChildren();
   for (const row of rows.slice(page * 50, (page + 1) * 50)) {
-    const tr = make('tr', null, current ? '' : !row.complete ? 'ongoing' : row.superBowlWin ? 'champion' : '');
+    const tr = current ? make('tr') : seasonRow(row);
     if (current) {
       tr.append(teamCell(row.team), make('td', row.games, 'number'));
       const cell = make('td'), link = make('a', recordText(row.wins, row.losses, row.ties)); link.href = historyUrl(row);
       link.setAttribute('aria-label', `${TEAMS[row.team].name} ${recordText(row.wins, row.losses, row.ties)} history`); cell.append(link, make('span', 'View past seasons', 'detail')); tr.append(cell, make('td', row.summary.count, 'number'));
       for (const key of ['playoffs', 'superBowl', 'superBowlWin']) tr.append(rateCell(row.summary[key]));
       tr.append(make('td', row.summary.avgWins == null ? '—' : row.summary.avgWins.toFixed(1), 'number'));
-    } else {
-      const season = make('th', row.season, 'number'); season.scope = 'row'; tr.append(season, teamCell(row.team));
-      const finish = make('td', recordText(row.wins, row.losses, row.ties), 'number');
-      if (!row.complete) finish.append(make('span', 'Record so far', 'detail')); tr.append(finish);
-      tr.append(make('td', row.games ? pct((row.wins + row.ties / 2) / row.games * 100) : '—', 'number'), make('td', row.playoffWins ?? '—', 'number'), make('td', row.outcome));
     }
     $('table-body').append(tr);
+    if (current) $('table-body').append(attachHistory(row, tr, columns.length));
   }
   $('empty').hidden = rows.length > 0; $('pagination').hidden = current || rows.length <= 50;
   $('page-label').textContent = `${page * 50 + 1}–${Math.min((page + 1) * 50, rows.length)} of ${rows.length}`;
