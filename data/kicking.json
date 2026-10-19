@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-16T19:57:57.696Z",
+  "checkedAt": "2026-10-19T13:12:25.725Z",
   "firstSeason": 1999,
   "season": 2026,
-  "through": "2026-10-15",
+  "through": "2026-10-18",
   "latestWeek": 6,
   "rosterWeek": 6,
-  "sourceHash": "492ed80d65563e1dc412a13e6f075f429d70bf7e85438e64c95eea1e6c0e8798",
+  "sourceHash": "eb609279c8db188015d8c42b737b06a8a9e09c91f6f76251a792720fabeef315",
   "sources": [
     {
       "season": 1999,
@@ -2475,6 +2475,49 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
+        "playerId": "00-0038428",
+        "name": "Andre Szmyt",
+        "length": 25,
+        "fieldGoals": 25,
+        "extraPoints": 0,
+        "teams": [
+          "CLE"
+        ],
+        "start": {
+          "date": "2025-11-09",
+          "team": "CLE",
+          "opponent": "NYJ",
+          "game": "2025_10_CLE_NYJ",
+          "play": 2309,
+          "type": "FG",
+          "distance": 45
+        },
+        "last": {
+          "date": "2026-10-18",
+          "team": "CLE",
+          "opponent": "BAL",
+          "game": "2026_06_BAL_CLE",
+          "play": 2298,
+          "type": "FG",
+          "distance": 48
+        },
+        "endedBy": {
+          "date": "2026-10-18",
+          "team": "CLE",
+          "opponent": "BAL",
+          "game": "2026_06_BAL_CLE",
+          "play": 3559,
+          "type": "FG",
+          "distance": 48,
+          "result": "missed"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "fg:00-0019770:2008_09_NYJ_BUF:2568",
         "playerId": "00-0019770",
         "name": "Jay Feely",
@@ -2814,40 +2857,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
-        "playerId": "00-0038428",
-        "name": "Andre Szmyt",
-        "length": 24,
-        "fieldGoals": 24,
-        "extraPoints": 0,
-        "teams": [
-          "CLE"
-        ],
-        "start": {
-          "date": "2025-11-09",
-          "team": "CLE",
-          "opponent": "NYJ",
-          "game": "2025_10_CLE_NYJ",
-          "play": 2309,
-          "type": "FG",
-          "distance": 45
-        },
-        "last": {
-          "date": "2026-10-11",
-          "team": "CLE",
-          "opponent": "NYJ",
-          "game": "2026_05_CLE_NYJ",
-          "play": 1422,
-          "type": "FG",
-          "distance": 41
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -4347,6 +4356,40 @@
           "result": "missed"
         },
         "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
+        "id": "fg:00-0039576:2025_03_IND_TEN:2180",
+        "playerId": "00-0039576",
+        "name": "Spencer Shrader",
+        "length": 21,
+        "fieldGoals": 21,
+        "extraPoints": 0,
+        "teams": [
+          "IND"
+        ],
+        "start": {
+          "date": "2025-09-21",
+          "team": "IND",
+          "opponent": "TEN",
+          "game": "2025_03_IND_TEN",
+          "play": 2180,
+          "type": "FG",
+          "distance": 36
+        },
+        "last": {
+          "date": "2026-10-18",
+          "team": "IND",
+          "opponent": "TEN",
+          "game": "2026_06_TEN_IND",
+          "play": 1831,
+          "type": "FG",
+          "distance": 47
+        },
+        "endedBy": null,
+        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
