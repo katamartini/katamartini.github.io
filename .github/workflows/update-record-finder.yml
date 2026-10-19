@@ -1,0 +1,48 @@
+name: Update NFL record finder
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 1 * * *"
+      timezone: "America/New_York"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-record-finder
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/record-finder
+          key: record-finder-v1-${{ github.run_id }}
+          restore-keys: record-finder-v1-
+      - name: Test season calculations
+        run: node --test nfl/record-finder-data.test.mjs
+      - name: Refresh historical outcomes and current records
+        run: node scripts/update-record-finder.mjs
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/record-finder.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/record-finder.json
+            git commit -m "Update NFL record finder"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
