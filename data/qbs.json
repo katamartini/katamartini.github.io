@@ -1,0 +1,1990 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-19T15:33:04.345Z",
+  "season": 2026,
+  "through": "2026-10-18",
+  "rosterWeek": 6,
+  "rosterWeeks": {
+    "ARI": 6,
+    "ATL": 6,
+    "BAL": 6,
+    "BUF": 6,
+    "CAR": 6,
+    "CHI": 6,
+    "CIN": 5,
+    "CLE": 6,
+    "DAL": 6,
+    "DEN": 6,
+    "DET": 5,
+    "GB": 6,
+    "HOU": 6,
+    "IND": 6,
+    "JAX": 6,
+    "KC": 6,
+    "LA": 6,
+    "LAC": 6,
+    "LV": 6,
+    "MIA": 5,
+    "MIN": 5,
+    "NE": 6,
+    "NO": 6,
+    "NYG": 6,
+    "NYJ": 6,
+    "PHI": 6,
+    "PIT": 6,
+    "SEA": 6,
+    "SF": 6,
+    "TB": 6,
+    "TEN": 6,
+    "WAS": 6
+  },
+  "starts": [
+    {
+      "id": "00-0034857",
+      "espn": "3918298",
+      "name": "Josh Allen",
+      "team": "BUF",
+      "since": 2018,
+      "seasons": 9,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 128,
+      "start": {
+        "id": "2018_12_JAX_BUF",
+        "event": "401030919",
+        "date": "2018-11-25",
+        "season": 2018,
+        "week": 12,
+        "opponent": "JAX"
+      },
+      "last": {
+        "id": "2026_06_BUF_LV",
+        "event": "401873005",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "LV"
+      }
+    },
+    {
+      "id": "00-0033106",
+      "espn": "3046779",
+      "name": "Jared Goff",
+      "team": "DET",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 5,
+      "length": 74,
+      "start": {
+        "id": "2021_18_GB_DET",
+        "event": "401326589",
+        "date": "2022-01-09",
+        "season": 2021,
+        "week": 18,
+        "opponent": "GB"
+      },
+      "last": {
+        "id": "2026_05_DET_ARI",
+        "event": "401872991",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "ARI"
+      }
+    },
+    {
+      "id": "00-0039732",
+      "espn": "4426338",
+      "name": "Bo Nix",
+      "team": "DEN",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 40,
+      "start": {
+        "id": "2024_01_DEN_SEA",
+        "event": "401671664",
+        "date": "2024-09-08",
+        "season": 2024,
+        "week": 1,
+        "opponent": "SEA"
+      },
+      "last": {
+        "id": "2026_06_SEA_DEN",
+        "event": "401872995",
+        "date": "2026-10-15",
+        "season": 2026,
+        "week": 6,
+        "opponent": "SEA"
+      }
+    },
+    {
+      "id": "00-0039851",
+      "espn": "4431452",
+      "name": "Drake Maye",
+      "team": "NE",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 35,
+      "start": {
+        "id": "2024_06_HOU_NE",
+        "event": "401671619",
+        "date": "2024-10-13",
+        "season": 2024,
+        "week": 6,
+        "opponent": "HOU"
+      },
+      "last": {
+        "id": "2026_06_NYJ_NE",
+        "event": "401873001",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "NYJ"
+      }
+    },
+    {
+      "id": "00-0040676",
+      "espn": "4688380",
+      "name": "Cam Ward",
+      "team": "TEN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 23,
+      "start": {
+        "id": "2025_01_TEN_DEN",
+        "event": "401772832",
+        "date": "2025-09-07",
+        "season": 2025,
+        "week": 1,
+        "opponent": "DEN"
+      },
+      "last": {
+        "id": "2026_06_TEN_IND",
+        "event": "401873003",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "IND"
+      }
+    },
+    {
+      "id": "00-0033077",
+      "espn": "2577417",
+      "name": "Dak Prescott",
+      "team": "DAL",
+      "since": 2016,
+      "seasons": 11,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 23,
+      "start": {
+        "id": "2025_01_DAL_PHI",
+        "event": "401772510",
+        "date": "2025-09-04",
+        "season": 2025,
+        "week": 1,
+        "opponent": "PHI"
+      },
+      "last": {
+        "id": "2026_06_DAL_GB",
+        "event": "401873007",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "GB"
+      }
+    },
+    {
+      "id": "00-0026498",
+      "espn": "12483",
+      "name": "Matthew Stafford",
+      "team": "LA",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 23,
+      "start": {
+        "id": "2025_01_HOU_LA",
+        "event": "401772723",
+        "date": "2025-09-07",
+        "season": 2025,
+        "week": 1,
+        "opponent": "HOU"
+      },
+      "last": {
+        "id": "2026_06_ARI_LA",
+        "event": "401873004",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "ARI"
+      }
+    },
+    {
+      "id": "00-0036971",
+      "espn": "4360310",
+      "name": "Trevor Lawrence",
+      "team": "JAX",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 23,
+      "start": {
+        "id": "2025_01_CAR_JAX",
+        "event": "401772828",
+        "date": "2025-09-07",
+        "season": 2025,
+        "week": 1,
+        "opponent": "CAR"
+      },
+      "last": {
+        "id": "2026_06_HOU_JAX",
+        "event": "401872996",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "HOU"
+      }
+    },
+    {
+      "id": "00-0033119",
+      "espn": "2578570",
+      "name": "Jacoby Brissett",
+      "team": "ARI",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 18,
+      "start": {
+        "id": "2025_06_ARI_IND",
+        "event": "401772856",
+        "date": "2025-10-12",
+        "season": 2025,
+        "week": 6,
+        "opponent": "IND"
+      },
+      "last": {
+        "id": "2026_06_ARI_LA",
+        "event": "401873004",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "LA"
+      }
+    },
+    {
+      "id": "00-0040743",
+      "espn": "4360689",
+      "name": "Tyler Shough",
+      "team": "NO",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 15,
+      "start": {
+        "id": "2025_09_NO_LA",
+        "event": "401772874",
+        "date": "2025-11-02",
+        "season": 2025,
+        "week": 9,
+        "opponent": "LA"
+      },
+      "last": {
+        "id": "2026_06_NO_NYG",
+        "event": "401873000",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "NYG"
+      }
+    },
+    {
+      "id": "00-0039150",
+      "espn": "4685720",
+      "name": "Bryce Young",
+      "team": "CAR",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 14,
+      "start": {
+        "id": "2025_09_CAR_GB",
+        "event": "401772872",
+        "date": "2025-11-02",
+        "season": 2025,
+        "week": 9,
+        "opponent": "GB"
+      },
+      "last": {
+        "id": "2026_06_CAR_PHI",
+        "event": "401872998",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "PHI"
+      }
+    },
+    {
+      "id": "00-0023459",
+      "espn": "8439",
+      "name": "Aaron Rodgers",
+      "team": "PIT",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 12,
+      "start": {
+        "id": "2025_13_BUF_PIT",
+        "event": "401772789",
+        "date": "2025-11-30",
+        "season": 2025,
+        "week": 13,
+        "opponent": "BUF"
+      },
+      "last": {
+        "id": "2026_06_PIT_TB",
+        "event": "401873002",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "TB"
+      }
+    },
+    {
+      "id": "00-0037834",
+      "espn": "4361741",
+      "name": "Brock Purdy",
+      "team": "SF",
+      "since": 2022,
+      "seasons": 5,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 12,
+      "start": {
+        "id": "2025_11_SF_ARI",
+        "event": "401772885",
+        "date": "2025-11-16",
+        "season": 2025,
+        "week": 11,
+        "opponent": "ARI"
+      },
+      "last": {
+        "id": "2026_05_SF_SEA",
+        "event": "401872992",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "SEA"
+      }
+    },
+    {
+      "id": "00-0039163",
+      "espn": "4432577",
+      "name": "C.J. Stroud",
+      "team": "HOU",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 12,
+      "start": {
+        "id": "2025_13_HOU_IND",
+        "event": "401772787",
+        "date": "2025-11-30",
+        "season": 2025,
+        "week": 13,
+        "opponent": "IND"
+      },
+      "last": {
+        "id": "2026_06_HOU_JAX",
+        "event": "401872996",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "JAX"
+      }
+    },
+    {
+      "id": "00-0036442",
+      "espn": "3915511",
+      "name": "Joe Burrow",
+      "team": "CIN",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 5,
+      "length": 11,
+      "start": {
+        "id": "2025_13_CIN_BAL",
+        "event": "401772930",
+        "date": "2025-11-27",
+        "season": 2025,
+        "week": 13,
+        "opponent": "BAL"
+      },
+      "last": {
+        "id": "2026_05_CIN_MIA",
+        "event": "401872982",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "MIA"
+      }
+    },
+    {
+      "id": "00-0035710",
+      "espn": "3917792",
+      "name": "Daniel Jones",
+      "team": "IND",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_BAL_IND",
+        "event": "401872659",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "BAL"
+      },
+      "last": {
+        "id": "2026_06_TEN_IND",
+        "event": "401873003",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "TEN"
+      }
+    },
+    {
+      "id": "00-0033537",
+      "espn": "3122840",
+      "name": "Deshaun Watson",
+      "team": "CLE",
+      "since": 2022,
+      "seasons": 5,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_CLE_JAX",
+        "event": "401872922",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "JAX"
+      },
+      "last": {
+        "id": "2026_06_BAL_CLE",
+        "event": "401872997",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "BAL"
+      }
+    },
+    {
+      "id": "00-0030565",
+      "espn": "15864",
+      "name": "Geno Smith",
+      "team": "NYJ",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_NYJ_TEN",
+        "event": "401872924",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "TEN"
+      },
+      "last": {
+        "id": "2026_06_NYJ_NE",
+        "event": "401873001",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "NE"
+      }
+    },
+    {
+      "id": "00-0036264",
+      "espn": "4036378",
+      "name": "Jordan Love",
+      "team": "GB",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_GB_MIN",
+        "event": "401872927",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "MIN"
+      },
+      "last": {
+        "id": "2026_06_DAL_GB",
+        "event": "401873007",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "DAL"
+      }
+    },
+    {
+      "id": "00-0036355",
+      "espn": "4038941",
+      "name": "Justin Herbert",
+      "team": "LAC",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_ARI_LAC",
+        "event": "401872926",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "ARI"
+      },
+      "last": {
+        "id": "2026_06_LAC_KC",
+        "event": "401873006",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "KC"
+      }
+    },
+    {
+      "id": "00-0029604",
+      "espn": "14880",
+      "name": "Kirk Cousins",
+      "team": "LV",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 6,
+      "start": {
+        "id": "2026_01_MIA_LV",
+        "event": "401872928",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "MIA"
+      },
+      "last": {
+        "id": "2026_06_BUF_LV",
+        "event": "401873005",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "BUF"
+      }
+    },
+    {
+      "id": "00-0038128",
+      "espn": "4242512",
+      "name": "Malik Willis",
+      "team": "MIA",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5,
+      "length": 5,
+      "start": {
+        "id": "2026_01_MIA_LV",
+        "event": "401872928",
+        "date": "2026-09-13",
+        "season": 2026,
+        "week": 1,
+        "opponent": "LV"
+      },
+      "last": {
+        "id": "2026_05_CIN_MIA",
+        "event": "401872982",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "CIN"
+      }
+    },
+    {
+      "id": "00-0033873",
+      "espn": "3139477",
+      "name": "Patrick Mahomes",
+      "team": "KC",
+      "since": 2017,
+      "seasons": 10,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 5,
+      "start": {
+        "id": "2026_01_DEN_KC",
+        "event": "401872931",
+        "date": "2026-09-14",
+        "season": 2026,
+        "week": 1,
+        "opponent": "DEN"
+      },
+      "last": {
+        "id": "2026_06_LAC_KC",
+        "event": "401873006",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "LAC"
+      }
+    },
+    {
+      "id": "00-0031503",
+      "espn": "2969939",
+      "name": "Jameis Winston",
+      "team": "NYG",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 4,
+      "start": {
+        "id": "2026_03_TEN_NYG",
+        "event": "401872956",
+        "date": "2026-09-27",
+        "season": 2026,
+        "week": 3,
+        "opponent": "TEN"
+      },
+      "last": {
+        "id": "2026_06_NO_NYG",
+        "event": "401873000",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "NO"
+      }
+    },
+    {
+      "id": "00-0039917",
+      "espn": "4360423",
+      "name": "Michael Penix Jr.",
+      "team": "ATL",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 4,
+      "start": {
+        "id": "2026_03_ATL_GB",
+        "event": "401872948",
+        "date": "2026-09-24",
+        "season": 2026,
+        "week": 3,
+        "opponent": "GB"
+      },
+      "last": {
+        "id": "2026_06_CHI_ATL",
+        "event": "401872999",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "CHI"
+      }
+    },
+    {
+      "id": "00-0034869",
+      "espn": "3912547",
+      "name": "Sam Darnold",
+      "team": "SEA",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 4,
+      "start": {
+        "id": "2026_03_SEA_WAS",
+        "event": "401872955",
+        "date": "2026-09-27",
+        "season": 2026,
+        "week": 3,
+        "opponent": "WAS"
+      },
+      "last": {
+        "id": "2026_06_SEA_DEN",
+        "event": "401872995",
+        "date": "2026-10-15",
+        "season": 2026,
+        "week": 6,
+        "opponent": "DEN"
+      }
+    },
+    {
+      "id": "00-0041251",
+      "espn": "4596472",
+      "name": "Jalon Daniels",
+      "team": "TB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 3,
+      "start": {
+        "id": "2026_04_GB_TB",
+        "event": "401872968",
+        "date": "2026-10-04",
+        "season": 2026,
+        "week": 4,
+        "opponent": "GB"
+      },
+      "last": {
+        "id": "2026_06_PIT_TB",
+        "event": "401873002",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "PIT"
+      }
+    },
+    {
+      "id": "00-0035228",
+      "espn": "3917315",
+      "name": "Kyler Murray",
+      "team": "MIN",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5,
+      "length": 3,
+      "start": {
+        "id": "2026_03_MIN_TB",
+        "event": "401872959",
+        "date": "2026-09-27",
+        "season": 2026,
+        "week": 3,
+        "opponent": "TB"
+      },
+      "last": {
+        "id": "2026_05_MIN_NO",
+        "event": "401872987",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "NO"
+      }
+    },
+    {
+      "id": "00-0035993",
+      "espn": "4035671",
+      "name": "Tyler Huntley",
+      "team": "BAL",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 2,
+      "start": {
+        "id": "2026_05_BAL_ATL",
+        "event": "401872993",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "ATL"
+      },
+      "last": {
+        "id": "2026_06_BAL_CLE",
+        "event": "401872997",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "CLE"
+      }
+    },
+    {
+      "id": "00-0039918",
+      "espn": "4431611",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 1,
+      "start": {
+        "id": "2026_06_CHI_ATL",
+        "event": "401872999",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "ATL"
+      },
+      "last": {
+        "id": "2026_06_CHI_ATL",
+        "event": "401872999",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "ATL"
+      }
+    },
+    {
+      "id": "00-0039910",
+      "espn": "4426348",
+      "name": "Jayden Daniels",
+      "team": "WAS",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 1,
+      "start": {
+        "id": "2026_05_NYG_WAS",
+        "event": "401872988",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "NYG"
+      },
+      "last": {
+        "id": "2026_05_NYG_WAS",
+        "event": "401872988",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "NYG"
+      }
+    },
+    {
+      "id": "00-0038400",
+      "espn": "4685201",
+      "name": "Tanner McKee",
+      "team": "PHI",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 1,
+      "start": {
+        "id": "2026_06_CAR_PHI",
+        "event": "401872998",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "CAR"
+      },
+      "last": {
+        "id": "2026_06_CAR_PHI",
+        "event": "401872998",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "CAR"
+      }
+    }
+  ],
+  "tenures": [
+    {
+      "id": "00-0033077",
+      "espn": "2577417",
+      "name": "Dak Prescott",
+      "team": "DAL",
+      "since": 2016,
+      "seasons": 11,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033873",
+      "espn": "3139477",
+      "name": "Patrick Mahomes",
+      "team": "KC",
+      "since": 2017,
+      "seasons": 10,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034857",
+      "espn": "3918298",
+      "name": "Josh Allen",
+      "team": "BUF",
+      "since": 2018,
+      "seasons": 9,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034796",
+      "espn": "3916387",
+      "name": "Lamar Jackson",
+      "team": "BAL",
+      "since": 2018,
+      "seasons": 9,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036389",
+      "espn": "4040715",
+      "name": "Jalen Hurts",
+      "team": "PHI",
+      "since": 2020,
+      "seasons": 7,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036442",
+      "espn": "3915511",
+      "name": "Joe Burrow",
+      "team": "CIN",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0036264",
+      "espn": "4036378",
+      "name": "Jordan Love",
+      "team": "GB",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036355",
+      "espn": "4038941",
+      "name": "Justin Herbert",
+      "team": "LAC",
+      "since": 2020,
+      "seasons": 7,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036898",
+      "espn": "4242546",
+      "name": "Davis Mills",
+      "team": "HOU",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033106",
+      "espn": "3046779",
+      "name": "Jared Goff",
+      "team": "DET",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0026498",
+      "espn": "12483",
+      "name": "Matthew Stafford",
+      "team": "LA",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036971",
+      "espn": "4360310",
+      "name": "Trevor Lawrence",
+      "team": "JAX",
+      "since": 2021,
+      "seasons": 6,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0037834",
+      "espn": "4361741",
+      "name": "Brock Purdy",
+      "team": "SF",
+      "since": 2022,
+      "seasons": 5,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033537",
+      "espn": "3122840",
+      "name": "Deshaun Watson",
+      "team": "CLE",
+      "since": 2022,
+      "seasons": 5,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038579",
+      "espn": "4260394",
+      "name": "Aidan O'Connell",
+      "team": "LV",
+      "since": 2023,
+      "seasons": 4,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039164",
+      "espn": "4429084",
+      "name": "Anthony Richardson",
+      "team": "IND",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034855",
+      "espn": "3052587",
+      "name": "Baker Mayfield",
+      "team": "TB",
+      "since": 2023,
+      "seasons": 4,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039150",
+      "espn": "4685720",
+      "name": "Bryce Young",
+      "team": "CAR",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039163",
+      "espn": "4432577",
+      "name": "C.J. Stroud",
+      "team": "HOU",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035264",
+      "espn": "3892775",
+      "name": "Jarrett Stidham",
+      "team": "DEN",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036679",
+      "espn": "4039034",
+      "name": "Shane Buechele",
+      "team": "BUF",
+      "since": 2023,
+      "seasons": 4,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039107",
+      "espn": "4259553",
+      "name": "Stetson Bennett",
+      "team": "LA",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038400",
+      "espn": "4685201",
+      "name": "Tanner McKee",
+      "team": "PHI",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038416",
+      "espn": "4434153",
+      "name": "Tyson Bagent",
+      "team": "CHI",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039732",
+      "espn": "4426338",
+      "name": "Bo Nix",
+      "team": "DEN",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039918",
+      "espn": "4431611",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039851",
+      "espn": "4431452",
+      "name": "Drake Maye",
+      "team": "NE",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039910",
+      "espn": "4426348",
+      "name": "Jayden Daniels",
+      "team": "WAS",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0032268",
+      "espn": "2576980",
+      "name": "Marcus Mariota",
+      "team": "WAS",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039917",
+      "espn": "4360423",
+      "name": "Michael Penix Jr.",
+      "team": "ATL",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039677",
+      "espn": "4361994",
+      "name": "Sam Hartman",
+      "team": "WAS",
+      "since": 2024,
+      "seasons": 3,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039376",
+      "espn": "4426339",
+      "name": "Spencer Rattler",
+      "team": "NO",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0023459",
+      "espn": "8439",
+      "name": "Aaron Rodgers",
+      "team": "PIT",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040676",
+      "espn": "4688380",
+      "name": "Cam Ward",
+      "team": "TEN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0032950",
+      "espn": "2573079",
+      "name": "Carson Wentz",
+      "team": "MIN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0028986",
+      "espn": "15168",
+      "name": "Case Keenum",
+      "team": "CHI",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035710",
+      "espn": "3917792",
+      "name": "Daniel Jones",
+      "team": "IND",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040704",
+      "espn": "4427238",
+      "name": "Dillon Gabriel",
+      "team": "CLE",
+      "since": 2025,
+      "seasons": 2,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040464",
+      "espn": "4429020",
+      "name": "DJ Uiagalelei",
+      "team": "LAC",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035704",
+      "espn": "3924327",
+      "name": "Drew Lock",
+      "team": "SEA",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040211",
+      "espn": "4426335",
+      "name": "Graham Mertz",
+      "team": "HOU",
+      "since": 2025,
+      "seasons": 2,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033119",
+      "espn": "2578570",
+      "name": "Jacoby Brissett",
+      "team": "ARI",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040673",
+      "espn": "4432734",
+      "name": "Jalen Milroe",
+      "team": "SEA",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0031503",
+      "espn": "2969939",
+      "name": "Jameis Winston",
+      "team": "NYG",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040691",
+      "espn": "4689114",
+      "name": "Jaxson Dart",
+      "team": "NYG",
+      "since": 2025,
+      "seasons": 2,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0026158",
+      "espn": "11252",
+      "name": "Joe Flacco",
+      "team": "CIN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0040589",
+      "espn": "4430431",
+      "name": "Kurtis Rourke",
+      "team": "SF",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036972",
+      "espn": "4241464",
+      "name": "Mac Jones",
+      "team": "SF",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034771",
+      "espn": "3116407",
+      "name": "Mason Rudolph",
+      "team": "PIT",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040494",
+      "espn": "4573398",
+      "name": "Max Brosmer",
+      "team": "MIN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0033319",
+      "espn": "3059989",
+      "name": "Nick Mullens",
+      "team": "JAX",
+      "since": 2025,
+      "seasons": 2,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040206",
+      "espn": "4683423",
+      "name": "Riley Leonard",
+      "team": "IND",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034869",
+      "espn": "3912547",
+      "name": "Sam Darnold",
+      "team": "SEA",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036879",
+      "espn": "4241820",
+      "name": "Sam Ehlinger",
+      "team": "DEN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038391",
+      "espn": "4259592",
+      "name": "Sean Clifford",
+      "team": "CIN",
+      "since": 2025,
+      "seasons": 2,
+      "status": "DEV",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0040668",
+      "espn": "4432762",
+      "name": "Shedeur Sanders",
+      "team": "CLE",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038476",
+      "espn": "4240391",
+      "name": "Tommy DeVito",
+      "team": "NE",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0037012",
+      "espn": "4383351",
+      "name": "Trey Lance",
+      "team": "LAC",
+      "since": 2025,
+      "seasons": 2,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035993",
+      "espn": "4035671",
+      "name": "Tyler Huntley",
+      "team": "BAL",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040743",
+      "espn": "4360689",
+      "name": "Tyler Shough",
+      "team": "NO",
+      "since": 2025,
+      "seasons": 2,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040203",
+      "espn": "4429955",
+      "name": "Will Howard",
+      "team": "PIT",
+      "since": 2025,
+      "seasons": 2,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041117",
+      "espn": "4432722",
+      "name": "Athan Kaliakmanis",
+      "team": "WAS",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041123",
+      "espn": "4431465",
+      "name": "Behren Morton",
+      "team": "NE",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034955",
+      "espn": "3722362",
+      "name": "Brett Rypien",
+      "team": "TB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041056",
+      "espn": "4685413",
+      "name": "Cade Klubnik",
+      "team": "NYJ",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041561",
+      "espn": "4430841",
+      "name": "Carson Beck",
+      "team": "ARI",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040891",
+      "espn": "4879250",
+      "name": "Cole Payton",
+      "team": "PHI",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033662",
+      "espn": "2972515",
+      "name": "Cooper Rush",
+      "team": "ATL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041565",
+      "espn": "4714771",
+      "name": "Drew Allar",
+      "team": "PIT",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035282",
+      "espn": "3120590",
+      "name": "Easton Stick",
+      "team": "TB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041562",
+      "espn": "4837248",
+      "name": "Fernando Mendoza",
+      "team": "LV",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035289",
+      "espn": "4038524",
+      "name": "Gardner Minshew",
+      "team": "ARI",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040906",
+      "espn": "4567747",
+      "name": "Garrett Nussmeier",
+      "team": "KC",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0030565",
+      "espn": "15864",
+      "name": "Geno Smith",
+      "team": "NYJ",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041149",
+      "espn": "4428993",
+      "name": "Haynes King",
+      "team": "CAR",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038550",
+      "espn": "4240858",
+      "name": "Hendon Hooker",
+      "team": "TEN",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039923",
+      "espn": "4433970",
+      "name": "J.J. McCarthy",
+      "team": "NYG",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041194",
+      "espn": "5344782",
+      "name": "Jack Strand",
+      "team": "ATL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0035100",
+      "espn": "3886812",
+      "name": "Jake Browning",
+      "team": "LAC",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038998",
+      "espn": "4243322",
+      "name": "Jake Haener",
+      "team": "NYG",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041251",
+      "espn": "4596472",
+      "name": "Jalon Daniels",
+      "team": "TB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040981",
+      "espn": "4429582",
+      "name": "Joe Fagnano",
+      "team": "BAL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039398",
+      "espn": "4360698",
+      "name": "Joe Milton III",
+      "team": "PHI",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041203",
+      "espn": null,
+      "name": "Joey Aguilar",
+      "team": "JAX",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0026300",
+      "espn": "11394",
+      "name": "Josh Johnson",
+      "team": "CIN",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0033949",
+      "espn": "3044720",
+      "name": "Joshua Dobbs",
+      "team": "DET",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0036945",
+      "espn": "4362887",
+      "name": "Justin Fields",
+      "team": "KC",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039577",
+      "espn": "4428512",
+      "name": "Kedon Slovis",
+      "team": "GB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0038102",
+      "espn": "4240703",
+      "name": "Kenny Pickett",
+      "team": "CAR",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0029604",
+      "espn": "14880",
+      "name": "Kirk Cousins",
+      "team": "LV",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0034577",
+      "espn": "3115293",
+      "name": "Kyle Allen",
+      "team": "BUF",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040014",
+      "espn": "4433971",
+      "name": "Kyle McCord",
+      "team": "MIA",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0035228",
+      "espn": "3917315",
+      "name": "Kyler Murray",
+      "team": "MIN",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0041453",
+      "espn": "4597679",
+      "name": "Luke Altmyer",
+      "team": "DET",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0038128",
+      "espn": "4242512",
+      "name": "Malik Willis",
+      "team": "MIA",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 5
+    },
+    {
+      "id": "00-0041156",
+      "espn": "4695400",
+      "name": "Mark Gronowski",
+      "team": "HOU",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041414",
+      "espn": null,
+      "name": "Matthew Caldwell",
+      "team": "LA",
+      "since": 2026,
+      "seasons": 1,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041172",
+      "espn": null,
+      "name": "Miller Moss",
+      "team": "CHI",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0033869",
+      "espn": "3039707",
+      "name": "Mitchell Trubisky",
+      "team": "TEN",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0040234",
+      "espn": "4889929",
+      "name": "Quinn Ewers",
+      "team": "JAX",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0037077",
+      "espn": "4426875",
+      "name": "Sam Howell",
+      "team": "DAL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0037327",
+      "espn": "4036419",
+      "name": "Skylar Thompson",
+      "team": "BAL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "RES",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041092",
+      "espn": "4431325",
+      "name": "Taylen Green",
+      "team": "CLE",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0036212",
+      "espn": "4241479",
+      "name": "Tua Tagovailoa",
+      "team": "ATL",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0041568",
+      "espn": "4685522",
+      "name": "Ty Simpson",
+      "team": "LA",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0028118",
+      "espn": "14163",
+      "name": "Tyrod Taylor",
+      "team": "GB",
+      "since": 2026,
+      "seasons": 1,
+      "status": "ACT",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0039152",
+      "espn": "4361418",
+      "name": "Will Levis",
+      "team": "NYJ",
+      "since": 2026,
+      "seasons": 1,
+      "status": "DEV",
+      "rosterWeek": 6
+    },
+    {
+      "id": "00-0037013",
+      "espn": "4361259",
+      "name": "Zach Wilson",
+      "team": "NO",
+      "since": 2026,
+      "seasons": 1,
+      "status": "INA",
+      "rosterWeek": 6
+    }
+  ],
+  "unavailable": []
+}
