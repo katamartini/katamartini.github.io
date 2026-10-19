@@ -3,7 +3,8 @@ name: Update NFL receiving streaks
 on:
   workflow_dispatch:
   schedule:
-    - cron: "37 17 * * *"
+    - cron: "15 1 * * *"
+      timezone: "America/New_York"
 
 permissions:
   contents: write
