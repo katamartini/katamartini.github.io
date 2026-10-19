@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-10-13T21:33:42.236Z",
+  "checkedAt": "2026-10-19T21:15:55.653Z",
   "season": 2026,
   "rosterWeek": 6,
-  "sourceHash": "9d45c7d3aac086d621718fef28fb0f2e62d81bfee0f3fb301d5980f066c6d430",
+  "sourceHash": "5bb1213b7a5cdaa2a8c3424051a2c57414651a4c74a88314aaa81ba6fc1d8eb6",
   "views": {
     "receiving": {
       "sources": [
@@ -196,8 +196,8 @@
         {
           "team": "KC",
           "name": "Travis Kelce",
-          "yards": 13248,
-          "receptions": 1096,
+          "yards": 13301,
+          "receptions": 1100,
           "touchdowns": 84,
           "current": true
         },
@@ -642,6 +642,14 @@
           "current": false
         },
         {
+          "team": "DAL",
+          "name": "CeeDee Lamb",
+          "yards": 7993,
+          "receptions": 619,
+          "touchdowns": 45,
+          "current": true
+        },
+        {
           "team": "GB",
           "name": "Don Hutson",
           "yards": 7991,
@@ -672,14 +680,6 @@
           "receptions": 542,
           "touchdowns": 46,
           "current": false
-        },
-        {
-          "team": "DAL",
-          "name": "CeeDee Lamb",
-          "yards": 7923,
-          "receptions": 610,
-          "touchdowns": 45,
-          "current": true
         },
         {
           "team": "ARI",
@@ -722,20 +722,20 @@
           "current": false
         },
         {
+          "team": "TB",
+          "name": "Chris Godwin Jr.",
+          "yards": 7842,
+          "receptions": 635,
+          "touchdowns": 41,
+          "current": true
+        },
+        {
           "team": "DAL",
           "name": "Drew Pearson",
           "yards": 7822,
           "receptions": 489,
           "touchdowns": 48,
           "current": false
-        },
-        {
-          "team": "TB",
-          "name": "Chris Godwin Jr.",
-          "yards": 7805,
-          "receptions": 631,
-          "touchdowns": 41,
-          "current": true
         },
         {
           "team": "LA",
@@ -1106,6 +1106,14 @@
           "current": false
         },
         {
+          "team": "DEN",
+          "name": "Courtland Sutton",
+          "yards": 6480,
+          "receptions": 466,
+          "touchdowns": 40,
+          "current": true
+        },
+        {
           "team": "PHI",
           "name": "Mike Quick",
           "yards": 6464,
@@ -1120,14 +1128,6 @@
           "receptions": 524,
           "touchdowns": 39,
           "current": false
-        },
-        {
-          "team": "DEN",
-          "name": "Courtland Sutton",
-          "yards": 6461,
-          "receptions": 464,
-          "touchdowns": 40,
-          "current": true
         },
         {
           "team": "SEA",
@@ -1258,20 +1258,20 @@
           "current": false
         },
         {
+          "team": "BAL",
+          "name": "Mark Andrews",
+          "yards": 6133,
+          "receptions": 507,
+          "touchdowns": 57,
+          "current": true
+        },
+        {
           "team": "LAC",
           "name": "Wes Chandler",
           "yards": 6132,
           "receptions": 373,
           "touchdowns": 41,
           "current": false
-        },
-        {
-          "team": "BAL",
-          "name": "Mark Andrews",
-          "yards": 6129,
-          "receptions": 506,
-          "touchdowns": 57,
-          "current": true
         },
         {
           "team": "TEN",
@@ -1658,6 +1658,14 @@
           "current": false
         },
         {
+          "team": "PHI",
+          "name": "DeVonta Smith",
+          "yards": 5329,
+          "receptions": 411,
+          "touchdowns": 33,
+          "current": true
+        },
+        {
           "team": "CLE",
           "name": "Gary Collins",
           "yards": 5299,
@@ -1672,14 +1680,6 @@
           "receptions": 294,
           "touchdowns": 35,
           "current": false
-        },
-        {
-          "team": "PHI",
-          "name": "DeVonta Smith",
-          "yards": 5254,
-          "receptions": 404,
-          "touchdowns": 32,
-          "current": true
         },
         {
           "team": "IND",
@@ -1832,6 +1832,14 @@
           "receptions": 339,
           "touchdowns": 32,
           "current": false
+        },
+        {
+          "team": "NO",
+          "name": "Alvin Kamara",
+          "yards": 5024,
+          "receptions": 621,
+          "touchdowns": 26,
+          "current": true
         },
         {
           "team": "TB",
@@ -2106,9 +2114,17 @@
         {
           "team": "DAL",
           "name": "Dak Prescott",
-          "yards": 37370,
-          "touchdowns": 252,
-          "interceptions": 95,
+          "yards": 37628,
+          "touchdowns": 253,
+          "interceptions": 97,
+          "current": true
+        },
+        {
+          "team": "KC",
+          "name": "Patrick Mahomes",
+          "yards": 37248,
+          "touchdowns": 276,
+          "interceptions": 88,
           "current": true
         },
         {
@@ -2118,14 +2134,6 @@
           "touchdowns": 292,
           "interceptions": 87,
           "current": false
-        },
-        {
-          "team": "KC",
-          "name": "Patrick Mahomes",
-          "yards": 36976,
-          "touchdowns": 276,
-          "interceptions": 87,
-          "current": true
         },
         {
           "team": "BUF",
@@ -2216,6 +2224,14 @@
           "current": false
         },
         {
+          "team": "BUF",
+          "name": "Josh Allen",
+          "yards": 31606,
+          "touchdowns": 229,
+          "interceptions": 98,
+          "current": true
+        },
+        {
           "team": "CIN",
           "name": "Andy Dalton",
           "yards": 31594,
@@ -2230,14 +2246,6 @@
           "touchdowns": 214,
           "interceptions": 224,
           "current": false
-        },
-        {
-          "team": "BUF",
-          "name": "Josh Allen",
-          "yards": 31351,
-          "touchdowns": 227,
-          "interceptions": 98,
-          "current": true
         },
         {
           "team": "SF",
@@ -2354,9 +2362,9 @@
         {
           "team": "LAC",
           "name": "Justin Herbert",
-          "yards": 25757,
+          "yards": 25961,
           "touchdowns": 168,
-          "interceptions": 65,
+          "interceptions": 66,
           "current": true
         },
         {
@@ -2602,8 +2610,8 @@
         {
           "team": "LA",
           "name": "Matthew Stafford",
-          "yards": 20979,
-          "touchdowns": 150,
+          "yards": 21201,
+          "touchdowns": 152,
           "interceptions": 58,
           "current": true
         },
@@ -2656,6 +2664,14 @@
           "current": false
         },
         {
+          "team": "JAX",
+          "name": "Trevor Lawrence",
+          "yards": 19302,
+          "touchdowns": 112,
+          "interceptions": 62,
+          "current": true
+        },
+        {
           "team": "CAR",
           "name": "Jake Delhomme",
           "yards": 19258,
@@ -2686,14 +2702,6 @@
           "touchdowns": 150,
           "interceptions": 143,
           "current": false
-        },
-        {
-          "team": "JAX",
-          "name": "Trevor Lawrence",
-          "yards": 18996,
-          "touchdowns": 108,
-          "interceptions": 61,
-          "current": true
         },
         {
           "team": "PHI",
@@ -3096,6 +3104,14 @@
           "current": false
         },
         {
+          "team": "GB",
+          "name": "Jordan Love",
+          "yards": 13219,
+          "touchdowns": 94,
+          "interceptions": 35,
+          "current": true
+        },
+        {
           "team": "TEN",
           "name": "Marcus Mariota",
           "yards": 13207,
@@ -3118,14 +3134,6 @@
           "touchdowns": 76,
           "interceptions": 36,
           "current": false
-        },
-        {
-          "team": "GB",
-          "name": "Jordan Love",
-          "yards": 12943,
-          "touchdowns": 93,
-          "interceptions": 34,
-          "current": true
         },
         {
           "team": "SF",
@@ -3184,6 +3192,14 @@
           "current": false
         },
         {
+          "team": "HOU",
+          "name": "C.J. Stroud",
+          "yards": 12590,
+          "touchdowns": 71,
+          "interceptions": 26,
+          "current": true
+        },
+        {
           "team": "NYJ",
           "name": "Vinny Testaverde",
           "yards": 12497,
@@ -3214,14 +3230,6 @@
           "touchdowns": 80,
           "interceptions": 53,
           "current": false
-        },
-        {
-          "team": "HOU",
-          "name": "C.J. Stroud",
-          "yards": 12278,
-          "touchdowns": 68,
-          "interceptions": 25,
-          "current": true
         },
         {
           "team": "SF",
@@ -3576,6 +3584,14 @@
           "current": false
         },
         {
+          "team": "CAR",
+          "name": "Bryce Young",
+          "yards": 9840,
+          "touchdowns": 60,
+          "interceptions": 32,
+          "current": true
+        },
+        {
           "team": "WAS",
           "name": "Gus Frerotte",
           "yards": 9769,
@@ -3614,14 +3630,6 @@
           "touchdowns": 76,
           "interceptions": 73,
           "current": false
-        },
-        {
-          "team": "CAR",
-          "name": "Bryce Young",
-          "yards": 9559,
-          "touchdowns": 58,
-          "interceptions": 32,
-          "current": true
         },
         {
           "team": "IND",
@@ -3744,6 +3752,14 @@
           "current": false
         },
         {
+          "team": "DEN",
+          "name": "Bo Nix",
+          "yards": 8755,
+          "touchdowns": 60,
+          "interceptions": 26,
+          "current": true
+        },
+        {
           "team": "IND",
           "name": "Jim Harbaugh",
           "yards": 8705,
@@ -3758,14 +3774,6 @@
           "touchdowns": 58,
           "interceptions": 23,
           "current": false
-        },
-        {
-          "team": "DEN",
-          "name": "Bo Nix",
-          "yards": 8648,
-          "touchdowns": 60,
-          "interceptions": 26,
-          "current": true
         },
         {
           "team": "PIT",
@@ -3864,12 +3872,28 @@
           "current": false
         },
         {
+          "team": "CHI",
+          "name": "Caleb Williams",
+          "yards": 8195,
+          "touchdowns": 50,
+          "interceptions": 14,
+          "current": true
+        },
+        {
           "team": "DET",
           "name": "Rodney Peete",
           "yards": 8164,
           "touchdowns": 38,
           "interceptions": 49,
           "current": false
+        },
+        {
+          "team": "NE",
+          "name": "Drake Maye",
+          "yards": 8133,
+          "touchdowns": 57,
+          "interceptions": 25,
+          "current": true
         },
         {
           "team": "PHI",
@@ -3910,22 +3934,6 @@
           "touchdowns": 59,
           "interceptions": 88,
           "current": false
-        },
-        {
-          "team": "NE",
-          "name": "Drake Maye",
-          "yards": 7898,
-          "touchdowns": 54,
-          "interceptions": 25,
-          "current": true
-        },
-        {
-          "team": "CHI",
-          "name": "Caleb Williams",
-          "yards": 7890,
-          "touchdowns": 49,
-          "interceptions": 14,
-          "current": true
         },
         {
           "team": "BAL",
@@ -3998,6 +4006,14 @@
           "touchdowns": 39,
           "interceptions": 37,
           "current": false
+        },
+        {
+          "team": "NYJ",
+          "name": "Geno Smith",
+          "yards": 7298,
+          "touchdowns": 35,
+          "interceptions": 37,
+          "current": true
         },
         {
           "team": "CLE",
@@ -4102,14 +4118,6 @@
           "touchdowns": 50,
           "interceptions": 49,
           "current": false
-        },
-        {
-          "team": "NYJ",
-          "name": "Geno Smith",
-          "yards": 7046,
-          "touchdowns": 34,
-          "interceptions": 36,
-          "current": true
         },
         {
           "team": "NO",
@@ -4686,6 +4694,14 @@
           "touchdowns": 33,
           "interceptions": 14,
           "current": false
+        },
+        {
+          "team": "SEA",
+          "name": "Sam Darnold",
+          "yards": 5081,
+          "touchdowns": 32,
+          "interceptions": 21,
+          "current": true
         }
       ]
     },
@@ -5038,6 +5054,14 @@
           "current": false
         },
         {
+          "team": "IND",
+          "name": "Jonathan Taylor",
+          "yards": 8090,
+          "attempts": 1673,
+          "touchdowns": 76,
+          "current": true
+        },
+        {
           "team": "NYJ",
           "name": "Freeman McNeil",
           "yards": 8074,
@@ -5068,14 +5092,6 @@
           "attempts": 1858,
           "touchdowns": 46,
           "current": false
-        },
-        {
-          "team": "IND",
-          "name": "Jonathan Taylor",
-          "yards": 7996,
-          "attempts": 1652,
-          "touchdowns": 75,
-          "current": true
         },
         {
           "team": "TEN",
@@ -5112,8 +5128,8 @@
         {
           "team": "NO",
           "name": "Alvin Kamara",
-          "yards": 7336,
-          "attempts": 1702,
+          "yards": 7370,
+          "attempts": 1709,
           "touchdowns": 63,
           "current": true
         },
@@ -5907,7 +5923,7 @@
           "team": "NO",
           "name": "Cameron Jordan",
           "sacks": 132,
-          "games": 247,
+          "games": 248,
           "current": true
         },
         {
@@ -5956,7 +5972,7 @@
           "team": "PIT",
           "name": "T.J. Watt",
           "sacks": 119.5,
-          "games": 140,
+          "games": 141,
           "current": true
         },
         {
@@ -5984,7 +6000,7 @@
           "team": "LA",
           "name": "Aaron Donald",
           "sacks": 111,
-          "games": 157,
+          "games": 158,
           "current": true
         },
         {
@@ -6089,7 +6105,7 @@
           "team": "PIT",
           "name": "Cameron Heyward",
           "sacks": 93,
-          "games": 233,
+          "games": 234,
           "current": true
         },
         {
@@ -6123,8 +6139,8 @@
         {
           "team": "KC",
           "name": "Chris Jones",
-          "sacks": 87.5,
-          "games": 159,
+          "sacks": 88,
+          "games": 160,
           "current": true
         },
         {
@@ -6362,7 +6378,7 @@
           "team": "LV",
           "name": "Maxx Crosby",
           "sacks": 71.5,
-          "games": 115,
+          "games": 116,
           "current": true
         },
         {
@@ -6488,7 +6504,7 @@
           "team": "JAX",
           "name": "Josh Hines-Allen",
           "sacks": 62.5,
-          "games": 112,
+          "games": 113,
           "current": true
         },
         {
