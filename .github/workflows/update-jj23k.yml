@@ -3,10 +3,8 @@ name: Update JJ23K receiving leaders
 on:
   workflow_dispatch:
   schedule:
-    # After Monday Night Football and nflverse's morning data refresh.
-    - cron: "17 16 * * 2"
-    # Retry the next day if Tuesday's data or scheduled job was delayed.
-    - cron: "23 16 * * 3"
+    # Check daily after nflverse's morning data refresh.
+    - cron: "17 16 * * *"
 
 permissions:
   contents: write
@@ -46,5 +44,5 @@ jobs:
           fi
 
           # A GITHUB_TOKEN push does not trigger the branch-based Pages build.
-          # Request it even on a no-op run, so Wednesday can retry a failed Tuesday build.
+          # Request it even on a no-op run, so the next daily check can retry a failed build.
           gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
