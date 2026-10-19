@@ -52,8 +52,12 @@
     .history-table { min-width: 620px; font-size: .84rem; }
     .history-table caption { padding: 0 0 10px; text-align: left; font-weight: bold; }
     .champion { background: #e0f1e3; }
+    .missed-playoffs { background: #f8e0e8; }
     .ongoing { background: #fff6d9; }
     tbody tr:hover { background: #e9ede5; }
+    tbody tr.champion:hover { background: #d2e9d7; }
+    tbody tr.missed-playoffs:hover { background: #f0d0dc; }
+    tbody tr.ongoing:hover { background: #f8edc2; }
     th button { border: 0; padding: 0; background: transparent; font: inherit; font-weight: bold; color: inherit; text-align: inherit; cursor: pointer; }
     th button:hover, .back:hover { text-decoration: underline; }
     .pagination { display: flex; align-items: center; justify-content: end; gap: 12px; margin-top: 16px; font-size: .85rem; }
@@ -96,7 +100,7 @@
     <h2 id="results-heading">Seasons starting 3–3</h2>
     <p id="summary-note" class="hint"></p>
     <div id="stats" class="stats"></div>
-    <p class="hint" id="table-note">Click a column to sort. Green: Super Bowl winner. Yellow: unfinished season.</p>
+    <p class="hint" id="table-note">Click a column to sort. Green: Super Bowl winner. Pink: missed playoffs. Yellow: unfinished season.</p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="Season results; scroll horizontally for more columns">
       <table><caption id="caption" hidden>Seasons matching the starting record</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
     </div>
@@ -111,6 +115,6 @@
       <p>Filters and views are saved in the URL for sharing. Checked daily at 1:45 a.m. Eastern (America/New_York), adjusting for daylight saving time. Data can lag completed games. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight historical scores</a> (<a href="https://github.com/fivethirtyeight/nfl-elo-game/blob/master/LICENSE">license</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse current schedules and postseason results</a>.</p>
     </div>
   </main>
-  <script type="module" src="../record-finder-page.mjs?v=inline-history-1"></script>
+  <script type="module" src="../record-finder-page.mjs?v=playoff-colors-1"></script>
 </body>
 </html>

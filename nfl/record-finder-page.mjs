@@ -19,7 +19,7 @@ function historyUrl(row) {
 }
 function rateCell(rate) { const cell = make('td', pct(rate.percent), 'number'); cell.append(make('span', `${rate.count} / ${rate.total}`, 'detail')); return cell; }
 function seasonRow(row, includeTeam = true) {
-  const tr = make('tr', null, !row.complete ? 'ongoing' : row.superBowlWin ? 'champion' : '');
+  const tr = make('tr', null, !row.complete ? 'ongoing' : row.superBowlWin ? 'champion' : row.playoffs === false ? 'missed-playoffs' : '');
   const season = make('th', row.season, 'number'); season.scope = 'row'; tr.append(season);
   if (includeTeam) tr.append(teamCell(row.team));
   const finish = make('td', recordText(row.wins, row.losses, row.ties), 'number');
@@ -91,7 +91,7 @@ function render() {
     rows = currentComparisons(data, state);
     $('stats').hidden = true;
     $('summary-note').textContent = `${rows.length} current team${rows.length === 1 ? '' : 's'}. Historical rates use the filters above and exclude ${data.activeSeason}. Expand a team to see its matching prior seasons here, or select its record to open the finder. Teams on byes may have played fewer games.`;
-    $('table-note').textContent = 'Click a column to sort. Counts are prior completed seasons for that franchise, not league-wide samples. A dash means no eligible historical sample.';
+    $('table-note').textContent = 'Click a column to sort. Counts are prior completed seasons for that franchise, not league-wide samples. A dash means no eligible historical sample. Expanded history: green = Super Bowl winner; pink = missed playoffs.';
   } else {
     rows = filterSeasons(data.seasons, state, state);
     const summary = summarize(rows); $('stats').hidden = false; $('stats').replaceChildren();
@@ -100,7 +100,7 @@ function render() {
     for (const [key, label] of [['playoffs', 'Made playoffs'], ['playoffWin', 'Won a playoff game'], ['superBowl', 'Reached Super Bowl'], ['superBowlWin', 'Won Super Bowl']]) addStat(label, pct(summary[key].percent), `${summary[key].count} / ${summary[key].total} eligible seasons`);
     addStat('Average final record', summary.count ? `${summary.avgWins.toFixed(1)}–${summary.avgLosses.toFixed(1)}–${summary.avgTies.toFixed(1)}` : '—', 'Wins–losses–ties');
     $('summary-note').textContent = `${rows.length} matching franchise-season${rows.length === 1 ? '' : 's'}${summary.ongoing ? `, including ${summary.ongoing} unfinished (excluded from all percentages and averages)` : ''}. Rates describe historical results, not predictions.`;
-    $('table-note').textContent = 'Click a column to sort. Green: Super Bowl winner. Yellow: unfinished season. Final records are regular season only.';
+    $('table-note').textContent = 'Click a column to sort. Green: Super Bowl winner. Pink: missed playoffs. Yellow: unfinished season. Final records are regular season only.';
   }
   const columns = current ? [{ key: 'team', label: 'Team' }, { key: 'games', label: 'Games', numeric: true }, { key: 'record', label: 'Current record' }, { key: 'sample', label: 'Prior seasons', numeric: true }, { key: 'playoffs', label: 'Made playoffs', numeric: true }, { key: 'superBowl', label: 'Reached Super Bowl', numeric: true }, { key: 'superBowlWin', label: 'Won Super Bowl', numeric: true }, { key: 'avgWins', label: 'Avg final wins', numeric: true }] :
     [{ key: 'season', label: 'Season', numeric: true }, { key: 'team', label: 'Franchise' }, { key: 'wins', label: 'Final record', numeric: true }, { key: 'winPct', label: 'Final win %', numeric: true }, { key: 'playoffWins', label: 'Playoff wins', numeric: true }, { key: 'outcome', label: 'Season result' }];
