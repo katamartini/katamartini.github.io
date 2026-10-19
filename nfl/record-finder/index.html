@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find NFL seasons that began with a given record, their final results and playoff/Super Bowl rates. Compare current records with each franchise's history.">
+  <meta name="theme-color" content="#f4f5f1">
+  <link rel="canonical" href="https://kmartini.com/nfl/record-finder/">
+  <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
+  <title>Record Finder — kmartini.com</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f5f1; color: #20221f; font: 16px/1.45 Arial, Helvetica, sans-serif; }
+    main { width: min(1200px, calc(100% - 40px)); margin: auto; padding: 42px 0 70px; }
+    a { color: #36534a; }
+    .back { color: #61665e; font-size: .88rem; text-decoration: none; }
+    h1 { margin: 36px 0 10px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; }
+    h2 { font-size: 1.3rem; margin: 26px 0 8px; }
+    .intro { max-width: 850px; color: #565c54; margin: 0 0 12px; }
+    .meta, .hint, .method { color: #61665e; font-size: .84rem; }
+    .views { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0; }
+    .views a, .apply, .pagination button { padding: 8px 12px; border: 1px solid #c8cdc5; border-radius: 4px; background: transparent; color: inherit; text-decoration: none; font: inherit; cursor: pointer; }
+    .views a[aria-current="page"], .apply { color: white; background: #36534a; border-color: #36534a; }
+    .filters { border-top: 1px solid #cdd0c9; border-bottom: 1px solid #cdd0c9; padding: 18px 0; margin: 20px 0; }
+    .fields { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; }
+    label { display: grid; gap: 5px; font-size: .84rem; color: #565c54; }
+    input, select { padding: 7px 8px; border: 1px solid #c8cdc5; border-radius: 4px; color: #20221f; background: transparent; font: inherit; }
+    input[type="number"] { width: 85px; }
+    #record-inputs { display: flex; gap: 10px; border: 0; padding: 0; margin: 0 0 16px; }
+    #record-inputs legend { font-size: .84rem; color: #61665e; margin-bottom: 8px; }
+    .check { display: flex; align-items: center; gap: 6px; margin-top: 15px; }
+    .check input { margin: 0; }
+    [hidden] { display: none !important; }
+    #error { color: #9f2929; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); border-top: 1px solid #c8cdc5; border-bottom: 1px solid #c8cdc5; margin: 20px 0 12px; }
+    .stat { padding: 14px 10px; }
+    .stat strong { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+    .stat span { font-size: .8rem; color: #61665e; }
+    .detail { display: block; color: #61665e; font-size: .74rem; font-weight: normal; }
+    .table-wrap { overflow-x: auto; border-top: 1px solid #c8cdc5; }
+    table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: .87rem; font-variant-numeric: tabular-nums; }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #dde1d8; }
+    thead th { font-size: .8rem; color: #565c54; }
+    .number { text-align: right; }
+    .team { display: flex; gap: 8px; align-items: center; white-space: nowrap; }
+    .team img { width: 25px; height: 25px; object-fit: contain; }
+    .champion { background: #e0f1e3; }
+    .ongoing { background: #fff6d9; }
+    tbody tr:hover { background: #e9ede5; }
+    th button { border: 0; padding: 0; background: transparent; font: inherit; font-weight: bold; color: inherit; text-align: inherit; cursor: pointer; }
+    th button:hover, .back:hover { text-decoration: underline; }
+    .pagination { display: flex; align-items: center; justify-content: end; gap: 12px; margin-top: 16px; font-size: .85rem; }
+    button:disabled { cursor: default; opacity: .45; }
+    .method { max-width: 1000px; margin-top: 30px; }
+    .method p { margin: 0 0 12px; }
+    :focus-visible { outline: 2px solid #20221f; outline-offset: 3px; }
+    @media(max-width: 600px) { main { width: calc(100% - 28px); padding-top: 28px; } .fields { gap: 12px; } .stats { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/nfl">← NFL index</a>
+    <h1>Record finder</h1>
+    <p class="intro">How did seasons finish after a particular start? Search historical records, or compare this season’s teams with their own past.</p>
+    <p class="meta" id="status" role="status">Loading season history…</p>
+    <nav class="views" aria-label="Record finder views">
+      <a id="finder-link" href="#finder">Find a record</a>
+      <a id="current-link" href="#current">Current season</a>
+    </nav>
+    <form id="filters" class="filters">
+      <fieldset id="record-inputs">
+        <legend>Starting record · first wins + losses + ties games, not a season week</legend>
+        <label>Wins <input id="wins" name="wins" type="number" min="0" max="17" value="3" required></label>
+        <label>Losses <input id="losses" name="losses" type="number" min="0" max="17" value="3" required></label>
+        <label>Ties <input id="ties" name="ties" type="number" min="0" max="17" value="0" required></label>
+      </fieldset>
+      <p id="current-filter-note" class="hint" hidden>These filters apply to the historical comparisons below. Current records always reflect the latest completed games.</p>
+      <div class="fields">
+        <label for="era">Era <select id="era"><option value="all">All available (1920+)</option><option value="sb" selected>Super Bowl era (1966+)</option><option value="merger">Post-merger (1970+)</option></select></label>
+        <label for="format">Season format <select id="format"><option value="all">All lengths</option><option value="17">17-game era (2021+)</option><option value="16">16 games</option><option value="14">14 games</option><option value="15">15 games</option><option value="9">9 games</option></select></label>
+        <label for="team-filter">Franchise <select id="team-filter"><option value="all">All teams</option></select></label>
+        <label>From season <input id="from" type="number" min="1920" required></label>
+        <label>Through season <input id="to" type="number" min="1920" required></label>
+        <button class="apply" type="submit">Apply</button>
+      </div>
+      <label id="ongoing-label" class="check"><input id="ongoing" type="checkbox"> Include unfinished seasons in the results (never in percentages)</label>
+      <p id="error" role="alert" hidden></p>
+    </form>
+    <h2 id="results-heading">Seasons starting 3–3</h2>
+    <p id="summary-note" class="hint"></p>
+    <div id="stats" class="stats"></div>
+    <p class="hint" id="table-note">Click a column to sort. Green: Super Bowl winner. Yellow: unfinished season.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Season results; scroll horizontally for more columns">
+      <table><caption id="caption" hidden>Seasons matching the starting record</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
+    </div>
+    <p id="empty" hidden>No matching seasons. Try a broader era, date range or season format.</p>
+    <div class="pagination" id="pagination"><button id="previous" type="button">Previous</button><span id="page-label"></span><button id="next" type="button">Next</button></div>
+    <noscript><p>Enable JavaScript to use the record finder.</p></noscript>
+    <div class="method">
+      <p>A 3–2 start means the record after exactly five regular-season games, regardless of win/loss order. Byes do not count; ties do. Postseason games do not change the starting or final regular-season record. A 0–0 search includes every eligible season. Final win percentage counts a tie as half a win.</p>
+      <p>Historical coverage follows today’s 32 franchises back to their league debuts, including earlier names/locations and AAFC/AFL history. Defunct franchises are not listed separately. Shared wartime teams count toward both participating franchises, so pooled rows are franchise-seasons, not always distinct historical clubs. The archive treats the 1932 standings tiebreaker as a regular-season game.</p>
+      <p>All outcome percentages exclude unfinished seasons, even after the regular season ends. A season enters the completed sample once its Super Bowl is final. Playoff appearance/win rates use seasons from 1933 onward; earlier seasons had no scheduled postseason and are excluded from those denominators. Super Bowl appearance/win rates use only seasons from 1966 onward. Counts and denominators are shown; “—” means no eligible sample, not 0%. Earlier playoff rounds are labeled generically rather than assigned modern round names.</p>
+      <p>“17-game era” means 2021 onward, including the 2022 Bills and Bengals seasons with 16 completed games after their canceled matchup. Strike-shortened seasons retain their actual lengths; replacement-player games count. Older seasons sometimes used unequal schedules. Current-season comparisons use only earlier completed seasons for the same franchise and the exact same record after the same number of games. These historical rates describe the sample; they are not predictions.</p>
+      <p>Filters and views are saved in the URL for sharing. Checked daily at 1:45 a.m. Eastern (America/New_York), adjusting for daylight saving time. Data can lag completed games. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight historical scores</a> (<a href="https://github.com/fivethirtyeight/nfl-elo-game/blob/master/LICENSE">license</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse current schedules and postseason results</a>.</p>
+    </div>
+  </main>
+  <script type="module" src="../record-finder-page.mjs"></script>
+</body>
+</html>
