@@ -44,6 +44,13 @@
     .number { text-align: right; }
     .team { display: flex; gap: 8px; align-items: center; white-space: nowrap; }
     .team img { width: 25px; height: 25px; object-fit: contain; }
+    .history-toggle { flex: 0 0 28px; width: 28px; height: 28px; padding: 0; border: 1px solid #c8cdc5; border-radius: 3px; background: transparent; color: #36534a; font: inherit; font-size: 1.1rem; cursor: pointer; }
+    .history-toggle:hover { background: #dde5d8; }
+    .history-row > td { padding: 0; }
+    .history-panel { padding: 16px 24px; background: #edf0e8; }
+    .history-panel p { margin: 0; }
+    .history-table { min-width: 620px; font-size: .84rem; }
+    .history-table caption { padding: 0 0 10px; text-align: left; font-weight: bold; }
     .champion { background: #e0f1e3; }
     .ongoing { background: #fff6d9; }
     tbody tr:hover { background: #e9ede5; }
@@ -104,6 +111,6 @@
       <p>Filters and views are saved in the URL for sharing. Checked daily at 1:45 a.m. Eastern (America/New_York), adjusting for daylight saving time. Data can lag completed games. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight historical scores</a> (<a href="https://github.com/fivethirtyeight/nfl-elo-game/blob/master/LICENSE">license</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse current schedules and postseason results</a>.</p>
     </div>
   </main>
-  <script type="module" src="../record-finder-page.mjs"></script>
+  <script type="module" src="../record-finder-page.mjs?v=inline-history-1"></script>
 </body>
 </html>
