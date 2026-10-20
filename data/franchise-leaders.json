@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-10-19T21:15:55.653Z",
+  "checkedAt": "2026-10-20T20:09:18.521Z",
   "season": 2026,
-  "rosterWeek": 6,
-  "sourceHash": "5bb1213b7a5cdaa2a8c3424051a2c57414651a4c74a88314aaa81ba6fc1d8eb6",
+  "rosterWeek": 7,
+  "sourceHash": "aecd42e7760de65eb01a517c1c8ba7c5e2fbb33fa8b025aa668094381fd3d05c",
   "views": {
     "receiving": {
       "sources": [
@@ -610,20 +610,20 @@
           "current": false
         },
         {
+          "team": "SF",
+          "name": "George Kittle",
+          "yards": 8345,
+          "receptions": 621,
+          "touchdowns": 57,
+          "current": true
+        },
+        {
           "team": "NYJ",
           "name": "Wesley Walker",
           "yards": 8306,
           "receptions": 438,
           "touchdowns": 71,
           "current": false
-        },
-        {
-          "team": "SF",
-          "name": "George Kittle",
-          "yards": 8276,
-          "receptions": 616,
-          "touchdowns": 56,
-          "current": true
         },
         {
           "team": "GB",
@@ -860,8 +860,8 @@
         {
           "team": "WAS",
           "name": "Terry McLaurin",
-          "yards": 7164,
-          "receptions": 512,
+          "yards": 7191,
+          "receptions": 513,
           "touchdowns": 42,
           "current": true
         },
@@ -3120,6 +3120,14 @@
           "current": false
         },
         {
+          "team": "SF",
+          "name": "Brock Purdy",
+          "yards": 13145,
+          "touchdowns": 98,
+          "interceptions": 39,
+          "current": true
+        },
+        {
           "team": "TB",
           "name": "Trent Dilfer",
           "yards": 12969,
@@ -3134,14 +3142,6 @@
           "touchdowns": 76,
           "interceptions": 36,
           "current": false
-        },
-        {
-          "team": "SF",
-          "name": "Brock Purdy",
-          "yards": 12881,
-          "touchdowns": 97,
-          "interceptions": 39,
-          "current": true
         },
         {
           "team": "PIT",
@@ -4520,6 +4520,14 @@
           "current": false
         },
         {
+          "team": "WAS",
+          "name": "Jayden Daniels",
+          "yards": 5589,
+          "touchdowns": 38,
+          "interceptions": 12,
+          "current": true
+        },
+        {
           "team": "ATL",
           "name": "Randy Johnson",
           "yards": 5538,
@@ -4598,14 +4606,6 @@
           "touchdowns": 36,
           "interceptions": 24,
           "current": false
-        },
-        {
-          "team": "WAS",
-          "name": "Jayden Daniels",
-          "yards": 5289,
-          "touchdowns": 36,
-          "interceptions": 12,
-          "current": true
         },
         {
           "team": "CLE",
