@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-19T15:37:03.602Z",
+  "checkedAt": "2026-10-20T10:16:53.884Z",
   "season": 2026,
-  "through": "2026-10-18",
+  "through": "2026-10-19",
   "rosterWeek": 6,
   "rosterWeeks": {
     "ARI": 6,
@@ -337,6 +337,33 @@
       }
     },
     {
+      "id": "00-0037834",
+      "espn": "4361741",
+      "name": "Brock Purdy",
+      "team": "SF",
+      "since": 2022,
+      "seasons": 5,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 13,
+      "start": {
+        "id": "2025_11_SF_ARI",
+        "event": "401772885",
+        "date": "2025-11-16",
+        "season": 2025,
+        "week": 11,
+        "opponent": "ARI"
+      },
+      "last": {
+        "id": "2026_06_WAS_SF",
+        "event": "401873008",
+        "date": "2026-10-19",
+        "season": 2026,
+        "week": 6,
+        "opponent": "WAS"
+      }
+    },
+    {
       "id": "00-0023459",
       "espn": "8439",
       "name": "Aaron Rodgers",
@@ -361,33 +388,6 @@
         "season": 2026,
         "week": 6,
         "opponent": "TB"
-      }
-    },
-    {
-      "id": "00-0037834",
-      "espn": "4361741",
-      "name": "Brock Purdy",
-      "team": "SF",
-      "since": 2022,
-      "seasons": 5,
-      "status": "ACT",
-      "rosterWeek": 6,
-      "length": 12,
-      "start": {
-        "id": "2025_11_SF_ARI",
-        "event": "401772885",
-        "date": "2025-11-16",
-        "season": 2025,
-        "week": 11,
-        "opponent": "ARI"
-      },
-      "last": {
-        "id": "2026_05_SF_SEA",
-        "event": "401872992",
-        "date": "2026-10-11",
-        "season": 2026,
-        "week": 5,
-        "opponent": "SEA"
       }
     },
     {
@@ -796,6 +796,33 @@
       }
     },
     {
+      "id": "00-0039910",
+      "espn": "4426348",
+      "name": "Jayden Daniels",
+      "team": "WAS",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 6,
+      "length": 2,
+      "start": {
+        "id": "2026_05_NYG_WAS",
+        "event": "401872988",
+        "date": "2026-10-11",
+        "season": 2026,
+        "week": 5,
+        "opponent": "NYG"
+      },
+      "last": {
+        "id": "2026_06_WAS_SF",
+        "event": "401873008",
+        "date": "2026-10-19",
+        "season": 2026,
+        "week": 6,
+        "opponent": "SF"
+      }
+    },
+    {
       "id": "00-0035993",
       "espn": "4035671",
       "name": "Tyler Huntley",
@@ -847,33 +874,6 @@
         "season": 2026,
         "week": 6,
         "opponent": "ATL"
-      }
-    },
-    {
-      "id": "00-0039910",
-      "espn": "4426348",
-      "name": "Jayden Daniels",
-      "team": "WAS",
-      "since": 2024,
-      "seasons": 3,
-      "status": "ACT",
-      "rosterWeek": 6,
-      "length": 1,
-      "start": {
-        "id": "2026_05_NYG_WAS",
-        "event": "401872988",
-        "date": "2026-10-11",
-        "season": 2026,
-        "week": 5,
-        "opponent": "NYG"
-      },
-      "last": {
-        "id": "2026_05_NYG_WAS",
-        "event": "401872988",
-        "date": "2026-10-11",
-        "season": 2026,
-        "week": 5,
-        "opponent": "NYG"
       }
     },
     {
@@ -1192,7 +1192,7 @@
       "team": "WAS",
       "since": 2024,
       "seasons": 3,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 6
     },
     {
@@ -1372,7 +1372,7 @@
       "team": "SF",
       "since": 2025,
       "seasons": 2,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 6
     },
     {
