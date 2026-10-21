@@ -90,7 +90,10 @@
     bindAuth();
     const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
     Object.entries(fields).forEach(([id,key]) => {
-      $(id).oninput = event => { entry[key] = event.target.value; persist(); $('simMatchId').textContent = model.matchId(entry); };
+      $(id).oninput = event => {
+        entry[key] = event.target.value; persist(); $('simMatchId').textContent = model.matchId(entry);
+        window.updateDraftSeriesScore?.();
+      };
     });
     $('simLoadMatch').onchange = event => { entry.selected = event.target.value; persist(); };
     $('simLoadMatchBtn').onclick = loadSelected;
@@ -144,6 +147,7 @@
     get region() { return entry.region; },
     get winner() { return entry.winner; },
     get saving() { return saving; },
+    get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
     setRegion(region) {
       if (saving || !['EU','NA'].includes(region) || region === entry.region) return;
       entry.region = region;
