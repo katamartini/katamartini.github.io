@@ -14,7 +14,7 @@ function teamCell(code) {
   wrap.append(img, make('span', TEAMS[code].name)); cell.append(wrap); return cell;
 }
 function historyUrl(row) {
-  const params = new URLSearchParams({ ...state, wins: row.wins, losses: row.losses, ties: row.ties, team: row.team, ongoing: 'false' });
+  const params = new URLSearchParams({ ...state, wins: row.wins, losses: row.losses, ties: row.ties, team: row.team, ongoing: 'true' });
   return `?${params}#finder`;
 }
 function rateCell(rate) { const cell = make('td', pct(rate.percent), 'number'); cell.append(make('span', `${rate.count} / ${rate.total}`, 'detail')); return cell; }
@@ -72,7 +72,7 @@ function readUrl() {
   state = { wins: number('wins', 3, 0, 17), losses: number('losses', 3, 0, 17), ties: number('ties', 0, 0, 17),
     era: ['all', 'sb', 'merger'].includes(params.get('era')) ? params.get('era') : 'sb',
     format: ['all', '17', '16', '14', '15', '9'].includes(params.get('format')) ? params.get('format') : 'all',
-    team: TEAMS[params.get('team')] ? params.get('team') : 'all', from: number('from', 1920, 1920, data.activeSeason), to: number('to', data.activeSeason, 1920, data.activeSeason), ongoing: params.get('ongoing') === 'true' };
+    team: TEAMS[params.get('team')] ? params.get('team') : 'all', from: number('from', 1920, 1920, data.activeSeason), to: number('to', data.activeSeason, 1920, data.activeSeason), ongoing: params.get('ongoing') !== 'false' };
   try { validateRecord(state.wins, state.losses, state.ties); } catch { Object.assign(state, { wins: 3, losses: 3, ties: 0 }); }
   if (state.from > state.to) { state.from = 1920; state.to = data.activeSeason; }
   for (const key of fields) $(key).value = state[key === 'team-filter' ? 'team' : key];
