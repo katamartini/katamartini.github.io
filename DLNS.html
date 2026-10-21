@@ -1674,7 +1674,11 @@ gap:12px;
 margin-top:14px}
 .simSuggestSide{
 display:grid;
-gap:10px}
+gap:10px;
+min-width:0;
+align-content:start}
+.simDraftMain{
+min-width:0}
 .simComboCard{
 border:1px solid var(--b);
 border-radius:14px;
@@ -1739,6 +1743,30 @@ min-height:22px}
 grid-column:1/-1;
 color:var(--m);
 padding:8px 0}
+@media(min-width:1800px){
+.wrap:has(#tab-draftsim:not(.hidden)){
+width:min(2400px,calc(100vw - 28px))}
+.simWorkspace{
+display:grid;
+grid-template-columns:minmax(240px,1fr) minmax(1100px,4fr) minmax(240px,1fr);
+gap:14px;
+align-items:start}
+.simDraftMain{
+grid-column:2;
+grid-row:1}
+.simSuggestions{
+display:contents}
+.simSuggestLeft{
+grid-column:1;
+grid-row:1}
+.simSuggestRight{
+grid-column:3;
+grid-row:1}
+}
+@media(max-width:640px){
+.simSuggestions{
+grid-template-columns:minmax(0,1fr)}
+}
 @media(max-width:1050px){
 .simControls,.simBoard{
 grid-template-columns:1fr}
@@ -1886,7 +1914,7 @@ return'<span class="'+(picked?'simPicked':'')+'">'+ih(h,'dIcon')+'</span>'}
 function simComboBox(kind,side){
 const title=kind==='duo'?'Duos':'Trios',items=possibleCombos(kind,side),mineSet=new Set(sim.slots[side].picks.filter(Boolean));return'<section class="simComboCard"><div class="week">'+esc(team(side))+' '+title+'</div><div class="table"><div class="head simCombo"><div>Rank</div><div>Heroes</div></div>'+(items.map(x=>'<div class="r simCombo '+(x.complete?'simComboComplete':'')+'"><div>#'+x.rank+'</div><div class="heroes">'+x.heroes.map(h=>simComboHero(h,mineSet.has(h))).join('')+'</div></div>').join('')||'<div class="r simCombo"><div></div><div class="muted">No possible unpicked '+title.toLowerCase()+' yet.</div></div>')+'</div></section>'}
 function simSuggestions(){
-return'<div class="simSuggestions"><div class="simSuggestSide">'+simComboBox('duo','left')+simComboBox('trio','left')+'</div><div class="simSuggestSide">'+simComboBox('duo','right')+simComboBox('trio','right')+'</div></div>'}
+return'<div class="simSuggestions"><div class="simSuggestSide simSuggestLeft">'+simComboBox('duo','left')+simComboBox('trio','left')+'</div><div class="simSuggestSide simSuggestRight">'+simComboBox('duo','right')+simComboBox('trio','right')+'</div></div>'}
 function exportDraft(){
 const lines=seq().map(x=>(sim.events.find(e=>e.type===x.type&&e.n===x.n)||{
 }).hero||'').join('\n'),out=$('simExportText');if(out){
@@ -1907,7 +1935,7 @@ return '<section class="simSide '+side+'">'+
 simPastDraftsHTML(side)+
 '</section>'}
 function renderSim(){
-const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div><div id="simPlayerAssignments"></div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
+const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div><div id="simPlayerAssignments"></div></div>'+simSuggestions()+'</div>';root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
 sim.left=e.target.value;saveSim()};$('simLeftTeam').onchange=e=>{
 sim.left=e.target.value;saveSim();renderSim()};$('simRightTeam').oninput=e=>{
 sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
