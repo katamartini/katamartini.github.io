@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Stats</title>
 <link rel="icon" type="image/png" href="images/deadlock/icons/abrams.png">
+<link rel="stylesheet" href="dlns/submission.css">
 <style>
 :root{
 --bg:#07111f;
@@ -466,14 +467,14 @@ grid-template-columns:1fr}
 <main class="wrap">
 <div class="pill">Deadlock draft coverage</div>
 <h1>Likely Unseen Drafts</h1>
-<p class="muted">Draft coverage, unseen combinations, hero/player stats, and roster movement from the public draft sheet.</p>
+<p class="muted">Draft coverage, unseen combinations, hero/player stats, and roster movement.</p>
 <section class="grid top">
 <div class="card">
 <div class="in">
 <div class="bar">
 <div>
 <div class="label">Draft source</div>
-<div class="muted" id="sourceNote">Using the public draft sheet.</div>
+<div class="muted" id="sourceNote">Loading the match database.</div>
 </div>
 <button id="loadBtn">Reload data</button>
 </div>
@@ -498,10 +499,12 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script>
+</main><script src="dlns/model.js"></script>
+<script src="dlns/database.js"></script>
+<script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
 let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
-const SHEET_ID='1mygk8trLTWuWgNcHNXYKb_3ZmHgRjDRT5dk0fZ9mMc4',GID='1738458418',CSV_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&gid='+GID,CACHE='likelyUnseenDrafts.csv.v1',CACHE_T='likelyUnseenDrafts.csvTime.v1',MAX_AGE=43200000,LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
+const LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
 let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,currentRarityIndex=null,sorts={
 hero:{
 key:'picks',dir:'desc'},player:{
@@ -1132,18 +1135,31 @@ rt=setTimeout(recompute,180)}
 function schedDraft(){
 clearTimeout(dt);
 dt=setTimeout(()=>renderDraftSearch(currentHeroUniverse),80)}
+function applyDraftRecords(rows){
+if(JSON.stringify(records)===JSON.stringify(rows)){
+window.dispatchEvent(new Event('dlns:data'));
+return}
+records=rows;
+currentRarityIndex=null;
+rarityBuildToken++;
+rarityBuildStatus=null;
+if(window.clearDraftSimRarityCache)window.clearDraftSimRarityCache();
+recompute();
+window.dispatchEvent(new Event('dlns:data'))}
+function applyDatabaseMatches(matches){
+applyDraftRecords(matches.flatMap(DLNSModel.matchToRecords));
+$('status').textContent='loaded';
+$('sourceNote').textContent='Using the DLNS match database.';
+$('error').classList.add('hidden')}
 function useCache(){
 try{
-const text=localStorage.getItem(CACHE),at=+localStorage.getItem(CACHE_T);
-if(!text||!at)return false;
-records=objs(csv(text));
-if(!records.length)return false;
+const cached=DLNSDatabase.readCache();
+if(!cached?.matches?.length)return false;
+applyDraftRecords(cached.matches.flatMap(DLNSModel.matchToRecords));
 $('status').textContent='cached';
-$('sourceNote').textContent='Using cached draft sheet. Reload data to refresh.';
-recompute();
-return Date.now()-at<MAX_AGE}
-catch{
-return false}}
+$('sourceNote').textContent='Using cached matches; checking for updates.';
+return true}
+catch{return false}}
 function loadEmbeddedSnapshot(){
 if(EMBEDDED_CSV_B64)return Promise.resolve(true);
 if(window.EMBEDDED_CSV_B64){
@@ -1158,43 +1174,28 @@ async function useEmbeddedFallback(){
 try{
 if(!await loadEmbeddedSnapshot())return false;
 const bytes=Uint8Array.from(atob(EMBEDDED_CSV_B64),c=>c.charCodeAt(0)),text=new TextDecoder().decode(bytes);
-records=objs(csv(text));
-if(!records.length)return false;
-try{
-localStorage.setItem(CACHE,text);
-localStorage.setItem(CACHE_T,Date.now())}
-catch{
-}
+const rows=objs(csv(text));
+if(!rows.length)return false;
+applyDraftRecords(rows);
 $('status').textContent='snapshot';
-$('sourceNote').textContent='Using embedded draft sheet snapshot because live Google Sheet fetch was blocked.';
+$('sourceNote').textContent='Using an offline history snapshot. Live updates are unavailable.';
 $('error').classList.add('hidden');
-recompute();
 return true}
 catch{
 return false}}
-async function loadSheet(force=false){
-if(!force&&useCache())return;
-$('status').textContent='loading';
+async function loadData(force=false){
+const cached=!force&&useCache();
+if(!cached)$('status').textContent='loading';
 $('error').classList.add('hidden');
 try{
-const r=await fetch(CSV_URL,{
-cache:force?'reload':'default'});
-if(!r.ok)throw Error('Fetch failed: '+r.status);
-const text=await r.text();
-records=objs(csv(text));
-if(!records.length)throw Error('No rows found');
-try{
-localStorage.setItem(CACHE,text);
-localStorage.setItem(CACHE_T,Date.now())}
-catch{
-}
-$('status').textContent='loaded';
-$('sourceNote').textContent='Using freshly loaded public draft sheet.';
-recompute()}
+const matches=await DLNSDatabase.loadMatches();
+if(!matches.length)throw Error('No matches are available yet.');
+applyDatabaseMatches(matches)}
 catch(err){
-if(await useEmbeddedFallback())return;
-$('status').textContent='error';
-$('error').textContent=(err.message||err)+'. Make sure the sheet is public.';
+if(!records.length&&await useEmbeddedFallback())return;
+$('status').textContent=records.length?'offline':'error';
+$('sourceNote').textContent=records.length?'Live database unavailable. Showing the last loaded matches.':'The match database is unavailable.';
+$('error').textContent=err.message||String(err);
 $('error').classList.remove('hidden')}}
 function setTab(name){
 if(!TABS.includes(name))name='search';
@@ -1203,7 +1204,7 @@ $('tab-'+id).classList.toggle('hidden',id!==name);$('tabBtn-'+id).classList.togg
 if(location.hash!=='#'+name)history.replaceState(null,'','#'+name)}
 function init(){
 makeUI();
-$('loadBtn').onclick=()=>loadSheet(true);
+$('loadBtn').onclick=()=>loadData(true);
 $('clearSearchBtn').onclick=()=>{
 for(let i=0;i<6;i++)$('draftHero'+i).value='';
 schedDraft()};
@@ -1214,7 +1215,14 @@ $('draftHero'+i).oninput=schedDraft;
 $('draftHero'+i).onchange=schedDraft}
 window.onhashchange=()=>setTab(location.hash.slice(1)||'search');
 setTab(location.hash.slice(1)||'search');
-loadSheet()}
+loadData()}
+window.DLNSApp={
+getRecords:()=>records,
+getSim:()=>window.draftSimState,
+setSim:next=>window.setDraftSimState(next),
+applyMatches:applyDatabaseMatches,
+reload:()=>loadData(true),
+heroIcon:ih};
 init();
 </script><style>
 .tableToggle{
@@ -1899,16 +1907,17 @@ return '<section class="simSide '+side+'">'+
 simPastDraftsHTML(side)+
 '</section>'}
 function renderSim(){
-const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
+const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div><div id="simPlayerAssignments"></div>'+simSuggestions();root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
 sim.left=e.target.value;saveSim()};$('simLeftTeam').onchange=e=>{
 sim.left=e.target.value;saveSim();renderSim()};$('simRightTeam').oninput=e=>{
 sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
-sim.right=e.target.value;saveSim();renderSim()};$('simFirstPick').onchange=e=>setFirstPick(e.target.value)}
+sim.right=e.target.value;saveSim();renderSim()};$('simFirstPick').onchange=e=>setFirstPick(e.target.value);window.dispatchEvent(new Event('dlns:sim-render'))}
 function addSimUI(){
 if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf('validation')),0,ID);const btn=document.createElement('button');btn.className='tab';btn.id='tabBtn-'+ID;btn.textContent='Draft Simulator';btn.onclick=()=>setTab(ID);$('tabs').insertBefore(btn,$('tabBtn-validation')||null);$('panels').insertAdjacentHTML('beforeend','<section id="tab-'+ID+'" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="'+ID+'Root"></div></div></section></section>')}
-window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
+window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
+<script src="dlns/submission.js"></script>
 </body>
 </html>
 
