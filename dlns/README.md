@@ -7,7 +7,9 @@ DLNS reads its match history from Supabase. Google Sheets is no longer fetched b
 Open `https://kmartini.com/DLNS.html#draftsim` and choose **Sign in with GitHub** under Match entry.
 Only GitHub account ID `66887569` (katamartini) can submit or edit. Other accounts remain read-only.
 
-For a new match, set the real team names, first pick, week, region, round and game; complete all 16 draft actions, optionally assign players, and submit. The result can remain pending until the match finishes.
+For a new match, choose a region and select each team from the dropdown in its draft header. The options include existing teams from that region. Set first pick with the left/right switch between the teams, then enter week, round and game; complete all 16 draft actions, optionally assign players, and submit. The winner has its own left/right switch and a clear control to leave the result pending.
+
+Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.
 
 To edit, select a saved match and choose **Load match**. Update it and choose **Save changes**. Edits refresh the page's stats immediately. Reload data on other open clients to see the latest changes.
 

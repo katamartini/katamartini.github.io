@@ -77,6 +77,17 @@
     }));
   }
 
+  function teamsForRegion(records, region) {
+    return [...new Set(records.filter(row => row.region === region).map(row => text(row.team)).filter(Boolean))]
+      .sort((a,b) => a.localeCompare(b));
+  }
+
+  function withFirstPick(sim, first) {
+    if (!['left','right'].includes(first)) throw new Error('Choose the first-pick team.');
+    const actions = sequence(first).slice(0,sim.events.length).map((action,i) => ({...action,hero:sim.events[i].hero}));
+    return matchToSim({left_team:sim.left,right_team:sim.right,first_pick:first,actions});
+  }
+
   function simToMatch(sim, details, players = {}) {
     const match = {
       week:Number(details.week),region:details.region,round:details.round,game:Number(details.game),
@@ -100,5 +111,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick});
 });

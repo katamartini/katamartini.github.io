@@ -2,7 +2,7 @@
 .matchEntryBar,.matchManagement{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .matchEntryTitle{font-size:14px;font-weight:750}
 .matchAuth,.matchEntryActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.matchEntryFields{display:grid;grid-template-columns:minmax(90px,.65fr) minmax(90px,.65fr) minmax(130px,1fr) minmax(80px,.5fr) minmax(160px,1.2fr);gap:10px;margin:12px 0}
+.matchEntryFields{display:grid;grid-template-columns:minmax(90px,.65fr) minmax(130px,1fr) minmax(80px,.5fr);gap:10px;margin:12px 0}
 .matchEntryFields label,.matchPlayerRow{min-width:0}
 .matchEntryFields input,.matchEntryFields select{width:100%;box-sizing:border-box;min-width:0}
 .matchEntryFields .label{margin-bottom:5px}
