@@ -329,6 +329,23 @@
       gap: 8px;
     }
 
+    .number-setting {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .number-setting-label {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .number-setting .field {
+      width: 88px;
+    }
+
     .segmented {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1408,6 +1425,11 @@
             </div>
             <div class="file-status" id="fileStatus"></div>
           </div>
+            <label class="number-setting-label" for="stalePinnedDays">Pink highlight after</label>
+            <div class="number-setting">
+              <input class="field" id="stalePinnedDays" type="number" min="1" max="3650" step="1" inputmode="numeric" value="6" />
+              <span>days since last watched</span>
+            </div>
           </section>
 
           <section class="settings-group">
@@ -1459,6 +1481,8 @@
     const STATUSES = ["watching", "paused", "finished"];
     const SEARCH_DEBOUNCE_MS = 300;
     const SEARCH_MIN_LENGTH = 2;
+    const DEFAULT_STALE_PINNED_DAYS = 6;
+    const MAX_STALE_PINNED_DAYS = 3650;
 
     let searchDebounceId = null;
     let searchRequestId = 0;
@@ -1485,6 +1509,7 @@
       sortMode: "title",
       sortDirection: "asc",
       hideCompleted: false,
+      stalePinnedDays: DEFAULT_STALE_PINNED_DAYS,
       episodeFilter: "all",
       selectedSeason: "all",
       viewMode: "list",
@@ -1516,6 +1541,7 @@
       openFileButton: document.querySelector("#openFileButton"),
       saveFileButton: document.querySelector("#saveFileButton"),
       fileStatus: document.querySelector("#fileStatus"),
+      stalePinnedDays: document.querySelector("#stalePinnedDays"),
       githubToken: document.querySelector("#githubToken"),
       repoLoadButton: document.querySelector("#repoLoadButton"),
       repoSaveButton: document.querySelector("#repoSaveButton"),
@@ -1545,6 +1571,7 @@
         state.sortMode = sortSettings.mode;
         state.sortDirection = sortSettings.direction;
         state.hideCompleted = !!parsed.hideCompleted;
+        state.stalePinnedDays = normalizeStalePinnedDays(parsed.stalePinnedDays);
         state.viewMode = "list";
       } catch {
         showToast("Saved tracker data could not be read.");
@@ -1588,8 +1615,16 @@
         sortMode: state.sortMode,
         sortDirection: state.sortDirection,
         hideCompleted: state.hideCompleted,
+        stalePinnedDays: state.stalePinnedDays,
         viewMode: state.viewMode,
       };
+    }
+
+    function normalizeStalePinnedDays(value) {
+      const days = Number(value);
+      return Number.isInteger(days) && days >= 1 && days <= MAX_STALE_PINNED_DAYS
+        ? days
+        : DEFAULT_STALE_PINNED_DAYS;
     }
 
     function normalizeSortSettings(mode, direction) {
@@ -1644,6 +1679,7 @@
       state.sortMode = sortSettings.mode;
       state.sortDirection = sortSettings.direction;
       state.hideCompleted = !!parsed.hideCompleted;
+      state.stalePinnedDays = normalizeStalePinnedDays(parsed.stalePinnedDays);
       state.viewMode = "list";
       state.selectedSeason = "all";
       state.episodeFilter = "all";
@@ -1729,7 +1765,7 @@
       const today = new Date();
       const todayValue = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
       const lastWatchedValue = Date.UTC(lastWatched.getFullYear(), lastWatched.getMonth(), lastWatched.getDate());
-      return todayValue - lastWatchedValue >= 6 * 24 * 60 * 60 * 1000;
+      return todayValue - lastWatchedValue >= state.stalePinnedDays * 24 * 60 * 60 * 1000;
     }
 
     function showMeta(show) {
@@ -2011,6 +2047,7 @@
       }
       renderSummary();
       renderLibraryFilter();
+      nodes.stalePinnedDays.value = state.stalePinnedDays;
       renderSearchResults();
       renderDetail();
       renderFileStatus();
@@ -3279,6 +3316,17 @@
     nodes.importButton.addEventListener("click", () => nodes.importFile.click());
     nodes.openFileButton.addEventListener("click", openDataFile);
     nodes.saveFileButton.addEventListener("click", () => saveDataFile(true));
+    nodes.stalePinnedDays.addEventListener("change", () => {
+      const days = Number(nodes.stalePinnedDays.value);
+      if (!Number.isInteger(days) || days < 1 || days > MAX_STALE_PINNED_DAYS) {
+        nodes.stalePinnedDays.value = state.stalePinnedDays;
+        showToast(`Enter a whole number from 1 to ${MAX_STALE_PINNED_DAYS}.`);
+        return;
+      }
+      if (days === state.stalePinnedDays) return;
+      state.stalePinnedDays = days;
+      render({ persistFile: true });
+    });
     nodes.repoLoadButton.addEventListener("click", loadRepoData);
     nodes.repoSaveButton.addEventListener("click", () => saveRepoData(true));
     nodes.githubToken.addEventListener("input", saveRepoSyncSettings);
