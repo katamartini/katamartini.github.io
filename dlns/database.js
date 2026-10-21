@@ -8,7 +8,7 @@
   const RETURN_TAB = 'dlns.auth.returnTab';
   const auth = {user:null,admin:false,ready:true,error:''};
   const listeners = new Set();
-  let clientPromise, client, matches = [], authVersion = 0;
+  let clientPromise, client, matches = [], teams = [], authVersion = 0;
 
   function notify() {
     listeners.forEach(listener => listener({...auth}));
@@ -19,6 +19,7 @@
       const cached = JSON.parse(localStorage.getItem(CACHE) || 'null');
       if (cached && Array.isArray(cached.matches)) {
         matches = cached.matches;
+        teams = Array.isArray(cached.teams) ? cached.teams : [];
         return cached;
       }
     } catch (_) {}
@@ -27,21 +28,30 @@
 
   function remember(next) {
     matches = next.slice().sort((a,b) => DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));
-    try { localStorage.setItem(CACHE,JSON.stringify({at:Date.now(),matches})); } catch (_) {}
+    try { localStorage.setItem(CACHE,JSON.stringify({at:Date.now(),matches,teams})); } catch (_) {}
     return matches;
   }
 
-  async function loadMatches() {
+  async function loadRows(table,order,label) {
     const all = [];
     for (let offset = 0;; offset += 500) {
-      const query = new URLSearchParams({select:'*',order:'week.asc,region.asc,round.asc,game.asc',limit:'500',offset:String(offset)});
-      const response = await fetch(`${URL}/rest/v1/dlns_matches?${query}`,{headers:{apikey:KEY},cache:'no-store'});
-      if (!response.ok) throw new Error(`The match database could not be loaded (${response.status}).`);
+      const query = new URLSearchParams({select:'*',order,limit:'500',offset:String(offset)});
+      const response = await fetch(`${URL}/rest/v1/${table}?${query}`,{headers:{apikey:KEY},cache:'no-store'});
+      if (!response.ok) throw new Error(`The ${label} database could not be loaded (${response.status}).`);
       const page = await response.json();
-      if (!Array.isArray(page)) throw new Error('The match database returned an invalid response.');
+      if (!Array.isArray(page)) throw new Error(`The ${label} database returned an invalid response.`);
       all.push(...page);
       if (page.length < 500) break;
     }
+    return all;
+  }
+
+  async function loadMatches() {
+    const [all,registered] = await Promise.all([
+      loadRows('dlns_matches','week.asc,region.asc,round.asc,game.asc','match'),
+      loadRows('dlns_teams','region.asc,name.asc','team')
+    ]);
+    teams = registered;
     return remember(all);
   }
 
@@ -132,9 +142,23 @@
     return saved;
   }
 
+  async function addTeam(name,region) {
+    const errors = DLNSModel.validateTeam(name,region);
+    if (errors.length) throw new Error(errors.join(' '));
+    const sdk = await getClient();
+    const {data,error} = await sdk.rpc('dlns_add_team',{p_name:name.trim(),p_region:region});
+    if (error) throw new Error(error.message);
+    const saved = Array.isArray(data) ? data[0] : data;
+    if (!saved?.name || saved.region !== region) throw new Error('The server did not confirm the saved team. Reload data before retrying.');
+    teams = [...teams.filter(team=>team.region !== region || team.name.toLowerCase() !== saved.name.toLowerCase()),saved];
+    remember(matches);
+    return saved;
+  }
+
   window.DLNSDatabase = {
-    loadMatches,readCache,signIn,signOut,saveMatch,
+    loadMatches,readCache,signIn,signOut,saveMatch,addTeam,
     get matches() { return matches; },
+    get teams() { return teams; },
     get auth() { return {...auth}; },
     subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
     initAuth() {

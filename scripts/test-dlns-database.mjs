@@ -34,6 +34,7 @@ await db.query(`insert into public.dlns_matches
     left_team text,right_team text,first_pick text,winner text,actions jsonb
   )`,[JSON.stringify(history.matches)]);
 assert.equal((await db.query('select count(*)::integer as count from public.dlns_matches')).rows[0].count,history.matches.length);
+await db.exec(await fs.readFile(new URL('../supabase/migrations/202610210002_dlns_teams.sql',import.meta.url),'utf8'));
 for (const match of history.matches) {
   assert.deepEqual(model.validateMatch(match,{allowHistoricalPlayers:true}),[],match.match_id);
   const players = Object.fromEntries(match.actions.filter(a=>a.type==='pick').map(a=>[a.hero,a.player]));
@@ -51,6 +52,12 @@ assert.deepEqual(model.teamsForRegion([
   {region:'EU',team:'Zulu'}, {region:'EU',team:'Alpha'}, {region:'EU',team:'Alpha'},
   {region:'NA',team:'Other'}, {region:'EU',team:''}
 ],'EU'),['Alpha','Zulu']);
+assert.deepEqual(model.teamsForRegion([{region:'EU',team:'Alpha'}],'EU',[
+  {region:'EU',name:'alpha'}, {region:'EU',name:'  New Team  '}, {region:'NA',name:'Other'}
+]),['Alpha','New Team']);
+assert.deepEqual(model.validateTeam(' First Timers ','EU'),[]);
+for (const name of ['',null,'   ','Team 1','TEAM 2','x'.repeat(101)]) assert.ok(model.validateTeam(name,'EU').length);
+assert.ok(model.validateTeam('First Timers','SA').length);
 for (const match of history.matches.slice(0,6)) {
   const sim = model.matchToSim(match), flipped = model.withFirstPick(sim,sim.first === 'left' ? 'right' : 'left');
   assert.deepEqual(flipped.events.map(event=>event.hero),sim.events.map(event=>event.hero));
@@ -123,22 +130,41 @@ async function asUser(role,uid = '') {
 async function save(match,revision = null,original = null) {
   return (await db.query('select * from public.dlns_save_match($1::jsonb,$2,$3)',[JSON.stringify(match),revision,original])).rows[0];
 }
+async function addTeam(name,region = 'EU') {
+  return (await db.query('select * from public.dlns_add_team($1,$2)',[name,region])).rows[0];
+}
 const fixture = structuredClone(history.matches[0]);
 Object.assign(fixture,{week:55,match_id:'55-EU-C-1',left_team:'DLNS Test Left',right_team:'DLNS Test Right'});
 await asUser('anon');
 assert.equal((await db.query('select count(*)::integer as count from public.dlns_matches')).rows[0].count,363);
 assert.equal((await db.query('select public.dlns_is_admin() as allowed')).rows[0].allowed,false);
 await assert.rejects(save(fixture),/permission denied/);
+assert.equal((await db.query('select * from public.dlns_teams')).rows.length,0);
+await assert.rejects(addTeam('First Timers'),/permission denied/);
+await assert.rejects(db.query("insert into public.dlns_teams (region,name) values ('EU','Not Allowed')"),/permission denied/);
 await assert.rejects(db.query('select * from public.dlns_match_revisions'),/permission denied/);
 await asUser('authenticated',outsider);
 assert.equal((await db.query('select public.dlns_is_admin() as allowed')).rows[0].allowed,false);
 await assert.rejects(save(fixture),/Only the DLNS owner/);
+await assert.rejects(addTeam('First Timers'),/Only the DLNS owner/);
 await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:outsider,user_metadata:{provider_id:'66887569',user_name:'katamartini'}})]);
 await assert.rejects(save(fixture),/Only the DLNS owner/);
+await assert.rejects(addTeam('First Timers'),/Only the DLNS owner/);
 await assert.rejects(db.query("update public.dlns_matches set left_team='Tampered' where match_id='1-EU-C-1'"),/permission denied/);
 assert.equal((await db.query('select * from public.dlns_match_revisions')).rows.length,0);
 await asUser('authenticated',owner);
 assert.equal((await db.query('select public.dlns_is_admin() as allowed')).rows[0].allowed,true);
+await assert.rejects(db.query("insert into public.dlns_teams (region,name) values ('EU','Bypass')"),/permission denied/);
+const registered = await addTeam('  First Timers  ');
+assert.equal(registered.name,'First Timers');
+assert.equal(registered.region,'EU');
+assert.deepEqual(await addTeam('first timers'),registered);
+assert.equal((await addTeam('First Timers','NA')).region,'NA');
+assert.equal((await addTeam('abrahams')).name,'Abrahams');
+for (const name of ['',null,'   ','Team 1','TEAM 2','x'.repeat(101)]) await assert.rejects(addTeam(name),/actual team name/);
+await assert.rejects(addTeam('First Timers','SA'),/Choose EU or NA/);
+await assert.rejects(addTeam('First Timers',null),/Choose EU or NA/);
+assert.equal((await db.query('select * from public.dlns_teams')).rows.length,3);
 await assert.rejects(db.query("update public.dlns_matches set left_team='Bypass' where match_id='1-EU-C-1'"),/permission denied/);
 const created = await save(fixture);
 assert.equal(created.revision,1);
@@ -165,6 +191,7 @@ const renamed = await save({...fixture,round:'Finals',match_id:'55-EU-F-1'},2,'5
 assert.equal(renamed.revision,3);
 assert.equal((await db.query("select * from public.dlns_match_revisions where match_id='55-EU-F-1'")).rows.length,3);
 await asUser('anon');
+assert.equal((await db.query("select name from public.dlns_teams where region='EU' order by name")).rows.length,2);
 assert.equal((await db.query("select revision from public.dlns_matches where match_id='55-EU-F-1'")).rows[0].revision,3);
 await db.close();
-console.log('DLNS: 363 historical matches round-trip correctly; owner-only writes, spoofed metadata, anonymous reads, draft validation, edit conflicts and revision history passed.');
+console.log('DLNS: 363 historical matches round-trip correctly; owner-only match/team writes, regional team names, spoofed metadata, anonymous reads, draft validation, edit conflicts and revision history passed.');

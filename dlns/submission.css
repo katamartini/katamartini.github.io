@@ -23,5 +23,14 @@
 .matchPlayerRow img{width:30px;height:30px;object-fit:contain}
 .matchEditing{color:var(--good);font-size:12px}
 .matchEntry button:disabled{opacity:.5;cursor:default}
+.matchTeamDialog{width:min(380px,calc(100vw - 32px));padding:20px;background:var(--p);color:var(--t);border:1px solid var(--b);border-radius:8px}
+.matchTeamDialog::backdrop{background:rgba(0,0,0,.6)}
+.matchTeamDialog h2{font-size:18px;margin:0 0 16px}
+.matchTeamDialog label{display:grid;gap:6px}
+.matchTeamDialog input{width:100%;min-width:0}
+.matchTeamError{font-size:12px;color:var(--bad);margin-top:10px;overflow-wrap:anywhere}
+.matchTeamActions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.matchTeamActions button:first-child{background:var(--chip);color:var(--t)}
+.matchTeamActions button:disabled{opacity:.5;cursor:default}
 @media(max-width:850px){.matchEntryFields{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:540px){.matchEntryFields{grid-template-columns:repeat(2,minmax(0,1fr))}.matchPlayers{grid-template-columns:1fr;gap:14px}.matchManagement select{width:100%}.matchAuth{width:100%}}

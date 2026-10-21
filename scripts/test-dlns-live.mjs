@@ -20,11 +20,16 @@ assert.equal(admin.status,200);
 assert.equal(await admin.json(),false);
 for (const [path,body] of [
   ['/rpc/dlns_save_match',{p_match:history.matches[0]}],
-  ['/dlns_matches',history.matches[0]]
+  ['/dlns_matches',history.matches[0]],
+  ['/rpc/dlns_add_team',{p_name:'Not Allowed',p_region:'EU'}],
+  ['/dlns_teams',{name:'Not Allowed',region:'EU'}]
 ]) {
   const denied = await fetch(url+path,{method:'POST',headers,body:JSON.stringify(body)});
   assert.ok([401,403].includes(denied.status),`${path} must reject anonymous writes (${denied.status})`);
 }
+const teams = await fetch(`${url}/dlns_teams?select=region,name&limit=1000`,{headers});
+assert.equal(teams.status,200,'Registered teams must be publicly readable');
+assert.ok(Array.isArray(await teams.json()));
 const audit = await fetch(`${url}/dlns_match_revisions?select=*&limit=1`,{headers});
 assert.ok([401,403].includes(audit.status),'Revision history must not be public');
 console.log(`DLNS live: ${matches.length} matches readable; imported content unchanged; anonymous writes and revision access denied.`);

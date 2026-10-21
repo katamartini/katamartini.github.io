@@ -77,9 +77,21 @@
     }));
   }
 
-  function teamsForRegion(records, region) {
-    return [...new Set(records.filter(row => row.region === region).map(row => text(row.team)).filter(Boolean))]
-      .sort((a,b) => a.localeCompare(b));
+  function teamsForRegion(records, region, registered = []) {
+    const names = new Map();
+    for (const row of [...records,...registered.map(team => ({region:team.region,team:team.name}))]) {
+      const name = text(row.team);
+      if (row.region === region && name && !names.has(name.toLowerCase())) names.set(name.toLowerCase(),name);
+    }
+    return [...names.values()].sort((a,b) => a.localeCompare(b));
+  }
+
+  function validateTeam(name, region) {
+    const errors = [];
+    if (!['EU','NA'].includes(region)) errors.push('Choose EU or NA.');
+    const value = text(name);
+    if (!value || value.length > 100 || /^team [12]$/i.test(value)) errors.push('Enter the actual team name (100 characters or fewer).');
+    return errors;
   }
 
   function withFirstPick(sim, first) {
@@ -148,5 +160,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,validateTeam,withFirstPick,seriesWins,nextMatch});
 });

@@ -9,6 +9,8 @@ Only GitHub account ID `66887569` (katamartini) can submit or edit. Other accoun
 
 For a new match, choose a region and select each team from the dropdown in its draft header. The options include existing teams from that region. Set first pick with the left/right switch between the teams, then enter week, round and game; complete all 16 draft actions, optionally assign players, and submit. The winner has its own left/right switch and a clear control to leave the result pending.
 
+For a team's first appearance, choose **+ Add new team...** at the bottom of either team dropdown while signed in as the owner. Enter the name and choose **Add team**. The name is saved for the current region and selected on that side without changing the draft's heroes or players. It remains available after refresh, on other devices, and before the team's first match is submitted. Names are limited to 100 characters; case-insensitive duplicates reuse the existing name. The same name may be registered in both regions.
+
 Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.
 
 The two circles beside each team show its wins in earlier games of the same series, matched by week, region, round and both team names. They follow the team even if it changes sides between games, and never include the current game or pending results.
@@ -23,14 +25,16 @@ Each save keeps a private revision snapshot. Concurrent edits are rejected inste
 
 ## Security
 
-- Tables have row-level security. Matches and hero availability are publicly readable; revision snapshots are owner-only.
+- Tables have row-level security. Matches, registered team names and hero availability are publicly readable; revision snapshots are owner-only.
 - Browser roles have no direct insert, update or delete privileges.
-- The save RPC checks the provider-owned GitHub identity in `auth.identities`, not editable user metadata.
+- The match-save and team-registration RPCs check the provider-owned GitHub identity in `auth.identities`, not editable user metadata.
 - Server-side validation enforces draft order, unique heroes, hero availability, player assignments and canonical match IDs.
 - The checked-in publishable key is public by design. No service-role key, database password or OAuth secret belongs in this repo.
 - The Supabase OAuth callback is configured in the DLNS GitHub OAuth app. Supabase allows `https://kmartini.com/DLNS.html` and `http://localhost:4173/DLNS.html` as sign-in return URLs.
 
 The schema is in `supabase/migrations/202610210001_dlns.sql`. It was applied before the history import. Apply future database changes through new reviewed migrations; do not rerun this initial migration on an existing database.
+
+`supabase/migrations/202610210002_dlns_teams.sql` adds region-specific team registration. The dropdown merges these names with teams already found in match history, so historical teams do not need to be registered again.
 
 ## History and Offline Preview
 

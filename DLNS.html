@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Stats</title>
 <link rel="icon" type="image/png" href="images/deadlock/icons/abrams.png">
-<link rel="stylesheet" href="dlns/submission.css?v=20261021-autofill">
+<link rel="stylesheet" href="dlns/submission.css?v=20261021-teams">
 <style>
 :root{
 --bg:#07111f;
@@ -498,8 +498,8 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js?v=20261021-autofill"></script>
-<script src="dlns/database.js"></script>
+</main><script src="dlns/model.js?v=20261021-teams"></script>
+<script src="dlns/database.js?v=20261021-teams"></script>
 <script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
 let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
@@ -2035,8 +2035,8 @@ function simUniqueInDraft(side){
 const badge=simUniqueBadge(side);
 return badge?'<div class="simUniqueWrap">'+badge+'</div>':''}
 function simTeamSelect(side){
-const region=window.DLNSMatchEntry?.region||'EU',teams=DLNSModel.teamsForRegion(records,region),fallback=side==='left'?'Team 1':'Team 2';
-return '<select class="simTeamSelect" id="'+(side==='left'?'simLeftTeam':'simRightTeam')+'" aria-label="'+(side==='left'?'Left':'Right')+' team" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'><option value="'+fallback+'" disabled '+(!teams.includes(sim[side])?'selected':'')+'>'+fallback+'</option>'+teams.map(name=>'<option value="'+esc(name)+'" '+(name===sim[side]?'selected ':'')+(name===sim[other(side)]?'disabled':'')+'>'+esc(name)+'</option>').join('')+'</select>'}
+const region=window.DLNSMatchEntry?.region||'EU',teams=DLNSModel.teamsForRegion(records,region,DLNSDatabase.teams),fallback=side==='left'?'Team 1':'Team 2';
+return '<select class="simTeamSelect" id="'+(side==='left'?'simLeftTeam':'simRightTeam')+'" aria-label="'+(side==='left'?'Left':'Right')+' team" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'><option value="'+fallback+'" disabled '+(!teams.includes(sim[side])?'selected':'')+'>'+fallback+'</option>'+teams.map(name=>'<option value="'+esc(name)+'" '+(name===sim[side]?'selected ':'')+(name===sim[other(side)]?'disabled':'')+'>'+esc(name)+'</option>').join('')+(DLNSDatabase.auth.admin?'<option value="">+ Add new team...</option>':'')+'</select>'}
 function simSeriesScore(side){
 const wins=window.DLNSMatchEntry?.seriesWins?.[side]||0,label=team(side)+': '+wins+' series win'+(wins===1?'':'s')+' before this game';
 return '<span class="simSeriesScore" id="simSeries-'+side+'" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+[0,1].map(i=>'<span class="simSeriesDot '+(i<wins?'won':'')+'" aria-hidden="true"></span>').join('')+'</span>'}
@@ -2070,7 +2070,7 @@ root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseH
 $('simRegion').onchange=e=>{window.DLNSMatchEntry?.setRegion(e.target.value);$('simRegion')?.focus({preventScroll:true})};
 for(const side of ['left','right']){
 const teamId=side==='left'?'simLeftTeam':'simRightTeam';
-$(teamId).onchange=e=>{window.DLNSMatchEntry?.setTeam(side,e.target.value);$(teamId)?.focus({preventScroll:true})};
+$(teamId).onchange=e=>{if(e.target.value===''){window.DLNSMatchEntry?.openAddTeam(side);return}window.DLNSMatchEntry?.setTeam(side,e.target.value);$(teamId)?.focus({preventScroll:true})};
 $('simFirstPick-'+side).onchange=()=>{setFirstPick(side);$('simFirstPick-'+side)?.focus({preventScroll:true})};
 $('simWinner-'+side).onchange=()=>{window.DLNSMatchEntry?.setWinner(side);$('simWinner-'+side)?.focus({preventScroll:true})}}
 $('simClearWinner').onclick=()=>window.DLNSMatchEntry?.setWinner('');
@@ -2080,7 +2080,7 @@ if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261021-autofill"></script>
+<script src="dlns/submission.js?v=20261021-teams"></script>
 </body>
 </html>
 
