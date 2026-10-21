@@ -62,6 +62,27 @@ for (const match of history.matches.slice(0,6)) {
   assert.deepEqual(switched.events.map(event=>event.hero),partial.events.map(event=>event.hero));
   assert.equal(model.simToMatch(sim,{...match,winner:''}).winner,null);
 }
+const seriesGame = {week:80,region:'EU',round:'Finals',game:1,left_team:'Alpha',right_team:'Bravo',winner:'left'};
+const seriesHistory = [
+  seriesGame,
+  {...seriesGame,game:2,left_team:'Bravo',right_team:'Alpha'},
+  {...seriesGame,game:3},
+  {...seriesGame,game:4},
+  {...seriesGame,week:79},
+  {...seriesGame,region:'NA'},
+  {...seriesGame,round:'Challenger'},
+  {...seriesGame,right_team:'Other'}
+];
+const seriesTeams = {left:'Alpha',right:'Bravo'};
+assert.deepEqual(model.seriesWins(seriesHistory,seriesGame,seriesTeams),{left:0,right:0});
+assert.deepEqual(model.seriesWins(seriesHistory,{...seriesGame,game:2},seriesTeams),{left:1,right:0});
+assert.deepEqual(model.seriesWins(seriesHistory,{...seriesGame,game:3},seriesTeams),{left:1,right:1});
+assert.deepEqual(model.seriesWins([seriesGame,{...seriesGame,game:2}],{...seriesGame,game:3},seriesTeams),{left:2,right:0});
+assert.deepEqual(model.seriesWins(seriesHistory,{...seriesGame,game:2},{left:'Bravo',right:'Alpha'}),{left:0,right:1});
+assert.deepEqual(model.seriesWins([seriesGame,{...seriesGame,game:2,winner:null}],{...seriesGame,game:3},seriesTeams),{left:1,right:0});
+assert.deepEqual(model.seriesWins(seriesHistory,{...seriesGame,game:''},seriesTeams),{left:0,right:0});
+const gameThree = history.matches.find(match=>match.match_id === '2-NA-F-3');
+assert.deepEqual(model.seriesWins(history.matches,gameThree,{left:gameThree.left_team,right:gameThree.right_team}),{left:1,right:1});
 
 const owner = '00000000-0000-4000-8000-000000000001';
 const outsider = '00000000-0000-4000-8000-000000000002';

@@ -88,6 +88,22 @@
     return matchToSim({left_team:sim.left,right_team:sim.right,first_pick:first,actions});
   }
 
+  function seriesWins(matches, details, teams) {
+    const wins = {left:0,right:0}, week = Number(details.week), game = Number(details.game);
+    const left = text(teams.left), right = text(teams.right);
+    if (!Number.isInteger(week) || week < 1 || !Number.isInteger(game) || game < 1 || !left || !right || left === right) return wins;
+    for (const match of matches) {
+      if (Number(match.week) !== week || match.region !== details.region || match.round !== details.round
+          || Number(match.game) >= game || !['left','right'].includes(match.winner)) continue;
+      const sameTeams = (match.left_team === left && match.right_team === right)
+        || (match.left_team === right && match.right_team === left);
+      if (!sameTeams) continue;
+      const winner = match[`${match.winner}_team`];
+      wins[winner === left ? 'left' : 'right']++;
+    }
+    return wins;
+  }
+
   function simToMatch(sim, details, players = {}) {
     const match = {
       week:Number(details.week),region:details.region,round:details.round,game:Number(details.game),
@@ -111,5 +127,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick,seriesWins});
 });
