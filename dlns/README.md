@@ -13,7 +13,7 @@ For a team's first appearance, choose **+ Add new team...** at the bottom of eit
 
 Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.
 
-The two circles beside each team show its wins in earlier games of the same series, matched by week, region, round and both team names. They follow the team even if it changes sides between games, and never include the current game or pending results.
+The two circles for each team sit in the gap between the draft panels, level with the team names. They show wins in earlier games of the same series, matched by week, region, round and both team names. They follow the team even if it changes sides between games, and never include the current game or pending results.
 
 To edit, select a saved match and choose **Load match**. Update it and choose **Save changes**. Edits refresh the page's stats immediately. Reload data on other open clients to see the latest changes.
 
