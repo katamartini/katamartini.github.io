@@ -8,6 +8,7 @@
 .matchEntryFields .label{margin-bottom:5px}
 .matchManagement{justify-content:flex-start;margin:10px 0}
 .matchManagement select{min-width:0;width:min(100%,420px);max-width:100%}
+.matchAutofill{min-width:100px}
 .matchEntryActions{justify-content:space-between;margin-top:10px}
 .matchEntryStatus{font-size:12px;color:var(--m);overflow-wrap:anywhere;flex:1;min-width:180px}
 .matchEntryStatus.errorText{color:var(--bad)}

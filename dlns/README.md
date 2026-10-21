@@ -15,6 +15,10 @@ The two circles beside each team show its wins in earlier games of the same seri
 
 To edit, select a saved match and choose **Load match**. Update it and choose **Save changes**. Edits refresh the page's stats immediately. Reload data on other open clients to see the latest changes.
 
+**Autofill** refreshes the database and fills the next match's week, region, round and game. It follows EU Challenger, EU Finals, NA Challenger, NA Finals, then the next week; Finals Game 3 is included only when Games 1 and 2 have different winning teams. Missing or pending Finals results must be resolved before it can make that decision. Match order is based on match IDs, not edit timestamps.
+
+Autofill keeps entered heroes, player assignments and valid team selections, clears the previous winner, and switches from editing an old record to creating a new one. It does not save a match; **Submit match** is still required.
+
 Each save keeps a private revision snapshot. Concurrent edits are rejected instead of overwriting a newer revision. Match IDs can be corrected by editing their week, region, round or game. There is intentionally no delete control.
 
 ## Security

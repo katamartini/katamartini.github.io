@@ -6,7 +6,7 @@
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},editing:null,revision:null,selected:''});
-  let entry = blank(), saving = false, message = '', messageKind = '', loginBusy = false;
+  let entry = blank(), saving = false, autofilling = false, message = '', messageKind = '', loginBusy = false;
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && typeof saved === 'object') entry = {...blank(),...saved,players:saved.players || {}};
@@ -49,6 +49,7 @@
     if (message) return message;
     const sim = app.getSim();
     if (saving) return 'Saving match...';
+    if (autofilling) return 'Checking the latest match...';
     if (entry.editing) return `Editing ${entry.editing} (revision ${entry.revision})`;
     return sim.events.length === 16 ? 'Draft complete' : `${sim.events.length} / 16 draft actions`;
   }
@@ -56,7 +57,7 @@
   function render() {
     const root = $('simMatchEntry'), playersRoot = $('simPlayerAssignments');
     if (!root || !playersRoot) return;
-    const auth = db.auth, sim = app.getSim();
+    const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
     const identity = auth.user?.user_metadata?.user_name || auth.user?.user_metadata?.preferred_username || auth.user?.email || '';
     const authButtons = auth.user ? `<span class="small">${esc(identity)}</span>${auth.ready && !auth.admin ? '<span class="small">Read-only</span>' : ''}<button id="simSignOut" ${loginBusy?'disabled':''}>Sign out</button>`
@@ -73,19 +74,20 @@
     const option = (value,label,current) => `<option value="${esc(value)}" ${value===current?'selected':''}>${esc(label)}</option>`;
     root.innerHTML = header + `
       <div class="matchManagement">
-        <select id="simLoadMatch" aria-label="Saved match">${option('','Select a saved match',entry.selected)}${matches.map(match=>option(match.match_id,`${match.match_id} | ${match.left_team} vs ${match.right_team}`,entry.selected)).join('')}</select>
-        <button id="simLoadMatchBtn" ${saving?'disabled':''}>Load match</button>
-        <button id="simNewMatch" ${saving?'disabled':''}>New match</button>
+        <select id="simLoadMatch" aria-label="Saved match" ${busy?'disabled':''}>${option('','Select a saved match',entry.selected)}${matches.map(match=>option(match.match_id,`${match.match_id} | ${match.left_team} vs ${match.right_team}`,entry.selected)).join('')}</select>
+        <button id="simLoadMatchBtn" ${busy?'disabled':''}>Load match</button>
+        <button id="simNewMatch" ${busy?'disabled':''}>New match</button>
+        <button id="simAutofillMatch" class="matchAutofill" ${busy?'disabled':''}>${autofilling?'Checking...':'Autofill'}</button>
       </div>
       <div class="matchEntryFields">
-        <label><div class="label">Week</div><input id="simMatchWeek" type="number" min="1" max="9999" step="1" value="${esc(entry.week)}" ${saving?'disabled':''}></label>
-        <label><div class="label">Round</div><select id="simMatchRound" ${saving?'disabled':''}>${['Challenger','Finals'].map(value=>option(value,value,entry.round)).join('')}</select></label>
-        <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${saving?'disabled':''}></label>
+        <label><div class="label">Week</div><input id="simMatchWeek" type="number" min="1" max="9999" step="1" value="${esc(entry.week)}" ${busy?'disabled':''}></label>
+        <label><div class="label">Round</div><select id="simMatchRound" ${busy?'disabled':''}>${['Challenger','Finals'].map(value=>option(value,value,entry.round)).join('')}</select></label>
+        <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${busy?'disabled':''}></label>
       </div>
-      <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${saving || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
+      <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${busy || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
     playersRoot.innerHTML = `<div class="matchPlayers">${['left','right'].map(side=>{
       const picked = sim.slots[side].picks.filter(Boolean);
-      return `<section class="matchPlayerTeam"><h3>${esc(sim[side])} players</h3>${picked.map(hero=>`<label class="matchPlayerRow">${app.heroIcon(hero,'mIcon')}<input data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" list="simPlayerNames" placeholder="Player (optional)" maxlength="100" value="${esc(entry.players[hero] || '')}" ${saving?'disabled':''}></label>`).join('')}</section>`;
+      return `<section class="matchPlayerTeam"><h3>${esc(sim[side])} players</h3>${picked.map(hero=>`<label class="matchPlayerRow">${app.heroIcon(hero,'mIcon')}<input data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" list="simPlayerNames" placeholder="Player (optional)" maxlength="100" value="${esc(entry.players[hero] || '')}" ${busy?'disabled':''}></label>`).join('')}</section>`;
     }).join('')}</div><datalist id="simPlayerNames">${playerList().map(player=>`<option value="${esc(player)}"></option>`).join('')}</datalist>`;
     bindAuth();
     const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
@@ -98,6 +100,7 @@
     $('simLoadMatch').onchange = event => { entry.selected = event.target.value; persist(); };
     $('simLoadMatchBtn').onclick = loadSelected;
     $('simNewMatch').onclick = () => { entry = {...blank(),week:suggestedWeek()}; persist(); setMessage(''); app.setSim(model.matchToSim({left_team:'Team 1',right_team:'Team 2',first_pick:'left',actions:[]})); };
+    $('simAutofillMatch').onclick = autofill;
     $('simSubmitMatch').onclick = submit;
     playersRoot.querySelectorAll('[data-match-player]').forEach(input => {
       input.oninput = () => { entry.players[input.dataset.matchPlayer] = input.value; persist(); };
@@ -128,7 +131,7 @@
   }
 
   async function submit() {
-    if (saving || !db.auth.admin) return;
+    if (saving || autofilling || !db.auth.admin) return;
     const match = model.simToMatch(app.getSim(),entry,entry.players);
     const errors = model.validateMatch(match);
     if (errors.length) { setMessage(errors.join(' '),'errorText'); return; }
@@ -143,13 +146,27 @@
     finally { saving = false; window.renderDraftSim(); }
   }
 
+  async function autofill() {
+    if (saving || autofilling || !db.auth.admin) return;
+    autofilling = true; setMessage(''); window.renderDraftSim();
+    try {
+      const matches = await db.loadMatches();
+      app.applyMatches(matches);
+      const next = model.nextMatch(matches);
+      entry = {...entry,...next,week:String(next.week),game:String(next.game),winner:'',editing:null,revision:null,selected:''};
+      persist(); refreshTeams();
+      setMessage(`Autofilled ${model.matchId(next)}.`,'success');
+    } catch (error) { setMessage(error.message,'errorText'); }
+    finally { autofilling = false; window.renderDraftSim(); }
+  }
+
   window.DLNSMatchEntry = {
     get region() { return entry.region; },
     get winner() { return entry.winner; },
-    get saving() { return saving; },
+    get saving() { return saving || autofilling; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
     setRegion(region) {
-      if (saving || !['EU','NA'].includes(region) || region === entry.region) return;
+      if (saving || autofilling || !['EU','NA'].includes(region) || region === entry.region) return;
       entry.region = region;
       const sim = app.getSim(), teams = model.teamsForRegion(app.getRecords(),region);
       const next = {...sim};
@@ -160,7 +177,7 @@
       persist(); setMessage(''); app.setSim(next);
     },
     setTeam(side,team) {
-      if (saving || !['left','right'].includes(side)) return;
+      if (saving || autofilling || !['left','right'].includes(side)) return;
       const sim = app.getSim(), other = side === 'left' ? 'right' : 'left';
       if (team === sim[other] || !model.teamsForRegion(app.getRecords(),entry.region).includes(team)) return;
       if (sim[side] === team) return;
@@ -168,7 +185,7 @@
       persist(); setMessage(''); app.setSim({...sim,[side]:team});
     },
     setWinner(side) {
-      if (saving || !['','left','right'].includes(side)) return;
+      if (saving || autofilling || !['','left','right'].includes(side)) return;
       entry.winner = side;
       persist(); setMessage(''); window.renderDraftSim();
     }

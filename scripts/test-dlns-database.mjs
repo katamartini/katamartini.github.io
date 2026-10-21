@@ -84,6 +84,34 @@ assert.deepEqual(model.seriesWins(seriesHistory,{...seriesGame,game:''},seriesTe
 const gameThree = history.matches.find(match=>match.match_id === '2-NA-F-3');
 assert.deepEqual(model.seriesWins(history.matches,gameThree,{left:gameThree.left_team,right:gameThree.right_team}),{left:1,right:1});
 
+assert.deepEqual(model.nextMatch([]),{week:1,region:'EU',round:'Challenger',game:1});
+const expectNext = (matches,id) => assert.equal(model.matchId(model.nextMatch(matches)),id);
+for (const region of ['EU','NA']) {
+  const first = {...seriesGame,region}, second = {...first,game:2};
+  const afterFinals = region === 'EU' ? '80-NA-C-1' : '81-EU-C-1';
+  expectNext([{...first,round:'Challenger'}],`80-${region}-F-1`);
+  expectNext([first],`80-${region}-F-2`);
+  expectNext([first,{...second,winner:'right'}],`80-${region}-F-3`);
+  expectNext([first,second],afterFinals);
+  expectNext([first,{...second,left_team:'Bravo',right_team:'Alpha',winner:'left'}],`80-${region}-F-3`);
+  expectNext([first,{...second,left_team:'Bravo',right_team:'Alpha',winner:'right'}],afterFinals);
+  expectNext([{...first,game:3}],afterFinals);
+}
+const sequenceHistory = [];
+for (const id of ['1-EU-C-1','1-EU-F-1','1-EU-F-2','1-EU-F-3','1-NA-C-1','1-NA-F-1','1-NA-F-2','1-NA-F-3','2-EU-C-1']) {
+  const next = model.nextMatch(sequenceHistory);
+  assert.equal(model.matchId(next),id);
+  sequenceHistory.push({...seriesGame,...next,winner:next.game === 2 ? 'right' : 'left'});
+}
+expectNext([{...seriesGame,region:'NA'}, {...seriesGame,updated_at:'2099-01-01'}],'80-NA-F-2');
+expectNext(history.matches.slice().reverse(),'55-EU-C-1');
+assert.throws(()=>model.nextMatch([{...seriesGame,game:2}]),/need winners/);
+assert.throws(()=>model.nextMatch([{...seriesGame,winner:null},{...seriesGame,game:2}]),/need winners/);
+assert.throws(()=>model.nextMatch([seriesGame,{...seriesGame,game:2,winner:null}]),/need winners/);
+assert.throws(()=>model.nextMatch([seriesGame,{...seriesGame,game:2,right_team:'Other',winner:'right'}]),/teams.*do not match/);
+assert.throws(()=>model.nextMatch([{...seriesGame,game:4}]),/outside.*sequence/);
+assert.throws(()=>model.nextMatch([{...seriesGame,week:9999,region:'NA',game:3}]),/exceed week 9999/);
+
 const owner = '00000000-0000-4000-8000-000000000001';
 const outsider = '00000000-0000-4000-8000-000000000002';
 await db.query("insert into auth.identities values ($1,'github','66887569'),($2,'github','1234')",[owner,outsider]);
