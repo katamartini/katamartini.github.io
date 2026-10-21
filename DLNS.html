@@ -408,7 +408,8 @@ text-transform:uppercase;
 letter-spacing:.08em;
 margin-top:4px}
 .coverageStats{
-margin:-4px 0 14px}
+grid-template-columns:repeat(3,minmax(0,1fr));
+margin:14px 0 0}
 .coverageCard .value{
 font-size:18px}
 .coveragePct{
@@ -448,7 +449,7 @@ border-radius:12px}
 @media(max-width:1050px){
 .layout,.searchLayout{
 grid-template-columns:1fr}
-.g5{
+.g5,.coverageStats{
 grid-template-columns:repeat(2,1fr)}
 .head:not(.duo):not(.trio):not(.quint):not(.playerStat):not(.heroStat){
 display:none}
@@ -458,7 +459,7 @@ grid-template-columns:1fr!important}
 grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:620px){
-.g5,.slots{
+.g5,.coverageStats,.slots{
 grid-template-columns:1fr}
 }
 </style>
@@ -492,8 +493,6 @@ grid-template-columns:1fr}
 </div>
 </section>
 <section class="grid g5" id="topStats">
-</section>
-<section class="grid g5 coverageStats" id="coverageStats">
 </section>
 <nav class="tabs" id="tabs">
 </nav>
@@ -2059,14 +2058,14 @@ simPastDraftsHTML(side)+
 function renderSim(){
 const root=$(ID+'Root');if(!root)return;
 saveSim();window.draftSimState=sim;
-if(window.renderCoverageStats)window.renderCoverageStats(sim);
 const c=current(),u=used(),region=window.DLNSMatchEntry?.region||'EU',filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';
 updateSimRanks();
 root.innerHTML='<div class="simControls"><label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+['EU','NA'].map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
 '<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
 '<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
 '<div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div>'+
-'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div></div>'+simSuggestions()+'</div>';
+'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div><section class="grid coverageStats" id="coverageStats"></section></div>'+simSuggestions()+'</div>';
+if(window.renderCoverageStats)window.renderCoverageStats(sim);
 root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));
 $('simRegion').onchange=e=>{window.DLNSMatchEntry?.setRegion(e.target.value);$('simRegion')?.focus({preventScroll:true})};
 for(const side of ['left','right']){
