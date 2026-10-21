@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Test receiving player identity matching
+        run: node --test scripts/jj23k-players.test.mjs
+
       - name: Refresh NFL receiving stats
         run: node scripts/update-jj23k.mjs
 
