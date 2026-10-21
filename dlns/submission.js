@@ -6,7 +6,7 @@
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},editing:null,revision:null,selected:''});
-  let entry = blank(), saving = false, autofilling = false, message = '', messageKind = '', loginBusy = false;
+  let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '', loginBusy = false;
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && typeof saved === 'object') entry = {...blank(),...saved,players:saved.players || {}};
@@ -33,9 +33,13 @@
     return [...new Set(app.getRecords().map(row=>row.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
   }
 
+  function teamNames(region = entry.region) {
+    return model.teamsForRegion(app.getRecords(),region,db.teams);
+  }
+
   function refreshTeams() {
     if (!app.getRecords().length) return;
-    const sim = app.getSim(), teams = model.teamsForRegion(app.getRecords(),entry.region);
+    const sim = app.getSim(), teams = teamNames();
     const next = {...sim};
     for (const [side,fallback] of [['left','Team 1'],['right','Team 2']]) {
       if (!teams.includes(sim[side])) next[side] = fallback;
@@ -130,6 +134,53 @@
     app.setSim(model.matchToSim(match));
   }
 
+  function openAddTeam(side) {
+    if (saving || autofilling || addingTeam || !db.auth.admin || !['left','right'].includes(side)) return;
+    const selectId = side === 'left' ? 'simLeftTeam' : 'simRightTeam';
+    $(selectId).value = app.getSim()[side];
+    if ($('simAddTeamDialog')) return;
+    const region = entry.region, dialog = document.createElement('dialog');
+    dialog.id = 'simAddTeamDialog';
+    dialog.className = 'matchTeamDialog';
+    dialog.setAttribute('aria-labelledby','simAddTeamTitle');
+    dialog.innerHTML = `<form>
+      <h2 id="simAddTeamTitle">Add ${esc(region)} team</h2>
+      <label><span class="label">Team name</span><input id="simNewTeamName" name="teamName" required maxlength="100" autocomplete="off" autofocus></label>
+      <div class="matchTeamError" id="simNewTeamError" role="status"></div>
+      <div class="matchTeamActions"><button type="button" id="simCancelTeam">Cancel</button><button type="submit" id="simSaveTeam">Add team</button></div>
+    </form>`;
+    document.body.appendChild(dialog);
+    const input = $('simNewTeamName'), errorText = $('simNewTeamError'), submitButton = $('simSaveTeam'), cancelButton = $('simCancelTeam');
+    dialog.oncancel = event => { if (addingTeam) event.preventDefault(); };
+    dialog.onclose = () => { dialog.remove(); $(selectId)?.focus({preventScroll:true}); };
+    cancelButton.onclick = () => dialog.close();
+    dialog.querySelector('form').onsubmit = async event => {
+      event.preventDefault();
+      if (addingTeam || !db.auth.admin) return;
+      const name = input.value.trim(), errors = model.validateTeam(name,region);
+      const otherSide = side === 'left' ? 'right' : 'left';
+      if (name.toLowerCase() === app.getSim()[otherSide].toLowerCase()) errors.push('This team is already selected on the other side.');
+      if (errors.length) { errorText.textContent = errors.join(' '); input.focus(); return; }
+      addingTeam = true;
+      input.disabled = submitButton.disabled = cancelButton.disabled = true;
+      submitButton.textContent = 'Adding...'; errorText.textContent = '';
+      let saved;
+      try { saved = await db.addTeam(name,region); }
+      catch (error) { errorText.textContent = error.message; }
+      finally {
+        addingTeam = false;
+        input.disabled = submitButton.disabled = cancelButton.disabled = false;
+        submitButton.textContent = 'Add team';
+      }
+      if (!saved) { input.focus(); return; }
+      entry.winner = '';
+      persist(); setMessage(`Added ${saved.name} to ${region}.`,'success');
+      app.setSim({...app.getSim(),[side]:saved.name});
+      dialog.close();
+    };
+    dialog.showModal();
+  }
+
   async function submit() {
     if (saving || autofilling || !db.auth.admin) return;
     const match = model.simToMatch(app.getSim(),entry,entry.players);
@@ -163,12 +214,13 @@
   window.DLNSMatchEntry = {
     get region() { return entry.region; },
     get winner() { return entry.winner; },
-    get saving() { return saving || autofilling; },
+    get saving() { return saving || autofilling || addingTeam; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
+    openAddTeam,
     setRegion(region) {
       if (saving || autofilling || !['EU','NA'].includes(region) || region === entry.region) return;
       entry.region = region;
-      const sim = app.getSim(), teams = model.teamsForRegion(app.getRecords(),region);
+      const sim = app.getSim(), teams = teamNames(region);
       const next = {...sim};
       for (const [side,fallback] of [['left','Team 1'],['right','Team 2']]) {
         if (!teams.includes(sim[side])) next[side] = fallback;
@@ -179,7 +231,7 @@
     setTeam(side,team) {
       if (saving || autofilling || !['left','right'].includes(side)) return;
       const sim = app.getSim(), other = side === 'left' ? 'right' : 'left';
-      if (team === sim[other] || !model.teamsForRegion(app.getRecords(),entry.region).includes(team)) return;
+      if (team === sim[other] || !teamNames().includes(team)) return;
       if (sim[side] === team) return;
       entry.winner = '';
       persist(); setMessage(''); app.setSim({...sim,[side]:team});
@@ -190,9 +242,9 @@
       persist(); setMessage(''); window.renderDraftSim();
     }
   };
-  db.subscribe(render);
+  db.subscribe(() => window.renderDraftSim());
   window.addEventListener('dlns:sim-render',render);
-  window.addEventListener('dlns:data',() => { refreshTeams(); render(); });
+  window.addEventListener('dlns:data',() => { refreshTeams(); window.renderDraftSim(); });
   refreshTeams();
   window.renderDraftSim();
   db.initAuth();
