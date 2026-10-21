@@ -42,6 +42,26 @@ for (const match of history.matches) {
   assert.equal(model.matchToRecords(match).length,16);
 }
 assert.deepEqual(model.sequence('right').filter(a=>a.type==='ban').map(a=>a.side),['right','left','left','right']);
+const records = history.matches.flatMap(model.matchToRecords);
+assert.ok(model.teamsForRegion(records,'EU').includes('Abrahams'));
+assert.ok(!model.teamsForRegion(records,'EU').includes('Melee Creeps'));
+assert.ok(model.teamsForRegion(records,'NA').includes('Melee Creeps'));
+assert.ok(!model.teamsForRegion(records,'NA').includes('Abrahams'));
+assert.deepEqual(model.teamsForRegion([
+  {region:'EU',team:'Zulu'}, {region:'EU',team:'Alpha'}, {region:'EU',team:'Alpha'},
+  {region:'NA',team:'Other'}, {region:'EU',team:''}
+],'EU'),['Alpha','Zulu']);
+for (const match of history.matches.slice(0,6)) {
+  const sim = model.matchToSim(match), flipped = model.withFirstPick(sim,sim.first === 'left' ? 'right' : 'left');
+  assert.deepEqual(flipped.events.map(event=>event.hero),sim.events.map(event=>event.hero));
+  assert.deepEqual(flipped.events.map(event=>event.side),model.sequence(flipped.first).map(action=>action.side));
+  assert.deepEqual(model.withFirstPick(flipped,sim.first),sim);
+  const partial = model.matchToSim({...match,actions:match.actions.slice(0,7)});
+  const switched = model.withFirstPick(partial,'right');
+  assert.equal(switched.events.length,7);
+  assert.deepEqual(switched.events.map(event=>event.hero),partial.events.map(event=>event.hero));
+  assert.equal(model.simToMatch(sim,{...match,winner:''}).winner,null);
+}
 
 const owner = '00000000-0000-4000-8000-000000000001';
 const outsider = '00000000-0000-4000-8000-000000000002';

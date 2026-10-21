@@ -11,6 +11,8 @@
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && typeof saved === 'object') entry = {...blank(),...saved,players:saved.players || {}};
   } catch (_) {}
+  entry.region = entry.region === 'NA' ? 'NA' : 'EU';
+  entry.winner = ['left','right'].includes(entry.winner) ? entry.winner : '';
 
   function persist() {
     try { localStorage.setItem(STORE,JSON.stringify(entry)); } catch (_) {}
@@ -29,6 +31,18 @@
 
   function playerList() {
     return [...new Set(app.getRecords().map(row=>row.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  }
+
+  function refreshTeams() {
+    if (!app.getRecords().length) return;
+    const sim = app.getSim(), teams = model.teamsForRegion(app.getRecords(),entry.region);
+    const next = {...sim};
+    for (const [side,fallback] of [['left','Team 1'],['right','Team 2']]) {
+      if (!teams.includes(sim[side])) next[side] = fallback;
+    }
+    if (next.left === sim.left && next.right === sim.right) return;
+    entry.winner = '';
+    persist(); app.setSim(next);
   }
 
   function statusText() {
@@ -65,10 +79,8 @@
       </div>
       <div class="matchEntryFields">
         <label><div class="label">Week</div><input id="simMatchWeek" type="number" min="1" max="9999" step="1" value="${esc(entry.week)}" ${saving?'disabled':''}></label>
-        <label><div class="label">Region</div><select id="simMatchRegion" ${saving?'disabled':''}>${['EU','NA'].map(value=>option(value,value,entry.region)).join('')}</select></label>
         <label><div class="label">Round</div><select id="simMatchRound" ${saving?'disabled':''}>${['Challenger','Finals'].map(value=>option(value,value,entry.round)).join('')}</select></label>
         <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${saving?'disabled':''}></label>
-        <label><div class="label">Winner</div><select id="simMatchWinner" ${saving?'disabled':''}>${option('','Result pending',entry.winner)}${option('left',sim.left,entry.winner)}${option('right',sim.right,entry.winner)}</select></label>
       </div>
       <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${saving || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
     playersRoot.innerHTML = `<div class="matchPlayers">${['left','right'].map(side=>{
@@ -76,7 +88,7 @@
       return `<section class="matchPlayerTeam"><h3>${esc(sim[side])} players</h3>${picked.map(hero=>`<label class="matchPlayerRow">${app.heroIcon(hero,'mIcon')}<input data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" list="simPlayerNames" placeholder="Player (optional)" maxlength="100" value="${esc(entry.players[hero] || '')}" ${saving?'disabled':''}></label>`).join('')}</section>`;
     }).join('')}</div><datalist id="simPlayerNames">${playerList().map(player=>`<option value="${esc(player)}"></option>`).join('')}</datalist>`;
     bindAuth();
-    const fields = {simMatchWeek:'week',simMatchRegion:'region',simMatchRound:'round',simMatchGame:'game',simMatchWinner:'winner'};
+    const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
     Object.entries(fields).forEach(([id,key]) => {
       $(id).oninput = event => { entry[key] = event.target.value; persist(); $('simMatchId').textContent = model.matchId(entry); };
     });
@@ -117,7 +129,7 @@
     const match = model.simToMatch(app.getSim(),entry,entry.players);
     const errors = model.validateMatch(match);
     if (errors.length) { setMessage(errors.join(' '),'errorText'); return; }
-    saving = true; setMessage(''); render();
+    saving = true; setMessage(''); window.renderDraftSim();
     try {
       const saved = await db.saveMatch(match,entry.revision,entry.editing);
       entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision;
@@ -125,12 +137,42 @@
       app.applyMatches(db.matches);
       setMessage(`Saved ${saved.match_id} (revision ${saved.revision})`,'success');
     } catch (error) { setMessage(error.message,'errorText'); }
-    finally { saving = false; render(); }
+    finally { saving = false; window.renderDraftSim(); }
   }
 
+  window.DLNSMatchEntry = {
+    get region() { return entry.region; },
+    get winner() { return entry.winner; },
+    get saving() { return saving; },
+    setRegion(region) {
+      if (saving || !['EU','NA'].includes(region) || region === entry.region) return;
+      entry.region = region;
+      const sim = app.getSim(), teams = model.teamsForRegion(app.getRecords(),region);
+      const next = {...sim};
+      for (const [side,fallback] of [['left','Team 1'],['right','Team 2']]) {
+        if (!teams.includes(sim[side])) next[side] = fallback;
+      }
+      if (next.left !== sim.left || next.right !== sim.right) entry.winner = '';
+      persist(); setMessage(''); app.setSim(next);
+    },
+    setTeam(side,team) {
+      if (saving || !['left','right'].includes(side)) return;
+      const sim = app.getSim(), other = side === 'left' ? 'right' : 'left';
+      if (team === sim[other] || !model.teamsForRegion(app.getRecords(),entry.region).includes(team)) return;
+      if (sim[side] === team) return;
+      entry.winner = '';
+      persist(); setMessage(''); app.setSim({...sim,[side]:team});
+    },
+    setWinner(side) {
+      if (saving || !['','left','right'].includes(side)) return;
+      entry.winner = side;
+      persist(); setMessage(''); window.renderDraftSim();
+    }
+  };
   db.subscribe(render);
   window.addEventListener('dlns:sim-render',render);
-  window.addEventListener('dlns:data',render);
-  render();
+  window.addEventListener('dlns:data',() => { refreshTeams(); render(); });
+  refreshTeams();
+  window.renderDraftSim();
   db.initAuth();
 })();

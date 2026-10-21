@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Stats</title>
 <link rel="icon" type="image/png" href="images/deadlock/icons/abrams.png">
-<link rel="stylesheet" href="dlns/submission.css">
+<link rel="stylesheet" href="dlns/submission.css?v=20261021-controls">
 <style>
 :root{
 --bg:#07111f;
@@ -499,7 +499,7 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js"></script>
+</main><script src="dlns/model.js?v=20261021-controls"></script>
 <script src="dlns/database.js"></script>
 <script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
@@ -1477,11 +1477,16 @@ window.renderMetaTrends=renderTrend;addTrendUI();const oldTrendRecompute=recompu
 oldTrendRecompute();renderTrend()};renderTrend();if(location.hash==='#'+ID)setTab(ID)})();
 </script><style>
 .simControls{
-display:grid;
-grid-template-columns:1fr 1fr 180px max-content max-content max-content;
+display:flex;
+flex-wrap:wrap;
 gap:10px;
 align-items:end;
 margin-bottom:12px}
+.simControls>label{
+width:160px;
+margin-right:auto}
+.simControls .label{
+margin-bottom:5px}
 .simBoard{
 display:grid;
 grid-template-columns:1fr 170px 1fr;
@@ -1494,10 +1499,12 @@ background:rgba(9,21,37,.72);
 border-radius:14px;
 overflow:hidden}
 .simTeamBar{
-display:flex;
+display:grid;
+grid-template-columns:minmax(0,1fr);
+grid-template-rows:30px minmax(20px,auto);
 align-items:center;
 justify-content:space-between;
-gap:8px;
+gap:4px;
 padding:9px 12px;
 background:rgba(20,184,166,.22);
 font-weight:900;
@@ -1508,12 +1515,99 @@ display:flex;
 align-items:center;
 gap:8px;
 flex-wrap:wrap;
-justify-content:flex-end}
+justify-content:space-between}
 .simTeamName{
 display:inline-flex;
+flex:1 1 130px;
 align-items:center;
 gap:6px;
 min-width:0}
+.simTeamSelect{
+min-width:0;
+width:100%;
+padding:4px 6px;
+font-size:14px;
+font-weight:850;
+text-transform:none;
+background:rgba(4,17,31,.35)}
+.simSideControl{
+border:0;
+padding:0;
+margin:0;
+min-width:0;
+width:100%}
+.simSideControl legend{
+width:100%;
+font-size:12px;
+color:var(--m)}
+.simSideChoices{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+margin:6px 0}
+.simSideChoices>span{
+font-size:11px;
+color:var(--m)}
+.simSideSwitch{
+position:relative;
+display:grid;
+grid-template-columns:1fr 1fr;
+width:76px;
+height:28px;
+flex:none;
+border:1px solid var(--b);
+border-radius:999px;
+background:var(--p2)}
+.simSideSwitch::before{
+content:'';
+position:absolute;
+top:3px;
+left:3px;
+width:20px;
+height:20px;
+border-radius:50%;
+background:var(--a);
+pointer-events:none;
+transition:transform .15s ease}
+.simSideSwitch[data-side="right"]::before{
+transform:translateX(48px)}
+.simSideSwitch[data-side=""]::before{
+transform:translateX(24px);
+background:var(--m2)}
+.simSideSwitch label{
+position:relative;
+cursor:pointer}
+.simSideSwitch input{
+position:absolute;
+opacity:0;
+width:1px;
+height:1px;
+padding:0;
+margin:0}
+.simSideSwitch:focus-within{
+outline:2px solid var(--a);
+outline-offset:2px}
+.simSideSwitch:has(input:disabled){
+opacity:.5}
+.simSideSwitch:has(input:disabled) label{
+cursor:default}
+.simSwitchValue{
+font-size:12px;
+min-height:17px;
+overflow-wrap:anywhere}
+.simClearWinner{
+padding:0;
+width:20px;
+height:20px;
+margin-left:4px;
+font-size:17px;
+line-height:1;
+background:transparent;
+color:var(--m)}
+.simClearWinner:disabled{
+opacity:.35;
+cursor:default}
 .simRarity{
 display:inline-flex;
 align-items:center;
@@ -1768,7 +1862,7 @@ grid-row:1}
 grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:1050px){
-.simControls,.simBoard{
+.simBoard{
 grid-template-columns:1fr}
 .simCenter{
 order:-1}
@@ -1839,9 +1933,10 @@ return seq()[sim.step]}
 function used(){
 return new Set(sim.events.map(e=>e.hero))}
 function resetDraft(){
-sim.step=0;sim.events=[];sim.slots=blankSlots();saveSim();renderSim()}
+sim.step=0;sim.events=[];sim.slots=blankSlots();saveSim();if(window.DLNSMatchEntry)window.DLNSMatchEntry.setWinner('');else renderSim()}
 function setFirstPick(v){
-sim.first=v;resetDraft()}
+if(v===sim.first||window.DLNSMatchEntry?.saving)return;
+sim=DLNSModel.withFirstPick(sim,v);saveSim();renderSim()}
 function undoSim(){
 const e=sim.events.pop();if(!e)return;sim.slots[e.side][e.type+'s'][e.index]='';sim.step=Math.max(0,sim.step-1);saveSim();renderSim()}
 let simRankCache={
@@ -1927,25 +2022,47 @@ const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(s
 function simUniqueInDraft(side){
 const badge=simUniqueBadge(side);
 return badge?'<div class="simUniqueWrap">'+badge+'</div>':''}
+function simTeamSelect(side){
+const region=window.DLNSMatchEntry?.region||'EU',teams=DLNSModel.teamsForRegion(records,region),fallback=side==='left'?'Team 1':'Team 2';
+return '<select class="simTeamSelect" id="'+(side==='left'?'simLeftTeam':'simRightTeam')+'" aria-label="'+(side==='left'?'Left':'Right')+' team" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'><option value="'+fallback+'" disabled '+(!teams.includes(sim[side])?'selected':'')+'>'+fallback+'</option>'+teams.map(name=>'<option value="'+esc(name)+'" '+(name===sim[side]?'selected ':'')+(name===sim[other(side)]?'disabled':'')+'>'+esc(name)+'</option>').join('')+'</select>'}
+function simSideToggle(kind,title,value){
+const disabled=window.DLNSMatchEntry?.saving;
+return '<fieldset class="simSideControl"><legend>'+title+(kind==='Winner'?'<button type="button" class="simClearWinner" id="simClearWinner" aria-label="Clear winner" title="Clear winner" '+(!value||disabled?'disabled':'')+'>&times;</button>':'')+'</legend><div class="simSideChoices"><span>Left</span><div class="simSideSwitch" data-side="'+value+'">'+['left','right'].map(side=>'<label title="'+esc(team(side))+'"><input type="radio" name="sim'+kind+'" id="sim'+kind+'-'+side+'" value="'+side+'" aria-label="'+title+': '+(side==='left'?'left':'right')+' team ('+esc(team(side))+')" '+(value===side?'checked ':'')+(disabled?'disabled':'')+'></label>').join('')+'</div><span>Right</span></div><div class="simSwitchValue">'+(value?esc(team(value)):'Result pending')+'</div></fieldset>'}
+function simCenterHTML(c){
+return '<section class="simCenter">'+simSideToggle('FirstPick','First pick',sim.first)+'<div><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></div>'+simSideToggle('Winner','Winner',window.DLNSMatchEntry?.winner||'')+'</section>'}
 function sideHTML(side){
 return '<section class="simSide '+side+'">'+
-'<div class="simTeamBar"><span class="simTeamName"><span>'+esc(team(side))+'</span></span><span class="simTeamMeta">'+simDraftRarity(side)+'<span class="small">'+(sim.first===side?'1st pick':'')+'</span></span></div>'+
+'<div class="simTeamBar"><span class="simTeamName">'+simTeamSelect(side)+'</span><span class="simTeamMeta">'+simDraftRarity(side)+'<span class="small">'+(sim.first===side?'1st pick':'')+'</span></span></div>'+
 '<div class="simBans">'+simUniqueInDraft(side)+[0,1].map(i=>slotHTML(side,'ban',i)).join('')+'</div>'+
 '<div class="simPicks">'+[0,1,2,3,4,5].map(i=>slotHTML(side,'pick',i)).join('')+'</div>'+
 simPastDraftsHTML(side)+
 '</section>'}
 function renderSim(){
-const root=$(ID+'Root');if(!root)return;saveSim();window.draftSimState=sim;if(window.renderCoverageStats)window.renderCoverageStats(sim);const c=current(),u=used(),filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';updateSimRanks();root.innerHTML='<div class="simControls"><label><div class="label">Left team</div><input id="simLeftTeam" value="'+esc(sim.left)+'"></label><label><div class="label">Right team</div><input id="simRightTeam" value="'+esc(sim.right)+'"></label><label><div class="label">First pick</div><select id="simFirstPick"><option value="left" '+(sim.first==='left'?'selected':'')+'>'+esc(sim.left)+'</option><option value="right" '+(sim.first==='right'?'selected':'')+'>'+esc(sim.right)+'</option></select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div><div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea><div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div><div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div><div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+'<section class="simCenter"><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></section>'+sideHTML('right')+'</div><div id="simPlayerAssignments"></div></div>'+simSuggestions()+'</div>';root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));$('simLeftTeam').oninput=e=>{
-sim.left=e.target.value;saveSim()};$('simLeftTeam').onchange=e=>{
-sim.left=e.target.value;saveSim();renderSim()};$('simRightTeam').oninput=e=>{
-sim.right=e.target.value;saveSim()};$('simRightTeam').onchange=e=>{
-sim.right=e.target.value;saveSim();renderSim()};$('simFirstPick').onchange=e=>setFirstPick(e.target.value);window.dispatchEvent(new Event('dlns:sim-render'))}
+const root=$(ID+'Root');if(!root)return;
+saveSim();window.draftSimState=sim;
+if(window.renderCoverageStats)window.renderCoverageStats(sim);
+const c=current(),u=used(),region=window.DLNSMatchEntry?.region||'EU',filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';
+updateSimRanks();
+root.innerHTML='<div class="simControls"><label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+['EU','NA'].map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
+'<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
+'<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
+'<div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div>'+
+'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div></div>'+simSuggestions()+'</div>';
+root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));
+$('simRegion').onchange=e=>{window.DLNSMatchEntry?.setRegion(e.target.value);$('simRegion')?.focus({preventScroll:true})};
+for(const side of ['left','right']){
+const teamId=side==='left'?'simLeftTeam':'simRightTeam';
+$(teamId).onchange=e=>{window.DLNSMatchEntry?.setTeam(side,e.target.value);$(teamId)?.focus({preventScroll:true})};
+$('simFirstPick-'+side).onchange=()=>{setFirstPick(side);$('simFirstPick-'+side)?.focus({preventScroll:true})};
+$('simWinner-'+side).onchange=()=>{window.DLNSMatchEntry?.setWinner(side);$('simWinner-'+side)?.focus({preventScroll:true})}}
+$('simClearWinner').onclick=()=>window.DLNSMatchEntry?.setWinner('');
+window.dispatchEvent(new Event('dlns:sim-render'))}
 function addSimUI(){
 if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf('validation')),0,ID);const btn=document.createElement('button');btn.className='tab';btn.id='tabBtn-'+ID;btn.textContent='Draft Simulator';btn.onclick=()=>setTab(ID);$('tabs').insertBefore(btn,$('tabBtn-validation')||null);$('panels').insertAdjacentHTML('beforeend','<section id="tab-'+ID+'" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="'+ID+'Root"></div></div></section></section>')}
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js"></script>
+<script src="dlns/submission.js?v=20261021-controls"></script>
 </body>
 </html>
 
