@@ -104,6 +104,27 @@
     return wins;
   }
 
+  function nextMatch(matches) {
+    if (!matches.length) return {week:1,region:'EU',round:'Challenger',game:1};
+    const latest = matches.reduce((last,match) => chronology(matchId(match)) > chronology(matchId(last)) ? match : last);
+    const week = Number(latest.week), game = Number(latest.game), region = latest.region;
+    const nextRegion = () => ({week:region === 'EU' ? week : week+1,region:region === 'EU' ? 'NA' : 'EU',round:'Challenger',game:1});
+    let next;
+    if (latest.round === 'Challenger' && game === 1) next = {week,region,round:'Finals',game:1};
+    else if (latest.round === 'Finals' && game === 1) next = {week,region,round:'Finals',game:2};
+    else if (latest.round === 'Finals' && game === 2) {
+      const finals = [1,2].map(n => matches.find(match => Number(match.week) === week && match.region === region && match.round === 'Finals' && Number(match.game) === n));
+      const winners = finals.map(match => match && ['left','right'].includes(match.winner) ? text(match[`${match.winner}_team`]) : '');
+      if (winners.some(winner => !winner)) throw new Error('Finals Games 1 and 2 need winners before deciding whether Game 3 is required.');
+      const teams = new Set([finals[0].left_team,finals[0].right_team]);
+      if (![finals[1].left_team,finals[1].right_team].every(team => teams.has(team))) throw new Error('The teams in Finals Games 1 and 2 do not match.');
+      next = winners[0] !== winners[1] ? {week,region,round:'Finals',game:3} : nextRegion();
+    } else if (latest.round === 'Finals' && game === 3) next = nextRegion();
+    else throw new Error('The latest match is outside the supported Challenger/Finals sequence.');
+    if (next.week > 9999) throw new Error('The next match would exceed week 9999.');
+    return next;
+  }
+
   function simToMatch(sim, details, players = {}) {
     const match = {
       week:Number(details.week),region:details.region,round:details.round,game:Number(details.game),
@@ -127,5 +148,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick,seriesWins});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,withFirstPick,seriesWins,nextMatch});
 });

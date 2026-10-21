@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Stats</title>
 <link rel="icon" type="image/png" href="images/deadlock/icons/abrams.png">
-<link rel="stylesheet" href="dlns/submission.css?v=20261021-controls">
+<link rel="stylesheet" href="dlns/submission.css?v=20261021-autofill">
 <style>
 :root{
 --bg:#07111f;
@@ -499,7 +499,7 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js?v=20261021-series"></script>
+</main><script src="dlns/model.js?v=20261021-autofill"></script>
 <script src="dlns/database.js"></script>
 <script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
@@ -2081,7 +2081,7 @@ if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261021-series"></script>
+<script src="dlns/submission.js?v=20261021-autofill"></script>
 </body>
 </html>
 
