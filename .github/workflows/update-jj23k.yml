@@ -3,8 +3,9 @@ name: Update JJ23K receiving leaders
 on:
   workflow_dispatch:
   schedule:
-    # Check daily after nflverse's morning data refresh.
-    - cron: "17 16 * * *"
+    # Refresh daily around 1 a.m. Eastern, adjusting for daylight saving time.
+    - cron: "0 1 * * *"
+      timezone: "America/New_York"
 
 permissions:
   contents: write
