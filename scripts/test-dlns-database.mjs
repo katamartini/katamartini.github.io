@@ -25,6 +25,10 @@ const coverageStart = html.indexOf('function coveragePct('), coverageEnd = html.
 assert.ok(coverageStart > 0 && coverageEnd > coverageStart);
 new Script(html.slice(html.indexOf('function combos('),html.indexOf('function draftSimTab('))
   + html.slice(coverageStart,coverageEnd)).runInContext(coverage);
+assert.equal(coverage.coveragePct(1,3),'33.333%');
+assert.equal(coverage.coveragePct(1,1),'100.000%');
+assert.equal(coverage.coveragePct(0,10),'0.000%');
+assert.equal(coverage.coveragePct(0,0),'0.000%');
 const coverageSizes = [['duos',2],['trios',3],['quads',4],['fives',5],['sixes',6]];
 const seenDrafts = ['ABCDEF','GHIJKQ','ABGHQR'].map(draft=>draft.split(''));
 for (const [kind,size] of coverageSizes) {
@@ -58,8 +62,10 @@ for (const [left,right] of [['ABC','GH'],['ABCDEF','GHIJKL']]) {
     const total = coverage.nCk(coverage.currentHeroUniverse.length,size), unseen = total-coverage.currentCoverageMaps[kind].size;
     const fresh = ['left','right'].flatMap(side=>coverage.newPickedCombosForSide(kind,size,side,state,coverage.currentCoverageMaps).items);
     const projected = unseen-new Set(fresh.map(coverage.keyOf)).size;
-    assert.ok(row.includes(`id="${kind}Base">${unseen} / ${total}`));
+    assert.ok(row.includes(`<span class="coverageCurrentCount">${unseen} / ${total}</span>`));
+    assert.ok(row.includes(`<span class="coverageProjectedCount">&rarr; ${projected} / ${total}</span>`));
     assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
+    for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+\.\d{3}%$/);
     assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
     assert.equal((row.match(/class="coverageNewCount mono"/g) || []).length,size === 6 ? 0 : 2);
   }
@@ -67,7 +73,7 @@ for (const [left,right] of [['ABC','GH'],['ABCDEF','GHIJKL']]) {
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: comparison rows preserve totals, projections, possible combinations, hero icons and draft-count omission.');
+console.log('DLNS coverage: raw count/percentage projections, three-decimal precision, possible combinations, hero icons and draft-count omission passed.');
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }
