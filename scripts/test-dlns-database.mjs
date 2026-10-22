@@ -31,6 +31,7 @@ assert.equal(coverage.coveragePct(1,1),'100.000%');
 assert.equal(coverage.coveragePct(0,10),'0.000%');
 assert.equal(coverage.coveragePct(0,0),'0.000%');
 const coverageSizes = [['duos',2],['trios',3],['quads',4],['fives',5],['sixes',6]];
+const projectionChanges = new Set();
 const seenDrafts = ['ABCDEF','GHIJKQ','ABGHQR'].map(draft=>draft.split(''));
 for (const [kind,size] of coverageSizes) {
   for (const draft of seenDrafts) coverage.combos(draft,size,heroes=>coverage.currentCoverageMaps[kind].set(coverage.keyOf(heroes),1));
@@ -63,8 +64,11 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
     const total = coverage.nCk(coverage.currentHeroUniverse.length,size), unseen = total-coverage.currentCoverageMaps[kind].size;
     const fresh = ['left','right'].flatMap(side=>coverage.newPickedCombosForSide(kind,size,side,state,coverage.currentCoverageMaps).items);
     const projected = unseen-new Set(fresh.map(coverage.keyOf)).size;
+    const reduced = projected < unseen;
+    projectionChanges.add(reduced);
     assert.ok(row.includes(`<span class="coverageNumerator">${unseen}</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">${total}</span>`));
-    assert.ok(row.includes(`<span class="coverageNumerator coverageProjectedNumerator">${projected}</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">${total}</span>`));
+    assert.ok(row.includes(`<span class="coverageNumerator coverageProjectedNumerator${reduced ? ' coverageCountReduced' : ''}">${projected}</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">${total}</span>`));
+    assert.equal((row.match(/coverageCountReduced/g) || []).length,reduced ? 1 : 0);
     assert.equal((row.match(/coverageNumerator coverageProjectedNumerator/g) || []).length,1);
     assert.equal((row.match(/class="coverageCountArrow"/g) || []).length,2);
     assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
@@ -90,6 +94,7 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
     assert.ok(!row.includes('coverageNewCount'));
   }
 }
+assert.deepEqual([...projectionChanges].sort(),[false,true],'coverage colors exercise unchanged and decreased counts');
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
