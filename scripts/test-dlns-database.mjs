@@ -63,8 +63,10 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
     const total = coverage.nCk(coverage.currentHeroUniverse.length,size), unseen = total-coverage.currentCoverageMaps[kind].size;
     const fresh = ['left','right'].flatMap(side=>coverage.newPickedCombosForSide(kind,size,side,state,coverage.currentCoverageMaps).items);
     const projected = unseen-new Set(fresh.map(coverage.keyOf)).size;
-    assert.ok(row.includes(`<span class="coverageCurrentCount">${unseen} / ${total}</span>`));
-    assert.ok(row.includes(`<span class="coverageProjectedCount">&rarr; ${projected} / ${total}</span>`));
+    assert.ok(row.includes(`<span class="coverageNumerator">${unseen}</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">${total}</span>`));
+    assert.ok(row.includes(`<span class="coverageNumerator coverageProjectedNumerator">${projected}</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">${total}</span>`));
+    assert.equal((row.match(/coverageNumerator coverageProjectedNumerator/g) || []).length,1);
+    assert.equal((row.match(/class="coverageCountArrow"/g) || []).length,2);
     assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
     for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+\.\d{3}%$/);
     assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
