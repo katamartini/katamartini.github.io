@@ -5,11 +5,13 @@
 })(typeof window === 'object' ? window : globalThis, function () {
   'use strict';
 
-  const heroes = Object.freeze(['Abrams','Apollo','Bebop','Billy','Calico','Celeste','Doorman','Drifter','Dynamo','Graves','Grey Talon','Haze','Holliday','Infernus','Ivy','Kelvin','Lady Geist','Lash','McGinnis','Mina','Mirage','Mo and Krill','Paige','Paradox','Pocket','Rem','Seven','Shiv','Silver','Sinclair','Venator','Victor','Vindicta','Viscous','Vyper','Warden','Wraith','Yamato']);
+  const heroes = Object.freeze(['Abrams','Apollo','Baba','Bebop','Billy','Calico','Celeste','Deadman Danny','Doorman','Drifter','Dynamo','Graves','Grey Talon','Haze','Holliday','Infernus','Ivy','Kelvin','Lady Geist','Lash','McGinnis','Mina','Mirage','Mo and Krill','Nurse Harrow','Paige','Paradox','Pocket','Rat King','Rem','Seven','Shiv','Silver','Sinclair','Solomon','Venator','Victor','Vindicta','Violet','Viscous','Vyper','Warden','Wraith','Yamato']);
   const availability = Object.freeze(Object.fromEntries(heroes.map(hero => [hero, ({
     Apollo:'26-EU-C-1',Billy:'2-NA-C-1',Celeste:'25-EU-C-1',Doorman:'3-EU-C-1',
     Drifter:'3-NA-C-1',Graves:'24-EU-C-1',Mina:'2-EU-C-1',Paige:'3-EU-C-1',
-    Rem:'23-EU-C-1',Silver:'24-EU-C-1',Venator:'25-EU-C-1',Victor:'4-EU-C-1'
+    Rem:'23-EU-C-1',Silver:'24-EU-C-1',Venator:'25-EU-C-1',Victor:'4-EU-C-1',
+    'Rat King':'59-EU-C-1',Baba:'59-EU-C-1',Solomon:'60-EU-C-1',
+    'Deadman Danny':'60-EU-C-1',Violet:'61-EU-C-1','Nurse Harrow':'61-EU-C-1'
   })[hero] || '1-EU-C-1'])));
   const other = side => side === 'left' ? 'right' : 'left';
   const text = value => typeof value === 'string' ? value.trim() : '';
