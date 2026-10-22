@@ -449,6 +449,9 @@ background:rgba(9,21,37,.28)}
 .coverageCount{
 font-size:14px;
 font-weight:750}
+.coverageProjectedCount{
+display:block;
+margin-top:3px}
 .coveragePct{
 color:var(--a);
 font-weight:700;
@@ -662,7 +665,7 @@ bindSort('quint',()=>{const d=groupDrafts(true).drafts;renderQuints(d,countMaps(
 function statCard([id,l]){
 return'<div class="card"><div class="in"><div class="label">'+l+'</div><div class="value mono" id="'+id+'">0</div></div></div>'}
 function coveragePct(count,total){
-return total?(count/total*100).toFixed(total>100000?3:1)+'%':'0.000%'}
+return total?(count/total*100).toFixed(3)+'%':'0.000%'}
 function possibleSeenForSide(kind,size,side,state,maps,heroes){
 const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),otherSide=side==='left'?'right':'left',blocked=new Set([...(state?.slots?.left?.bans||[]),...(state?.slots?.right?.bans||[]),...(state?.slots?.[otherSide]?.picks||[])].filter(Boolean)),mineSet=new Set(mine),avail=heroes.filter(h=>!blocked.has(h)&&!mineSet.has(h));
 let total=0,seen=0;
@@ -696,7 +699,7 @@ const possible=possibleSeenForSide(id,size,side,state,maps,heroes),fresh=newPick
 return {side,possible,fresh,unseen:Math.max(0,possible.total-possible.seen)}}):[];
 const newKeys=new Set(sides.flatMap(side=>side.fresh.items.map(keyOf))),projectedUnseen=Math.max(0,unseen-newKeys.size);
 const currentPct=coveragePct(unseen,total),projectedPct=coveragePct(projectedUnseen,total);
-return '<tr id="'+id+'Coverage"><th scope="row">'+label+'</th><td class="coverageOverall"><div class="coverageCellLabel" aria-hidden="true">Overall unseen</div><div class="coverageCount mono" id="'+id+'Base">'+num(unseen)+' / '+num(total)+'</div><div class="coveragePct mono" id="'+id+'Pct" title="Unseen percentage now, then after adding this draft">'+currentPct+' &rarr; '+projectedPct+'</div></td>'+['left','right'].map((side,index)=>{
+return '<tr id="'+id+'Coverage"><th scope="row">'+label+'</th><td class="coverageOverall"><div class="coverageCellLabel" aria-hidden="true">Overall unseen</div><div class="coverageCount mono" id="'+id+'Base"><span class="coverageCurrentCount">'+num(unseen)+' / '+num(total)+'</span><span class="coverageProjectedCount">&rarr; '+num(projectedUnseen)+' / '+num(total)+'</span></div><div class="coveragePct mono" id="'+id+'Pct" title="Unseen percentage now, then after adding this draft">'+currentPct+' &rarr; '+projectedPct+'</div></td>'+['left','right'].map((side,index)=>{
 const name=state?.[side]||(index===0?'Team 1':'Team 2'),data=sides[index];
 return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'</div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.unseen)+' / '+num(data.possible.total)+'</strong><span class="coverageRate">'+coveragePct(data.unseen,data.possible.total)+' unseen</span></div>'+(size===6?'':'<div class="coverageNewCount mono">New <strong>'+num(data.fresh.items.length)+'</strong> / '+num(data.possible.total)+'</div>')+coverageComboIcons(data.fresh.items):'&mdash;')+'</td>'}).join('')+'</tr>'}
 function renderCoverageStats(state=window.draftSimState){

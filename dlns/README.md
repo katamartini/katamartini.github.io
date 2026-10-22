@@ -23,7 +23,7 @@ Autofill keeps entered heroes, player assignments and valid team selections, cle
 
 Each save keeps a private revision snapshot. Concurrent edits are rejected instead of overwriting a newer revision. Match IDs can be corrected by editing their week, region, round or game. There is intentionally no delete control.
 
-Below the player entries, **Unseen combinations** compares duos through full drafts in rows. The overall column shows the unseen total and its percentage before and after counting the new combinations in the current draft. Each team column separates its still-possible unseen count from its new picked combinations, shown with hero icons. Full drafts retain their icons without a redundant new-count line. The comparison stacks by combo size on narrow screens.
+Below the player entries, **Unseen combinations** compares duos through full drafts in rows. The overall column shows the raw unseen count (out of all possible combinations) and its percentage, both before and after counting the new combinations in the current draft. All percentages in this comparison use three decimal places. Each team column separates its still-possible unseen count from its new picked combinations, shown with hero icons. Full drafts retain their icons without a redundant new-count line. The comparison stacks by combo size on narrow screens.
 
 ## Security
 
