@@ -572,6 +572,7 @@ grid-template-columns:1fr}
 <section id="panels">
 </section>
 </main><script src="dlns/model.js?v=20261022-heroes"></script>
+<script src="dlns/combinations.js?v=20261022-leaders"></script>
 <script src="dlns/database.js?v=20261021-teams"></script>
 <script>
 const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
@@ -800,13 +801,14 @@ total:w.heroes*heroAvg+w.duos*duoAvg+w.trios*trioAvg+w.quads*quadAvg+w.fives*fiv
 function raritySignature(heroes,maps,w){
 return heroes.join('|')+'||'+maps.sixes.size+'||'+[w.heroes,w.duos,w.trios,w.quads,w.fives].join(',')}
 function buildRarityIndex(heroes,maps,w){
-const total=nCk(heroes.length,6),scores=new Float64Array(total);
+const total=nCk(heroes.length,6),scores=new Float64Array(total),unseen=DLNSCombinations.topList(maps.sixes);
 let i=0;
 combos(heroes,6,c=>{
-scores[i++]=score(c,maps,w).total});
+const value=score(c,maps,w).total;
+scores[i++]=value;unseen.consider(c,value)});
 scores.sort();
 return{
-scores,total,signature:raritySignature(heroes,maps,w)}}
+scores,total,topUnseen:unseen.items,signature:raritySignature(heroes,maps,w)}}
 let rarityBuildToken=0,rarityBuildStatus=null;
 function renderRarityProgress(){
 const el=$('rarityProgress');
@@ -832,11 +834,11 @@ function scheduleRarityIndex(heroes,maps,w){
 const signature=raritySignature(heroes,maps,w);
 if(currentRarityIndex&&currentRarityIndex.signature===signature)return;
 if(rarityBuildStatus&&rarityBuildStatus.signature===signature)return;
-const token=++rarityBuildToken,total=nCk(heroes.length,6),scores=new Float64Array(total),idx=[0,1,2,3,4,5];
-let out=0,done=heroes.length<6;
+const token=++rarityBuildToken,total=nCk(heroes.length,6),scores=new Float64Array(total),idx=[0,1,2,3,4,5],unseen=DLNSCombinations.topList(maps.sixes);
+let out=0,done=heroes.length<6,lastLeadersRender=0;
 currentRarityIndex=null;
 rarityBuildStatus={
-signature,total,done:0};
+signature,total,done:0,topUnseen:unseen.items};
 renderRarityProgress();
 function advance(){
 let p=5;
@@ -848,7 +850,8 @@ for(let q=p+1;q<6;q++)idx[q]=idx[q-1]+1}
 function step(){
 const start=performance.now();
 while(!done&&performance.now()-start<12){
-scores[out++]=score(idx.map(i=>heroes[i]),maps,w).total;
+const combo=idx.map(i=>heroes[i]),value=score(combo,maps,w).total;
+scores[out++]=value;unseen.consider(combo,value);
 advance()}
 if(token!==rarityBuildToken)return;
 rarityBuildStatus.done=out;
@@ -856,13 +859,16 @@ renderRarityProgress();
 if(done){
 scores.sort();
 currentRarityIndex={
-scores,total,signature};
+scores,total,topUnseen:unseen.items,signature};
 rarityBuildStatus=null;
 if(window.clearDraftSimRarityCache)window.clearDraftSimRarityCache();
 if($('draftsimRoot')&&window.renderDraftSim)window.renderDraftSim();
 renderRarityProgress();
 if($('draftSearchResults'))renderDraftSearch(currentHeroUniverse);
 return}
+if(performance.now()-lastLeadersRender>=500){
+lastLeadersRender=performance.now();
+window.renderDraftSimLeaders?.()}
 setTimeout(step,0)}
 setTimeout(step,0)}
 function rarityRankFromIndex(targetScore,index){
@@ -1880,6 +1886,56 @@ color:var(--t)}
 .simPicked .dIcon{
 outline:2px solid var(--good);
 outline-offset:2px}
+.simLeaders{
+margin-top:18px;
+padding-top:14px;
+border-top:1px solid var(--b)}
+.simLeaders h3{
+font-size:15px;
+margin:0 0 14px}
+.simLeaderGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));
+gap:14px}
+.simLeaderGroup{
+min-width:0}
+.simLeaderGroup h4{
+font-size:13px;
+margin:0 0 8px}
+.simLeaderList{
+list-style:none;
+margin:0;
+padding:0}
+.simLeaderRow{
+display:flex;
+align-items:center;
+gap:6px;
+min-height:42px;
+padding:8px 0;
+border-top:1px solid var(--b)}
+.simLeaderRank{
+min-width:16px;
+font-size:11px;
+color:var(--m)}
+.simLeaderHeroes{
+display:flex;
+align-items:center;
+flex-wrap:wrap;
+gap:6px;
+min-width:0}
+.simLeaderHeroes .dIcon{
+width:24px;
+height:24px}
+.simLeaderHeroes .simPicked .dIcon{
+outline-offset:1px}
+.simLeaderImpossible{
+opacity:.35;
+filter:grayscale(1)}
+.simLeaderStatus{
+min-height:16px;
+font-size:11px;
+color:var(--m);
+margin-bottom:5px}
 .simHeroBtn{
 display:flex;
 align-items:center;
@@ -2037,16 +2093,53 @@ sim=DLNSModel.withFirstPick(sim,v);saveSim();renderSim()}
 function undoSim(){
 const e=sim.events.pop();if(!e)return;sim.slots[e.side][e.type+'s'][e.index]='';sim.step=Math.max(0,sim.step-1);saveSim();renderSim()}
 let simRankCache={
-duo:[],trio:[]};function simRankedCombos(kind){
-const heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,size=kind==='duo'?2:3,m=countMaps(groupDrafts(true).drafts),all=[];combos(heroes,size,t=>{
+duo:[],trio:[]},simRankMaps=null,simRankUniverse='';function simRankedCombos(kind){
+const heroes=currentHeroUniverse.length?currentHeroUniverse:HEROES,size=kind==='duo'?2:3,m=currentCoverageMaps,all=[];combos(heroes,size,t=>{
 const k=keyOf(t);if(m[kind+'s'].has(k))return;const heroAvg=t.reduce((s,h)=>s+Math.log1p(m.heroes.get(h)||0),0)/size,duoCount=m.duos.get(k)||0;let duoAvg=0;if(size===3){
 let ds=0,dn=0;combos(t,2,d=>{
 ds+=Math.log1p(m.duos.get(keyOf(d))||0);dn++});duoAvg=ds/dn}
 const total=size===2?heroAvg+2*Math.log1p(duoCount):heroAvg+2*duoAvg;all.push({
 heroes:t,total})});all.sort((a,b)=>b.total-a.total);all.forEach((x,i)=>x.rank=i+1);return all.sort((a,b)=>a.rank-b.rank)}
 function updateSimRanks(){
+if(!currentCoverageMaps)return;
+const universe=currentHeroUniverse.join('|');
+if(simRankMaps===currentCoverageMaps&&simRankUniverse===universe)return;
+simRankMaps=currentCoverageMaps;simRankUniverse=universe;
 simRankCache={
 duo:simRankedCombos('duo'),trio:simRankedCombos('trio')}}
+let simLeaderCache=null,simLeaderBuildToken=0;
+function prepareSimLeaders(){
+const heroes=currentHeroUniverse,maps=currentCoverageMaps,w=currentLikelyWeights();
+if(!maps||!heroes.length)return;
+const signature=raritySignature(heroes,maps,w);
+if(simLeaderCache?.maps===maps&&simLeaderCache.signature===signature)return;
+const token=++simLeaderBuildToken,builders={};
+for(const size of [4,5])builders[size]=DLNSCombinations.createBuilder(heroes,size,maps[size===4?'quads':'fives'],combo=>score(combo,maps,w).total);
+simLeaderCache={maps,signature,builders};
+let stage=4,lastRender=0;
+function step(){
+if(token!==simLeaderBuildToken)return;
+const builder=builders[stage],start=performance.now();
+while(!builder.done&&performance.now()-start<12)builder.step();
+if(builder.done||performance.now()-lastRender>=500){
+lastRender=performance.now();renderSimLeaders()}
+if(builder.done)stage++;
+if(stage<=5)setTimeout(step,0)}
+setTimeout(step,0)}
+function simLeaderBox(size,label,items,progress){
+return '<section class="simLeaderGroup" data-size="'+size+'"><h4>'+label+'</h4>'+(progress===null?'':'<div class="simLeaderStatus" role="status">Calculating '+progress+'%...</div>')+'<ol class="simLeaderList">'+items.map((item,index)=>{
+const status=DLNSCombinations.possibility(item.heroes,sim),picked=new Set(status.selected),available=status.possible?'Possible for '+[status.leftPossible?team('left'):'',status.rightPossible?team('right'):''].filter(Boolean).join(' or '):'Impossible for either team';
+return '<li class="simLeaderRow '+(status.possible?'':'simLeaderImpossible')+'" data-combo-key="'+esc(item.key||keyOf(item.heroes))+'" data-possible="'+status.possible+'" title="'+esc(item.heroes.join(' + ')+'; '+available+'; likelihood score '+fmt(item.total,3))+'"><span class="simLeaderRank mono">#'+(index+1)+'</span><div class="simLeaderHeroes">'+item.heroes.map(hero=>simComboHero(hero,picked.has(hero))).join('')+'</div></li>'}).join('')+'</ol>'+(!items.length&&progress===null?'<div class="small">No unseen combinations.</div>':'')+'</section>'}
+function renderSimLeaders(){
+const root=$('simLeaders');if(!root)return;
+const signature=currentCoverageMaps?raritySignature(currentHeroUniverse,currentCoverageMaps,currentLikelyWeights()):'',cache=simLeaderCache?.maps===currentCoverageMaps&&simLeaderCache.signature===signature?simLeaderCache:null;
+const index=currentRarityIndex?.signature===signature?currentRarityIndex:null,build=rarityBuildStatus?.signature===signature?rarityBuildStatus:null;
+root.innerHTML='<h3>Likely unseen combinations</h3><div class="simLeaderGrid">'+[[2,'Duos'],[3,'Trios'],[4,'Quads'],[5,'Quints'],[6,'Drafts']].map(([size,label])=>{
+let items=[],progress=0;
+if(cache&&size<4){items=simRankCache[size===2?'duo':'trio'].slice(0,5);progress=null}
+else if(cache&&size<6){const builder=cache.builders[size];items=builder.items;progress=builder.done?null:Math.floor(builder.visited/Math.max(1,builder.total)*100)}
+else if(size===6){items=index?.topUnseen||build?.topUnseen||[];progress=index?null:Math.floor((build?.done||0)/Math.max(1,build?.total||0)*100)}
+return simLeaderBox(size,label,items,progress)}).join('')+'</div>'}
 let simRarityCache=new Map();
 function simLikelyWeights(){
 return currentLikelyWeights()}
@@ -2145,12 +2238,14 @@ const root=$(ID+'Root');if(!root)return;
 saveSim();window.draftSimState=sim;
 const c=current(),u=used(),region=window.DLNSMatchEntry?.region||'EU',filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';
 updateSimRanks();
+prepareSimLeaders();
 root.innerHTML='<div class="simControls"><label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+['EU','NA'].map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
 '<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
 '<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
 '<div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div>'+
-'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div><section class="coverageStats" id="coverageStats"></section></div>'+simSuggestions()+'</div>';
+'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div><section class="coverageStats" id="coverageStats"></section><section class="simLeaders" id="simLeaders" aria-label="Likely unseen combinations"></section></div>'+simSuggestions()+'</div>';
 if(window.renderCoverageStats)window.renderCoverageStats(sim);
+renderSimLeaders();
 root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));
 $('simRegion').onchange=e=>{window.DLNSMatchEntry?.setRegion(e.target.value);$('simRegion')?.focus({preventScroll:true})};
 for(const side of ['left','right']){
@@ -2162,6 +2257,7 @@ $('simClearWinner').onclick=()=>window.DLNSMatchEntry?.setWinner('');
 window.dispatchEvent(new Event('dlns:sim-render'))}
 function addSimUI(){
 if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf('validation')),0,ID);const btn=document.createElement('button');btn.className='tab';btn.id='tabBtn-'+ID;btn.textContent='Draft Simulator';btn.onclick=()=>setTab(ID);$('tabs').insertBefore(btn,$('tabBtn-validation')||null);$('panels').insertAdjacentHTML('beforeend','<section id="tab-'+ID+'" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="'+ID+'Root"></div></div></section></section>')}
+window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
