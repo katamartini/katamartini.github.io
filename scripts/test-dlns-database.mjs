@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
-import { Script } from 'node:vm';
+import { Script, createContext } from 'node:vm';
 
 const require = createRequire(import.meta.url);
 const { PGlite } = require('../.cache/dlns-tools/node_modules/@electric-sql/pglite');
@@ -12,6 +12,62 @@ for (const [,attributes,source] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/
   const external = attributes.match(/\bsrc=["']([^"']+)["']/i)?.[1];
   new Script(external ? await fs.readFile(new URL('../'+external,import.meta.url),'utf8') : source);
 }
+// Exercise the inline coverage renderer without booting the rest of the page.
+const coverageRoot = {innerHTML:''};
+const coverage = createContext({
+  window:{}, $:id=>id === 'coverageStats' ? coverageRoot : null,
+  num:String, esc:value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'),
+  ih:hero=>`<img alt="${hero}">`, keyOf:heroes=>heroes.slice().sort().join('|'),
+  currentHeroUniverse:'ABCDEFGHIJKLMNOPQR'.split(''),
+  currentCoverageMaps:Object.fromEntries(['duos','trios','quads','fives','sixes'].map(kind=>[kind,new Map()]))
+});
+const coverageStart = html.indexOf('function coveragePct('), coverageEnd = html.indexOf('function bigStats(');
+assert.ok(coverageStart > 0 && coverageEnd > coverageStart);
+new Script(html.slice(html.indexOf('function combos('),html.indexOf('function draftSimTab('))
+  + html.slice(coverageStart,coverageEnd)).runInContext(coverage);
+const coverageSizes = [['duos',2],['trios',3],['quads',4],['fives',5],['sixes',6]];
+const seenDrafts = ['ABCDEF','GHIJKQ','ABGHQR'].map(draft=>draft.split(''));
+for (const [kind,size] of coverageSizes) {
+  for (const draft of seenDrafts) coverage.combos(draft,size,heroes=>coverage.currentCoverageMaps[kind].set(coverage.keyOf(heroes),1));
+}
+for (const [left,right] of [['ABC','GH'],['ABCDEF','GHIJKL']]) {
+  const state = {left:'Left <Team>',right:'Right & Team',slots:{
+    left:{picks:left.split(''),bans:['M']},right:{picks:right.split(''),bans:['N']}
+  }};
+  for (const side of ['left','right']) {
+    const mine = state.slots[side].picks;
+    const blocked = new Set(['M','N',...state.slots[side === 'left' ? 'right' : 'left'].picks]);
+    const available = coverage.currentHeroUniverse.filter(hero=>!blocked.has(hero) && !mine.includes(hero));
+    const legal = Object.fromEntries(coverageSizes.map(([kind])=>[kind,new Set()]));
+    coverage.combos(available,6-mine.length,remaining=>{
+      for (const [kind,size] of coverageSizes) coverage.combos([...mine,...remaining],size,heroes=>legal[kind].add(coverage.keyOf(heroes)));
+    });
+    for (const [kind,size] of coverageSizes) {
+      const actual = coverage.possibleSeenForSide(kind,size,side,state,coverage.currentCoverageMaps,coverage.currentHeroUniverse);
+      assert.equal(actual.total,legal[kind].size,`${kind}: theoretical combinations for ${side}`);
+      assert.equal(actual.seen,[...legal[kind]].filter(key=>coverage.currentCoverageMaps[kind].has(key)).length);
+    }
+  }
+  coverage.renderCoverageStats(state);
+  assert.equal((coverageRoot.innerHTML.match(/<tr id=/g) || []).length,5);
+  assert.equal((coverageRoot.innerHTML.match(/class="coverageSide"/g) || []).length,10);
+  assert.ok(coverageRoot.innerHTML.includes('Left &lt;Team&gt;'));
+  assert.ok(coverageRoot.innerHTML.includes('Right &amp; Team'));
+  for (const [kind,size] of coverageSizes) {
+    const row = coverage.coverageRowHTML(kind,size,kind,state,coverage.currentCoverageMaps,coverage.currentHeroUniverse);
+    const total = coverage.nCk(coverage.currentHeroUniverse.length,size), unseen = total-coverage.currentCoverageMaps[kind].size;
+    const fresh = ['left','right'].flatMap(side=>coverage.newPickedCombosForSide(kind,size,side,state,coverage.currentCoverageMaps).items);
+    const projected = unseen-new Set(fresh.map(coverage.keyOf)).size;
+    assert.ok(row.includes(`id="${kind}Base">${unseen} / ${total}`));
+    assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
+    assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
+    assert.equal((row.match(/class="coverageNewCount mono"/g) || []).length,size === 6 ? 0 : 2);
+  }
+}
+coverage.renderCoverageStats();
+assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
+assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
+console.log('DLNS coverage: comparison rows preserve totals, projections, possible combinations, hero icons and draft-count omission.');
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }

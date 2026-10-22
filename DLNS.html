@@ -408,38 +408,112 @@ text-transform:uppercase;
 letter-spacing:.08em;
 margin-top:4px}
 .coverageStats{
-grid-template-columns:repeat(3,minmax(0,1fr));
 margin:14px 0 0}
-.coverageCard .value{
-font-size:18px}
+.coverageTable{
+width:100%;
+table-layout:fixed;
+border-collapse:collapse;
+border-top:1px solid var(--b);
+font-size:13px}
+.coverageTable caption{
+text-align:left;
+font-size:16px;
+font-weight:750;
+padding:0 0 10px}
+.coverageTypeColumn{
+width:10%}
+.coverageOverallColumn{
+width:22%}
+.coverageTable th,.coverageTable td{
+padding:12px;
+text-align:left;
+vertical-align:top;
+border-bottom:1px solid var(--b);
+overflow-wrap:anywhere}
+.coverageTable thead th{
+font-weight:650;
+color:var(--m);
+background:var(--p2)}
+.coverageHeaderNote{
+display:block;
+margin-top:4px;
+font-size:11px;
+font-weight:400}
+.coverageTable tbody th{
+font-size:14px;
+font-weight:750}
+.coverageTable td{
+border-left:1px solid var(--b)}
+.coverageTable tbody tr:nth-child(even){
+background:rgba(9,21,37,.28)}
+.coverageCount{
+font-size:14px;
+font-weight:750}
 .coveragePct{
 color:var(--a);
-font-weight:900;
-margin-top:2px}
-.coverageSim{
-margin-top:7px;
-font-size:11px;
-line-height:1.35;
+font-weight:700;
+margin-top:5px}
+.coverageMetric{
+display:flex;
+align-items:baseline;
+flex-wrap:wrap;
+gap:4px 10px}
+.coverageRate,.coverageNewCount{
+font-size:12px;
 color:var(--m)}
-.coverageSim b{
-color:var(--t)}
+.coverageNewCount{
+margin-top:5px}
+.coverageNewCount strong{
+color:var(--good)}
+.coverageCellLabel{
+display:none}
 .coverageNewCombos{
 display:flex;
 flex-wrap:wrap;
-gap:4px;
-margin:3px 0 6px}
+gap:5px;
+margin-top:8px}
 .coverageCombo{
 display:inline-flex;
 gap:2px;
 align-items:center;
 padding:2px;
 border:1px solid rgba(125,211,252,.22);
-border-radius:7px;
+border-radius:5px;
 background:rgba(125,211,252,.07)}
 .coverageCombo .sIcon{
-width:16px;
-height:16px;
-border-radius:5px}
+width:20px;
+height:20px;
+border-radius:4px}
+@media(max-width:760px){
+.coverageTable,.coverageTable tbody{
+display:block}
+.coverageTable caption{
+display:block;
+width:100%}
+.coverageTable colgroup{
+display:none}
+.coverageTable thead{
+position:absolute;
+width:1px;
+height:1px;
+overflow:hidden;
+clip-path:inset(50%)}
+.coverageTable tbody tr{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+border-bottom:1px solid var(--b)}
+.coverageTable tbody th,.coverageTable tbody td{
+min-width:0;
+border:0}
+.coverageTable .coverageSide{
+grid-column:1/-1;
+border-top:1px solid var(--b)}
+.coverageCellLabel{
+display:block;
+font-size:12px;
+font-weight:700;
+margin-bottom:7px}
+}
 .error{
 color:var(--bad);
 background:rgba(127,29,29,.28);
@@ -449,7 +523,7 @@ border-radius:12px}
 @media(max-width:1050px){
 .layout,.searchLayout{
 grid-template-columns:1fr}
-.g5,.coverageStats{
+.g5{
 grid-template-columns:repeat(2,1fr)}
 .head:not(.duo):not(.trio):not(.quint):not(.playerStat):not(.heroStat){
 display:none}
@@ -459,7 +533,7 @@ grid-template-columns:1fr!important}
 grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:620px){
-.g5,.coverageStats,.slots{
+.g5,.slots{
 grid-template-columns:1fr}
 }
 </style>
@@ -587,8 +661,6 @@ bindSort('trio',()=>renderTrios(currentHeroUniverse,countMaps(groupDrafts(true).
 bindSort('quint',()=>{const d=groupDrafts(true).drafts;renderQuints(d,countMaps(d))})}
 function statCard([id,l]){
 return'<div class="card"><div class="in"><div class="label">'+l+'</div><div class="value mono" id="'+id+'">0</div></div></div>'}
-function coverageCard(id,label){
-return'<div class="card coverageCard"><div class="in"><div class="label">'+label+'</div><div class="value mono" id="'+id+'Base">0 / 0</div><div class="coveragePct mono" id="'+id+'Pct">0.000%</div><div class="coverageSim mono" id="'+id+'Sim"></div></div></div>'}
 function coveragePct(count,total){
 return total?(count/total*100).toFixed(total>100000?3:1)+'%':'0.000%'}
 function possibleSeenForSide(kind,size,side,state,maps,heroes){
@@ -617,25 +689,21 @@ return{
 items,total}}
 function coverageComboIcons(items){
 return items.length?'<div class="coverageNewCombos">'+items.map(combo=>'<span class="coverageCombo" title="'+esc(combo.join(' + '))+'">'+combo.map(h=>ih(h,'sIcon')).join('')+'</span>').join('')+'</div>':''}
+function coverageRowHTML(id,size,label,state,maps,heroes){
+const total=nCk(heroes.length,size),unseen=Math.max(0,total-maps[id].size);
+const sides=state?.slots?['left','right'].map(side=>{
+const possible=possibleSeenForSide(id,size,side,state,maps,heroes),fresh=newPickedCombosForSide(id,size,side,state,maps);
+return {side,possible,fresh,unseen:Math.max(0,possible.total-possible.seen)}}):[];
+const newKeys=new Set(sides.flatMap(side=>side.fresh.items.map(keyOf))),projectedUnseen=Math.max(0,unseen-newKeys.size);
+const currentPct=coveragePct(unseen,total),projectedPct=coveragePct(projectedUnseen,total);
+return '<tr id="'+id+'Coverage"><th scope="row">'+label+'</th><td class="coverageOverall"><div class="coverageCellLabel" aria-hidden="true">Overall unseen</div><div class="coverageCount mono" id="'+id+'Base">'+num(unseen)+' / '+num(total)+'</div><div class="coveragePct mono" id="'+id+'Pct" title="Unseen percentage now, then after adding this draft">'+currentPct+' &rarr; '+projectedPct+'</div></td>'+['left','right'].map((side,index)=>{
+const name=state?.[side]||(index===0?'Team 1':'Team 2'),data=sides[index];
+return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'</div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.unseen)+' / '+num(data.possible.total)+'</strong><span class="coverageRate">'+coveragePct(data.unseen,data.possible.total)+' unseen</span></div>'+(size===6?'':'<div class="coverageNewCount mono">New <strong>'+num(data.fresh.items.length)+'</strong> / '+num(data.possible.total)+'</div>')+coverageComboIcons(data.fresh.items):'&mdash;')+'</td>'}).join('')+'</tr>'}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
-const defs=[['duos','duo',2,'Unseen duos'],['trios','trio',3,'Unseen trios'],['quads','quad',4,'Unseen quads'],['fives','quint',5,'Unseen quints'],['sixes','draft',6,'Unseen drafts']];
-if(!root.children.length)root.innerHTML=defs.map(([id,,,label])=>coverageCard(id,label)).join('');
-defs.forEach(([id,kind,size])=>{
-const seen=maps[id].size,total=nCk(heroes.length,size),unseen=Math.max(0,total-seen);
-$(id+'Base').textContent=num(unseen)+' / '+num(total);
-if(state?.slots){
-const left=possibleSeenForSide(id,size,'left',state,maps,heroes),right=possibleSeenForSide(id,size,'right',state,maps,heroes);
-const leftUnseen=Math.max(0,left.total-left.seen),rightUnseen=Math.max(0,right.total-right.seen);
-const leftNew=newPickedCombosForSide(id,size,'left',state,maps),rightNew=newPickedCombosForSide(id,size,'right',state,maps);
-const newKeys=new Set([...leftNew.items,...rightNew.items].map(keyOf)),projectedUnseen=Math.max(0,unseen-newKeys.size);
-const leftNewText=size===6?coverageComboIcons(leftNew.items):' · New '+num(leftNew.items.length)+' / '+num(left.total)+coverageComboIcons(leftNew.items),rightNewText=size===6?coverageComboIcons(rightNew.items):' · New '+num(rightNew.items.length)+' / '+num(right.total)+coverageComboIcons(rightNew.items);
-$(id+'Pct').textContent=coveragePct(unseen,total)+' -> '+coveragePct(projectedUnseen,total);
-$(id+'Sim').innerHTML='<b>'+esc(state.left||'Team 1')+':</b> '+num(leftUnseen)+' / '+num(left.total)+' ('+coveragePct(leftUnseen,left.total)+')'+leftNewText+'<br><b>'+esc(state.right||'Team 2')+':</b> '+num(rightUnseen)+' / '+num(right.total)+' ('+coveragePct(rightUnseen,right.total)+')'+rightNewText}
-else{
-$(id+'Pct').textContent=coveragePct(unseen,total);
-$(id+'Sim').textContent=''}})}
+const defs=[['duos',2,'Duos'],['trios',3,'Trios'],['quads',4,'Quads'],['fives',5,'Quints'],['sixes',6,'Drafts']];
+root.innerHTML='<table class="coverageTable"><caption>Unseen combinations</caption><colgroup><col class="coverageTypeColumn"><col class="coverageOverallColumn"><col><col></colgroup><thead><tr><th scope="col">Combo</th><th scope="col">Overall unseen<span class="coverageHeaderNote">Now &rarr; after draft</span></th><th scope="col">'+esc(state?.left||'Team 1')+'</th><th scope="col">'+esc(state?.right||'Team 2')+'</th></tr></thead><tbody>'+defs.map(([id,size,label])=>coverageRowHTML(id,size,label,state,maps,heroes)).join('')+'</tbody></table>'}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
 function comboTab(k,title,noun,label,last){
@@ -2080,7 +2148,7 @@ root.innerHTML='<div class="simControls"><label><div class="label">Region</div><
 '<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
 '<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
 '<div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div>'+
-'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div><section class="grid coverageStats" id="coverageStats"></section></div>'+simSuggestions()+'</div>';
+'<div class="simWorkspace"><div class="simDraftMain"><div class="simBoard">'+sideHTML('left')+simCenterHTML(c)+sideHTML('right')+'</div><div id="simPlayerAssignments"></div><section class="coverageStats" id="coverageStats"></section></div>'+simSuggestions()+'</div>';
 if(window.renderCoverageStats)window.renderCoverageStats(sim);
 root.querySelectorAll('.simHeroBtn:not(.used)').forEach(b=>b.onclick=()=>chooseHero(b.dataset.hero));
 $('simRegion').onchange=e=>{window.DLNSMatchEntry?.setRegion(e.target.value);$('simRegion')?.focus({preventScroll:true})};
