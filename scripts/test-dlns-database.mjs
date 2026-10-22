@@ -34,7 +34,7 @@ const seenDrafts = ['ABCDEF','GHIJKQ','ABGHQR'].map(draft=>draft.split(''));
 for (const [kind,size] of coverageSizes) {
   for (const draft of seenDrafts) coverage.combos(draft,size,heroes=>coverage.currentCoverageMaps[kind].set(coverage.keyOf(heroes),1));
 }
-for (const [left,right] of [['ABC','GH'],['ABCDEF','GHIJKL']]) {
+for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHIJKL']]) {
   const state = {left:'Left <Team>',right:'Right & Team',slots:{
     left:{picks:left.split(''),bans:['M']},right:{picks:right.split(''),bans:['N']}
   }};
@@ -67,13 +67,30 @@ for (const [left,right] of [['ABC','GH'],['ABCDEF','GHIJKL']]) {
     assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
     for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+\.\d{3}%$/);
     assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
-    assert.equal((row.match(/class="coverageNewCount mono"/g) || []).length,size === 6 ? 0 : 2);
+    for (const side of ['left','right']) {
+      const possible = coverage.possibleSeenForSide(kind,size,side,state,coverage.currentCoverageMaps,coverage.currentHeroUniverse);
+      const unseenPossible = possible.total-possible.seen;
+      let pickedUnseen = 0;
+      coverage.combos(state.slots[side].picks,size,heroes=>{
+        if (!coverage.currentCoverageMaps[kind].has(coverage.keyOf(heroes))) pickedUnseen++;
+      });
+      const cell = row.match(new RegExp(`<td class="coverageSide" data-side="${side}">([\\s\\S]*?)</td>`))?.[1];
+      assert.ok(cell,`${kind}: coverage cell for ${side}`);
+      assert.ok(cell.includes(`<strong class="coverageCount">${pickedUnseen} / ${unseenPossible}</strong>`),`${kind}: picked / possible unseen for ${side}`);
+      assert.ok(cell.includes(`${coverage.coveragePct(pickedUnseen,unseenPossible)} picked`));
+      assert.ok(pickedUnseen <= unseenPossible);
+      if (state.slots[side].picks.length === 6) {
+        assert.equal(pickedUnseen,unseenPossible,`${kind}: all possible unseen combos picked for a completed team`);
+        assert.ok(cell.includes(pickedUnseen ? '100.000% picked' : '0.000% picked'));
+      }
+    }
+    assert.ok(!row.includes('coverageNewCount'));
   }
 }
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: raw count/percentage projections, three-decimal precision, possible combinations, hero icons and draft-count omission passed.');
+console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, three-decimal precision and hero icons passed.');
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }

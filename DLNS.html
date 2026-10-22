@@ -461,13 +461,9 @@ display:flex;
 align-items:baseline;
 flex-wrap:wrap;
 gap:4px 10px}
-.coverageRate,.coverageNewCount{
+.coverageRate{
 font-size:12px;
 color:var(--m)}
-.coverageNewCount{
-margin-top:5px}
-.coverageNewCount strong{
-color:var(--good)}
 .coverageCellLabel{
 display:none}
 .coverageNewCombos{
@@ -701,12 +697,12 @@ const newKeys=new Set(sides.flatMap(side=>side.fresh.items.map(keyOf))),projecte
 const currentPct=coveragePct(unseen,total),projectedPct=coveragePct(projectedUnseen,total);
 return '<tr id="'+id+'Coverage"><th scope="row">'+label+'</th><td class="coverageOverall"><div class="coverageCellLabel" aria-hidden="true">Overall unseen</div><div class="coverageCount mono" id="'+id+'Base"><span class="coverageCurrentCount">'+num(unseen)+' / '+num(total)+'</span><span class="coverageProjectedCount">&rarr; '+num(projectedUnseen)+' / '+num(total)+'</span></div><div class="coveragePct mono" id="'+id+'Pct" title="Unseen percentage now, then after adding this draft">'+currentPct+' &rarr; '+projectedPct+'</div></td>'+['left','right'].map((side,index)=>{
 const name=state?.[side]||(index===0?'Team 1':'Team 2'),data=sides[index];
-return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'</div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.unseen)+' / '+num(data.possible.total)+'</strong><span class="coverageRate">'+coveragePct(data.unseen,data.possible.total)+' unseen</span></div>'+(size===6?'':'<div class="coverageNewCount mono">New <strong>'+num(data.fresh.items.length)+'</strong> / '+num(data.possible.total)+'</div>')+coverageComboIcons(data.fresh.items):'&mdash;')+'</td>'}).join('')+'</tr>'}
+return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'<span class="coverageHeaderNote">Picked / possible unseen</span></div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.fresh.items.length)+' / '+num(data.unseen)+'</strong><span class="coverageRate">'+coveragePct(data.fresh.items.length,data.unseen)+' picked</span></div>'+coverageComboIcons(data.fresh.items):'&mdash;')+'</td>'}).join('')+'</tr>'}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
 const defs=[['duos',2,'Duos'],['trios',3,'Trios'],['quads',4,'Quads'],['fives',5,'Quints'],['sixes',6,'Drafts']];
-root.innerHTML='<table class="coverageTable"><caption>Unseen combinations</caption><colgroup><col class="coverageTypeColumn"><col class="coverageOverallColumn"><col><col></colgroup><thead><tr><th scope="col">Combo</th><th scope="col">Overall unseen<span class="coverageHeaderNote">Now &rarr; after draft</span></th><th scope="col">'+esc(state?.left||'Team 1')+'</th><th scope="col">'+esc(state?.right||'Team 2')+'</th></tr></thead><tbody>'+defs.map(([id,size,label])=>coverageRowHTML(id,size,label,state,maps,heroes)).join('')+'</tbody></table>'}
+root.innerHTML='<table class="coverageTable"><caption>Unseen combinations</caption><colgroup><col class="coverageTypeColumn"><col class="coverageOverallColumn"><col><col></colgroup><thead><tr><th scope="col">Combo</th><th scope="col">Overall unseen<span class="coverageHeaderNote">Now &rarr; after draft</span></th><th scope="col">'+esc(state?.left||'Team 1')+'<span class="coverageHeaderNote">Picked / possible unseen</span></th><th scope="col">'+esc(state?.right||'Team 2')+'<span class="coverageHeaderNote">Picked / possible unseen</span></th></tr></thead><tbody>'+defs.map(([id,size,label])=>coverageRowHTML(id,size,label,state,maps,heroes)).join('')+'</tbody></table>'}
 function bigStats(k){
 return'<div class="bigStats"><div class="bigStat"><div class="n" id="'+k+'ShownCount">0</div><div class="l">unseen</div></div><div class="bigStat"><div class="n" id="'+k+'TotalCount">0</div><div class="l">total</div></div><div class="bigStat"><div class="n" id="'+k+'CoveragePct">0%</div><div class="l">seen coverage</div></div></div>'}
 function comboTab(k,title,noun,label,last){
