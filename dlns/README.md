@@ -38,6 +38,10 @@ The schema is in `supabase/migrations/202610210001_dlns.sql`. It was applied bef
 
 `supabase/migrations/202610210002_dlns_teams.sql` adds region-specific team registration. The dropdown merges these names with teams already found in match history, so historical teams do not need to be registered again.
 
+`supabase/migrations/202610220001_dlns_heroes.sql` adds Rat King and Baba from `59-EU-C-1`, Solomon and Deadman Danny from `60-EU-C-1`, and Violet and Nurse Harrow from `61-EU-C-1`. The shared catalog in `model.js` supplies the simulator, availability calculations and hero icons, including heroes with no recorded appearances. Both client and database validation reject picks and bans before each hero's first available match. The original history snapshot is unchanged.
+
+On screens at least 1800px wide, only the simulator expands into the side columns. The page header, statistics and tab navigation retain the same width and position as the other tabs.
+
 ## History and Offline Preview
 
 `history.json` is the structured import snapshot: 363 matches through `54-NA-F-2`, with all 5,808 actions. It is not a second live database. The initial import preserved 468 missing player assignments and duplicate player assignments in `44-NA-F-1` and `45-NA-F-3`; those records need corrected player assignments before saving an edit.

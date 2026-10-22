@@ -94,6 +94,27 @@ console.log('DLNS coverage: picked / possible unseen ratios, complete and partia
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }
+const newHeroes = {
+  'Rat King':'59-EU-C-1',Baba:'59-EU-C-1',Solomon:'60-EU-C-1',
+  'Deadman Danny':'60-EU-C-1',Violet:'61-EU-C-1','Nurse Harrow':'61-EU-C-1'
+};
+assert.equal(model.heroes.length,44);
+for (const [hero,first] of Object.entries(newHeroes)) assert.equal(model.availability[hero],first);
+const catalog = createContext({DLNSModel:model});
+new Script(html.slice(html.indexOf('const HERO_AVAIL='),html.indexOf('function ih('))).runInContext(catalog);
+assert.deepEqual(Array.from(new Script('Object.keys(HERO_AVAIL)').runInContext(catalog)),model.heroes);
+for (const hero of model.heroes) {
+  const path = catalog.ip(hero);
+  assert.ok(path,`${hero} icon mapping`);
+  await fs.access(new URL('../'+path,import.meta.url));
+}
+assert.ok(html.includes('HEROES=DLNSModel.heroes;'));
+const restoredSim = createContext({HEROES:model.heroes});
+new Script(html.slice(html.indexOf('function blankSlots('),html.indexOf('function loadSim('))).runInContext(restoredSim);
+for (const hero of Object.keys(newHeroes)) {
+  const partial = model.matchToSim({...history.matches[0],actions:[{type:'ban',order:1,side:'left',hero}]});
+  assert.equal(restoredSim.cleanSim(partial).events[0].hero,hero,`${hero} survives draft restoration`);
+}
 const db = new PGlite();
 await db.exec(`
   create role anon; create role authenticated;
@@ -114,6 +135,11 @@ await db.query(`insert into public.dlns_matches
   )`,[JSON.stringify(history.matches)]);
 assert.equal((await db.query('select count(*)::integer as count from public.dlns_matches')).rows[0].count,history.matches.length);
 await db.exec(await fs.readFile(new URL('../supabase/migrations/202610210002_dlns_teams.sql',import.meta.url),'utf8'));
+const heroMigration = await fs.readFile(new URL('../supabase/migrations/202610220001_dlns_heroes.sql',import.meta.url),'utf8');
+await db.exec(heroMigration);
+await db.exec(heroMigration);
+assert.deepEqual((await db.query('select name, first_available from public.dlns_heroes order by name')).rows,
+  model.heroes.map(name=>({name,first_available:model.chronology(model.availability[name])})).sort((a,b)=>a.name < b.name ? -1 : 1));
 for (const match of history.matches) {
   assert.deepEqual(model.validateMatch(match,{allowHistoricalPlayers:true}),[],match.match_id);
   const players = Object.fromEntries(match.actions.filter(a=>a.type==='pick').map(a=>[a.hero,a.player]));
@@ -233,6 +259,21 @@ await assert.rejects(db.query("update public.dlns_matches set left_team='Tampere
 assert.equal((await db.query('select * from public.dlns_match_revisions')).rows.length,0);
 await asUser('authenticated',owner);
 assert.equal((await db.query('select public.dlns_is_admin() as allowed')).rows[0].allowed,true);
+for (const [hero,first] of Object.entries(newHeroes)) {
+  const firstWeek = Number(first.split('-')[0]), available = structuredClone(fixture);
+  Object.assign(available,{week:firstWeek,match_id:first});
+  available.actions[0].hero = hero;
+  const early = {...available,week:firstWeek-1,region:'NA',round:'Finals',game:3,match_id:`${firstWeek-1}-NA-F-3`};
+  assert.ok(model.validateMatch(early).some(error=>error.includes(`${hero} was not available`)));
+  await assert.rejects(save(early),new RegExp(`${hero} was not available`));
+  assert.deepEqual(model.validateMatch(available),[]);
+  await db.exec('begin');
+  try {
+    assert.equal((await save(available)).actions[0].hero,hero,`${hero} accepted at first availability`);
+  } finally {
+    await db.exec('rollback');
+  }
+}
 await assert.rejects(db.query("insert into public.dlns_teams (region,name) values ('EU','Bypass')"),/permission denied/);
 const registered = await addTeam('  First Timers  ');
 assert.equal(registered.name,'First Timers');
@@ -273,4 +314,4 @@ await asUser('anon');
 assert.equal((await db.query("select name from public.dlns_teams where region='EU' order by name")).rows.length,2);
 assert.equal((await db.query("select revision from public.dlns_matches where match_id='55-EU-F-1'")).rows[0].revision,3);
 await db.close();
-console.log('DLNS: 363 historical matches round-trip correctly; owner-only match/team writes, regional team names, spoofed metadata, anonymous reads, draft validation, edit conflicts and revision history passed.');
+console.log('DLNS: 44 catalog heroes and availability boundaries, 363 historical match round-trips, owner-only match/team writes, regional team names, spoofed metadata, anonymous reads, draft validation, edit conflicts and revision history passed.');
