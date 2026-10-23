@@ -11,6 +11,8 @@ For a new match, choose a region and select each team from the dropdown in its d
 
 Assign players using the dropdown directly below each picked hero portrait. Players from the selected team's latest recorded roster in that region appear first, followed by everyone else; both groups are alphabetical. Matches without player assignments do not replace the last known roster. Choose an existing name or **+ New player...** to enter a first-time player. Assignments stay with their hero as draft ownership changes. The Likely unseen combinations lists show the top 20 duos, trios, quads, quints and drafts.
 
+New picks automatically select whoever most recently played that hero for the selected team in the current region. Automatic selections update when the team or region changes; heroes without a recorded player stay blank. Choosing or clearing a player manually keeps that choice, including after a reload. Loading a saved match preserves its recorded assignments.
+
 For a team's first appearance, choose **+ Add new team...** at the bottom of either team dropdown while signed in as the owner. Enter the name and choose **Add team**. The name is saved for the current region and selected on that side without changing the draft's heroes or players. It remains available after refresh, on other devices, and before the team's first match is submitted. Names are limited to 100 characters; case-insensitive duplicates reuse the existing name. The same name may be registered in both regions.
 
 Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.

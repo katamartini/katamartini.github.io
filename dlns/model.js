@@ -88,6 +88,18 @@
     return [...names.values()].sort((a,b) => a.localeCompare(b));
   }
 
+  function latestHeroPlayer(records, team, hero, region) {
+    const teamKey = text(team).toLowerCase();
+    let latest = -Infinity, player = '';
+    for (const row of records) {
+      if (row.region !== region || text(row.team).toLowerCase() !== teamKey || row.hero !== hero
+          || text(row.type).toLowerCase() !== 'pick' || !text(row.player) || !row.matchid) continue;
+      const order = chronology(row.matchid);
+      if (order > latest) { latest = order; player = text(row.player); }
+    }
+    return player;
+  }
+
   function validateTeam(name, region) {
     const errors = [];
     if (!['EU','NA'].includes(region)) errors.push('Choose EU or NA.');
@@ -162,5 +174,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,validateTeam,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,validateTeam,withFirstPick,seriesWins,nextMatch});
 });

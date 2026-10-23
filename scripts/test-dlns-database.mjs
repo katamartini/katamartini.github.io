@@ -168,6 +168,52 @@ assert.deepEqual(model.teamsForRegion([
 assert.deepEqual(model.teamsForRegion([{region:'EU',team:'Alpha'}],'EU',[
   {region:'EU',name:'alpha'}, {region:'EU',name:'  New Team  '}, {region:'NA',name:'Other'}
 ]),['Alpha','New Team']);
+const heroPlayerHistory = [
+  {matchid:'10-EU-F-2',region:'EU',team:'Alpha',type:'Pick',hero:'Abrams',player:'Latest'},
+  {matchid:'9-EU-F-3',region:'EU',team:'Alpha',type:'Pick',hero:'Abrams',player:'Earlier'},
+  {matchid:'11-EU-C-1',region:'EU',team:'Alpha',type:'Pick',hero:'Abrams',player:''},
+  {matchid:'12-EU-C-1',region:'EU',team:'Alpha',type:'Ban',hero:'Abrams',player:'Ban'},
+  {matchid:'12-EU-C-1',region:'EU',team:'Other',type:'Pick',hero:'Abrams',player:'Opponent'},
+  {matchid:'12-NA-C-1',region:'NA',team:'Alpha',type:'Pick',hero:'Abrams',player:'NA Player'},
+  {matchid:'12-EU-C-1',region:'EU',team:'Alpha',type:'Pick',hero:'Ivy',player:'Other Hero'}
+];
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,' ALPHA ','Abrams','EU'),'Latest');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory.slice().reverse(),'Alpha','Abrams','EU'),'Latest');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Alpha','Abrams','NA'),'NA Player');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Other','Abrams','EU'),'Opponent');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Alpha','Ivy','EU'),'Other Hero');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Alpha','Haze','EU'),'');
+assert.equal(model.latestHeroPlayer(heroPlayerHistory,'New Team','Abrams','EU'),'');
+const playerEntrySource = await fs.readFile(new URL('../dlns/submission.js',import.meta.url),'utf8');
+const playerEntryState = createContext({
+  app:{getRecords:()=>heroPlayerHistory},model,persist:()=>{},
+  entry:{region:'EU',players:{Ivy:'Manual'},autoPlayers:{}},
+  sim:{left:'Alpha',right:'Other',slots:{left:{picks:['Abrams']},right:{picks:['Ivy']}}}
+});
+new Script(playerEntrySource.slice(playerEntrySource.indexOf('  function autofillPlayers('),playerEntrySource.indexOf('  function teamNames('))).runInContext(playerEntryState);
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'Latest');
+assert.equal(playerEntryState.entry.players.Ivy,'Manual');
+playerEntryState.sim.left = 'Other';
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'Opponent');
+playerEntryState.sim.left = 'Alpha';
+playerEntryState.entry = JSON.parse(JSON.stringify(playerEntryState.entry));
+playerEntryState.entry.region = 'NA';
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'NA Player','automatic assignments remain automatic after reload');
+playerEntryState.entry.players.Abrams = '';
+delete playerEntryState.entry.autoPlayers.Abrams;
+playerEntryState.entry.region = 'EU';
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'','an explicit clear stays blank');
+playerEntryState.entry.players.Abrams = 'Manual';
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'Manual');
+delete playerEntryState.entry.players.Abrams;
+playerEntryState.sim.left = 'New Team';
+playerEntryState.autofillPlayers(playerEntryState.sim);
+assert.equal(playerEntryState.entry.players.Abrams,'','no history leaves the dropdown blank');
 assert.deepEqual(model.validateTeam(' First Timers ','EU'),[]);
 for (const name of ['',null,'   ','Team 1','TEAM 2','x'.repeat(101)]) assert.ok(model.validateTeam(name,'EU').length);
 assert.ok(model.validateTeam('First Timers','SA').length);
