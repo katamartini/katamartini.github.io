@@ -13,6 +13,8 @@ Assign players using the dropdown directly below each picked hero portrait. Play
 
 New picks automatically select whoever most recently played that hero for the selected team in the current region. Automatic selections update when the team or region changes; heroes without a recorded player stay blank. Choosing or clearing a player manually keeps that choice, including after a reload. Loading a saved match preserves its recorded assignments.
 
+Picked hero portraits show their all-time pick-count rank in the bottom-right corner, using **T** for ties. If the current draft improves a hero's standing, the badge shows its smaller current rank, an arrow, and its projected rank in green italics. Projections include both teams' picks, and editing a saved match replaces that match's picks rather than counting it twice. Rankings always use the full history from both regions.
+
 For a team's first appearance, choose **+ Add new team...** at the bottom of either team dropdown while signed in as the owner. Enter the name and choose **Add team**. The name is saved for the current region and selected on that side without changing the draft's heroes or players. It remains available after refresh, on other devices, and before the team's first match is submitted. Names are limited to 100 characters; case-insensitive duplicates reuse the existing name. The same name may be registered in both regions.
 
 Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.

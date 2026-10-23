@@ -589,7 +589,7 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js?v=20261022-player-autofill"></script>
+</main><script src="dlns/model.js?v=20261022-pick-ranks"></script>
 <script src="dlns/combinations.js?v=20261022-top20"></script>
 <script src="dlns/database.js?v=20261021-teams"></script>
 <script>
@@ -1856,6 +1856,32 @@ border-radius:7px}
 width:auto;
 min-width:100%;
 height:100%}
+.simPickRank{
+position:absolute;
+right:4px;
+bottom:4px;
+z-index:1;
+display:inline-flex;
+align-items:baseline;
+gap:3px;
+padding:3px 4px;
+border-radius:5px;
+background:rgba(4,17,31,.9);
+color:var(--t);
+font-size:13px;
+font-weight:900;
+line-height:1.1;
+font-variant-numeric:tabular-nums;
+white-space:nowrap}
+.simPickRankCurrent{
+font-size:.8em;
+color:var(--m)}
+.simPickRankArrow{
+font-size:.75em;
+color:var(--m)}
+.simPickRankProjected{
+color:var(--good);
+font-style:italic}
 .simSlot.ban .mIcon,.simSlot.ban .dIcon{
 width:42px;
 height:42px;
@@ -2232,8 +2258,13 @@ out.classList.remove('hidden');out.value=lines;out.focus();out.select()}}
 function chooseHero(h){
 if(used().has(h))return;const c=current();if(!c)return;const count=filled(c.side,c.type),index=pos(c.side,c.type,count);sim.slots[c.side][c.type+'s'][index]=h;sim.events.push({
 ...c,index,hero:h});sim.step++;saveSim();renderSim()}
+let simPickRanks=new Map();
+function simPickRankHTML(hero){
+const info=simPickRanks.get(hero);if(!info||!records.length)return'';
+const {current,projected,improved}=info,label=hero+': all-time pick rank '+current.label+' ('+current.picks+' picks)'+(improved?'; after this draft '+projected.label+' ('+projected.picks+' picks)':'');
+return '<span class="simPickRank" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+(improved?'<span class="simPickRankCurrent">'+current.label+'</span><span class="simPickRankArrow" aria-hidden="true">&rarr;</span><span class="simPickRankProjected">'+projected.label+'</span>':current.label)+'</span>'}
 function slotHTML(side,type,i){
-const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(side,type))===i,h=sim.slots[side][type+'s'][i],portrait='<div class="simSlot '+type+' '+(active?'active':'')+'">'+(h?ih(h,type==='pick'?'dIcon':'mIcon'):'')+'</div>';
+const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(side,type))===i,h=sim.slots[side][type+'s'][i],portrait='<div class="simSlot '+type+' '+(active?'active':'')+'">'+(h?ih(h,type==='pick'?'dIcon':'mIcon')+(type==='pick'?simPickRankHTML(h):''):'')+'</div>';
 return type==='pick'?'<div class="simPick">'+portrait+(h?'<div class="simPlayerAssignment" data-player-hero="'+esc(h)+'" data-player-side="'+side+'"></div>':'')+'</div>':portrait}
 function simUniqueInDraft(side){
 const badge=simUniqueBadge(side);
@@ -2265,6 +2296,7 @@ saveSim();window.draftSimState=sim;
 const c=current(),u=used(),region=window.DLNSMatchEntry?.region||'EU',filterBadge=simHeroFilter?'<span class="simTypeFilter">Filtering: '+esc(simHeroFilter)+'</span>':'';
 updateSimRanks();
 prepareSimLeaders();
+simPickRanks=DLNSModel.heroPickRanks(records,sim.slots.left.picks.concat(sim.slots.right.picks),window.DLNSMatchEntry?.editingMatchId);
 root.innerHTML='<div class="simControls"><label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+['EU','NA'].map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
 '<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
 '<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
@@ -2287,7 +2319,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261022-player-autofill"></script>
+<script src="dlns/submission.js?v=20261022-pick-ranks"></script>
 </body>
 </html>
 

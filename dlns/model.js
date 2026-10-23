@@ -100,6 +100,32 @@
     return player;
   }
 
+  function heroPickRanks(records, pickedHeroes = [], replacingMatchId = null) {
+    const picks = records.filter(row=>text(row.type).toLowerCase() === 'pick' && row.hero);
+    const selected = new Set(pickedHeroes.filter(Boolean));
+    const universe = new Set([...heroes,...picks.map(row=>row.hero),...selected]);
+    const currentCounts = new Map([...universe].map(hero=>[hero,0]));
+    for (const row of picks) currentCounts.set(row.hero,currentCounts.get(row.hero)+1);
+    const projectedCounts = new Map(currentCounts);
+    if (replacingMatchId) {
+      for (const row of picks) {
+        if (row.matchid === replacingMatchId) projectedCounts.set(row.hero,projectedCounts.get(row.hero)-1);
+      }
+    }
+    for (const hero of selected) projectedCounts.set(hero,projectedCounts.get(hero)+1);
+    const standing = (counts,hero) => {
+      const count = counts.get(hero), values = [...counts.values()];
+      const rank = 1+values.filter(value=>value > count).length;
+      const tied = values.filter(value=>value === count).length > 1;
+      return {picks:count,rank,tied,label:(tied?'T':'')+rank};
+    };
+    return new Map([...universe].map(hero=>{
+      const current = standing(currentCounts,hero), projected = standing(projectedCounts,hero);
+      const improved = projected.rank < current.rank || (projected.rank === current.rank && current.tied && !projected.tied);
+      return [hero,{current,projected,improved}];
+    }));
+  }
+
   function validateTeam(name, region) {
     const errors = [];
     if (!['EU','NA'].includes(region)) errors.push('Choose EU or NA.');
@@ -174,5 +200,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,validateTeam,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,validateTeam,withFirstPick,seriesWins,nextMatch});
 });
