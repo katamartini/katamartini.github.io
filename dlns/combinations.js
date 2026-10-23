@@ -7,8 +7,9 @@
 
   const keyOf = heroes => heroes.slice().sort((a,b)=>a.localeCompare(b)).join('|');
   const compare = (a,b) => b.total-a.total || a.key.localeCompare(b.key);
+  const leaderLimit = 20;
 
-  function topList(seen, limit = 5) {
+  function topList(seen, limit = leaderLimit) {
     const items = [];
     const couldEnter = total => items.length < limit || total >= items[items.length-1].total;
     return {
@@ -24,7 +25,7 @@
     };
   }
 
-  function createBuilder(heroes, size, seen, score, limit = 5) {
+  function createBuilder(heroes, size, seen, score, limit = leaderLimit) {
     const top = topList(seen,limit), indices = Array.from({length:size},(_,i)=>i);
     let done = size < 1 || size > heroes.length, visited = 0, total = done ? 0 : 1;
     for (let i = 1; i <= size && !done; i++) total = total*(heroes.length-size+i)/i;
@@ -63,5 +64,5 @@
     return {possible,leftPossible,rightPossible,selected:possible ? heroes.filter(hero=>picked.has(hero)) : []};
   }
 
-  return Object.freeze({topList,createBuilder,possibility});
+  return Object.freeze({leaderLimit,topList,createBuilder,possibility});
 });

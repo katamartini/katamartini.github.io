@@ -10,7 +10,7 @@ const keyOf = heroes=>heroes.slice().sort((a,b)=>a.localeCompare(b)).join('|');
 const engine = createContext({DLNSCombinations:combinations,keyOf});
 new Script(html.slice(html.indexOf('function combos('),html.indexOf('function draftSimTab('))
   + html.slice(html.indexOf('function countMaps('),html.indexOf('let rarityBuildToken='))).runInContext(engine);
-const heroes = 'ABCDEFGHI'.split('');
+const heroes = 'ABCDEFGHIJK'.split('');
 const maps = engine.countMaps(['ABCDEF','ABCDGH','ABEGHI'].map(value=>({heroes:value.split('')})));
 const weights = {heroes:.35,duos:1,trios:2,quads:4,fives:8};
 const expectedBySize = new Map();
@@ -21,17 +21,18 @@ for (const [size,kind] of [[2,'duos'],[3,'trios'],[4,'quads'],[5,'fives'],[6,'si
     if (!maps[kind].has(key)) expected.push({key,heroes:Array.from(combo),total:engine.score(combo,maps,weights).total});
   });
   expected.sort((a,b)=>b.total-a.total || a.key.localeCompare(b.key));
-  expectedBySize.set(size,expected.slice(0,5));
+  assert.ok(expected.length >= 20,`${kind}: enough unseen combinations to exercise the limit`);
+  expectedBySize.set(size,expected.slice(0,20));
   const builder = combinations.createBuilder(heroes,size,maps[kind],combo=>engine.score(combo,maps,weights).total);
   while (!builder.done) {
     const previous = builder.visited;
     builder.step(7);
     assert.ok(builder.visited > previous && builder.visited <= previous+7);
-    assert.ok(builder.items.length <= 5);
+    assert.ok(builder.items.length <= 20);
   }
   assert.equal(builder.total,engine.nCk(heroes.length,size));
   assert.equal(builder.visited,builder.total);
-  assert.deepEqual(builder.items,expected.slice(0,5),`${kind}: exact top five unseen combinations`);
+  assert.deepEqual(builder.items,expected.slice(0,20),`${kind}: exact top twenty unseen combinations`);
 }
 const originalScore = engine.score;
 let scoreCalls = 0;
@@ -40,7 +41,7 @@ const index = engine.buildRarityIndex(heroes,maps,weights);
 assert.equal(scoreCalls,engine.nCk(heroes.length,6),'Draft leaders reuse the existing rarity pass');
 assert.deepEqual(index.topUnseen,expectedBySize.get(6));
 assert.equal(index.scores.length,index.total);
-const tied = combinations.createBuilder(['D','C','B','A'],2,new Set(),()=>0);
+const tied = combinations.createBuilder(['D','C','B','A'],2,new Set(),()=>0,5);
 while (!tied.done) tied.step(2);
 assert.deepEqual(tied.items.map(item=>item.key),['A|B','A|C','A|D','B|C','B|D']);
 const empty = combinations.createBuilder([],6,new Set(),()=>0);
@@ -87,5 +88,5 @@ assert.ok(rendered.includes('data-possible="true"'));
 assert.ok(rendered.includes('alt="A" class="selected"'));
 assert.ok(rendered.includes('Calculating 25%'));
 assert.ok(rendered.includes('Possible for Left Team'));
-assert.equal((renderer.simLeaderBox(6,'Drafts',expectedBySize.get(6),null).match(/<li /g) || []).length,5);
-console.log('DLNS combination leaders: exact top fives, cached rarity reuse, ties, bans, split picks, team capacity, outlines and disabled rows passed.');
+assert.equal((renderer.simLeaderBox(6,'Drafts',expectedBySize.get(6),null).match(/<li /g) || []).length,20);
+console.log('DLNS combination leaders: exact top twenties, cached rarity reuse, ties, bans, split picks, team capacity, outlines and disabled rows passed.');

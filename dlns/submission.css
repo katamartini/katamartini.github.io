@@ -3,7 +3,7 @@
 .matchEntryTitle{font-size:14px;font-weight:750}
 .matchAuth,.matchEntryActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .matchEntryFields{display:grid;grid-template-columns:minmax(90px,.65fr) minmax(130px,1fr) minmax(80px,.5fr);gap:10px;margin:12px 0}
-.matchEntryFields label,.matchPlayerRow{min-width:0}
+.matchEntryFields label{min-width:0}
 .matchEntryFields input,.matchEntryFields select{width:100%;box-sizing:border-box;min-width:0}
 .matchEntryFields .label{margin-bottom:5px}
 .matchManagement{justify-content:flex-start;margin:10px 0}
@@ -14,13 +14,8 @@
 .matchEntryStatus.errorText{color:var(--bad)}
 .matchEntryStatus.success{color:var(--good)}
 .matchId{font-variant-numeric:tabular-nums;color:var(--a);font-size:12px}
-.matchPlayers{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:14px 0;border-bottom:1px solid var(--b);margin-bottom:14px}
-.matchPlayerTeam{min-width:0}
-.matchPlayerTeam h3{font-size:13px;margin:0 0 8px}
-.matchPlayerRow{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:8px;margin:6px 0}
-.matchPlayerRow input{width:100%;min-width:0;box-sizing:border-box}
-.matchPlayerRow .iw{width:30px;height:30px;display:flex;align-items:center;justify-content:center}
-.matchPlayerRow img{width:30px;height:30px;object-fit:contain}
+.simPlayerAssignment:empty{display:none}
+.simPlayerAssignment select{display:block;width:100%;min-width:0;padding:5px 3px;border-radius:6px;font-size:11px;text-overflow:ellipsis;cursor:pointer}
 .matchEditing{color:var(--good);font-size:12px}
 .matchEntry button:disabled{opacity:.5;cursor:default}
 .matchTeamDialog{width:min(380px,calc(100vw - 32px));padding:20px;background:var(--p);color:var(--t);border:1px solid var(--b);border-radius:8px}
@@ -33,4 +28,4 @@
 .matchTeamActions button:first-child{background:var(--chip);color:var(--t)}
 .matchTeamActions button:disabled{opacity:.5;cursor:default}
 @media(max-width:850px){.matchEntryFields{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:540px){.matchEntryFields{grid-template-columns:repeat(2,minmax(0,1fr))}.matchPlayers{grid-template-columns:1fr;gap:14px}.matchManagement select{width:100%}.matchAuth{width:100%}}
+@media(max-width:540px){.matchEntryFields{grid-template-columns:repeat(2,minmax(0,1fr))}.matchManagement select{width:100%}.matchAuth{width:100%}}

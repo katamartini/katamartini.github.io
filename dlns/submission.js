@@ -30,7 +30,7 @@
   }
 
   function playerList() {
-    return [...new Set(app.getRecords().map(row=>row.player).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    return [...new Set([...app.getRecords().map(row=>row.player),...Object.values(entry.players)].filter(Boolean))].sort((a,b)=>a.localeCompare(b));
   }
 
   function teamNames(region = entry.region) {
@@ -59,8 +59,8 @@
   }
 
   function render() {
-    const root = $('simMatchEntry'), playersRoot = $('simPlayerAssignments');
-    if (!root || !playersRoot) return;
+    const root = $('simMatchEntry'), playerSlots = document.querySelectorAll('[data-player-hero]');
+    if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
     const identity = auth.user?.user_metadata?.user_name || auth.user?.user_metadata?.preferred_username || auth.user?.email || '';
@@ -70,7 +70,7 @@
     root.className = 'matchEntry';
     if (!auth.admin) {
       root.innerHTML = header + ((auth.error || message) ? `<div class="matchEntryStatus errorText" role="status">${esc(auth.error || message)}</div>` : '');
-      playersRoot.innerHTML = '';
+      playerSlots.forEach(slot=>{ slot.innerHTML = ''; });
       bindAuth();
       return;
     }
@@ -89,10 +89,22 @@
         <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${busy?'disabled':''}></label>
       </div>
       <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${busy || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
-    playersRoot.innerHTML = `<div class="matchPlayers">${['left','right'].map(side=>{
-      const picked = sim.slots[side].picks.filter(Boolean);
-      return `<section class="matchPlayerTeam"><h3>${esc(sim[side])} players</h3>${picked.map(hero=>`<label class="matchPlayerRow">${app.heroIcon(hero,'mIcon')}<input data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" list="simPlayerNames" placeholder="Player (optional)" maxlength="100" value="${esc(entry.players[hero] || '')}" ${busy?'disabled':''}></label>`).join('')}</section>`;
-    }).join('')}</div><datalist id="simPlayerNames">${playerList().map(player=>`<option value="${esc(player)}"></option>`).join('')}</datalist>`;
+    const players = playerList();
+    playerSlots.forEach(slot=>{
+      const hero = slot.dataset.playerHero, side = slot.dataset.playerSide, selected = entry.players[hero] || '';
+      slot.innerHTML = `<select data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" title="${esc(selected || 'Player (optional)')}" ${busy?'disabled':''}>${option('','Player',selected)}${players.map(player=>option(player,player,selected)).join('')}<option value="__new_player__" data-new-player>+ New player...</option></select>`;
+      const select = slot.querySelector('select');
+      select.onchange = () => {
+        if (select.selectedOptions[0]?.hasAttribute('data-new-player')) {
+          select.value = entry.players[hero] || '';
+          openNewPlayer(hero);
+          return;
+        }
+        entry.players[hero] = select.value;
+        select.title = select.value || 'Player (optional)';
+        persist();
+      };
+    });
     bindAuth();
     const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
     Object.entries(fields).forEach(([id,key]) => {
@@ -106,9 +118,33 @@
     $('simNewMatch').onclick = () => { entry = {...blank(),week:suggestedWeek()}; persist(); setMessage(''); app.setSim(model.matchToSim({left_team:'Team 1',right_team:'Team 2',first_pick:'left',actions:[]})); };
     $('simAutofillMatch').onclick = autofill;
     $('simSubmitMatch').onclick = submit;
-    playersRoot.querySelectorAll('[data-match-player]').forEach(input => {
-      input.oninput = () => { entry.players[input.dataset.matchPlayer] = input.value; persist(); };
-    });
+  }
+
+  function openNewPlayer(hero) {
+    if (saving || autofilling || !db.auth.admin || $('simNewPlayerDialog')) return;
+    const dialog = document.createElement('dialog');
+    dialog.id = 'simNewPlayerDialog';
+    dialog.className = 'matchTeamDialog';
+    dialog.setAttribute('aria-labelledby','simNewPlayerTitle');
+    dialog.innerHTML = `<form>
+      <h2 id="simNewPlayerTitle">Player for ${esc(hero)}</h2>
+      <label><span class="label">Player name</span><input id="simNewPlayerName" required maxlength="100" autocomplete="off" autofocus></label>
+      <div class="matchTeamActions"><button type="button" id="simCancelPlayer">Cancel</button><button type="submit">Use player</button></div>
+    </form>`;
+    const focusPlayer = () => [...document.querySelectorAll('[data-match-player]')].find(select=>select.dataset.matchPlayer === hero)?.focus({preventScroll:true});
+    dialog.onclose = () => { dialog.remove(); focusPlayer(); };
+    document.body.appendChild(dialog);
+    $('simCancelPlayer').onclick = () => dialog.close();
+    dialog.querySelector('form').onsubmit = event => {
+      event.preventDefault();
+      if (saving || autofilling || !db.auth.admin) return;
+      const input = $('simNewPlayerName'), name = input.value.trim();
+      if (!name) { input.setCustomValidity('Enter a player name.'); input.reportValidity(); return; }
+      entry.players[hero] = name;
+      persist(); render(); dialog.close();
+    };
+    $('simNewPlayerName').oninput = event => event.target.setCustomValidity('');
+    dialog.showModal();
   }
 
   function bindAuth() {
