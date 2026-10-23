@@ -5,11 +5,11 @@
   const STORE = 'dlns.matchEntry.v1';
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},editing:null,revision:null,selected:''});
+  const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},autoPlayers:{},editing:null,revision:null,selected:''});
   let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '', loginBusy = false;
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
-    if (saved && typeof saved === 'object') entry = {...blank(),...saved,players:saved.players || {}};
+    if (saved && typeof saved === 'object') entry = {...blank(),...saved,players:saved.players || {},autoPlayers:saved.autoPlayers || {}};
   } catch (_) {}
   entry.region = entry.region === 'NA' ? 'NA' : 'EU';
   entry.winner = ['left','right'].includes(entry.winner) ? entry.winner : '';
@@ -41,6 +41,23 @@
     }
     return [...new Set([...records.map(row=>row.player),...Object.values(entry.players)].filter(Boolean))]
       .sort((a,b)=>Number(roster.has(b))-Number(roster.has(a)) || a.localeCompare(b));
+  }
+
+  function autofillPlayers(sim) {
+    const records = app.getRecords();
+    let changed = false;
+    for (const side of ['left','right']) {
+      for (const hero of sim.slots[side].picks.filter(Boolean)) {
+        if (Object.hasOwn(entry.players,hero) && !entry.autoPlayers[hero]) continue;
+        const player = model.latestHeroPlayer(records,sim[side],hero,entry.region);
+        if (entry.players[hero] !== player || !entry.autoPlayers[hero]) {
+          entry.players[hero] = player;
+          entry.autoPlayers[hero] = true;
+          changed = true;
+        }
+      }
+    }
+    if (changed) persist();
   }
 
   function teamNames(region = entry.region) {
@@ -84,6 +101,7 @@
       bindAuth();
       return;
     }
+    if (!busy) autofillPlayers(sim);
     const matches = db.matches.slice().reverse();
     const option = (value,label,current) => `<option value="${esc(value)}" ${value===current?'selected':''}>${esc(label)}</option>`;
     root.innerHTML = header + `
@@ -111,6 +129,7 @@
           return;
         }
         entry.players[hero] = select.value;
+        delete entry.autoPlayers[hero];
         select.title = select.value || 'Player (optional)';
         persist();
       };
@@ -151,6 +170,7 @@
       const input = $('simNewPlayerName'), name = input.value.trim();
       if (!name) { input.setCustomValidity('Enter a player name.'); input.reportValidity(); return; }
       entry.players[hero] = name;
+      delete entry.autoPlayers[hero];
       persist(); render(); dialog.close();
     };
     $('simNewPlayerName').oninput = event => event.target.setCustomValidity('');
@@ -172,7 +192,7 @@
   function loadSelected() {
     const match = db.matches.find(item=>item.match_id === entry.selected);
     if (!match) { setMessage('Select a saved match first.','errorText'); return; }
-    entry = {week:String(match.week),region:match.region,round:match.round,game:String(match.game),winner:match.winner || '',
+    entry = {...blank(),week:String(match.week),region:match.region,round:match.round,game:String(match.game),winner:match.winner || '',
       players:Object.fromEntries(match.actions.filter(action=>action.type==='pick').map(action=>[action.hero,action.player || ''])),
       editing:match.match_id,revision:match.revision,selected:match.match_id};
     persist();
@@ -236,6 +256,7 @@
     try {
       const saved = await db.saveMatch(match,entry.revision,entry.editing);
       entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision;
+      entry.autoPlayers = {};
       persist();
       app.applyMatches(db.matches);
       setMessage(`Saved ${saved.match_id} (revision ${saved.revision})`,'success');
