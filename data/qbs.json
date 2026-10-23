@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-22T10:25:02.564Z",
+  "checkedAt": "2026-10-23T10:22:11.893Z",
   "season": 2026,
-  "through": "2026-10-19",
+  "through": "2026-10-22",
   "rosterWeek": 7,
   "rosterWeeks": {
     "ARI": 7,
@@ -129,7 +129,7 @@
       "seasons": 3,
       "status": "ACT",
       "rosterWeek": 7,
-      "length": 35,
+      "length": 36,
       "start": {
         "id": "2024_06_HOU_NE",
         "event": "401671619",
@@ -139,12 +139,12 @@
         "opponent": "HOU"
       },
       "last": {
-        "id": "2026_06_NYJ_NE",
-        "event": "401873001",
-        "date": "2026-10-18",
+        "id": "2026_07_NE_CHI",
+        "event": "401873010",
+        "date": "2026-10-22",
         "season": 2026,
-        "week": 6,
-        "opponent": "NYJ"
+        "week": 7,
+        "opponent": "CHI"
       }
     },
     {
@@ -796,6 +796,33 @@
       }
     },
     {
+      "id": "00-0039918",
+      "espn": "4431611",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "since": 2024,
+      "seasons": 3,
+      "status": "ACT",
+      "rosterWeek": 7,
+      "length": 2,
+      "start": {
+        "id": "2026_06_CHI_ATL",
+        "event": "401872999",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "ATL"
+      },
+      "last": {
+        "id": "2026_07_NE_CHI",
+        "event": "401873010",
+        "date": "2026-10-22",
+        "season": 2026,
+        "week": 7,
+        "opponent": "NE"
+      }
+    },
+    {
       "id": "00-0039910",
       "espn": "4426348",
       "name": "Jayden Daniels",
@@ -847,33 +874,6 @@
         "season": 2026,
         "week": 6,
         "opponent": "CLE"
-      }
-    },
-    {
-      "id": "00-0039918",
-      "espn": "4431611",
-      "name": "Caleb Williams",
-      "team": "CHI",
-      "since": 2024,
-      "seasons": 3,
-      "status": "ACT",
-      "rosterWeek": 7,
-      "length": 1,
-      "start": {
-        "id": "2026_06_CHI_ATL",
-        "event": "401872999",
-        "date": "2026-10-18",
-        "season": 2026,
-        "week": 6,
-        "opponent": "ATL"
-      },
-      "last": {
-        "id": "2026_06_CHI_ATL",
-        "event": "401872999",
-        "date": "2026-10-18",
-        "season": 2026,
-        "week": 6,
-        "opponent": "ATL"
       }
     },
     {
@@ -1262,7 +1262,7 @@
       "team": "CHI",
       "since": 2025,
       "seasons": 2,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 7
     },
     {
@@ -1542,7 +1542,7 @@
       "team": "NE",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 7
     },
     {
