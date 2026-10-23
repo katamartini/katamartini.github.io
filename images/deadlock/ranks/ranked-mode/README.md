@@ -2,7 +2,7 @@
 
 Badge artwork belongs to Valve. These transparent 300-pixel PNGs are imported from the badge column of [The Deadlock Wiki's Ranked Mode rank table](https://deadlock.wiki/Ranked_Mode#Ranks). They are separate from the older Skill Rating images in the parent directory.
 
-DLNS uses four-place bands based on the hero's numeric all-time pick rank. If a draft improves the rank, the displayed background follows the projected rank. Obscurus is unranked and is not used.
+DLNS uses four-place bands based on the hero's numeric all-time pick rank. If a draft improves the rank, the projected rank and badge appear in the bottom-right corner and the smaller current rank and badge appear in the bottom-left. Each badge uses its own rank's tier. Obscurus is unranked and is not used.
 
 | Hero pick ranks | Tier | Imported PNG source |
 | --- | --- | --- |

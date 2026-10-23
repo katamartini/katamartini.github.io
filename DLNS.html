@@ -1865,10 +1865,10 @@ z-index:1;
 display:inline-flex;
 align-items:center;
 justify-content:center;
-gap:2px;
-width:44px;
-height:38px;
-padding:0 3px;
+width:min(64px,calc(100% - 8px));
+height:auto;
+aspect-ratio:44/38;
+padding:0;
 background-position:center;
 background-size:contain;
 background-repeat:no-repeat;
@@ -1879,17 +1879,15 @@ text-shadow:0 1px 3px #000,0 0 2px #000;
 line-height:1.1;
 font-variant-numeric:tabular-nums;
 white-space:nowrap}
-.simPickRank:has(.simPickRankProjected){
-width:min(64px,calc(100% - 8px));
-height:42px;
-font-size:clamp(14px,21cqi,18px)}
 .simPickRankCurrent{
-font-size:.75em;
-color:var(--m)}
-.simPickRankArrow{
-font-size:.65em;
+right:auto;
+left:4px;
+width:min(28px,calc((100% - 10px)*.3));
+font-size:clamp(10px,18cqi,12px);
 color:var(--m)}
 .simPickRankProjected{
+width:min(64px,calc((100% - 10px)*.7));
+font-size:clamp(12px,28cqi,18px);
 color:var(--good);
 font-style:italic}
 .simSlot.ban .mIcon,.simSlot.ban .dIcon{
@@ -2271,8 +2269,11 @@ if(used().has(h))return;const c=current();if(!c)return;const count=filled(c.side
 let simPickRanks=new Map();
 function simPickRankHTML(hero){
 const info=simPickRanks.get(hero);if(!info||!records.length)return'';
-const {current,projected,improved}=info,badge=DLNSModel.heroPickBadge(improved?projected.rank:current.rank),label=hero+': all-time pick rank '+current.label+' ('+current.picks+' picks)'+(improved?'; after this draft '+projected.label+' ('+projected.picks+' picks)':'')+'; '+badge.name+' badge (ranks '+badge.minRank+'-'+badge.maxRank+')';
-return '<span class="simPickRank" data-rank-tier="'+badge.name+'" style="background-image:url('+esc(badge.image)+')" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+(improved?'<span class="simPickRankCurrent">'+current.label+'</span><span class="simPickRankArrow" aria-hidden="true">&rarr;</span><span class="simPickRankProjected">'+projected.label+'</span>':current.label)+'</span>'}
+const {current,projected,improved}=info;
+function rankHTML(rank,variant,description){
+const badge=DLNSModel.heroPickBadge(rank.rank),label=hero+': '+description+' all-time pick rank '+rank.label+' ('+rank.picks+' picks); '+badge.name+' badge (ranks '+badge.minRank+'-'+badge.maxRank+')';
+return '<span class="simPickRank'+(variant?' '+variant:'')+'" data-rank-tier="'+badge.name+'" style="background-image:url('+esc(badge.image)+')" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+rank.label+'</span>'}
+return improved?rankHTML(projected,'simPickRankProjected','projected')+rankHTML(current,'simPickRankCurrent','current'):rankHTML(current,'','current')}
 function slotHTML(side,type,i){
 const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(side,type))===i,h=sim.slots[side][type+'s'][i],portrait='<div class="simSlot '+type+' '+(active?'active':'')+'">'+(h?ih(h,type==='pick'?'dIcon':'mIcon')+(type==='pick'?simPickRankHTML(h):''):'')+'</div>';
 return type==='pick'?'<div class="simPick">'+portrait+(h?'<div class="simPlayerAssignment" data-player-hero="'+esc(h)+'" data-player-side="'+side+'"></div>':'')+'</div>':portrait}
