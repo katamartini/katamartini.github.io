@@ -1865,13 +1865,9 @@ z-index:1;
 display:inline-flex;
 align-items:center;
 justify-content:center;
-width:min(64px,calc(100% - 8px));
-height:auto;
-aspect-ratio:44/38;
+width:44px;
+height:38px;
 padding:0;
-background-position:center;
-background-size:contain;
-background-repeat:no-repeat;
 color:var(--t);
 font-size:18px;
 font-weight:900;
@@ -1879,14 +1875,31 @@ text-shadow:0 1px 3px #000,0 0 2px #000;
 line-height:1.1;
 font-variant-numeric:tabular-nums;
 white-space:nowrap}
+.simPickRank::before{
+content:"";
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+z-index:-1;
+width:64px;
+aspect-ratio:44/38;
+background-image:var(--sim-rank-badge);
+background-position:center;
+background-size:contain;
+background-repeat:no-repeat;
+pointer-events:none}
 .simPickRankCurrent{
 right:auto;
 left:4px;
 width:min(28px,calc((100% - 10px)*.3));
+height:auto;
+aspect-ratio:44/38;
 font-size:clamp(10px,18cqi,12px);
 color:var(--m)}
+.simPickRankCurrent::before{
+width:100%}
 .simPickRankProjected{
-width:min(64px,calc((100% - 10px)*.7));
 font-size:clamp(12px,28cqi,18px);
 color:var(--good);
 font-style:italic}
@@ -2272,7 +2285,7 @@ const info=simPickRanks.get(hero);if(!info||!records.length)return'';
 const {current,projected,improved}=info;
 function rankHTML(rank,variant,description){
 const badge=DLNSModel.heroPickBadge(rank.rank),label=hero+': '+description+' all-time pick rank '+rank.label+' ('+rank.picks+' picks); '+badge.name+' badge (ranks '+badge.minRank+'-'+badge.maxRank+')';
-return '<span class="simPickRank'+(variant?' '+variant:'')+'" data-rank-tier="'+badge.name+'" style="background-image:url('+esc(badge.image)+')" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+rank.label+'</span>'}
+return '<span class="simPickRank'+(variant?' '+variant:'')+'" data-rank-tier="'+badge.name+'" style="--sim-rank-badge:url('+esc(badge.image)+')" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+rank.label+'</span>'}
 return improved?rankHTML(projected,'simPickRankProjected','projected')+rankHTML(current,'simPickRankCurrent','current'):rankHTML(current,'','current')}
 function slotHTML(side,type,i){
 const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(side,type))===i,h=sim.slots[side][type+'s'][i],portrait='<div class="simSlot '+type+' '+(active?'active':'')+'">'+(h?ih(h,type==='pick'?'dIcon':'mIcon')+(type==='pick'?simPickRankHTML(h):''):'')+'</div>';
