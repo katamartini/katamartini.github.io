@@ -1843,7 +1843,8 @@ justify-content:center;
 position:relative;
 overflow:hidden}
 .simSlot.pick{
-min-height:116px}
+min-height:116px;
+container-type:inline-size}
 .simSlot.active{
 outline:2px solid var(--a);
 box-shadow:0 0 0 3px rgba(125,211,252,.16)}
@@ -1863,21 +1864,24 @@ bottom:4px;
 z-index:1;
 display:inline-flex;
 align-items:baseline;
-gap:3px;
-padding:3px 4px;
+gap:2px;
+padding:2px 3px;
 border-radius:5px;
-background:rgba(4,17,31,.9);
+background:rgba(4,17,31,.3);
 color:var(--t);
-font-size:13px;
+font-size:18px;
 font-weight:900;
+text-shadow:0 1px 3px rgba(0,0,0,.9);
 line-height:1.1;
 font-variant-numeric:tabular-nums;
 white-space:nowrap}
+.simPickRank:has(.simPickRankProjected){
+font-size:clamp(14px,21cqi,18px)}
 .simPickRankCurrent{
-font-size:.8em;
+font-size:.75em;
 color:var(--m)}
 .simPickRankArrow{
-font-size:.75em;
+font-size:.65em;
 color:var(--m)}
 .simPickRankProjected{
 color:var(--good);
