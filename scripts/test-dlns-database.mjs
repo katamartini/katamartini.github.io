@@ -186,35 +186,18 @@ assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Alpha','Ivy','EU'),'Other
 assert.equal(model.latestHeroPlayer(heroPlayerHistory,'Alpha','Haze','EU'),'');
 assert.equal(model.latestHeroPlayer(heroPlayerHistory,'New Team','Abrams','EU'),'');
 const playerEntrySource = await fs.readFile(new URL('../dlns/submission.js',import.meta.url),'utf8');
-const playerEntryState = createContext({
-  app:{getRecords:()=>heroPlayerHistory},model,persist:()=>{},
-  entry:{region:'EU',players:{Ivy:'Manual'},autoPlayers:{}},
-  sim:{left:'Alpha',right:'Other',slots:{left:{picks:['Abrams']},right:{picks:['Ivy']}}}
-});
-new Script(playerEntrySource.slice(playerEntrySource.indexOf('  function autofillPlayers('),playerEntrySource.indexOf('  function teamNames('))).runInContext(playerEntryState);
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'Latest');
-assert.equal(playerEntryState.entry.players.Ivy,'Manual');
-playerEntryState.sim.left = 'Other';
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'Opponent');
-playerEntryState.sim.left = 'Alpha';
-playerEntryState.entry = JSON.parse(JSON.stringify(playerEntryState.entry));
-playerEntryState.entry.region = 'NA';
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'NA Player','automatic assignments remain automatic after reload');
-playerEntryState.entry.players.Abrams = '';
-delete playerEntryState.entry.autoPlayers.Abrams;
-playerEntryState.entry.region = 'EU';
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'','an explicit clear stays blank');
-playerEntryState.entry.players.Abrams = 'Manual';
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'Manual');
-delete playerEntryState.entry.players.Abrams;
-playerEntryState.sim.left = 'New Team';
-playerEntryState.autofillPlayers(playerEntryState.sim);
-assert.equal(playerEntryState.entry.players.Abrams,'','no history leaves the dropdown blank');
+const restorePlayerEntry = saved => {
+  const state = createContext({STORE:'dlns.matchEntry.v1',localStorage:{getItem:()=>JSON.stringify(saved)},persist:()=>{}});
+  new Script(playerEntrySource.slice(playerEntrySource.indexOf('  const blank = '),playerEntrySource.indexOf('  entry.region ='))).runInContext(state);
+  return new Script('entry').runInContext(state);
+};
+const restoredPlayers = restorePlayerEntry({players:{Abrams:'Automatic',Ivy:'Manual',Haze:''},autoPlayers:{Abrams:true}});
+assert.ok(!Object.hasOwn(restoredPlayers.players,'Abrams'),'old automatic selections are cleared');
+assert.equal(restoredPlayers.players.Ivy,'Manual');
+assert.equal(restoredPlayers.players.Haze,'');
+assert.ok(!Object.hasOwn(restoredPlayers,'autoPlayers'));
+assert.equal(restorePlayerEntry({players:{Abrams:'Saved'},editing:'60-EU-C-1'}).players.Abrams,'Saved','saved assignments are preserved');
+assert.equal(Object.keys(restorePlayerEntry(null).players).length,0,'new drafts start without assigned players');
 assert.deepEqual(model.validateTeam(' First Timers ','EU'),[]);
 for (const name of ['',null,'   ','Team 1','TEAM 2','x'.repeat(101)]) assert.ok(model.validateTeam(name,'EU').length);
 assert.ok(model.validateTeam('First Timers','SA').length);
