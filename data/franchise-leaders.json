@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-10-20T20:09:18.521Z",
+  "checkedAt": "2026-10-23T20:06:41.221Z",
   "season": 2026,
   "rosterWeek": 7,
-  "sourceHash": "aecd42e7760de65eb01a517c1c8ba7c5e2fbb33fa8b025aa668094381fd3d05c",
+  "sourceHash": "51020312199c1065221565193b2f4a0e7cc05ce19c3be98366069db086c0065f",
   "views": {
     "receiving": {
       "sources": [
@@ -3816,6 +3816,14 @@
           "current": false
         },
         {
+          "team": "CHI",
+          "name": "Caleb Williams",
+          "yards": 8503,
+          "touchdowns": 52,
+          "interceptions": 14,
+          "current": true
+        },
+        {
           "team": "ATL",
           "name": "Bob Berry",
           "yards": 8489,
@@ -3838,6 +3846,14 @@
           "touchdowns": 56,
           "interceptions": 42,
           "current": false
+        },
+        {
+          "team": "NE",
+          "name": "Drake Maye",
+          "yards": 8454,
+          "touchdowns": 59,
+          "interceptions": 26,
+          "current": true
         },
         {
           "team": "DEN",
@@ -3872,28 +3888,12 @@
           "current": false
         },
         {
-          "team": "CHI",
-          "name": "Caleb Williams",
-          "yards": 8195,
-          "touchdowns": 50,
-          "interceptions": 14,
-          "current": true
-        },
-        {
           "team": "DET",
           "name": "Rodney Peete",
           "yards": 8164,
           "touchdowns": 38,
           "interceptions": 49,
           "current": false
-        },
-        {
-          "team": "NE",
-          "name": "Drake Maye",
-          "yards": 8133,
-          "touchdowns": 57,
-          "interceptions": 25,
-          "current": true
         },
         {
           "team": "PHI",
