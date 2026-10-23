@@ -29,8 +29,18 @@
     return String(Math.max(0,...db.matches.map(match=>match.week)) + 1);
   }
 
-  function playerList() {
-    return [...new Set([...app.getRecords().map(row=>row.player),...Object.values(entry.players)].filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  function playerList(team) {
+    const records = app.getRecords(), roster = new Set(), teamKey = team.trim().toLowerCase();
+    let latest = -Infinity;
+    for (const row of records) {
+      if (row.region !== entry.region || (row.team || '').trim().toLowerCase() !== teamKey
+          || (row.type || '').toLowerCase() !== 'pick' || !row.player || !row.matchid) continue;
+      const order = model.chronology(row.matchid);
+      if (order > latest) { latest = order; roster.clear(); }
+      if (order === latest) roster.add(row.player);
+    }
+    return [...new Set([...records.map(row=>row.player),...Object.values(entry.players)].filter(Boolean))]
+      .sort((a,b)=>Number(roster.has(b))-Number(roster.has(a)) || a.localeCompare(b));
   }
 
   function teamNames(region = entry.region) {
@@ -89,10 +99,10 @@
         <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${busy?'disabled':''}></label>
       </div>
       <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${busy || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
-    const players = playerList();
+    const players = Object.fromEntries(['left','right'].map(side=>[side,playerList(sim[side])]));
     playerSlots.forEach(slot=>{
       const hero = slot.dataset.playerHero, side = slot.dataset.playerSide, selected = entry.players[hero] || '';
-      slot.innerHTML = `<select data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" title="${esc(selected || 'Player (optional)')}" ${busy?'disabled':''}>${option('','Player',selected)}${players.map(player=>option(player,player,selected)).join('')}<option value="__new_player__" data-new-player>+ New player...</option></select>`;
+      slot.innerHTML = `<select data-match-player="${esc(hero)}" aria-label="Player for ${esc(hero)} (${esc(sim[side])})" title="${esc(selected || 'Player (optional)')}" ${busy?'disabled':''}>${option('','Player',selected)}${players[side].map(player=>option(player,player,selected)).join('')}<option value="__new_player__" data-new-player>+ New player...</option></select>`;
       const select = slot.querySelector('select');
       select.onchange = () => {
         if (select.selectedOptions[0]?.hasAttribute('data-new-player')) {
