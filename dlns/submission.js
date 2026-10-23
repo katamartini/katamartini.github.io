@@ -281,6 +281,7 @@
   window.DLNSMatchEntry = {
     get region() { return entry.region; },
     get winner() { return entry.winner; },
+    get editingMatchId() { return entry.editing; },
     get saving() { return saving || autofilling || addingTeam; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
     openAddTeam,

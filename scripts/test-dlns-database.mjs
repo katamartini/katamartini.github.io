@@ -13,6 +13,7 @@ for (const [,attributes,source] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/
   new Script(external ? await fs.readFile(new URL('../'+external,import.meta.url),'utf8') : source);
 }
 await import('./test-dlns-combinations.mjs');
+await import('./test-dlns-pick-ranks.mjs');
 // Exercise the inline coverage renderer without booting the rest of the page.
 const coverageRoot = {innerHTML:''};
 const coverage = createContext({
