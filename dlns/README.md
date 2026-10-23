@@ -15,6 +15,8 @@ New picks stay blank until you choose a player. Choosing or clearing a player ma
 
 Picked hero portraits show their all-time pick-count rank in the bottom-right corner. Tied heroes share the same rank number. If the current draft moves a hero to a lower rank number, the badge shows its smaller current rank, an arrow, and its projected rank in green italics. Breaking a tie at the same rank leaves the badge unchanged. Projections include both teams' picks, and editing a saved match replaces that match's existing picks. Rankings always use the full history from both regions.
 
+Rank numbers sit over the current Ranked Mode badge artwork from The Deadlock Wiki. Each tier covers four places: 1-4 Eternus, 5-8 Ascendant, 9-12 Phantom, 13-16 Oracle, 17-20 Emissary, 21-24 Ritualist, 25-28 Mystic, 29-32 Sentinel, 33-36 Acolyte, 37-40 Seeker and 41-44 Initiate. An improved rank uses its projected tier's background. Source links are recorded in `images/deadlock/ranks/ranked-mode/README.md`.
+
 For a team's first appearance, choose **+ Add new team...** at the bottom of either team dropdown while signed in as the owner. Enter the name and choose **Add team**. The name is saved for the current region and selected on that side without changing the draft's heroes or players. It remains available after refresh, on other devices, and before the team's first match is submitted. Names are limited to 100 characters; case-insensitive duplicates reuse the existing name. The same name may be registered in both regions.
 
 Changing first pick preserves the hero selection order and moves draft ownership to the correct sides. Changing region clears team selections that do not belong to that region. Changing either team clears the winner.

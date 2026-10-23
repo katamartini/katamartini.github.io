@@ -64,13 +64,31 @@ assert.equal(edited.get(c).projected.picks,4);
 assert.equal(edited.get(c).projected.label,'22');
 
 const html = await fs.readFile(new URL('../DLNS.html',import.meta.url),'utf8');
-const renderer = createContext({simPickRanks:single,records,esc:String});
+const badgeTiers = ['Eternus','Ascendant','Phantom','Oracle','Emissary','Ritualist','Mystic','Sentinel','Acolyte','Seeker','Initiate'];
+for (const [band,name] of badgeTiers.entries()) {
+  for (let rank = band*4+1; rank <= band*4+4; rank++) {
+    assert.deepEqual(model.heroPickBadge(rank),{name,image:`images/deadlock/ranks/ranked-mode/${name.toLowerCase()}.png`,minRank:band*4+1,maxRank:band*4+4});
+  }
+  const png = await fs.readFile(new URL('../'+model.heroPickBadge(band*4+1).image,import.meta.url));
+  assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a',`${name}: imported PNG`);
+  assert.equal(png.readUInt32BE(16),300,`${name}: 300-pixel wiki PNG`);
+}
+assert.equal(model.heroPickBadge(0),null);
+const renderer = createContext({DLNSModel:model,simPickRanks:single,records,esc:String});
 new Script(html.slice(html.indexOf('function simPickRankHTML('),html.indexOf('function slotHTML('))).runInContext(renderer);
 let badge = renderer.simPickRankHTML(d);
 assert.ok(badge.includes('class="simPickRankCurrent">24</span>'));
 assert.ok(badge.includes('&rarr;'));
 assert.ok(badge.includes('class="simPickRankProjected">23</span>'));
 assert.ok(badge.includes('all-time pick rank 24 (2 picks); after this draft 23 (3 picks)'));
+assert.ok(badge.includes('data-rank-tier="Ritualist"'));
+assert.ok(badge.includes('background-image:url(images/deadlock/ranks/ranked-mode/ritualist.png)'));
+const crossingTier = model.heroPickRanks(rows([...model.heroes.slice(0,23).map(hero=>[hero,20]),[model.heroes[23],3],[model.heroes[24],2]]),[model.heroes[24]]);
+renderer.simPickRanks = crossingTier;
+badge = renderer.simPickRankHTML(model.heroes[24]);
+assert.ok(badge.includes('class="simPickRankCurrent">25</span>'));
+assert.ok(badge.includes('class="simPickRankProjected">24</span>'));
+assert.ok(badge.includes('data-rank-tier="Ritualist"'),'the badge uses the projected rank when crossing a tier boundary');
 renderer.simPickRanks = breakTie;
 badge = renderer.simPickRankHTML(c);
 assert.ok(badge.includes('>23</span>'));
@@ -82,4 +100,4 @@ assert.ok(badge.includes('>21</span>'));
 assert.ok(!badge.includes('simPickRankProjected'));
 renderer.records = [];
 assert.equal(renderer.simPickRankHTML(a),'','no badge while history is unavailable');
-console.log('DLNS hero pick ranks: numeric-only labels, 27 to 26 into a tie, silent same-rank tie breaks, simultaneous picks, all-time counts, loaded/edited matches and badge text passed.');
+console.log('DLNS hero pick ranks: numeric labels, tie handling, simultaneous picks, all-time counts, loaded/edited matches, eleven imported PNG tiers, four-place bands and projected badge backgrounds passed.');

@@ -589,7 +589,7 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js?v=20261022-numeric-ranks"></script>
+</main><script src="dlns/model.js?v=20261022-rank-backgrounds"></script>
 <script src="dlns/combinations.js?v=20261022-top20"></script>
 <script src="dlns/database.js?v=20261021-teams"></script>
 <script>
@@ -1863,19 +1863,25 @@ right:4px;
 bottom:4px;
 z-index:1;
 display:inline-flex;
-align-items:baseline;
+align-items:center;
+justify-content:center;
 gap:2px;
-padding:2px 3px;
-border-radius:5px;
-background:rgba(4,17,31,.3);
+width:44px;
+height:38px;
+padding:0 3px;
+background-position:center;
+background-size:contain;
+background-repeat:no-repeat;
 color:var(--t);
 font-size:18px;
 font-weight:900;
-text-shadow:0 1px 3px rgba(0,0,0,.9);
+text-shadow:0 1px 3px #000,0 0 2px #000;
 line-height:1.1;
 font-variant-numeric:tabular-nums;
 white-space:nowrap}
 .simPickRank:has(.simPickRankProjected){
+width:min(64px,calc(100% - 8px));
+height:42px;
 font-size:clamp(14px,21cqi,18px)}
 .simPickRankCurrent{
 font-size:.75em;
@@ -2265,8 +2271,8 @@ if(used().has(h))return;const c=current();if(!c)return;const count=filled(c.side
 let simPickRanks=new Map();
 function simPickRankHTML(hero){
 const info=simPickRanks.get(hero);if(!info||!records.length)return'';
-const {current,projected,improved}=info,label=hero+': all-time pick rank '+current.label+' ('+current.picks+' picks)'+(improved?'; after this draft '+projected.label+' ('+projected.picks+' picks)':'');
-return '<span class="simPickRank" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+(improved?'<span class="simPickRankCurrent">'+current.label+'</span><span class="simPickRankArrow" aria-hidden="true">&rarr;</span><span class="simPickRankProjected">'+projected.label+'</span>':current.label)+'</span>'}
+const {current,projected,improved}=info,badge=DLNSModel.heroPickBadge(improved?projected.rank:current.rank),label=hero+': all-time pick rank '+current.label+' ('+current.picks+' picks)'+(improved?'; after this draft '+projected.label+' ('+projected.picks+' picks)':'')+'; '+badge.name+' badge (ranks '+badge.minRank+'-'+badge.maxRank+')';
+return '<span class="simPickRank" data-rank-tier="'+badge.name+'" style="background-image:url('+esc(badge.image)+')" role="img" aria-label="'+esc(label)+'" title="'+esc(label)+'">'+(improved?'<span class="simPickRankCurrent">'+current.label+'</span><span class="simPickRankArrow" aria-hidden="true">&rarr;</span><span class="simPickRankProjected">'+projected.label+'</span>':current.label)+'</span>'}
 function slotHTML(side,type,i){
 const c=current(),active=c&&c.side===side&&c.type===type&&pos(side,type,filled(side,type))===i,h=sim.slots[side][type+'s'][i],portrait='<div class="simSlot '+type+' '+(active?'active':'')+'">'+(h?ih(h,type==='pick'?'dIcon':'mIcon')+(type==='pick'?simPickRankHTML(h):''):'')+'</div>';
 return type==='pick'?'<div class="simPick">'+portrait+(h?'<div class="simPlayerAssignment" data-player-hero="'+esc(h)+'" data-player-side="'+side+'"></div>':'')+'</div>':portrait}

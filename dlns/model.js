@@ -125,6 +125,14 @@
     }));
   }
 
+  const pickRankBadgeTiers = Object.freeze(['Eternus','Ascendant','Phantom','Oracle','Emissary','Ritualist','Mystic','Sentinel','Acolyte','Seeker','Initiate']);
+  function heroPickBadge(rank) {
+    if (!Number.isInteger(rank) || rank < 1) return null;
+    const band = Math.min(pickRankBadgeTiers.length-1,Math.floor((rank-1)/4));
+    const name = pickRankBadgeTiers[band];
+    return {name,image:`images/deadlock/ranks/ranked-mode/${name.toLowerCase()}.png`,minRank:band*4+1,maxRank:band*4+4};
+  }
+
   function validateTeam(name, region) {
     const errors = [];
     if (!['EU','NA'].includes(region)) errors.push('Choose EU or NA.');
@@ -199,5 +207,5 @@
     return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,validateTeam,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,heroPickBadge,validateTeam,withFirstPick,seriesWins,nextMatch});
 });
