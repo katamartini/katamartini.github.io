@@ -13,7 +13,7 @@ Assign players using the dropdown directly below each picked hero portrait. The 
 
 New picks stay blank until you choose a player. Choosing or clearing a player manually keeps that choice, including after a reload or a change of team or region. Loading a saved match preserves its recorded assignments.
 
-Picked hero portraits show their all-time pick-count rank in the bottom-right corner, using **T** for ties. If the current draft improves a hero's standing, the badge shows its smaller current rank, an arrow, and its projected rank in green italics. Projections include both teams' picks, and editing a saved match replaces that match's picks rather than counting it twice. Rankings always use the full history from both regions.
+Picked hero portraits show their all-time pick-count rank in the bottom-right corner. Tied heroes share the same rank number. If the current draft moves a hero to a lower rank number, the badge shows its smaller current rank, an arrow, and its projected rank in green italics. Breaking a tie at the same rank leaves the badge unchanged. Projections include both teams' picks, and editing a saved match replaces that match's existing picks. Rankings always use the full history from both regions.
 
 For a team's first appearance, choose **+ Add new team...** at the bottom of either team dropdown while signed in as the owner. Enter the name and choose **Add team**. The name is saved for the current region and selected on that side without changing the draft's heroes or players. It remains available after refresh, on other devices, and before the team's first match is submitted. Names are limited to 100 characters; case-insensitive duplicates reuse the existing name. The same name may be registered in both regions.
 

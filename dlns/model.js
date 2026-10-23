@@ -116,12 +116,11 @@
     const standing = (counts,hero) => {
       const count = counts.get(hero), values = [...counts.values()];
       const rank = 1+values.filter(value=>value > count).length;
-      const tied = values.filter(value=>value === count).length > 1;
-      return {picks:count,rank,tied,label:(tied?'T':'')+rank};
+      return {picks:count,rank,label:String(rank)};
     };
     return new Map([...universe].map(hero=>{
       const current = standing(currentCounts,hero), projected = standing(projectedCounts,hero);
-      const improved = projected.rank < current.rank || (projected.rank === current.rank && current.tied && !projected.tied);
+      const improved = projected.rank < current.rank;
       return [hero,{current,projected,improved}];
     }));
   }
