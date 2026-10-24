@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-21T10:04:37.066Z",
+  "checkedAt": "2026-10-24T09:28:47.637Z",
   "season": 2026,
-  "through": "2026-10-19",
-  "latestWeek": 6,
+  "through": "2026-10-22",
+  "latestWeek": 7,
   "rosterWeek": 7,
   "firstStatsSeason": 1999,
   "firstParticipationSeason": 2013,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "a9f4bef995e30a1745d283220ad0d63717bf19a0fbab062cc29389b6dc37f629",
+  "sourceHash": "f20438962ae40b16643303af2abe28bcae7a9f1798c3b6138dd7eb0dbdd69ec2",
   "sources": [
     {
       "kind": "stats",
@@ -2369,6 +2369,38 @@
       "rank": 64
     },
     {
+      "id": "00-0035676:2021_05_TEN_JAX",
+      "playerId": "00-0035676",
+      "name": "A.J. Brown",
+      "length": 75,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_TEN_JAX",
+        "team": "TEN",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-10-22",
+        "season": 2026,
+        "game": "2026_07_NE_CHI",
+        "team": "NE",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "TEN",
+        "PHI",
+        "NE"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 65
+    },
+    {
       "id": "00-0022127:2003_16_NYG_DAL",
       "playerId": "00-0022127",
       "name": "Jason Witten",
@@ -2402,7 +2434,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 65
+      "rank": 66
     },
     {
       "id": "00-0034827:2018_02_CAR_ATL",
@@ -2437,38 +2469,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 66
-    },
-    {
-      "id": "00-0035676:2021_05_TEN_JAX",
-      "playerId": "00-0035676",
-      "name": "A.J. Brown",
-      "length": 74,
-      "start": {
-        "date": "2021-10-10",
-        "season": 2021,
-        "game": "2021_05_TEN_JAX",
-        "team": "TEN",
-        "opponent": "JAX"
-      },
-      "last": {
-        "date": "2026-10-18",
-        "season": 2026,
-        "game": "2026_06_NYJ_NE",
-        "team": "NE",
-        "opponent": "NYJ"
-      },
-      "teams": [
-        "TEN",
-        "PHI",
-        "NE"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 67
     },
