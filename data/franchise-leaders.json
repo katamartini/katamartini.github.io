@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-10-23T20:06:41.221Z",
+  "checkedAt": "2026-10-25T19:17:21.937Z",
   "season": 2026,
   "rosterWeek": 7,
-  "sourceHash": "51020312199c1065221565193b2f4a0e7cc05ce19c3be98366069db086c0065f",
+  "sourceHash": "0ca35137d060038d47e48bb6a98538835c8b1eadaa94d4a38a8be3212a57756e",
   "views": {
     "receiving": {
       "sources": [
@@ -1802,6 +1802,14 @@
           "current": false
         },
         {
+          "team": "NO",
+          "name": "Alvin Kamara",
+          "yards": 5081,
+          "receptions": 628,
+          "touchdowns": 26,
+          "current": true
+        },
+        {
           "team": "MIA",
           "name": "O.J. McDuffie",
           "yards": 5074,
@@ -1832,14 +1840,6 @@
           "receptions": 339,
           "touchdowns": 32,
           "current": false
-        },
-        {
-          "team": "NO",
-          "name": "Alvin Kamara",
-          "yards": 5024,
-          "receptions": 621,
-          "touchdowns": 26,
-          "current": true
         },
         {
           "team": "TB",
@@ -4702,6 +4702,14 @@
           "touchdowns": 32,
           "interceptions": 21,
           "current": true
+        },
+        {
+          "team": "PIT",
+          "name": "Aaron Rodgers",
+          "yards": 5021,
+          "touchdowns": 37,
+          "interceptions": 12,
+          "current": true
         }
       ]
     },
@@ -5128,8 +5136,8 @@
         {
           "team": "NO",
           "name": "Alvin Kamara",
-          "yards": 7370,
-          "attempts": 1709,
+          "yards": 7375,
+          "attempts": 1715,
           "touchdowns": 63,
           "current": true
         },
@@ -5923,7 +5931,7 @@
           "team": "NO",
           "name": "Cameron Jordan",
           "sacks": 132,
-          "games": 248,
+          "games": 249,
           "current": true
         },
         {
@@ -5971,8 +5979,8 @@
         {
           "team": "PIT",
           "name": "T.J. Watt",
-          "sacks": 119.5,
-          "games": 141,
+          "sacks": 120.5,
+          "games": 142,
           "current": true
         },
         {
@@ -6105,7 +6113,7 @@
           "team": "PIT",
           "name": "Cameron Heyward",
           "sacks": 93,
-          "games": 234,
+          "games": 235,
           "current": true
         },
         {
