@@ -1,7 +1,7 @@
 import { SOURCE_URL } from './divstreaks-data.mjs';
 import { readGames, latestCompletedSeason, calculateDroughts, divisionWinners,
   calculateWinStreakDroughts, calculateLossStreakDroughts, validWinStreakView, validLossStreakView,
-  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, WIN_STREAK_TARGET, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-1';
+  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, WIN_STREAK_TARGET, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-50';
 import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, FRANCHISE_DEBUTS } from './droughts-archive.mjs';
 
 export function updateTimeText(value) {

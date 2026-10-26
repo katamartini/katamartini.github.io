@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { calculateWinStreakDroughts, calculateLossStreakDroughts, daysBetween,
   allTimeDroughtsFromHash, droughtViewFromHash, streakDroughtHash,
   winThresholdFromHash, lossThresholdFromHash, validAllTimeDroughts,
-  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS } from './droughts-data.mjs';
+  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, ALL_TIME_DROUGHT_LIMIT } from './droughts-data.mjs';
 
 function games(results, team = 'MIN', season = 2026) {
   return [...results].map((result, i) => ({ id: `g${i}`, season, type: 'REG', week: i + 1,
@@ -28,6 +28,16 @@ test('separate ended droughts and the ongoing gap count games before, not includ
   assert.equal(rows[2].end, null);
   assert.equal(rows[2].gamesSince, view.teams.find(row => row.team === 'MIN').gamesSince);
   assert.equal(validAllTimeDroughts(view), true);
+});
+
+test('more than 50 droughts are truncated to the 50 longest with deterministic tie ordering', () => {
+  const input = games('WWWL'.repeat(80));
+  const view = calculateWinStreakDroughts(input, {}, 3);
+  assert.equal(view.allTime.length, 50);
+  assert.equal(validAllTimeDroughts(view), true);
+  assert.ok(view.allTime.every(row => row.team === 'MIN' && row.gamesSince === 3));
+  assert.equal(view.allTime[0].start.date, input[2].date);
+  assert.equal(view.allTime[49].start.date, input[2 + 49 * 4].date);
 });
 
 test('each extra qualifying win resets the start; zero-game droughts are not leaderboard entries', () => {
@@ -111,12 +121,14 @@ test('every threshold has shareable all-time and current links; invalid hashes r
   }
 });
 
-test('all 52 published top-20 lists validate, rank by games and use known franchise history', () => {
+test('all 52 published top-50 lists validate, rank by games and use known franchise history', () => {
   const saved = JSON.parse(readFileSync(new URL('../data/droughts.json', import.meta.url)));
   for (const [root, thresholds] of [[saved.winStreaks, WIN_STREAK_THRESHOLDS], [saved.lossStreaks, LOSS_STREAK_THRESHOLDS]]) {
     for (const n of thresholds) {
       const view = n === 5 ? root : root.thresholds[n];
-      assert.equal(view.allTime.length, 20); assert.equal(validAllTimeDroughts(view), true);
+      assert.ok(view.allTime.length >= 20 && view.allTime.length <= ALL_TIME_DROUGHT_LIMIT);
+      if (n <= 5) assert.equal(view.allTime.length, 50);
+      assert.equal(validAllTimeDroughts(view), true);
       for (const row of view.allTime.filter(row => row.ongoing)) {
         const current = view.teams.find(team => team.team === row.team);
         assert.equal(row.gamesSince, current.gamesSince);

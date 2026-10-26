@@ -83,7 +83,7 @@
     <nav id="streak-thresholds" class="views thresholds" aria-label="Win streak length" hidden></nav>
     <nav id="streak-periods" class="views thresholds" aria-label="Drought time period" hidden>
       <a id="current-droughts" href="#win-streaks">Current</a>
-      <a id="all-time-droughts" href="#win-streaks-all-time">All-time top 20</a>
+      <a id="all-time-droughts" href="#win-streaks-all-time">All-time top 50</a>
     </nav>
     <h2 id="view-heading">Milestones</h2>
     <p id="status" class="meta" role="status">Loading records…</p>
@@ -119,7 +119,7 @@
       <p>“Last N+ loss” is the most recent defeat that left the team on a streak of at least N losses. Every further loss in a qualifying run resets its game drought to 0. Games since counts completed regular-season games after that defeat; time since is calendar time through the latest game date in the feed. “Worst” means the franchise’s longest losing streak, with the season year or range of every tied record-length run beneath it. Season years are used even for January games. Current losing streaks are included.</p>
     </div>
     <div id="streak-history-method" class="method" hidden>
-      <p id="all-time-method" hidden>All-time top 20 ranks separate droughts by regular-season games without a qualifying result; calendar days break game-count ties. A franchise can appear more than once. The start is its last qualifying win/loss, or its first league game if it had never qualified. The end is the game that next reached the selected streak length; that drought-ending game is excluded from the game count. Every further win/loss in an already qualifying streak resets the drought, just as in Current. Streaks carry across seasons; ties and the opposite result reset streaks. Preseason and postseason games are excluded. Initial droughts from franchise debut and ongoing droughts are included; ongoing time runs through the latest league game date. Offseasons, byes and suspensions add calendar time but not games. Yellow marks an ongoing drought; pink marks an ongoing drought that has never ended. Coverage follows today's 32 franchises and their predecessors, not separately defunct franchises. Column sorting rearranges the same top 20, not a new top 20 by that column.</p>
+      <p id="all-time-method" hidden>All-time top 50 shows up to 50 separate droughts, or every available entry when fewer exist. It ranks droughts by regular-season games without a qualifying result; calendar days break game-count ties. A franchise can appear more than once. The start is its last qualifying win/loss, or its first league game if it had never qualified. The end is the game that next reached the selected streak length; that drought-ending game is excluded from the game count. Every further win/loss in an already qualifying streak resets the drought, just as in Current. Streaks carry across seasons; ties and the opposite result reset streaks. Preseason and postseason games are excluded. Initial droughts from franchise debut and ongoing droughts are included; ongoing time runs through the latest league game date. Offseasons, byes and suspensions add calendar time but not games. Yellow marks an ongoing drought; pink marks an ongoing drought that has never ended. Coverage follows today's 32 franchises and their predecessors, not separately defunct franchises. Column sorting rearranges the same top 50, not a new top 50 by that column.</p>
       <p>Coverage reaches all 32 franchises’ first APFA/NFL, AAFC or 1960 AFL seasons, starting in 1920. Earlier club founding dates and pre-league seasons are not used. The archive is checked against each franchise’s fixed early-season schedule totals and later expected season lengths, including strike-shortened seasons and inactive years. “Never” is used only when covered results extend back to the first league season. In Current's longest-drought sorts, these teams come first, ordered by first league season (oldest first). Their game and time droughts run from their first recorded league-season game. An incomplete history would remain “Not found in covered history” and sort last. Team-name, current-streak and Best/Worst sorts follow their selected columns normally.</p>
       <p>Early APFA season records include some games against non-league opponents; these are retained when classified as regular season in the archive, following historical season records. The <a href="https://www.profootballhof.com/news/playoff-results-1930s">1932 Bears–Spartans tiebreaker counted in the regular standings</a> and is included. The <a href="https://www.profootballhof.com/teams/pittsburgh-steelers/team-history">1943 Steagles games are credited to both the Eagles and Steelers, and 1944 Card-Pitt games to both the Cardinals and Steelers</a>. Their opponents see one game against the combined club, not two. The Rams’ 1943 suspension and Browns’ 1996–98 suspension add no games and do not reset streaks.</p>
       <p>The current season is included. All win and loss thresholds are checked daily. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1920–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct and non-league clubs remain separate opponents, and the Ravens have their own history.</p>
@@ -130,9 +130,9 @@
       winThresholdFromHash, winStreakRowClass, validWinStreakView, winStreakHistoryStatus,
       compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears,
       LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView,
-      allTimeDroughtsFromHash, streakDroughtHash, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-1';
+      allTimeDroughtsFromHash, streakDroughtHash, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-50';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
-    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=all-time-1';
+    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=all-time-50';
 
     const status = document.getElementById('status');
     const head = document.getElementById('table-head');
@@ -340,14 +340,14 @@
       document.getElementById('intro').textContent = winsView ? `How long has each team gone without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}? Includes this season, with streaks carrying across season boundaries.` : 'When did each team last reach these milestones? Each cell shows the last season and the number of completed seasons since.';
       document.getElementById('view-heading').textContent = winsView ? `${threshold}+ ${noun} streak droughts` : 'Milestones';
       if (allTime) {
-        document.getElementById('intro').textContent = `The 20 longest stretches without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}. Includes ended and ongoing droughts across the histories of today's 32 franchises.`;
-        document.getElementById('view-heading').textContent += ' · All-time top 20';
+        document.getElementById('intro').textContent = `Up to 50 of the longest stretches without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}. Includes ended and ongoing droughts across the histories of today's 32 franchises.`;
+        document.getElementById('view-heading').textContent += ' · All-time top 50';
       }
       document.getElementById('sort-hint').textContent = winsView ? 'Click a column to sort. Sorting carries between streak lengths.' : 'Click a milestone to sort by longest drought.';
       document.getElementById('table-caption').textContent = winsView ? `NFL droughts since the last ${threshold}-game regular-season ${losses ? 'losing' : 'winning'} streak` : 'NFL droughts: last season and completed seasons without each milestone';
       if (allTime) {
-        document.getElementById('sort-hint').textContent = 'Top 20 ranked by games; calendar days break ties. Click a column to reorder.';
-        document.getElementById('table-caption').textContent = `20 longest all-time ${threshold}+ ${noun} streak droughts`;
+        document.getElementById('sort-hint').textContent = 'Top 50 ranked by games; calendar days break ties. Click a column to reorder.';
+        document.getElementById('table-caption').textContent = `50 longest all-time ${threshold}+ ${noun} streak droughts`;
       }
       document.getElementById('streak-thresholds').hidden = !winsView;
       document.getElementById('streak-periods').hidden = !winsView;
@@ -380,7 +380,7 @@
     filter.addEventListener('change', render);
 
     async function loadSnapshot() {
-      const response = await fetch('../data/droughts.json?v=all-time-1', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
+      const response = await fetch('../data/droughts.json?v=all-time-50', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
       if (!Number.isInteger(saved.throughSeason) || saved.teams?.length !== 32 ||
