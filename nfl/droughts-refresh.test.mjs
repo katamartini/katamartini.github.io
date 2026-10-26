@@ -61,7 +61,9 @@ test('live refresh recalculates every view with a real update timestamp and leav
   assert.equal(result.teams.length, 32);
   for (const root of [result.winStreaks, result.lossStreaks]) {
     assert.ok(Array.isArray(root.allTime));
+    assert.equal(Object.keys(root.allTimeByTeam).length, 32);
     assert.ok(Object.values(root.thresholds).every(view => Array.isArray(view.allTime)));
+    assert.ok(Object.values(root.thresholds).every(view => Object.keys(view.allTimeByTeam).length === 32));
   }
   assert.equal(validWinStreakView(result.winStreaks), true);
   assert.equal(validLossStreakView(result.lossStreaks), true);

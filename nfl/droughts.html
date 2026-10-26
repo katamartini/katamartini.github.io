@@ -94,6 +94,7 @@
     </div>
     <div class="toolbar">
       <label id="division-label">Division <select id="division-filter"><option value="all">All divisions</option></select></label>
+      <label id="all-time-team-label" hidden>Team <select id="all-time-team-filter"><option value="all">All teams</option></select></label>
       <p class="hint"><span id="sort-hint">Click a milestone to sort by longest drought.</span> <span id="team-count"></span></p>
     </div>
     <p id="streak-legend" class="hint" hidden>Green: active qualifying streak. Yellow: one win away from ending the drought. Pink: never had a qualifying streak.</p>
@@ -119,7 +120,7 @@
       <p>“Last N+ loss” is the most recent defeat that left the team on a streak of at least N losses. Every further loss in a qualifying run resets its game drought to 0. Games since counts completed regular-season games after that defeat; time since is calendar time through the latest game date in the feed. “Worst” means the franchise’s longest losing streak, with the season year or range of every tied record-length run beneath it. Season years are used even for January games. Current losing streaks are included.</p>
     </div>
     <div id="streak-history-method" class="method" hidden>
-      <p id="all-time-method" hidden>All-time top 50 shows up to 50 separate droughts, or every available entry when fewer exist. It ranks droughts by regular-season games without a qualifying result; calendar days break game-count ties. A franchise can appear more than once. The start is its last qualifying win/loss, or its first league game if it had never qualified. The end is the game that next reached the selected streak length; that drought-ending game is excluded from the game count. Every further win/loss in an already qualifying streak resets the drought, just as in Current. Streaks carry across seasons; ties and the opposite result reset streaks. Preseason and postseason games are excluded. Initial droughts from franchise debut and ongoing droughts are included; ongoing time runs through the latest league game date. Offseasons, byes and suspensions add calendar time but not games. Yellow marks an ongoing drought; pink marks an ongoing drought that has never ended. Coverage follows today's 32 franchises and their predecessors, not separately defunct franchises. Column sorting rearranges the same top 50, not a new top 50 by that column.</p>
+      <p id="all-time-method" hidden>All-time top 50 shows up to 50 separate droughts, or every available entry when fewer exist. Choose All teams for the league-wide leaders, or a team for that franchise's own 50 longest droughts, including entries outside the league-wide top 50. The team choice is saved in the URL. It ranks droughts by regular-season games without a qualifying result; calendar days break game-count ties. A franchise can appear more than once. The start is its last qualifying win/loss, or its first league game if it had never qualified. The end is the game that next reached the selected streak length; that drought-ending game is excluded from the game count. Every further win/loss in an already qualifying streak resets the drought, just as in Current. Streaks carry across seasons; ties and the opposite result reset streaks. Preseason and postseason games are excluded. Initial droughts from franchise debut and ongoing droughts are included; ongoing time runs through the latest league game date. Offseasons, byes and suspensions add calendar time but not games. Yellow marks an ongoing drought; pink marks an ongoing drought that has never ended. Coverage follows today's 32 franchises and their predecessors, not separately defunct franchises. Column sorting rearranges the same top 50, not a new top 50 by that column.</p>
       <p>Coverage reaches all 32 franchises’ first APFA/NFL, AAFC or 1960 AFL seasons, starting in 1920. Earlier club founding dates and pre-league seasons are not used. The archive is checked against each franchise’s fixed early-season schedule totals and later expected season lengths, including strike-shortened seasons and inactive years. “Never” is used only when covered results extend back to the first league season. In Current's longest-drought sorts, these teams come first, ordered by first league season (oldest first). Their game and time droughts run from their first recorded league-season game. An incomplete history would remain “Not found in covered history” and sort last. Team-name, current-streak and Best/Worst sorts follow their selected columns normally.</p>
       <p>Early APFA season records include some games against non-league opponents; these are retained when classified as regular season in the archive, following historical season records. The <a href="https://www.profootballhof.com/news/playoff-results-1930s">1932 Bears–Spartans tiebreaker counted in the regular standings</a> and is included. The <a href="https://www.profootballhof.com/teams/pittsburgh-steelers/team-history">1943 Steagles games are credited to both the Eagles and Steelers, and 1944 Card-Pitt games to both the Cardinals and Steelers</a>. Their opponents see one game against the combined club, not two. The Rams’ 1943 suspension and Browns’ 1996–98 suspension add no games and do not reset streaks.</p>
       <p>The current season is included. All win and loss thresholds are checked daily. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1920–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct and non-league clubs remain separate opponents, and the Ravens have their own history.</p>
@@ -130,14 +131,15 @@
       winThresholdFromHash, winStreakRowClass, validWinStreakView, winStreakHistoryStatus,
       compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears,
       LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView,
-      allTimeDroughtsFromHash, streakDroughtHash, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-50';
+      allTimeDroughtsFromHash, streakDroughtHash, validAllTimeDroughts, allTimeDroughtRows } from './droughts-data.mjs?v=team-droughts-1';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
-    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=all-time-50';
+    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=team-droughts-1';
 
     const status = document.getElementById('status');
     const head = document.getElementById('table-head');
     const body = document.getElementById('table-body');
     const filter = document.getElementById('division-filter');
+    const teamFilter = document.getElementById('all-time-team-filter');
     const count = document.getElementById('team-count');
     const headers = new Map();
     const logoCodes = { LA: 'lar', WAS: 'wsh' };
@@ -199,6 +201,16 @@
       option.value = division.name;
       filter.append(option);
     }
+    for (const team of Object.keys(TEAMS).sort((a, b) => TEAMS[a].name.localeCompare(TEAMS[b].name))) {
+      const option = element('option', '', TEAMS[team].name);
+      option.value = team;
+      teamFilter.append(option);
+    }
+    function readTeamFilter() {
+      const team = new URLSearchParams(location.search).get('team');
+      teamFilter.value = team && Object.hasOwn(TEAMS, team) ? team : 'all';
+    }
+    readTeamFilter();
 
     function render() {
       if (!data) return;
@@ -207,7 +219,7 @@
       const noun = losses ? 'loss' : 'win';
       const plural = losses ? 'losses' : 'wins';
       const wins = winsView ? streakData() : null;
-      const sourceRows = allTime ? wins.allTime.map((row, i) => ({ ...row, rank: i + 1 })) : losses ? wins.teams.map(row => ({ ...row, currentWins: row.currentLosses, bestWins: row.bestLosses,
+      const sourceRows = allTime ? allTimeDroughtRows(wins, teamFilter.value).map((row, i) => ({ ...row, rank: i + 1 })) : losses ? wins.teams.map(row => ({ ...row, currentWins: row.currentLosses, bestWins: row.bestLosses,
         last: row.last ? { ...row.last, wins: row.last.losses } : null })) : winsView ? wins.teams : data.teams;
       const rows = sourceRows.filter(row => allTime || filter.value === 'all' || row.division === filter.value);
       rows.sort((a, b) => {
@@ -302,7 +314,7 @@
         fragment.append(tr);
       }
       body.replaceChildren(fragment);
-      count.textContent = allTime ? `${rows.length} longest droughts · ${new Set(rows.map(row => row.team)).size} franchises.` : `${rows.length} teams.`;
+      count.textContent = allTime ? `${rows.length} longest ${rows.length === 1 ? 'drought' : 'droughts'} · ${teamFilter.value === 'all' ? `${new Set(rows.map(row => row.team)).size} franchises` : TEAMS[teamFilter.value].name}.` : `${rows.length} teams.`;
     }
 
     function buildHeaders() {
@@ -342,16 +354,21 @@
       if (allTime) {
         document.getElementById('intro').textContent = `Up to 50 of the longest stretches without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}. Includes ended and ongoing droughts across the histories of today's 32 franchises.`;
         document.getElementById('view-heading').textContent += ' · All-time top 50';
+        if (teamFilter.value !== 'all') {
+          document.getElementById('intro').textContent = `The ${TEAMS[teamFilter.value].name}' ${threshold}+ ${noun} streak droughts, ranked within the franchise's full history. Shows up to 50 ended and ongoing droughts, including earlier team names and locations.`;
+          document.getElementById('view-heading').textContent += ` · ${TEAMS[teamFilter.value].name}`;
+        }
       }
       document.getElementById('sort-hint').textContent = winsView ? 'Click a column to sort. Sorting carries between streak lengths.' : 'Click a milestone to sort by longest drought.';
       document.getElementById('table-caption').textContent = winsView ? `NFL droughts since the last ${threshold}-game regular-season ${losses ? 'losing' : 'winning'} streak` : 'NFL droughts: last season and completed seasons without each milestone';
       if (allTime) {
         document.getElementById('sort-hint').textContent = 'Top 50 ranked by games; calendar days break ties. Click a column to reorder.';
-        document.getElementById('table-caption').textContent = `50 longest all-time ${threshold}+ ${noun} streak droughts`;
+        document.getElementById('table-caption').textContent = `50 longest all-time ${threshold}+ ${noun} streak droughts${teamFilter.value === 'all' ? '' : ` · ${TEAMS[teamFilter.value].name}`}`;
       }
       document.getElementById('streak-thresholds').hidden = !winsView;
       document.getElementById('streak-periods').hidden = !winsView;
       document.getElementById('division-label').hidden = allTime;
+      document.getElementById('all-time-team-label').hidden = !allTime;
       document.getElementById('all-time-method').hidden = !allTime;
       if (winsView) for (const [id, mode] of [['current-droughts', false], ['all-time-droughts', true]]) {
         const link = document.getElementById(id);
@@ -376,11 +393,19 @@
       if (data) updated.textContent = `Last updated: ${updateTimeText(data.updatedAt)} · ${dataOrigin}`;
     }
     window.addEventListener('hashchange', selectView);
+    window.addEventListener('popstate', () => { readTeamFilter(); selectView(); });
     selectView();
     filter.addEventListener('change', render);
+    teamFilter.addEventListener('change', () => {
+      const url = new URL(location.href);
+      if (teamFilter.value === 'all') url.searchParams.delete('team');
+      else url.searchParams.set('team', teamFilter.value);
+      history.replaceState(null, '', url);
+      selectView();
+    });
 
     async function loadSnapshot() {
-      const response = await fetch('../data/droughts.json?v=all-time-50', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
+      const response = await fetch('../data/droughts.json?v=team-droughts-1', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
       if (!Number.isInteger(saved.throughSeason) || saved.teams?.length !== 32 ||

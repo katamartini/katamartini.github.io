@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { calculateWinStreakDroughts, calculateLossStreakDroughts, daysBetween,
   allTimeDroughtsFromHash, droughtViewFromHash, streakDroughtHash,
   winThresholdFromHash, lossThresholdFromHash, validAllTimeDroughts,
-  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, ALL_TIME_DROUGHT_LIMIT } from './droughts-data.mjs';
+  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, ALL_TIME_DROUGHT_LIMIT, allTimeDroughtRows } from './droughts-data.mjs';
 
 function games(results, team = 'MIN', season = 2026) {
   return [...results].map((result, i) => ({ id: `g${i}`, season, type: 'REG', week: i + 1,
@@ -47,6 +47,20 @@ test('each extra qualifying win resets the start; zero-game droughts are not lea
   assert.equal(rows[0].start.date, input[4].date);
   assert.equal(rows[0].gamesSince, 3);
   assert.equal(rows[0].end.date, input[8].date);
+});
+
+test('team top 50 is calculated before league-wide truncation, including teams absent from league leaders', () => {
+  const large = games('WWWLLL'.repeat(80));
+  const small = games('WWWL'.repeat(4), 'HOU').map(g => ({ ...g, id: `hou:${g.id}`,
+    date: new Date(Date.parse(g.date) + 86400000).toISOString().slice(0, 10) }));
+  const view = calculateWinStreakDroughts([...large, ...small], {}, 3);
+  assert.ok(view.allTime.every(row => row.team !== 'HOU'));
+  assert.equal(allTimeDroughtRows(view, 'MIN').length, 50);
+  assert.equal(allTimeDroughtRows(view, 'HOU').length, 4);
+  assert.ok(allTimeDroughtRows(view, 'HOU').every(row => row.team === 'HOU'));
+  assert.equal(allTimeDroughtRows(view), view.allTime);
+  assert.throws(() => allTimeDroughtRows(view, 'bad'), /Unknown/);
+  assert.equal(validAllTimeDroughts(view), true);
 });
 
 test('initial and never-ended droughts start at franchise debut, but partial-history boundaries are excluded', () => {
@@ -129,6 +143,14 @@ test('all 52 published top-50 lists validate, rank by games and use known franch
       assert.ok(view.allTime.length >= 20 && view.allTime.length <= ALL_TIME_DROUGHT_LIMIT);
       if (n <= 5) assert.equal(view.allTime.length, 50);
       assert.equal(validAllTimeDroughts(view), true);
+      assert.equal(Object.keys(view.allTimeByTeam).length, 32);
+      for (const team of view.teams) {
+        const own = allTimeDroughtRows(view, team.team);
+        assert.ok(own.length >= 1 && own.length <= 50);
+        assert.ok(own.every(row => row.team === team.team));
+        const current = own.find(row => row.ongoing);
+        if (current) assert.equal(current.gamesSince, team.gamesSince);
+      }
       for (const row of view.allTime.filter(row => row.ongoing)) {
         const current = view.teams.find(team => team.team === row.team);
         assert.equal(row.gamesSince, current.gamesSince);
@@ -142,6 +164,8 @@ test('all 52 published top-50 lists validate, rank by games and use known franch
     view => { view.allTime[0].gamesSince = -1; }, view => { view.allTime[0].daysSince++; },
     view => { view.allTime.reverse(); }, view => { view.allTime[0].ongoing = !view.allTime[0].ongoing; },
     view => { view.allTime[1] = view.allTime[0]; },
+    view => { delete view.allTimeByTeam; }, view => { delete view.allTimeByTeam.MIN; },
+    view => { view.allTimeByTeam.MIN = view.allTimeByTeam.GB; },
   ]) {
     const broken = structuredClone(saved.winStreaks); modify(broken); assert.equal(validAllTimeDroughts(broken), false);
   }
