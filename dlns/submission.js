@@ -181,14 +181,20 @@
   }
 
   function loadSelected() {
-    const match = db.matches.find(item=>item.match_id === entry.selected);
-    if (!match) { setMessage('Select a saved match first.','errorText'); return; }
+    return loadMatch(entry.selected);
+  }
+
+  function loadMatch(id) {
+    if (saving || autofilling || addingTeam) return false;
+    const match = db.matches.find(item=>item.match_id === id);
+    if (!match) { setMessage('Select a saved match first.','errorText'); return false; }
     entry = {...blank(),week:String(match.week),region:match.region,round:match.round,game:String(match.game),winner:match.winner || '',
       players:Object.fromEntries(match.actions.filter(action=>action.type==='pick').map(action=>[action.hero,action.player || ''])),
       editing:match.match_id,revision:match.revision,selected:match.match_id};
     persist();
     setMessage('');
     app.setSim(model.matchToSim(match));
+    return true;
   }
 
   function openAddTeam(side) {
@@ -274,6 +280,7 @@
     get editingMatchId() { return entry.editing; },
     get saving() { return saving || autofilling || addingTeam; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
+    loadMatch,
     openAddTeam,
     setRegion(region) {
       if (saving || autofilling || !['EU','NA'].includes(region) || region === entry.region) return;
