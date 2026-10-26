@@ -160,6 +160,14 @@ color:var(--m);
 font-size:13px}
 .r b{
 color:var(--t)}
+.validationFlag{
+text-decoration:none;
+cursor:pointer}
+.validationFlag:hover,.validationFlag:focus-visible{
+background:rgba(125,211,252,.08)}
+.validationFlag:focus-visible{
+outline:2px solid var(--a);
+outline-offset:-2px}
 .match{
 grid-template-columns:130px 65px 1fr 70px 115px 1.4fr 110px}
 .draft{
@@ -1094,7 +1102,15 @@ chall.filter(d=>d.result==='Win').forEach(c=>{
 const ck=keyOf(c.players),ok=finals.some(f=>keyOf(f.players)===ck);if(!ok)issues.push({
 type:'Challenger to Finals',match:c.matchID,detail:'Winning roster for '+c.team+' not found together in Finals'})})}
 if($('validationCount'))$('validationCount').textContent=num(issues.length);
-if($('validationResults'))$('validationResults').innerHTML=issues.length?'<div class="head match"><div>Type</div><div>Match</div><div>Detail</div><div></div><div></div><div></div></div>'+issues.map(x=>'<div class="r match"><div><b>'+esc(x.type)+'</b></div><div>'+esc(x.match)+'</div><div>'+esc(x.detail)+'</div><div></div><div></div><div></div></div>').join(''):'<div class="r"><div class="muted">No validation issues found.</div></div>'}
+const root=$('validationResults');
+if(!root)return;
+root.innerHTML=issues.length?'<div class="head match"><div>Type</div><div>Match</div><div>Detail</div><div></div><div></div><div></div></div>'+issues.map(x=>'<a class="r match validationFlag" href="#draftsim" data-validation-match="'+esc(x.match)+'" title="Load '+esc(x.match)+' in Draft Simulator"><div><b>'+esc(x.type)+'</b></div><div>'+esc(x.match)+'</div><div>'+esc(x.detail)+'</div><div></div><div></div><div></div></a>').join(''):'<div class="r"><div class="muted">No validation issues found.</div></div>';
+root.querySelectorAll('[data-validation-match]').forEach(link=>link.onclick=event=>{
+event.preventDefault();
+if(!window.DLNSMatchEntry?.loadMatch(link.dataset.validationMatch))return;
+setTab('draftsim');
+$('tabBtn-draftsim')?.focus({preventScroll:true});
+$('tab-draftsim')?.scrollIntoView({block:'start'})})}
 function renderRosterMoves(drafts){
 const sorted=[...drafts].sort((a,b)=>wv(a.week)-wv(b.week)||mv(a.matchID)-mv(b.matchID)),firstPlayer=new Map(),last=new Map(),changes=[];
 [...drafts].sort((a,b)=>mo(a.matchID,a.week)-mo(b.matchID,b.week)).forEach(d=>d.players.forEach(p=>{
@@ -2343,7 +2359,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261022-player-suggestions"></script>
+<script src="dlns/submission.js?v=20261026-validation-links"></script>
 </body>
 </html>
 
