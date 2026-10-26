@@ -73,6 +73,7 @@ export function readGames(csv) {
 export const WIN_STREAK_TARGET = 5;
 export const WIN_STREAK_THRESHOLDS = Array.from({ length: 23 }, (_, i) => i + 1);
 export const LOSS_STREAK_THRESHOLDS = Array.from({ length: 29 }, (_, i) => i + 1);
+export const ALL_TIME_DROUGHT_LIMIT = 50;
 const winThresholdPattern = /^#win-streaks-([1-9]|1[0-9]|2[0-3])(?:-all-time)?$/;
 const lossThresholdPattern = /^#loss-streaks-([1-9]|[12][0-9])(?:-all-time)?$/;
 export const droughtViewFromHash = hash => ['#win-streaks', '#win-streaks-all-time'].includes(hash) || winThresholdPattern.test(hash) ? 'win-streaks' :
@@ -180,7 +181,7 @@ export function validAllTimeDroughts(view) {
   const date = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value));
   const endpoint = value => value && date(value.date) && Number.isInteger(value.season) &&
     (Number.isInteger(value.week) && value.week >= 1 || value.week === null && Number.isInteger(value.gameNumber) && value.gameNumber >= 1);
-  if (!view || !date(view.throughDate) || !Array.isArray(view.allTime) || view.allTime.length > 20) return false;
+  if (!view || !date(view.throughDate) || !Array.isArray(view.allTime) || view.allTime.length > ALL_TIME_DROUGHT_LIMIT) return false;
   const keys = new Set();
   return view.allTime.every((row, index) => {
     if (!row || typeof row !== 'object') return false;
@@ -279,7 +280,7 @@ function calculateResultStreakDroughts(games, earlierByTeam, threshold, outcome)
   }));
   return { threshold, scope: 'REG', throughDate,
     firstResultsSeason: Math.min(...regular.map(g => g.season), ...Object.values(earlierByTeam).flatMap(rows => rows.map(g => g.season))), teams,
-    allTime: droughts.sort(compareAllTimeDroughts).slice(0, 20) };
+    allTime: droughts.sort(compareAllTimeDroughts).slice(0, ALL_TIME_DROUGHT_LIMIT) };
 }
 
 export function latestCompletedSeason(games) {
