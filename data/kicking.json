@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-23T09:45:07.323Z",
+  "checkedAt": "2026-10-26T10:46:11.444Z",
   "firstSeason": 1999,
   "season": 2026,
-  "through": "2026-10-22",
+  "through": "2026-10-25",
   "latestWeek": 7,
   "rosterWeek": 7,
-  "sourceHash": "c97432f42b357bd30d61f47056dae8b2a3b78ef9682efe9f2eb6f25e70cbc871",
+  "sourceHash": "cdb118859d5ec672af13b95aec020c15953ce78500a3994f31118e2faa7e98ef",
   "sources": [
     {
       "season": 1999,
@@ -532,6 +532,49 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0039404:2025_09_MIN_DET:1528",
+        "playerId": "00-0039404",
+        "name": "Will Reichard",
+        "length": 36,
+        "fieldGoals": 36,
+        "extraPoints": 0,
+        "teams": [
+          "MIN"
+        ],
+        "start": {
+          "date": "2025-11-02",
+          "team": "MIN",
+          "opponent": "DET",
+          "game": "2025_09_MIN_DET",
+          "play": 1528,
+          "type": "FG",
+          "distance": 50
+        },
+        "last": {
+          "date": "2026-10-25",
+          "team": "MIN",
+          "opponent": "IND",
+          "game": "2026_07_IND_MIN",
+          "play": 1489,
+          "type": "FG",
+          "distance": 47
+        },
+        "endedBy": {
+          "date": "2026-10-25",
+          "team": "MIN",
+          "opponent": "IND",
+          "game": "2026_07_IND_MIN",
+          "play": 3185,
+          "type": "FG",
+          "distance": 59,
+          "result": "blocked"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "fg:00-0016919:2013_16_IND_KC:1191",
         "playerId": "00-0016919",
         "name": "Adam Vinatieri",
@@ -656,40 +699,6 @@
           "result": "blocked"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "fg:00-0039404:2025_09_MIN_DET:1528",
-        "playerId": "00-0039404",
-        "name": "Will Reichard",
-        "length": 34,
-        "fieldGoals": 34,
-        "extraPoints": 0,
-        "teams": [
-          "MIN"
-        ],
-        "start": {
-          "date": "2025-11-02",
-          "team": "MIN",
-          "opponent": "DET",
-          "game": "2025_09_MIN_DET",
-          "play": 1528,
-          "type": "FG",
-          "distance": 50
-        },
-        "last": {
-          "date": "2026-10-11",
-          "team": "MIN",
-          "opponent": "NO",
-          "game": "2026_05_MIN_NO",
-          "play": 3320,
-          "type": "FG",
-          "distance": 55
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -3724,6 +3733,49 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0039576:2025_03_IND_TEN:2180",
+        "playerId": "00-0039576",
+        "name": "Spencer Shrader",
+        "length": 22,
+        "fieldGoals": 22,
+        "extraPoints": 0,
+        "teams": [
+          "IND"
+        ],
+        "start": {
+          "date": "2025-09-21",
+          "team": "IND",
+          "opponent": "TEN",
+          "game": "2025_03_IND_TEN",
+          "play": 2180,
+          "type": "FG",
+          "distance": 36
+        },
+        "last": {
+          "date": "2026-10-25",
+          "team": "IND",
+          "opponent": "MIN",
+          "game": "2026_07_IND_MIN",
+          "play": 1953,
+          "type": "FG",
+          "distance": 43
+        },
+        "endedBy": {
+          "date": "2026-10-25",
+          "team": "IND",
+          "opponent": "MIN",
+          "game": "2026_07_IND_MIN",
+          "play": 2600,
+          "type": "FG",
+          "distance": 56,
+          "result": "missed"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
         "playerId": "00-0036854",
         "name": "Evan McPherson",
@@ -4356,40 +4408,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "fg:00-0039576:2025_03_IND_TEN:2180",
-        "playerId": "00-0039576",
-        "name": "Spencer Shrader",
-        "length": 21,
-        "fieldGoals": 21,
-        "extraPoints": 0,
-        "teams": [
-          "IND"
-        ],
-        "start": {
-          "date": "2025-09-21",
-          "team": "IND",
-          "opponent": "TEN",
-          "game": "2025_03_IND_TEN",
-          "play": 2180,
-          "type": "FG",
-          "distance": 36
-        },
-        "last": {
-          "date": "2026-10-18",
-          "team": "IND",
-          "opponent": "TEN",
-          "game": "2026_06_TEN_IND",
-          "play": 1831,
-          "type": "FG",
-          "distance": 47
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
@@ -5916,6 +5934,49 @@
         "gapAfter": null
       },
       {
+        "id": "all:00-0039404:2025_08_MIN_LAC:2884",
+        "playerId": "00-0039404",
+        "name": "Will Reichard",
+        "length": 64,
+        "fieldGoals": 36,
+        "extraPoints": 28,
+        "teams": [
+          "MIN"
+        ],
+        "start": {
+          "date": "2025-10-23",
+          "team": "MIN",
+          "opponent": "LAC",
+          "game": "2025_08_MIN_LAC",
+          "play": 2884,
+          "type": "XP",
+          "distance": 33
+        },
+        "last": {
+          "date": "2026-10-25",
+          "team": "MIN",
+          "opponent": "IND",
+          "game": "2026_07_IND_MIN",
+          "play": 2821,
+          "type": "XP",
+          "distance": 33
+        },
+        "endedBy": {
+          "date": "2026-10-25",
+          "team": "MIN",
+          "opponent": "IND",
+          "game": "2026_07_IND_MIN",
+          "play": 3185,
+          "type": "FG",
+          "distance": 59,
+          "result": "blocked"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null
+      },
+      {
         "id": "all:00-0023001:2013_08_PIT_OAK:3311",
         "playerId": "00-0023001",
         "name": "Shaun Suisham",
@@ -6127,40 +6188,6 @@
           "result": "missed"
         },
         "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null
-      },
-      {
-        "id": "all:00-0039404:2025_08_MIN_LAC:2884",
-        "playerId": "00-0039404",
-        "name": "Will Reichard",
-        "length": 61,
-        "fieldGoals": 34,
-        "extraPoints": 27,
-        "teams": [
-          "MIN"
-        ],
-        "start": {
-          "date": "2025-10-23",
-          "team": "MIN",
-          "opponent": "LAC",
-          "game": "2025_08_MIN_LAC",
-          "play": 2884,
-          "type": "XP",
-          "distance": 33
-        },
-        "last": {
-          "date": "2026-10-11",
-          "team": "MIN",
-          "opponent": "NO",
-          "game": "2026_05_MIN_NO",
-          "play": 3320,
-          "type": "FG",
-          "distance": 55
-        },
-        "endedBy": null,
-        "active": true,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
