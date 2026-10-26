@@ -14,6 +14,7 @@ for (const [,attributes,source] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/
 }
 await import('./test-dlns-combinations.mjs');
 await import('./test-dlns-validation.mjs');
+await import('./test-dlns-fill-players.mjs');
 await import('./test-dlns-pick-ranks.mjs');
 // Exercise the inline coverage renderer without booting the rest of the page.
 const coverageRoot = {innerHTML:''};

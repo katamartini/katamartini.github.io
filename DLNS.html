@@ -1735,6 +1735,12 @@ color:var(--m)}
 .simClearWinner:disabled{
 opacity:.35;
 cursor:default}
+.simFillPlayers{
+font-size:12px;
+border-radius:6px}
+.simFillPlayers:disabled{
+opacity:.5;
+cursor:default}
 .simRarity{
 display:inline-flex;
 align-items:center;
@@ -2322,7 +2328,8 @@ function simSideToggle(kind,title,value){
 const disabled=window.DLNSMatchEntry?.saving;
 return '<fieldset class="simSideControl"><legend>'+title+(kind==='Winner'?'<button type="button" class="simClearWinner" id="simClearWinner" aria-label="Clear winner" title="Clear winner" '+(!value||disabled?'disabled':'')+'>&times;</button>':'')+'</legend><div class="simSideChoices"><span>Left</span><div class="simSideSwitch" data-side="'+value+'">'+['left','right'].map(side=>'<label title="'+esc(team(side))+'"><input type="radio" name="sim'+kind+'" id="sim'+kind+'-'+side+'" value="'+side+'" aria-label="'+title+': '+(side==='left'?'left':'right')+' team ('+esc(team(side))+')" '+(value===side?'checked ':'')+(disabled?'disabled':'')+'></label>').join('')+'</div><span>Right</span></div><div class="simSwitchValue">'+(value?esc(team(value)):'Result pending')+'</div></fieldset>'}
 function simCenterHTML(c){
-return '<section class="simCenter"><div class="simSeriesScores">'+simSeriesScore('left')+simSeriesScore('right')+'</div>'+simSideToggle('FirstPick','First pick',sim.first)+'<div><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></div>'+simSideToggle('Winner','Winner',window.DLNSMatchEntry?.winner||'')+'</section>'}
+const fillButton=window.DLNSDatabase?.auth?.admin?'<button type="button" class="simFillPlayers" id="simFillPlayers" title="Fill unassigned players from each team\'s latest picks for each hero" '+(window.DLNSMatchEntry?.saving||!sim.events.some(event=>event.type==='pick')?'disabled':'')+'>Fill players</button>':'';
+return '<section class="simCenter"><div class="simSeriesScores">'+simSeriesScore('left')+simSeriesScore('right')+'</div>'+simSideToggle('FirstPick','First pick',sim.first)+'<div><div class="label">Current turn</div><div class="simTurn">'+(c?esc(team(c.side))+'&#39;s '+(c.type==='pick'?'Pick':'Ban'):'Draft complete')+'</div><div class="muted">'+sim.step+' / '+seq().length+'</div></div>'+simSideToggle('Winner','Winner',window.DLNSMatchEntry?.winner||'')+fillButton+'</section>'}
 function sideHTML(side){
 return '<section class="simSide '+side+'">'+
 '<div class="simTeamBar"><span class="simTeamName">'+simTeamSelect(side)+'</span><span class="simTeamMeta">'+simDraftRarity(side)+'<span class="small">'+(sim.first===side?'1st pick':'')+'</span></span></div>'+
@@ -2352,6 +2359,7 @@ $(teamId).onchange=e=>{if(e.target.value===''){window.DLNSMatchEntry?.openAddTea
 $('simFirstPick-'+side).onchange=()=>{setFirstPick(side);$('simFirstPick-'+side)?.focus({preventScroll:true})};
 $('simWinner-'+side).onchange=()=>{window.DLNSMatchEntry?.setWinner(side);$('simWinner-'+side)?.focus({preventScroll:true})}}
 $('simClearWinner').onclick=()=>window.DLNSMatchEntry?.setWinner('');
+if($('simFillPlayers'))$('simFillPlayers').onclick=()=>{window.DLNSMatchEntry?.fillPlayers();$('simFillPlayers')?.focus({preventScroll:true})};
 window.dispatchEvent(new Event('dlns:sim-render'))}
 function addSimUI(){
 if($(ID+'Root'))return;if(!TABS.includes(ID))TABS.splice(Math.max(0,TABS.indexOf('validation')),0,ID);const btn=document.createElement('button');btn.className='tab';btn.id='tabBtn-'+ID;btn.textContent='Draft Simulator';btn.onclick=()=>setTab(ID);$('tabs').insertBefore(btn,$('tabBtn-validation')||null);$('panels').insertAdjacentHTML('beforeend','<section id="tab-'+ID+'" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Draft Simulator</div><div class="muted" style="margin-bottom:10px">Click heroes to fill the active pick or ban slot.</div><div id="'+ID+'Root"></div></div></section></section>')}
@@ -2359,7 +2367,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261026-validation-links"></script>
+<script src="dlns/submission.js?v=20261026-fill-players"></script>
 </body>
 </html>
 
