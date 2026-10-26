@@ -56,6 +56,24 @@
     return model.teamsForRegion(app.getRecords(),region,db.teams);
   }
 
+  function fillPlayers() {
+    if (saving || autofilling || addingTeam || !db.auth.admin) return;
+    const sim = app.getSim(), records = app.getRecords();
+    let filled = 0;
+    for (const side of ['left','right']) {
+      for (const hero of sim.slots[side].picks.filter(Boolean)) {
+        if (entry.players[hero]) continue;
+        const player = model.latestHeroPlayer(records,sim[side],hero,entry.region);
+        if (!player) continue;
+        entry.players[hero] = player;
+        filled++;
+      }
+    }
+    if (filled) persist();
+    setMessage(filled ? `Filled ${filled} player assignment${filled === 1 ? '' : 's'}.` : 'No player assignments changed.',filled ? 'success' : '');
+    render();
+  }
+
   function refreshTeams() {
     if (!app.getRecords().length) return;
     const sim = app.getSim(), teams = teamNames();
@@ -280,6 +298,7 @@
     get editingMatchId() { return entry.editing; },
     get saving() { return saving || autofilling || addingTeam; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
+    fillPlayers,
     loadMatch,
     openAddTeam,
     setRegion(region) {
