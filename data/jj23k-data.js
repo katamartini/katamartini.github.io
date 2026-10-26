@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 7,
-  "sourceHash": "890ca3da3fd237b1d41a51c3ea3dcc5809b91fc8c08cb41170e38ee649f394d5",
+  "sourceHash": "ac347efe2e5be8a836cb7506ad1b79f7ccaed940dc21f31adbfd11349fac294a",
   "careerYards": [
     0,
     26,
@@ -103,7 +103,8 @@ window.JJ23K_DATA = {
     8572,
     8627,
     8659,
-    8738
+    8738,
+    8782
   ],
   "leaders": [
     [
@@ -289,11 +290,11 @@ window.JJ23K_DATA = {
     [
       19,
       "Travis Kelce",
-      13301,
-      1100,
+      13345,
+      1104,
       12.1,
       84,
-      299,
+      343,
       4
     ],
     [
@@ -378,6 +379,16 @@ window.JJ23K_DATA = {
     ],
     [
       28,
+      "Keenan Allen",
+      12309,
+      1084,
+      11.4,
+      71,
+      258,
+      5
+    ],
+    [
+      29,
       "Antonio Brown",
       12291,
       928,
@@ -387,7 +398,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      29,
+      30,
       "Jimmy Smith",
       12287,
       862,
@@ -395,16 +406,6 @@ window.JJ23K_DATA = {
       67,
       null,
       null
-    ],
-    [
-      30,
-      "Keenan Allen",
-      12278,
-      1081,
-      11.4,
-      71,
-      227,
-      3
     ],
     [
       31,
@@ -698,6 +699,16 @@ window.JJ23K_DATA = {
     ],
     [
       60,
+      "Brandin Cooks",
+      9844,
+      737,
+      13.4,
+      61,
+      33,
+      2
+    ],
+    [
+      61,
       "Drew Hill",
       9831,
       634,
@@ -705,16 +716,6 @@ window.JJ23K_DATA = {
       60,
       null,
       null
-    ],
-    [
-      61,
-      "Brandin Cooks",
-      9831,
-      736,
-      13.4,
-      61,
-      20,
-      1
     ],
     [
       62,
@@ -948,6 +949,16 @@ window.JJ23K_DATA = {
     ],
     [
       85,
+      "Justin Jefferson",
+      8782,
+      602,
+      14.6,
+      45,
+      302,
+      13
+    ],
+    [
+      86,
       "Mark Carrier",
       8763,
       569,
@@ -957,7 +968,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      86,
+      87,
       "Joe Horn",
       8744,
       603,
@@ -965,16 +976,6 @@ window.JJ23K_DATA = {
       58,
       null,
       null
-    ],
-    [
-      87,
-      "Justin Jefferson",
-      8738,
-      598,
-      14.6,
-      45,
-      258,
-      11
     ],
     [
       88,
@@ -1048,6 +1049,16 @@ window.JJ23K_DATA = {
     ],
     [
       95,
+      "Cooper Kupp",
+      8568,
+      699,
+      12.3,
+      60,
+      199,
+      6
+    ],
+    [
+      96,
       "Paul Warfield",
       8565,
       427,
@@ -1055,16 +1066,6 @@ window.JJ23K_DATA = {
       85,
       null,
       null
-    ],
-    [
-      96,
-      "Cooper Kupp",
-      8548,
-      697,
-      12.3,
-      60,
-      179,
-      5
     ],
     [
       97,
