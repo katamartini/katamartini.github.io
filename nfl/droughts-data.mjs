@@ -73,10 +73,16 @@ export function readGames(csv) {
 export const WIN_STREAK_TARGET = 5;
 export const WIN_STREAK_THRESHOLDS = Array.from({ length: 23 }, (_, i) => i + 1);
 export const LOSS_STREAK_THRESHOLDS = Array.from({ length: 29 }, (_, i) => i + 1);
-const winThresholdPattern = /^#win-streaks-([1-9]|1[0-9]|2[0-3])$/;
-const lossThresholdPattern = /^#loss-streaks-([1-9]|[12][0-9])$/;
-export const droughtViewFromHash = hash => hash === '#win-streaks' || winThresholdPattern.test(hash) ? 'win-streaks' :
-  hash === '#loss-streaks' || lossThresholdPattern.test(hash) ? 'loss-streaks' : 'milestones';
+const winThresholdPattern = /^#win-streaks-([1-9]|1[0-9]|2[0-3])(?:-all-time)?$/;
+const lossThresholdPattern = /^#loss-streaks-([1-9]|[12][0-9])(?:-all-time)?$/;
+export const droughtViewFromHash = hash => ['#win-streaks', '#win-streaks-all-time'].includes(hash) || winThresholdPattern.test(hash) ? 'win-streaks' :
+  ['#loss-streaks', '#loss-streaks-all-time'].includes(hash) || lossThresholdPattern.test(hash) ? 'loss-streaks' : 'milestones';
+export const allTimeDroughtsFromHash = hash => droughtViewFromHash(hash) !== 'milestones' && hash.endsWith('-all-time');
+export function streakDroughtHash(view, threshold, allTime = false) {
+  const thresholds = view === 'win-streaks' ? WIN_STREAK_THRESHOLDS : view === 'loss-streaks' ? LOSS_STREAK_THRESHOLDS : [];
+  if (!thresholds.includes(threshold)) throw new Error('Invalid streak drought view');
+  return `#${view}${threshold === WIN_STREAK_TARGET ? '' : `-${threshold}`}${allTime ? '-all-time' : ''}`;
+}
 export const winThresholdFromHash = hash => {
   const match = winThresholdPattern.exec(hash);
   return match ? Number(match[1]) : WIN_STREAK_TARGET;
@@ -166,6 +172,31 @@ function validStreakView(wins, thresholds) {
         (row.currentWins >= wins.threshold ? row.gamesSince === 0 : row.gamesSince > 0)));
 }
 export const daysBetween = (first, last) => Math.round((Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / 86400000);
+export function compareAllTimeDroughts(a, b) {
+  return b.gamesSince - a.gamesSince || b.daysSince - a.daysSince ||
+    TEAMS[a.team].name.localeCompare(TEAMS[b.team].name) || a.start.date.localeCompare(b.start.date);
+}
+export function validAllTimeDroughts(view) {
+  const date = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value));
+  const endpoint = value => value && date(value.date) && Number.isInteger(value.season) &&
+    (Number.isInteger(value.week) && value.week >= 1 || value.week === null && Number.isInteger(value.gameNumber) && value.gameNumber >= 1);
+  if (!view || !date(view.throughDate) || !Array.isArray(view.allTime) || view.allTime.length > 20) return false;
+  const keys = new Set();
+  return view.allTime.every((row, index) => {
+    if (!row || typeof row !== 'object') return false;
+    const key = `${row.team}:${row.start?.date}:${row.end?.date ?? 'ongoing'}`;
+    if (keys.has(key)) return false;
+    keys.add(key);
+    return TEAMS[row.team] && DIVISIONS.some(d => d.name === row.division && d.teams.includes(row.team)) &&
+      endpoint(row.start) && typeof row.fromDebut === 'boolean' && typeof row.ongoing === 'boolean' &&
+      (row.ongoing ? row.end === null : endpoint(row.end)) &&
+      row.start.date <= (row.end?.date ?? view.throughDate) && (row.end?.date ?? view.throughDate) <= view.throughDate &&
+      (!row.fromDebut || row.start.season === FRANCHISE_DEBUTS[row.team]) &&
+      Number.isInteger(row.gamesSince) && row.gamesSince > 0 &&
+      Number.isInteger(row.daysSince) && row.daysSince === daysBetween(row.start.date, row.end?.date ?? view.throughDate) &&
+      (!index || compareAllTimeDroughts(view.allTime[index - 1], row) <= 0);
+  });
+}
 export function elapsedTime(first, last) {
   const a = new Date(`${first}T00:00:00Z`), b = new Date(`${last}T00:00:00Z`);
   const months = (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + b.getUTCMonth() - a.getUTCMonth() - (b.getUTCDate() < a.getUTCDate() ? 1 : 0);
@@ -197,6 +228,7 @@ function calculateResultStreakDroughts(games, earlierByTeam, threshold, outcome)
     Number.isInteger(game.homeScore) && game.homeScore >= 0 && Number.isInteger(game.awayScore) && game.awayScore >= 0;
   if (regular.some(g => !valid(g))) throw new Error('Invalid regular-season result');
   const throughDate = regular.at(-1).date;
+  const droughts = [];
   const teams = DIVISIONS.flatMap(division => division.teams.map(team => {
     const modern = regular.filter(g => g.home === team || g.away === team);
     const earlier = earlierByTeam[team] || [];
@@ -205,6 +237,18 @@ function calculateResultStreakDroughts(games, earlierByTeam, threshold, outcome)
     const rows = [...earlier, ...modern].sort((a, b) => a.date.localeCompare(b.date));
     if (new Set(rows.map(g => g.date)).size !== rows.length) throw new Error(`Duplicate game: ${team}`);
     let currentWins = 0, bestWins = 0, bestRuns = [], currentStart = null, currentStartSeason = null, last = null, gamesSince = 0, season = null, gameNumber = 0;
+    const point = (game, number) => ({ date: game.date, season: game.season, week: game.week,
+      ...(game.week === null ? { gameNumber: number } : {}) });
+    let previousQualifying = null;
+    const debut = rows[0]?.season === FRANCHISE_DEBUTS[team];
+    const recordDrought = end => {
+      // Do not invent the start of a drought when coverage begins mid-history.
+      if (!gamesSince || !previousQualifying && !debut) return;
+      const start = previousQualifying ?? point(rows[0], 1);
+      droughts.push({ team, division: division.name, start, end, ongoing: end === null,
+        fromDebut: previousQualifying === null, gamesSince,
+        daysSince: daysBetween(start.date, end?.date ?? throughDate) });
+    };
     for (const game of rows) {
       if (season !== game.season) { season = game.season; gameNumber = 0; }
       gameNumber++;
@@ -219,16 +263,23 @@ function calculateResultStreakDroughts(games, earlierByTeam, threshold, outcome)
       // replaces shorter runs, rather than labeling every win in one run a tie.
       if (win && currentWins === bestWins) bestRuns.push({ startSeason: currentStartSeason, endSeason: game.season });
       if (currentWins >= threshold) {
+        // The qualifying game ends the drought; it is not a game without one.
+        gamesSince--;
+        const end = point(game, gameNumber);
+        recordDrought(end);
+        previousQualifying = end;
         last = { date: game.date, season: game.season, week: game.week, game: game.id, startDate: currentStart, wins: currentWins };
         if (game.week === null) last.gameNumber = gameNumber;
         gamesSince = 0;
       }
     }
+    recordDrought(null);
     return { team, division: division.name, last, gamesSince, daysSince: last ? daysBetween(last.date, throughDate) : null, currentWins, bestWins, bestRuns, currentStart,
       coverageStart: rows[0]?.date ?? null };
   }));
   return { threshold, scope: 'REG', throughDate,
-    firstResultsSeason: Math.min(...regular.map(g => g.season), ...Object.values(earlierByTeam).flatMap(rows => rows.map(g => g.season))), teams };
+    firstResultsSeason: Math.min(...regular.map(g => g.season), ...Object.values(earlierByTeam).flatMap(rows => rows.map(g => g.season))), teams,
+    allTime: droughts.sort(compareAllTimeDroughts).slice(0, 20) };
 }
 
 export function latestCompletedSeason(games) {

@@ -59,6 +59,10 @@ test('live refresh recalculates every view with a real update timestamp and leav
   assert.equal(result.updatedAt, '2026-10-12T18:05:00.000Z');
   assert.equal(result.winStreaks.throughDate, '2026-10-12');
   assert.equal(result.teams.length, 32);
+  for (const root of [result.winStreaks, result.lossStreaks]) {
+    assert.ok(Array.isArray(root.allTime));
+    assert.ok(Object.values(root.thresholds).every(view => Array.isArray(view.allTime)));
+  }
   assert.equal(validWinStreakView(result.winStreaks), true);
   assert.equal(validLossStreakView(result.lossStreaks), true);
   for (const view of Object.values(result.winStreaks.thresholds)) assert.equal(validWinStreakView(view), true);

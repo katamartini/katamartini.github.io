@@ -21,7 +21,7 @@
     .views a { padding: 6px 10px; border: 1px solid #c8cdc5; border-radius: 4px; font-size: 0.88rem; text-decoration: none; }
     .views a[aria-current="page"] { color: #fff; background: #36534a; border-color: #36534a; }
     .thresholds { margin-top: 12px; }
-    .thresholds[hidden] { display: none; }
+    .thresholds[hidden], .views[hidden] { display: none; }
     h2 { margin: 24px 0 8px; font-size: 1.2rem; }
     .meta { margin: 22px 0 28px; color: #61665e; font-size: 0.86rem; }
     .refresh-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: -12px 0 24px; }
@@ -81,6 +81,10 @@
       <a href="#loss-streaks">Loss streak droughts</a>
     </nav>
     <nav id="streak-thresholds" class="views thresholds" aria-label="Win streak length" hidden></nav>
+    <nav id="streak-periods" class="views thresholds" aria-label="Drought time period" hidden>
+      <a id="current-droughts" href="#win-streaks">Current</a>
+      <a id="all-time-droughts" href="#win-streaks-all-time">All-time top 20</a>
+    </nav>
     <h2 id="view-heading">Milestones</h2>
     <p id="status" class="meta" role="status">Loading records…</p>
     <div class="refresh-controls">
@@ -89,7 +93,7 @@
       <span id="refresh-status" class="hint refresh-note" role="status">Fetches current results for this browser. The shared site snapshot updates daily.</span>
     </div>
     <div class="toolbar">
-      <label>Division <select id="division-filter"><option value="all">All divisions</option></select></label>
+      <label id="division-label">Division <select id="division-filter"><option value="all">All divisions</option></select></label>
       <p class="hint"><span id="sort-hint">Click a milestone to sort by longest drought.</span> <span id="team-count"></span></p>
     </div>
     <p id="streak-legend" class="hint" hidden>Green: active qualifying streak. Yellow: one win away from ending the drought. Pink: never had a qualifying streak.</p>
@@ -115,7 +119,8 @@
       <p>“Last N+ loss” is the most recent defeat that left the team on a streak of at least N losses. Every further loss in a qualifying run resets its game drought to 0. Games since counts completed regular-season games after that defeat; time since is calendar time through the latest game date in the feed. “Worst” means the franchise’s longest losing streak, with the season year or range of every tied record-length run beneath it. Season years are used even for January games. Current losing streaks are included.</p>
     </div>
     <div id="streak-history-method" class="method" hidden>
-      <p>Coverage reaches all 32 franchises’ first APFA/NFL, AAFC or 1960 AFL seasons, starting in 1920. Earlier club founding dates and pre-league seasons are not used. The archive is checked against each franchise’s fixed early-season schedule totals and later expected season lengths, including strike-shortened seasons and inactive years. “Never” is used only when covered results extend back to the first league season. In longest-drought sorts, these teams come first, ordered by first league season (oldest first). Their game and time droughts run from their first recorded league-season game. An incomplete history would remain “Not found in covered history” and sort last. Team-name, current-streak and Best/Worst sorts follow their selected columns normally.</p>
+      <p id="all-time-method" hidden>All-time top 20 ranks separate droughts by regular-season games without a qualifying result; calendar days break game-count ties. A franchise can appear more than once. The start is its last qualifying win/loss, or its first league game if it had never qualified. The end is the game that next reached the selected streak length; that drought-ending game is excluded from the game count. Every further win/loss in an already qualifying streak resets the drought, just as in Current. Streaks carry across seasons; ties and the opposite result reset streaks. Preseason and postseason games are excluded. Initial droughts from franchise debut and ongoing droughts are included; ongoing time runs through the latest league game date. Offseasons, byes and suspensions add calendar time but not games. Yellow marks an ongoing drought; pink marks an ongoing drought that has never ended. Coverage follows today's 32 franchises and their predecessors, not separately defunct franchises. Column sorting rearranges the same top 20, not a new top 20 by that column.</p>
+      <p>Coverage reaches all 32 franchises’ first APFA/NFL, AAFC or 1960 AFL seasons, starting in 1920. Earlier club founding dates and pre-league seasons are not used. The archive is checked against each franchise’s fixed early-season schedule totals and later expected season lengths, including strike-shortened seasons and inactive years. “Never” is used only when covered results extend back to the first league season. In Current's longest-drought sorts, these teams come first, ordered by first league season (oldest first). Their game and time droughts run from their first recorded league-season game. An incomplete history would remain “Not found in covered history” and sort last. Team-name, current-streak and Best/Worst sorts follow their selected columns normally.</p>
       <p>Early APFA season records include some games against non-league opponents; these are retained when classified as regular season in the archive, following historical season records. The <a href="https://www.profootballhof.com/news/playoff-results-1930s">1932 Bears–Spartans tiebreaker counted in the regular standings</a> and is included. The <a href="https://www.profootballhof.com/teams/pittsburgh-steelers/team-history">1943 Steagles games are credited to both the Eagles and Steelers, and 1944 Card-Pitt games to both the Cardinals and Steelers</a>. Their opponents see one game against the combined club, not two. The Rams’ 1943 suspension and Browns’ 1996–98 suspension add no games and do not reset streaks.</p>
       <p>The current season is included. All win and loss thresholds are checked daily. Sources: <a href="https://github.com/fivethirtyeight/nfl-elo-game">FiveThirtyEight’s historical game archive</a> (1920–98, adapted to current franchise identities; <a href="../data/droughts-history-LICENSE.txt">license and attribution</a>) and <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse results</a> (1999 onward). Older records show the team’s season game number, not an NFL week, because the archive has no week field. Relocations stay with the franchise; the Oilers belong to the Titans, not the Texans. Defunct and non-league clubs remain separate opponents, and the Ravens have their own history.</p>
     </div>
@@ -124,9 +129,10 @@
     import { CATEGORIES, seasonsSince, droughtViewFromHash, elapsedTime, WIN_STREAK_THRESHOLDS, WIN_STREAK_TARGET,
       winThresholdFromHash, winStreakRowClass, validWinStreakView, winStreakHistoryStatus,
       compareWinStreakRows, FRANCHISE_DEBUTS, daysBetween, bestStreakYears,
-      LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView } from './droughts-data.mjs?v=manual-refresh';
+      LOSS_STREAK_THRESHOLDS, lossThresholdFromHash, lossStreakRowClass, validLossStreakView,
+      allTimeDroughtsFromHash, streakDroughtHash, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-1';
     import { DIVISIONS, TEAMS } from './divstreaks-data.mjs';
-    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=manual-refresh';
+    import { refreshDroughts, updateTimeText } from './droughts-refresh.mjs?v=all-time-1';
 
     const status = document.getElementById('status');
     const head = document.getElementById('table-head');
@@ -144,10 +150,14 @@
     let descending = false;
     let view = droughtViewFromHash(location.hash);
     let threshold = winThresholdFromHash(location.hash);
+    let allTime = allTimeDroughtsFromHash(location.hash);
+    const sortGroup = () => `${view}${allTime ? '-all-time' : ''}`;
     const sorts = {
       milestones: { key: 'team', descending: false },
       'win-streaks': { key: 'gamesSince', descending: true },
       'loss-streaks': { key: 'gamesSince', descending: true },
+      'win-streaks-all-time': { key: 'gamesSince', descending: true },
+      'loss-streaks-all-time': { key: 'gamesSince', descending: true },
     };
     const streakData = () => {
       const root = view === 'loss-streaks' ? data.lossStreaks : data.winStreaks;
@@ -159,6 +169,11 @@
       { key: 'bestWins', label: 'Best' },
     ];
     const dateText = date => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
+    const allTimeColumns = [
+      { key: 'gamesSince', label: 'Games without streak' }, { key: 'daysSince', label: 'Duration' },
+      { key: 'start', label: 'Drought start' }, { key: 'end', label: 'Drought ended' },
+      { key: 'ongoing', label: 'Status' },
+    ];
 
     function element(tag, className, text) {
       const node = document.createElement(tag);
@@ -173,7 +188,7 @@
       nav.setAttribute('aria-label', view === 'loss-streaks' ? 'Loss streak length' : 'Win streak length');
       for (const n of view === 'loss-streaks' ? LOSS_STREAK_THRESHOLDS : WIN_STREAK_THRESHOLDS) {
         const link = element('a', '', `${n}+`);
-        link.href = n === WIN_STREAK_TARGET ? `#${view}` : `#${view}-${n}`;
+        link.href = streakDroughtHash(view, n, allTime);
         if (n === threshold) link.setAttribute('aria-current', 'page');
         nav.append(link);
       }
@@ -192,10 +207,16 @@
       const noun = losses ? 'loss' : 'win';
       const plural = losses ? 'losses' : 'wins';
       const wins = winsView ? streakData() : null;
-      const sourceRows = losses ? wins.teams.map(row => ({ ...row, currentWins: row.currentLosses, bestWins: row.bestLosses,
+      const sourceRows = allTime ? wins.allTime.map((row, i) => ({ ...row, rank: i + 1 })) : losses ? wins.teams.map(row => ({ ...row, currentWins: row.currentLosses, bestWins: row.bestLosses,
         last: row.last ? { ...row.last, wins: row.last.losses } : null })) : winsView ? wins.teams : data.teams;
-      const rows = sourceRows.filter(row => filter.value === 'all' || row.division === filter.value);
+      const rows = sourceRows.filter(row => allTime || filter.value === 'all' || row.division === filter.value);
       rows.sort((a, b) => {
+        if (allTime) {
+          const value = row => sortKey === 'team' ? TEAMS[row.team].name : sortKey === 'start' ? row.start.date : sortKey === 'end' ? row.end?.date ?? wins.throughDate : row[sortKey];
+          const av = value(a), bv = value(b);
+          const difference = typeof av === 'string' ? av.localeCompare(bv) : Number(av) - Number(bv);
+          return (descending ? -difference : difference) || a.rank - b.rank;
+        }
         if (winsView) return compareWinStreakRows(a, b, sortKey, descending, wins);
         const names = TEAMS[a.team].name.localeCompare(TEAMS[b.team].name);
         if (sortKey === 'team') return descending ? -names : names;
@@ -209,7 +230,7 @@
       }
       const fragment = document.createDocumentFragment();
       for (const row of rows) {
-        const state = losses ? lossStreakRowClass(row, wins) : winsView ? winStreakRowClass(row, wins) : '';
+        const state = allTime ? row.ongoing ? row.fromDebut ? 'never-streak' : 'one-away' : '' : losses ? lossStreakRowClass(row, wins) : winsView ? winStreakRowClass(row, wins) : '';
         const tr = element('tr', state);
         const team = element('th');
         team.scope = 'row';
@@ -223,12 +244,35 @@
         logo.decoding = 'async';
         logo.addEventListener('error', () => logo.remove(), { once: true });
         const label = element('div');
-        label.append(element('span', 'team-name', TEAMS[row.team].name));
+        label.append(element('span', 'team-name', `${allTime ? `#${row.rank} · ` : ''}${TEAMS[row.team].name}`));
         label.append(element('span', 'division', row.division));
         identity.append(logo, label);
         team.append(identity);
         tr.append(team);
-        if (winsView) {
+        if (allTime) {
+          const games = element('td');
+          games.append(element('span', 'last-season', row.gamesSince.toLocaleString('en-US')));
+          games.append(element('span', 'drought', 'regular-season games'));
+          const duration = element('td');
+          duration.append(element('span', 'last-season', elapsedTime(row.start.date, row.end?.date ?? wins.throughDate)));
+          duration.append(element('span', 'drought', `${row.daysSince.toLocaleString('en-US')} days`));
+          const endpoint = (point, detail) => {
+            const cell = element('td');
+            cell.append(element('span', 'last-season', dateText(point.date)));
+            cell.append(element('span', 'drought', `${point.season} · ${point.week === null ? `Game ${point.gameNumber}` : `Week ${point.week}`} · ${detail}`));
+            return cell;
+          };
+          const start = endpoint(row.start, row.fromDebut ? 'Franchise debut' : `Last ${threshold}+ ${noun}`);
+          const end = row.end ? endpoint(row.end, `${threshold}+ ${noun} reached`) : element('td');
+          if (!row.end) {
+            end.append(element('span', 'last-season', 'Ongoing'));
+            end.append(element('span', 'drought', `Through ${dateText(wins.throughDate)}`));
+          }
+          const stateCell = element('td');
+          stateCell.append(element('span', 'last-season', row.ongoing ? 'Ongoing' : 'Ended'));
+          if (row.ongoing && row.fromDebut) stateCell.append(element('span', 'drought', 'Never had this streak'));
+          tr.append(games, duration, start, end, stateCell);
+        } else if (winsView) {
           const active = state === 'active-streak';
           const never = winStreakHistoryStatus(row, wins) === 'never';
           const since = row.last?.date || (never ? row.coverageStart : null);
@@ -258,12 +302,12 @@
         fragment.append(tr);
       }
       body.replaceChildren(fragment);
-      count.textContent = `${rows.length} teams.`;
+      count.textContent = allTime ? `${rows.length} longest droughts · ${new Set(rows.map(row => row.team)).size} franchises.` : `${rows.length} teams.`;
     }
 
     function buildHeaders() {
       head.replaceChildren(); headers.clear();
-      for (const category of [{ key: 'team', label: 'Team' }, ...(view !== 'milestones' ? winColumns : CATEGORIES)]) {
+      for (const category of [{ key: 'team', label: allTime ? 'Rank / Team' : 'Team' }, ...(allTime ? allTimeColumns : view !== 'milestones' ? winColumns : CATEGORIES)]) {
       const th = element('th');
       th.scope = 'col';
       const label = view !== 'milestones' && category.key === 'last' ? `Last ${threshold}+ ${view === 'loss-streaks' ? 'loss' : 'win'}` :
@@ -277,7 +321,7 @@
       button.addEventListener('click', () => {
         descending = sortKey === category.key ? !descending : category.key !== 'team' && category.key !== 'last';
         sortKey = category.key;
-        sorts[view] = { key: sortKey, descending };
+        sorts[sortGroup()] = { key: sortKey, descending };
         render();
       });
       th.append(button);
@@ -287,24 +331,44 @@
     }
     function selectView() {
       view = droughtViewFromHash(location.hash);
+      allTime = allTimeDroughtsFromHash(location.hash);
       const losses = view === 'loss-streaks';
       threshold = losses ? lossThresholdFromHash(location.hash) : winThresholdFromHash(location.hash);
       const winsView = view !== 'milestones';
       const noun = losses ? 'loss' : 'win';
-      sortKey = sorts[view].key; descending = sorts[view].descending;
+      sortKey = sorts[sortGroup()].key; descending = sorts[sortGroup()].descending;
       document.getElementById('intro').textContent = winsView ? `How long has each team gone without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}? Includes this season, with streaks carrying across season boundaries.` : 'When did each team last reach these milestones? Each cell shows the last season and the number of completed seasons since.';
       document.getElementById('view-heading').textContent = winsView ? `${threshold}+ ${noun} streak droughts` : 'Milestones';
+      if (allTime) {
+        document.getElementById('intro').textContent = `The 20 longest stretches without ${losses ? 'losing' : 'winning'} ${threshold} straight regular-season ${threshold === 1 ? 'game' : 'games'}. Includes ended and ongoing droughts across the histories of today's 32 franchises.`;
+        document.getElementById('view-heading').textContent += ' · All-time top 20';
+      }
       document.getElementById('sort-hint').textContent = winsView ? 'Click a column to sort. Sorting carries between streak lengths.' : 'Click a milestone to sort by longest drought.';
       document.getElementById('table-caption').textContent = winsView ? `NFL droughts since the last ${threshold}-game regular-season ${losses ? 'losing' : 'winning'} streak` : 'NFL droughts: last season and completed seasons without each milestone';
+      if (allTime) {
+        document.getElementById('sort-hint').textContent = 'Top 20 ranked by games; calendar days break ties. Click a column to reorder.';
+        document.getElementById('table-caption').textContent = `20 longest all-time ${threshold}+ ${noun} streak droughts`;
+      }
       document.getElementById('streak-thresholds').hidden = !winsView;
+      document.getElementById('streak-periods').hidden = !winsView;
+      document.getElementById('division-label').hidden = allTime;
+      document.getElementById('all-time-method').hidden = !allTime;
+      if (winsView) for (const [id, mode] of [['current-droughts', false], ['all-time-droughts', true]]) {
+        const link = document.getElementById(id);
+        link.href = streakDroughtHash(view, threshold, mode);
+        if (allTime === mode) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+      }
       document.getElementById('streak-legend').hidden = !winsView;
       document.getElementById('streak-legend').textContent = `Green: active qualifying ${losses ? 'losing' : 'winning'} streak. Yellow: one ${noun} away from ending the drought. Pink: never had a qualifying streak.`;
+      if (allTime) document.getElementById('streak-legend').textContent = 'Yellow: ongoing drought. Pink: ongoing since franchise debut (never had this streak). A franchise may appear more than once.';
       document.getElementById('milestone-method').hidden = winsView;
-      document.getElementById('win-streak-method').hidden = view !== 'win-streaks';
-      document.getElementById('loss-streak-method').hidden = !losses;
+      document.getElementById('win-streak-method').hidden = allTime || view !== 'win-streaks';
+      document.getElementById('loss-streak-method').hidden = allTime || !losses;
       document.getElementById('streak-history-method').hidden = !winsView;
       for (const link of document.querySelectorAll('#drought-views a')) {
-        if (link.hash === `#${view}`) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+        const target = droughtViewFromHash(link.hash);
+        if (target !== 'milestones') link.href = streakDroughtHash(target, (target === 'win-streaks' ? WIN_STREAK_THRESHOLDS : LOSS_STREAK_THRESHOLDS).includes(threshold) ? threshold : WIN_STREAK_TARGET, allTime);
+        if (target === view) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
       }
       if (winsView) buildThresholds();
       buildHeaders(); render();
@@ -316,7 +380,7 @@
     filter.addEventListener('change', render);
 
     async function loadSnapshot() {
-      const response = await fetch('../data/droughts.json?v=manual-refresh', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
+      const response = await fetch('../data/droughts.json?v=all-time-1', { cache: 'no-store', signal: AbortSignal.timeout(30000) });
       if (!response.ok) throw new Error('Records unavailable');
       const saved = await response.json();
       if (!Number.isInteger(saved.throughSeason) || saved.teams?.length !== 32 ||
@@ -328,11 +392,11 @@
       }
       if (WIN_STREAK_THRESHOLDS.some(n => {
         const wins = n === WIN_STREAK_TARGET ? saved.winStreaks : saved.winStreaks?.thresholds?.[n];
-        return !validWinStreakView(wins) || wins.threshold !== n || wins.throughDate !== saved.winStreaks.throughDate;
+        return !validWinStreakView(wins) || !validAllTimeDroughts(wins) || wins.threshold !== n || wins.throughDate !== saved.winStreaks.throughDate;
       })) throw new Error('Incomplete win-streak records');
       if (LOSS_STREAK_THRESHOLDS.some(n => {
         const losses = n === WIN_STREAK_TARGET ? saved.lossStreaks : saved.lossStreaks?.thresholds?.[n];
-        return !validLossStreakView(losses) || losses.threshold !== n || losses.throughDate !== saved.winStreaks.throughDate;
+        return !validLossStreakView(losses) || !validAllTimeDroughts(losses) || losses.threshold !== n || losses.throughDate !== saved.winStreaks.throughDate;
       })) throw new Error('Incomplete loss-streak records');
       return saved;
     }
