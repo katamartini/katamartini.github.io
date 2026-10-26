@@ -1,7 +1,7 @@
 import { SOURCE_URL } from './divstreaks-data.mjs';
 import { readGames, latestCompletedSeason, calculateDroughts, divisionWinners,
   calculateWinStreakDroughts, calculateLossStreakDroughts, validWinStreakView, validLossStreakView,
-  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, WIN_STREAK_TARGET } from './droughts-data.mjs?v=manual-refresh';
+  WIN_STREAK_THRESHOLDS, LOSS_STREAK_THRESHOLDS, WIN_STREAK_TARGET, validAllTimeDroughts } from './droughts-data.mjs?v=all-time-1';
 import { archiveByTeam, ARCHIVE_SOURCE, ARCHIVE_SHA256, ARCHIVE_ROWS_SHA256, FRANCHISE_DEBUTS } from './droughts-archive.mjs';
 
 export function updateTimeText(value) {
@@ -51,7 +51,7 @@ export async function refreshDroughts(published, { fetchImpl = fetch, now = () =
   }
   const pack = (thresholds, calculate, validate) => {
     const views = thresholds.map(n => calculate(games, history, n));
-    if (views.some(view => !validate(view) || view.teams.some(row =>
+    if (views.some(view => !validate(view) || !validAllTimeDroughts(view) || view.teams.some(row =>
       Number(row.coverageStart.slice(0, 4)) !== FRANCHISE_DEBUTS[row.team]))) throw new Error('Incomplete streak records');
     return { ...views.find(view => view.threshold === WIN_STREAK_TARGET),
       historicalSources: published.winStreaks.historicalSources,
