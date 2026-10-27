@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-26T11:22:00.754Z",
+  "checkedAt": "2026-10-27T10:46:33.528Z",
   "season": 2026,
-  "through": "2026-10-25",
+  "through": "2026-10-26",
   "rosterWeek": 7,
   "rosterWeeks": {
     "ARI": 7,
@@ -175,6 +175,33 @@
       }
     },
     {
+      "id": "00-0033077",
+      "espn": "2577417",
+      "name": "Dak Prescott",
+      "team": "DAL",
+      "since": 2016,
+      "seasons": 11,
+      "status": "ACT",
+      "rosterWeek": 7,
+      "length": 24,
+      "start": {
+        "id": "2025_01_DAL_PHI",
+        "event": "401772510",
+        "date": "2025-09-04",
+        "season": 2025,
+        "week": 1,
+        "opponent": "PHI"
+      },
+      "last": {
+        "id": "2026_07_DAL_PHI",
+        "event": "401873009",
+        "date": "2026-10-26",
+        "season": 2026,
+        "week": 7,
+        "opponent": "PHI"
+      }
+    },
+    {
       "id": "00-0026498",
       "espn": "12483",
       "name": "Matthew Stafford",
@@ -199,33 +226,6 @@
         "season": 2026,
         "week": 7,
         "opponent": "LV"
-      }
-    },
-    {
-      "id": "00-0033077",
-      "espn": "2577417",
-      "name": "Dak Prescott",
-      "team": "DAL",
-      "since": 2016,
-      "seasons": 11,
-      "status": "ACT",
-      "rosterWeek": 7,
-      "length": 23,
-      "start": {
-        "id": "2025_01_DAL_PHI",
-        "event": "401772510",
-        "date": "2025-09-04",
-        "season": 2025,
-        "week": 1,
-        "opponent": "PHI"
-      },
-      "last": {
-        "id": "2026_06_DAL_GB",
-        "event": "401873007",
-        "date": "2026-10-18",
-        "season": 2026,
-        "week": 6,
-        "opponent": "GB"
       }
     },
     {
@@ -823,6 +823,33 @@
       }
     },
     {
+      "id": "00-0038400",
+      "espn": "4685201",
+      "name": "Tanner McKee",
+      "team": "PHI",
+      "since": 2023,
+      "seasons": 4,
+      "status": "ACT",
+      "rosterWeek": 7,
+      "length": 2,
+      "start": {
+        "id": "2026_06_CAR_PHI",
+        "event": "401872998",
+        "date": "2026-10-18",
+        "season": 2026,
+        "week": 6,
+        "opponent": "CAR"
+      },
+      "last": {
+        "id": "2026_07_DAL_PHI",
+        "event": "401873009",
+        "date": "2026-10-26",
+        "season": 2026,
+        "week": 7,
+        "opponent": "DAL"
+      }
+    },
+    {
       "id": "00-0034855",
       "espn": "3052587",
       "name": "Baker Mayfield",
@@ -874,33 +901,6 @@
         "season": 2026,
         "week": 7,
         "opponent": "HOU"
-      }
-    },
-    {
-      "id": "00-0038400",
-      "espn": "4685201",
-      "name": "Tanner McKee",
-      "team": "PHI",
-      "since": 2023,
-      "seasons": 4,
-      "status": "ACT",
-      "rosterWeek": 7,
-      "length": 1,
-      "start": {
-        "id": "2026_06_CAR_PHI",
-        "event": "401872998",
-        "date": "2026-10-18",
-        "season": 2026,
-        "week": 6,
-        "opponent": "CAR"
-      },
-      "last": {
-        "id": "2026_06_CAR_PHI",
-        "event": "401872998",
-        "date": "2026-10-18",
-        "season": 2026,
-        "week": 6,
-        "opponent": "CAR"
       }
     }
   ],
@@ -1592,7 +1592,7 @@
       "team": "PHI",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 7
     },
     {
