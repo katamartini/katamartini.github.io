@@ -2322,6 +2322,7 @@
             </svg>
             <p class="chart-empty" id="chartEmpty" hidden>Select at least two runs to see a trend line.</p>
           </div>
+          <p class="chart-note">The Y-axis spans 40–80%. Values outside that range sit at the chart edge; hover for the exact percentage.</p>
         </article>
 
         <article class="blocks-panel panel">
@@ -3552,6 +3553,10 @@
         const padding = { top: 16, right: 16, bottom: 28, left: 42 };
         const chartWidth = width - padding.left - padding.right;
         const chartHeight = height - padding.top - padding.bottom;
+        const yMin = 40;
+        const yMax = 80;
+        const yPosition = (value) => padding.top
+          + ((yMax - Math.min(yMax, Math.max(yMin, value))) / (yMax - yMin)) * chartHeight;
 
         [elements.trendStartRange, elements.trendEndRange].forEach((input) => {
           input.max = Math.max(1, totalRuns);
@@ -3570,8 +3575,8 @@
         elements.chartLine.setAttribute("points", "");
         elements.chartArea.setAttribute("d", "");
 
-        [100, 75, 50, 25, 0].forEach((value) => {
-          const y = padding.top + ((100 - value) / 100) * chartHeight;
+        [80, 70, 60, 50, 40].forEach((value) => {
+          const y = yPosition(value);
           elements.chartGrid.append(
             svgElement("line", {
               class: "chart-grid-line",
@@ -3612,7 +3617,7 @@
           const x = values.length === 1
             ? padding.left + chartWidth / 2
             : padding.left + (index / (values.length - 1)) * chartWidth;
-          const y = padding.top + ((100 - value) / 100) * chartHeight;
+          const y = yPosition(value);
           return { x, y, value, run: visibleRuns[index], runNumber: start + index };
         });
 
@@ -3649,9 +3654,10 @@
           label: `Run ${point.runNumber} · ${formatDate(point.run.date)}`,
           values: [{ text: `${formatPercentage(point.value)} · ${runSummary(point.run).makes}/${runSummary(point.run).attempts} made` }]
         })), padding.top, padding.top + chartHeight);
-        elements.trendChartDescription.textContent = points.length
+        const seriesDescription = points.length
           ? visibleRuns.map((run, index) => `Run ${start + index}, ${formatDate(run.date)}, ${formatPercentage(values[index])}`).join("; ")
           : "No imported runs.";
+        elements.trendChartDescription.textContent = `${seriesDescription} The Y-axis runs from 40% to 80%; values outside that range appear at the chart edge.`;
       }
 
       function lifetimeSeries() {
