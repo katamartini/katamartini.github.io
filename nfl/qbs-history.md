@@ -3,7 +3,11 @@
 `QBs.html#all-time` lists recorded single-franchise runs. `#franchise` keeps
 each quarterback's best run per franchise, with competition ranks within that
 franchise. The team filter is shareable, for example
-`QBs.html?team=BUF#franchise`. Both historical tables use 50 rows per page.
+`QBs.html?team=BUF#franchise`. Clickable team logos select a franchise; selecting
+the same logo again, or All teams, clears the filter. Every view shows up to the
+100 longest matching entries on one page, in descending streak length (or roster
+seasons for tenure) by default. Team and player filters apply before the limit;
+column sorting reorders the selected top 100 without changing their membership.
 
 The historical snapshot combines FiveThirtyEight's 1950–2022 starter records,
 preserved in a pinned nfelo archive, with ESPN's explicit game-roster QB
