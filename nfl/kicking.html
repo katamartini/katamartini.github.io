@@ -58,7 +58,7 @@
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Kicking streaks</h1>
     <p class="intro">Flawless runs of made kicks, plus near-streaks with just one miss in the middle. Every qualifying run in the available play-by-play since 1999 is listed. The flawless views also include a partial archive of documented older runs.</p>
-    <nav class="views" aria-label="Kicking views"><a href="#fg">20+ field goals</a><a href="#all">40+ FG + extra points</a><a href="#near-fg">20+ FG near-streaks</a><a href="#near-all">40+ FG + XP near-streaks</a></nav>
+    <nav class="views" aria-label="Kicking views"><a href="#fg">20+ field goals</a><a href="#all">40+ FG + extra points</a><a href="#near-fg">Top 100 FG near-streaks</a><a href="#near-all">Top 100 FG + XP near-streaks</a></nav>
     <h2 id="view-heading">Consecutive made field goals</h2>
     <p id="status" class="meta" role="status">Loading streaks…</p>
     <div class="toolbar">
@@ -74,7 +74,7 @@
     <noscript><p>Enable JavaScript to display the kicking streaks.</p></noscript>
     <div class="method">
       <p id="view-note">Only field-goal attempts count in this view; an extra-point miss does not end a field-goal streak.</p>
-      <p>Near-streaks contain exactly one missed or blocked kick, with at least one make on each side. Each row joins the complete make-runs immediately before and after that miss; the next miss ends it. Neighboring near-streaks can overlap. “Made / attempts” includes the lone miss in the attempt total; the split below it shows makes before + one miss + makes after. The 20/40 cutoffs and ranks use total attempts: the flawless streak that would exist if that one kick had been made. FG and XP columns count actual makes.</p>
+      <p>Near-streaks contain exactly one missed or blocked kick, with at least one make on each side. Each row joins the complete make-runs immediately before and after that miss; the next miss ends it. Neighboring near-streaks can overlap. “Made / attempts” includes the lone miss in the attempt total; the split below it shows makes before + one miss + makes after. The 20/40 cutoffs and ranks use total attempts: the flawless streak that would exist if that one kick had been made. FG and XP columns count actual makes. Each near-streak view is limited to its top 100 runs; filters and column sorting operate within that list.</p>
       <p>Regular-season attempts only; postseason and preseason games are excluded. Streaks carry across seasons and team changes. A miss or blocked kick ends a streak. Two-point tries, fake/aborted tries with no kick, and plays nullified by penalty do not count.</p>
       <p>Start and most recent dates are the first and last made kicks in the run. “Ended by” is the next missed or blocked attempt. “Unbroken · inactive” means no later miss is recorded, but the kicker is not on a current roster. Active roster status includes injured/reserve and practice-squad players.</p>
       <p>Play-by-play coverage starts in 1999. Older rows are a partial archive of individually verified regular-season records, with source links under the kicker’s name. A season range is not an exact start date; unverified dates are left blank. “Documented” does not mean all older streaks have been found.</p>
@@ -86,7 +86,7 @@
   <script type="module">
     import { TEAMS } from './divstreaks-data.mjs';
     import { normalizeName } from './franchise-leaders-data.mjs';
-    import { KICKING_VIEWS, kickingView } from './kicking-data.mjs';
+    import { KICKING_VIEWS, kickingView } from './kicking-data.mjs?v=near-top100-1';
     const head = document.getElementById('table-head'), body = document.getElementById('table-body');
     const filter = document.getElementById('team-filter'), search = document.getElementById('kicker-search'), activeOnly = document.getElementById('active-only');
     const status = document.getElementById('status'), headers = new Map();
@@ -101,7 +101,7 @@
       const config = KICKING_VIEWS[view];
       status.textContent = `Regular season · Play-by-play: 1999–${data.season}${config.near ? ' · One miss per run' : ' · Partial pre-1999 archive'} · Games through ${dateText(data.through)} · Rosters: ${data.season} Week ${data.rosterWeek}`;
       const query = normalizeName(search.value);
-      const rows = data.views[view].map((row, i) => ({ ...row, rank: i + 1 })).filter(row =>
+      const rows = data.views[view].slice(0, config.limit).map((row, i) => ({ ...row, rank: i + 1 })).filter(row =>
         (filter.value === 'all' || row.teams.includes(filter.value)) && normalizeName(row.name).includes(query) && (!activeOnly.checked || row.active));
       const value = (row, key) => ['start', 'last'].includes(key) ? row[key].date : ['endedBy', 'missed'].includes(key) ? row[key]?.date || null :
         key === 'teams' ? row.teams.map(team => TEAMS[team].name).join(', ') : key === 'status' ? statusText(row) : row[key];
@@ -130,13 +130,15 @@
         tr.append(ended, make('td', row.active ? 'active-label' : '', statusText(row))); fragment.append(tr);
       }
       body.replaceChildren(fragment); document.getElementById('empty').hidden = rows.length > 0;
-      document.getElementById('row-count').textContent = `${rows.length} ${config.near ? 'near-streak' : 'streak'}${rows.length === 1 ? '' : 's'}.`;
+      document.getElementById('row-count').textContent = config.near
+        ? `${rows.length} of the top ${Math.min(config.limit, data.views[view].length)} near-streaks.`
+        : `${rows.length} streak${rows.length === 1 ? '' : 's'}.`;
     }
     function selectView() {
       view = kickingView(location.hash); sortKey = 'length'; descending = true;
       const config = KICKING_VIEWS[view];
       document.getElementById('view-heading').textContent = config.near
-        ? `One-miss near-streaks: ${config.combined ? 'FG + extra points' : 'field goals'}`
+        ? `Top 100 near-streaks: ${config.combined ? 'FG + extra points' : 'field goals'}`
         : config.combined ? 'Consecutive made kicks: FG + extra points' : 'Consecutive made field goals';
       document.getElementById('view-note').textContent = (config.combined
         ? 'Every field goal and extra point is one attempt, in game order. These are consecutive kicks, not a point total.'
@@ -161,9 +163,9 @@
     filter.addEventListener('change', render); search.addEventListener('input', render); activeOnly.addEventListener('change', render);
     window.addEventListener('hashchange', selectView); selectView();
     try {
-      const response = await fetch('../data/kicking.json'); if (!response.ok) throw new Error('Data unavailable');
+      const response = await fetch('../data/kicking.json?v=near-top100-1', { cache: 'no-cache' }); if (!response.ok) throw new Error('Data unavailable');
       const saved = await response.json();
-      if (saved.schemaVersion !== 2 || saved.firstSeason !== 1999 || Object.entries(KICKING_VIEWS).some(([key, config]) =>
+      if (![1, 2].includes(saved.schemaVersion) || saved.firstSeason !== 1999 || Object.entries(KICKING_VIEWS).some(([key, config]) =>
         !Array.isArray(saved.views?.[key]) || saved.views[key].some(row => typeof row.name !== 'string' || !Number.isInteger(row.length) || row.length < config.minimum ||
           row.fieldGoals + row.extraPoints !== row.length - (config.near ? 1 : 0) || !row.teams.length || row.teams.some(team => !TEAMS[team]) ||
           (config.near && (!row.missed?.date || !TEAMS[row.missed.opponent] || !['FG', 'XP'].includes(row.missed.type) ||

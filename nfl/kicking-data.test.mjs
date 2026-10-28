@@ -94,9 +94,9 @@ test('1999 boundary streaks are lower bounds until an observed miss or a known c
 test('saved history retains known record streaks and internally consistent dates and counts', async () => {
   const data = JSON.parse(await readFile(new URL('../data/kicking.json', import.meta.url), 'utf8'));
   assert.equal(data.firstSeason, 1999);
-  assert.equal(data.schemaVersion, 2);
-  assert.ok(data.views['near-fg'].length > 0);
-  assert.ok(data.views['near-all'].length > 0);
+  assert.equal(data.schemaVersion, 1); // Cached flawless-only pages still expect version 1.
+  assert.equal(data.views['near-fg'].length, 100);
+  assert.equal(data.views['near-all'].length, 100);
   assert.equal(data.sources.length, data.season - 1999 + 1);
   const vinatieri = data.views.fg.find(row => row.name === 'Adam Vinatieri' && row.start.date === '2015-10-04');
   assert.equal(vinatieri.length, 44);
@@ -129,6 +129,26 @@ test('saved history retains known record streaks and internally consistent dates
       if (row.endedBy) { assert.ok(row.last.date <= row.endedBy.date); assert.equal(row.active, false); }
     }
   }
+});
+
+test('near-streak lists retain exactly the 100 longest runs without limiting flawless views', () => {
+  const attempts = [];
+  for (let i = 0; i < 110; i++) {
+    const start = i * 1000, id = `kicker-${i}`;
+    attempts.push(...Array.from({ length: 40 }, (_, j) => kick(start + j, 'FG', true, { id })),
+      kick(start + 40, 'FG', false, { id }),
+      ...Array.from({ length: i + 1 }, (_, j) => kick(start + 41 + j, 'FG', true, { id })));
+  }
+  const views = calculateKickingStreaks(attempts, player);
+  for (const view of ['near-fg', 'near-all']) {
+    assert.equal(views[view].length, 100);
+    assert.equal(views[view][0].length, 151);
+    assert.equal(views[view].at(-1).length, 52);
+    assert.deepEqual(new Set(views[view].map(row => row.playerId)),
+      new Set(Array.from({ length: 100 }, (_, i) => `kicker-${i + 10}`)));
+  }
+  assert.ok(views.fg.length > 100);
+  assert.ok(views.all.length > 100);
 });
 
 test('near-streaks include one internal miss in the attempt threshold and retain its details', () => {

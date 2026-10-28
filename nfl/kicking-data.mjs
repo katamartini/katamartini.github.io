@@ -5,8 +5,8 @@ export const FIRST_SEASON = 1999;
 export const KICKING_VIEWS = {
   fg: { label: 'Field goals', minimum: 20, combined: false },
   all: { label: 'Field goals + extra points', minimum: 40, combined: true },
-  'near-fg': { label: 'Field-goal near-streaks', minimum: 20, combined: false, near: true },
-  'near-all': { label: 'FG + extra-point near-streaks', minimum: 40, combined: true, near: true },
+  'near-fg': { label: 'Field-goal near-streaks', minimum: 20, combined: false, near: true, limit: 100 },
+  'near-all': { label: 'FG + extra-point near-streaks', minimum: 40, combined: true, near: true, limit: 100 },
 };
 export const kickingView = hash => Object.hasOwn(KICKING_VIEWS, hash.slice(1)) ? hash.slice(1) : 'fg';
 export const KICK_COLUMNS = ['play_id', 'game_id', 'season', 'season_type', 'week', 'game_date', 'posteam',
@@ -141,7 +141,8 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
       state.teams.add(kick.team); state.last = point(kick);
     }
     for (const state of states.values()) save(state);
-    result[view] = streaks.sort((a, b) => b.length - a.length || a.start.date.localeCompare(b.start.date) || a.name.localeCompare(b.name));
+    result[view] = streaks.sort((a, b) => b.length - a.length || a.start.date.localeCompare(b.start.date) || a.name.localeCompare(b.name))
+      .slice(0, config.limit);
   }
   return result;
 }

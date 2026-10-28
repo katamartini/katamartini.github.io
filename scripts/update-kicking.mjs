@@ -66,14 +66,17 @@ const missingGames = schedule.filter(game => Number(game.season) >= FIRST_SEASON
   game.game_type === 'REG' && game.gameday <= latestDate && game.home_score !== '' && game.away_score !== '' && !coveredGames.has(game.game_id));
 if (missingGames.length) throw new Error(`Uncovered games; retaining saved data: ${missingGames.map(game => game.game_id).join(', ')}`);
 const views = mergeHistoricalStreaks(calculateKickingStreaks(attempts, players, currentIds, history.gaps));
-const sourceHash = createHash('sha256').update(JSON.stringify({ season, rosterWeek: roster.week, through: latestDate, historicalSources: history.sources, gaps: history.gaps, views })).digest('hex');
+// Near-streak views are additive. Keep version 1 so previously cached flawless
+// pages can still read their unchanged fg/all records during a deployment.
+const schemaVersion = 1;
+const sourceHash = createHash('sha256').update(JSON.stringify({ schemaVersion, season, rosterWeek: roster.week, through: latestDate, historicalSources: history.sources, gaps: history.gaps, views })).digest('hex');
 let saved = null;
 try { saved = JSON.parse(await readFile(destination, 'utf8')); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
 if (saved && (latestDate < saved.through || season * 100 + roster.week < saved.season * 100 + saved.rosterWeek)) throw new Error('Source feed regressed; retaining saved data');
 if (saved?.sourceHash === sourceHash) console.log('Kicking streaks are unchanged.');
 else {
-  await writeFile(destination, `${JSON.stringify({ schemaVersion: 2, checkedAt: now.toISOString(), firstSeason: FIRST_SEASON, season,
+  await writeFile(destination, `${JSON.stringify({ schemaVersion, checkedAt: now.toISOString(), firstSeason: FIRST_SEASON, season,
     through: latestDate, latestWeek, rosterWeek: roster.week, sourceHash, sources, historicalSources: history.sources,
     gaps: history.gaps.map(({ id, shortName, date, game, source }) => ({ playerId: id, name: shortName, date, game, source })), views }, null, 2)}\n`);
   console.log(`Saved ${views.fg.length} field-goal streaks, ${views.all.length} combined streaks, and ${views['near-fg'].length + views['near-all'].length} near-streaks, through ${latestDate}.`);
