@@ -76,6 +76,6 @@ export function rankRows(rows, key, descending) {
   return [...rows].sort((a, b) => {
     const x = key === 'team' ? TEAMS[a.team].name : a[key], y = key === 'team' ? TEAMS[b.team].name : b[key];
     const order = typeof x === 'number' ? x - y : String(x).localeCompare(String(y));
-    return (descending ? -order : order) || a.name.localeCompare(b.name) || a.team.localeCompare(b.team);
+    return (descending ? -order : order) || (a.rank ?? 0) - (b.rank ?? 0) || a.name.localeCompare(b.name) || a.team.localeCompare(b.team);
   });
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Active NFL quarterback starting streaks and longest-tenured QBs with their current teams, including backups.">
+  <meta name="description" content="Active and all-time NFL quarterback starting streaks, franchise leaderboards, and current team tenure. Starter history from 1950 onward.">
   <meta name="theme-color" content="#f4f5f1">
   <link rel="canonical" href="https://kmartini.com/nfl/QBs.html">
   <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
@@ -33,6 +33,12 @@
     .team { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
     .team img { width: 25px; height: 25px; object-fit: contain; }
     .detail { display: block; color: #61665e; font-size: .75rem; font-weight: normal; }
+    .current { background: #e0f1e3; }
+    .current-label { color: #267a45; }
+    .pagination { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+    .pagination[hidden] { display: none; }
+    .pagination button { border: 1px solid #c8cdc5; border-radius: 4px; padding: 6px 10px; }
+    button:disabled { opacity: .45; cursor: default; }
     tbody tr:hover { background: #e7ece3; }
     button { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: bold; text-align: inherit; cursor: pointer; }
     button:hover, .back:hover { text-decoration: underline; }
@@ -46,14 +52,17 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Quarterbacks</h1>
-    <p class="intro">Active starting streaks and the longest-tenured QBs with their current teams.</p>
+    <p class="intro">Active and all-time starting streaks, franchise leaderboards, and the longest-tenured QBs with their current teams.</p>
     <nav class="views" aria-label="Quarterback views">
       <a href="#starts" id="starts-link">Starting streaks</a>
+      <a href="#all-time" id="all-time-link">All-time streaks</a>
+      <a href="#franchise" id="franchise-link">Franchise leaders</a>
       <a href="#tenure" id="tenure-link">Team tenure</a>
     </nav>
     <h2 id="view-heading">Active starting streaks</h2>
     <p id="description" class="intro"></p>
     <p id="status" class="meta" role="status">Loading quarterback data…</p>
+    <p id="history-coverage" class="hint" hidden></p>
     <div class="toolbar">
       <label>Team <select id="team-filter"><option value="all">All teams</option></select></label>
       <label>Player <input id="player-search" type="search" placeholder="Search quarterbacks" autocomplete="off"></label>
@@ -62,13 +71,20 @@
     <div class="table-wrap" tabindex="0" role="region" aria-label="Quarterbacks; scroll horizontally for more columns">
       <table><caption id="caption" hidden>Active quarterback starting streaks</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
     </div>
+    <div id="pagination" class="pagination" hidden>
+      <button id="previous" type="button">← Previous</button>
+      <span id="page-label" class="hint" role="status"></span>
+      <button id="next" type="button">Next →</button>
+    </div>
     <p id="empty" hidden>No quarterbacks match these filters.</p>
     <noscript><p>Enable JavaScript to display the quarterback tables.</p></noscript>
     <div class="method">
       <p><strong>Starting streaks:</strong> one row per team’s latest regular-season starting QB, if still on that team’s eligible roster. Counts consecutive team games started at QB, not games played or games with a pass. Missing a start for any reason—including injury, rest, suspension or benching—breaks the streak. Byes do not. Runs carry across seasons, but not across teams. Playoffs and preseason are excluded. “Active” describes the recorded run through the team’s latest completed regular-season game, not a prediction of who will start next.</p>
+      <p><strong>All-time streaks:</strong> recorded runs for today’s 32 franchises, including completed runs and multiple streaks by the same quarterback. Game-level starter history begins in 1950; earlier records are not included. The coverage note above the table identifies any gaps in recent data. “≥” marks a run whose full length is unknown at a coverage boundary. Ranks use the recorded lengths and share places for ties. Relocations and name changes stay with the same franchise; defunct clubs remain separate. The 1987 replacement games count as team games and can break a streak.</p>
+      <p><strong>Franchise leaders:</strong> each quarterback’s longest recorded run with that franchise, ranked within the franchise. Equal best runs by the same QB use the earlier run. Select a team to see its leaderboard. A green row means that run extends through the franchise’s latest completed game, without predicting the next starter.</p>
       <p><strong>Tenure:</strong> all current roster QBs, including backups and practice-squad/reserve players. Counts consecutive seasons listed with the franchise, including the current season. “Since” is a roster season, not an exact signing date. Missing seasons and intervening franchises reset the stint; short releases/re-signings within a season may not be visible in annual roster history. Team relocations do not reset tenure. Roster status is not a depth-chart ranking.</p>
       <p id="availability"></p>
-      <p>Checked daily at 1:30 a.m. Eastern (America/New_York), adjusting for daylight saving time. Source updates can lag games and transactions. Each team uses its latest available regular-season roster snapshot, including during bye weeks. Sources: <a href="https://www.espn.com/nfl/scoreboard">ESPN game-roster starter flags</a>, <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game dates/results</a>, and <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse current and historical rosters</a>.</p>
+      <p>Checked daily at 1:30 a.m. Eastern (America/New_York), adjusting for daylight saving time. Source updates can lag games and transactions. Each team uses its latest available regular-season roster snapshot, including during bye weeks. Sources: <a href="https://www.espn.com/nfl/scoreboard">ESPN game-roster starter flags (active runs and 2023 onward)</a>, <a href="https://github.com/nflverse/nfldata/blob/master/data/games.csv">nflverse game dates/results</a>, <a href="https://github.com/greerreNFL/nfeloqb/blob/b88af41f71bc95e25826869fd8ceca8a80939ac6/qb_elos.csv">FiveThirtyEight starter history preserved by nfelo (1950–2022)</a>, and <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse current and historical rosters</a>. The schedule’s primary passer is not used as a substitute for the official starter.</p>
     </div>
   </main>
   <script type="module" src="./qbs-page.mjs"></script>

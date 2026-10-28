@@ -30,9 +30,11 @@ jobs:
           key: qbs-v1-${{ github.run_id }}
           restore-keys: qbs-v1-
       - name: Test QB calculations
-        run: node --test nfl/qbs-data.test.mjs
-      - name: Refresh QB starting streaks and rosters
+        run: node --test nfl/qbs-data.test.mjs nfl/qbs-history.test.mjs
+      - name: Refresh QB starting streaks, franchise records and rosters
         run: node scripts/update-qbs.mjs
+      - name: Validate refreshed QB records
+        run: node --test nfl/qbs-data.test.mjs nfl/qbs-history.test.mjs
       - name: Commit data and request a Pages build
         env:
           GH_TOKEN: ${{ github.token }}

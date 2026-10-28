@@ -76,7 +76,7 @@ test('table sorts are numeric/textual and do not mutate rank order', () => {
 });
 test('published data has one starting result per team and every team has tenure QBs', async () => {
   const data = JSON.parse(await readFile(new URL('../data/qbs.json', import.meta.url), 'utf8'));
-  assert.equal(data.schemaVersion, 1);
+  assert.equal(data.schemaVersion, 2);
   assert.deepEqual([...data.starts, ...data.unavailable].map(row => row.team).sort(), Object.keys(TEAMS).sort());
   assert.deepEqual([...new Set(data.tenures.map(row => row.team))].sort(), Object.keys(TEAMS).sort());
   assert.ok(data.tenures.length >= 64, 'Includes backups');
