@@ -1,5 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { calculatePlayerTeamTenures, parseRoster, rosterUrl, ROSTER_SOURCE } from '../nfl/longest-tenure-data.mjs';
+import { calculatePlayerTeamTenures, franchiseTenureLeaders, parseRoster, rosterUrl, ROSTER_SOURCE } from '../nfl/longest-tenure-data.mjs';
 import { DIVISIONS, TEAMS } from '../nfl/divstreaks-data.mjs';
 
 // Usage: node scripts/update-longest-tenure.mjs [season] [--cached] [--refresh-history]
@@ -28,6 +28,7 @@ const result = calculatePlayerTeamTenures(rows, season);
 const data = { schemaVersion: 2, firstSeason: 1920, source: ROSTER_SOURCE, ...result,
   activeCount: result.active.length, allTimeCount: result.allTime.length,
   active: result.active.slice(0, 100), allTime: result.allTime.slice(0, 100),
+  franchiseLeaders: franchiseTenureLeaders(result.allTime),
   updated: new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(now) };
 const cities = {
   ARI: 'Arizona', ATL: 'Atlanta', BAL: 'Baltimore', BUF: 'Buffalo', CAR: 'Carolina',
@@ -41,12 +42,13 @@ const cities = {
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g,
   (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const teamName = (team) => `${cities[team]} ${TEAMS[team].name}`;
+const teamLogo = (team) => `../images/nfl/${({ LA: 'lar', WAS: 'wsh' })[team] || team.toLowerCase()}.png`;
 for (const team of data.teams) team.name = teamName(team.team);
 const longest = Math.max(...data.teams.map((team) => team.seasons));
 const rowsHtml = [...data.teams]
   .sort((a, b) => a.since - b.since || teamName(a.team).localeCompare(teamName(b.team)))
   .map((team) => `      <article class="team-row" data-team="${teamName(team.team)}" data-since="${team.since}" data-division="${DIVISIONS.findIndex((division) => division.name === team.division)}">
-        <div class="team"><strong class="team-name">${teamName(team.team)}</strong><span class="division">${team.division}${team.players.length > 1 ? ' · Tied' : ''}</span></div>
+        <div class="team"><strong class="team-name"><img class="team-logo" src="${teamLogo(team.team)}" alt="" width="26" height="26" loading="lazy"><span>${teamName(team.team)}</span></strong><span class="division">${team.division}${team.players.length > 1 ? ' · Tied' : ''}</span></div>
         <div class="players">${team.players.map((player) => `<span class="player"><strong>${escapeHtml(player.name)}</strong><span class="position">${escapeHtml(player.position)}</span></span>`).join('')}</div>
         <div class="tenure"><div class="tenure-label"><strong>${team.seasons}</strong><span>seasons</span></div><span class="since">Since ${team.since}</span><div class="track" aria-hidden="true"><span class="bar" style="--width: ${(team.seasons / longest * 100).toFixed(2)}%; --team-color: ${TEAMS[team.team].color}"></span></div></div>
       </article>`).join('\n');
@@ -59,9 +61,13 @@ for (const [marker, content] of [['rows', rowsHtml], ['meta', metaHtml]]) {
   if (!expression.test(html)) throw new Error(`Missing page marker: ${marker}`);
   html = html.replace(expression, (_, start, end) => `${start}\n${content}\n      ${end}`);
 }
-await writeFile(new URL('../data/longest-tenure.json', import.meta.url), `${JSON.stringify(data, null, 2)}\n`);
+const franchiseJson = Object.entries(data.franchiseLeaders).map(([team, leaders]) =>
+  `    "${team}": [\n${leaders.map(row => `      ${JSON.stringify(row)}`).join(',\n')}\n    ]`).join(',\n');
+const json = JSON.stringify({ ...data, franchiseLeaders: {} }, null, 2)
+  .replace('"franchiseLeaders": {}', `"franchiseLeaders": {\n${franchiseJson}\n  }`);
+await writeFile(new URL('../data/longest-tenure.json', import.meta.url), `${json}\n`);
 await writeFile(pagePath, html);
-console.log(`Saved ${data.teams.length} team leaders, top ${data.active.length} active and top ${data.allTime.length} all-time player-team tenures: 1920–${season}, week ${data.week}`);
+console.log(`Saved ${data.teams.length} team leaders, top ${data.active.length} active and top ${data.allTime.length} all-time tenures, plus 32 franchise leaderboards: 1920–${season}, week ${data.week}`);
 for (const team of [...data.teams].sort((a, b) => a.since - b.since)) {
   console.log(`${team.team}: ${team.players.map((player) => player.name).join(' / ')} (${team.since}, ${team.seasons} seasons)`);
 }

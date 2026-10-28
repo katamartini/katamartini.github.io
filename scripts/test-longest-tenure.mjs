@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { test } from 'node:test';
-import { calculateTenures, calculatePlayerTeamTenures, parseRoster, rankTenures, rosterFranchises } from '../nfl/longest-tenure-data.mjs';
+import { calculateTenures, calculatePlayerTeamTenures, franchiseTenureLeaders, parseRoster, rankTenures, rosterFranchises } from '../nfl/longest-tenure-data.mjs';
 import { TEAMS } from '../nfl/divstreaks-data.mjs';
 
 test('CSV handles quoted names, commas, escaped quotes and historical files without weeks', () => {
@@ -63,6 +63,25 @@ test('old players without GSIS IDs join modern identities while namesakes and hi
   assert.throws(() => calculatePlayerTeamTenures(currentTeams().filter(row => row.team !== 'BUF'), 2026), /No current roster for BUF/);
 });
 
+test('franchise leaderboards retain one best stay per player, rank ties within each club and cap each club at 100', () => {
+  const rows = [
+    { id: 'a', name: 'A', team: 'BUF', since: 2000, seasons: 10 },
+    { id: 'a', name: 'A', team: 'BUF', since: 2015, seasons: 10 },
+    { id: 'b', name: 'B', team: 'BUF', since: 2001, seasons: 10 },
+    { id: 'c', name: 'C', team: 'BUF', since: 2002, seasons: 5 },
+    { id: 'a', name: 'A', team: 'MIA', since: 2003, seasons: 8 },
+    ...Array.from({ length: 101 }, (_, i) => ({ id: `eagle-${i}`, name: `Eagle ${i}`, team: 'PHI', since: 2000, seasons: 101 - i })),
+  ];
+  const leaders = franchiseTenureLeaders(rows);
+  assert.deepEqual(Object.keys(leaders).sort(), Object.keys(TEAMS).sort());
+  assert.deepEqual(leaders.BUF.map(row => row.rank), [1, 1, 3]);
+  assert.equal(leaders.BUF[0].since, 2000);
+  assert.equal(leaders.MIA[0].rank, 1);
+  assert.equal(leaders.PHI.length, 100);
+  assert.equal(leaders.PHI.at(-1).seasons, 2);
+  assert.equal(rows[0].rank, undefined);
+});
+
 test('counts current franchise seasons, preserves ties, handles byes and excludes former players', () => {
   const row = (id, team, season, status = 'ACT', week = 5) => ({
     gsis_id: id, full_name: id, team, season, status, week, position: 'LS',
@@ -104,8 +123,22 @@ test('saved data and visible page cover all 32 teams consistently', async () => 
     }
   }
   assert.ok(data.active.every(row => row.active && row.through === data.season));
+  assert.deepEqual(Object.keys(data.franchiseLeaders).sort(), Object.keys(TEAMS).sort());
+  for (const [team, leaders] of Object.entries(data.franchiseLeaders)) {
+    assert.equal(leaders.length, 100, team);
+    assert.equal(leaders[0].rank, 1);
+    assert.equal(new Set(leaders.map(row => row.id)).size, 100);
+    for (let i = 0; i < leaders.length; i++) {
+      assert.equal(leaders[i].team, team);
+      assert.equal(leaders[i].seasons, leaders[i].through - leaders[i].since + 1);
+      if (i) assert.ok(leaders[i - 1].seasons >= leaders[i].seasons);
+    }
+  }
+  assert.ok(data.franchiseLeaders.JAX.some(row => !data.allTime.some(global => global.id === row.id && global.team === row.team)));
   for (const [name, team, seasons] of [['Jason Hanson', 'DET', 21], ['Tom Brady', 'NE', 20], ['Darrell Green', 'WAS', 20], ['Jackie Slater', 'LA', 20], ['Bruce Matthews', 'TEN', 19], ['Jim Marshall', 'MIN', 19], ['Johnny Unitas', 'IND', 17], ['Ray Lewis', 'BAL', 17]]) {
     assert.equal(data.allTime.find(row => row.name === name && row.team === team)?.seasons, seasons, name);
+    assert.equal(data.franchiseLeaders[team][0].name, name);
+    assert.equal(data.franchiseLeaders[team][0].seasons, seasons);
   }
   for (const row of data.allTime.filter(row => row.active)) assert.ok(data.active.some(active => active.id === row.id && active.team === row.team && active.since === row.since));
   assert.equal((html.match(/<article class="team-row"/g) || []).length, 32);

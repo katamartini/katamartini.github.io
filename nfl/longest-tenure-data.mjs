@@ -80,6 +80,17 @@ export function rankTenures(rows) {
     });
 }
 
+export function franchiseTenureLeaders(rows) {
+  const best = new Map();
+  for (const row of rankTenures(rows)) {
+    const key = `${row.id}:${row.team}`;
+    if (!best.has(key)) best.set(key, row);
+  }
+  return Object.fromEntries(Object.keys(TEAMS).map(team => [team,
+    rankTenures([...best.values()].filter(row => row.team === team)).slice(0, 100),
+  ]));
+}
+
 export function calculatePlayerTeamTenures(rosters, season) {
   const knownIds = new Map();
   for (const row of rosters) {
