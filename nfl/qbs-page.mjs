@@ -1,6 +1,6 @@
 import { TEAMS } from './divstreaks-data.mjs';
-import { rankRows } from './qbs-data.mjs';
-import { franchiseStartingLeaders, HISTORICAL_OPPONENTS, rankedStartingStreaks, validStartingHistory } from './qbs-history.mjs';
+import { rankRows } from './qbs-data.mjs?v=qb-history-2';
+import { franchiseStartingLeaders, HISTORICAL_OPPONENTS, rankedStartingStreaks, validStartingHistory } from './qbs-history.mjs?v=qb-history-2';
 const byId = id => document.getElementById(id);
 const make = (tag, text, className) => { const node = document.createElement(tag); if (text != null) node.textContent = text; if (className) node.className = className; return node; };
 const dateText = value => new Date(`${value}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' });
@@ -87,7 +87,7 @@ byId('player-search').addEventListener('input', () => { page = 0; render(); });
 for (const [id, delta] of [['previous', -1], ['next', 1]]) byId(id).addEventListener('click', () => { page += delta; render(); });
 setView();
 try {
-  const response = await fetch('../data/qbs.json'); if (!response.ok) throw new Error('Data unavailable');
+  const response = await fetch('../data/qbs.json?v=qb-history-2', { cache: 'no-cache' }); if (!response.ok) throw new Error('Data unavailable');
   const saved = await response.json();
   if (saved.schemaVersion !== 2 || !validStartingHistory(saved.history) || saved.history.through !== saved.through || !Array.isArray(saved.starts) || !Array.isArray(saved.tenures) || !Array.isArray(saved.unavailable) || saved.starts.length + saved.unavailable.length !== 32 ||
       saved.tenures.some(row => !TEAMS[row.team] || !row.name || !Number.isInteger(row.seasons) || row.seasons < 1) ||
