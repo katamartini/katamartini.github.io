@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="NFL kicking streaks: 20+ made field goals and 40+ made kicks, with play-by-play since 1999 and a partial archive of documented older runs.">
+  <meta name="description" content="NFL kicking streaks and one-miss near-streaks: field goals and combined field goals plus extra points, with play-by-play since 1999.">
   <meta name="theme-color" content="#f4f5f1">
   <link rel="canonical" href="https://kmartini.com/nfl/kicking.html">
   <link rel="icon" type="image/svg+xml" href="/nfl/football.svg">
@@ -31,6 +31,8 @@
     .table-wrap { overflow-x: auto; border-top: 1px solid #c8cdc5; }
     table { width: 100%; min-width: 1020px; border-collapse: collapse; font-size: 0.88rem; font-variant-numeric: tabular-nums; }
     table.combined { min-width: 1120px; }
+    table.near { min-width: 1190px; }
+    table.near.combined { min-width: 1290px; }
     caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
     th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #dde1d8; vertical-align: middle; }
     thead th { color: #565c54; font-size: 0.8rem; }
@@ -55,8 +57,8 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Kicking streaks</h1>
-    <p class="intro">Runs of made kicks without a miss. Every qualifying run in the available play-by-play since 1999 is listed, plus individually documented older runs. Pre-1999 coverage is partial.</p>
-    <nav class="views" aria-label="Kicking views"><a href="#fg">20+ field goals</a><a href="#all">40+ FG + extra points</a></nav>
+    <p class="intro">Flawless runs of made kicks, plus near-streaks with just one miss in the middle. Every qualifying run in the available play-by-play since 1999 is listed. The flawless views also include a partial archive of documented older runs.</p>
+    <nav class="views" aria-label="Kicking views"><a href="#fg">20+ field goals</a><a href="#all">40+ FG + extra points</a><a href="#near-fg">20+ FG near-streaks</a><a href="#near-all">40+ FG + XP near-streaks</a></nav>
     <h2 id="view-heading">Consecutive made field goals</h2>
     <p id="status" class="meta" role="status">Loading streaks…</p>
     <div class="toolbar">
@@ -64,7 +66,7 @@
       <label for="kicker-search">Kicker <input type="search" id="kicker-search" placeholder="Search kickers" autocomplete="off"></label>
       <label><input type="checkbox" id="active-only"> Active streaks only</label>
     </div>
-    <p class="hint">Green rows: unbroken streaks by kickers currently on an NFL roster. Click a column to sort; scroll sideways for more columns. <span id="row-count"></span></p>
+    <p class="hint"><span id="active-hint">Green rows: unbroken streaks by kickers currently on an NFL roster.</span> Click a column to sort; scroll sideways for more columns. <span id="row-count"></span></p>
     <div class="table-wrap" tabindex="0" role="region" aria-label="Kicking streaks; scroll horizontally for more columns">
       <table><caption id="table-caption">Historical NFL kicking streaks since 1999</caption><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
     </div>
@@ -72,10 +74,11 @@
     <noscript><p>Enable JavaScript to display the kicking streaks.</p></noscript>
     <div class="method">
       <p id="view-note">Only field-goal attempts count in this view; an extra-point miss does not end a field-goal streak.</p>
+      <p>Near-streaks contain exactly one missed or blocked kick, with at least one make on each side. Each row joins the complete make-runs immediately before and after that miss; the next miss ends it. Neighboring near-streaks can overlap. “Made / attempts” includes the lone miss in the attempt total; the split below it shows makes before + one miss + makes after. The 20/40 cutoffs and ranks use total attempts: the flawless streak that would exist if that one kick had been made. FG and XP columns count actual makes.</p>
       <p>Regular-season attempts only; postseason and preseason games are excluded. Streaks carry across seasons and team changes. A miss or blocked kick ends a streak. Two-point tries, fake/aborted tries with no kick, and plays nullified by penalty do not count.</p>
       <p>Start and most recent dates are the first and last made kicks in the run. “Ended by” is the next missed or blocked attempt. “Unbroken · inactive” means no later miss is recorded, but the kicker is not on a current roster. Active roster status includes injured/reserve and practice-squad players.</p>
       <p>Play-by-play coverage starts in 1999. Older rows are a partial archive of individually verified regular-season records, with source links under the kicker’s name. A season range is not an exact start date; unverified dates are left blank. “Documented” does not mean all older streaks have been found.</p>
-      <p>A ≥ total is a lower bound where a start or end crosses missing attempt data, or only a segment is documented. Gary Anderson’s combined row includes his perfect 1998 regular season (35 FG + 59 XP), not an exact full multi-season streak. Playoff totals are not substituted for regular-season streaks. Rank is based on recorded or documented makes and stays the same when filtering.</p>
+      <p>A ≥ total is a lower bound where a start or end crosses missing attempt data, or only a segment is documented. Gary Anderson’s combined row includes his perfect 1998 regular season (35 FG + 59 XP), not an exact full multi-season streak. Playoff totals are not substituted for regular-season streaks. Near-streaks use only the available attempt sequences since 1999 and never bridge a data gap; older documented flawless runs are not stitched together. Rank stays the same when filtering.</p>
       <p id="gap-note"></p>
       <p>Checked daily at 1 a.m. Eastern (America/New_York), automatically adjusting for daylight saving time. Play-by-play and roster feeds may refresh at different times; bye-week teams use their latest roster. Data: <a href="https://github.com/nflverse/nflverse-data/releases/tag/pbp">nflverse play-by-play</a>, <a href="https://github.com/nflverse/nflverse-data/releases/tag/players">player names</a>, and <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">weekly rosters</a>. <a href="https://nflreadr.nflverse.com/reference/load_pbp.html">Coverage documentation</a>. Play-by-play attribution: nflverse/nflfastR, <a href="https://github.com/nflverse/nflverse-pbp/blob/master/LICENSE.md">CC BY 4.0</a>.</p>
     </div>
@@ -95,10 +98,12 @@
     for (const [code, team] of Object.entries(TEAMS).sort((a, b) => a[1].name.localeCompare(b[1].name))) { const option = make('option', '', team.name); option.value = code; filter.append(option); }
     function render() {
       if (!data) return;
+      const config = KICKING_VIEWS[view];
+      status.textContent = `Regular season · Play-by-play: 1999–${data.season}${config.near ? ' · One miss per run' : ' · Partial pre-1999 archive'} · Games through ${dateText(data.through)} · Rosters: ${data.season} Week ${data.rosterWeek}`;
       const query = normalizeName(search.value);
       const rows = data.views[view].map((row, i) => ({ ...row, rank: i + 1 })).filter(row =>
         (filter.value === 'all' || row.teams.includes(filter.value)) && normalizeName(row.name).includes(query) && (!activeOnly.checked || row.active));
-      const value = (row, key) => ['start', 'last'].includes(key) ? row[key].date : key === 'endedBy' ? row.endedBy?.date || null :
+      const value = (row, key) => ['start', 'last'].includes(key) ? row[key].date : ['endedBy', 'missed'].includes(key) ? row[key]?.date || null :
         key === 'teams' ? row.teams.map(team => TEAMS[team].name).join(', ') : key === 'status' ? statusText(row) : row[key];
       rows.sort((a, b) => { const x = value(a, sortKey), y = value(b, sortKey); if (x == null || y == null) return x == null && y == null ? a.rank - b.rank : x == null ? 1 : -1; const order = typeof x === 'number' ? x - y : x.localeCompare(y); return (descending ? -order : order) || a.rank - b.rank; });
       for (const [key, { th, arrow }] of headers) { th.setAttribute('aria-sort', key === sortKey ? descending ? 'descending' : 'ascending' : 'none'); arrow.textContent = key === sortKey ? descending ? ' ↓' : ' ↑' : ''; }
@@ -112,29 +117,44 @@
         const teams = make('td');
         for (const code of row.teams) { const identity = make('div', 'team'); const img = make('img'); img.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${logoCodes[code] || code.toLowerCase()}.png`; img.alt = ''; img.width = 23; img.height = 23; img.loading = 'lazy'; identity.append(img, make('span', '', TEAMS[code].name)); teams.append(identity); }
         tr.append(teams);
-        const length = make('td', 'number', `${row.lowerBound ? '≥' : ''}${row.length}`); if (row.lowerBound) length.title = 'Minimum recorded length; part of the run is outside available attempt data'; tr.append(length);
-        if (view === 'all') tr.append(make('td', 'number', row.fieldGoals), make('td', 'number', row.extraPoints));
+        const length = make('td', 'number', `${row.lowerBound ? '≥' : ''}${config.near ? `${row.length - 1} / ${row.length}` : row.length}`); if (row.lowerBound) length.title = 'Minimum recorded span; part of the run is outside available attempt data';
+        if (config.near) length.append(make('span', 'detail', `${row.beforeMiss} + 1 miss + ${row.afterMiss}`));
+        tr.append(length);
+        if (config.combined) tr.append(make('td', 'number', row.fieldGoals), make('td', 'number', row.extraPoints));
         for (const key of ['start', 'last']) { const date = row[key].date; const cell = make('td', 'date', date ? dateText(date) : key === 'start' ? row.period : '—'); if (key === 'start' && !date) cell.append(make('span', 'detail', row.segment ? 'Segment; full start unknown' : 'Season range; date unverified')); if (key === 'start' && row.startUnknown) cell.append(make('span', 'detail', 'Observed start')); tr.append(cell); }
-        const ended = make('td', 'date', row.endedBy ? dateText(row.endedBy.date) : '—');
-        if (row.endedBy) { const miss = row.endedBy; ended.append(make('span', 'detail', `${miss.result === 'blocked' ? 'Blocked' : 'Missed'} ${miss.distance && miss.type === 'FG' ? `${miss.distance}-yd ` : ''}${miss.type} vs ${TEAMS[miss.opponent].name}`)); }
+        const missCell = miss => { const cell = make('td', 'date', miss ? dateText(miss.date) : '—'); if (miss) cell.append(make('span', 'detail', `${miss.result === 'blocked' ? 'Blocked' : 'Missed'} ${miss.distance && miss.type === 'FG' ? `${miss.distance}-yd ` : ''}${miss.type} vs ${TEAMS[miss.opponent].name}`)); return cell; };
+        if (config.near) tr.append(missCell(row.missed));
+        const ended = missCell(row.endedBy);
         if (row.gapAfter) { ended.textContent = dateText(row.gapAfter.date); ended.append(make('span', 'detail', 'Attempt order unavailable')); }
         if (row.archive && !row.endedBy) ended.append(make('span', 'detail', row.segment ? 'Full run not reconstructed' : 'Date unverified'));
         tr.append(ended, make('td', row.active ? 'active-label' : '', statusText(row))); fragment.append(tr);
       }
       body.replaceChildren(fragment); document.getElementById('empty').hidden = rows.length > 0;
-      document.getElementById('row-count').textContent = `${rows.length} streak${rows.length === 1 ? '' : 's'}.`;
+      document.getElementById('row-count').textContent = `${rows.length} ${config.near ? 'near-streak' : 'streak'}${rows.length === 1 ? '' : 's'}.`;
     }
     function selectView() {
       view = kickingView(location.hash); sortKey = 'length'; descending = true;
-      document.getElementById('view-heading').textContent = view === 'fg' ? 'Consecutive made field goals' : 'Consecutive made kicks: FG + extra points';
-      document.getElementById('view-note').textContent = view === 'fg' ? 'Only field-goal attempts count in this view; an extra-point miss does not end a field-goal streak.' : 'Every field goal and extra point is one attempt, in game order. A miss of either kind ends the combined streak. These are consecutive kicks, not a point total.';
-      document.getElementById('table-caption').textContent = `${KICKING_VIEWS[view].minimum}+ consecutive made ${view === 'fg' ? 'field goals' : 'field goals and extra points'}, regular season since 1999 plus partial older archive`;
-      document.querySelector('table').classList.toggle('combined', view === 'all');
+      const config = KICKING_VIEWS[view];
+      document.getElementById('view-heading').textContent = config.near
+        ? `One-miss near-streaks: ${config.combined ? 'FG + extra points' : 'field goals'}`
+        : config.combined ? 'Consecutive made kicks: FG + extra points' : 'Consecutive made field goals';
+      document.getElementById('view-note').textContent = (config.combined
+        ? 'Every field goal and extra point is one attempt, in game order. These are consecutive kicks, not a point total.'
+        : 'Only field-goal attempts count in this view; extra-point misses are ignored.') +
+        (config.near ? ' One miss is allowed inside the run; a second miss ends it.' : ' A missed or blocked attempt ends the streak.');
+      document.getElementById('active-hint').textContent = config.near
+        ? 'Green rows: ongoing near-streaks by current roster kickers, with makes after the lone miss and no second miss yet.'
+        : 'Green rows: unbroken streaks by kickers currently on an NFL roster.';
+      document.getElementById('table-caption').textContent = `${config.minimum}+ ${config.combined ? 'field-goal and extra-point' : 'field-goal'} attempts ${config.near ? 'with exactly one internal miss, since 1999' : 'without a miss, since 1999 plus partial older archive'}`;
+      document.querySelector('table').classList.toggle('combined', config.combined);
+      document.querySelector('table').classList.toggle('near', !!config.near);
       for (const link of document.querySelectorAll('.views a')) { if (link.hash === `#${view}`) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current'); }
       head.replaceChildren(); headers.clear();
-      const columns = [{ key: 'rank', label: 'Rank', number: true }, { key: 'name', label: 'Kicker' }, { key: 'teams', label: 'Team(s)' }, { key: 'length', label: 'Streak', number: true },
-        ...(view === 'all' ? [{ key: 'fieldGoals', label: 'FG', number: true }, { key: 'extraPoints', label: 'XP', number: true }] : []),
-        { key: 'start', label: 'Start' }, { key: 'last', label: 'Most recent make' }, { key: 'endedBy', label: 'Ended by' }, { key: 'status', label: 'Status' }];
+      const columns = [{ key: 'rank', label: 'Rank', number: true }, { key: 'name', label: 'Kicker' }, { key: 'teams', label: 'Team(s)' }, { key: 'length', label: config.near ? 'Made / attempts' : 'Streak', number: true },
+        ...(config.combined ? [{ key: 'fieldGoals', label: config.near ? 'FG made' : 'FG', number: true }, { key: 'extraPoints', label: config.near ? 'XP made' : 'XP', number: true }] : []),
+        { key: 'start', label: 'Start' }, { key: 'last', label: 'Most recent make' },
+        ...(config.near ? [{ key: 'missed', label: 'Lone miss' }] : []),
+        { key: 'endedBy', label: config.near ? 'Next miss' : 'Ended by' }, { key: 'status', label: 'Status' }];
       for (const column of columns) { const th = make('th', column.number ? 'number' : ''); th.scope = 'col'; const button = make('button', '', column.label); button.type = 'button'; const arrow = make('span'); arrow.setAttribute('aria-hidden', 'true'); button.append(arrow); button.addEventListener('click', () => { descending = sortKey === column.key ? !descending : !!column.number && column.key !== 'rank'; sortKey = column.key; render(); }); th.append(button); head.append(th); headers.set(column.key, { th, arrow }); }
       render();
     }
@@ -143,9 +163,12 @@
     try {
       const response = await fetch('../data/kicking.json'); if (!response.ok) throw new Error('Data unavailable');
       const saved = await response.json();
-      if (saved.schemaVersion !== 1 || saved.firstSeason !== 1999 || Object.entries(KICKING_VIEWS).some(([key, config]) =>
+      if (saved.schemaVersion !== 2 || saved.firstSeason !== 1999 || Object.entries(KICKING_VIEWS).some(([key, config]) =>
         !Array.isArray(saved.views?.[key]) || saved.views[key].some(row => typeof row.name !== 'string' || !Number.isInteger(row.length) || row.length < config.minimum ||
-          row.fieldGoals + row.extraPoints !== row.length || !row.teams.length || row.teams.some(team => !TEAMS[team]) ||
+          row.fieldGoals + row.extraPoints !== row.length - (config.near ? 1 : 0) || !row.teams.length || row.teams.some(team => !TEAMS[team]) ||
+          (config.near && (!row.missed?.date || !TEAMS[row.missed.opponent] || !['FG', 'XP'].includes(row.missed.type) ||
+            !['missed', 'failed', 'blocked'].includes(row.missed.result) || !Number.isInteger(row.beforeMiss) || row.beforeMiss < 1 ||
+            !Number.isInteger(row.afterMiss) || row.afterMiss < 1 || row.beforeMiss + row.afterMiss + 1 !== row.length || row.archive)) ||
           (!row.archive && (!row.start?.date || !row.last?.date)) || (row.archive && (!row.period || !row.source?.startsWith('https://') || row.active || !row.note || !row.start || !row.last)) || typeof row.active !== 'boolean'))) throw new Error('Incomplete data');
       data = saved; render();
       const gapNote = document.getElementById('gap-note');
@@ -154,7 +177,6 @@
       for (const [i, source] of (data.historicalSources || []).entries()) { if (i) gapNote.append(document.createTextNode(', ')); const link = make('a', '', dateText(source.date)); link.href = source.url; gapNote.append(link); }
       gapNote.append(document.createTextNode('. Miss-free kicker totals are restored.'));
       if (data.gaps?.length) gapNote.append(document.createTextNode(` Attempt order remains unavailable for ${data.gaps.map(gap => `${gap.name} (${dateText(gap.date)})`).join(' and ')}; their runs are not joined across those gaps. A qualifying run crossing a gap may be incomplete or absent.`));
-      status.textContent = `Regular season · Play-by-play: 1999–${data.season} · Partial pre-1999 archive · Games through ${dateText(data.through)} · Rosters: ${data.season} Week ${data.rosterWeek}`;
     } catch { status.textContent = 'Streaks could not be loaded. Please refresh to try again.'; }
   </script>
 </body>

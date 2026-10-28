@@ -3,10 +3,12 @@ import { normalizeTeam } from './franchise-leaders-data.mjs';
 
 export const FIRST_SEASON = 1999;
 export const KICKING_VIEWS = {
-  fg: { label: 'Field goals', minimum: 20 },
-  all: { label: 'Field goals + extra points', minimum: 40 },
+  fg: { label: 'Field goals', minimum: 20, combined: false },
+  all: { label: 'Field goals + extra points', minimum: 40, combined: true },
+  'near-fg': { label: 'Field-goal near-streaks', minimum: 20, combined: false, near: true },
+  'near-all': { label: 'FG + extra-point near-streaks', minimum: 40, combined: true, near: true },
 };
-export const kickingView = hash => hash === '#all' ? 'all' : 'fg';
+export const kickingView = hash => Object.hasOwn(KICKING_VIEWS, hash.slice(1)) ? hash.slice(1) : 'fg';
 export const KICK_COLUMNS = ['play_id', 'game_id', 'season', 'season_type', 'week', 'game_date', 'posteam',
   'defteam', 'play_type', 'field_goal_attempt', 'extra_point_attempt', 'field_goal_result',
   'extra_point_result', 'kicker_player_id', 'kicker_player_name', 'kick_distance'];
@@ -97,25 +99,40 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
   for (const [view, config] of Object.entries(KICKING_VIEWS)) {
     const states = new Map(), streaks = [];
     const save = (state, miss = null, gap = null) => {
-      if (state.length < config.minimum) return;
-      streaks.push({ id: `${view}:${state.id}:${state.start.game}:${state.start.play}`, playerId: state.id,
-        name: players.get(state.id)?.name || state.name, length: state.length, fieldGoals: state.fg, extraPoints: state.xp,
-        teams: [...state.teams], start: state.start, last: state.last, endedBy: miss ? { ...point(miss), result: miss.result } : null,
-        active: !miss && !gap && currentIds.has(state.id), startUnknown: !state.knownStart,
-        lowerBound: !state.knownStart || !!gap, gapAfter: gap ? { date: gap.date, game: gap.game, source: gap.source } : null });
+      const before = config.near ? state.beforeMiss : null;
+      // The lone miss must be internal: retain the entire make-run on each side.
+      // Adjacent misses and a miss at the end of the feed are not near-streaks.
+      if (config.near && (!before?.length || !state.length)) return;
+      const length = state.length + (before ? before.length + 1 : 0);
+      if (length < config.minimum) return;
+      const start = before ? before.start : state.start;
+      const knownStart = before ? before.knownStart : state.knownStart;
+      streaks.push({ id: `${view}:${state.id}:${start.game}:${start.play}`, playerId: state.id,
+        name: players.get(state.id)?.name || state.name, length, fieldGoals: state.fg + (before?.fg || 0), extraPoints: state.xp + (before?.xp || 0),
+        teams: before ? [...new Set([...before.teams, state.miss.team, ...state.teams])] : [...state.teams],
+        start, last: state.last, endedBy: miss ? { ...point(miss), result: miss.result } : null,
+        active: !miss && !gap && currentIds.has(state.id), startUnknown: !knownStart,
+        lowerBound: !knownStart || !!gap, gapAfter: gap ? { date: gap.date, game: gap.game, source: gap.source } : null,
+        ...(config.near ? { missed: state.miss, beforeMiss: before.length, afterMiss: state.length } : {}) });
     };
     for (const kick of ordered) {
-      if (view === 'fg' && kick.type !== 'FG' && kick.type !== 'gap') continue;
+      if (!config.combined && kick.type !== 'FG' && kick.type !== 'gap') continue;
       if (!states.has(kick.id)) states.set(kick.id, { id: kick.id, name: kick.shortName, length: 0,
         knownStart: Number(players.get(kick.id)?.rookieSeason || 0) >= FIRST_SEASON, teams: new Set(), fg: 0, xp: 0 });
       const state = states.get(kick.id);
       if (kick.type === 'gap') {
         save(state, null, kick);
         state.length = 0; state.fg = 0; state.xp = 0; state.teams = new Set(); state.knownStart = false;
+        state.beforeMiss = null; state.miss = null;
         continue;
       }
       if (!kick.made) {
         save(state, kick);
+        if (config.near) {
+          state.beforeMiss = { length: state.length, start: state.start, knownStart: state.knownStart,
+            fg: state.fg, xp: state.xp, teams: [...state.teams] };
+          state.miss = { ...point(kick), result: kick.result };
+        }
         state.length = 0; state.fg = 0; state.xp = 0; state.teams = new Set(); state.knownStart = true;
         continue;
       }

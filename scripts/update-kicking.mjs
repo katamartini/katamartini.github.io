@@ -73,8 +73,8 @@ catch (error) { if (error.code !== 'ENOENT') throw error; }
 if (saved && (latestDate < saved.through || season * 100 + roster.week < saved.season * 100 + saved.rosterWeek)) throw new Error('Source feed regressed; retaining saved data');
 if (saved?.sourceHash === sourceHash) console.log('Kicking streaks are unchanged.');
 else {
-  await writeFile(destination, `${JSON.stringify({ schemaVersion: 1, checkedAt: now.toISOString(), firstSeason: FIRST_SEASON, season,
+  await writeFile(destination, `${JSON.stringify({ schemaVersion: 2, checkedAt: now.toISOString(), firstSeason: FIRST_SEASON, season,
     through: latestDate, latestWeek, rosterWeek: roster.week, sourceHash, sources, historicalSources: history.sources,
     gaps: history.gaps.map(({ id, shortName, date, game, source }) => ({ playerId: id, name: shortName, date, game, source })), views }, null, 2)}\n`);
-  console.log(`Saved ${views.fg.length} field-goal streaks and ${views.all.length} combined streaks, through ${latestDate}.`);
+  console.log(`Saved ${views.fg.length} field-goal streaks, ${views.all.length} combined streaks, and ${views['near-fg'].length + views['near-all'].length} near-streaks, through ${latestDate}.`);
 }

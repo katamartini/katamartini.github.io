@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { calculateKickingStreaks, kickingView, kickFromPlay, readProjectedCsv } from './kicking-data.mjs';
+import { KICKING_VIEWS, calculateKickingStreaks, kickingView, kickFromPlay, readProjectedCsv } from './kicking-data.mjs';
 import { HISTORICAL_GAMES, historicalKicks } from './kicking-history.mjs';
 import { HISTORICAL_STREAKS, mergeHistoricalStreaks } from './kicking-archive.mjs';
 
@@ -85,12 +85,18 @@ test('1999 boundary streaks are lower bounds until an observed miss or a known c
   assert.equal(calculateKickingStreaks(attempts, new Map([['kicker', { name: 'Rookie', rookieSeason: 1999 }]])).fg[0].lowerBound, false);
   assert.throws(() => calculateKickingStreaks([...attempts, attempts[0]], veteran), /Duplicate/);
   assert.equal(kickingView('#all'), 'all');
+  assert.equal(kickingView('#near-fg'), 'near-fg');
+  assert.equal(kickingView('#near-all'), 'near-all');
+  assert.equal(kickingView('#constructor'), 'fg');
   assert.equal(kickingView('#invalid'), 'fg');
 });
 
 test('saved history retains known record streaks and internally consistent dates and counts', async () => {
   const data = JSON.parse(await readFile(new URL('../data/kicking.json', import.meta.url), 'utf8'));
   assert.equal(data.firstSeason, 1999);
+  assert.equal(data.schemaVersion, 2);
+  assert.ok(data.views['near-fg'].length > 0);
+  assert.ok(data.views['near-all'].length > 0);
   assert.equal(data.sources.length, data.season - 1999 + 1);
   const vinatieri = data.views.fg.find(row => row.name === 'Adam Vinatieri' && row.start.date === '2015-10-04');
   assert.equal(vinatieri.length, 44);
@@ -103,8 +109,16 @@ test('saved history retains known record streaks and internally consistent dates
   for (const [view, rows] of Object.entries(data.views)) {
     assert.equal(new Set(rows.map(row => row.id)).size, rows.length);
     for (const row of rows) {
-      assert.ok(row.length >= (view === 'fg' ? 20 : 40));
-      assert.equal(row.fieldGoals + row.extraPoints, row.length);
+      const config = KICKING_VIEWS[view];
+      assert.ok(row.length >= config.minimum);
+      assert.equal(row.fieldGoals + row.extraPoints, row.length - (config.near ? 1 : 0));
+      if (config.near) {
+        assert.ok(!row.archive && row.beforeMiss > 0 && row.afterMiss > 0);
+        assert.equal(row.beforeMiss + row.afterMiss + 1, row.length);
+        assert.ok(row.start.date <= row.missed.date && row.missed.date <= row.last.date);
+        assert.ok(['missed', 'blocked', 'failed'].includes(row.missed.result));
+        if (!config.combined) assert.equal(row.missed.type, 'FG');
+      }
       if (row.start.date && row.last.date) assert.ok(row.start.date <= row.last.date);
       if (row.last.date) assert.ok(row.last.date <= data.through);
       if (row.archive) {
@@ -114,6 +128,116 @@ test('saved history retains known record streaks and internally consistent dates
       } else { assert.ok(row.start.date && row.last.date); }
       if (row.endedBy) { assert.ok(row.last.date <= row.endedBy.date); assert.equal(row.active, false); }
     }
+  }
+});
+
+test('near-streaks include one internal miss in the attempt threshold and retain its details', () => {
+  const attempts = [...Array.from({ length: 9 }, (_, i) => kick(i)), kick(9, 'FG', false, { distance: 55 }),
+    ...Array.from({ length: 10 }, (_, i) => kick(i + 10)), kick(20, 'FG', false)];
+  const near = calculateKickingStreaks(attempts, player, new Set(['kicker']))['near-fg'];
+  assert.equal(near.length, 1);
+  assert.equal(near[0].length, 20);
+  assert.equal(near[0].fieldGoals, 19);
+  assert.equal(near[0].beforeMiss, 9);
+  assert.equal(near[0].afterMiss, 10);
+  assert.equal(near[0].missed.play, 9);
+  assert.equal(near[0].missed.distance, 55);
+  assert.equal(near[0].endedBy.play, 20);
+  assert.equal(near[0].active, false);
+  const ongoing = calculateKickingStreaks(attempts.slice(0, -1).reverse(), player, new Set(['kicker']))['near-fg'][0];
+  assert.equal(ongoing.active, true);
+  assert.equal(ongoing.endedBy, null);
+  assert.equal(calculateKickingStreaks(attempts.slice(0, -1), player)['near-fg'][0].active, false);
+});
+
+test('near-streaks require makes on both sides and exclude flawless runs and adjacent misses', () => {
+  const makes = Array.from({ length: 40 }, (_, i) => kick(i + 1));
+  for (const attempts of [makes, [kick(0, 'FG', false), ...makes], [...makes, kick(41, 'FG', false)],
+    [...makes, kick(41, 'FG', false), kick(42, 'FG', false), ...makes.map(row => ({ ...row, play: row.play + 42 }))]]) {
+    const views = calculateKickingStreaks(attempts, player);
+    assert.equal(views['near-fg'].length, 0);
+    assert.equal(views['near-all'].length, 0);
+  }
+  const short = [...makes.slice(0, 9), kick(10, 'FG', false), ...makes.slice(11, 20)];
+  assert.equal(calculateKickingStreaks(short, player)['near-fg'].length, 0);
+});
+
+test('each internal miss gets its maximal near-streak, including overlapping make-runs', () => {
+  const attempts = Array.from({ length: 32 }, (_, i) => kick(i, 'FG', i !== 10 && i !== 21));
+  const rows = calculateKickingStreaks(attempts, player, new Set(['kicker']))['near-fg'];
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows.map(row => [row.start.play, row.missed.play, row.last.play, row.length]),
+    [[0, 10, 20, 21], [11, 21, 31, 21]]);
+  assert.equal(rows[0].endedBy.play, 21);
+  assert.equal(rows[1].active, true);
+});
+
+test('FG near-streaks ignore XP misses while combined near-streaks count blocked or failed kicks of either type', () => {
+  const attempts = Array.from({ length: 43 }, (_, i) => kick(i, i === 10 ? 'XP' : 'FG', i !== 10 && i !== 21));
+  const views = calculateKickingStreaks(attempts, player);
+  assert.equal(views['near-fg'][0].length, 42);
+  assert.equal(views['near-fg'][0].missed.play, 21);
+  assert.equal(views['near-all'].length, 0); // Each of the two one-miss spans is below 40.
+  for (const [type, result] of [['FG', 'blocked'], ['XP', 'failed']]) {
+    const combined = [...Array.from({ length: 19 }, (_, i) => kick(i, 'XP')),
+      kick(19, type, false, { result }), ...Array.from({ length: 20 }, (_, i) => kick(i + 20, 'FG'))];
+    const row = calculateKickingStreaks(combined, player)['near-all'][0];
+    assert.equal(row.length, 40);
+    assert.equal(row.fieldGoals, 20);
+    assert.equal(row.extraPoints, 19);
+    assert.equal(row.missed.result, result);
+    assert.equal(row.missed.type, type);
+  }
+});
+
+test('near-streaks follow players across teams and seasons, but never join across unknown attempts', () => {
+  const before = Array.from({ length: 10 }, (_, i) => kick(i, 'FG', true, { season: 1999 }));
+  const miss = kick(10, 'FG', false, { team: 'SF', opponent: 'SEA', season: 1999 });
+  const after = Array.from({ length: 10 }, (_, i) => kick(i + 11, 'FG', true,
+    { date: '2026-09-07', game: '2026_01_BUF_MIA', season: 2026, team: 'BUF', opponent: 'MIA' }));
+  const veteran = new Map([['kicker', { name: 'Veteran', rookieSeason: 1990 }]]);
+  const row = calculateKickingStreaks([...before, miss, ...after], veteran)['near-fg'][0];
+  assert.deepEqual(row.teams, ['KC', 'SF', 'BUF']); // The miss's team belongs to the span too.
+  assert.equal(row.lowerBound, true);
+  assert.equal(row.startUnknown, true);
+  const gap = kick(0, 'gap', false, { date: '2026-01-01', game: '2025_18_KC_LAC', source: 'https://example.com' });
+  assert.equal(calculateKickingStreaks([...before, miss, ...after], player, new Set(), [gap])['near-fg'].length, 0);
+  const laterGap = { ...gap, date: '2026-09-14', game: '2026_02_KC_LAC' };
+  const censored = calculateKickingStreaks([...before, miss, ...after], player, new Set(['kicker']), [laterGap])['near-fg'][0];
+  assert.equal(censored.gapAfter.date, laterGap.date);
+  assert.equal(censored.active, false);
+  assert.equal(censored.lowerBound, true);
+  const laterMiss = kick(25, 'FG', false, { date: '2026-09-21', game: '2026_03_KC_LAC' });
+  const laterMakes = Array.from({ length: 19 }, (_, i) => kick(i + 26, 'FG', true, { date: '2026-09-21', game: '2026_03_KC_LAC' }));
+  const resumed = calculateKickingStreaks([...before, miss, ...after, ...before.map(row => ({ ...row, play: row.play + 1, date: laterMiss.date, game: laterMiss.game })), laterMiss, ...laterMakes], player, new Set(), [laterGap])['near-fg'];
+  assert.equal(resumed.length, 2);
+  assert.equal(resumed.find(row => row.missed.play === 25).startUnknown, true);
+  const merged = mergeHistoricalStreaks({ fg: [], all: [], 'near-fg': [row], 'near-all': [] });
+  assert.deepEqual(merged['near-fg'], [row]);
+  assert.deepEqual(mergeHistoricalStreaks(merged)['near-fg'], [row]);
+});
+
+test('near-streak output matches exhaustive windows for mixed kicks and interleaved kickers', () => {
+  let seed = 17;
+  const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const attempts = Array.from({ length: 1000 }, (_, i) => kick(i, random() < .5 ? 'FG' : 'XP', random() > .04,
+    { id: i % 3 ? 'kicker' : 'other' }));
+  const views = calculateKickingStreaks(attempts, player);
+  for (const view of ['near-fg', 'near-all']) {
+    const config = KICKING_VIEWS[view], expected = [];
+    for (const id of ['kicker', 'other']) {
+      const kicks = attempts.filter(row => row.id === id && (config.combined || row.type === 'FG'));
+      for (let i = 0; i < kicks.length; i++) {
+        if (kicks[i].made) continue;
+        let left = i - 1, right = i + 1;
+        while (left >= 0 && kicks[left].made) left--;
+        while (right < kicks.length && kicks[right].made) right++;
+        if (i - left > 1 && right - i > 1 && right - left - 1 >= config.minimum)
+          expected.push([id, kicks[left + 1].play, kicks[i].play, kicks[right - 1].play, right - left - 1, kicks[right]?.play ?? null]);
+      }
+    }
+    const actual = views[view].map(row => [row.playerId, row.start.play, row.missed.play, row.last.play, row.length, row.endedBy?.play ?? null]);
+    assert.deepEqual(actual.sort(), expected.sort());
   }
 });
 

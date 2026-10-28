@@ -46,11 +46,11 @@ export const HISTORICAL_STREAKS = {
 };
 
 export function mergeHistoricalStreaks(views) {
-  return Object.fromEntries(Object.entries(HISTORICAL_STREAKS).map(([view, archive]) => {
+  return { ...views, ...Object.fromEntries(Object.entries(HISTORICAL_STREAKS).map(([view, archive]) => {
     if (!Array.isArray(views[view])) throw new Error(`Missing kicking view: ${view}`);
     // Idempotent so re-running an import cannot add the same records twice.
     const rows = [...views[view].filter(row => !row.archive), ...archive.map(row => structuredClone(row))];
     return [view, rows.sort((a, b) => b.length - a.length ||
       (a.start.date || '9999').localeCompare(b.start.date || '9999') || a.name.localeCompare(b.name) || a.id.localeCompare(b.id))];
-  }));
+  })) };
 }
