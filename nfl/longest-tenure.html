@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="The longest-tenured current player for every NFL team, ranked by consecutive seasons with the franchise.">
+  <meta name="description" content="Top 100 active and all-time NFL player-team tenures, plus every franchise's longest-tenured current players. Roster history from 1920 onward.">
   <meta name="theme-color" content="#f4f5f1">
   <link rel="canonical" href="https://kmartini.com/nfl/longest-tenure.html">
   <title>Longest Tenure — kmartini.com</title>
@@ -16,6 +16,11 @@
     .back:hover { text-decoration: underline; }
     h1 { margin: 36px 0 12px; font-size: clamp(2.4rem, 6vw, 4.3rem); line-height: 1.05; letter-spacing: -.035em; }
     .intro { max-width: 710px; margin: 0; color: #565c54; font-size: 1.03rem; }
+    h2 { margin: 26px 0 8px; font-size: 1.25rem; }
+    .views { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+    .views a { padding: 8px 12px; border: 1px solid #c8cdc5; border-radius: 5px; text-decoration: none; font-size: .9rem; }
+    .views a[aria-current="page"] { background: #36473c; border-color: #36473c; color: white; }
+    .hint { color: #61665e; font-size: .84rem; }
     .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 26px 0 32px; color: #61665e; font-size: .85rem; }
     .meta strong { color: #20221f; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 16px; }
@@ -31,6 +36,8 @@
     .table-head { padding: 13px 0; border-top: 1px solid #c8cdc5; border-bottom: 1px solid #c8cdc5; color: #61665e; font-size: .73rem; text-transform: uppercase; letter-spacing: .07em; }
     .team-row { min-height: 83px; padding: 15px 0; border-bottom: 1px solid #dce0d7; }
     .team-row[hidden] { display: none; }
+    .team-row.current { background: #e0f1e3; }
+    .rank { display: inline-block; min-width: 28px; margin-right: 5px; color: #61665e; font-size: .8rem; font-variant-numeric: tabular-nums; }
     .team-name { display: block; font-size: .95rem; }
     .division, .since { display: block; margin-top: 4px; color: #737a70; font-size: .76rem; }
     .player { display: block; font-size: .92rem; }
@@ -66,9 +73,17 @@
   <main>
     <a class="back" href="/nfl">← NFL index</a>
     <h1>Longest tenure</h1>
-    <p class="intro">The players who have been with their team the longest. Every franchise’s longest current stay, counted in seasons.</p>
+    <p class="intro">The longest player-team tenures in NFL history, counted in consecutive roster seasons. Explore the top 100 active stays, the top 100 all-time stays, and each franchise’s current leaders.</p>
+    <nav class="views" aria-label="Player tenure views">
+      <a href="#active" id="active-link">Active top 100</a>
+      <a href="#all-time" id="all-time-link">All-time top 100</a>
+      <a href="#teams" id="teams-link" aria-current="page">Team leaders</a>
+    </nav>
+    <h2 id="view-heading">Current team leaders</h2>
+    <p id="view-description" class="hint">Each franchise’s longest current stay, including ties.</p>
+    <p id="load-status" class="hint" role="status" hidden></p>
     <!-- tenure-meta:start -->
-    <div class="meta"><span><strong>32</strong> teams</span><span><strong>2026</strong> season · roster data through Week 5</span><span>Updated <time datetime="2026-10-07">Oct 7, 2026</time></span></div>
+    <div class="meta"><span><strong>32</strong> teams</span><span><strong>2026</strong> season · roster data through Week 8</span><span>Updated <time datetime="2026-10-28">Oct 28, 2026</time></span></div>
       <!-- tenure-meta:end -->
     <div class="toolbar" id="controls" hidden>
       <div class="sort" aria-label="Team order">
@@ -78,7 +93,7 @@
       </div>
       <label class="search" for="search">Find a team or player <input id="search" type="search" placeholder="e.g. Panthers or Jansen"></label>
     </div>
-    <div class="table-head" aria-hidden="true"><span>Team</span><span>Longest-tenured player · position</span><span>Seasons with team</span></div>
+    <div class="table-head" aria-hidden="true"><span>Team</span><span id="player-column-label">Longest-tenured player · position</span><span>Seasons with team</span></div>
     <section class="teams" id="teams" aria-label="Longest-tenured players for all 32 NFL teams">
       <!-- tenure-rows:start -->
       <article class="team-row" data-team="Carolina Panthers" data-since="2009" data-division="6">
@@ -245,44 +260,15 @@
     </section>
     <p class="empty" id="empty" hidden>No teams or players match your search.</p>
     <p class="result-count" id="result-count" role="status" hidden></p>
+    <noscript><p>Enable JavaScript to view the active and all-time top 100 lists. The saved team leaders are shown above.</p></noscript>
     <div class="method">
-      <p>Tenure is measured by consecutive seasons listed with the current franchise, including the current season. Active, practice-squad and reserve players are eligible; retired and released players are excluded from the current roster. Reserve and practice-squad seasons count toward tenure.</p>
-      <p>A missing season or a season with another franchise resets the count. Brief releases and re-signings within the same franchise do not. Players with the same starting season share the lead; this is a season-based comparison, so exact signing dates do not break ties. Franchise moves stay with the same team.</p>
-      <p>Source: <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse roster data</a>. Each team uses its latest available roster week; teams on a bye may have an earlier snapshot. The date above identifies the saved snapshot.</p>
+      <p>Tenure is measured by consecutive seasons listed with one franchise. Active stays include the current season. Active, practice-squad and reserve players are eligible; retired and released players are excluded from the current roster. Reserve and practice-squad seasons count toward tenure.</p>
+      <p>The active and all-time views show up to 100 player-team stays, longest first, with shared ranks for equal lengths. Search and division sorting operate within the selected top 100. A player can appear for more than one franchise or for separate stays with the same franchise. Green rows in the all-time list are still active.</p>
+      <p>A missing season or an intervening franchise resets the stay. Joining and leaving seasons count for each franchise listed that year, so a transition season can be shared by two stays. Brief releases and re-signings within the same franchise may not be visible in annual history. This is a season-based comparison; exact signing dates do not break ties.</p>
+      <p>Franchise moves and historical abbreviations stay with the same team, including the Oilers/Titans and Baltimore/Indianapolis Colts. The 1950 Baltimore Colts are separate from today’s Colts, and the Ravens have their own history. The joint 1943 Eagles/Steelers and 1944 Cardinals/Steelers seasons count for both partner clubs. The all-time list covers today’s 32 franchises; defunct clubs remain separate.</p>
+      <p>Source: <a href="https://github.com/nflverse/nflverse-data/releases/tag/rosters">nflverse roster data</a>, covering 1920 onward. Older players are matched using stable player IDs where available, otherwise their recorded name and birth date. These are roster seasons, not seasons with game appearances. Each current team uses its latest available roster week; teams on a bye may have an earlier snapshot. The date above identifies the saved snapshot.</p>
     </div>
   </main>
-  <script>
-    const teams = document.getElementById('teams');
-    const rows = [...teams.querySelectorAll('.team-row')];
-    const search = document.getElementById('search');
-    const buttons = [...document.querySelectorAll('[data-sort]')];
-    const count = document.getElementById('result-count');
-    let sort = 'longest';
-    function render() {
-      const query = search.value.trim().toLocaleLowerCase();
-      rows.sort(sort === 'longest'
-        ? (a, b) => Number(a.dataset.since) - Number(b.dataset.since) || a.dataset.team.localeCompare(b.dataset.team)
-        : (a, b) => Number(a.dataset.division) - Number(b.dataset.division) || a.dataset.team.localeCompare(b.dataset.team));
-      let visible = 0;
-      for (const row of rows) {
-        row.hidden = !row.textContent.toLocaleLowerCase().includes(query);
-        if (!row.hidden) visible += 1;
-        teams.append(row);
-      }
-      document.getElementById('empty').hidden = visible !== 0;
-      count.textContent = `Showing ${visible} of ${rows.length} teams`;
-    }
-    for (const button of buttons) {
-      button.addEventListener('click', () => {
-        sort = button.dataset.sort;
-        for (const item of buttons) item.setAttribute('aria-pressed', String(item === button));
-        render();
-      });
-    }
-    search.addEventListener('input', render);
-    document.getElementById('controls').hidden = false;
-    count.hidden = false;
-    render();
-  </script>
+  <script type="module" src="./longest-tenure-page.mjs?v=tenure-top100-1"></script>
 </body>
 </html>

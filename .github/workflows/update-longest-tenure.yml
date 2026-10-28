@@ -1,0 +1,50 @@
+name: Update NFL player tenures
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 1 * * *"
+      timezone: "America/New_York"
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-longest-tenure
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/longest-tenure
+          key: longest-tenure-v2-${{ github.run_id }}
+          restore-keys: longest-tenure-v2-
+      - name: Test player tenure calculations
+        run: node --test scripts/test-longest-tenure.mjs
+      - name: Refresh active and all-time tenures
+        run: node scripts/update-longest-tenure.mjs
+      - name: Validate refreshed snapshots
+        run: node --test scripts/test-longest-tenure.mjs
+      - name: Commit snapshots and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/longest-tenure.json nfl/longest-tenure.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/longest-tenure.json nfl/longest-tenure.html
+            git commit -m "Update NFL player tenures"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
