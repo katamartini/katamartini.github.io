@@ -142,3 +142,26 @@ test('stat view hashes resolve direct links and safely default unknown values', 
   for (const view of Object.keys(VIEWS)) assert.equal(viewFromHash(`#${view}`), view);
   for (const hash of ['', '#unknown', '#constructor', '#__proto__']) assert.equal(viewFromHash(hash), 'receiving');
 });
+
+test('selects the unique matching table and normalizes case, markup, and nonbreaking spaces', () => {
+  const html = table([['Calvin Johnson', 11619], ['Tail', 4000]])
+    .replace('NAME', 'name').replace('REC YDS', '<span>rec</span>&nbsp;yds');
+  const unrelated = '<table><thead><tr><th>TEAM</th><th>GP</th></tr></thead></table>';
+  assert.deepEqual(parseReceivingTable(`<title>Lions receiving leaders</title>${unrelated}${html}`, 'DET'),
+    [record('DET', 'Calvin Johnson', 11619)]);
+});
+
+test('ambiguous tables and duplicate required columns fail closed', () => {
+  const html = table([['Leader', 6000], ['Tail', 4000]]);
+  assert.throws(() => parseReceivingTable(html + html, 'DET'), /Ambiguous/);
+  assert.throws(() => parseReceivingTable(html.replace('<th>GP</th>', '<th>REC YDS</th>'), 'DET'), /Duplicate/);
+});
+
+test('column errors include observed headers; malformed numbers and rows are rejected', () => {
+  const html = table([['Leader', 6000], ['Tail', 4000]]);
+  assert.throws(() => parseReceivingTable(html.replace('REC YDS', 'PASS YDS'), 'DET'), /Unexpected receiving columns for DET:.*PASS YDS/);
+  for (const bad of ['6,00', '6000.5', 'NaN', '90071992547409920']) {
+    assert.throws(() => parseReceivingTable(html.replace('6,000', bad), 'DET'), /Invalid REC YDS/);
+  }
+  assert.throws(() => parseReceivingTable(html.replace('<td>100</td>', ''), 'DET'), /Incomplete/);
+});
