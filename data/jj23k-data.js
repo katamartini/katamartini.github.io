@@ -2,8 +2,8 @@
 window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
-  "throughWeek": 7,
-  "sourceHash": "12831c6d5f0c328a25d15d26cb49fd782d841d029cf61043fef0d58b8e23c3e8",
+  "throughWeek": 8,
+  "sourceHash": "293a6da19ac8263a7c9fc738e397f4fecf0113ba02dd9b7f59908b387fbe78c5",
   "careerYards": [
     0,
     26,
