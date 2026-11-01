@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { watchWeek, teamWatchEvents, playerWatchEvents, postseasonWatchEvents, validWatchSnapshot } from './what-to-watch-data.mjs';
+import { watchWeek, teamWatchEvents, playerWatchEvents, postseasonWatchEvents, validWatchSnapshot, droughtLength } from './what-to-watch-data.mjs';
 
 const game = (id, date, patch = {}) => ({ id, date, season: 2026, type: 'REG', week: 8, home: 'BUF', away: 'MIA', homeScore: 24, awayScore: 10, location: 'Home', completed: true, ...patch });
 const run = (n, patch = {}) => Array.from({ length: n }, (_, i) => game(`g${i}`, `2026-09-${String(i + 1).padStart(2, '0')}`, patch));
@@ -33,6 +33,36 @@ test('a loss ends a winning run and a win ends a losing run, with the ending gam
   const bills = ended.find(e => e.title === 'Bills: 5 straight wins');
   assert.equal(bills.game, 'final'); assert.equal(bills.date, '2026-10-25'); assert.equal(bills.result, 'Dolphins 14, Bills 3');
   assert.ok(ended.some(e => e.title === 'Dolphins: 5 straight losses'));
+});
+test('droughts include elapsed time to the scheduled or actual ending game', () => {
+  const d = droughtLength('2003-10-05', '2026-11-01', { count: 22, unit: 'meetings', anchor: 'since last win' });
+  assert.equal(d.elapsed, '23 years'); assert.equal(d.days, 8428); assert.equal(d.count, 22);
+  const win = game('win', '2025-12-01', { season: 2025, homeScore: 3, awayScore: 24 });
+  const { watch } = teamWatchEvents([win, ...run(5), upcoming], 2026, [upcoming]);
+  const matchup = watch.find(e => e.title === 'Dolphins: 5 games without a win against the Bills');
+  assert.equal(matchup.drought.since, '2025-12-01'); assert.equal(matchup.drought.elapsed, '11 months');
+  assert.equal(matchup.drought.lowerBound, false);
+  const unknown = teamWatchEvents([...run(5), upcoming], 2026, [upcoming]).watch.find(e => e.category === 'matchup');
+  assert.equal(unknown.drought.lowerBound, true); assert.equal(unknown.drought.since, '2026-09-01');
+});
+test('team ranks compare maximal historical runs and preserve venue scope', () => {
+  const first = run(7), loss = game('loss', '2026-09-10', { homeScore: 3, awayScore: 24 });
+  const second = run(5).map((g, i) => ({ ...g, id: `second${i}`, date: `2026-10-${String(i + 1).padStart(2, '0')}` }));
+  const { watch, ended } = teamWatchEvents([...first, loss, ...second, upcoming], 2026, [upcoming]);
+  const active = watch.find(e => e.title === 'Bills: 5 straight wins');
+  assert.equal(active.leaderboard.franchise.rank, 2); assert.equal(active.leaderboard.franchise.record, 7);
+  assert.equal(active.leaderboard.franchise.length, 5); assert.equal(active.leaderboard.franchise.next.rank, 2);
+  assert.equal(ended.find(e => e.title === 'Bills: 7 straight wins').leaderboard.franchise.rank, 1);
+  assert.match(watch.find(e => e.title.endsWith('wins at home')).leaderboard.overall.coverage, /1999/);
+});
+test('QB rank projections exclude the active history row even when the roster uses a different ID', () => {
+  const feeds = emptyFeeds();
+  const active = player({ id: 'history-id', playerId: 'p', team: 'BUF', length: 16 });
+  feeds.qbs.history.streaks = [active, { ...active, id: 'other', playerId: 'q', length: 17 }];
+  feeds.qbs.starts = [{ ...active, id: 'p', playerId: undefined }];
+  const event = playerWatchEvents([upcoming], 2026, [upcoming], feeds).watch[0];
+  assert.equal(event.leaderboard.franchise.rank, 2); assert.equal(event.leaderboard.franchise.tied, false);
+  assert.deepEqual(event.leaderboard.franchise.next, { rank: 1, tied: true });
 });
 test('ties end strict wins and losses while preserving matchup and overall winless droughts', () => {
   const tie = game('tie', '2026-10-25', { homeScore: 10, awayScore: 10 });
@@ -123,6 +153,16 @@ test('postseason droughts end only on an appearance or win and are recorded once
   const ended = postseasonWatchEvents([loss], 2026, [], baseline).ended;
   assert.equal(ended.length, 1); assert.match(ended[0].title, /playoff appearance/);
 });
+test('postseason elapsed time uses the verified achievement date without inventing old dates', () => {
+  const prior = game('old-postseason', '2020-01-12', { season: 2019, type: 'DIV' });
+  const wc = game('wc', '2027-01-17', { type: 'WC', week: 19 });
+  const baseline = { BUF: { playoffs: 2019, playoffWin: 2019, superBowl: null } };
+  const ended = postseasonWatchEvents([prior, wc], 2026, [], baseline).ended;
+  assert.equal(ended[0].drought.count, 6); assert.equal(ended[0].drought.since, '2020-01-12'); assert.equal(ended[0].drought.elapsed, '7 years');
+  const sb = { ...upcoming, type: 'SB', date: '2027-02-14' };
+  const never = postseasonWatchEvents([sb], 2026, [sb], baseline).watch.find(e => /Super Bowl/.test(e.title));
+  assert.equal(never.drought.never, true); assert.equal(never.drought.since, undefined);
+});
 test('snapshot validates subject clubs, season, unique events, results and scheduled watches', () => {
   const saved = JSON.parse(readFileSync(new URL('../data/what-to-watch.json', import.meta.url)));
   assert.ok(validWatchSnapshot(saved));
@@ -136,7 +176,9 @@ test('snapshot validates subject clubs, season, unique events, results and sched
   for (const mutate of [d => d.watch.push(d.watch[0]), d => { d.watch[0].team = 'INVALID'; },
     d => { d.watch[0].game = 'missing'; }, d => { d.ended[0].season--; },
     d => { d.games.find(g => g.id === d.watch[0].game).completed = true; },
-    d => { d.watch[0].href = 'javascript:alert(1)'; }, d => { d.watch[0].date = 'not-a-date'; }]) {
+    d => { d.watch[0].href = 'javascript:alert(1)'; }, d => { d.watch[0].date = 'not-a-date'; },
+    d => { d.watch[0].leaderboard.franchise.rank = 0; },
+    d => { d.watch.find(e => e.drought).drought.days = -1; }]) {
     const changed = structuredClone(snapshot); mutate(changed); assert.equal(validWatchSnapshot(changed), false);
   }
 });

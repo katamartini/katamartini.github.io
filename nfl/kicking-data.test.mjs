@@ -76,6 +76,13 @@ test('streaks follow the kicker across seasons and teams, without resets for ina
   assert.equal(row.active, false); // Unbroken at last appearance is not automatically active.
   assert.equal(row.endedBy, null);
 });
+test('franchise kick ranks retain short portions and split transfers and returns', () => {
+  const attempts = [...Array.from({ length: 20 }, (_, i) => kick(i)), kick(20, 'FG', true, { team: 'SF', opponent: 'SEA' }), kick(21)];
+  const clubs = calculateKickingStreaks(attempts, player, new Set(), [], true);
+  assert.deepEqual(clubs.fg.map(r => [r.length, r.teams[0]]), [[20, 'KC'], [1, 'SF'], [1, 'KC']]);
+  assert.equal(calculateKickingStreaks(attempts, player).fg[0].length, 22);
+  assert.equal(clubs['near-fg'], undefined);
+});
 
 test('1999 boundary streaks are lower bounds until an observed miss or a known career start', () => {
   const attempts = Array.from({ length: 20 }, (_, i) => kick(i, 'FG', true, { season: 1999 }));

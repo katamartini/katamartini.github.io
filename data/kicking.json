@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-30T11:11:15.819Z",
+  "checkedAt": "2026-11-01T03:58:57.096Z",
   "firstSeason": 1999,
   "season": 2026,
   "through": "2026-10-29",
   "latestWeek": 8,
   "rosterWeek": 8,
-  "sourceHash": "f698d0ec684b71641532ea687bd9067fda8e79176c99c9e7b56710d7d1f688d7",
+  "sourceHash": "9d47d26e2ecbc9d7ad1172df6ab0d976f5a69801339dcdc8d24c5791e0e80a45",
   "sources": [
     {
       "season": 1999,
@@ -572,7 +572,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 36,
+            "rank": 8,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 6,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "MIN",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 36,
+            "rank": 1,
+            "tied": false,
+            "record": 36,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "MIN"
+        }
       },
       {
         "id": "fg:00-0016919:2013_16_IND_KC:1191",
@@ -1707,7 +1738,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 28,
+            "rank": 34,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 28,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "NYJ",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 1,
+            "rank": 117,
+            "tied": true,
+            "record": 26,
+            "next": {
+              "rank": 93,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "NYJ"
+        }
       },
       {
         "id": "archive:chris-boniol-1996-97",
@@ -2524,7 +2586,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 50,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 46,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "CLE",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 3,
+            "tied": false,
+            "record": 29,
+            "next": {
+              "rank": 3,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "CLE"
+        }
       },
       {
         "id": "fg:00-0019770:2008_09_NYJ_BUF:2568",
@@ -2868,7 +2961,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 24,
+            "rank": 57,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 50,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "JAX",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 24,
+            "rank": 1,
+            "tied": true,
+            "record": 24,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "JAX"
+        }
       },
       {
         "id": "fg:00-0016919:2004_06_SEA_NE:682",
@@ -3773,7 +3897,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 22,
+            "rank": 72,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 65,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "IND",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 22,
+            "rank": 5,
+            "tied": false,
+            "record": 44,
+            "next": {
+              "rank": 5,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "IND"
+        }
       },
       {
         "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
@@ -3807,7 +3962,38 @@
         "active": true,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 22,
+            "rank": 72,
+            "tied": true,
+            "record": 44,
+            "next": {
+              "rank": 65,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "CIN",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 22,
+            "rank": 1,
+            "tied": false,
+            "record": 22,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "CIN"
+        }
       },
       {
         "id": "fg:00-0004091:2001_04_SD_CLE:3228",
@@ -5801,7 +5987,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 66,
+            "rank": 13,
+            "tied": false,
+            "record": 98,
+            "next": {
+              "rank": 13,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "JAX",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 66,
+            "rank": 1,
+            "tied": false,
+            "record": 66,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "JAX"
+        }
       },
       {
         "id": "all:00-0004811:2007_09_DEN_DET:4223",
@@ -5974,7 +6191,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 64,
+            "rank": 16,
+            "tied": true,
+            "record": 98,
+            "next": {
+              "rank": 14,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "MIN",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 64,
+            "rank": 2,
+            "tied": false,
+            "record": 94,
+            "next": {
+              "rank": 2,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "MIN"
+        }
       },
       {
         "id": "all:00-0023001:2013_08_PIT_OAK:3311",
@@ -9248,7 +9496,38 @@
         "active": false,
         "startUnknown": false,
         "lowerBound": false,
-        "gapAfter": null
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 44,
+            "rank": 85,
+            "tied": true,
+            "record": 98,
+            "next": {
+              "rank": 81,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "CLE",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 44,
+            "rank": 3,
+            "tied": false,
+            "record": 57,
+            "next": {
+              "rank": 3,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "CLE"
+        }
       },
       {
         "id": "all:00-0016830:2000_02_OAK_IND:1904",

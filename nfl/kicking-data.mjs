@@ -86,7 +86,7 @@ export function kickFromPlay(row) {
     distance: row.kick_distance ? Number(row.kick_distance) : null };
 }
 
-export function calculateKickingStreaks(attempts, players = new Map(), currentIds = new Set(), gaps = []) {
+export function calculateKickingStreaks(attempts, players = new Map(), currentIds = new Set(), gaps = [], splitByTeam = false) {
   const keys = new Set();
   const ordered = [...attempts, ...gaps].sort((a, b) => a.date.localeCompare(b.date) || a.game.localeCompare(b.game) || a.play - b.play);
   for (const kick of ordered) {
@@ -97,6 +97,7 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
   const result = {};
   const point = kick => ({ date: kick.date, team: kick.team, opponent: kick.opponent, game: kick.game, play: kick.play, type: kick.type, distance: kick.distance });
   for (const [view, config] of Object.entries(KICKING_VIEWS)) {
+    if (splitByTeam && config.near) continue;
     const states = new Map(), streaks = [];
     const save = (state, miss = null, gap = null) => {
       const before = config.near ? state.beforeMiss : null;
@@ -104,7 +105,7 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
       // Adjacent misses and a miss at the end of the feed are not near-streaks.
       if (config.near && (!before?.length || !state.length)) return;
       const length = state.length + (before ? before.length + 1 : 0);
-      if (length < config.minimum) return;
+      if (length < (splitByTeam ? 1 : config.minimum)) return;
       const start = before ? before.start : state.start;
       const knownStart = before ? before.knownStart : state.knownStart;
       streaks.push({ id: `${view}:${state.id}:${start.game}:${start.play}`, playerId: state.id,
@@ -125,6 +126,10 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
         state.length = 0; state.fg = 0; state.xp = 0; state.teams = new Set(); state.knownStart = false;
         state.beforeMiss = null; state.miss = null;
         continue;
+      }
+      if (splitByTeam && state.last && state.last.team !== kick.team) {
+        save(state);
+        state.length = 0; state.fg = 0; state.xp = 0; state.teams = new Set(); state.knownStart = true;
       }
       if (!kick.made) {
         save(state, kick);

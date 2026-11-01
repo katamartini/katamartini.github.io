@@ -25,6 +25,18 @@ test('seasons and franchise changes do not reset streaks', () => {
   const [row] = calculate([appearance(old), appearance(next, 1, 'SF')], [old, next]);
   assert.equal(row.length, 2); assert.deepEqual(row.teams, ['MIN', 'SF']);
 });
+test('franchise comparisons split transfers and returns while preserving the career run', () => {
+  const games = [g1, g2, game('sf', '2026-09-27', 2026, 'SF', 'SEA'), g4];
+  const appearances = games.map(g => appearance(g, 1, g.home_team));
+  const club = calculateReceivingStreaks(appearances, games, new Set(games.map(g => g.game_id)), players(), new Set(['p']), true);
+  assert.deepEqual(club.map(r => [r.length, r.teams[0]]), [[2, 'MIN'], [1, 'SF'], [1, 'MIN']]);
+  assert.equal(calculate(appearances, games)[0].length, 4);
+});
+test('franchise splits preserve uncertainty across a pre-participation coverage gap', () => {
+  const a = game('a', '2012-09-09', 2012), missing = game('missing', '2012-09-16', 2012, 'SF', 'SEA'), b = game('b', '2012-09-23', 2012, 'SF', 'SEA');
+  const club = calculateReceivingStreaks([appearance(a), appearance(b, 1, 'SF')], [a, missing, b], new Set(), players(2010), new Set(['p']), true);
+  assert.ok(club.find(r => r.start.game === 'b').lowerBound);
+});
 test('current roster membership alone cannot turn an ended streak green', () => {
   const [ended] = calculate([appearance(g1), appearance(g2, 0)], [g1, g2]); assert.equal(ended.active, false);
   const [inactive] = calculate([appearance(g1)], [g1], players(), new Set()); assert.equal(inactive.active, false); assert.equal(inactive.endedBy, null);

@@ -7,6 +7,7 @@ import { readProjectedCsv } from '../nfl/kicking-data.mjs';
 import { FIRST_STATS_SEASON, FIRST_PARTICIPATION_SEASON, KNOWN_MISSING_GAMES, KNOWN_INCOMPLETE_GAMES, STAT_COLUMNS, SNAP_COLUMNS,
   receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks, receivingWatchStreaks } from '../nfl/receiving-streaks-data.mjs';
 import { RECEIVING_ARCHIVE } from '../nfl/receiving-streaks-archive.mjs';
+import { playerStreakContext } from '../nfl/streak-context.mjs';
 
 const now = new Date(), season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
 const root = 'https://github.com/nflverse/nflverse-data/releases/download';
@@ -75,9 +76,14 @@ const gameIds = new Set(games.map(g => g.game_id));
 stats = stats.filter(r => gameIds.has(r.game_id)); snaps = snaps.filter(r => gameIds.has(r.game_id));
 const { appearances, participationGames } = receivingAppearances(stats, snaps, games, players);
 const calculated = calculateReceivingStreaks(appearances, games, participationGames, players, currentIds);
-const leaders = topReceivingStreaks(mergeReceivingArchive(calculated, RECEIVING_ARCHIVE));
+const allStreaks = mergeReceivingArchive(calculated, RECEIVING_ARCHIVE);
+const clubStreaks = mergeReceivingArchive(calculateReceivingStreaks(appearances, games, participationGames, players, currentIds, true),
+  RECEIVING_ARCHIVE.filter(row => row.teams.length === 1));
+const leaders = topReceivingStreaks(allStreaks);
 const currentTeams = new Map(roster.rows.filter(p => currentIds.has(p.gsis_id)).map(p => [p.gsis_id, p.team]));
 const watchStreaks = receivingWatchStreaks(calculated, season, currentTeams);
+for (const row of watchStreaks) row.leaderboard = playerStreakContext(row, allStreaks, clubStreaks,
+  row.active ? row.currentTeam : row.endedBy.team, '1999+ game logs plus documented older records');
 if (leaders.length !== 100 || !leaders.some(r => r.name === 'Jerry Rice' && r.length === 274) || !leaders.some(r => r.name === 'Larry Fitzgerald' && r.length === 256))
   throw new Error('Receiving leaderboard validation failed; retaining saved data');
 const latestWeek = Math.max(...games.filter(g => Number(g.season) === season).map(g => Number(g.week)));

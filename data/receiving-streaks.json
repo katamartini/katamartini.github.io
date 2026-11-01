@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-01T03:29:04.359Z",
+  "checkedAt": "2026-11-01T03:58:58.593Z",
   "season": 2026,
   "through": "2026-10-29",
   "latestWeek": 8,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "f17c7de1b9f5da6bb46ea2b7eb27cfd590899f02e2c42e594cba39051f1fcf4e",
+  "sourceHash": "405c0ce1d0b006f079f525c27c5d83852754d8c32d1762aa7ffbc0edab99ae27",
   "sources": [
     {
       "kind": "stats",
@@ -3641,7 +3641,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "KC"
+      "currentTeam": "KC",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 197,
+          "rank": 4,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "KC",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 197,
+          "rank": 1,
+          "tied": false,
+          "record": 197,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "KC"
+      }
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN",
@@ -3675,7 +3706,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "WAS"
+      "currentTeam": "WAS",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 166,
+          "rank": 12,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 12,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "WAS",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 5,
+          "rank": 134,
+          "tied": true,
+          "record": 76,
+          "next": {
+            "rank": 115,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "WAS"
+      }
     },
     {
       "id": "00-0031381:2015_08_GB_DEN",
@@ -3708,7 +3770,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "LA"
+      "currentTeam": "LA",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 165,
+          "rank": 13,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 12,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "LA",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 20,
+          "rank": 18,
+          "tied": true,
+          "record": 97,
+          "next": {
+            "rank": 18,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LA"
+      }
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC",
@@ -3740,7 +3833,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "IND"
+      "currentTeam": "IND",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 109,
+          "rank": 29,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 27,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 6,
+          "rank": 113,
+          "tied": true,
+          "record": 190,
+          "next": {
+            "rank": 85,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "00-0035640:2019_17_SF_SEA",
@@ -3771,7 +3895,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "PIT"
+      "currentTeam": "PIT",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 104,
+          "rank": 31,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 30,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PIT",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 22,
+          "tied": true,
+          "record": 186,
+          "next": {
+            "rank": 22,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PIT"
+      }
     },
     {
       "id": "00-0036322:2020_01_GB_MIN",
@@ -3801,7 +3956,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "MIN"
+      "currentTeam": "MIN",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 99,
+          "rank": 36,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 99,
+          "rank": 1,
+          "tied": false,
+          "record": 99,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      }
     },
     {
       "id": "00-0036252:2020_01_IND_JAX",
@@ -3832,7 +4018,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "PIT"
+      "currentTeam": "PIT",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 98,
+          "rank": 37,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 36,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PIT",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 3,
+          "rank": 192,
+          "tied": true,
+          "record": 186,
+          "next": {
+            "rank": 155,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PIT"
+      }
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN",
@@ -3862,7 +4079,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "CIN"
+      "currentTeam": "CIN",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 84,
+          "rank": 49,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 48,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "CIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 84,
+          "rank": 2,
+          "tied": false,
+          "record": 102,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CIN"
+      }
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX",
@@ -3894,7 +4142,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "NE"
+      "currentTeam": "NE",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 75,
+          "rank": 63,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 60,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NE",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 3,
+          "rank": 216,
+          "tied": true,
+          "record": 89,
+          "next": {
+            "rank": 175,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NE"
+      }
     },
     {
       "id": "00-0034960:2021_15_NE_IND",
@@ -3926,7 +4205,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "JAX"
+      "currentTeam": "JAX",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 71,
+          "rank": 71,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 69,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 15,
+          "rank": 40,
+          "tied": true,
+          "record": 86,
+          "next": {
+            "rank": 38,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      }
     },
     {
       "id": "00-0033906:2021_05_NO_WAS",
@@ -3956,7 +4266,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "NO"
+      "currentTeam": "NO",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 68,
+          "rank": 79,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 76,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NO",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 68,
+          "rank": 2,
+          "tied": false,
+          "record": 81,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NO"
+      }
     },
     {
       "id": "00-0034383:2022_07_DET_DAL",
@@ -3987,7 +4328,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "HOU"
+      "currentTeam": "HOU",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 67,
+          "rank": 83,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 79,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "HOU",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 3,
+          "tied": false,
+          "record": 110,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "HOU"
+      }
     },
     {
       "id": "00-0035229:2021_11_DET_CLE",
@@ -4018,7 +4390,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "MIN"
+      "currentTeam": "MIN",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 88,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 83,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 4,
+          "tied": false,
+          "record": 99,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      }
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI",
@@ -4048,7 +4451,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "PHI"
+      "currentTeam": "PHI",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 88,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 83,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PHI",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 3,
+          "tied": false,
+          "record": 127,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PHI"
+      }
     },
     {
       "id": "00-0037744:2022_10_ARI_LA",
@@ -4078,7 +4512,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "ARI"
+      "currentTeam": "ARI",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 65,
+          "rank": 90,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 88,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ARI",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 65,
+          "rank": 2,
+          "tied": false,
+          "record": 256,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ARI"
+      }
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC",
@@ -4109,7 +4574,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "WAS"
+      "currentTeam": "WAS",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 63,
+          "rank": 102,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "WAS",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 17,
+          "rank": 28,
+          "tied": true,
+          "record": 76,
+          "next": {
+            "rank": 25,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "WAS"
+      }
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU",
@@ -4139,7 +4635,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "HOU"
+      "currentTeam": "HOU",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 62,
+          "rank": 105,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 102,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "HOU",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 62,
+          "rank": 2,
+          "tied": false,
+          "record": 110,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "HOU"
+      }
     },
     {
       "id": "00-0037239:2022_01_NO_ATL",
@@ -4169,7 +4696,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "NO"
+      "currentTeam": "NO",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 62,
+          "rank": 105,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 102,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NO",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 62,
+          "rank": 4,
+          "tied": false,
+          "record": 81,
+          "next": {
+            "rank": 3,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NO"
+      }
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR",
@@ -4200,7 +4758,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "SF"
+      "currentTeam": "SF",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 61,
+          "rank": 109,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 105,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "SF",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 55,
+          "rank": 4,
+          "tied": false,
+          "record": 114,
+          "next": {
+            "rank": 3,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SF"
+      }
     },
     {
       "id": "00-0038543:2023_01_LA_SEA",
@@ -4230,7 +4819,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "SEA"
+      "currentTeam": "SEA",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 58,
+          "rank": 116,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 115,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 58,
+          "rank": 5,
+          "tied": false,
+          "record": 177,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SEA"
+      }
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL",
@@ -4260,7 +4880,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "BAL"
+      "currentTeam": "BAL",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 126,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 121,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "BAL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 1,
+          "tied": false,
+          "record": 56,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "BAL"
+      }
     },
     {
       "id": "00-0038997:2023_01_JAX_IND",
@@ -4290,7 +4941,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "IND"
+      "currentTeam": "IND",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 54,
+          "rank": 133,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 129,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 54,
+          "rank": 5,
+          "tied": false,
+          "record": 190,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "00-0037238:2023_02_GB_ATL",
@@ -4320,7 +5002,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "ATL"
+      "currentTeam": "ATL",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 51,
+          "rank": 142,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 137,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ATL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 51,
+          "rank": 5,
+          "tied": false,
+          "record": 128,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ATL"
+      }
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL",
@@ -4350,7 +5063,38 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "ATL"
+      "currentTeam": "ATL",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 148,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 142,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ATL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 6,
+          "tied": false,
+          "record": 128,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ATL"
+      }
     }
   ]
 }

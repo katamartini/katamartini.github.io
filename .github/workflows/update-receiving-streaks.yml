@@ -30,7 +30,7 @@ jobs:
           key: receiving-v1-${{ github.run_id }}
           restore-keys: receiving-v1-
       - name: Test receiving calculations and roster snapshots
-        run: node --test nfl/receiving-streaks-data.test.mjs nfl/franchise-leaders-data.test.mjs
+        run: node --test nfl/receiving-streaks-data.test.mjs nfl/franchise-leaders-data.test.mjs nfl/streak-context.test.mjs
       - name: Refresh receiving streaks and current rosters
         run: node scripts/update-receiving-streaks.mjs
       - name: Commit data and request a Pages build

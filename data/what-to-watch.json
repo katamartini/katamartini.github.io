@@ -216,6 +216,37 @@
       "action": "Each made field goal extends it; the next missed or blocked field goal ends it.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 72,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 65,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "CIN",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 1,
+          "tied": false,
+          "record": 22,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CIN"
+      },
       "game": "2026_08_TEN_CIN",
       "date": "2026-11-01",
       "season": 2026,
@@ -235,13 +266,55 @@
       "value": 22,
       "unit": "games",
       "title": "Browns: 22 games without a win against the Steelers on the road",
+      "drought": {
+        "since": "2003-10-05",
+        "through": "2026-11-01",
+        "elapsed": "23 years",
+        "days": 8428,
+        "count": 22,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "A win ends the drought; a tie keeps it going.",
       "game": "2026_08_CLE_PIT",
       "date": "2026-11-01",
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Road matchup droughts",
+        "franchise": {
+          "scope": "CLE",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 22,
+          "rank": 1,
+          "tied": false,
+          "record": 22,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 22,
+          "rank": 1,
+          "tied": false,
+          "record": 22,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CLE"
+      }
     },
     {
       "id": "matchup-away:JAX:IND:winless:2026_08_IND_JAX",
@@ -255,13 +328,55 @@
       "value": 10,
       "unit": "games",
       "title": "Colts: 10 games without a win against the Jaguars on the road",
+      "drought": {
+        "since": "2014-09-21",
+        "through": "2026-11-01",
+        "elapsed": "12 years, 1 month",
+        "days": 4424,
+        "count": 10,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "A win ends the drought; a tie keeps it going.",
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Road matchup droughts",
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 10,
+          "rank": 1,
+          "tied": false,
+          "record": 10,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 10,
+          "rank": 8,
+          "tied": true,
+          "record": 22,
+          "next": {
+            "rank": 8,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "00-0034857:2026_08_BAL_BUF",
@@ -275,6 +390,38 @@
       "action": "Starting this game makes it 129. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "BUF",
+        "franchise": {
+          "scope": "BUF",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 128,
+          "rank": 1,
+          "tied": false,
+          "record": 128,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 128,
+          "rank": 8,
+          "tied": false,
+          "record": 253,
+          "next": {
+            "rank": 8,
+            "tied": false
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_BAL_BUF",
       "date": "2026-11-01",
       "season": 2026,
@@ -294,6 +441,38 @@
       "action": "Starting this game makes it 76. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "DET",
+        "franchise": {
+          "scope": "DET",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 75,
+          "rank": 2,
+          "tied": false,
+          "record": 136,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 75,
+          "rank": 25,
+          "tied": false,
+          "record": 253,
+          "next": {
+            "rank": 24,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_MIN_DET",
       "date": "2026-11-01",
       "season": 2026,
@@ -313,6 +492,38 @@
       "action": "Starting this game makes it 42. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "DEN",
+        "franchise": {
+          "scope": "DEN",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 41,
+          "rank": 4,
+          "tied": true,
+          "record": 57,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 41,
+          "rank": 102,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 100,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_KC_DEN",
       "date": "2026-11-01",
       "season": 2026,
@@ -332,6 +543,38 @@
       "action": "Starting this game makes it 37. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "NE",
+        "franchise": {
+          "scope": "NE",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 36,
+          "rank": 7,
+          "tied": false,
+          "record": 112,
+          "next": {
+            "rank": 7,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 36,
+          "rank": 124,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 118,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_NE_MIA",
       "date": "2026-11-01",
       "season": 2026,
@@ -351,6 +594,38 @@
       "action": "Starting this game makes it 25. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "LA",
+        "franchise": {
+          "scope": "LA",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 8,
+          "tied": true,
+          "record": 89,
+          "next": {
+            "rank": 7,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 250,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 233,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_LAC_LA",
       "date": "2026-11-01",
       "season": 2026,
@@ -370,6 +645,38 @@
       "action": "Starting this game makes it 25. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "DAL",
+        "franchise": {
+          "scope": "DAL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 11,
+          "tied": true,
+          "record": 69,
+          "next": {
+            "rank": 11,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 250,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 233,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_ARI_DAL",
       "date": "2026-11-01",
       "season": 2026,
@@ -389,6 +696,38 @@
       "action": "Starting this game makes it 25. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "TEN",
+        "franchise": {
+          "scope": "TEN",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 11,
+          "tied": false,
+          "record": 49,
+          "next": {
+            "rank": 9,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 24,
+          "rank": 250,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 233,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_TEN_CIN",
       "date": "2026-11-01",
       "season": 2026,
@@ -408,6 +747,38 @@
       "action": "Starting this game makes it 24. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "JAX",
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 23,
+          "rank": 7,
+          "tied": false,
+          "record": 72,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 23,
+          "rank": 275,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 250,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
@@ -427,6 +798,38 @@
       "action": "Starting this game makes it 20. A different starting QB ends the run.",
       "href": "/nfl/QBs.html#starts",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "ARI",
+        "franchise": {
+          "scope": "ARI",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 19,
+          "rank": 12,
+          "tied": false,
+          "record": 63,
+          "next": {
+            "rank": 11,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 19,
+          "rank": 367,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 348,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_08_ARI_DAL",
       "date": "2026-11-01",
       "season": 2026,
@@ -446,6 +849,37 @@
       "action": "A catch in his next appearance makes it 198. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 197,
+          "rank": 4,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "KC",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 197,
+          "rank": 1,
+          "tied": false,
+          "record": 197,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "KC"
+      },
       "game": "2026_08_KC_DEN",
       "date": "2026-11-01",
       "season": 2026,
@@ -465,6 +899,37 @@
       "action": "A catch in his next appearance makes it 167. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 166,
+          "rank": 12,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 12,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "WAS",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 5,
+          "rank": 134,
+          "tied": true,
+          "record": 76,
+          "next": {
+            "rank": 115,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "WAS"
+      },
       "game": "2026_08_PHI_WAS",
       "date": "2026-11-01",
       "season": 2026,
@@ -484,6 +949,37 @@
       "action": "A catch in his next appearance makes it 166. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 165,
+          "rank": 13,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 12,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "LA",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 20,
+          "rank": 18,
+          "tied": true,
+          "record": 97,
+          "next": {
+            "rank": 18,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LA"
+      },
       "game": "2026_08_LAC_LA",
       "date": "2026-11-01",
       "season": 2026,
@@ -503,6 +999,37 @@
       "action": "A catch in his next appearance makes it 110. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 109,
+          "rank": 29,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 27,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 6,
+          "rank": 113,
+          "tied": true,
+          "record": 190,
+          "next": {
+            "rank": 85,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      },
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
@@ -522,6 +1049,37 @@
       "action": "A catch in his next appearance makes it 105. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 104,
+          "rank": 31,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 30,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PIT",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 22,
+          "tied": true,
+          "record": 186,
+          "next": {
+            "rank": 22,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PIT"
+      },
       "game": "2026_08_CLE_PIT",
       "date": "2026-11-01",
       "season": 2026,
@@ -541,6 +1099,37 @@
       "action": "A catch in his next appearance makes it 100. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 99,
+          "rank": 36,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 99,
+          "rank": 1,
+          "tied": false,
+          "record": 99,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      },
       "game": "2026_08_MIN_DET",
       "date": "2026-11-01",
       "season": 2026,
@@ -560,6 +1149,37 @@
       "action": "A catch in his next appearance makes it 99. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 98,
+          "rank": 37,
+          "tied": false,
+          "record": 274,
+          "next": {
+            "rank": 36,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PIT",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 3,
+          "rank": 192,
+          "tied": true,
+          "record": 186,
+          "next": {
+            "rank": 155,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PIT"
+      },
       "game": "2026_08_CLE_PIT",
       "date": "2026-11-01",
       "season": 2026,
@@ -579,6 +1199,37 @@
       "action": "A catch in his next appearance makes it 85. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 84,
+          "rank": 49,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 48,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "CIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 84,
+          "rank": 2,
+          "tied": false,
+          "record": 102,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CIN"
+      },
       "game": "2026_08_TEN_CIN",
       "date": "2026-11-01",
       "season": 2026,
@@ -598,6 +1249,37 @@
       "action": "A catch in his next appearance makes it 76. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 75,
+          "rank": 63,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 60,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NE",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 3,
+          "rank": 216,
+          "tied": true,
+          "record": 89,
+          "next": {
+            "rank": 175,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NE"
+      },
       "game": "2026_08_NE_MIA",
       "date": "2026-11-01",
       "season": 2026,
@@ -617,6 +1299,37 @@
       "action": "A catch in his next appearance makes it 72. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 71,
+          "rank": 71,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 69,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 15,
+          "rank": 40,
+          "tied": true,
+          "record": 86,
+          "next": {
+            "rank": 38,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      },
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
@@ -636,6 +1349,37 @@
       "action": "A catch in his next appearance makes it 67. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 88,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 83,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 4,
+          "tied": false,
+          "record": 99,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      },
       "game": "2026_08_MIN_DET",
       "date": "2026-11-01",
       "season": 2026,
@@ -655,6 +1399,37 @@
       "action": "A catch in his next appearance makes it 67. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 88,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 83,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "PHI",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 3,
+          "tied": false,
+          "record": 127,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PHI"
+      },
       "game": "2026_08_PHI_WAS",
       "date": "2026-11-01",
       "season": 2026,
@@ -674,6 +1449,37 @@
       "action": "A catch in his next appearance makes it 66. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 65,
+          "rank": 90,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 88,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ARI",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 65,
+          "rank": 2,
+          "tied": false,
+          "record": 256,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ARI"
+      },
       "game": "2026_08_ARI_DAL",
       "date": "2026-11-01",
       "season": 2026,
@@ -693,6 +1499,37 @@
       "action": "A catch in his next appearance makes it 64. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 63,
+          "rank": 102,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "WAS",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 17,
+          "rank": 28,
+          "tied": true,
+          "record": 76,
+          "next": {
+            "rank": 25,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "WAS"
+      },
       "game": "2026_08_PHI_WAS",
       "date": "2026-11-01",
       "season": 2026,
@@ -712,6 +1549,37 @@
       "action": "A catch in his next appearance makes it 57. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 126,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 121,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "BAL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 1,
+          "tied": false,
+          "record": 56,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "BAL"
+      },
       "game": "2026_08_BAL_BUF",
       "date": "2026-11-01",
       "season": 2026,
@@ -731,6 +1599,37 @@
       "action": "A catch in his next appearance makes it 55. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 54,
+          "rank": 133,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 129,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 54,
+          "rank": 5,
+          "tied": false,
+          "record": 190,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      },
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
@@ -750,6 +1649,37 @@
       "action": "A catch in his next appearance makes it 52. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 51,
+          "rank": 142,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 137,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ATL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 51,
+          "rank": 5,
+          "tied": false,
+          "record": 128,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ATL"
+      },
       "game": "2026_08_ATL_TB",
       "date": "2026-11-01",
       "season": 2026,
@@ -769,6 +1699,37 @@
       "action": "A catch in his next appearance makes it 51. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 148,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 142,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "ATL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 6,
+          "tied": false,
+          "record": 128,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ATL"
+      },
       "game": "2026_08_ATL_TB",
       "date": "2026-11-01",
       "season": 2026,
@@ -794,7 +1755,39 @@
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 11,
+          "rank": 3,
+          "tied": false,
+          "record": 13,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 11,
+          "rank": 31,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 29,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      }
     },
     {
       "id": "away:IND:losses:2026_08_IND_JAX",
@@ -808,13 +1801,55 @@
       "value": 8,
       "unit": "games",
       "title": "Colts: 8 straight losses on the road",
+      "drought": {
+        "since": "2025-10-19",
+        "through": "2026-11-01",
+        "elapsed": "1 year",
+        "days": 378,
+        "count": 8,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "A win or tie ends the losing streak.",
       "game": "2026_08_IND_JAX",
       "date": "2026-11-01",
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 2,
+          "tied": false,
+          "record": 10,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 46,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 30,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "overall:LAC:losses:2026_08_LAC_LA",
@@ -828,13 +1863,55 @@
       "value": 8,
       "unit": "games",
       "title": "Chargers: 8 straight losses",
+      "drought": {
+        "since": "2025-12-21",
+        "through": "2026-11-01",
+        "elapsed": "10 months",
+        "days": 315,
+        "count": 8,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "A win or tie ends the losing streak.",
       "game": "2026_08_LAC_LA",
       "date": "2026-11-01",
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "LAC",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 6,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 3,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 129,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 83,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LAC"
+      }
     },
     {
       "id": "home:JAX:wins:2026_08_IND_JAX",
@@ -854,7 +1931,39 @@
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 2,
+          "tied": true,
+          "record": 7,
+          "next": {
+            "rank": 1,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 90,
+          "tied": true,
+          "record": 20,
+          "next": {
+            "rank": 63,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      }
     },
     {
       "id": "away:MIN:wins:2026_08_MIN_DET",
@@ -874,7 +1983,39 @@
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 2,
+          "tied": true,
+          "record": 6,
+          "next": {
+            "rank": 1,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 56,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      }
     },
     {
       "id": "home:PIT:wins:2026_08_CLE_PIT",
@@ -894,7 +2035,39 @@
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "PIT",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 7,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 6,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 142,
+          "tied": true,
+          "record": 20,
+          "next": {
+            "rank": 90,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PIT"
+      }
     },
     {
       "id": "overall:PHI:losses:2026_08_PHI_WAS",
@@ -908,13 +2081,55 @@
       "value": 5,
       "unit": "games",
       "title": "Eagles: 5 straight losses",
+      "drought": {
+        "since": "2026-09-20",
+        "through": "2026-11-01",
+        "elapsed": "1 month",
+        "days": 42,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "A win or tie ends the losing streak.",
       "game": "2026_08_PHI_WAS",
       "date": "2026-11-01",
       "season": 2026,
       "week": 8,
       "gameType": "REG",
-      "status": "watch"
+      "status": "watch",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "PHI",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 16,
+          "tied": true,
+          "record": 14,
+          "next": {
+            "rank": 11,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 455,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 308,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "PHI"
+      }
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_08_CHI_SEA",
@@ -928,6 +2143,37 @@
       "action": "A catch in his next appearance makes it 59. A zero-catch appearance ends it; missed games do not.",
       "href": "/nfl/receiving-streaks.html",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 58,
+          "rank": 116,
+          "tied": true,
+          "record": 274,
+          "next": {
+            "rank": 115,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 58,
+          "rank": 5,
+          "tied": false,
+          "record": 177,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SEA"
+      },
       "game": "2026_08_CHI_SEA",
       "date": "2026-11-02",
       "season": 2026,
@@ -949,6 +2195,37 @@
       "action": "A 59-yard field goal was blocked, ending the run.",
       "href": "/nfl/kicking.html#all",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 64,
+          "rank": 16,
+          "tied": true,
+          "record": 98,
+          "next": {
+            "rank": 14,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 64,
+          "rank": 2,
+          "tied": false,
+          "record": 94,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      },
       "game": "2026_07_IND_MIN",
       "date": "2026-10-25",
       "season": 2026,
@@ -969,6 +2246,37 @@
       "action": "A 59-yard field goal was blocked, ending the run.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 36,
+          "rank": 8,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 6,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 36,
+          "rank": 1,
+          "tied": false,
+          "record": 36,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      },
       "game": "2026_07_IND_MIN",
       "date": "2026-10-25",
       "season": 2026,
@@ -989,6 +2297,37 @@
       "action": "A 56-yard field goal was missed, ending the run.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 72,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 65,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 22,
+          "rank": 5,
+          "tied": false,
+          "record": 44,
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      },
       "game": "2026_07_IND_MIN",
       "date": "2026-10-25",
       "season": 2026,
@@ -1009,6 +2348,16 @@
       "value": 6,
       "unit": "games",
       "title": "Dolphins: 6 straight losses",
+      "drought": {
+        "since": "2025-12-28",
+        "through": "2026-10-25",
+        "elapsed": "9 months",
+        "days": 301,
+        "count": 6,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Dolphins won, ending the run.",
       "game": "2026_07_MIA_NYJ",
       "date": "2026-10-25",
@@ -1016,7 +2365,39 @@
       "week": 7,
       "gameType": "REG",
       "status": "ended",
-      "result": "Dolphins 28, Jets 25"
+      "result": "Dolphins 28, Jets 25",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "MIA",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 6,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 308,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 203,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIA"
+      }
     },
     {
       "id": "overall:SF:wins:2026_07_SF_ATL",
@@ -1037,7 +2418,39 @@
       "week": 7,
       "gameType": "REG",
       "status": "ended",
-      "result": "49ers 20, Falcons 29"
+      "result": "49ers 20, Falcons 29",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "SF",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 17,
+          "tied": true,
+          "record": 15,
+          "next": {
+            "rank": 13,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 288,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 197,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SF"
+      }
     },
     {
       "id": "away:MIA:losses:2026_07_MIA_NYJ",
@@ -1051,6 +2464,16 @@
       "value": 5,
       "unit": "games",
       "title": "Dolphins: 5 straight losses on the road",
+      "drought": {
+        "since": "2025-12-07",
+        "through": "2026-10-25",
+        "elapsed": "10 months",
+        "days": 322,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Dolphins won, ending the run.",
       "game": "2026_07_MIA_NYJ",
       "date": "2026-10-25",
@@ -1058,7 +2481,39 @@
       "week": 7,
       "gameType": "REG",
       "status": "ended",
-      "result": "Dolphins 28, Jets 25"
+      "result": "Dolphins 28, Jets 25",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "MIA",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 135,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIA"
+      }
     },
     {
       "id": "away:SF:wins:2026_07_SF_ATL",
@@ -1079,7 +2534,39 @@
       "week": 7,
       "gameType": "REG",
       "status": "ended",
-      "result": "49ers 20, Falcons 29"
+      "result": "49ers 20, Falcons 29",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "SF",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 1,
+          "tied": true,
+          "record": 5,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 56,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SF"
+      }
     },
     {
       "id": "overall:KC:wins:2026_07_KC_SEA",
@@ -1100,7 +2587,39 @@
       "week": 7,
       "gameType": "REG",
       "status": "ended",
-      "result": "Chiefs 3, Seahawks 20"
+      "result": "Chiefs 3, Seahawks 20",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "KC",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 18,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 14,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 439,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 288,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "KC"
+      }
     },
     {
       "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_06_BAL_CLE",
@@ -1114,6 +2633,37 @@
       "action": "A 48-yard field goal was missed, ending the run.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 25,
+          "rank": 50,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 46,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "CLE",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 25,
+          "rank": 3,
+          "tied": false,
+          "record": 29,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CLE"
+      },
       "game": "2026_06_BAL_CLE",
       "date": "2026-10-18",
       "season": 2026,
@@ -1134,6 +2684,16 @@
       "value": 7,
       "unit": "games",
       "title": "Titans: 7 straight losses",
+      "drought": {
+        "since": "2025-12-21",
+        "through": "2026-10-18",
+        "elapsed": "9 months",
+        "days": 301,
+        "count": 7,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Titans won, ending the run.",
       "game": "2026_06_TEN_IND",
       "date": "2026-10-18",
@@ -1141,7 +2701,39 @@
       "week": 6,
       "gameType": "REG",
       "status": "ended",
-      "result": "Titans 26, Colts 20"
+      "result": "Titans 26, Colts 20",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "TEN",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 12,
+          "tied": true,
+          "record": 18,
+          "next": {
+            "rank": 9,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 203,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 129,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "TEN"
+      }
     },
     {
       "id": "matchup:IND:TEN:winless:2026_06_TEN_IND",
@@ -1155,6 +2747,16 @@
       "value": 6,
       "unit": "games",
       "title": "Titans: 6 games without a win against the Colts",
+      "drought": {
+        "since": "2022-10-23",
+        "through": "2026-10-18",
+        "elapsed": "3 years, 11 months",
+        "days": 1456,
+        "count": 6,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Titans won, ending the run.",
       "game": "2026_06_TEN_IND",
       "date": "2026-10-18",
@@ -1162,7 +2764,39 @@
       "week": 6,
       "gameType": "REG",
       "status": "ended",
-      "result": "Titans 26, Colts 20"
+      "result": "Titans 26, Colts 20",
+      "leaderboard": {
+        "label": "Matchup droughts",
+        "franchise": {
+          "scope": "TEN",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 3,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 66,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 32,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "TEN"
+      }
     },
     {
       "id": "home:LA:wins:2026_05_BUF_LA",
@@ -1183,7 +2817,39 @@
       "week": 5,
       "gameType": "REG",
       "status": "ended",
-      "result": "Bills 37, Rams 34"
+      "result": "Bills 37, Rams 34",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "LA",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 3,
+          "tied": true,
+          "record": 15,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 90,
+          "tied": true,
+          "record": 20,
+          "next": {
+            "rank": 63,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LA"
+      }
     },
     {
       "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_05_CLE_NYJ",
@@ -1197,6 +2863,37 @@
       "action": "A 33-yard extra point was missed, ending the run.",
       "href": "/nfl/kicking.html#all",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 44,
+          "rank": 85,
+          "tied": true,
+          "record": 98,
+          "next": {
+            "rank": 81,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "CLE",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 44,
+          "rank": 3,
+          "tied": false,
+          "record": 57,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "CLE"
+      },
       "game": "2026_05_CLE_NYJ",
       "date": "2026-10-11",
       "season": 2026,
@@ -1224,7 +2921,39 @@
       "week": 5,
       "gameType": "REG",
       "status": "ended",
-      "result": "49ers 32, Seahawks 29"
+      "result": "49ers 32, Seahawks 29",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 4,
+          "tied": true,
+          "record": 14,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 63,
+          "tied": true,
+          "record": 20,
+          "next": {
+            "rank": 48,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SEA"
+      }
     },
     {
       "id": "matchup:PHI:JAX:winless:2026_05_PHI_JAX",
@@ -1238,6 +2967,16 @@
       "value": 5,
       "unit": "games",
       "title": "Jaguars: 5 games without a win against the Eagles",
+      "drought": {
+        "since": "2006-10-29",
+        "through": "2026-10-11",
+        "elapsed": "19 years, 11 months",
+        "days": 7287,
+        "count": 5,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Jaguars won, ending the run.",
       "game": "2026_05_PHI_JAX",
       "date": "2026-10-11",
@@ -1245,7 +2984,39 @@
       "week": 5,
       "gameType": "REG",
       "status": "ended",
-      "result": "Eagles 17, Jaguars 19"
+      "result": "Eagles 17, Jaguars 19",
+      "leaderboard": {
+        "label": "Matchup droughts",
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 8,
+          "tied": true,
+          "record": 9,
+          "next": {
+            "rank": 3,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 127,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 66,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      }
     },
     {
       "id": "away:TB:losses:2026_05_TB_DAL",
@@ -1259,6 +3030,16 @@
       "value": 5,
       "unit": "games",
       "title": "Buccaneers: 5 straight losses on the road",
+      "drought": {
+        "since": "2025-10-26",
+        "through": "2026-10-08",
+        "elapsed": "11 months",
+        "days": 347,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Buccaneers won, ending the run.",
       "game": "2026_05_TB_DAL",
       "date": "2026-10-08",
@@ -1266,7 +3047,39 @@
       "week": 5,
       "gameType": "REG",
       "status": "ended",
-      "result": "Buccaneers 24, Cowboys 16"
+      "result": "Buccaneers 24, Cowboys 16",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "TB",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 6,
+          "tied": true,
+          "record": 9,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 135,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "TB"
+      }
     },
     {
       "id": "TB:2023_01_TB_MIN:00-0034855:2026_04_GB_TB",
@@ -1280,6 +3093,38 @@
       "action": "Jalon Daniels started the next team game, ending Baker Mayfield’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "TB",
+        "franchise": {
+          "scope": "TB",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 54,
+          "rank": 3,
+          "tied": false,
+          "record": 70,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 54,
+          "rank": 54,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 52,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_04_GB_TB",
       "date": "2026-10-04",
       "season": 2026,
@@ -1300,6 +3145,38 @@
       "action": "Case Keenum started the next team game, ending Caleb Williams’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "CHI",
+        "franchise": {
+          "scope": "CHI",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 36,
+          "rank": 3,
+          "tied": false,
+          "record": 42,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 36,
+          "rank": 124,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 118,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_03_PHI_CHI",
       "date": "2026-09-28",
       "season": 2026,
@@ -1320,6 +3197,16 @@
       "value": 9,
       "unit": "games",
       "title": "Colts: 9 straight losses",
+      "drought": {
+        "since": "2025-11-09",
+        "through": "2026-09-27",
+        "elapsed": "10 months",
+        "days": 322,
+        "count": 9,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Colts won, ending the run.",
       "game": "2026_03_HOU_IND",
       "date": "2026-09-27",
@@ -1327,7 +3214,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Texans 17, Colts 19"
+      "result": "Texans 17, Colts 19",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 7,
+          "tied": false,
+          "record": 14,
+          "next": {
+            "rank": 5,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 83,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 60,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "overall:SEA:wins:2026_03_SEA_WAS",
@@ -1348,7 +3267,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Seahawks 31, Commanders 33"
+      "result": "Seahawks 31, Commanders 33",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 2,
+          "tied": true,
+          "record": 11,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 78,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 58,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SEA"
+      }
     },
     {
       "id": "away:KC:losses:2026_03_KC_MIA",
@@ -1362,6 +3313,16 @@
       "value": 6,
       "unit": "games",
       "title": "Chiefs: 6 straight losses on the road",
+      "drought": {
+        "since": "2025-09-21",
+        "through": "2026-09-27",
+        "elapsed": "1 year",
+        "days": 371,
+        "count": 6,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Chiefs won, ending the run.",
       "game": "2026_03_KC_MIA",
       "date": "2026-09-27",
@@ -1369,7 +3330,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Chiefs 24, Dolphins 10"
+      "result": "Chiefs 24, Dolphins 10",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "KC",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 2,
+          "tied": true,
+          "record": 9,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 95,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 64,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "KC"
+      }
     },
     {
       "id": "home:WAS:losses:2026_03_SEA_WAS",
@@ -1383,6 +3376,16 @@
       "value": 6,
       "unit": "games",
       "title": "Commanders: 6 straight losses at home",
+      "drought": {
+        "since": "2025-09-21",
+        "through": "2026-09-27",
+        "elapsed": "1 year",
+        "days": 371,
+        "count": 6,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Commanders won, ending the run.",
       "game": "2026_03_SEA_WAS",
       "date": "2026-09-27",
@@ -1390,7 +3393,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Seahawks 31, Commanders 33"
+      "result": "Seahawks 31, Commanders 33",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "WAS",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 4,
+          "tied": false,
+          "record": 9,
+          "next": {
+            "rank": 3,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 43,
+          "tied": true,
+          "record": 14,
+          "next": {
+            "rank": 25,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "WAS"
+      }
     },
     {
       "id": "away:SEA:wins:2026_03_SEA_WAS",
@@ -1411,7 +3446,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Seahawks 31, Commanders 33"
+      "result": "Seahawks 31, Commanders 33",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 10,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 56,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SEA"
+      }
     },
     {
       "id": "matchup:HOU:IND:winless:2026_03_HOU_IND",
@@ -1425,6 +3492,16 @@
       "value": 5,
       "unit": "games",
       "title": "Colts: 5 games without a win against the Texans",
+      "drought": {
+        "since": "2023-09-17",
+        "through": "2026-09-27",
+        "elapsed": "3 years",
+        "days": 1106,
+        "count": 5,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Colts won, ending the run.",
       "game": "2026_03_HOU_IND",
       "date": "2026-09-27",
@@ -1432,7 +3509,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Texans 17, Colts 19"
+      "result": "Texans 17, Colts 19",
+      "leaderboard": {
+        "label": "Matchup droughts",
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 8,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 127,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 66,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
+      }
     },
     {
       "id": "matchup:LA:DEN:winless:2026_03_LA_DEN",
@@ -1446,6 +3555,16 @@
       "value": 5,
       "unit": "games",
       "title": "Broncos: 5 games without a win against the Rams",
+      "drought": {
+        "since": "2002-09-08",
+        "through": "2026-09-27",
+        "elapsed": "24 years",
+        "days": 8785,
+        "count": 5,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Broncos won, ending the run.",
       "game": "2026_03_LA_DEN",
       "date": "2026-09-27",
@@ -1453,7 +3572,39 @@
       "week": 3,
       "gameType": "REG",
       "status": "ended",
-      "result": "Rams 26, Broncos 30"
+      "result": "Rams 26, Broncos 30",
+      "leaderboard": {
+        "label": "Matchup droughts",
+        "franchise": {
+          "scope": "DEN",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 127,
+          "tied": true,
+          "record": 16,
+          "next": {
+            "rank": 66,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "DEN"
+      }
     },
     {
       "id": "all:00-0039409:2025_07_LA_JAX:3900:2026_02_JAX_DEN",
@@ -1467,6 +3618,37 @@
       "action": "A 54-yard field goal was missed, ending the run.",
       "href": "/nfl/kicking.html#all",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 13,
+          "tied": false,
+          "record": 98,
+          "next": {
+            "rank": 13,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 66,
+          "rank": 1,
+          "tied": false,
+          "record": 66,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      },
       "game": "2026_02_JAX_DEN",
       "date": "2026-09-20",
       "season": 2026,
@@ -1487,6 +3669,37 @@
       "action": "A 54-yard field goal was missed, ending the run.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 24,
+          "rank": 57,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 50,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 24,
+          "rank": 1,
+          "tied": true,
+          "record": 24,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      },
       "game": "2026_02_JAX_DEN",
       "date": "2026-09-20",
       "season": 2026,
@@ -1507,6 +3720,38 @@
       "action": "Drew Lock started the next team game, ending Sam Darnold’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "label": "Consecutive QB starts",
+        "franchiseTeam": "SEA",
+        "franchise": {
+          "scope": "SEA",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 18,
+          "rank": 13,
+          "tied": false,
+          "record": 149,
+          "next": {
+            "rank": 11,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "NFL",
+          "coverage": "1950+",
+          "partial": false,
+          "length": 18,
+          "rank": 392,
+          "tied": true,
+          "record": 253,
+          "next": {
+            "rank": 367,
+            "tied": true
+          },
+          "lowerBound": false
+        }
+      },
       "game": "2026_02_SEA_ARI",
       "date": "2026-09-20",
       "season": 2026,
@@ -1534,7 +3779,39 @@
       "week": 2,
       "gameType": "REG",
       "status": "ended",
-      "result": "Jaguars 13, Broncos 20"
+      "result": "Jaguars 13, Broncos 20",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "JAX",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 2,
+          "tied": false,
+          "record": 11,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 78,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 58,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "JAX"
+      }
     },
     {
       "id": "away:LV:losses:2026_02_LV_LAC",
@@ -1548,6 +3825,16 @@
       "value": 7,
       "unit": "games",
       "title": "Raiders: 7 straight losses on the road",
+      "drought": {
+        "since": "2025-09-07",
+        "through": "2026-09-20",
+        "elapsed": "1 year",
+        "days": 378,
+        "count": 7,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Raiders won, ending the run.",
       "game": "2026_02_LV_LAC",
       "date": "2026-09-20",
@@ -1555,7 +3842,39 @@
       "week": 2,
       "gameType": "REG",
       "status": "ended",
-      "result": "Raiders 26, Chargers 14"
+      "result": "Raiders 26, Chargers 14",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "LV",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 5,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 4,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 7,
+          "rank": 64,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 46,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LV"
+      }
     },
     {
       "id": "matchup-away:LAC:LV:winless:2026_02_LV_LAC",
@@ -1569,6 +3888,16 @@
       "value": 5,
       "unit": "games",
       "title": "Raiders: 5 games without a win against the Chargers on the road",
+      "drought": {
+        "since": "2020-11-08",
+        "through": "2026-09-20",
+        "elapsed": "5 years, 10 months",
+        "days": 2142,
+        "count": 5,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Raiders won, ending the run.",
       "game": "2026_02_LV_LAC",
       "date": "2026-09-20",
@@ -1576,7 +3905,39 @@
       "week": 2,
       "gameType": "REG",
       "status": "ended",
-      "result": "Raiders 26, Chargers 14"
+      "result": "Raiders 26, Chargers 14",
+      "leaderboard": {
+        "label": "Road matchup droughts",
+        "franchise": {
+          "scope": "LV",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 7,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 62,
+          "tied": true,
+          "record": 22,
+          "next": {
+            "rank": 38,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "LV"
+      }
     },
     {
       "id": "overall:GB:losses:2026_02_GB_NYJ",
@@ -1590,6 +3951,16 @@
       "value": 5,
       "unit": "games",
       "title": "Packers: 5 straight losses",
+      "drought": {
+        "since": "2025-12-07",
+        "through": "2026-09-20",
+        "elapsed": "9 months",
+        "days": 287,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Packers won, ending the run.",
       "game": "2026_02_GB_NYJ",
       "date": "2026-09-20",
@@ -1597,7 +3968,39 @@
       "week": 2,
       "gameType": "REG",
       "status": "ended",
-      "result": "Packers 20, Jets 17"
+      "result": "Packers 20, Jets 17",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "GB",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 14,
+          "tied": true,
+          "record": 9,
+          "next": {
+            "rank": 11,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 455,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 308,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "GB"
+      }
     },
     {
       "id": "overall:KC:losses:2026_01_DEN_KC",
@@ -1611,6 +4014,16 @@
       "value": 6,
       "unit": "games",
       "title": "Chiefs: 6 straight losses",
+      "drought": {
+        "since": "2025-11-23",
+        "through": "2026-09-14",
+        "elapsed": "9 months",
+        "days": 295,
+        "count": 6,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Chiefs won, ending the run.",
       "game": "2026_01_DEN_KC",
       "date": "2026-09-14",
@@ -1618,7 +4031,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Broncos 10, Chiefs 31"
+      "result": "Broncos 10, Chiefs 31",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "KC",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 8,
+          "tied": true,
+          "record": 12,
+          "next": {
+            "rank": 6,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 308,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 203,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "KC"
+      }
     },
     {
       "id": "away:DEN:wins:2026_01_DEN_KC",
@@ -1639,7 +4084,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Broncos 10, Chiefs 31"
+      "result": "Broncos 10, Chiefs 31",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "DEN",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 2,
+          "tied": true,
+          "record": 8,
+          "next": {
+            "rank": 2,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 56,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 34,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "DEN"
+      }
     },
     {
       "id": "fg:00-0034794:2024_08_ARI_MIA:813:2026_01_NYJ_TEN",
@@ -1653,6 +4130,37 @@
       "action": "A 54-yard field goal was missed, ending the run.",
       "href": "/nfl/kicking.html#fg",
       "sourceThrough": "2026-10-29",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 28,
+          "rank": 34,
+          "tied": true,
+          "record": 44,
+          "next": {
+            "rank": 28,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NYJ",
+          "coverage": "1999+ play-by-play plus documented older records",
+          "partial": true,
+          "length": 1,
+          "rank": 117,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 93,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NYJ"
+      },
       "game": "2026_01_NYJ_TEN",
       "date": "2026-09-13",
       "season": 2026,
@@ -1673,6 +4181,16 @@
       "value": 9,
       "unit": "games",
       "title": "Cardinals: 9 straight losses",
+      "drought": {
+        "since": "2025-11-03",
+        "through": "2026-09-13",
+        "elapsed": "10 months",
+        "days": 314,
+        "count": 9,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Cardinals won, ending the run.",
       "game": "2026_01_ARI_LAC",
       "date": "2026-09-13",
@@ -1680,7 +4198,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Cardinals 26, Chargers 14"
+      "result": "Cardinals 26, Chargers 14",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "ARI",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 4,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 83,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 60,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ARI"
+      }
     },
     {
       "id": "overall:HOU:wins:2026_01_BUF_HOU",
@@ -1701,7 +4251,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Bills 36, Texans 31"
+      "result": "Bills 36, Texans 31",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "HOU",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 1,
+          "tied": true,
+          "record": 9,
+          "next": {
+            "rank": 1,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 9,
+          "rank": 78,
+          "tied": true,
+          "record": 23,
+          "next": {
+            "rank": 58,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "HOU"
+      }
     },
     {
       "id": "away:ARI:losses:2026_01_ARI_LAC",
@@ -1715,6 +4297,16 @@
       "value": 5,
       "unit": "games",
       "title": "Cardinals: 5 straight losses on the road",
+      "drought": {
+        "since": "2025-11-03",
+        "through": "2026-09-13",
+        "elapsed": "10 months",
+        "days": 314,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Cardinals won, ending the run.",
       "game": "2026_01_ARI_LAC",
       "date": "2026-09-13",
@@ -1722,7 +4314,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Cardinals 26, Chargers 14"
+      "result": "Cardinals 26, Chargers 14",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "ARI",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 8,
+          "tied": false,
+          "record": 17,
+          "next": {
+            "rank": 8,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 135,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "ARI"
+      }
     },
     {
       "id": "away:NYJ:losses:2026_01_NYJ_TEN",
@@ -1736,6 +4360,16 @@
       "value": 5,
       "unit": "games",
       "title": "Jets: 5 straight losses on the road",
+      "drought": {
+        "since": "2025-10-26",
+        "through": "2026-09-13",
+        "elapsed": "10 months",
+        "days": 322,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Jets won, ending the run.",
       "game": "2026_01_NYJ_TEN",
       "date": "2026-09-13",
@@ -1743,7 +4377,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Jets 23, Titans 10"
+      "result": "Jets 23, Titans 10",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "NYJ",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 4,
+          "tied": true,
+          "record": 10,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 135,
+          "tied": true,
+          "record": 26,
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NYJ"
+      }
     },
     {
       "id": "home:HOU:wins:2026_01_BUF_HOU",
@@ -1764,7 +4430,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Bills 36, Texans 31"
+      "result": "Bills 36, Texans 31",
+      "leaderboard": {
+        "label": "Home runs",
+        "franchise": {
+          "scope": "HOU",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 2,
+          "tied": true,
+          "record": 6,
+          "next": {
+            "rank": 1,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 142,
+          "tied": true,
+          "record": 20,
+          "next": {
+            "rank": 90,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "HOU"
+      }
     },
     {
       "id": "matchup-away:HOU:BUF:winless:2026_01_BUF_HOU",
@@ -1778,6 +4476,16 @@
       "value": 5,
       "unit": "games",
       "title": "Bills: 5 games without a win against the Texans on the road",
+      "drought": {
+        "since": "2006-11-19",
+        "through": "2026-09-13",
+        "elapsed": "19 years, 9 months",
+        "days": 7238,
+        "count": 5,
+        "unit": "meetings",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Bills won, ending the run.",
       "game": "2026_01_BUF_HOU",
       "date": "2026-09-13",
@@ -1785,7 +4493,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Bills 36, Texans 31"
+      "result": "Bills 36, Texans 31",
+      "leaderboard": {
+        "label": "Road matchup droughts",
+        "franchise": {
+          "scope": "BUF",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 3,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 2,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 62,
+          "tied": true,
+          "record": 22,
+          "next": {
+            "rank": 38,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "BUF"
+      }
     },
     {
       "id": "overall:NYJ:losses:2026_01_NYJ_TEN",
@@ -1799,6 +4539,16 @@
       "value": 5,
       "unit": "games",
       "title": "Jets: 5 straight losses",
+      "drought": {
+        "since": "2025-11-30",
+        "through": "2026-09-13",
+        "elapsed": "9 months",
+        "days": 287,
+        "count": 5,
+        "unit": "losses",
+        "anchor": "since last win",
+        "lowerBound": false
+      },
       "action": "The Jets won, ending the run.",
       "game": "2026_01_NYJ_TEN",
       "date": "2026-09-13",
@@ -1806,7 +4556,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Jets 23, Titans 10"
+      "result": "Jets 23, Titans 10",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "NYJ",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 20,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 12,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 5,
+          "rank": 455,
+          "tied": true,
+          "record": 29,
+          "next": {
+            "rank": 308,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NYJ"
+      }
     },
     {
       "id": "away:NE:wins:2026_01_NE_SEA",
@@ -1827,7 +4609,39 @@
       "week": 1,
       "gameType": "REG",
       "status": "ended",
-      "result": "Patriots 10, Seahawks 13"
+      "result": "Patriots 10, Seahawks 13",
+      "leaderboard": {
+        "label": "Road runs",
+        "franchise": {
+          "scope": "NE",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 3,
+          "tied": false,
+          "record": 13,
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1999+ · today’s 32 franchises",
+          "partial": false,
+          "length": 8,
+          "rank": 16,
+          "tied": true,
+          "record": 13,
+          "next": {
+            "rank": 9,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NE"
+      }
     }
   ],
   "games": [
@@ -3539,6 +6353,6 @@
     "receiving": "/data/receiving-streaks.json",
     "kicking": "/data/kicking.json"
   },
-  "sourceHash": "e39e7cc5f634d7d65727008f83079f382f6bc03928cdd292eaa3549105b9d380",
-  "checkedAt": "2026-11-01T03:29:36.649Z"
+  "sourceHash": "40a15ad4e7d0cb513c404d11b24e44c797d14a8ce5bcfd74c6185b91fd21c588",
+  "checkedAt": "2026-11-01T04:00:34.632Z"
 }

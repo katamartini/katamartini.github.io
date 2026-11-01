@@ -1,5 +1,5 @@
 import { TEAMS } from './divstreaks-data.mjs';
-import { WATCH_CATEGORIES, validWatchSnapshot } from './what-to-watch-data.mjs?v=watch-1';
+import { WATCH_CATEGORIES, validWatchSnapshot } from './what-to-watch-data.mjs?v=watch-context-2';
 
 const $ = id => document.getElementById(id);
 const make = (tag, text, className) => { const el = document.createElement(tag); if (text != null) el.textContent = text; if (className) el.className = className; return el; };
@@ -49,11 +49,48 @@ function renderNote(event) {
   const li = make('li', null, `note ${event.kind}`), tags = make('div', null, 'tags');
   tags.append(make('span', WATCH_CATEGORIES[event.category], 'tag'), make('span', view === 'ended' ? 'Ended' : event.kind === 'drought' ? 'Drought in reach' : 'Streak on the line', 'tag'));
   li.append(tags, make('h4', event.title), make('p', event.action, 'action'));
+  if (event.drought) {
+    const d = event.drought;
+    let text = `${d.count} ${d.unit}`;
+    if (d.elapsed) text += ` · ${d.lowerBound ? 'at least ' : ''}${d.elapsed} ${d.anchor} (${date(d.since, { month: 'short', day: 'numeric', year: 'numeric' })})`;
+    else if (d.lastSeason != null) text += ` · Last achieved in the ${d.lastSeason} season`;
+    else if (d.never) text += ' · Never achieved in the Super Bowl era';
+    const length = make('p', null, 'drought-length');
+    length.append(make('strong', view === 'ended' ? 'Drought ended: ' : 'Would end: '), document.createTextNode(text)); li.append(length);
+  }
+  if (event.leaderboard) li.append(renderLeaderboard(event));
   const context = make('details', null, 'context'); context.append(make('summary', 'Context & source'));
   if (event.detail) context.append(make('p', event.detail));
   if (event.sourceThrough) context.append(make('p', `Source results through ${date(event.sourceThrough, { month: 'short', day: 'numeric', year: 'numeric' })}.`));
   const link = make('a', event.href.endsWith('#method') ? 'How this is tracked' : 'Open tracker →'); link.href = event.href;
   context.append(link); li.append(context); return li;
+}
+function renderLeaderboard(event) {
+  const board = event.leaderboard, box = make('div', null, 'leaderboard');
+  if (board.label) box.append(make('p', board.label, 'rank-label'));
+  const rankText = row => `${row.tied ? 'Tied ' : ''}#${row.rank}`;
+  for (const [key, label] of [['franchise', TEAMS[board.franchiseTeam].name], ['overall', board.overall.scope]]) {
+    const row = board[key]; if (!row) continue;
+    const line = make('p', null, 'rank-line');
+    line.append(make('strong', `${row.partial && key === 'franchise' ? 'Recorded ' : ''}${label}: ${rankText(row)}`), document.createTextNode(` · ${row.lowerBound ? 'at least ' : ''}${row.length} ${row.length === 1 ? event.unit.slice(0, -1) : event.unit} · High: ${row.record}`));
+    box.append(line);
+    const qualification = key === 'franchise' && row.length !== event.value ? `This team’s portion of the ${event.value}-${event.unit === 'games' ? 'game' : event.unit === 'kicks' ? 'kick' : 'start'} career run. ` : '';
+    if (qualification) box.append(make('p', qualification.trim(), 'rank-coverage'));
+  }
+  const coverage = [...new Set([board.franchise, board.overall].filter(Boolean).map(row => `${row.coverage}${row.partial ? ' · partial historical coverage' : ''}`))];
+  box.append(make('p', coverage.join(' / '), 'rank-coverage'));
+  if (!board.franchise) box.append(make('p', 'No qualifying portion recorded for this franchise yet.', 'rank-coverage'));
+  if (view !== 'ended' && event.kind === 'streak') {
+    const club = board.franchise, overall = board.overall;
+    if (club && (club.next.rank !== club.rank || club.next.tied !== club.tied || club.length + 1 >= club.record) || overall.next.rank !== overall.rank || overall.next.tied !== overall.tied) {
+      const projected = row => `${row.next.tied ? 'tied ' : ''}#${row.next.rank}`;
+      let text = `One more: ${club ? `${TEAMS[board.franchiseTeam].name} ${projected(club)} · ` : ''}${overall.scope} ${projected(overall)}`;
+      if (club && club.length + 1 === club.record) text += ' · ties the recorded franchise high';
+      if (club && club.length >= club.record) text += ' · extends the recorded franchise high';
+      box.append(make('p', text, 'rank-next'));
+    }
+  }
+  return box;
 }
 function renderGame(game, events) {
   const article = make('article', null, 'game'), header = make('header', null, 'game-header'); article.dataset.game = game.id;
@@ -105,7 +142,7 @@ function syncView() {
 }
 async function init() {
   try {
-    const response = await fetch('../data/what-to-watch.json?v=watch-1', { cache: 'no-cache' });
+    const response = await fetch('../data/what-to-watch.json?v=watch-context-2', { cache: 'no-cache' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const incoming = await response.json(); if (!validWatchSnapshot(incoming)) throw new Error('Invalid watch list');
     data = incoming; view = location.hash === '#ended' ? 'ended' : 'watch';

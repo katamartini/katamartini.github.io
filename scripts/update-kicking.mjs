@@ -6,6 +6,7 @@ import { parseCsv, currentRoster, normalizeName, normalizeTeam } from '../nfl/fr
 import { FIRST_SEASON, KICK_COLUMNS, readProjectedCsv, kickFromPlay, calculateKickingStreaks } from '../nfl/kicking-data.mjs';
 import { historicalKicks } from '../nfl/kicking-history.mjs';
 import { mergeHistoricalStreaks } from '../nfl/kicking-archive.mjs';
+import { playerStreakContext } from '../nfl/streak-context.mjs';
 
 const now = new Date();
 const season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
@@ -66,6 +67,14 @@ const missingGames = schedule.filter(game => Number(game.season) >= FIRST_SEASON
   game.game_type === 'REG' && game.gameday <= latestDate && game.home_score !== '' && game.away_score !== '' && !coveredGames.has(game.game_id));
 if (missingGames.length) throw new Error(`Uncovered games; retaining saved data: ${missingGames.map(game => game.game_id).join(', ')}`);
 const views = mergeHistoricalStreaks(calculateKickingStreaks(attempts, players, currentIds, history.gaps));
+const clubViews = mergeHistoricalStreaks(calculateKickingStreaks(attempts, players, currentIds, history.gaps, true));
+const currentTeams = new Map(roster.rows.filter(row => currentIds.has(row.gsis_id)).map(row => [row.gsis_id, normalizeTeam(row.team)]));
+for (const view of ['fg', 'all']) {
+  const clubs = clubViews[view].filter(row => row.teams.length === 1);
+  for (const row of views[view]) if (row.active || row.endedBy?.date >= `${season}-09-01`) row.leaderboard = playerStreakContext(row,
+    views[view], clubs, row.active ? currentTeams.get(row.playerId) || row.last.team : row.endedBy.team,
+    '1999+ play-by-play plus documented older records');
+}
 // Near-streak views are additive. Keep version 1 so previously cached flawless
 // pages can still read their unchanged fg/all records during a deployment.
 const schemaVersion = 1;

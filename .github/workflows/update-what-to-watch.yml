@@ -29,11 +29,11 @@ jobs:
         with:
           node-version: "22"
       - name: Test watch calculations
-        run: node --test nfl/what-to-watch-data.test.mjs
+        run: node --test nfl/what-to-watch-data.test.mjs nfl/streak-context.test.mjs
       - name: Refresh weekly watches and season endings
         run: node scripts/update-what-to-watch.mjs
       - name: Validate refreshed snapshot
-        run: node --test nfl/what-to-watch-data.test.mjs
+        run: node --test nfl/what-to-watch-data.test.mjs nfl/streak-context.test.mjs
       - name: Commit data and request a Pages build
         env:
           GH_TOKEN: ${{ github.token }}

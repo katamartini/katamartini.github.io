@@ -48,6 +48,31 @@ block. Censored player runs are excluded. The receiving updater publishes an
 additional uncapped watch feed so qualifying runs below its all-time top 100
 are retained.
 
+## Drought lengths and historical ranks
+
+Cards show the elapsed calendar time and relevant game/season count of the
+drought that a result would end. The clock runs from the last success to the
+scheduled game, or to the actual ending game in the season archive. If that
+success is outside verified coverage, the observed duration is a lower bound.
+Postseason droughts always show completed seasons; an exact date is added only
+when the source schedule verifies it.
+
+Ranks compare maximal individual runs with competition ranking (1, 1, 3).
+Separate runs by the same player or franchise count separately. Team comparisons
+use the same metric and venue scope. Overall team history covers today's 32
+franchises since 1920; venue and matchup history starts in 1999. QB comparisons
+start in 1950. Receiving and kicking ranks include the uncapped calculated
+history and documented older runs, and are explicitly labeled partial.
+
+The player updaters also calculate franchise-only portions, resetting at team
+changes, and attach summarized ranks to eligible watch records. A career run
+spanning several clubs is never credited in full to the current club. The
+franchise portion can be shorter than the weekly selection threshold, so its
+comparison pool retains those short runs too. Unknown coverage gaps remain
+censored. One-more projections remove the current run before inserting its
+projected length. Ended runs display their final length against the latest
+saved history, without future projections.
+
 Tests cover these rules, season boundaries, byes, missing player-game data,
 postseason eligibility, and snapshot validity. The page uses versioned entry and
 data URLs with revalidation, and has explicit failed-load and offseason states.

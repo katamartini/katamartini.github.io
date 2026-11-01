@@ -66,7 +66,7 @@ export function receivingAppearances(stats, snaps, games, players) {
   return { appearances: [...rows.values()], participationGames };
 }
 
-export function calculateReceivingStreaks(appearances, games, participationGames, players = new Map(), currentIds = new Set()) {
+export function calculateReceivingStreaks(appearances, games, participationGames, players = new Map(), currentIds = new Set(), splitByTeam = false) {
   const byPlayer = new Map(), seen = new Set(), teamGames = new Map();
   for (const game of games) {
     if (game.game_type !== 'REG' || game.home_score === '' || game.away_score === '') continue;
@@ -97,13 +97,17 @@ export function calculateReceivingStreaks(appearances, games, participationGames
     };
     let previous;
     for (const row of rows) {
+      let gapBeforeRow = false;
       // Before snap coverage, a missing stat row is not evidence of either a
       // DNP or a zero-catch appearance. Censor the run instead of guessing.
       if (previous && previous.season < FIRST_PARTICIPATION_SEASON) {
         const missing = [...(teamGames.get(previous.team) || []), ...(previous.team === row.team ? [] : teamGames.get(row.team) || [])]
           .filter(game => game.gameday > previous.date && game.gameday < row.date && !participationGames.has(game.game_id))
           .sort((a, b) => a.gameday.localeCompare(b.gameday))[0];
-        if (missing) { save(null, { date: missing.gameday, game: missing.game_id }); length = 0; teams = new Set(); knownStart = false; }
+        if (missing) { save(null, { date: missing.gameday, game: missing.game_id }); length = 0; teams = new Set(); knownStart = false; gapBeforeRow = true; }
+      }
+      if (splitByTeam && previous && previous.team !== row.team) {
+        save(); length = 0; teams = new Set(); knownStart = !gapBeforeRow;
       }
       if (!row.receptions) { save(point(row)); length = 0; teams = new Set(); knownStart = true; }
       else {
