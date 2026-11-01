@@ -128,7 +128,7 @@ export function calculateKickingStreaks(attempts, players = new Map(), currentId
         continue;
       }
       if (splitByTeam && state.last && state.last.team !== kick.team) {
-        save(state);
+        if (state.length) { save(state); streaks.at(-1).active = false; }
         state.length = 0; state.fg = 0; state.xp = 0; state.teams = new Set(); state.knownStart = true;
       }
       if (!kick.made) {

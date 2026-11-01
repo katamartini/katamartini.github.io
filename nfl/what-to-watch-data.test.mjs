@@ -52,6 +52,10 @@ test('team ranks compare maximal historical runs and preserve venue scope', () =
   const active = watch.find(e => e.title === 'Bills: 5 straight wins');
   assert.equal(active.leaderboard.franchise.rank, 2); assert.equal(active.leaderboard.franchise.record, 7);
   assert.equal(active.leaderboard.franchise.length, 5); assert.equal(active.leaderboard.franchise.next.rank, 2);
+  assert.equal(active.leaderboard.franchise.nextHigher.length, 7);
+  assert.equal(active.leaderboard.franchise.recordHolders[0].name, 'Bills');
+  assert.equal(active.leaderboard.franchise.recordHolders[0].years, '2026');
+  assert.equal(active.leaderboard.franchise.recordHolders[0].active, false);
   assert.equal(ended.find(e => e.title === 'Bills: 7 straight wins').leaderboard.franchise.rank, 1);
   assert.match(watch.find(e => e.title.endsWith('wins at home')).leaderboard.overall.coverage, /1999/);
 });
@@ -178,6 +182,8 @@ test('snapshot validates subject clubs, season, unique events, results and sched
     d => { d.games.find(g => g.id === d.watch[0].game).completed = true; },
     d => { d.watch[0].href = 'javascript:alert(1)'; }, d => { d.watch[0].date = 'not-a-date'; },
     d => { d.watch[0].leaderboard.franchise.rank = 0; },
+    d => { d.watch[0].leaderboard.franchise.recordHolders[0].name = ''; },
+    d => { d.watch[0].leaderboard.overall.nextHigher = { length: d.watch[0].leaderboard.overall.length, rank: 1, holders: [] }; },
     d => { d.watch.find(e => e.drought).drought.days = -1; }]) {
     const changed = structuredClone(snapshot); mutate(changed); assert.equal(validWatchSnapshot(changed), false);
   }

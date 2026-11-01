@@ -30,6 +30,7 @@ test('franchise comparisons split transfers and returns while preserving the car
   const appearances = games.map(g => appearance(g, 1, g.home_team));
   const club = calculateReceivingStreaks(appearances, games, new Set(games.map(g => g.game_id)), players(), new Set(['p']), true);
   assert.deepEqual(club.map(r => [r.length, r.teams[0]]), [[2, 'MIN'], [1, 'SF'], [1, 'MIN']]);
+  assert.deepEqual(club.map(r => r.active), [false, false, true]);
   assert.equal(calculate(appearances, games)[0].length, 4);
 });
 test('franchise splits preserve uncertainty across a pre-participation coverage gap', () => {

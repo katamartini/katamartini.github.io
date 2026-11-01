@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-01T03:58:57.096Z",
+  "checkedAt": "2026-11-01T04:59:00.831Z",
   "firstSeason": 1999,
   "season": 2026,
   "through": "2026-10-29",
   "latestWeek": 8,
   "rosterWeek": 8,
-  "sourceHash": "9d47d26e2ecbc9d7ad1172df6ab0d976f5a69801339dcdc8d24c5791e0e80a45",
+  "sourceHash": "d71c6639d8c3eb164d422d9cddf21914a358832991f13d4b5ffb44bc3e324a2f",
   "sources": [
     {
       "season": 1999,
@@ -582,6 +582,56 @@
             "rank": 8,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 37,
+              "rank": 6,
+              "holders": [
+                {
+                  "id": "fg:00-0026858:2020_02_NYG_CHI:2172",
+                  "name": "Graham Gano",
+                  "teams": [
+                    "NYG"
+                  ],
+                  "opponent": null,
+                  "length": 37,
+                  "firstSeason": 2020,
+                  "lastSeason": 2021,
+                  "years": "2020–2021",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0031492:2019_10_SEA_SF:4080",
+                  "name": "Jason Myers",
+                  "teams": [
+                    "SEA"
+                  ],
+                  "opponent": null,
+                  "length": 37,
+                  "firstSeason": 2019,
+                  "lastSeason": 2021,
+                  "years": "2019–2021",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 6,
               "tied": true
@@ -596,6 +646,23 @@
             "rank": 1,
             "tied": false,
             "record": 36,
+            "recordHolders": [
+              {
+                "id": "fg:00-0039404:2025_09_MIN_DET:1528",
+                "name": "Will Reichard",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 36,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
             "next": {
               "rank": 1,
               "tied": false
@@ -1748,6 +1815,112 @@
             "rank": 34,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 29,
+              "rank": 28,
+              "holders": [
+                {
+                  "id": "fg:00-0034161:2020_08_LV_CLE:1414",
+                  "name": "Daniel Carlson",
+                  "teams": [
+                    "LV"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 2020,
+                  "lastSeason": 2021,
+                  "years": "2020–2021",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "archive:john-carney-1992-93",
+                  "name": "John Carney",
+                  "teams": [
+                    "LAC"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 1992,
+                  "lastSeason": 1993,
+                  "years": "1992–1993",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0021940:2014_17_PHI_NYG:1001",
+                  "name": "Josh Brown",
+                  "teams": [
+                    "NYG"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 2014,
+                  "lastSeason": 2015,
+                  "years": "2014–2015",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0032726:2023_03_HOU_JAX:2290",
+                  "name": "Ka'imi Fairbairn",
+                  "teams": [
+                    "HOU"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 2023,
+                  "lastSeason": 2024,
+                  "years": "2023–2024",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0004091:2011_13_BAL_CLE:2558",
+                  "name": "Phil Dawson",
+                  "teams": [
+                    "CLE"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 2011,
+                  "lastSeason": 2012,
+                  "years": "2011–2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0032569:2019_08_ARI_NO:932",
+                  "name": "Wil Lutz",
+                  "teams": [
+                    "NO"
+                  ],
+                  "opponent": null,
+                  "length": 29,
+                  "firstSeason": 2019,
+                  "lastSeason": 2020,
+                  "years": "2019–2020",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 28,
               "tied": true
@@ -1762,6 +1935,364 @@
             "rank": 117,
             "tied": true,
             "record": 26,
+            "recordHolders": [
+              {
+                "id": "fg:00-0029621:2023_05_NYJ_DEN:285",
+                "name": "Greg Zuerlein",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 26,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 2,
+              "rank": 93,
+              "holders": [
+                {
+                  "id": "fg:00-0003395:2000_17_NYJ_BAL:2364",
+                  "name": "Brett Conway",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2000,
+                  "lastSeason": 2000,
+                  "years": "2000",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0001759:2004_09_NYJ_BUF:1247",
+                  "name": "Doug Brien",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2004,
+                  "lastSeason": 2004,
+                  "years": "2004",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029621:2023_18_NYJ_NE:3297",
+                  "name": "Greg Zuerlein",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2023,
+                  "lastSeason": 2024,
+                  "years": "2023–2024",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0031492:2018_16_GB_NYJ:4872",
+                  "name": "Jason Myers",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2018,
+                  "lastSeason": 2018,
+                  "years": "2018",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0019770:2008_09_NYJ_BUF:184",
+                  "name": "Jay Feely",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2008,
+                  "lastSeason": 2008,
+                  "years": "2008",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:1999_05_JAX_NYJ:1632",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 1999,
+                  "lastSeason": 1999,
+                  "years": "1999",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2000_01_NYJ_GB:3181",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2000,
+                  "lastSeason": 2000,
+                  "years": "2000",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2000_06_PIT_NYJ:1860",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2000,
+                  "lastSeason": 2000,
+                  "years": "2000",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2000_14_IND_NYJ:1159",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2000,
+                  "lastSeason": 2000,
+                  "years": "2000",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2001_01_IND_NYJ:2414",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2001,
+                  "lastSeason": 2001,
+                  "years": "2001",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2002_05_KC_NYJ:3349",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2002,
+                  "lastSeason": 2002,
+                  "years": "2002",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006662:2002_09_NYJ_SD:1993",
+                  "name": "John Hall",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2002,
+                  "lastSeason": 2002,
+                  "years": "2002",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0036469:2021_11_MIA_NYJ:4317",
+                  "name": "Matt Ammendola",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2021,
+                  "lastSeason": 2021,
+                  "years": "2021",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023482:2007_02_NYJ_BAL:3415",
+                  "name": "Mike Nugent",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2007,
+                  "lastSeason": 2007,
+                  "years": "2007",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023482:2007_05_NYJ_NYG:1978",
+                  "name": "Mike Nugent",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2007,
+                  "lastSeason": 2007,
+                  "years": "2007",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023482:2007_17_KC_NYJ:1921",
+                  "name": "Mike Nugent",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2007,
+                  "lastSeason": 2007,
+                  "years": "2007",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2010_11_HOU_NYJ:267",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2010,
+                  "lastSeason": 2010,
+                  "years": "2010",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2010_11_HOU_NYJ:2963",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2010,
+                  "lastSeason": 2010,
+                  "years": "2010",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2011_15_NYJ_PHI:1512",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2011,
+                  "lastSeason": 2011,
+                  "years": "2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2012_08_MIA_NYJ:2404",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2012,
+                  "lastSeason": 2012,
+                  "years": "2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2015_06_WAS_NYJ:1021",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2015,
+                  "lastSeason": 2015,
+                  "years": "2015",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0033138:2019_10_NYG_NYJ:2910",
+                  "name": "Sam Ficken",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2019,
+                  "lastSeason": 2019,
+                  "years": "2019",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0033138:2019_12_OAK_NYJ:666",
+                  "name": "Sam Ficken",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2019,
+                  "lastSeason": 2019,
+                  "years": "2019",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0039576:2024_10_NYJ_ARI:609",
+                  "name": "Spencer Shrader",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 2,
+                  "firstSeason": 2024,
+                  "lastSeason": 2024,
+                  "years": "2024",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 93,
               "tied": true
@@ -2596,6 +3127,84 @@
             "rank": 50,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 26,
+              "rank": 46,
+              "holders": [
+                {
+                  "id": "fg:00-0028660:2011_02_DAL_SF:4002",
+                  "name": "Dan Bailey",
+                  "teams": [
+                    "DAL"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2011,
+                  "lastSeason": 2011,
+                  "years": "2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029621:2023_05_NYJ_DEN:285",
+                  "name": "Greg Zuerlein",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023252:2005_16_CHI_GB:2354",
+                  "name": "Robbie Gould",
+                  "teams": [
+                    "CHI"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0032569:2018_02_CLE_NO:4023",
+                  "name": "Wil Lutz",
+                  "teams": [
+                    "NO"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2018,
+                  "lastSeason": 2018,
+                  "years": "2018",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 46,
               "tied": true
@@ -2610,6 +3219,42 @@
             "rank": 3,
             "tied": false,
             "record": 29,
+            "recordHolders": [
+              {
+                "id": "fg:00-0004091:2011_13_BAL_CLE:2558",
+                "name": "Phil Dawson",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 29,
+                "firstSeason": 2011,
+                "lastSeason": 2012,
+                "years": "2011–2012",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 27,
+              "rank": 2,
+              "holders": [
+                {
+                  "id": "fg:00-0004091:2003_07_SD_CLE:2011",
+                  "name": "Phil Dawson",
+                  "teams": [
+                    "CLE"
+                  ],
+                  "opponent": null,
+                  "length": 27,
+                  "firstSeason": 2003,
+                  "lastSeason": 2004,
+                  "years": "2003–2004",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 3,
               "tied": false
@@ -2971,6 +3616,129 @@
             "rank": 57,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 25,
+              "rank": 50,
+              "holders": [
+                {
+                  "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
+                  "name": "Andre Szmyt",
+                  "teams": [
+                    "CLE"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2025,
+                  "lastSeason": 2026,
+                  "years": "2025–2026",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0031136:2019_12_PIT_CIN:1329",
+                  "name": "Chris Boswell",
+                  "teams": [
+                    "PIT"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2019,
+                  "lastSeason": 2020,
+                  "years": "2019–2020",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0026138:2011_06_NO_TB:3011",
+                  "name": "Connor Barth",
+                  "teams": [
+                    "TB"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2011,
+                  "lastSeason": 2012,
+                  "years": "2011–2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0034173:2022_10_ATL_CAR:448",
+                  "name": "Eddy Pineiro",
+                  "teams": [
+                    "CAR"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2022,
+                  "lastSeason": 2023,
+                  "years": "2022–2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0000282:2001_10_NYG_MIN:2409",
+                  "name": "Morten Andersen",
+                  "teams": [
+                    "NYG",
+                    "KC"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2001,
+                  "lastSeason": 2002,
+                  "years": "2001–2002",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023252:2018_06_SF_GB:2087",
+                  "name": "Robbie Gould",
+                  "teams": [
+                    "SF"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2018,
+                  "lastSeason": 2019,
+                  "years": "2018–2019",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0019536:2009_11_CIN_OAK:2648",
+                  "name": "Shayne Graham",
+                  "teams": [
+                    "CIN",
+                    "NE",
+                    "MIA"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2009,
+                  "lastSeason": 2011,
+                  "years": "2009–2011",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 50,
               "tied": true
@@ -2985,6 +3753,51 @@
             "rank": 1,
             "tied": true,
             "record": 24,
+            "recordHolders": [
+              {
+                "id": "fg:00-0039409:2025_09_JAX_LV:2100",
+                "name": "Cam Little",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 24,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "fg:00-0032087:2017_11_JAX_CLE:3569",
+                "name": "Josh Lambo",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 24,
+                "firstSeason": 2017,
+                "lastSeason": 2018,
+                "years": "2017–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "fg:00-0032087:2018_13_IND_JAX:1877",
+                "name": "Josh Lambo",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 24,
+                "firstSeason": 2018,
+                "lastSeason": 2019,
+                "years": "2018–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
             "next": {
               "rank": 1,
               "tied": false
@@ -3907,6 +4720,127 @@
             "rank": 72,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 23,
+              "rank": 65,
+              "holders": [
+                {
+                  "id": "fg:00-0016919:2004_06_SEA_NE:682",
+                  "name": "Adam Vinatieri",
+                  "teams": [
+                    "NE"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2004,
+                  "lastSeason": 2004,
+                  "years": "2004",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0033303:2017_04_WAS_KC:2819",
+                  "name": "Harrison Butker",
+                  "teams": [
+                    "KC"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2017,
+                  "lastSeason": 2017,
+                  "years": "2017",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029597:2017_09_BAL_TEN:487",
+                  "name": "Justin Tucker",
+                  "teams": [
+                    "BAL"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2017,
+                  "lastSeason": 2018,
+                  "years": "2017–2018",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0028787:2015_17_NO_ATL:2621",
+                  "name": "Kai Forbath",
+                  "teams": [
+                    "NO",
+                    "MIN"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2015,
+                  "lastSeason": 2017,
+                  "years": "2015–2017",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025580:2010_13_SF_GB:2914",
+                  "name": "Mason Crosby",
+                  "teams": [
+                    "GB"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2010,
+                  "lastSeason": 2011,
+                  "years": "2010–2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0035269:2021_05_LA_SEA:1608",
+                  "name": "Matt Gay",
+                  "teams": [
+                    "LA"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2021,
+                  "lastSeason": 2021,
+                  "years": "2021",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2013_01_TB_NYJ:1428",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2013,
+                  "lastSeason": 2013,
+                  "years": "2013",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 65,
               "tied": true
@@ -3921,6 +4855,42 @@
             "rank": 5,
             "tied": false,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 28,
+              "rank": 4,
+              "holders": [
+                {
+                  "id": "fg:00-0016830:1999_08_DAL_IND:712",
+                  "name": "Mike Vanderjagt",
+                  "teams": [
+                    "IND"
+                  ],
+                  "opponent": null,
+                  "length": 28,
+                  "firstSeason": 1999,
+                  "lastSeason": 2000,
+                  "years": "1999–2000",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 5,
               "tied": false
@@ -3972,6 +4942,127 @@
             "rank": 72,
             "tied": true,
             "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 23,
+              "rank": 65,
+              "holders": [
+                {
+                  "id": "fg:00-0016919:2004_06_SEA_NE:682",
+                  "name": "Adam Vinatieri",
+                  "teams": [
+                    "NE"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2004,
+                  "lastSeason": 2004,
+                  "years": "2004",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0033303:2017_04_WAS_KC:2819",
+                  "name": "Harrison Butker",
+                  "teams": [
+                    "KC"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2017,
+                  "lastSeason": 2017,
+                  "years": "2017",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029597:2017_09_BAL_TEN:487",
+                  "name": "Justin Tucker",
+                  "teams": [
+                    "BAL"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2017,
+                  "lastSeason": 2018,
+                  "years": "2017–2018",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0028787:2015_17_NO_ATL:2621",
+                  "name": "Kai Forbath",
+                  "teams": [
+                    "NO",
+                    "MIN"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2015,
+                  "lastSeason": 2017,
+                  "years": "2015–2017",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025580:2010_13_SF_GB:2914",
+                  "name": "Mason Crosby",
+                  "teams": [
+                    "GB"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2010,
+                  "lastSeason": 2011,
+                  "years": "2010–2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0035269:2021_05_LA_SEA:1608",
+                  "name": "Matt Gay",
+                  "teams": [
+                    "LA"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2021,
+                  "lastSeason": 2021,
+                  "years": "2021",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025565:2013_01_TB_NYJ:1428",
+                  "name": "Nick Folk",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 23,
+                  "firstSeason": 2013,
+                  "lastSeason": 2013,
+                  "years": "2013",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 65,
               "tied": true
@@ -3986,6 +5077,23 @@
             "rank": 1,
             "tied": false,
             "record": 22,
+            "recordHolders": [
+              {
+                "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+                "name": "Evan McPherson",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 22,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
             "next": {
               "rank": 1,
               "tied": false
@@ -5997,6 +7105,42 @@
             "rank": 13,
             "tied": false,
             "record": 98,
+            "recordHolders": [
+              {
+                "id": "all:00-0016830:2002_15_IND_CLE:2297",
+                "name": "Mike Vanderjagt",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 98,
+                "firstSeason": 2002,
+                "lastSeason": 2004,
+                "years": "2002–2004",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 72,
+              "rank": 12,
+              "holders": [
+                {
+                  "id": "all:00-0015784:2005_08_BAL_PIT:2869",
+                  "name": "Matt Stover",
+                  "teams": [
+                    "BAL"
+                  ],
+                  "opponent": null,
+                  "length": 72,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 13,
               "tied": false
@@ -6011,6 +7155,23 @@
             "rank": 1,
             "tied": false,
             "record": 66,
+            "recordHolders": [
+              {
+                "id": "all:00-0039409:2025_07_LA_JAX:3900",
+                "name": "Cam Little",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 66,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
             "next": {
               "rank": 1,
               "tied": false
@@ -6201,6 +7362,57 @@
             "rank": 16,
             "tied": true,
             "record": 98,
+            "recordHolders": [
+              {
+                "id": "all:00-0016830:2002_15_IND_CLE:2297",
+                "name": "Mike Vanderjagt",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 98,
+                "firstSeason": 2002,
+                "lastSeason": 2004,
+                "years": "2002–2004",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 65,
+              "rank": 14,
+              "holders": [
+                {
+                  "id": "all:00-0004811:2007_09_DEN_DET:4223",
+                  "name": "Jason Elam",
+                  "teams": [
+                    "DEN",
+                    "ATL"
+                  ],
+                  "opponent": null,
+                  "length": 65,
+                  "firstSeason": 2007,
+                  "lastSeason": 2008,
+                  "years": "2007–2008",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0010373:2009_03_CHI_SEA:3192",
+                  "name": "Olindo Mare",
+                  "teams": [
+                    "SEA"
+                  ],
+                  "opponent": null,
+                  "length": 65,
+                  "firstSeason": 2009,
+                  "lastSeason": 2010,
+                  "years": "2009–2010",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 14,
               "tied": true
@@ -6215,6 +7427,42 @@
             "rank": 2,
             "tied": false,
             "record": 94,
+            "recordHolders": [
+              {
+                "id": "archive:gary-anderson-1998-segment",
+                "name": "Gary Anderson",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 94,
+                "firstSeason": 1998,
+                "lastSeason": 1998,
+                "years": "1998",
+                "active": false,
+                "lowerBound": true
+              }
+            ],
+            "nextHigher": {
+              "length": 94,
+              "rank": 1,
+              "holders": [
+                {
+                  "id": "archive:gary-anderson-1998-segment",
+                  "name": "Gary Anderson",
+                  "teams": [
+                    "MIN"
+                  ],
+                  "opponent": null,
+                  "length": 94,
+                  "firstSeason": 1998,
+                  "lastSeason": 1998,
+                  "years": "1998",
+                  "active": false,
+                  "lowerBound": true
+                }
+              ]
+            },
             "next": {
               "rank": 2,
               "tied": false
@@ -9506,6 +10754,84 @@
             "rank": 85,
             "tied": true,
             "record": 98,
+            "recordHolders": [
+              {
+                "id": "all:00-0016830:2002_15_IND_CLE:2297",
+                "name": "Mike Vanderjagt",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 98,
+                "firstSeason": 2002,
+                "lastSeason": 2004,
+                "years": "2002–2004",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 45,
+              "rank": 81,
+              "holders": [
+                {
+                  "id": "all:00-0026138:2011_06_NO_TB:3011",
+                  "name": "Connor Barth",
+                  "teams": [
+                    "TB"
+                  ],
+                  "opponent": null,
+                  "length": 45,
+                  "firstSeason": 2011,
+                  "lastSeason": 2012,
+                  "years": "2011–2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0025580:2013_10_PHI_GB:2186",
+                  "name": "Mason Crosby",
+                  "teams": [
+                    "GB"
+                  ],
+                  "opponent": null,
+                  "length": 45,
+                  "firstSeason": 2013,
+                  "lastSeason": 2014,
+                  "years": "2013–2014",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0019536:2005_09_CIN_BAL:3275",
+                  "name": "Shayne Graham",
+                  "teams": [
+                    "CIN"
+                  ],
+                  "opponent": null,
+                  "length": 45,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0019536:2007_01_BAL_CIN:912",
+                  "name": "Shayne Graham",
+                  "teams": [
+                    "CIN"
+                  ],
+                  "opponent": null,
+                  "length": 45,
+                  "firstSeason": 2007,
+                  "lastSeason": 2007,
+                  "years": "2007",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 81,
               "tied": true
@@ -9520,6 +10846,42 @@
             "rank": 3,
             "tied": false,
             "record": 57,
+            "recordHolders": [
+              {
+                "id": "all:00-0004091:2003_07_SD_CLE:2011",
+                "name": "Phil Dawson",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2003,
+                "lastSeason": 2004,
+                "years": "2003–2004",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 55,
+              "rank": 2,
+              "holders": [
+                {
+                  "id": "all:00-0004091:2011_13_BAL_CLE:2558",
+                  "name": "Phil Dawson",
+                  "teams": [
+                    "CLE"
+                  ],
+                  "opponent": null,
+                  "length": 55,
+                  "firstSeason": 2011,
+                  "lastSeason": 2012,
+                  "years": "2011–2012",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
             "next": {
               "rank": 3,
               "tied": false

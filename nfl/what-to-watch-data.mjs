@@ -114,12 +114,17 @@ export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}
                 state[`${key}Start`] = game.date;
                 const scope = context.split(':')[0];
                 const record = { id: `${context}:${team}:${key}:${game.id}`, team, scope, metric: key, length: 0,
-                  lowerBound: !states.has(context), start: game.date };
+                  name: TEAMS[team].name, opponent: matchup ? other : null, active: true,
+                  lowerBound: !states.has(context), start: { date: game.date, season: game.season } };
                 state[`${key}Run`] = record; records.push(record); references.set(record.id, record);
               }
               state[key]++;
               state[`${key}Run`].length = state[key];
-            } else state[key] = 0;
+              state[`${key}Run`].last = { date: game.date, season: game.season };
+            } else {
+              if (state[key]) state[`${key}Run`].active = false;
+              state[key] = 0;
+            }
           }
           if (outcome === 'W') state.lastWin = game;
           if (outcome !== 'L') state.lastNonLoss = game;
@@ -285,9 +290,17 @@ export function validWatchSnapshot(data) {
 }
 
 function validLeaderboard(board) {
+  const holders = (rows, length) => Array.isArray(rows) && rows.length > 0 && new Set(rows.map(row => row.id)).size === rows.length &&
+    rows.every(row => row && typeof row.id === 'string' && typeof row.name === 'string' && row.name && row.length === length &&
+      typeof row.years === 'string' && row.years && Array.isArray(row.teams) && row.teams.every(team => typeof team === 'string') &&
+      [row.firstSeason, row.lastSeason].every(year => year === null || Number.isInteger(year)) &&
+      (row.firstSeason === null || row.lastSeason === null || row.firstSeason <= row.lastSeason));
   const position = row => row && Number.isInteger(row.rank) && row.rank > 0 && typeof row.tied === 'boolean' &&
     Number.isInteger(row.length) && row.length > 0 && Number.isInteger(row.record) && row.record >= row.length &&
     typeof row.scope === 'string' && typeof row.coverage === 'string' && typeof row.partial === 'boolean' &&
-    Number.isInteger(row.next?.rank) && row.next.rank > 0 && row.next.rank <= row.rank && typeof row.next.tied === 'boolean';
+    Number.isInteger(row.next?.rank) && row.next.rank > 0 && row.next.rank <= row.rank && typeof row.next.tied === 'boolean' &&
+    (row.recordHolders === undefined || holders(row.recordHolders, row.record)) &&
+    (row.nextHigher == null || Number.isInteger(row.nextHigher.length) && row.nextHigher.length > row.length && row.nextHigher.length <= row.record &&
+      Number.isInteger(row.nextHigher.rank) && row.nextHigher.rank > 0 && row.nextHigher.rank < row.rank && holders(row.nextHigher.holders, row.nextHigher.length));
   return TEAMS[board.franchiseTeam] && position(board.overall) && (board.franchise === null || position(board.franchise));
 }

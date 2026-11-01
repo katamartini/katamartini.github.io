@@ -64,6 +64,14 @@
     .leaderboard { margin-top: 12px; padding: 10px 12px; background: #f0f4ed; border-radius: 6px; }
     .rank-label { margin: 0 0 5px; color: #61665e; font-size: .72rem; }
     .rank-line { margin: 4px 0 0; font-size: .83rem; }
+    .rank-comparison { margin-bottom: 12px; }
+    .rank-comparison + .rank-comparison { padding-top: 10px; border-top: 1px solid #d9e0d3; }
+    .rank-target { margin: 8px 0 0; padding-left: 10px; border-left: 2px solid #cbd7c2; }
+    .rank-target-title, .rank-target-empty { margin: 4px 0; font-size: .78rem; }
+    .rank-target-empty { color: #61665e; }
+    .rank-holder { margin: 3px 0; font-size: .76rem; overflow-wrap: anywhere; }
+    .rank-ties { font-size: .76rem; margin-top: 4px; }
+    .rank-ties summary { cursor: pointer; padding: 4px 0; }
     .rank-coverage { margin: 2px 0 8px; color: #61665e; font-size: .72rem; }
     .rank-coverage:last-child { margin-bottom: 0; }
     .rank-next { margin: 8px 0 0; padding-top: 8px; border-top: 1px solid #d9e0d3; font-size: .8rem; color: #294821; }
@@ -126,10 +134,10 @@
       </ul>
       <p>Team and player streaks count regular-season games and carry across seasons. Receiving streaks count appearances; missed games preserve the run. Player watches are conditional on playing or starting, and current roster membership includes reserve players. Home/away runs skip neutral-site games.</p>
       <p>The weekly view uses the next unfinished schedule week and shows remaining games. “Ended this season” uses the NFL season, including its January/February playoffs. A tie ends a winning or losing streak; it preserves a winless drought. Playoff-appearance droughts end when a team takes the field in the postseason. Results update every six hours and after player-feed refreshes.</p>
-      <p>Historical ranks compare individual runs, so separate runs by the same player or team count separately. Ties share a rank. Current and ended runs are compared with the latest saved history; “one more” replaces the current run instead of counting it twice. Franchise player ranks use only that team’s portion of a run spanning multiple teams. Coverage is shown with each rank: QB starts since 1950, overall team runs for today’s franchises since 1920, venue/matchup runs since 1999, and partial receiving/kicking history including documented older records. Calendar drought lengths run to the scheduled or actual ending game; unknown earlier starts are marked “at least.”</p>
+      <p>Historical ranks compare individual runs, so separate runs by the same player or team count separately. Ties share a rank. Each comparison names the holders and NFL seasons of the nearest strictly longer run and the record; tied holders can be expanded. “Next higher / record” means the next run is also the record. Current and ended runs are compared with the latest saved history; “one more” replaces the current run instead of counting it twice. Franchise player ranks use only that team’s portion of a run spanning multiple teams. Coverage is shown with each rank: QB starts since 1950, overall team runs for today’s franchises since 1920, venue/matchup runs since 1999, and partial receiving/kicking history including documented older records. Calendar drought lengths run to the scheduled or actual ending game; unknown earlier starts are marked “at least.”</p>
       <p>Sources: <a href="https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv">nflverse schedules and results</a>, the site’s <a href="/nfl/QBs.html">verified QB starters</a>, <a href="/nfl/receiving-streaks.html">receiving</a> and <a href="/nfl/kicking.html">kicking</a> feeds, and <a href="/nfl/droughts.html">franchise milestone history</a>. Overall team runs use the verified 1920–1998 archive plus nflverse; venue and matchup coverage starts in 1999. Player coverage dates appear below the list. This is a selection of tracked streaks, with partial historical player coverage; it does not claim every NFL record.</p>
     </footer>
   </main>
-  <script type="module" src="./what-to-watch-page.mjs?v=watch-context-2"></script>
+  <script type="module" src="./what-to-watch-page.mjs?v=watch-targets-3"></script>
 </body>
 </html>

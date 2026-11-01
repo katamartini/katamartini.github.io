@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-01T03:58:58.593Z",
+  "checkedAt": "2026-11-01T04:58:59.282Z",
   "season": 2026,
   "through": "2026-10-29",
   "latestWeek": 8,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "405c0ce1d0b006f079f525c27c5d83852754d8c32d1762aa7ffbc0edab99ae27",
+  "sourceHash": "86d3fff1a93ab115a73a8c96eba4f04e91114174010fd376e6d5158b0541f1c5",
   "sources": [
     {
       "kind": "stats",
@@ -3651,6 +3651,44 @@
           "rank": 4,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 211,
+            "rank": 3,
+            "holders": [
+              {
+                "id": "archive:00-0006101:211",
+                "name": "Tony Gonzalez",
+                "teams": [
+                  "KC",
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 211,
+                "firstSeason": 2000,
+                "lastSeason": 2013,
+                "years": "2000–2013",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 4,
             "tied": false
@@ -3665,6 +3703,23 @@
           "rank": 1,
           "tied": false,
           "record": 197,
+          "recordHolders": [
+            {
+              "id": "00-0030506:2014_01_TEN_KC",
+              "name": "Travis Kelce",
+              "teams": [
+                "KC"
+              ],
+              "opponent": null,
+              "length": 197,
+              "firstSeason": 2014,
+              "lastSeason": 2026,
+              "years": "2014–2026",
+              "active": true,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": null,
           "next": {
             "rank": 1,
             "tied": false
@@ -3716,6 +3771,43 @@
           "rank": 12,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 177,
+            "rank": 11,
+            "holders": [
+              {
+                "id": "archive:LAR118653:177",
+                "name": "Steve Largent",
+                "teams": [
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 177,
+                "firstSeason": 1976,
+                "lastSeason": 1989,
+                "years": "1976–1989",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 12,
             "tied": false
@@ -3730,6 +3822,294 @@
           "rank": 134,
           "tied": true,
           "record": 76,
+          "recordHolders": [
+            {
+              "id": "00-0022738:2004_10_CIN_WAS",
+              "name": "Chris Cooley",
+              "teams": [
+                "WAS"
+              ],
+              "opponent": null,
+              "length": 76,
+              "firstSeason": 2004,
+              "lastSeason": 2009,
+              "years": "2004–2009",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 6,
+            "rank": 115,
+            "holders": [
+              {
+                "id": "00-0003378:2000_01_CAR_WAS",
+                "name": "Albert Connell",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0029141:2014_08_WAS_DAL",
+                "name": "Alfred Morris",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2014,
+                "lastSeason": 2014,
+                "years": "2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036328:2020_01_PHI_WAS",
+                "name": "Antonio Gibson",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2020,
+                "lastSeason": 2020,
+                "years": "2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0041040:2026_01_WAS_PHI",
+                "name": "Antonio Williams",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2026,
+                "lastSeason": 2026,
+                "years": "2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037746:2023_17_SF_WAS",
+                "name": "Brian Robinson",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2023,
+                "lastSeason": 2024,
+                "years": "2023–2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034104:2020_13_WAS_PIT",
+                "name": "Cam Sims",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2020,
+                "lastSeason": 2021,
+                "years": "2020–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0004386:2002_10_WAS_JAX",
+                "name": "Chris Doering",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021179:2007_02_WAS_PHI",
+                "name": "Clinton Portis",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036671:2021_07_WAS_GB",
+                "name": "Dax Milne",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028411:2020_01_PHI_WAS",
+                "name": "Dontrelle Inman",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2020,
+                "lastSeason": 2020,
+                "years": "2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028115:2012_02_WAS_STL",
+                "name": "Evan Royster",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037741:2022_01_JAX_WAS",
+                "name": "Jahan Dotson",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0016440:2004_17_MIN_WAS",
+                "name": "James Thrash",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2004,
+                "lastSeason": 2005,
+                "years": "2004–2005",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021184:2007_11_WAS_DAL",
+                "name": "Ladell Betts",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027215:2013_13_NYG_WAS",
+                "name": "Logan Paulsen",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2013,
+                "lastSeason": 2014,
+                "years": "2013–2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0031260:2021_12_SEA_WAS",
+                "name": "Logan Thomas",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2021,
+                "lastSeason": 2022,
+                "years": "2021–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028825:2017_01_PHI_WAS",
+                "name": "Terrelle Pryor",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2017,
+                "lastSeason": 2017,
+                "years": "2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0024221:2016_04_CLE_WAS",
+                "name": "Vernon Davis",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0024221:2016_12_WAS_DAL",
+                "name": "Vernon Davis",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 6,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 115,
             "tied": true
@@ -3780,6 +4160,47 @@
           "rank": 13,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 166,
+            "rank": 12,
+            "holders": [
+              {
+                "id": "00-0031588:2015_04_MIN_DEN",
+                "name": "Stefon Diggs",
+                "teams": [
+                  "MIN",
+                  "BUF",
+                  "HOU",
+                  "NE",
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 166,
+                "firstSeason": 2015,
+                "lastSeason": 2026,
+                "years": "2015–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 12,
             "tied": true
@@ -3794,6 +4215,42 @@
           "rank": 18,
           "tied": true,
           "record": 97,
+          "recordHolders": [
+            {
+              "id": "00-0007681:1999_07_CLE_STL",
+              "name": "Torry Holt",
+              "teams": [
+                "LA"
+              ],
+              "opponent": null,
+              "length": 97,
+              "firstSeason": 1999,
+              "lastSeason": 2005,
+              "years": "1999–2005",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 23,
+            "rank": 17,
+            "holders": [
+              {
+                "id": "00-0005092:1999_03_ATL_STL",
+                "name": "Marshall Faulk",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 23,
+                "firstSeason": 1999,
+                "lastSeason": 2000,
+                "years": "1999–2000",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 18,
             "tied": false
@@ -3843,6 +4300,60 @@
           "rank": 29,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 110,
+            "rank": 27,
+            "holders": [
+              {
+                "id": "00-0027874:2011_13_DEN_MIN",
+                "name": "Demaryius Thomas",
+                "teams": [
+                  "DEN",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 110,
+                "firstSeason": 2011,
+                "lastSeason": 2018,
+                "years": "2011–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033881:2017_06_NYG_DEN",
+                "name": "Evan Engram",
+                "teams": [
+                  "NYG",
+                  "JAX",
+                  "DEN"
+                ],
+                "opponent": null,
+                "length": 110,
+                "firstSeason": 2017,
+                "lastSeason": 2025,
+                "years": "2017–2025",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 27,
             "tied": true
@@ -3857,6 +4368,420 @@
           "rank": 113,
           "tied": true,
           "record": 190,
+          "recordHolders": [
+            {
+              "id": "archive:00-0007024:190",
+              "name": "Marvin Harrison",
+              "teams": [
+                "IND"
+              ],
+              "opponent": null,
+              "length": 190,
+              "firstSeason": 1996,
+              "lastSeason": 2008,
+              "years": "1996–2008",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 7,
+            "rank": 85,
+            "holders": [
+              {
+                "id": "00-0037664:2022_03_KC_IND",
+                "name": "Alec Pierce",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037664:2023_10_IND_NE",
+                "name": "Alec Pierce",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037664:2024_07_MIA_IND",
+                "name": "Alec Pierce",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022044:2015_11_IND_ATL",
+                "name": "Andre Johnson",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2015,
+                "lastSeason": 2015,
+                "years": "2015",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027477:2010_11_IND_NE",
+                "name": "Blair White",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0015754:2005_05_IND_SF",
+                "name": "Brandon Stokley",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0032355:2017_07_JAX_IND",
+                "name": "Chester Rogers",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2017,
+                "lastSeason": 2017,
+                "years": "2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022165:2004_05_OAK_IND",
+                "name": "Dallas Clark",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2004,
+                "lastSeason": 2004,
+                "years": "2004",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0019863:2006_10_BUF_IND",
+                "name": "Dominic Rhodes",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029689:2014_03_IND_JAX",
+                "name": "Dwayne Allen",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2014,
+                "lastSeason": 2014,
+                "years": "2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029689:2016_01_DET_IND",
+                "name": "Dwayne Allen",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0008241:2002_01_IND_JAX",
+                "name": "Edgerrin James",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0008241:2002_14_IND_TEN",
+                "name": "Edgerrin James",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2002,
+                "lastSeason": 2003,
+                "years": "2002–2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0030181:2019_12_IND_HOU",
+                "name": "Jack Doyle",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2019,
+                "lastSeason": 2020,
+                "years": "2019–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030181:2021_08_TEN_IND",
+                "name": "Jack Doyle",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0026267:2011_09_ATL_IND",
+                "name": "Jacob Tamme",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037755:2022_09_IND_NE",
+                "name": "Jelani Woods",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0012637:2000_01_IND_KC",
+                "name": "Jerome Pathon",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0036223:2021_17_LV_IND",
+                "name": "Jonathan Taylor",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2022,
+                "years": "2021–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036223:2024_02_IND_GB",
+                "name": "Jonathan Taylor",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0024245:2006_01_IND_NYG",
+                "name": "Joseph Addai",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0004294:1999_03_IND_SD",
+                "name": "Ken Dilger",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0029548:2012_08_IND_TEN",
+                "name": "LaVon Brazill",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0032208:2015_01_IND_BUF",
+                "name": "Phillip Dorsett",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2015,
+                "lastSeason": 2015,
+                "years": "2015",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029273:2016_14_HOU_IND",
+                "name": "Robert Turbin",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2017,
+                "years": "2016–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029608:2012_02_MIN_IND",
+                "name": "T.Y. Hilton",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0019552:2003_04_IND_NO",
+                "name": "Troy Walters",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2003,
+                "lastSeason": 2003,
+                "years": "2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0029547:2012_05_GB_IND",
+                "name": "Vick Ballard",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 85,
             "tied": true
@@ -3905,6 +4830,47 @@
           "rank": 31,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 105,
+            "rank": 30,
+            "holders": [
+              {
+                "id": "00-0024334:2010_14_MIA_NYJ",
+                "name": "Brandon Marshall",
+                "teams": [
+                  "MIA",
+                  "CHI",
+                  "NYJ",
+                  "NYG",
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 105,
+                "firstSeason": 2010,
+                "lastSeason": 2018,
+                "years": "2010–2018",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 30,
             "tied": true
@@ -3919,6 +4885,70 @@
           "rank": 22,
           "tied": true,
           "record": 186,
+          "recordHolders": [
+            {
+              "id": "archive:00-0017162:186",
+              "name": "Hines Ward",
+              "teams": [
+                "PIT"
+              ],
+              "opponent": null,
+              "length": 186,
+              "firstSeason": 1998,
+              "lastSeason": 2010,
+              "years": "1998–2010",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 25,
+            "rank": 19,
+            "holders": [
+              {
+                "id": "00-0027793:2010_13_PIT_BAL",
+                "name": "Antonio Brown",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 25,
+                "firstSeason": 2010,
+                "lastSeason": 2012,
+                "years": "2010–2012",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037247:2022_10_NO_PIT",
+                "name": "George Pickens",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 25,
+                "firstSeason": 2022,
+                "lastSeason": 2023,
+                "years": "2022–2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0024240:2008_09_PIT_WAS",
+                "name": "Santonio Holmes",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 25,
+                "firstSeason": 2008,
+                "lastSeason": 2009,
+                "years": "2008–2009",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 22,
             "tied": false
@@ -3966,6 +4996,60 @@
           "rank": 36,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 100,
+            "rank": 34,
+            "holders": [
+              {
+                "id": "00-0031941:2015_01_MIA_WAS",
+                "name": "Jamison Crowder",
+                "teams": [
+                  "WAS",
+                  "NYJ",
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 100,
+                "firstSeason": 2015,
+                "lastSeason": 2022,
+                "years": "2015–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029608:2015_01_IND_BUF",
+                "name": "T.Y. Hilton",
+                "teams": [
+                  "IND",
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 100,
+                "firstSeason": 2015,
+                "lastSeason": 2022,
+                "years": "2015–2022",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 34,
             "tied": true
@@ -3980,6 +5064,23 @@
           "rank": 1,
           "tied": false,
           "record": 99,
+          "recordHolders": [
+            {
+              "id": "00-0036322:2020_01_GB_MIN",
+              "name": "Justin Jefferson",
+              "teams": [
+                "MIN"
+              ],
+              "opponent": null,
+              "length": 99,
+              "firstSeason": 2020,
+              "lastSeason": 2026,
+              "years": "2020–2026",
+              "active": true,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": null,
           "next": {
             "rank": 1,
             "tied": false
@@ -4028,6 +5129,43 @@
           "rank": 37,
           "tied": false,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 99,
+            "rank": 36,
+            "holders": [
+              {
+                "id": "00-0036322:2020_01_GB_MIN",
+                "name": "Justin Jefferson",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 99,
+                "firstSeason": 2020,
+                "lastSeason": 2026,
+                "years": "2020–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 36,
             "tied": true
@@ -4042,6 +5180,546 @@
           "rank": 192,
           "tied": true,
           "record": 186,
+          "recordHolders": [
+            {
+              "id": "archive:00-0017162:186",
+              "name": "Hines Ward",
+              "teams": [
+                "PIT"
+              ],
+              "opponent": null,
+              "length": 186,
+              "firstSeason": 1998,
+              "lastSeason": 2010,
+              "years": "1998–2010",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 4,
+            "rank": 155,
+            "holders": [
+              {
+                "id": "00-0018501:2001_09_PIT_CLE",
+                "name": "Amos Zereoue",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0018501:2002_09_PIT_CLE",
+                "name": "Amos Zereoue",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0014729:2001_07_TEN_PIT",
+                "name": "Bobby Shaw",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037837:2023_01_SF_PIT",
+                "name": "Calvin Austin III",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036326:2022_05_PIT_BUF",
+                "name": "Chase Claypool",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029140:2012_01_PIT_DEN",
+                "name": "Chris Rainey",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0030578:2024_13_PIT_CIN",
+                "name": "Cordarrelle Patterson",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0038558:2023_09_TEN_PIT",
+                "name": "Darnell Washington",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027685:2010_10_NE_PIT",
+                "name": "Emmanuel Sanders",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0017162:2011_10_PIT_CIN",
+                "name": "Hines Ward",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0033553:2019_06_PIT_LAC",
+                "name": "James Conner",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034676:2018_17_CIN_PIT",
+                "name": "James Washington",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2018,
+                "lastSeason": 2019,
+                "years": "2018–2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037228:2022_02_NE_PIT",
+                "name": "Jaylen Warren",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037228:2025_13_BUF_PIT",
+                "name": "Jaylen Warren",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0032135:2015_09_OAK_PIT",
+                "name": "Jesse James",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2015,
+                "lastSeason": 2015,
+                "years": "2015",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0032135:2018_12_PIT_DEN",
+                "name": "Jesse James",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2018,
+                "lastSeason": 2018,
+                "years": "2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027786:2013_09_PIT_NE",
+                "name": "Jonathan Dwyer",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2013,
+                "lastSeason": 2013,
+                "years": "2013",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029275:2016_12_PIT_IND",
+                "name": "Ladarius Green",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0002102:1999_02_PIT_BAL",
+                "name": "Mark Bruener",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0002102:1999_12_CIN_PIT",
+                "name": "Mark Bruener",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0002102:2002_01_PIT_NE",
+                "name": "Mark Bruener",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034272:2025_15_MIA_PIT",
+                "name": "Marquez Valdes-Scantling",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022217:2009_17_PIT_MIA",
+                "name": "Mewelde Moore",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2009,
+                "lastSeason": 2010,
+                "years": "2009–2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0036893:2022_05_PIT_BUF",
+                "name": "Najee Harris",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036893:2022_11_CIN_PIT",
+                "name": "Najee Harris",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034407:2021_03_CIN_PIT",
+                "name": "Ray-Ray McCloud",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0007969:1999_15_PIT_KC",
+                "name": "Richard Huntley",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 2000,
+                "years": "1999–2000",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0036139:2026_01_ATL_PIT",
+                "name": "Rico Dowdle",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2026,
+                "lastSeason": 2026,
+                "years": "2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0039739:2026_01_ATL_PIT",
+                "name": "Roman Wilson",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2026,
+                "lastSeason": 2026,
+                "years": "2026",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034928:2022_14_BAL_PIT",
+                "name": "Steven Sims",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0010539:2002_01_PIT_NE",
+                "name": "Terance Mathis",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0010539:2002_08_PIT_BAL",
+                "name": "Terance Mathis",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0004780:2001_05_PIT_KC",
+                "name": "Troy Edwards",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021279:2005_02_PIT_HOU",
+                "name": "Verron Haynes",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028841:2012_07_PIT_CIN",
+                "name": "Will Johnson",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0022250:2007_07_PIT_DEN",
+                "name": "Willie Parker",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022250:2007_12_MIA_PIT",
+                "name": "Willie Parker",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 155,
             "tied": true
@@ -4089,6 +5767,43 @@
           "rank": 49,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 85,
+            "rank": 48,
+            "holders": [
+              {
+                "id": "00-0011754:1999_01_MIN_ATL",
+                "name": "Randy Moss",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 85,
+                "firstSeason": 1999,
+                "lastSeason": 2004,
+                "years": "1999–2004",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 48,
             "tied": true
@@ -4103,6 +5818,42 @@
           "rank": 2,
           "tied": false,
           "record": 102,
+          "recordHolders": [
+            {
+              "id": "00-0020397:2002_05_CIN_IND",
+              "name": "Chad Johnson",
+              "teams": [
+                "CIN"
+              ],
+              "opponent": null,
+              "length": 102,
+              "firstSeason": 2002,
+              "lastSeason": 2008,
+              "years": "2002–2008",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 102,
+            "rank": 1,
+            "holders": [
+              {
+                "id": "00-0020397:2002_05_CIN_IND",
+                "name": "Chad Johnson",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 102,
+                "firstSeason": 2002,
+                "lastSeason": 2008,
+                "years": "2002–2008",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 2,
             "tied": false
@@ -4152,6 +5903,73 @@
           "rank": 63,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 76,
+            "rank": 60,
+            "holders": [
+              {
+                "id": "00-0036358:2020_08_DAL_PHI",
+                "name": "CeeDee Lamb",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 76,
+                "firstSeason": 2020,
+                "lastSeason": 2025,
+                "years": "2020–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022738:2004_10_CIN_WAS",
+                "name": "Chris Cooley",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 76,
+                "firstSeason": 2004,
+                "lastSeason": 2009,
+                "years": "2004–2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034775:2019_17_ARI_LA",
+                "name": "Christian Kirk",
+                "teams": [
+                  "ARI",
+                  "JAX",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 76,
+                "firstSeason": 2019,
+                "lastSeason": 2025,
+                "years": "2019–2025",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 60,
             "tied": true
@@ -4166,6 +5984,602 @@
           "rank": 216,
           "tied": true,
           "record": 89,
+          "recordHolders": [
+            {
+              "id": "00-0027150:2013_01_NE_BUF",
+              "name": "Julian Edelman",
+              "teams": [
+                "NE"
+              ],
+              "opponent": null,
+              "length": 89,
+              "firstSeason": 2013,
+              "lastSeason": 2020,
+              "years": "2013–2020",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 4,
+            "rank": 175,
+            "holders": [
+              {
+                "id": "00-0030540:2015_01_PIT_NE",
+                "name": "Aaron Dobson",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2015,
+                "lastSeason": 2015,
+                "years": "2015",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0032392:2025_06_NE_NO",
+                "name": "Austin Hooper",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0003142:1999_14_NE_IND",
+                "name": "Ben Coates",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0022943:2019_07_NE_NYJ",
+                "name": "Benjamin Watson",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027057:2010_01_CIN_NE",
+                "name": "Brandon Tate",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0027057:2010_07_NE_SD",
+                "name": "Brandon Tate",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020397:2011_13_IND_NE",
+                "name": "Chad Johnson",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0028237:2016_05_NE_CLE",
+                "name": "Chris Hogan",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0005101:2003_09_NE_DEN",
+                "name": "Christian Fauria",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2003,
+                "lastSeason": 2003,
+                "years": "2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0004304:2004_15_NE_MIA",
+                "name": "Corey Dillon",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2004,
+                "lastSeason": 2005,
+                "years": "2004–2005",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0004304:2006_12_CHI_NE",
+                "name": "Corey Dillon",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021154:2002_12_MIN_NE",
+                "name": "Daniel Graham",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0021154:2003_01_NE_BUF",
+                "name": "Daniel Graham",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2003,
+                "lastSeason": 2003,
+                "years": "2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0021154:2004_10_BUF_NE",
+                "name": "Daniel Graham",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2004,
+                "lastSeason": 2004,
+                "years": "2004",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0021154:2005_05_NE_ATL",
+                "name": "Daniel Graham",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0021154:2006_01_BUF_NE",
+                "name": "Daniel Graham",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0026035:2014_07_NYJ_NE",
+                "name": "Danny Amendola",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2014,
+                "lastSeason": 2014,
+                "years": "2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0017160:2003_12_NE_HOU",
+                "name": "Dedric Ward",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2003,
+                "lastSeason": 2003,
+                "years": "2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0028087:2017_02_NE_NO",
+                "name": "Dion Lewis",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2017,
+                "lastSeason": 2017,
+                "years": "2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028087:2017_14_NE_MIA",
+                "name": "Dion Lewis",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2017,
+                "lastSeason": 2017,
+                "years": "2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033045:2023_03_NE_NYJ",
+                "name": "Ezekiel Elliott",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020507:2006_14_NE_MIA",
+                "name": "Heath Evans",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021163:2007_05_CLE_NE",
+                "name": "Jabar Gaffney",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034960:2019_05_NE_WAS",
+                "name": "Jakobi Meyers",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034960:2019_11_NE_PHI",
+                "name": "Jakobi Meyers",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0005091:1999_10_NYJ_NE",
+                "name": "Kevin Faulk",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0005091:2000_14_KC_NE",
+                "name": "Kevin Faulk",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0005091:2001_07_NE_DEN",
+                "name": "Kevin Faulk",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0005091:2005_13_NYJ_NE",
+                "name": "Kevin Faulk",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0001661:2007_05_CLE_NE",
+                "name": "Kyle Brady",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0033555:2025_01_LV_NE",
+                "name": "Mack Hollins",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027732:2013_09_PIT_NE",
+                "name": "Michael Hoomanawanui",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2013,
+                "lastSeason": 2013,
+                "years": "2013",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034829:2023_15_KC_NE",
+                "name": "Mike Gesicki",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0035624:2021_07_NYJ_NE",
+                "name": "N'Keal Harry",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0014211:2000_11_NE_CLE",
+                "name": "Rod Rutledge",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034439:2019_05_NE_WAS",
+                "name": "Ryan Izzo",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2020,
+                "years": "2019–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028011:2013_03_TB_NE",
+                "name": "Stevan Ridley",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2013,
+                "lastSeason": 2013,
+                "years": "2013",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0004673:2005_04_SD_NE",
+                "name": "Tim Dwight",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0002713:1999_02_IND_NE",
+                "name": "Tony Carter",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0002068:1999_01_NE_NYJ",
+                "name": "Troy Brown",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0002068:2004_08_NE_PIT",
+                "name": "Troy Brown",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2004,
+                "lastSeason": 2004,
+                "years": "2004",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 175,
             "tied": true
@@ -4215,6 +6629,60 @@
           "rank": 71,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 72,
+            "rank": 69,
+            "holders": [
+              {
+                "id": "00-0030035:2020_01_GB_MIN",
+                "name": "Adam Thielen",
+                "teams": [
+                  "MIN",
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 72,
+                "firstSeason": 2020,
+                "lastSeason": 2024,
+                "years": "2020–2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027690:2011_17_KC_DEN",
+                "name": "Eric Decker",
+                "teams": [
+                  "DEN",
+                  "NYJ",
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 72,
+                "firstSeason": 2011,
+                "lastSeason": 2017,
+                "years": "2011–2017",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 69,
             "tied": true
@@ -4229,6 +6697,56 @@
           "rank": 40,
           "tied": true,
           "record": 86,
+          "recordHolders": [
+            {
+              "id": "archive:00-0015218:86",
+              "name": "Jimmy Smith",
+              "teams": [
+                "JAX"
+              ],
+              "opponent": null,
+              "length": 86,
+              "firstSeason": 1995,
+              "lastSeason": 2000,
+              "years": "1995–2000",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 16,
+            "rank": 38,
+            "holders": [
+              {
+                "id": "00-0024275:2011_06_JAX_PIT",
+                "name": "Maurice Jones-Drew",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 16,
+                "firstSeason": 2011,
+                "lastSeason": 2012,
+                "years": "2011–2012",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027076:2010_15_JAX_IND",
+                "name": "Mike Thomas",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 16,
+                "firstSeason": 2010,
+                "lastSeason": 2011,
+                "years": "2010–2011",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 38,
             "tied": true
@@ -4276,6 +6794,72 @@
           "rank": 79,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 69,
+            "rank": 76,
+            "holders": [
+              {
+                "id": "00-0029137:2012_16_CHI_ARI",
+                "name": "Alshon Jeffery",
+                "teams": [
+                  "CHI",
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2012,
+                "lastSeason": 2017,
+                "years": "2012–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033908:2019_11_CHI_LA",
+                "name": "Cooper Kupp",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2019,
+                "lastSeason": 2024,
+                "years": "2019–2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033009:2016_01_CIN_NYJ",
+                "name": "Tyler Boyd",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 76,
             "tied": true
@@ -4290,6 +6874,42 @@
           "rank": 2,
           "tied": false,
           "record": 81,
+          "recordHolders": [
+            {
+              "id": "00-0032765:2016_01_OAK_NO",
+              "name": "Michael Thomas",
+              "teams": [
+                "NO"
+              ],
+              "opponent": null,
+              "length": 81,
+              "firstSeason": 2016,
+              "lastSeason": 2023,
+              "years": "2016–2023",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 81,
+            "rank": 1,
+            "holders": [
+              {
+                "id": "00-0032765:2016_01_OAK_NO",
+                "name": "Michael Thomas",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 81,
+                "firstSeason": 2016,
+                "lastSeason": 2023,
+                "years": "2016–2023",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 2,
             "tied": false
@@ -4338,6 +6958,86 @@
           "rank": 83,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 68,
+            "rank": 79,
+            "holders": [
+              {
+                "id": "00-0033906:2021_05_NO_WAS",
+                "name": "Alvin Kamara",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033921:2018_16_TB_DAL",
+                "name": "Chris Godwin Jr.",
+                "teams": [
+                  "TB"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2018,
+                "lastSeason": 2023,
+                "years": "2018–2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "archive:historical:elbie-nickel:68",
+                "name": "Elbie Nickel",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 1951,
+                "lastSeason": 1957,
+                "years": "1951–1957",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0013232:2000_07_SD_BUF",
+                "name": "Peerless Price",
+                "teams": [
+                  "BUF",
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2000,
+                "lastSeason": 2004,
+                "years": "2000–2004",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 79,
             "tied": true
@@ -4352,6 +7052,42 @@
           "rank": 3,
           "tied": false,
           "record": 110,
+          "recordHolders": [
+            {
+              "id": "00-0030564:2013_01_HOU_SD",
+              "name": "DeAndre Hopkins",
+              "teams": [
+                "HOU"
+              ],
+              "opponent": null,
+              "length": 110,
+              "firstSeason": 2013,
+              "lastSeason": 2019,
+              "years": "2013–2019",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 62,
+            "rank": 2,
+            "holders": [
+              {
+                "id": "00-0036554:2021_14_SEA_HOU",
+                "name": "Nico Collins",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 62,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 3,
             "tied": false
@@ -4400,6 +7136,101 @@
           "rank": 88,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 67,
+            "rank": 83,
+            "holders": [
+              {
+                "id": "00-0034383:2022_07_DET_DAL",
+                "name": "Dalton Schultz",
+                "teams": [
+                  "DAL",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "archive:STA285936:67",
+                "name": "John Stallworth",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 1977,
+                "lastSeason": 1982,
+                "years": "1977–1982",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030279:2013_02_SD_PHI",
+                "name": "Keenan Allen",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2013,
+                "lastSeason": 2018,
+                "years": "2013–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022910:2004_08_ARI_BUF",
+                "name": "Lee Evans",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2004,
+                "lastSeason": 2008,
+                "years": "2004–2008",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0023367:2008_03_PIT_PHI",
+                "name": "Nate Washington",
+                "teams": [
+                  "PIT",
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2008,
+                "lastSeason": 2012,
+                "years": "2008–2012",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 83,
             "tied": true
@@ -4414,6 +7245,42 @@
           "rank": 4,
           "tied": false,
           "record": 99,
+          "recordHolders": [
+            {
+              "id": "00-0036322:2020_01_GB_MIN",
+              "name": "Justin Jefferson",
+              "teams": [
+                "MIN"
+              ],
+              "opponent": null,
+              "length": 99,
+              "firstSeason": 2020,
+              "lastSeason": 2026,
+              "years": "2020–2026",
+              "active": true,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 70,
+            "rank": 3,
+            "holders": [
+              {
+                "id": "00-0031588:2015_04_MIN_DEN",
+                "name": "Stefon Diggs",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 70,
+                "firstSeason": 2015,
+                "lastSeason": 2019,
+                "years": "2015–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 4,
             "tied": false
@@ -4461,6 +7328,101 @@
           "rank": 88,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 67,
+            "rank": 83,
+            "holders": [
+              {
+                "id": "00-0034383:2022_07_DET_DAL",
+                "name": "Dalton Schultz",
+                "teams": [
+                  "DAL",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "archive:STA285936:67",
+                "name": "John Stallworth",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 1977,
+                "lastSeason": 1982,
+                "years": "1977–1982",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030279:2013_02_SD_PHI",
+                "name": "Keenan Allen",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2013,
+                "lastSeason": 2018,
+                "years": "2013–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022910:2004_08_ARI_BUF",
+                "name": "Lee Evans",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2004,
+                "lastSeason": 2008,
+                "years": "2004–2008",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0023367:2008_03_PIT_PHI",
+                "name": "Nate Washington",
+                "teams": [
+                  "PIT",
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2008,
+                "lastSeason": 2012,
+                "years": "2008–2012",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 83,
             "tied": true
@@ -4475,6 +7437,42 @@
           "rank": 3,
           "tied": false,
           "record": 127,
+          "recordHolders": [
+            {
+              "id": "archive:CAR217503:127",
+              "name": "Harold Carmichael",
+              "teams": [
+                "PHI"
+              ],
+              "opponent": null,
+              "length": 127,
+              "firstSeason": 1972,
+              "lastSeason": 1980,
+              "years": "1972–1980",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 95,
+            "rank": 2,
+            "holders": [
+              {
+                "id": "00-0030061:2014_14_SEA_PHI",
+                "name": "Zach Ertz",
+                "teams": [
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 95,
+                "firstSeason": 2014,
+                "lastSeason": 2021,
+                "years": "2014–2021",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 3,
             "tied": false
@@ -4522,6 +7520,58 @@
           "rank": 90,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 66,
+            "rank": 88,
+            "holders": [
+              {
+                "id": "00-0036912:2022_02_MIN_PHI",
+                "name": "DeVonta Smith",
+                "teams": [
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 66,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0035229:2021_11_DET_CLE",
+                "name": "T.J. Hockenson",
+                "teams": [
+                  "DET",
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 66,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 88,
             "tied": true
@@ -4536,6 +7586,42 @@
           "rank": 2,
           "tied": false,
           "record": 256,
+          "recordHolders": [
+            {
+              "id": "archive:00-0022921:256",
+              "name": "Larry Fitzgerald",
+              "teams": [
+                "ARI"
+              ],
+              "opponent": null,
+              "length": 256,
+              "firstSeason": 2004,
+              "lastSeason": 2020,
+              "years": "2004–2020",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 256,
+            "rank": 1,
+            "holders": [
+              {
+                "id": "archive:00-0022921:256",
+                "name": "Larry Fitzgerald",
+                "teams": [
+                  "ARI"
+                ],
+                "opponent": null,
+                "length": 256,
+                "firstSeason": 2004,
+                "lastSeason": 2020,
+                "years": "2004–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 2,
             "tied": false
@@ -4584,6 +7670,133 @@
           "rank": 102,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 64,
+            "rank": 95,
+            "holders": [
+              {
+                "id": "00-0032009:2016_01_TB_ATL",
+                "name": "Adam Humphries",
+                "teams": [
+                  "TB",
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028434:2014_01_GB_SEA",
+                "name": "Doug Baldwin",
+                "teams": [
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030472:2013_01_PHI_WAS",
+                "name": "Jordan Reed",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2013,
+                "lastSeason": 2018,
+                "years": "2013–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029664:2012_01_PHI_CLE",
+                "name": "Josh Gordon",
+                "teams": [
+                  "CLE",
+                  "NE",
+                  "SEA",
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2012,
+                "lastSeason": 2021,
+                "years": "2012–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000339:1999_01_NE_NYJ",
+                "name": "Richie Anderson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0032385:2016_13_NYG_PIT",
+                "name": "Sterling Shepard",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2016,
+                "lastSeason": 2022,
+                "years": "2016–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022427:2011_01_NE_MIA",
+                "name": "Wes Welker",
+                "teams": [
+                  "NE",
+                  "DEN",
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2011,
+                "lastSeason": 2015,
+                "years": "2011–2015",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 95,
             "tied": true
@@ -4598,6 +7811,70 @@
           "rank": 28,
           "tied": true,
           "record": 76,
+          "recordHolders": [
+            {
+              "id": "00-0022738:2004_10_CIN_WAS",
+              "name": "Chris Cooley",
+              "teams": [
+                "WAS"
+              ],
+              "opponent": null,
+              "length": 76,
+              "firstSeason": 2004,
+              "lastSeason": 2009,
+              "years": "2004–2009",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 18,
+            "rank": 25,
+            "holders": [
+              {
+                "id": "00-0018958:2003_16_WAS_CHI",
+                "name": "Laveranues Coles",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 18,
+                "firstSeason": 2003,
+                "lastSeason": 2004,
+                "years": "2003–2004",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0017470:1999_01_DAL_WAS",
+                "name": "Michael Westbrook",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 18,
+                "firstSeason": 1999,
+                "lastSeason": 2000,
+                "years": "1999–2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0020494:2010_05_GB_WAS",
+                "name": "Santana Moss",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 18,
+                "firstSeason": 2010,
+                "lastSeason": 2011,
+                "years": "2010–2011",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 25,
             "tied": true
@@ -4645,6 +7922,74 @@
           "rank": 105,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 63,
+            "rank": 102,
+            "holders": [
+              {
+                "id": "00-0033699:2021_02_DAL_LAC",
+                "name": "Austin Ekeler",
+                "teams": [
+                  "LAC",
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027061:2016_01_GB_JAX",
+                "name": "Jared Cook",
+                "teams": [
+                  "GB",
+                  "LV",
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020536:2001_01_WAS_SD",
+                "name": "LaDainian Tomlinson",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2001,
+                "lastSeason": 2004,
+                "years": "2001–2004",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 102,
             "tied": true
@@ -4659,6 +8004,42 @@
           "rank": 2,
           "tied": false,
           "record": 110,
+          "recordHolders": [
+            {
+              "id": "00-0030564:2013_01_HOU_SD",
+              "name": "DeAndre Hopkins",
+              "teams": [
+                "HOU"
+              ],
+              "opponent": null,
+              "length": 110,
+              "firstSeason": 2013,
+              "lastSeason": 2019,
+              "years": "2013–2019",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 110,
+            "rank": 1,
+            "holders": [
+              {
+                "id": "00-0030564:2013_01_HOU_SD",
+                "name": "DeAndre Hopkins",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 110,
+                "firstSeason": 2013,
+                "lastSeason": 2019,
+                "years": "2013–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 2,
             "tied": false
@@ -4706,6 +8087,74 @@
           "rank": 105,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 63,
+            "rank": 102,
+            "holders": [
+              {
+                "id": "00-0033699:2021_02_DAL_LAC",
+                "name": "Austin Ekeler",
+                "teams": [
+                  "LAC",
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027061:2016_01_GB_JAX",
+                "name": "Jared Cook",
+                "teams": [
+                  "GB",
+                  "LV",
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020536:2001_01_WAS_SD",
+                "name": "LaDainian Tomlinson",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2001,
+                "lastSeason": 2004,
+                "years": "2001–2004",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 102,
             "tied": true
@@ -4720,6 +8169,42 @@
           "rank": 4,
           "tied": false,
           "record": 81,
+          "recordHolders": [
+            {
+              "id": "00-0032765:2016_01_OAK_NO",
+              "name": "Michael Thomas",
+              "teams": [
+                "NO"
+              ],
+              "opponent": null,
+              "length": 81,
+              "firstSeason": 2016,
+              "lastSeason": 2023,
+              "years": "2016–2023",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 63,
+            "rank": 3,
+            "holders": [
+              {
+                "id": "00-0007744:2000_01_DET_NO",
+                "name": "Joe Horn",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2000,
+                "lastSeason": 2003,
+                "years": "2000–2003",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 3,
             "tied": true
@@ -4768,6 +8253,86 @@
           "rank": 109,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 62,
+            "rank": 105,
+            "holders": [
+              {
+                "id": "00-0022084:2013_01_GB_SF",
+                "name": "Anquan Boldin",
+                "teams": [
+                  "SF",
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 62,
+                "firstSeason": 2013,
+                "lastSeason": 2016,
+                "years": "2013–2016",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037239:2022_01_NO_ATL",
+                "name": "Chris Olave",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 62,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0002099:2000_01_DEN_STL",
+                "name": "Isaac Bruce",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 62,
+                "firstSeason": 2000,
+                "lastSeason": 2003,
+                "years": "2000–2003",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0036554:2021_14_SEA_HOU",
+                "name": "Nico Collins",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 62,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 105,
             "tied": true
@@ -4782,6 +8347,42 @@
           "rank": 4,
           "tied": false,
           "record": 114,
+          "recordHolders": [
+            {
+              "id": "00-0033288:2017_01_CAR_SF",
+              "name": "George Kittle",
+              "teams": [
+                "SF"
+              ],
+              "opponent": null,
+              "length": 114,
+              "firstSeason": 2017,
+              "lastSeason": 2025,
+              "years": "2017–2025",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 56,
+            "rank": 3,
+            "holders": [
+              {
+                "id": "00-0036261:2021_02_SF_PHI",
+                "name": "Brandon Aiyuk",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 56,
+                "firstSeason": 2021,
+                "lastSeason": 2024,
+                "years": "2021–2024",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 3,
             "tied": true
@@ -4829,6 +8430,43 @@
           "rank": 116,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 59,
+            "rank": 115,
+            "holders": [
+              {
+                "id": "00-0021547:2005_02_SD_DEN",
+                "name": "Antonio Gates",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 59,
+                "firstSeason": 2005,
+                "lastSeason": 2008,
+                "years": "2005–2008",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
           "next": {
             "rank": 115,
             "tied": true
@@ -4843,6 +8481,42 @@
           "rank": 5,
           "tied": false,
           "record": 177,
+          "recordHolders": [
+            {
+              "id": "archive:LAR118653:177",
+              "name": "Steve Largent",
+              "teams": [
+                "SEA"
+              ],
+              "opponent": null,
+              "length": 177,
+              "firstSeason": 1976,
+              "lastSeason": 1989,
+              "years": "1976–1989",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 64,
+            "rank": 4,
+            "holders": [
+              {
+                "id": "00-0028434:2014_01_GB_SEA",
+                "name": "Doug Baldwin",
+                "teams": [
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 5,
             "tied": false
@@ -4890,6 +8564,100 @@
           "rank": 126,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 57,
+            "rank": 121,
+            "holders": [
+              {
+                "id": "00-0027681:2014_03_OAK_NE",
+                "name": "Brandon LaFell",
+                "teams": [
+                  "NE",
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033280:2017_01_CAR_SF",
+                "name": "Christian McCaffrey",
+                "teams": [
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0018343:1999_01_CIN_TEN",
+                "name": "Frank Wycheck",
+                "teams": [
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037740:2022_01_BAL_NYJ",
+                "name": "Garrett Wilson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2022,
+                "lastSeason": 2025,
+                "years": "2022–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030107:2014_16_DET_CHI",
+                "name": "Theo Riddick",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2018,
+                "years": "2014–2018",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 121,
             "tied": true
@@ -4904,6 +8672,23 @@
           "rank": 1,
           "tied": false,
           "record": 56,
+          "recordHolders": [
+            {
+              "id": "00-0039064:2023_01_HOU_BAL",
+              "name": "Zay Flowers",
+              "teams": [
+                "BAL"
+              ],
+              "opponent": null,
+              "length": 56,
+              "firstSeason": 2023,
+              "lastSeason": 2026,
+              "years": "2023–2026",
+              "active": true,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": null,
           "next": {
             "rank": 1,
             "tied": false
@@ -4951,6 +8736,86 @@
           "rank": 133,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 55,
+            "rank": 129,
+            "holders": [
+              {
+                "id": "00-0030085:2016_06_PIT_MIA",
+                "name": "Kenny Stills",
+                "teams": [
+                  "MIA",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 55,
+                "firstSeason": 2016,
+                "lastSeason": 2019,
+                "years": "2016–2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034753:2018_15_TB_BAL",
+                "name": "Mark Andrews",
+                "teams": [
+                  "BAL"
+                ],
+                "opponent": null,
+                "length": 55,
+                "firstSeason": 2018,
+                "lastSeason": 2022,
+                "years": "2018–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020525:2001_01_WAS_SD",
+                "name": "Rod Gardner",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 55,
+                "firstSeason": 2001,
+                "lastSeason": 2004,
+                "years": "2001–2004",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027265:2011_02_STL_NYG",
+                "name": "Victor Cruz",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 55,
+                "firstSeason": 2011,
+                "lastSeason": 2016,
+                "years": "2011–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 129,
             "tied": true
@@ -4965,6 +8830,42 @@
           "rank": 5,
           "tied": false,
           "record": 190,
+          "recordHolders": [
+            {
+              "id": "archive:00-0007024:190",
+              "name": "Marvin Harrison",
+              "teams": [
+                "IND"
+              ],
+              "opponent": null,
+              "length": 190,
+              "firstSeason": 1996,
+              "lastSeason": 2008,
+              "years": "1996–2008",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 95,
+            "rank": 4,
+            "holders": [
+              {
+                "id": "00-0036252:2020_01_IND_JAX",
+                "name": "Michael Pittman",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 95,
+                "firstSeason": 2020,
+                "lastSeason": 2025,
+                "years": "2020–2025",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 5,
             "tied": false
@@ -5012,6 +8913,102 @@
           "rank": 142,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 52,
+            "rank": 137,
+            "holders": [
+              {
+                "id": "00-0036275:2020_01_CHI_DET",
+                "name": "D'Andre Swift",
+                "teams": [
+                  "DET",
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2020,
+                "lastSeason": 2023,
+                "years": "2020–2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033885:2021_17_CLE_PIT",
+                "name": "David Njoku",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2021,
+                "lastSeason": 2025,
+                "years": "2021–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0011727:1999_02_GB_DET",
+                "name": "Johnnie Morton",
+                "teams": [
+                  "DET",
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034367:2018_01_CIN_IND",
+                "name": "Nyheim Hines",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2018,
+                "lastSeason": 2021,
+                "years": "2018–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030431:2015_10_BUF_NYJ",
+                "name": "Robert Woods",
+                "teams": [
+                  "BUF",
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2015,
+                "lastSeason": 2019,
+                "years": "2015–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 137,
             "tied": true
@@ -5026,6 +9023,42 @@
           "rank": 5,
           "tied": false,
           "record": 128,
+          "recordHolders": [
+            {
+              "id": "00-0023462:2006_14_ATL_TB",
+              "name": "Roddy White",
+              "teams": [
+                "ATL"
+              ],
+              "opponent": null,
+              "length": 128,
+              "firstSeason": 2006,
+              "lastSeason": 2015,
+              "years": "2006–2015",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 53,
+            "rank": 4,
+            "holders": [
+              {
+                "id": "00-0029632:2016_01_TB_ATL",
+                "name": "Mohamed Sanu",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 53,
+                "firstSeason": 2016,
+                "lastSeason": 2019,
+                "years": "2016–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 5,
             "tied": false
@@ -5073,6 +9106,113 @@
           "rank": 148,
           "tied": true,
           "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 51,
+            "rank": 142,
+            "holders": [
+              {
+                "id": "00-0023438:2006_01_NO_CLE",
+                "name": "Braylon Edwards",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2006,
+                "lastSeason": 2009,
+                "years": "2006–2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034351:2019_04_PHI_GB",
+                "name": "Dallas Goedert",
+                "teams": [
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2019,
+                "lastSeason": 2022,
+                "years": "2019–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037238:2023_02_GB_ATL",
+                "name": "Drake London",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0031062:2017_12_MIA_NE",
+                "name": "James White",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0011754:2007_01_NE_NYJ",
+                "name": "Randy Moss",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2007,
+                "lastSeason": 2010,
+                "years": "2007–2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0033556:2017_01_ATL_CHI",
+                "name": "Tarik Cohen",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2017,
+                "lastSeason": 2020,
+                "years": "2017–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 142,
             "tied": true
@@ -5087,6 +9227,42 @@
           "rank": 6,
           "tied": false,
           "record": 128,
+          "recordHolders": [
+            {
+              "id": "00-0023462:2006_14_ATL_TB",
+              "name": "Roddy White",
+              "teams": [
+                "ATL"
+              ],
+              "opponent": null,
+              "length": 128,
+              "firstSeason": 2006,
+              "lastSeason": 2015,
+              "years": "2006–2015",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 51,
+            "rank": 5,
+            "holders": [
+              {
+                "id": "00-0037238:2023_02_GB_ATL",
+                "name": "Drake London",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
           "next": {
             "rank": 5,
             "tied": true

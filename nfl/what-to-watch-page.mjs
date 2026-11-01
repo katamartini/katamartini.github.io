@@ -1,5 +1,5 @@
 import { TEAMS } from './divstreaks-data.mjs';
-import { WATCH_CATEGORIES, validWatchSnapshot } from './what-to-watch-data.mjs?v=watch-context-2';
+import { WATCH_CATEGORIES, validWatchSnapshot } from './what-to-watch-data.mjs?v=watch-targets-3';
 
 const $ = id => document.getElementById(id);
 const make = (tag, text, className) => { const el = document.createElement(tag); if (text != null) el.textContent = text; if (className) el.className = className; return el; };
@@ -71,11 +71,19 @@ function renderLeaderboard(event) {
   const rankText = row => `${row.tied ? 'Tied ' : ''}#${row.rank}`;
   for (const [key, label] of [['franchise', TEAMS[board.franchiseTeam].name], ['overall', board.overall.scope]]) {
     const row = board[key]; if (!row) continue;
+    const comparison = make('div', null, 'rank-comparison'); comparison.dataset.scope = key;
     const line = make('p', null, 'rank-line');
-    line.append(make('strong', `${row.partial && key === 'franchise' ? 'Recorded ' : ''}${label}: ${rankText(row)}`), document.createTextNode(` · ${row.lowerBound ? 'at least ' : ''}${row.length} ${row.length === 1 ? event.unit.slice(0, -1) : event.unit} · High: ${row.record}`));
-    box.append(line);
+    line.append(make('strong', `${row.partial && key === 'franchise' ? 'Recorded ' : ''}${label}: ${rankText(row)}`), document.createTextNode(` · ${row.lowerBound ? 'at least ' : ''}${row.length} ${row.length === 1 ? event.unit.slice(0, -1) : event.unit}`));
+    comparison.append(line);
     const qualification = key === 'franchise' && row.length !== event.value ? `This team’s portion of the ${event.value}-${event.unit === 'games' ? 'game' : event.unit === 'kicks' ? 'kick' : 'start'} career run. ` : '';
-    if (qualification) box.append(make('p', qualification.trim(), 'rank-coverage'));
+    if (qualification) comparison.append(make('p', qualification.trim(), 'rank-coverage'));
+    if (row.nextHigher?.length === row.record) comparison.append(renderTarget('Next higher / record', row.record, row.recordHolders, event.unit));
+    else {
+      if (row.nextHigher) comparison.append(renderTarget('Next higher', row.nextHigher.length, row.nextHigher.holders, event.unit));
+      else comparison.append(make('p', 'Next higher: no higher recorded run.', 'rank-target-empty'));
+      comparison.append(renderTarget('Record', row.record, row.recordHolders, event.unit));
+    }
+    box.append(comparison);
   }
   const coverage = [...new Set([board.franchise, board.overall].filter(Boolean).map(row => `${row.coverage}${row.partial ? ' · partial historical coverage' : ''}`))];
   box.append(make('p', coverage.join(' / '), 'rank-coverage'));
@@ -91,6 +99,22 @@ function renderLeaderboard(event) {
     }
   }
   return box;
+}
+function renderTarget(label, length, holders = [], unit) {
+  const target = make('div', null, 'rank-target'); target.dataset.target = label.startsWith('Next higher') ? 'higher' : 'record';
+  const header = make('p', null, 'rank-target-title');
+  header.append(make('strong', `${label}: `), document.createTextNode(`${holders.some(holder => holder.lowerBound) ? 'at least ' : ''}${length} ${length === 1 ? unit.slice(0, -1) : unit}`));
+  target.append(header);
+  const holderLine = holder => {
+    const teams = holder.teams.map(team => TEAMS[team]?.name || team).filter(name => name !== holder.name);
+    const who = `${holder.name}${holder.opponent ? ` vs. ${TEAMS[holder.opponent]?.name || holder.opponent}` : ''}`;
+    return make('p', `${who}${teams.length ? ` · ${teams.join(' / ')}` : ''} · ${holder.years}${holder.active ? ' · ongoing' : ''}${holder.lowerBound ? ' · minimum recorded run' : ''}`, 'rank-holder');
+  };
+  target.append(...holders.slice(0, 3).map(holderLine));
+  if (holders.length > 3) {
+    const more = make('details', null, 'rank-ties'); more.append(make('summary', `${holders.length - 3} more tied runs`), ...holders.slice(3).map(holderLine)); target.append(more);
+  }
+  return target;
 }
 function renderGame(game, events) {
   const article = make('article', null, 'game'), header = make('header', null, 'game-header'); article.dataset.game = game.id;
@@ -142,7 +166,7 @@ function syncView() {
 }
 async function init() {
   try {
-    const response = await fetch('../data/what-to-watch.json?v=watch-context-2', { cache: 'no-cache' });
+    const response = await fetch('../data/what-to-watch.json?v=watch-targets-3', { cache: 'no-cache' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const incoming = await response.json(); if (!validWatchSnapshot(incoming)) throw new Error('Invalid watch list');
     data = incoming; view = location.hash === '#ended' ? 'ended' : 'watch';

@@ -73,6 +73,15 @@ censored. One-more projections remove the current run before inserting its
 projected length. Ended runs display their final length against the latest
 saved history, without future projections.
 
+Both franchise and league comparisons include the nearest strictly longer run
+and the recorded high, with all tied holders, teams, and NFL season years.
+If the nearest longer run is the record, one combined entry identifies both.
+At the recorded high, the card says no higher run is recorded and names the
+record holders. The first three tied holders are visible immediately; the rest
+can be expanded. Years come from season fields or game IDs (so January games
+retain their NFL season), then documented archive periods. Unknown years and
+minimum-length historical segments remain explicit.
+
 Tests cover these rules, season boundaries, byes, missing player-game data,
 postseason eligibility, and snapshot validity. The page uses versioned entry and
 data URLs with revalidation, and has explicit failed-load and offseason states.

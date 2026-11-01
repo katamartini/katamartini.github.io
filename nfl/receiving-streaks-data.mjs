@@ -107,7 +107,8 @@ export function calculateReceivingStreaks(appearances, games, participationGames
         if (missing) { save(null, { date: missing.gameday, game: missing.game_id }); length = 0; teams = new Set(); knownStart = false; gapBeforeRow = true; }
       }
       if (splitByTeam && previous && previous.team !== row.team) {
-        save(); length = 0; teams = new Set(); knownStart = !gapBeforeRow;
+        if (length) { save(); streaks.at(-1).active = false; }
+        length = 0; teams = new Set(); knownStart = !gapBeforeRow;
       }
       if (!row.receptions) { save(point(row)); length = 0; teams = new Set(); knownStart = true; }
       else {
