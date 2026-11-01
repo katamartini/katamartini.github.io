@@ -30,7 +30,7 @@ jobs:
           key: kicking-pbp-v1-${{ github.run_id }}
           restore-keys: kicking-pbp-v1-
       - name: Test kicking calculations and roster snapshots
-        run: node --test nfl/kicking-data.test.mjs nfl/franchise-leaders-data.test.mjs nfl/streak-context.test.mjs
+        run: node --test nfl/kicking-data.test.mjs nfl/franchise-leaders-data.test.mjs nfl/streak-context.test.mjs nfl/watch-weekly.test.mjs
       - name: Refresh historical streaks and current rosters
         run: node scripts/update-kicking.mjs
       - name: Commit data and request a Pages build

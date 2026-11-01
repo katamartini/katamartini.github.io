@@ -37,6 +37,14 @@
     .lower-filters { display: flex; gap: 16px 24px; align-items: end; justify-content: space-between; flex-wrap: wrap; margin-top: 16px; }
     .categories { display: flex; flex-wrap: wrap; gap: 6px; }
     .category { min-height: 44px; border-radius: 7px; padding: 7px 11px; font-size: .85rem; }
+    .weekly-controls { margin-bottom: 24px; }
+    .week-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 16px; }
+    .week-outcomes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .outcome-button { min-height: 44px; border: 1px solid #cdd0c9; border-radius: 7px; padding: 10px 14px; background: #fff; color: inherit; font: inherit; font-size: .87rem; cursor: pointer; }
+    .outcome-continued { color: #2f6233; }
+    .outcome-ended { color: #8a3b2c; }
+    .outcome-pending { color: #61665e; }
+    #week-schedule { color: #61665e; font-size: .85rem; margin: 12px 0 0; }
     .search { display: grid; gap: 5px; font-size: .85rem; flex: 1 1 220px; max-width: 320px; }
     .search input { min-height: 44px; width: 100%; background: #fff; color: inherit; border: 1px solid #aeb4a8; border-radius: 7px; padding: 10px 12px; font: inherit; }
     h2 { margin: 0 0 5px; font-size: 1.65rem; letter-spacing: -.025em; }
@@ -106,6 +114,7 @@
       <nav class="views" aria-label="Watch list views">
         <a href="#watch" id="watch-link" aria-current="page">This week</a>
         <a href="#ended" id="ended-link">Ended this season</a>
+        <a href="#weekly" id="weekly-link">Week-by-week</a>
       </nav>
       <div class="filters">
         <div class="filter-heading"><strong id="team-label">Games involving</strong><span id="selected-team">All teams</span></div>
@@ -114,6 +123,12 @@
           <div id="categories" class="categories" role="group" aria-label="Streak category"></div>
           <label class="search">Find a player, team, or streak<input id="search" type="search" placeholder="Search this view…" autocomplete="off"></label>
         </div>
+      </div>
+      <div id="weekly-controls" class="weekly-controls" hidden>
+        <strong id="week-label">Choose a week</strong>
+        <div id="week-filter" class="week-filter" role="group" aria-labelledby="week-label"></div>
+        <div id="week-outcomes" class="week-outcomes" role="group" aria-label="Weekly result"></div>
+        <p id="week-schedule"></p>
       </div>
       <section aria-labelledby="view-title">
         <h2 id="view-title">This week</h2>
@@ -134,10 +149,11 @@
       </ul>
       <p>Team and player streaks count regular-season games and carry across seasons. Receiving streaks count appearances; missed games preserve the run. Player watches are conditional on playing or starting, and current roster membership includes reserve players. Home/away runs skip neutral-site games.</p>
       <p>The weekly view uses the next unfinished schedule week and shows remaining games. “Ended this season” uses the NFL season, including its January/February playoffs. A tie ends a winning or losing streak; it preserves a winless drought. Playoff-appearance droughts end when a team takes the field in the postseason. Results update every six hours and after player-feed refreshes.</p>
+      <p>“Week-by-week” defaults to the latest completed week and reconstructs each game’s streak lengths from verified results. Continued includes runs that reach the selection threshold that game; those are marked “Newly noteworthy.” Receiving and kicking summaries require an actual catch or made kick; missed appearances, byes, and games without an attempt preserve runs without being counted as extensions. A run extended and broken in the same game appears once as ended, at its final length. Pending games and delayed player feeds remain identified as pending. Historical summaries use the team represented in that game, including players who have since changed teams or retired.</p>
       <p>Historical ranks compare individual runs, so separate runs by the same player or team count separately. Ties share a rank. Each comparison names the holders and NFL seasons of the nearest strictly longer run and the record; tied holders can be expanded. “Next higher / record” means the next run is also the record. Current and ended runs are compared with the latest saved history; “one more” replaces the current run instead of counting it twice. Franchise player ranks use only that team’s portion of a run spanning multiple teams. Coverage is shown with each rank: QB starts since 1950, overall team runs for today’s franchises since 1920, venue/matchup runs since 1999, and partial receiving/kicking history including documented older records. Calendar drought lengths run to the scheduled or actual ending game; unknown earlier starts are marked “at least.”</p>
       <p>Sources: <a href="https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv">nflverse schedules and results</a>, the site’s <a href="/nfl/QBs.html">verified QB starters</a>, <a href="/nfl/receiving-streaks.html">receiving</a> and <a href="/nfl/kicking.html">kicking</a> feeds, and <a href="/nfl/droughts.html">franchise milestone history</a>. Overall team runs use the verified 1920–1998 archive plus nflverse; venue and matchup coverage starts in 1999. Player coverage dates appear below the list. This is a selection of tracked streaks, with partial historical player coverage; it does not claim every NFL record.</p>
     </footer>
   </main>
-  <script type="module" src="./what-to-watch-page.mjs?v=watch-targets-3"></script>
+  <script type="module" src="./what-to-watch-page.mjs?v=watch-weekly-4"></script>
 </body>
 </html>

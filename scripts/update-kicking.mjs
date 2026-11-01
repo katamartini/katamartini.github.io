@@ -7,6 +7,8 @@ import { FIRST_SEASON, KICK_COLUMNS, readProjectedCsv, kickFromPlay, calculateKi
 import { historicalKicks } from '../nfl/kicking-history.mjs';
 import { mergeHistoricalStreaks } from '../nfl/kicking-archive.mjs';
 import { playerStreakContext } from '../nfl/streak-context.mjs';
+import { playerWeeklyResults } from '../nfl/watch-weekly.mjs';
+import { readGames } from '../nfl/droughts-data.mjs';
 
 const now = new Date();
 const season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
@@ -61,7 +63,8 @@ if (attempts.length < 50000 || !latestDate) throw new Error('Incomplete kick his
 const history = historicalKicks(attempts, players);
 attempts.push(...history.additions);
 const scheduleUrl = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
-const schedule = parseCsv(await (await download(scheduleUrl)).text());
+const scheduleCSV = await (await download(scheduleUrl)).text();
+const schedule = parseCsv(scheduleCSV);
 const coveredGames = new Set([...attempts, ...history.gaps].map(kick => kick.game));
 const missingGames = schedule.filter(game => Number(game.season) >= FIRST_SEASON && Number(game.season) <= season &&
   game.game_type === 'REG' && game.gameday <= latestDate && game.home_score !== '' && game.away_score !== '' && !coveredGames.has(game.game_id));
@@ -75,10 +78,16 @@ for (const view of ['fg', 'all']) {
     views[view], clubs, row.active ? currentTeams.get(row.playerId) || row.last.team : row.endedBy.team,
     '1999+ play-by-play plus documented older records');
 }
+const summaryGames = readGames(scheduleCSV);
+const weeklyResults = ['fg', 'all'].flatMap(view => playerWeeklyResults(views[view],
+  attempts.filter(kick => kick.season === season && kick.made && (view === 'all' || kick.type === 'FG'))
+    .map(kick => ({ ...kick, playerId: kick.id })), summaryGames,
+  { season, category: 'kicking', minimum: view === 'fg' ? 20 : 40, unit: 'kicks',
+    label: view === 'fg' ? 'consecutive field goals made' : 'consecutive kicks made', href: `/nfl/kicking.html#${view}`, through: latestDate }));
 // Near-streak views are additive. Keep version 1 so previously cached flawless
 // pages can still read their unchanged fg/all records during a deployment.
 const schemaVersion = 1;
-const sourceHash = createHash('sha256').update(JSON.stringify({ schemaVersion, season, rosterWeek: roster.week, through: latestDate, historicalSources: history.sources, gaps: history.gaps, views })).digest('hex');
+const sourceHash = createHash('sha256').update(JSON.stringify({ schemaVersion, season, rosterWeek: roster.week, through: latestDate, historicalSources: history.sources, gaps: history.gaps, views, weeklyResults })).digest('hex');
 let saved = null;
 try { saved = JSON.parse(await readFile(destination, 'utf8')); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -87,6 +96,6 @@ if (saved?.sourceHash === sourceHash) console.log('Kicking streaks are unchanged
 else {
   await writeFile(destination, `${JSON.stringify({ schemaVersion, checkedAt: now.toISOString(), firstSeason: FIRST_SEASON, season,
     through: latestDate, latestWeek, rosterWeek: roster.week, sourceHash, sources, historicalSources: history.sources,
-    gaps: history.gaps.map(({ id, shortName, date, game, source }) => ({ playerId: id, name: shortName, date, game, source })), views }, null, 2)}\n`);
+    gaps: history.gaps.map(({ id, shortName, date, game, source }) => ({ playerId: id, name: shortName, date, game, source })), views, weeklyResults }, null, 2)}\n`);
   console.log(`Saved ${views.fg.length} field-goal streaks, ${views.all.length} combined streaks, and ${views['near-fg'].length + views['near-all'].length} near-streaks, through ${latestDate}.`);
 }

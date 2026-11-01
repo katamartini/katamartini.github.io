@@ -8,6 +8,8 @@ import { FIRST_STATS_SEASON, FIRST_PARTICIPATION_SEASON, KNOWN_MISSING_GAMES, KN
   receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks, receivingWatchStreaks } from '../nfl/receiving-streaks-data.mjs';
 import { RECEIVING_ARCHIVE } from '../nfl/receiving-streaks-archive.mjs';
 import { playerStreakContext } from '../nfl/streak-context.mjs';
+import { playerWeeklyResults } from '../nfl/watch-weekly.mjs';
+import { readGames } from '../nfl/droughts-data.mjs';
 
 const now = new Date(), season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
 const root = 'https://github.com/nflverse/nflverse-data/releases/download';
@@ -33,7 +35,8 @@ async function projected(url, name, columns) {
   return rows;
 }
 const scheduleUrl = 'https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv';
-const schedule = parseCsv(await (await download(scheduleUrl)).text()).filter(g => g.game_type === 'REG' &&
+const scheduleCSV = await (await download(scheduleUrl)).text();
+const schedule = parseCsv(scheduleCSV).filter(g => g.game_type === 'REG' &&
   Number(g.season) >= FIRST_STATS_SEASON && Number(g.season) <= season && g.home_score !== '' && g.away_score !== '');
 const playersUrl = `${root}/players/players.csv`;
 const players = new Map(parseCsv(await (await download(playersUrl)).text()).map(p => [p.gsis_id, p]));
@@ -84,11 +87,14 @@ const currentTeams = new Map(roster.rows.filter(p => currentIds.has(p.gsis_id)).
 const watchStreaks = receivingWatchStreaks(calculated, season, currentTeams);
 for (const row of watchStreaks) row.leaderboard = playerStreakContext(row, allStreaks, clubStreaks,
   row.active ? row.currentTeam : row.endedBy.team, '1999+ game logs plus documented older records');
+const weeklyResults = playerWeeklyResults(calculated, appearances.filter(row => row.season === season && row.receptions > 0)
+  .map(row => ({ ...row, playerId: row.id })), readGames(scheduleCSV),
+  { season, category: 'receiving', minimum: 50, unit: 'games', label: 'straight appearances with a catch', href: '/nfl/receiving-streaks.html', through });
 if (leaders.length !== 100 || !leaders.some(r => r.name === 'Jerry Rice' && r.length === 274) || !leaders.some(r => r.name === 'Larry Fitzgerald' && r.length === 256))
   throw new Error('Receiving leaderboard validation failed; retaining saved data');
 const latestWeek = Math.max(...games.filter(g => Number(g.season) === season).map(g => Number(g.week)));
 if (!Number.isFinite(latestWeek)) throw new Error('No current-season games; retaining saved data');
-const sourceHash = createHash('sha256').update(JSON.stringify({ season, through, latestWeek, rosterWeek: roster.week, missingGames, leaders, watchStreaks })).digest('hex');
+const sourceHash = createHash('sha256').update(JSON.stringify({ season, through, latestWeek, rosterWeek: roster.week, missingGames, leaders, watchStreaks, weeklyResults })).digest('hex');
 let saved;
 try { saved = JSON.parse(await readFile(destination, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
 if (saved && (through < saved.through || season * 100 + roster.week < saved.season * 100 + saved.rosterWeek)) throw new Error('Receiving feed regressed');
@@ -96,6 +102,6 @@ if (sourceHash === saved?.sourceHash) console.log('Receiving streaks are unchang
 else {
   await writeFile(destination, `${JSON.stringify({ schemaVersion: 1, checkedAt: now.toISOString(), season, through, latestWeek,
     rosterWeek: roster.week, firstStatsSeason: FIRST_STATS_SEASON, firstParticipationSeason: FIRST_PARTICIPATION_SEASON,
-    historicalCoverage: 'partial', missingGames, sourceHash, sources, scheduleSource: scheduleUrl, rosterSource: rosterUrl, leaders, watchStreaks }, null, 2)}\n`);
+    historicalCoverage: 'partial', missingGames, sourceHash, sources, scheduleSource: scheduleUrl, rosterSource: rosterUrl, leaders, watchStreaks, weeklyResults }, null, 2)}\n`);
   console.log(`Saved top ${leaders.length} recorded receiving streaks through ${through}.`);
 }

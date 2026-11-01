@@ -82,6 +82,30 @@ can be expanded. Years come from season fields or game IDs (so January games
 retain their NFL season), then documented archive periods. Unknown years and
 minimum-length historical segments remain explicit.
 
+## Week-by-week results
+
+The `#weekly` view defaults to the latest fully completed week. Week buttons
+cover completed rounds and the current unfinished round; `?week=REG-7#weekly`
+links to a particular week, and team/category/search filters remain available.
+Result buttons separate continued runs, ended runs, and pending watches.
+
+Team results reuse the regular-season state machine. QB summaries reconstruct
+each game's counter from verified starter runs. Receiving and kicking updaters
+publish `weeklyResults`, computed from maximal runs and actual current-season
+appearances or attempts. These retain the player's team in that game, including
+former players and team changes. Counters reflect each game's result rather
+than the run's final or current length. Runs reaching the selection threshold
+are marked newly noteworthy. A run extended and broken in the same game appears
+once as ended, with its entering and final lengths retained.
+
+Missing appearances, byes, and games without an attempt never create invented
+extensions or endings. Unplayed games remain pending; the summary separately
+identifies completed games awaiting player-feed updates. Postseason rounds use
+distinct keys, and their games stay in the NFL season even in January/February.
+The updater requires current-season player summary feeds before publishing a
+replacement snapshot. Historical summaries are compact; full leaderboard
+context remains in the weekly watch list and season-ending archive.
+
 Tests cover these rules, season boundaries, byes, missing player-game data,
 postseason eligibility, and snapshot validity. The page uses versioned entry and
 data URLs with revalidation, and has explicit failed-load and offseason states.

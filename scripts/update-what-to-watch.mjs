@@ -33,7 +33,7 @@ if (new Set(games.map(g => g.id)).size !== games.length) throw new Error('Duplic
 const [qbs, receiving, kicking, archive] = await Promise.all(['qbs', 'receiving-streaks', 'kicking', 'droughts-history'].map(readJSON));
 if (createHash('sha256').update(JSON.stringify(archive.rows)).digest('hex') !== ARCHIVE_ROWS_SHA256) throw new Error('Historical results checksum changed');
 if (qbs.season !== season || !validStartingHistory(qbs.history) || !qbs.history.recentComplete ||
-  receiving.season !== season || !Array.isArray(receiving.watchStreaks) || kicking.season !== season ||
+  receiving.season !== season || !Array.isArray(receiving.watchStreaks) || !Array.isArray(receiving.weeklyResults) || kicking.season !== season || !Array.isArray(kicking.weeklyResults) ||
   !['fg', 'all'].every(key => Array.isArray(kicking.views[key]))) throw new Error('Missing current-season player feeds; keeping saved watch list');
 const rosterUrl = `https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_${season}.csv`;
 const roster = currentRoster(parseCsv(await source(rosterUrl, `roster-${season}.csv`)), season);

@@ -1,6 +1,7 @@
 import { TEAMS } from './divstreaks-data.mjs';
 import { seasonsSince, elapsedTime, daysBetween } from './droughts-data.mjs';
 import { streakPosition } from './streak-context.mjs';
+import { weeklyResult, qbWeeklyResults, summarizeWeeks, validWeeklySummaries } from './watch-weekly.mjs';
 
 export function droughtLength(since, through, { count, unit, anchor, lowerBound = false } = {}) {
   return { since, through, elapsed: elapsedTime(since, through), days: daysBetween(since, through), count, unit, anchor, lowerBound };
@@ -33,8 +34,9 @@ export function watchWeek(games, season) {
 
 // Historical overall runs use each franchise's full schedule. Venue and matchup
 // runs use nflverse's 1999+ results, where neutral-site designations are known.
-export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}) {
+export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}, includeResults = false) {
   const watch = [], ended = [], pending = new Set(upcoming.map(g => g.id));
+  const continued = [];
   const records = [], references = new Map();
   for (const team of Object.keys(TEAMS)) {
     const history = [...(earlierByTeam[team] || []), ...games.filter(g => g.home === team || g.away === team)].sort(orderGames);
@@ -105,6 +107,12 @@ export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}
           if (!game.completed) watch.push(point(game, event));
           else if (ends === outcome || ends === 'not-W' && outcome !== 'W' || ends === 'not-L' && outcome !== 'L')
             ended.push(point(game, { ...event, action: outcome === 'T' ? 'A tie ended the run.' : `The ${TEAMS[team].name} ${outcome === 'W' ? 'won' : 'lost'}, ending the run.` }, true));
+          else if (includeResults) {
+            const after = event.unit === 'seasons' ? event.value : event.value + 1;
+            continued.push(weeklyResult(point(game, { ...event, title: event.title.replace(`: ${event.value} `, `: ${after} `) }),
+              { status: 'continued', after, action: event.unit === 'seasons' ? 'The wait for a five-win run continued.' :
+                `${outcome === 'T' ? 'A tie' : outcome === 'W' ? 'A win' : 'A loss'} ${event.kind === 'drought' ? `kept the drought going: ${event.value} → ${after} games.` : `extended the streak: ${event.value} → ${after} wins.`}` }));
+          }
         }
         // Never treat a scheduled game as a loss, or project future victories.
         if (game.completed) {
@@ -121,6 +129,14 @@ export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}
               state[key]++;
               state[`${key}Run`].length = state[key];
               state[`${key}Run`].last = { date: game.date, season: game.season };
+              if (includeResults && game.season === season && state[key] === (matchup ? WATCH_THRESHOLDS.matchup : WATCH_THRESHOLDS.team) &&
+                (matchup ? key === 'winless' : key !== 'winless' || state.winless !== state.losses)) {
+                const value = state[key], label = key === 'wins' ? 'wins' : key === 'losses' ? 'losses' : 'games without a win';
+                const title = `${TEAMS[team].name}: ${value} ${key === 'winless' ? '' : 'straight '}${label}${suffix}`;
+                continued.push(weeklyResult(point(game, { ...base, id: `${base.id}:${key}`, kind: key === 'wins' ? 'streak' : 'drought',
+                  title, value, unit: 'games', detail: `Run began ${state[`${key}Start`]}.`, href: key === 'losses' && context === 'overall' ? '/nfl/droughts.html#loss-streaks' : base.href }),
+                  { status: 'continued', before: value - 1, after: value, action: `Reached the ${value}-game watch threshold in this game.`, newlyNoteworthy: true }));
+              }
             } else {
               if (state[key]) state[`${key}Run`].active = false;
               state[key] = 0;
@@ -145,7 +161,7 @@ export function teamWatchEvents(games, season, upcoming = [], earlierByTeam = {}
       franchise: streakPosition(record, pool.filter(row => row.team === event.team), { scope: event.team, coverage }),
       overall: streakPosition(record, pool, { scope: 'Current franchises', coverage }), franchiseTeam: event.team };
   }
-  return { watch, ended };
+  return includeResults ? { watch, ended, continued } : { watch, ended };
 }
 
 export function playerWatchEvents(games, season, upcoming, { qbs, receiving, kicking, currentTeams = new Map() }) {
@@ -208,8 +224,9 @@ export function playerWatchEvents(games, season, upcoming, { qbs, receiving, kic
   return { watch, ended };
 }
 
-export function postseasonWatchEvents(games, season, upcoming, baseline) {
+export function postseasonWatchEvents(games, season, upcoming, baseline, includeResults = false) {
   const watch = [], ended = [], pending = new Set(upcoming.map(g => g.id));
+  const continued = [];
   const last = structuredClone(baseline);
   const dates = {};
   for (const game of [...games].filter(g => g.completed && g.season < season && ['WC', 'DIV', 'CON', 'SB'].includes(g.type)).sort(orderGames)) {
@@ -240,6 +257,8 @@ export function postseasonWatchEvents(games, season, upcoming, baseline) {
         if (!game.completed) watch.push(point(game, event));
         else if (key === 'playoffs' || result(game, team) === 'W') ended.push(point(game,
           { ...event, action: key === 'playoffs' ? 'Playing this postseason game ended the drought.' : 'A win ended the drought.' }, true));
+        else if (includeResults) continued.push(weeklyResult(point(game, event),
+          { status: 'continued', action: `A loss kept the ${label} drought going.` }));
       }
       if (game.completed) {
         last[team] ||= {};
@@ -252,20 +271,23 @@ export function postseasonWatchEvents(games, season, upcoming, baseline) {
       }
     }
   }
-  return { watch, ended };
+  return includeResults ? { watch, ended, continued } : { watch, ended };
 }
 
 export function buildWatchSnapshot({ games, season, earlierByTeam, qbs, receiving, kicking, currentTeams, postseasonBaseline }) {
   const week = watchWeek(games, season), upcoming = week?.games || [];
-  const events = [teamWatchEvents(games, season, upcoming, earlierByTeam),
+  const events = [teamWatchEvents(games, season, upcoming, earlierByTeam, true),
     playerWatchEvents(games, season, upcoming, { qbs, receiving, kicking, currentTeams }),
-    postseasonWatchEvents(games, season, upcoming, postseasonBaseline)];
+    postseasonWatchEvents(games, season, upcoming, postseasonBaseline, true)];
   const watch = events.flatMap(e => e.watch).sort((a, b) => a.date.localeCompare(b.date) || a.category.localeCompare(b.category) || b.value - a.value || a.id.localeCompare(b.id));
   const ended = events.flatMap(e => e.ended).sort((a, b) => b.date.localeCompare(a.date) || b.value - a.value || a.id.localeCompare(b.id));
+  const coverage = { qbs: qbs.through, receiving: receiving.through, kicking: kicking.through };
+  const results = [...events.flatMap(e => e.continued || []), ...qbWeeklyResults(games, season, qbs),
+    ...(receiving.weeklyResults || []), ...(kicking.weeklyResults || [])];
   return { schemaVersion: 1, season, through: games.filter(g => g.completed).map(g => g.date).sort().at(-1),
     thresholds: WATCH_THRESHOLDS, week, watch, ended,
     games: games.filter(g => g.season === season && (g.completed || upcoming.some(u => u.id === g.id))),
-    coverage: { qbs: qbs.through, receiving: receiving.through, kicking: kicking.through },
+    coverage, weeks: summarizeWeeks(games, season, week, results, watch, ended, coverage),
   };
 }
 
@@ -275,6 +297,7 @@ export function validWatchSnapshot(data) {
   const games = new Map(data.games.map(g => [g.id, g]));
   if (games.size !== data.games.length || data.games.some(g => !g.id || !TEAMS[g.home] || !TEAMS[g.away] || g.home === g.away || !date(g.date) || g.season !== data.season)) return false;
   if (!data.coverage || Object.values(data.coverage).some(value => !date(value))) return false;
+  if (data.weeks !== undefined && !validWeeklySummaries(data.weeks, games, data.season, WATCH_CATEGORIES)) return false;
   if (data.week !== null && (!Number.isInteger(data.week?.week) || !Array.isArray(data.week.games) || !data.week.games.length ||
     data.week.games.some(g => !games.has(g.id) || g.completed || g.week !== data.week.week || g.type !== data.week.type))) return false;
   return ['watch', 'ended'].every(key => Array.isArray(data[key]) && new Set(data[key].map(e => e.id)).size === data[key].length && data[key].every(e =>
