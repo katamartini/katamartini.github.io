@@ -1,0 +1,49 @@
+name: Update NFL what to watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 */6 * * *"
+  workflow_run:
+    workflows: [Update NFL quarterbacks, Update NFL receiving streaks, Update NFL kicking streaks]
+    types: [completed]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-what-to-watch
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test watch calculations
+        run: node --test nfl/what-to-watch-data.test.mjs
+      - name: Refresh weekly watches and season endings
+        run: node scripts/update-what-to-watch.mjs
+      - name: Validate refreshed snapshot
+        run: node --test nfl/what-to-watch-data.test.mjs
+      - name: Commit data and request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git diff --quiet -- data/what-to-watch.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/what-to-watch.json
+            git commit -m "Update NFL weekly watch list"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"

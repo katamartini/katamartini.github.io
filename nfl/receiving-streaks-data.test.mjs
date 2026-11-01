@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks } from './receiving-streaks-data.mjs';
+import { receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks, receivingWatchStreaks } from './receiving-streaks-data.mjs';
 import { RECEIVING_ARCHIVE } from './receiving-streaks-archive.mjs';
 
 const game = (id, date, season = 2026, home = 'MIN', away = 'GB') => ({ game_id: id, gameday: date, season: String(season), game_type: 'REG', home_team: home, away_team: away, home_score: '20', away_score: '17' });
@@ -94,6 +94,14 @@ test('a fully calculated archive match retains its exact game dates', () => {
 test('top 100 ranks are deterministic and unknown dates sort last in count ties', () => {
   const rows = Array.from({ length: 102 }, (_, i) => ({ id: String(i), name: `Player ${String(i).padStart(3, '0')}`, length: 2, start: { date: i === 0 ? null : '2020-01-01' } }));
   const top = topReceivingStreaks(rows.reverse()); assert.equal(top.length, 100); assert.equal(top[0].id, '1'); assert.equal(top.at(-1).rank, 100);
+});
+test('watch feed includes qualifying runs below the all-time top 100 and current-season endings', () => {
+  const row = (id, patch = {}) => ({ id, playerId: id, name: id, length: 50, start: { date: '2020-01-01' }, last: { team: 'MIN' }, active: false, endedBy: null, ...patch });
+  const rows = [row('active', { active: true }), row('ended', { endedBy: { season: 2026 } }), row('old', { endedBy: { season: 2025 } }), row('short', { length: 49, active: true }), row('retired')];
+  const watch = receivingWatchStreaks(rows, 2026, new Map([['active', 'BUF']]));
+  assert.deepEqual(watch.map(r => r.id), ['active', 'ended']);
+  assert.equal(watch[0].currentTeam, 'BUF'); assert.equal(watch[1].currentTeam, null);
+  assert.equal(rows[0].currentTeam, undefined);
 });
 test('saved snapshot has 100 valid ranks, partial coverage, sourced archives and no invented historical dates', () => {
   const saved = JSON.parse(readFileSync(new URL('../data/receiving-streaks.json', import.meta.url)));

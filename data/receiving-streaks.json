@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-30T11:21:28.621Z",
+  "checkedAt": "2026-11-01T03:29:04.359Z",
   "season": 2026,
   "through": "2026-10-29",
   "latestWeek": 8,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "72772fb640ac9dc4270925328461f6554165200b8d6748f823ba85538e6fc646",
+  "sourceHash": "f17c7de1b9f5da6bb46ea2b7eb27cfd590899f02e2c42e594cba39051f1fcf4e",
   "sources": [
     {
       "kind": "stats",
@@ -3610,6 +3610,747 @@
       "active": false,
       "archive": false,
       "rank": 100
+    }
+  ],
+  "watchStreaks": [
+    {
+      "id": "00-0030506:2014_01_TEN_KC",
+      "playerId": "00-0030506",
+      "name": "Travis Kelce",
+      "length": 197,
+      "start": {
+        "date": "2014-09-07",
+        "season": 2014,
+        "game": "2014_01_TEN_KC",
+        "team": "KC",
+        "opponent": "TEN"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_KC_SEA",
+        "team": "KC",
+        "opponent": "SEA"
+      },
+      "teams": [
+        "KC"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "KC"
+    },
+    {
+      "id": "00-0031588:2015_04_MIN_DEN",
+      "playerId": "00-0031588",
+      "name": "Stefon Diggs",
+      "length": 166,
+      "start": {
+        "date": "2015-10-04",
+        "season": 2015,
+        "game": "2015_04_MIN_DEN",
+        "team": "MIN",
+        "opponent": "DEN"
+      },
+      "last": {
+        "date": "2026-10-19",
+        "season": 2026,
+        "game": "2026_06_WAS_SF",
+        "team": "WAS",
+        "opponent": "SF"
+      },
+      "teams": [
+        "MIN",
+        "BUF",
+        "HOU",
+        "NE",
+        "WAS"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "WAS"
+    },
+    {
+      "id": "00-0031381:2015_08_GB_DEN",
+      "playerId": "00-0031381",
+      "name": "Davante Adams",
+      "length": 165,
+      "start": {
+        "date": "2015-11-01",
+        "season": 2015,
+        "game": "2015_08_GB_DEN",
+        "team": "GB",
+        "opponent": "DEN"
+      },
+      "last": {
+        "date": "2026-10-18",
+        "season": 2026,
+        "game": "2026_06_ARI_LA",
+        "team": "LA",
+        "opponent": "ARI"
+      },
+      "teams": [
+        "GB",
+        "LV",
+        "NYJ",
+        "LA"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "LA"
+    },
+    {
+      "id": "00-0030279:2018_16_BAL_LAC",
+      "playerId": "00-0030279",
+      "name": "Keenan Allen",
+      "length": 109,
+      "start": {
+        "date": "2018-12-22",
+        "season": 2018,
+        "game": "2018_16_BAL_LAC",
+        "team": "LAC",
+        "opponent": "BAL"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_IND_MIN",
+        "team": "IND",
+        "opponent": "MIN"
+      },
+      "teams": [
+        "LAC",
+        "CHI",
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "IND"
+    },
+    {
+      "id": "00-0035640:2019_17_SF_SEA",
+      "playerId": "00-0035640",
+      "name": "DK Metcalf",
+      "length": 104,
+      "start": {
+        "date": "2019-12-29",
+        "season": 2019,
+        "game": "2019_17_SF_SEA",
+        "team": "SEA",
+        "opponent": "SF"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_PIT_NO",
+        "team": "PIT",
+        "opponent": "NO"
+      },
+      "teams": [
+        "SEA",
+        "PIT"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "PIT"
+    },
+    {
+      "id": "00-0036322:2020_01_GB_MIN",
+      "playerId": "00-0036322",
+      "name": "Justin Jefferson",
+      "length": 99,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_GB_MIN",
+        "team": "MIN",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_IND_MIN",
+        "team": "MIN",
+        "opponent": "IND"
+      },
+      "teams": [
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "MIN"
+    },
+    {
+      "id": "00-0036252:2020_01_IND_JAX",
+      "playerId": "00-0036252",
+      "name": "Michael Pittman",
+      "length": 98,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_IND_JAX",
+        "team": "IND",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-10-01",
+        "season": 2026,
+        "game": "2026_04_PIT_CLE",
+        "team": "PIT",
+        "opponent": "CLE"
+      },
+      "teams": [
+        "IND",
+        "PIT"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "PIT"
+    },
+    {
+      "id": "00-0036900:2021_01_MIN_CIN",
+      "playerId": "00-0036900",
+      "name": "Ja'Marr Chase",
+      "length": 84,
+      "start": {
+        "date": "2021-09-12",
+        "season": 2021,
+        "game": "2021_01_MIN_CIN",
+        "team": "CIN",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_CIN_BAL",
+        "team": "CIN",
+        "opponent": "BAL"
+      },
+      "teams": [
+        "CIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "CIN"
+    },
+    {
+      "id": "00-0035676:2021_05_TEN_JAX",
+      "playerId": "00-0035676",
+      "name": "A.J. Brown",
+      "length": 75,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_TEN_JAX",
+        "team": "TEN",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-10-22",
+        "season": 2026,
+        "game": "2026_07_NE_CHI",
+        "team": "NE",
+        "opponent": "CHI"
+      },
+      "teams": [
+        "TEN",
+        "PHI",
+        "NE"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "NE"
+    },
+    {
+      "id": "00-0034960:2021_15_NE_IND",
+      "playerId": "00-0034960",
+      "name": "Jakobi Meyers",
+      "length": 71,
+      "start": {
+        "date": "2021-12-18",
+        "season": 2021,
+        "game": "2021_15_NE_IND",
+        "team": "NE",
+        "opponent": "IND"
+      },
+      "last": {
+        "date": "2026-10-18",
+        "season": 2026,
+        "game": "2026_06_HOU_JAX",
+        "team": "JAX",
+        "opponent": "HOU"
+      },
+      "teams": [
+        "NE",
+        "LV",
+        "JAX"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "JAX"
+    },
+    {
+      "id": "00-0033906:2021_05_NO_WAS",
+      "playerId": "00-0033906",
+      "name": "Alvin Kamara",
+      "length": 68,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_NO_WAS",
+        "team": "NO",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_PIT_NO",
+        "team": "NO",
+        "opponent": "PIT"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "NO"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL",
+      "playerId": "00-0034383",
+      "name": "Dalton Schultz",
+      "length": 67,
+      "start": {
+        "date": "2022-10-23",
+        "season": 2022,
+        "game": "2022_07_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_NYG_HOU",
+        "team": "HOU",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "DAL",
+        "HOU"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "HOU"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE",
+      "playerId": "00-0035229",
+      "name": "T.J. Hockenson",
+      "length": 66,
+      "start": {
+        "date": "2021-11-21",
+        "season": 2021,
+        "game": "2021_11_DET_CLE",
+        "team": "DET",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_IND_MIN",
+        "team": "MIN",
+        "opponent": "IND"
+      },
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "MIN"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI",
+      "playerId": "00-0036912",
+      "name": "DeVonta Smith",
+      "length": 66,
+      "start": {
+        "date": "2022-09-19",
+        "season": 2022,
+        "game": "2022_02_MIN_PHI",
+        "team": "PHI",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-10-18",
+        "season": 2026,
+        "game": "2026_06_CAR_PHI",
+        "team": "PHI",
+        "opponent": "CAR"
+      },
+      "teams": [
+        "PHI"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "PHI"
+    },
+    {
+      "id": "00-0037744:2022_10_ARI_LA",
+      "playerId": "00-0037744",
+      "name": "Trey McBride",
+      "length": 65,
+      "start": {
+        "date": "2022-11-13",
+        "season": 2022,
+        "game": "2022_10_ARI_LA",
+        "team": "ARI",
+        "opponent": "LA"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_DEN_ARI",
+        "team": "ARI",
+        "opponent": "DEN"
+      },
+      "teams": [
+        "ARI"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "ARI"
+    },
+    {
+      "id": "00-0033699:2021_02_DAL_LAC",
+      "playerId": "00-0033699",
+      "name": "Austin Ekeler",
+      "length": 63,
+      "start": {
+        "date": "2021-09-19",
+        "season": 2021,
+        "game": "2021_02_DAL_LAC",
+        "team": "LAC",
+        "opponent": "DAL"
+      },
+      "last": {
+        "date": "2026-10-19",
+        "season": 2026,
+        "game": "2026_06_WAS_SF",
+        "team": "WAS",
+        "opponent": "SF"
+      },
+      "teams": [
+        "LAC",
+        "WAS"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "WAS"
+    },
+    {
+      "id": "00-0036554:2021_14_SEA_HOU",
+      "playerId": "00-0036554",
+      "name": "Nico Collins",
+      "length": 62,
+      "start": {
+        "date": "2021-12-12",
+        "season": 2021,
+        "game": "2021_14_SEA_HOU",
+        "team": "HOU",
+        "opponent": "SEA"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_NYG_HOU",
+        "team": "HOU",
+        "opponent": "NYG"
+      },
+      "teams": [
+        "HOU"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "HOU"
+    },
+    {
+      "id": "00-0037239:2022_01_NO_ATL",
+      "playerId": "00-0037239",
+      "name": "Chris Olave",
+      "length": 62,
+      "start": {
+        "date": "2022-09-11",
+        "season": 2022,
+        "game": "2022_01_NO_ATL",
+        "team": "NO",
+        "opponent": "ATL"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_PIT_NO",
+        "team": "NO",
+        "opponent": "PIT"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "NO"
+    },
+    {
+      "id": "00-0033280:2022_01_CLE_CAR",
+      "playerId": "00-0033280",
+      "name": "Christian McCaffrey",
+      "length": 61,
+      "start": {
+        "date": "2022-09-11",
+        "season": 2022,
+        "game": "2022_01_CLE_CAR",
+        "team": "CAR",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_SF_ATL",
+        "team": "SF",
+        "opponent": "ATL"
+      },
+      "teams": [
+        "CAR",
+        "SF"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "SF"
+    },
+    {
+      "id": "00-0038543:2023_01_LA_SEA",
+      "playerId": "00-0038543",
+      "name": "Jaxon Smith-Njigba",
+      "length": 58,
+      "start": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_LA_SEA",
+        "team": "SEA",
+        "opponent": "LA"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_KC_SEA",
+        "team": "SEA",
+        "opponent": "KC"
+      },
+      "teams": [
+        "SEA"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "SEA"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL",
+      "playerId": "00-0039064",
+      "name": "Zay Flowers",
+      "length": 56,
+      "start": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_HOU_BAL",
+        "team": "BAL",
+        "opponent": "HOU"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_CIN_BAL",
+        "team": "BAL",
+        "opponent": "CIN"
+      },
+      "teams": [
+        "BAL"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "BAL"
+    },
+    {
+      "id": "00-0038997:2023_01_JAX_IND",
+      "playerId": "00-0038997",
+      "name": "Josh Downs",
+      "length": 54,
+      "start": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_JAX_IND",
+        "team": "IND",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_IND_MIN",
+        "team": "IND",
+        "opponent": "MIN"
+      },
+      "teams": [
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "IND"
+    },
+    {
+      "id": "00-0037238:2023_02_GB_ATL",
+      "playerId": "00-0037238",
+      "name": "Drake London",
+      "length": 51,
+      "start": {
+        "date": "2023-09-17",
+        "season": 2023,
+        "game": "2023_02_GB_ATL",
+        "team": "ATL",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_SF_ATL",
+        "team": "ATL",
+        "opponent": "SF"
+      },
+      "teams": [
+        "ATL"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "ATL"
+    },
+    {
+      "id": "00-0038542:2023_09_MIN_ATL",
+      "playerId": "00-0038542",
+      "name": "Bijan Robinson",
+      "length": 50,
+      "start": {
+        "date": "2023-11-05",
+        "season": 2023,
+        "game": "2023_09_MIN_ATL",
+        "team": "ATL",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_SF_ATL",
+        "team": "ATL",
+        "opponent": "SF"
+      },
+      "teams": [
+        "ATL"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "ATL"
     }
   ]
 }

@@ -142,3 +142,11 @@ export function mergeReceivingArchive(rows, archive) {
 export function topReceivingStreaks(rows, limit = 100) {
   return sortReceivingStreaks(rows).slice(0, limit).map((row, i) => ({ ...row, rank: i + 1 }));
 }
+
+// The weekly watch list must not lose qualifying runs below the all-time top 100.
+export function receivingWatchStreaks(rows, season, currentTeams = new Map()) {
+  return sortReceivingStreaks(rows).filter(row => row.length >= 50 &&
+    (row.active || row.endedBy?.season === season)).map(row => ({ ...row,
+    currentTeam: row.active ? currentTeams.get(row.playerId) || row.last.team : null,
+  }));
+}

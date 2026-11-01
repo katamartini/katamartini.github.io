@@ -5,7 +5,7 @@ import { createGunzip } from 'node:zlib';
 import { parseCsv, currentRoster } from '../nfl/franchise-leaders-data.mjs';
 import { readProjectedCsv } from '../nfl/kicking-data.mjs';
 import { FIRST_STATS_SEASON, FIRST_PARTICIPATION_SEASON, KNOWN_MISSING_GAMES, KNOWN_INCOMPLETE_GAMES, STAT_COLUMNS, SNAP_COLUMNS,
-  receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks } from '../nfl/receiving-streaks-data.mjs';
+  receivingAppearances, calculateReceivingStreaks, mergeReceivingArchive, topReceivingStreaks, receivingWatchStreaks } from '../nfl/receiving-streaks-data.mjs';
 import { RECEIVING_ARCHIVE } from '../nfl/receiving-streaks-archive.mjs';
 
 const now = new Date(), season = now.getUTCMonth() < 8 ? now.getUTCFullYear() - 1 : now.getUTCFullYear();
@@ -76,11 +76,13 @@ stats = stats.filter(r => gameIds.has(r.game_id)); snaps = snaps.filter(r => gam
 const { appearances, participationGames } = receivingAppearances(stats, snaps, games, players);
 const calculated = calculateReceivingStreaks(appearances, games, participationGames, players, currentIds);
 const leaders = topReceivingStreaks(mergeReceivingArchive(calculated, RECEIVING_ARCHIVE));
+const currentTeams = new Map(roster.rows.filter(p => currentIds.has(p.gsis_id)).map(p => [p.gsis_id, p.team]));
+const watchStreaks = receivingWatchStreaks(calculated, season, currentTeams);
 if (leaders.length !== 100 || !leaders.some(r => r.name === 'Jerry Rice' && r.length === 274) || !leaders.some(r => r.name === 'Larry Fitzgerald' && r.length === 256))
   throw new Error('Receiving leaderboard validation failed; retaining saved data');
 const latestWeek = Math.max(...games.filter(g => Number(g.season) === season).map(g => Number(g.week)));
 if (!Number.isFinite(latestWeek)) throw new Error('No current-season games; retaining saved data');
-const sourceHash = createHash('sha256').update(JSON.stringify({ season, through, latestWeek, rosterWeek: roster.week, missingGames, leaders })).digest('hex');
+const sourceHash = createHash('sha256').update(JSON.stringify({ season, through, latestWeek, rosterWeek: roster.week, missingGames, leaders, watchStreaks })).digest('hex');
 let saved;
 try { saved = JSON.parse(await readFile(destination, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
 if (saved && (through < saved.through || season * 100 + roster.week < saved.season * 100 + saved.rosterWeek)) throw new Error('Receiving feed regressed');
@@ -88,6 +90,6 @@ if (sourceHash === saved?.sourceHash) console.log('Receiving streaks are unchang
 else {
   await writeFile(destination, `${JSON.stringify({ schemaVersion: 1, checkedAt: now.toISOString(), season, through, latestWeek,
     rosterWeek: roster.week, firstStatsSeason: FIRST_STATS_SEASON, firstParticipationSeason: FIRST_PARTICIPATION_SEASON,
-    historicalCoverage: 'partial', missingGames, sourceHash, sources, scheduleSource: scheduleUrl, rosterSource: rosterUrl, leaders }, null, 2)}\n`);
+    historicalCoverage: 'partial', missingGames, sourceHash, sources, scheduleSource: scheduleUrl, rosterSource: rosterUrl, leaders, watchStreaks }, null, 2)}\n`);
   console.log(`Saved top ${leaders.length} recorded receiving streaks through ${through}.`);
 }
