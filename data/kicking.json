@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-01T08:40:37.823Z",
+  "checkedAt": "2026-11-02T14:48:52.202Z",
   "firstSeason": 1999,
   "season": 2026,
-  "through": "2026-10-29",
+  "through": "2026-11-01",
   "latestWeek": 8,
   "rosterWeek": 8,
-  "sourceHash": "3ca669138bf26889642cbb8841f2c8969bb08f10bde531bbb55f23a6167fcc40",
+  "sourceHash": "0de80e7e06f93225ce21cec04f9ea12239231a8cf922a11c50596b5214960159",
   "sources": [
     {
       "season": 1999,
@@ -1932,7 +1932,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 1,
-            "rank": 117,
+            "rank": 118,
             "tied": true,
             "record": 26,
             "recordHolders": [
@@ -1953,7 +1953,7 @@
             ],
             "nextHigher": {
               "length": 2,
-              "rank": 93,
+              "rank": 94,
               "holders": [
                 {
                   "id": "fg:00-0003395:2000_17_NYJ_BAL:2364",
@@ -2294,7 +2294,7 @@
               ]
             },
             "next": {
-              "rank": 93,
+              "rank": 94,
               "tied": true
             },
             "lowerBound": false
@@ -5705,6 +5705,321 @@
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null
+      },
+      {
+        "id": "fg:00-0036162:2024_15_BUF_DET:3452",
+        "playerId": "00-0036162",
+        "name": "Tyler Bass",
+        "length": 21,
+        "fieldGoals": 21,
+        "extraPoints": 0,
+        "teams": [
+          "BUF"
+        ],
+        "start": {
+          "date": "2024-12-15",
+          "team": "BUF",
+          "opponent": "DET",
+          "game": "2024_15_BUF_DET",
+          "play": 3452,
+          "type": "FG",
+          "distance": 50
+        },
+        "last": {
+          "date": "2026-11-01",
+          "team": "BUF",
+          "opponent": "BAL",
+          "game": "2026_08_BAL_BUF",
+          "play": 2479,
+          "type": "FG",
+          "distance": 51
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 21,
+            "rank": 87,
+            "tied": true,
+            "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 22,
+              "rank": 72,
+              "holders": [
+                {
+                  "id": "fg:00-0028058:2012_02_BAL_PHI:2744",
+                  "name": "Alex Henery",
+                  "teams": [
+                    "PHI"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2012,
+                  "lastSeason": 2012,
+                  "years": "2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0028660:2019_08_WAS_MIN:510",
+                  "name": "Dan Bailey",
+                  "teams": [
+                    "MIN"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2019,
+                  "lastSeason": 2020,
+                  "years": "2019–2020",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+                  "name": "Evan McPherson",
+                  "teams": [
+                    "CIN"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2025,
+                  "lastSeason": 2026,
+                  "years": "2025–2026",
+                  "active": true,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0006800:2010_04_DET_GB:2402",
+                  "name": "Jason Hanson",
+                  "teams": [
+                    "DET"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2010,
+                  "lastSeason": 2011,
+                  "years": "2010–2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0034794:2019_16_CIN_MIA:5609",
+                  "name": "Jason Sanders",
+                  "teams": [
+                    "MIA"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2019,
+                  "lastSeason": 2020,
+                  "years": "2019–2020",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0019770:2006_11_NYG_JAX:256",
+                  "name": "Jay Feely",
+                  "teams": [
+                    "NYG",
+                    "MIA"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2006,
+                  "lastSeason": 2007,
+                  "years": "2006–2007",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0020737:2004_11_PIT_CIN:628",
+                  "name": "Jeff Reed",
+                  "teams": [
+                    "PIT"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2004,
+                  "lastSeason": 2005,
+                  "years": "2004–2005",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0009028:2002_02_DET_CAR:1342",
+                  "name": "John Kasay",
+                  "teams": [
+                    "CAR"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2002,
+                  "lastSeason": 2003,
+                  "years": "2002–2003",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029597:2018_16_BAL_LAC:2756",
+                  "name": "Justin Tucker",
+                  "teams": [
+                    "BAL"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2018,
+                  "lastSeason": 2019,
+                  "years": "2018–2019",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0020578:2017_16_ATL_NO:2303",
+                  "name": "Matt Bryant",
+                  "teams": [
+                    "ATL"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2017,
+                  "lastSeason": 2018,
+                  "years": "2017–2018",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0015784:1999_09_BAL_CLE:1906",
+                  "name": "Matt Stover",
+                  "teams": [
+                    "BAL"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 1999,
+                  "lastSeason": 2000,
+                  "years": "1999–2000",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0022737:2009_07_SD_KC:2055",
+                  "name": "Nate Kaeding",
+                  "teams": [
+                    "LAC"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2009,
+                  "lastSeason": 2010,
+                  "years": "2009–2010",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0026968:2011_03_KC_SD:2930",
+                  "name": "Ryan Succop",
+                  "teams": [
+                    "KC"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2011,
+                  "lastSeason": 2011,
+                  "years": "2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0039576:2025_03_IND_TEN:2180",
+                  "name": "Spencer Shrader",
+                  "teams": [
+                    "IND"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2025,
+                  "lastSeason": 2026,
+                  "years": "2025–2026",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0025944:2013_05_SEA_IND:2419",
+                  "name": "Steven Hauschka",
+                  "teams": [
+                    "SEA"
+                  ],
+                  "opponent": null,
+                  "length": 22,
+                  "firstSeason": 2013,
+                  "lastSeason": 2013,
+                  "years": "2013",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
+            "next": {
+              "rank": 72,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "BUF",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 21,
+            "rank": 1,
+            "tied": false,
+            "record": 21,
+            "recordHolders": [
+              {
+                "id": "fg:00-0036162:2024_15_BUF_DET:3452",
+                "name": "Tyler Bass",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 21,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "BUF"
+        }
       },
       {
         "id": "archive:john-carney-1994",
@@ -14850,8 +15165,17 @@
           "type": "FG",
           "distance": 52
         },
-        "endedBy": null,
-        "active": true,
+        "endedBy": {
+          "date": "2026-11-01",
+          "team": "MIN",
+          "opponent": "DET",
+          "game": "2026_08_MIN_DET",
+          "play": 150,
+          "type": "FG",
+          "distance": 57,
+          "result": "missed"
+        },
+        "active": false,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null,
@@ -23005,8 +23329,17 @@
           "type": "FG",
           "distance": 52
         },
-        "endedBy": null,
-        "active": true,
+        "endedBy": {
+          "date": "2026-11-01",
+          "team": "MIN",
+          "opponent": "DET",
+          "game": "2026_08_MIN_DET",
+          "play": 150,
+          "type": "FG",
+          "distance": 57,
+          "result": "missed"
+        },
+        "active": false,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null,
@@ -23268,7 +23601,7 @@
       "value": 20,
       "action": "Extended from 19 to 20 kicks.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_02_MIN_CHI",
@@ -23290,7 +23623,7 @@
       "value": 23,
       "action": "Extended from 20 to 23 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_03_MIN_TB",
@@ -23312,7 +23645,7 @@
       "value": 26,
       "action": "Extended from 23 to 26 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_04_MIA_MIN",
@@ -23334,7 +23667,7 @@
       "value": 31,
       "action": "Extended from 26 to 31 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_05_MIN_NO",
@@ -23356,7 +23689,7 @@
       "value": 34,
       "action": "Extended from 31 to 34 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_07_IND_MIN",
@@ -23378,7 +23711,7 @@
       "value": 36,
       "action": "A 59-yard field goal was blocked, ending the run at 36 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0034794:2024_08_ARI_MIA:813:2026_01_NYJ_TEN",
@@ -23400,7 +23733,7 @@
       "value": 28,
       "action": "A 54-yard field goal was missed, ending the run at 28 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_03_CAR_CLE",
@@ -23422,7 +23755,7 @@
       "value": 20,
       "action": "Extended from 18 to 20 kicks (+2).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_04_PIT_CLE",
@@ -23444,7 +23777,7 @@
       "value": 22,
       "action": "Extended from 20 to 22 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_05_CLE_NYJ",
@@ -23466,7 +23799,7 @@
       "value": 24,
       "action": "Extended from 22 to 24 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_06_BAL_CLE",
@@ -23488,7 +23821,7 @@
       "value": 25,
       "action": "A 48-yard field goal was missed, ending the run at 25 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_01_CLE_JAX",
@@ -23510,7 +23843,7 @@
       "value": 22,
       "action": "Extended from 20 to 22 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_02_JAX_DEN",
@@ -23532,7 +23865,7 @@
       "value": 24,
       "action": "A 54-yard field goal was missed, ending the run at 24 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039576:2025_03_IND_TEN:2180:2026_06_TEN_IND",
@@ -23554,7 +23887,7 @@
       "value": 21,
       "action": "Extended from 19 to 21 kicks (+2).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0039576:2025_03_IND_TEN:2180:2026_07_IND_MIN",
@@ -23576,7 +23909,7 @@
       "value": 22,
       "action": "A 56-yard field goal was missed, ending the run at 22 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_03_CIN_PIT",
@@ -23598,7 +23931,7 @@
       "value": 20,
       "action": "Extended from 18 to 20 kicks (+2).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_04_JAX_CIN",
@@ -23620,7 +23953,7 @@
       "value": 21,
       "action": "Extended from 20 to 21 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_05_CIN_MIA",
@@ -23642,7 +23975,29 @@
       "value": 22,
       "action": "Extended from 21 to 22 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
+    },
+    {
+      "id": "fg:00-0036162:2024_15_BUF_DET:3452:2026_08_BAL_BUF",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "BUF",
+      "title": "Tyler Bass: 21 consecutive field goals made",
+      "detail": "Run began 2024-12-15. Length after this game: 21.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_08_BAL_BUF",
+      "date": "2026-11-01",
+      "season": 2026,
+      "week": 8,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 18,
+      "after": 21,
+      "value": 21,
+      "action": "Extended from 18 to 21 kicks (+3).",
+      "newlyNoteworthy": true,
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039409:2025_07_LA_JAX:3900:2026_01_CLE_JAX",
@@ -23664,7 +24019,7 @@
       "value": 63,
       "action": "Extended from 57 to 63 kicks (+6).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039409:2025_07_LA_JAX:3900:2026_02_JAX_DEN",
@@ -23686,7 +24041,7 @@
       "value": 66,
       "action": "A 54-yard field goal was missed, ending the run at 66 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_01_GB_MIN",
@@ -23708,7 +24063,7 @@
       "value": 43,
       "action": "Extended from 38 to 43 kicks (+5).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_02_MIN_CHI",
@@ -23730,7 +24085,7 @@
       "value": 46,
       "action": "Extended from 43 to 46 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_03_MIN_TB",
@@ -23752,7 +24107,7 @@
       "value": 51,
       "action": "Extended from 46 to 51 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_04_MIA_MIN",
@@ -23774,7 +24129,7 @@
       "value": 56,
       "action": "Extended from 51 to 56 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_05_MIN_NO",
@@ -23796,7 +24151,7 @@
       "value": 61,
       "action": "Extended from 56 to 61 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_07_IND_MIN",
@@ -23818,7 +24173,7 @@
       "value": 64,
       "action": "A 59-yard field goal was blocked, ending the run at 64 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_04_PIT_CLE",
@@ -23840,7 +24195,7 @@
       "value": 42,
       "action": "Extended from 37 to 42 kicks (+5).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     },
     {
       "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_05_CLE_NYJ",
@@ -23862,7 +24217,7 @@
       "value": 44,
       "action": "A 33-yard extra point was missed, ending the run at 44 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-10-29"
+      "sourceThrough": "2026-11-01"
     }
   ]
 }
