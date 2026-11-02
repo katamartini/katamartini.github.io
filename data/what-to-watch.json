@@ -12862,7 +12862,7 @@
       "detail": "Run began 2023-09-10. Last verified 2026-09-27.",
       "action": "Jalon Daniels started the next team game, ending Baker Mayfield’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
-      "sourceThrough": "2026-10-29",
+      "sourceThrough": "2026-11-01",
       "leaderboard": {
         "label": "Consecutive QB starts",
         "franchiseTeam": "TB",
@@ -13000,7 +13000,7 @@
       "detail": "Run began 2024-09-08. Last verified 2026-09-20.",
       "action": "Case Keenum started the next team game, ending Caleb Williams’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
-      "sourceThrough": "2026-10-29",
+      "sourceThrough": "2026-11-01",
       "leaderboard": {
         "label": "Consecutive QB starts",
         "franchiseTeam": "CHI",
@@ -13059,7 +13059,7 @@
           "coverage": "1950+",
           "partial": false,
           "length": 36,
-          "rank": 124,
+          "rank": 125,
           "tied": true,
           "record": 253,
           "recordHolders": [
@@ -13108,6 +13108,20 @@
                 "lastSeason": 1971,
                 "years": "1968–1971",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "NE:2024_06_HOU_NE:00-0039851",
+                "name": "Drake Maye",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 37,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -17662,7 +17676,7 @@
       "detail": "Run began 2025-09-07. Last verified 2026-09-09.",
       "action": "Drew Lock started the next team game, ending Sam Darnold’s starting streak.",
       "href": "/nfl/QBs.html#all-time",
-      "sourceThrough": "2026-10-29",
+      "sourceThrough": "2026-11-01",
       "leaderboard": {
         "label": "Consecutive QB starts",
         "franchiseTeam": "SEA",
@@ -17756,7 +17770,7 @@
           ],
           "nextHigher": {
             "length": 19,
-            "rank": 367,
+            "rank": 368,
             "holders": [
               {
                 "id": "KC:1982-12-19_KC_DEN:historical:billkenney",
@@ -17882,20 +17896,6 @@
                 "lastSeason": 2007,
                 "years": "2006–2007",
                 "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "ARI:2025_06_ARI_IND:00-0033119",
-                "name": "Jacoby Brissett",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 19,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
                 "lowerBound": false
               },
               {
@@ -18111,7 +18111,7 @@
             ]
           },
           "next": {
-            "rank": 367,
+            "rank": 368,
             "tied": true
           },
           "lowerBound": false
@@ -31833,7 +31833,7 @@
     }
   ],
   "coverage": {
-    "qbs": "2026-10-29",
+    "qbs": "2026-11-01",
     "receiving": "2026-11-01",
     "kicking": "2026-11-01"
   },
@@ -31987,7 +31987,7 @@
           "value": 30,
           "action": "Drake Maye started for the Patriots, extending the run from 29 to 30 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:SEA:wins:2026_01_NE_SEA",
@@ -32032,7 +32032,7 @@
           "value": 18,
           "action": "Sam Darnold started for the Seahawks, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031381:2015_08_GB_DEN:2026_01_SF_LA",
@@ -32098,7 +32098,7 @@
           "value": 18,
           "action": "Matthew Stafford started for the Rams, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0037744:2022_10_ARI_LA:2026_01_ARI_LAC",
@@ -32429,7 +32429,7 @@
           "value": 123,
           "action": "Josh Allen started for the Bills, extending the run from 122 to 123 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "home:HOU:wins:2026_01_BUF_HOU",
@@ -32530,7 +32530,7 @@
           "value": 35,
           "action": "Caleb Williams started for the Bears, extending the run from 34 to 35 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:CHI:CAR:winless:2026_01_CHI_CAR",
@@ -32664,7 +32664,7 @@
           "value": 18,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:JAX:wins:2026_01_CLE_JAX",
@@ -32709,7 +32709,7 @@
           "value": 18,
           "action": "Dak Prescott started for the Cowboys, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0035229:2021_11_DET_CLE:2026_01_GB_MIN",
@@ -32887,7 +32887,7 @@
           "value": 70,
           "action": "Jared Goff started for the Lions, extending the run from 69 to 70 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "away:NYJ:losses:2026_01_NYJ_TEN",
@@ -32997,7 +32997,7 @@
           "value": 18,
           "action": "Cam Ward started for the Titans, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0036900:2021_01_MIN_CIN:2026_01_TB_CIN",
@@ -33064,7 +33064,7 @@
           "value": 52,
           "action": "Baker Mayfield started for the Buccaneers, extending the run from 51 to 52 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031588:2015_04_MIN_DEN:2026_01_WAS_PHI",
@@ -33175,7 +33175,7 @@
           "value": 35,
           "action": "Bo Nix started for the Broncos, extending the run from 34 to 35 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:KC:losses:2026_01_DEN_KC",
@@ -33253,7 +33253,7 @@
           "value": 124,
           "action": "Josh Allen started for the Bills, extending the run from 123 to 124 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "DET:2021_18_GB_DET:00-0033106:2026_02_DET_BUF",
@@ -33275,7 +33275,7 @@
           "value": 71,
           "action": "Jared Goff started for the Lions, extending the run from 70 to 71 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:BUF:DET:winless:2026_02_DET_BUF",
@@ -33374,7 +33374,7 @@
           "value": 53,
           "action": "Baker Mayfield started for the Buccaneers, extending the run from 52 to 53 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:GB:losses:2026_02_GB_NYJ",
@@ -33583,7 +33583,7 @@
           "value": 36,
           "action": "Bo Nix started for the Broncos, extending the run from 35 to 36 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_02_JAX_DEN",
@@ -33627,7 +33627,7 @@
           "value": 19,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 18 to 19 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:JAX:wins:2026_02_JAX_DEN",
@@ -33826,7 +33826,7 @@
           "value": 36,
           "action": "Caleb Williams started for the Bears, extending the run from 35 to 36 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_02_MIN_CHI",
@@ -33992,7 +33992,7 @@
           "value": 19,
           "action": "Cam Ward started for the Titans, extending the run from 18 to 19 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0035640:2019_17_SF_SEA:2026_02_PIT_NE",
@@ -34036,7 +34036,7 @@
           "value": 31,
           "action": "Drake Maye started for the Patriots, extending the run from 30 to 31 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0037744:2022_10_ARI_LA:2026_02_SEA_ARI",
@@ -34247,7 +34247,7 @@
           "value": 18,
           "action": "Drew Lock started the next team game, ending Sam Darnold’s starting streak.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031588:2015_04_MIN_DEN:2026_02_WAS_DAL",
@@ -34291,7 +34291,7 @@
           "value": 19,
           "action": "Dak Prescott started for the Cowboys, extending the run from 18 to 19 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031381:2015_08_GB_DEN:2026_02_NYG_LA",
@@ -34358,7 +34358,7 @@
           "value": 19,
           "action": "Matthew Stafford started for the Rams, extending the run from 18 to 19 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:LA:NYG:winless:2026_02_NYG_LA",
@@ -34492,7 +34492,7 @@
           "value": 20,
           "action": "Dak Prescott started for the Cowboys, extending the run from 19 to 20 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_03_CAR_CLE",
@@ -34856,7 +34856,7 @@
           "value": 37,
           "action": "Bo Nix started for the Broncos, extending the run from 36 to 37 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "LA:2025_01_HOU_LA:00-0026498:2026_03_LA_DEN",
@@ -34878,7 +34878,7 @@
           "value": 20,
           "action": "Matthew Stafford started for the Rams, extending the run from 19 to 20 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:LA:DEN:winless:2026_03_LA_DEN",
@@ -34933,7 +34933,7 @@
           "value": 125,
           "action": "Josh Allen started for the Bills, extending the run from 124 to 125 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:LAC:losses:2026_03_LAC_BUF",
@@ -35133,7 +35133,7 @@
           "value": 54,
           "action": "Baker Mayfield started for the Buccaneers, extending the run from 53 to 54 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0034960:2021_15_NE_IND:2026_03_NE_JAX",
@@ -35200,7 +35200,7 @@
           "value": 20,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 19 to 20 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "NE:2024_06_HOU_NE:00-0039851:2026_03_NE_JAX",
@@ -35222,7 +35222,7 @@
           "value": 32,
           "action": "Drake Maye started for the Patriots, extending the run from 31 to 32 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "DET:2021_18_GB_DET:00-0033106:2026_03_NYJ_DET",
@@ -35244,7 +35244,7 @@
           "value": 72,
           "action": "Jared Goff started for the Lions, extending the run from 71 to 72 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031588:2015_04_MIN_DEN:2026_03_SEA_WAS",
@@ -35412,7 +35412,7 @@
           "value": 20,
           "action": "Cam Ward started for the Titans, extending the run from 19 to 20 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0036912:2022_02_MIN_PHI:2026_03_PHI_CHI",
@@ -35456,7 +35456,7 @@
           "value": 36,
           "action": "Case Keenum started the next team game, ending Caleb Williams’s starting streak.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         }
       ],
       "counts": {
@@ -35634,7 +35634,7 @@
           "value": 16,
           "action": "Jacoby Brissett started for the Cardinals, extending the run from 15 to 16 starts.",
           "newlyNoteworthy": true,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0034383:2022_07_DET_DAL:2026_04_DAL_HOU",
@@ -35700,7 +35700,7 @@
           "value": 21,
           "action": "Dak Prescott started for the Cowboys, extending the run from 20 to 21 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0033280:2022_01_CLE_CAR:2026_04_DEN_SF",
@@ -35744,7 +35744,7 @@
           "value": 38,
           "action": "Bo Nix started for the Broncos, extending the run from 37 to 38 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "DET:2021_18_GB_DET:00-0033106:2026_04_DET_CAR",
@@ -35766,7 +35766,7 @@
           "value": 73,
           "action": "Jared Goff started for the Lions, extending the run from 72 to 73 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup-away:CAR:DET:winless:2026_04_DET_CAR",
@@ -35821,7 +35821,7 @@
           "value": 54,
           "action": "Jalon Daniels started the next team game, ending Baker Mayfield’s starting streak.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031588:2015_04_MIN_DEN:2026_04_IND_WAS",
@@ -35975,7 +35975,7 @@
           "value": 21,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 20 to 21 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0030506:2014_01_TEN_KC:2026_04_KC_LV",
@@ -36074,7 +36074,7 @@
           "value": 21,
           "action": "Matthew Stafford started for the Rams, extending the run from 20 to 21 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0038543:2023_01_LA_SEA:2026_04_LAC_SEA",
@@ -36332,7 +36332,7 @@
           "value": 126,
           "action": "Josh Allen started for the Bills, extending the run from 125 to 126 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "NE:2024_06_HOU_NE:00-0039851:2026_04_NE_BUF",
@@ -36354,7 +36354,7 @@
           "value": 33,
           "action": "Drake Maye started for the Patriots, extending the run from 32 to 33 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0039064:2023_01_HOU_BAL:2026_04_TEN_BAL",
@@ -36431,7 +36431,7 @@
           "value": 21,
           "action": "Cam Ward started for the Titans, extending the run from 20 to 21 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0033906:2021_05_NO_WAS:2026_04_ATL_NO",
@@ -36553,7 +36553,7 @@
           "value": 22,
           "action": "Dak Prescott started for the Cowboys, extending the run from 21 to 22 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0039064:2023_01_HOU_BAL:2026_05_BAL_ATL",
@@ -36718,7 +36718,7 @@
           "value": 39,
           "action": "Bo Nix started for the Broncos, extending the run from 38 to 39 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:LAC:losses:2026_05_DEN_LAC",
@@ -36795,7 +36795,7 @@
           "value": 17,
           "action": "Jacoby Brissett started for the Cardinals, extending the run from 16 to 17 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "DET:2021_18_GB_DET:00-0033106:2026_05_DET_ARI",
@@ -36817,7 +36817,7 @@
           "value": 74,
           "action": "Jared Goff started for the Lions, extending the run from 73 to 74 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "home:ARI:losses:2026_05_DET_ARI",
@@ -37038,7 +37038,7 @@
           "value": 22,
           "action": "Cam Ward started for the Titans, extending the run from 21 to 22 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0030279:2018_16_BAL_LAC:2026_05_IND_PIT",
@@ -37215,7 +37215,7 @@
           "value": 34,
           "action": "Drake Maye started for the Patriots, extending the run from 33 to 34 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0033906:2021_05_NO_WAS:2026_05_MIN_NO",
@@ -37482,7 +37482,7 @@
           "value": 22,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 21 to 22 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:PHI:JAX:winless:2026_05_PHI_JAX",
@@ -37718,7 +37718,7 @@
           "value": 127,
           "action": "Josh Allen started for the Bills, extending the run from 126 to 127 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "home:LA:wins:2026_05_BUF_LA",
@@ -37763,7 +37763,7 @@
           "value": 22,
           "action": "Matthew Stafford started for the Rams, extending the run from 21 to 22 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         }
       ],
       "counts": {
@@ -37830,7 +37830,7 @@
           "value": 40,
           "action": "Bo Nix started for the Broncos, extending the run from 39 to 40 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031381:2015_08_GB_DEN:2026_06_ARI_LA",
@@ -37896,7 +37896,7 @@
           "value": 18,
           "action": "Jacoby Brissett started for the Cardinals, extending the run from 17 to 18 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "LA:2025_01_HOU_LA:00-0026498:2026_06_ARI_LA",
@@ -37918,7 +37918,7 @@
           "value": 23,
           "action": "Matthew Stafford started for the Rams, extending the run from 22 to 23 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0039064:2023_01_HOU_BAL:2026_06_BAL_CLE",
@@ -38007,7 +38007,7 @@
           "value": 128,
           "action": "Josh Allen started for the Bills, extending the run from 127 to 128 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0036912:2022_02_MIN_PHI:2026_06_CAR_PHI",
@@ -38073,7 +38073,7 @@
           "value": 23,
           "action": "Dak Prescott started for the Cowboys, extending the run from 22 to 23 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:GB:DAL:winless:2026_06_DAL_GB",
@@ -38184,7 +38184,7 @@
           "value": 23,
           "action": "Trevor Lawrence started for the Jaguars, extending the run from 22 to 23 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0030506:2014_01_TEN_KC:2026_06_LAC_KC",
@@ -38350,7 +38350,7 @@
           "value": 35,
           "action": "Drake Maye started for the Patriots, extending the run from 34 to 35 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0035640:2019_17_SF_SEA:2026_06_PIT_TB",
@@ -38549,7 +38549,7 @@
           "value": 23,
           "action": "Cam Ward started for the Titans, extending the run from 22 to 23 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0031588:2015_04_MIN_DEN:2026_06_WAS_SF",
@@ -38705,7 +38705,7 @@
           "value": 36,
           "action": "Drake Maye started for the Patriots, extending the run from 35 to 36 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0036900:2021_01_MIN_CIN:2026_07_CIN_BAL",
@@ -38794,7 +38794,7 @@
           "value": 24,
           "action": "Cam Ward started for the Titans, extending the run from 23 to 24 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0037744:2022_10_ARI_LA:2026_07_DEN_ARI",
@@ -38838,7 +38838,7 @@
           "value": 19,
           "action": "Jacoby Brissett started for the Cardinals, extending the run from 18 to 19 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "DEN:2024_01_DEN_SEA:00-0039732:2026_07_DEN_ARI",
@@ -38860,7 +38860,7 @@
           "value": 41,
           "action": "Bo Nix started for the Broncos, extending the run from 40 to 41 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "home:ARI:losses:2026_07_DEN_ARI",
@@ -38915,7 +38915,7 @@
           "value": 75,
           "action": "Jared Goff started for the Lions, extending the run from 74 to 75 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0030279:2018_16_BAL_LAC:2026_07_IND_MIN",
@@ -39237,7 +39237,7 @@
           "value": 24,
           "action": "Matthew Stafford started for the Rams, extending the run from 23 to 24 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "matchup:LA:LV:winless:2026_07_LA_LV",
@@ -39491,7 +39491,7 @@
           "value": 16,
           "action": "Tyler Shough started for the Saints, extending the run from 15 to 16 starts.",
           "newlyNoteworthy": true,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0033280:2022_01_CLE_CAR:2026_07_SF_ATL",
@@ -39648,7 +39648,7 @@
           "value": 24,
           "action": "Dak Prescott started for the Cowboys, extending the run from 23 to 24 starts.",
           "newlyNoteworthy": false,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "overall:PHI:losses:2026_07_DAL_PHI",
@@ -39693,20 +39693,7 @@
         "2026_08_CHI_SEA"
       ],
       "awaitingFeeds": {
-        "qbs": [
-          "2026_08_ARI_DAL",
-          "2026_08_ATL_TB",
-          "2026_08_BAL_BUF",
-          "2026_08_CLE_PIT",
-          "2026_08_IND_JAX",
-          "2026_08_KC_DEN",
-          "2026_08_LAC_LA",
-          "2026_08_LV_NYJ",
-          "2026_08_MIN_DET",
-          "2026_08_NE_MIA",
-          "2026_08_PHI_WAS",
-          "2026_08_TEN_CIN"
-        ],
+        "qbs": [],
         "receiving": [],
         "kicking": []
       },
@@ -39731,7 +39718,7 @@
           "value": 16,
           "action": "Bryce Young started for the Panthers, extending the run from 15 to 16 starts.",
           "newlyNoteworthy": true,
-          "sourceThrough": "2026-10-29"
+          "sourceThrough": "2026-11-01"
         },
         {
           "id": "00-0037744:2022_10_ARI_LA:2026_08_ARI_DAL",
@@ -39752,6 +39739,50 @@
           "after": 66,
           "value": 66,
           "action": "Extended from 65 to 66 games.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "ARI:2025_06_ARI_IND:00-0033119:2026_08_ARI_DAL",
+          "category": "qb",
+          "kind": "streak",
+          "team": "ARI",
+          "title": "Jacoby Brissett: 20 consecutive starts for his team",
+          "detail": "Run began 2025-10-12.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_ARI_DAL",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 19,
+          "after": 20,
+          "value": 20,
+          "action": "Jacoby Brissett started for the Cardinals, extending the run from 19 to 20 starts.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "DAL:2025_01_DAL_PHI:00-0033077:2026_08_ARI_DAL",
+          "category": "qb",
+          "kind": "streak",
+          "team": "DAL",
+          "title": "Dak Prescott: 25 consecutive starts for his team",
+          "detail": "Run began 2025-09-04.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_ARI_DAL",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 24,
+          "after": 25,
+          "value": 25,
+          "action": "Dak Prescott started for the Cowboys, extending the run from 24 to 25 starts.",
           "newlyNoteworthy": false,
           "sourceThrough": "2026-11-01"
         },
@@ -39864,6 +39895,28 @@
           "after": 56,
           "value": 56,
           "action": "A zero-catch appearance ended the run at 56 games.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "BUF:2018_12_JAX_BUF:00-0034857:2026_08_BAL_BUF",
+          "category": "qb",
+          "kind": "streak",
+          "team": "BUF",
+          "title": "Josh Allen: 129 consecutive starts for his team",
+          "detail": "Run began 2018-11-25.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_BAL_BUF",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 128,
+          "after": 129,
+          "value": 129,
+          "action": "Josh Allen started for the Bills, extending the run from 128 to 129 starts.",
           "newlyNoteworthy": false,
           "sourceThrough": "2026-11-01"
         },
@@ -40090,6 +40143,28 @@
           "sourceThrough": "2026-11-01"
         },
         {
+          "id": "JAX:2025_01_CAR_JAX:00-0036971:2026_08_IND_JAX",
+          "category": "qb",
+          "kind": "streak",
+          "team": "JAX",
+          "title": "Trevor Lawrence: 24 consecutive starts for his team",
+          "detail": "Run began 2025-09-07.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_IND_JAX",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 23,
+          "after": 24,
+          "value": 24,
+          "action": "Trevor Lawrence started for the Jaguars, extending the run from 23 to 24 starts.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
           "id": "matchup-away:JAX:IND:winless:2026_08_IND_JAX",
           "category": "matchup",
           "kind": "drought",
@@ -40141,6 +40216,28 @@
           "after": 198,
           "value": 198,
           "action": "Extended from 197 to 198 games.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "DEN:2024_01_DEN_SEA:00-0039732:2026_08_KC_DEN",
+          "category": "qb",
+          "kind": "streak",
+          "team": "DEN",
+          "title": "Bo Nix: 42 consecutive starts for his team",
+          "detail": "Run began 2024-09-08.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_KC_DEN",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 41,
+          "after": 42,
+          "value": 42,
+          "action": "Bo Nix started for the Broncos, extending the run from 41 to 42 starts.",
           "newlyNoteworthy": false,
           "sourceThrough": "2026-11-01"
         },
@@ -40210,6 +40307,28 @@
           "value": 5,
           "action": "Reached the 5-game watch threshold in this game.",
           "newlyNoteworthy": true,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "LA:2025_01_HOU_LA:00-0026498:2026_08_LAC_LA",
+          "category": "qb",
+          "kind": "streak",
+          "team": "LA",
+          "title": "Matthew Stafford: 25 consecutive starts for his team",
+          "detail": "Run began 2025-09-07.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_LAC_LA",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 24,
+          "after": 25,
+          "value": 25,
+          "action": "Matthew Stafford started for the Rams, extending the run from 24 to 25 starts.",
+          "newlyNoteworthy": false,
           "sourceThrough": "2026-11-01"
         },
         {
@@ -40336,6 +40455,28 @@
           "sourceThrough": "2026-11-01"
         },
         {
+          "id": "DET:2021_18_GB_DET:00-0033106:2026_08_MIN_DET",
+          "category": "qb",
+          "kind": "streak",
+          "team": "DET",
+          "title": "Jared Goff: 76 consecutive starts for his team",
+          "detail": "Run began 2022-01-09.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_MIN_DET",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 75,
+          "after": 76,
+          "value": 76,
+          "action": "Jared Goff started for the Lions, extending the run from 75 to 76 starts.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
           "id": "overall:MIN:wins:2026_08_MIN_DET",
           "category": "team",
           "kind": "streak",
@@ -40355,6 +40496,28 @@
           "after": 11,
           "value": 11,
           "action": "The Vikings lost, ending the run.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
+          "id": "NE:2024_06_HOU_NE:00-0039851:2026_08_NE_MIA",
+          "category": "qb",
+          "kind": "streak",
+          "team": "NE",
+          "title": "Drake Maye: 37 consecutive starts for his team",
+          "detail": "Run began 2024-10-13.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_NE_MIA",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 36,
+          "after": 37,
+          "value": 37,
+          "action": "Drake Maye started for the Patriots, extending the run from 36 to 37 starts.",
           "newlyNoteworthy": false,
           "sourceThrough": "2026-11-01"
         },
@@ -40480,6 +40643,28 @@
           "sourceThrough": "2026-11-01"
         },
         {
+          "id": "TEN:2025_01_TEN_DEN:00-0040676:2026_08_TEN_CIN",
+          "category": "qb",
+          "kind": "streak",
+          "team": "TEN",
+          "title": "Cam Ward: 25 consecutive starts for his team",
+          "detail": "Run began 2025-09-07.",
+          "unit": "starts",
+          "href": "/nfl/QBs.html#all-time",
+          "game": "2026_08_TEN_CIN",
+          "date": "2026-11-01",
+          "season": 2026,
+          "week": 8,
+          "gameType": "REG",
+          "status": "continued",
+          "before": 24,
+          "after": 25,
+          "value": 25,
+          "action": "Cam Ward started for the Titans, extending the run from 24 to 25 starts.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-01"
+        },
+        {
           "id": "00-0038543:2023_01_LA_SEA:2026_08_CHI_SEA",
           "category": "receiving",
           "kind": "streak",
@@ -40503,7 +40688,7 @@
         }
       ],
       "counts": {
-        "continued": 27,
+        "continued": 36,
         "ended": 5,
         "pending": 1
       }
@@ -40517,6 +40702,6 @@
     "receiving": "/data/receiving-streaks.json",
     "kicking": "/data/kicking.json"
   },
-  "sourceHash": "ab84850e96465bf1358c63eeb4c47d8ea6c896b4835b165d4c69fd4fd40807c1",
-  "checkedAt": "2026-11-02T15:40:59.768Z"
+  "sourceHash": "c60b89560dc79f2a662f10824d9494fe3f48c3f5751edb7ffdb115c2d7dcce66",
+  "checkedAt": "2026-11-02T16:27:01.553Z"
 }
