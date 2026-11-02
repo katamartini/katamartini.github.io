@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 8,
-  "sourceHash": "a2841329b59efc98eedbdece3c2f0543adfcc8bb9c6181af1ae0ff3ae3918cae",
+  "sourceHash": "b2681affd070f493213894e75319f3d400bcd55a280e6ec497763412e5048a1c",
   "careerYards": [
     0,
     26,
@@ -104,7 +104,8 @@ window.JJ23K_DATA = {
     8627,
     8659,
     8738,
-    8782
+    8782,
+    8815
   ],
   "leaders": [
     [
@@ -279,6 +280,16 @@ window.JJ23K_DATA = {
     ],
     [
       18,
+      "Travis Kelce",
+      13412,
+      1109,
+      12.1,
+      84,
+      410,
+      5
+    ],
+    [
+      19,
       "Torry Holt",
       13382,
       920,
@@ -286,16 +297,6 @@ window.JJ23K_DATA = {
       74,
       null,
       null
-    ],
-    [
-      19,
-      "Travis Kelce",
-      13345,
-      1104,
-      12.1,
-      84,
-      343,
-      4
     ],
     [
       20,
@@ -369,6 +370,16 @@ window.JJ23K_DATA = {
     ],
     [
       27,
+      "Keenan Allen",
+      12376,
+      1091,
+      11.3,
+      71,
+      325,
+      6
+    ],
+    [
+      28,
       "Brandon Marshall",
       12351,
       970,
@@ -376,16 +387,6 @@ window.JJ23K_DATA = {
       83,
       null,
       null
-    ],
-    [
-      28,
-      "Keenan Allen",
-      12309,
-      1084,
-      11.4,
-      71,
-      258,
-      5
     ],
     [
       29,
@@ -470,11 +471,11 @@ window.JJ23K_DATA = {
     [
       37,
       "Stefon Diggs",
-      11718,
-      966,
+      11756,
+      969,
       12.1,
-      78,
-      214,
+      79,
+      252,
       1
     ],
     [
@@ -939,6 +940,16 @@ window.JJ23K_DATA = {
     ],
     [
       84,
+      "Justin Jefferson",
+      8815,
+      607,
+      14.5,
+      46,
+      335,
+      14
+    ],
+    [
+      85,
       "Terance Mathis",
       8809,
       689,
@@ -946,16 +957,6 @@ window.JJ23K_DATA = {
       63,
       null,
       null
-    ],
-    [
-      85,
-      "Justin Jefferson",
-      8782,
-      602,
-      14.6,
-      45,
-      302,
-      13
     ],
     [
       86,
@@ -1099,13 +1100,13 @@ window.JJ23K_DATA = {
     ],
     [
       100,
-      "Billy Howton",
-      8459,
-      503,
-      16.8,
-      61,
-      null,
-      null
+      "DJ Moore",
+      8473,
+      624,
+      13.6,
+      43,
+      260,
+      5
     ]
   ]
 };
