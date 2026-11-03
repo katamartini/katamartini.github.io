@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 8,
-  "sourceHash": "b2681affd070f493213894e75319f3d400bcd55a280e6ec497763412e5048a1c",
+  "sourceHash": "7d7dad88340364cd4f3497d1e97c05622beae4e56ef3a03510bb5eaf3eccc85f",
   "careerYards": [
     0,
     26,
@@ -1051,11 +1051,11 @@ window.JJ23K_DATA = {
     [
       95,
       "Cooper Kupp",
-      8568,
-      699,
+      8575,
+      700,
       12.3,
-      60,
-      199,
+      61,
+      206,
       6
     ],
     [
