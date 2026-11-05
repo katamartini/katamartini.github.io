@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TEAMS } from './divstreaks-data.mjs';
-import { VIEWS, buildLeaders, currentRoster, franchiseHighs, normalizeName, normalizeTeam, parseCsv, parseReceivingTable, parseLeaderboardTable, validRecord, viewFromHash } from './franchise-leaders-data.mjs';
+import { VIEWS, leaderboardDiagnostics, buildLeaders, currentRoster, franchiseHighs, normalizeName, normalizeTeam, parseCsv, parseReceivingTable, parseLeaderboardTable, validRecord, viewFromHash } from './franchise-leaders-data.mjs';
 
 function table(rows, headers = ['', '', 'NAME', 'REC YDS', 'GP', 'REC', 'REC TD']) {
   return `<table><thead><tr>${headers.map(label => `<th>${label}</th>`).join('')}</tr></thead><tbody>${rows.map(([name, yards, rec = 400, td = 30], i) =>
@@ -164,4 +164,19 @@ test('column errors include observed headers; malformed numbers and rows are rej
     assert.throws(() => parseReceivingTable(html.replace('6,000', bad), 'DET'), /Invalid REC YDS/);
   }
   assert.throws(() => parseReceivingTable(html.replace('<td>100</td>', ''), 'DET'), /Incomplete/);
+});
+
+test('career parser rejects season and game splits even when required statistic columns exist', () => {
+  const career = table([['Calvin Johnson', 11619], ['Tail', 4000]]);
+  for (const column of ['SEASON', 'DATE', 'OPP', 'WEEK']) {
+    assert.throws(() => parseReceivingTable(career.replace('<th>GP</th>', `<th>${column}</th>`), 'DET'), /Non-career/);
+  }
+});
+
+test('diagnostics retain all six observed table positions within their bounded limit', () => {
+  const html = Array.from({ length: 6 }, (_, i) => `<table><thead><tr><th>TABLE ${i + 1}</th></tr></thead></table>`).join('');
+  const diagnostics = leaderboardDiagnostics(html);
+  assert.equal(diagnostics.tableCount, 6);
+  assert.equal(diagnostics.headers.length, 6);
+  assert.deepEqual(diagnostics.headers[5], ['TABLE 6']);
 });

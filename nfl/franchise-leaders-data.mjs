@@ -72,7 +72,7 @@ export function leaderboardDiagnostics(html) {
   return {
     title: plain(html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').slice(0, 200),
     tableCount: tables.length,
-    headers: tables.slice(0, 5).map(({ headers }) => headers.slice(0, 40).map(header => header.slice(0, 80))),
+    headers: tables.slice(0, 10).map(({ headers }) => headers.slice(0, 40).map(header => header.slice(0, 80))),
   };
 }
 
@@ -90,6 +90,8 @@ export function parseLeaderboardTable(html, team, view = 'receiving') {
   if (candidates.length !== 1) throw new Error(`Ambiguous ${view} tables for ${team}`);
   const { table, headers } = candidates[0];
   if (required.some(key => headers.filter(header => header === key).length !== 1)) throw new Error(`Duplicate ${view} columns for ${team}`);
+  // A season/game split can have all the required stats but is not a career total.
+  if (headers.some(header => ['SEASON', 'DATE', 'OPP', 'WEEK'].includes(header))) throw new Error(`Non-career ${view} leaderboard for ${team}`);
   const indexes = Object.fromEntries(required.map(key => [key, headers.indexOf(key)]));
   const rows = [];
   for (const match of table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)) {

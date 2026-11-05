@@ -1,6 +1,21 @@
 import { createHash } from 'node:crypto';
 import { setTimeout } from 'node:timers/promises';
-import { leaderboardDiagnostics, parseLeaderboardTable } from '../nfl/franchise-leaders-data.mjs';
+import { TEAMS } from '../nfl/divstreaks-data.mjs';
+import { VIEWS, leaderboardDiagnostics, parseLeaderboardTable } from '../nfl/franchise-leaders-data.mjs';
+
+// The shorthand DET receiving query returned only standings/schedule tables on
+// 2026-11-05. This explicit, equivalent career query is indexed as a leaderboard.
+// Keep exceptions narrow; do not try arbitrary queries or bypass HTTP failures.
+const QUERY_OVERRIDES = {
+  DET: { receiving: 'detroit-lions-receiving-yards-leaders-all-time' },
+};
+
+export function leaderboardUrl(team, view) {
+  if (!Object.hasOwn(TEAMS, team) || !Object.hasOwn(VIEWS, view)) throw new Error(`Unknown leaderboard: ${team}/${view}`);
+  const slug = TEAMS[team].name.toLowerCase().replace(/\s+/g, '-');
+  const query = QUERY_OVERRIDES[team]?.[view] || `${slug}-all-time-${VIEWS[view].query}-leaders`;
+  return `https://www.statmuse.com/nfl/ask/${query}`;
+}
 
 // Retry the whole download + validation, never reuse an invalid response.
 export async function downloadValidated(url, parse, {
@@ -17,7 +32,7 @@ export async function downloadValidated(url, parse, {
       const retryable = !response || response.ok || response.status === 408 || response.status === 429 || response.status >= 500;
       const retry = retryable && attempt < 3;
       warn(JSON.stringify({ event: 'franchise-source-failure', url, attempt, retry,
-        status: response?.status, contentType: response?.headers.get('content-type'),
+        status: response?.status, responseUrl: response?.url, redirected: response?.redirected, contentType: response?.headers.get('content-type'),
         error: error.message, cause: error.cause?.code || error.cause?.message,
         ...(body === undefined ? {} : { bytes: Buffer.byteLength(body),
           sha256: createHash('sha256').update(body).digest('hex'), ...describe(body) }),

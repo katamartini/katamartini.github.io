@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, rename, rm, mkdtemp } from 'node:fs/promises';
 import { pathToFileURL, fileURLToPath } from 'node:url';
-import { downloadValidated, downloadLeaderboard } from './franchise-leaders-source.mjs';
+import { downloadValidated, downloadLeaderboard, leaderboardUrl } from './franchise-leaders-source.mjs';
 import { TEAMS } from '../nfl/divstreaks-data.mjs';
 import { VIEWS, buildLeaders, currentRoster, normalizeName, parseCsv } from '../nfl/franchise-leaders-data.mjs';
 
@@ -27,11 +27,10 @@ export async function refreshFranchiseLeaders({
   const roster = await downloadValidated(rosterUrl, text => currentRoster(parseCsv(text), season), sourceOptions);
   const views = {};
   // Fetch sequentially to keep requests to the historical source modest.
-  for (const [view, config] of Object.entries(VIEWS)) {
+  for (const view of Object.keys(VIEWS)) {
     const records = [], sources = [];
     for (const [team, details] of Object.entries(TEAMS)) {
-      const slug = details.name.toLowerCase().replace(/\s+/g, '-');
-      const url = `https://www.statmuse.com/nfl/ask/${slug}-all-time-${config.query}-leaders`;
+      const url = leaderboardUrl(team, view);
       records.push(...await downloadLeaderboard(url, team, view, sourceOptions));
       sources.push({ team, url });
       log(`Checked ${details.name}: ${view}`);
