@@ -34,3 +34,28 @@ first table, harmless header formatting, transient incorrect columns, and persis
 malformed data. These demonstrate recovery paths, not a replay of those incidents.
 The pull request workflow only runs offline tests; production refresh/publishing
 remains in the separate main-only scheduled workflow.
+
+## November 5 follow-up
+
+[The first post-merge run](https://github.com/katamartini/katamartini.github.io/actions/runs/42120699878)
+returned HTTP 200 for DET receiving three times, with six tables but no matching
+leaderboard. The five logged header lists were standings/schedules. This is missing
+leaderboard content, not a header-formatting problem; retrying the same URL did not
+recover it. The logs do not establish why the source omitted the answer table.
+
+The DET receiving source now uses the explicit equivalent query
+[Detroit Lions receiving yards leaders all-time](https://www.statmuse.com/nfl/ask/detroit-lions-receiving-yards-leaders-all-time).
+On November 5, the search-indexed page showed career receiving columns, Calvin
+Johnson leading, and rows below the 5,000-yard cutoff. Direct HTML retrieval from
+this environment returned HTTP 403. This supports the query choice but does **not**
+prove its current raw HTML parses successfully or that the full refresh will pass.
+All other 127 source URLs remain unchanged; the successful query URL is recorded
+in the saved source metadata only when the complete refresh validates.
+
+The regression fixture reconstructs the five logged header arrays, not the full
+incident HTML. Tests cover rejecting that response, using the explicit route,
+preserving saved bytes if that route also fails, and rejecting season/game splits
+with otherwise valid statistic columns. Diagnostics now retain up to ten header
+lists (so all six tables are visible) and the final response URL/redirect flag.
+HTTP 403 remains terminal: no alternate-route retry, access workaround, or saved
+statistics are used to manufacture a successful refresh.
