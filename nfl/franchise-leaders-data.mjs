@@ -61,17 +61,36 @@ function decode(text) {
 }
 const plain = html => decode(html.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
 
+const tableHeaders = table => [...(table.match(/<thead\b[^>]*>([\s\S]*?)<\/thead>/i)?.[1] || '')
+  .matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map(match => plain(match[1]).toUpperCase());
+const sourceTables = html => [...html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)]
+  .map(match => ({ table: match[1], headers: tableHeaders(match[1]) }));
+
+// Bounded structural diagnostics, never the entire response body.
+export function leaderboardDiagnostics(html) {
+  const tables = sourceTables(html);
+  return {
+    title: plain(html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').slice(0, 200),
+    tableCount: tables.length,
+    headers: tables.slice(0, 5).map(({ headers }) => headers.slice(0, 40).map(header => header.slice(0, 80))),
+  };
+}
+
 export function parseLeaderboardTable(html, team, view = 'receiving') {
   const config = VIEWS[view];
   if (!config) throw new Error(`Unknown view: ${view}`);
   if (!TEAMS[team]) throw new Error(`Unknown franchise: ${team}`);
   const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1];
   if (title && !plain(title).toLowerCase().includes(TEAMS[team].name.toLowerCase())) throw new Error(`Wrong franchise in source: ${team}`);
-  const table = html.match(/<table\b[^>]*>([\s\S]*?)<\/table>/i)?.[1];
-  if (!table) throw new Error(`Missing ${view} table for ${team}`);
-  const headers = [...(table.match(/<thead\b[^>]*>([\s\S]*?)<\/thead>/i)?.[1] || '').matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map(match => plain(match[1]));
-  const indexes = Object.fromEntries(['NAME', ...config.stats.map(stat => stat.source)].map(key => [key, headers.indexOf(key)]));
-  if (Object.values(indexes).some(index => index < 0)) throw new Error(`Unexpected ${view} columns for ${team}`);
+  const tables = sourceTables(html);
+  if (!tables.length) throw new Error(`Missing ${view} table for ${team}`);
+  const required = ['NAME', ...config.stats.map(stat => stat.source)];
+  const candidates = tables.filter(({ headers }) => required.every(key => headers.includes(key)));
+  if (!candidates.length) throw new Error(`Unexpected ${view} columns for ${team}: ${JSON.stringify(leaderboardDiagnostics(html))}`);
+  if (candidates.length !== 1) throw new Error(`Ambiguous ${view} tables for ${team}`);
+  const { table, headers } = candidates[0];
+  if (required.some(key => headers.filter(header => header === key).length !== 1)) throw new Error(`Duplicate ${view} columns for ${team}`);
+  const indexes = Object.fromEntries(required.map(key => [key, headers.indexOf(key)]));
   const rows = [];
   for (const match of table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)) {
     const cells = [...match[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map(cell => cell[1]);
@@ -81,9 +100,12 @@ export function parseLeaderboardTable(html, team, view = 'receiving') {
     const playerCell = cells[indexes.NAME];
     const name = decode(playerCell.match(/\btitle="([^"]+)"/i)?.[1] || '');
     const stat = key => {
-      const text = plain(cells[indexes[key]]).replace(/,/g, '');
-      if (!/^-?\d+(?:\.\d)?$/.test(text)) throw new Error(`Invalid ${key} for ${team}: ${name}`);
-      return Number(text);
+      const text = plain(cells[indexes[key]]);
+      if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d)?$/.test(text)) throw new Error(`Invalid ${key} for ${team}: ${name}`);
+      const value = Number(text.replace(/,/g, ''));
+      if (!Number.isFinite(value) || !Number.isSafeInteger(Math.round(value * 10)) ||
+          (key !== 'SCK' && !Number.isSafeInteger(value))) throw new Error(`Invalid ${key} for ${team}: ${name}`);
+      return value;
     };
     if (!name) throw new Error(`Missing player name for ${team}`);
     rows.push({ team, name, ...Object.fromEntries(config.stats.map(field => [field.key, stat(field.source)])) });

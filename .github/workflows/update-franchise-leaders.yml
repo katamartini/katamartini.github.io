@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: "22"
       - name: Check franchise leader calculations
-        run: node --test nfl/franchise-leaders-data.test.mjs
+        run: node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs nfl/divstreaks-data.test.mjs
       - name: Refresh receiving, passing, rushing, sacks, and current rosters
         run: node scripts/update-franchise-leaders.mjs
       - name: Commit data and request a Pages build

@@ -1,0 +1,29 @@
+name: Check NFL franchise leaders
+
+on:
+  pull_request:
+    paths:
+      - 'nfl/franchise-leaders-data*'
+      - 'nfl/divstreaks-data.mjs'
+      - 'scripts/*franchise-leaders*'
+      - '.github/workflows/*franchise-leaders.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'nfl/franchise-leaders-data*'
+      - 'nfl/divstreaks-data.mjs'
+      - 'scripts/*franchise-leaders*'
+      - '.github/workflows/*franchise-leaders.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs nfl/divstreaks-data.test.mjs
