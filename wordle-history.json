@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-11-06T15:19:02.492081+00:00",
+  "data_updated_at": "2026-11-06T16:42:13.652441+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -16,7 +16,7 @@
     {
       "id": "353fdaeb72f2a7dc",
       "name": "Ryan (Mayan)",
-      "avatar": null
+      "avatar": "data:image/webp;base64,UklGRqgFAABXRUJQVlA4IJwFAABQFwCdASpAAEAAPmEkjEWkIiEc+7aoQAYEtgBOmVVA2+Z8yKtf4/ZxzMQktuZzxnph85nqN96J/yNo279cUfLz8Mjrt5Woj3bv2y4ODmmAxx+jfn/VDek+h8UQzHGPzmP//BLiDjJtZqc+Dv/BnRzKW6dmrF0VdlS4VamzKjjoTF8OA2vPyfvSslaYjsJaJj+m8MsfS8oh1C/suVWeNYgwApRk33djjU83wimxSQ8MQ1SkrjsJbyd5DX26TXPogFVGNAAA/v0Wh0RlnoZumhv8rbIHkrxhAxTzMVrChQFCmWhFYRTckzE2wjtYyYR9Ty44LiXCF1ELB2pZqtfpiZD/g1X52B7le/ewbeLJbxyKH/AmuvYjT0qX3a+uJOb3EBSQA/utR0AGbO/7iRmrxCLt1Kz+fCa6S9SQGvfGpo4K7or+1n0Glt1bmow8PZddhNH19g35yOkhH3sMmvFZo2ogn4+1yvQfzFsBTrR3t5i3jWUIePM6HLC25bQC6CaO44ghwBrEiJXzMF/rXMHBIegAEV9xXFRGMYTNY9PVHlP2mH3iLxpHvlb4Xei938UNyKq9tDeRkImOlNbOYA8g9bq0fQc2UnxzXrfvR2pBKvIyre/NOpNjVKGq+YQOWVJryNZRBVZgXbEvGqnNiVeqUliwfVFsjE1TSajZrHDZWviSEtxkK4+ktVRclb61ZKsnJadAOgweXcK98cLBvn8hgRFe4a6wAa6vuw1st8GXq98yPvoTghHHLB38FLvx03O42sx2pvTgosg7F1kNwEBQbwPKk7+/q6bLnTD19n8gQOLvZV2T2T89seRP6CZsuFIAPtVbeeWVowHZzUAhppQJ8JeHZ8901RykRTEEVke6wzufrXrbfatItloTg2vRSckoKpgmTY3vyk+Y8OgEYzXj2wE6vhjRBcjBrw0MhUgSiKmUmUu5Li1KTG0AdqAu40Wzx0wz/DR+I+FwwqCrPemEAa9PwjVxunuY6M8zYsX2ndbB2QRRqFCziPGq0XLhR59yzAdIdkHUzFakn3MH5zh9tjDzQKW17vItdk+YT1kfwdLHgxQ3PePdBVNW+slTHm7TwEasiPQ4l+3XXmsDWu8QC53DVu5320Np57/jYVjpxVL1d4Dikw6/zArUNM+ynx+MOGwRGrEWmdxzjfnNbl+vlFOPN7/g/hbKNFSeuLwUDCm0Dwb2QR5KnmwCX9IDJ7/1TAySo/BS5yzdjh9bprA9rdzc0ozAiLzLDRlmICgn0RZJJ8OYINEIPj/hLMH2B7RuK5K7QSh5oTnwbJj/NYAGkviEkpLkj6ryK/SefsBvrucmMz3UQxmIkrxVhBxPa/WeV+ZqldL2J1kAJlrDSWF+C7iyTOH4aXS/syNu//q21tSN96kK9ltmQl+A7O/Y2hJj1XNJHZajWi0XmVn1ATn0UdCbDmioFL+IiM7ja7k4+vkAg7WomqTLWG3cRS8mWBqDF8DP6qt3Xy3OOF6fI8/NmI8BxG+/Zv6NdcIgoFgiVqhR1x4vaFLExa7DxqDw20rndzG7mZ+Yu8PgdPIQNHeyRtd3zMq1o5R7rbty42Y7iIkOp884WE+uONQb6uAqVij4Svd7xlmPYNhP2kqQi9mvgf3mLXrlCKfjoIaI0V1kqKcJX+hVT0Z03fl6EkrHTQiU1k+zc4Ooo0XPckIg3XK5lrD4CN+VHyZia/6t4vF0M3HTrbz3gryBROkwYf6uweM/9oa9dJz1d6Vu23MJ81W/g9id9swEYoPv00w8lutfj7yJv63zeunFWkotrGwq1m8KBPFJtGGik6BVpvnlTcZYDU1ohnZ8t/mZc2ANXFgwlIziAhRBBXaVXKQY4QOPwEyinhv1o3yuTlf3JG7WftiB3EDp0qGsIcbkAKZ2XgROf3ZtIDuOTx0EVVFROAAAAA=="
     },
     {
       "id": "c03d5d55866019e7",
@@ -8652,6 +8652,34 @@
         {
           "row_number": 6,
           "pattern": "XGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "353fdaeb72f2a7dc",
+      "player_name": "Ryan (Mayan)",
+      "puzzle_number": 1966,
+      "score": 4,
+      "hard_mode": true,
+      "grid_pattern": "XGXXX\nXGXGG\nXGXGG\nGGGGG",
+      "posted_at": "2026-11-06T16:42:13.570000+00:00",
+      "tracked_at": "2026-11-06T16:42:13.652441+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGXGG"
+        },
+        {
+          "row_number": 4,
+          "pattern": "GGGGG"
         }
       ]
     }
