@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-11-05T14:51:16.854Z",
+  "checkedAt": "2026-11-06T14:30:01.299Z",
   "season": 2026,
-  "through": "2026-11-02",
+  "through": "2026-11-05",
   "rosterWeek": 9,
   "rosterWeeks": {
     "ARI": 9,
@@ -237,7 +237,7 @@
       "seasons": 6,
       "status": "ACT",
       "rosterWeek": 9,
-      "length": 24,
+      "length": 25,
       "start": {
         "id": "2025_01_CAR_JAX",
         "event": "401772828",
@@ -247,12 +247,12 @@
         "opponent": "CAR"
       },
       "last": {
-        "id": "2026_08_IND_JAX",
-        "event": "401873028",
-        "date": "2026-11-01",
+        "id": "2026_09_JAX_BAL",
+        "event": "401873037",
+        "date": "2026-11-05",
         "season": 2026,
-        "week": 8,
-        "opponent": "IND"
+        "week": 9,
+        "opponent": "BAL"
       }
     },
     {
@@ -877,30 +877,30 @@
       }
     },
     {
-      "id": "00-0034796",
-      "espn": "3916387",
-      "name": "Lamar Jackson",
+      "id": "00-0040981",
+      "espn": "4429582",
+      "name": "Joe Fagnano",
       "team": "BAL",
-      "since": 2018,
-      "seasons": 9,
+      "since": 2026,
+      "seasons": 1,
       "status": "ACT",
       "rosterWeek": 9,
       "length": 1,
       "start": {
-        "id": "2026_08_BAL_BUF",
-        "event": "401873026",
-        "date": "2026-11-01",
+        "id": "2026_09_JAX_BAL",
+        "event": "401873037",
+        "date": "2026-11-05",
         "season": 2026,
-        "week": 8,
-        "opponent": "BUF"
+        "week": 9,
+        "opponent": "JAX"
       },
       "last": {
-        "id": "2026_08_BAL_BUF",
-        "event": "401873026",
-        "date": "2026-11-01",
+        "id": "2026_09_JAX_BAL",
+        "event": "401873037",
+        "date": "2026-11-05",
         "season": 2026,
-        "week": 8,
-        "opponent": "BUF"
+        "week": 9,
+        "opponent": "JAX"
       }
     }
   ],
@@ -942,7 +942,7 @@
       "team": "BAL",
       "since": 2018,
       "seasons": 9,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 9
     },
     {
@@ -1492,7 +1492,7 @@
       "team": "BAL",
       "since": 2025,
       "seasons": 2,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 9
     },
     {
@@ -1542,7 +1542,7 @@
       "team": "BAL",
       "since": 2026,
       "seasons": 1,
-      "status": "DEV",
+      "status": "ACT",
       "rosterWeek": 9
     },
     {
@@ -1802,7 +1802,7 @@
       "team": "BAL",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "INA",
       "rosterWeek": 9
     },
     {
@@ -2011,7 +2011,7 @@
     "firstSeason": 1950,
     "lastCompleteSeason": 2025,
     "recentComplete": true,
-    "through": "2026-11-02",
+    "through": "2026-11-05",
     "sources": [
       "https://raw.githubusercontent.com/greerreNFL/nfeloqb/b88af41f71bc95e25826869fd8ceca8a80939ac6/qb_elos.csv",
       "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
@@ -2270,6 +2270,7 @@
       {"id":"DAL:2025_01_DAL_PHI:00-0033077","playerId":"00-0033077","name":"Dak Prescott","team":"DAL","length":25,"start":{"id":"2025_01_DAL_PHI","date":"2025-09-04","season":2025,"week":1,"opponent":"PHI"},"last":{"id":"2026_08_ARI_DAL","date":"2026-11-01","season":2026,"week":8,"opponent":"ARI"},"startKnown":true,"endKnown":true,"active":true},
       {"id":"TEN:2025_01_TEN_DEN:00-0040676","playerId":"00-0040676","name":"Cam Ward","team":"TEN","length":25,"start":{"id":"2025_01_TEN_DEN","date":"2025-09-07","season":2025,"week":1,"opponent":"DEN"},"last":{"id":"2026_08_TEN_CIN","date":"2026-11-01","season":2026,"week":8,"opponent":"CIN"},"startKnown":true,"endKnown":true,"active":true},
       {"id":"LA:2025_01_HOU_LA:00-0026498","playerId":"00-0026498","name":"Matthew Stafford","team":"LA","length":25,"start":{"id":"2025_01_HOU_LA","date":"2025-09-07","season":2025,"week":1,"opponent":"HOU"},"last":{"id":"2026_08_LAC_LA","date":"2026-11-01","season":2026,"week":8,"opponent":"LAC"},"startKnown":true,"endKnown":true,"active":true},
+      {"id":"JAX:2025_01_CAR_JAX:00-0036971","playerId":"00-0036971","name":"Trevor Lawrence","team":"JAX","length":25,"start":{"id":"2025_01_CAR_JAX","date":"2025-09-07","season":2025,"week":1,"opponent":"CAR"},"last":{"id":"2026_09_JAX_BAL","date":"2026-11-05","season":2026,"week":9,"opponent":"BAL"},"startKnown":true,"endKnown":true,"active":true},
       {"id":"PIT:1954-09-26_PIT_GB:historical:jimfinks","playerId":"historical:jimfinks","name":"Jim Finks","team":"PIT","length":24,"start":{"id":"1954-09-26_PIT_GB","date":"1954-09-26","season":1954,"week":null,"opponent":"GB"},"last":{"id":"1955-12-11_PIT_WAS","date":"1955-12-11","season":1955,"week":null,"opponent":"WAS"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"PHI:1968-10-06_PHI_WAS:historical:normsnead","playerId":"historical:normsnead","name":"Norm Snead","team":"PHI","length":24,"start":{"id":"1968-10-06_PHI_WAS","date":"1968-10-06","season":1968,"week":null,"opponent":"WAS"},"last":{"id":"1969-12-14_ATL_PHI","date":"1969-12-14","season":1969,"week":null,"opponent":"ATL"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"ATL:1978-09-24_ATL_TB:historical:stevebartkowski","playerId":"historical:stevebartkowski","name":"Steve Bartkowski","team":"ATL","length":24,"start":{"id":"1978-09-24_ATL_TB","date":"1978-09-24","season":1978,"week":null,"opponent":"TB"},"last":{"id":"1979-11-11_ATL_NYG","date":"1979-11-11","season":1979,"week":null,"opponent":"NYG"},"startKnown":true,"endKnown":true,"active":false},
@@ -2292,7 +2293,6 @@
       {"id":"NYJ:2013_01_TB_NYJ:00-0030565","playerId":"00-0030565","name":"Geno Smith","team":"NYJ","length":24,"start":{"id":"2013_01_TB_NYJ","date":"2013-09-08","season":2013,"week":1,"opponent":"TB"},"last":{"id":"2014_08_BUF_NYJ","date":"2014-10-26","season":2014,"week":8,"opponent":"BUF"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"BUF:2015_09_MIA_BUF:00-0028118","playerId":"00-0028118","name":"Tyrod Taylor","team":"BUF","length":24,"start":{"id":"2015_09_MIA_BUF","date":"2015-11-08","season":2015,"week":9,"opponent":"MIA"},"last":{"id":"2016_16_MIA_BUF","date":"2016-12-24","season":2016,"week":16,"opponent":"MIA"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"KC:2017_17_KC_DEN:00-0033873","playerId":"00-0033873","name":"Patrick Mahomes","team":"KC","length":24,"start":{"id":"2017_17_KC_DEN","date":"2017-12-31","season":2017,"week":17,"opponent":"DEN"},"last":{"id":"2019_07_KC_DEN","date":"2019-10-17","season":2019,"week":7,"opponent":"DEN"},"startKnown":true,"endKnown":true,"active":false},
-      {"id":"JAX:2025_01_CAR_JAX:00-0036971","playerId":"00-0036971","name":"Trevor Lawrence","team":"JAX","length":24,"start":{"id":"2025_01_CAR_JAX","date":"2025-09-07","season":2025,"week":1,"opponent":"CAR"},"last":{"id":"2026_08_IND_JAX","date":"2026-11-01","season":2026,"week":8,"opponent":"IND"},"startKnown":true,"endKnown":true,"active":true},
       {"id":"KC:1962-09-08_NE_KC:historical:lendawson","playerId":"historical:lendawson","name":"Len Dawson","team":"KC","length":23,"start":{"id":"1962-09-08_NE_KC","date":"1962-09-08","season":1962,"week":null,"opponent":"NE"},"last":{"id":"1963-11-08_OAK_KC","date":"1963-11-08","season":1963,"week":null,"opponent":"LV"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"PIT:1963-09-15_PIT_PHI:historical:edbrown","playerId":"historical:edbrown","name":"Ed Brown","team":"PIT","length":23,"start":{"id":"1963-09-15_PIT_PHI","date":"1963-09-15","season":1963,"week":null,"opponent":"PHI"},"last":{"id":"1964-11-08_PIT_ARI","date":"1964-11-08","season":1964,"week":null,"opponent":"ARI"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"LV:1973-10-07_OAK_ARI:historical:kenstabler","playerId":"historical:kenstabler","name":"Ken Stabler","team":"LV","length":23,"start":{"id":"1973-10-07_OAK_ARI","date":"1973-10-07","season":1973,"week":null,"opponent":"ARI"},"last":{"id":"1974-12-01_NE_OAK","date":"1974-12-01","season":1974,"week":null,"opponent":"NE"},"startKnown":true,"endKnown":true,"active":false},
@@ -6226,7 +6226,8 @@
       {"id":"SEA:2026_02_SEA_ARI:00-0035704","playerId":"00-0035704","name":"Drew Lock","team":"SEA","length":1,"start":{"id":"2026_02_SEA_ARI","date":"2026-09-20","season":2026,"week":2,"opponent":"ARI"},"last":{"id":"2026_02_SEA_ARI","date":"2026-09-20","season":2026,"week":2,"opponent":"ARI"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"CHI:2026_05_CHI_GB:00-0038416","playerId":"00-0038416","name":"Tyson Bagent","team":"CHI","length":1,"start":{"id":"2026_05_CHI_GB","date":"2026-10-11","season":2026,"week":5,"opponent":"GB"},"last":{"id":"2026_05_CHI_GB","date":"2026-10-11","season":2026,"week":5,"opponent":"GB"},"startKnown":true,"endKnown":true,"active":false},
       {"id":"NYG:2026_07_NYG_HOU:00-0039923","playerId":"00-0039923","name":"J.J. McCarthy","team":"NYG","length":1,"start":{"id":"2026_07_NYG_HOU","date":"2026-10-25","season":2026,"week":7,"opponent":"HOU"},"last":{"id":"2026_07_NYG_HOU","date":"2026-10-25","season":2026,"week":7,"opponent":"HOU"},"startKnown":true,"endKnown":true,"active":true},
-      {"id":"BAL:2026_08_BAL_BUF:00-0034796","playerId":"00-0034796","name":"Lamar Jackson","team":"BAL","length":1,"start":{"id":"2026_08_BAL_BUF","date":"2026-11-01","season":2026,"week":8,"opponent":"BUF"},"last":{"id":"2026_08_BAL_BUF","date":"2026-11-01","season":2026,"week":8,"opponent":"BUF"},"startKnown":true,"endKnown":true,"active":true}
+      {"id":"BAL:2026_08_BAL_BUF:00-0034796","playerId":"00-0034796","name":"Lamar Jackson","team":"BAL","length":1,"start":{"id":"2026_08_BAL_BUF","date":"2026-11-01","season":2026,"week":8,"opponent":"BUF"},"last":{"id":"2026_08_BAL_BUF","date":"2026-11-01","season":2026,"week":8,"opponent":"BUF"},"startKnown":true,"endKnown":true,"active":false},
+      {"id":"BAL:2026_09_JAX_BAL:00-0040981","playerId":"00-0040981","name":"Joe Fagnano","team":"BAL","length":1,"start":{"id":"2026_09_JAX_BAL","date":"2026-11-05","season":2026,"week":9,"opponent":"JAX"},"last":{"id":"2026_09_JAX_BAL","date":"2026-11-05","season":2026,"week":9,"opponent":"JAX"},"startKnown":true,"endKnown":true,"active":true}
     ]
   }
 }
