@@ -3,7 +3,7 @@
 Run the offline checks on Node 22:
 
 ```sh
-node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs nfl/divstreaks-data.test.mjs
+node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs scripts/footballdb-receiving.test.mjs nfl/divstreaks-data.test.mjs
 ```
 
 Validate the roster and all 128 live leaderboards without changing the saved dataset:
@@ -59,3 +59,9 @@ with otherwise valid statistic columns. Diagnostics now retain up to ten header
 lists (so all six tables are visible) and the final response URL/redirect flag.
 HTTP 403 remains terminal: no alternate-route retry, access workaround, or saved
 statistics are used to manufacture a successful refresh.
+
+## November 6 source replacement
+
+The explicit StatMuse query also failed in [run 42299433768](https://github.com/katamartini/katamartini.github.io/actions/runs/42299433768). DET receiving now uses [FootballDB career receiving](https://www.footballdb.com/teams/nfl/detroit-lions/leaders/career-receiving-yards) directly, not as a fallback after an HTTP denial. All other source URLs and atomic save behavior are unchanged. Its dedicated parser requires Detroit career/regular-season scope, exact columns, full player identities, strict integers, unique sorted rows and below-cutoff coverage.
+
+The reduced fixture retains the actual downloaded 50-row table; its title, heading and scope wrapper are reconstructed from observed page text. Full downloaded response SHA-256: 2ee041db1648c79a3e6a409a57b5f32e35fd5e67c09abaea5ecb9eabb60107da. Fixture SHA-256: 7d06cd0dd83f2570ae2a3450c7bb903495275740583a008e913fc32112837bb2. Local parsing does not prove production access. HTTP 403 remains terminal with no alternate-route request. A complete successful scheduled run is required before calling live refresh restored.

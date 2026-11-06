@@ -6,6 +6,8 @@ on:
       - 'nfl/franchise-leaders-data*'
       - 'nfl/divstreaks-data.mjs'
       - 'scripts/*franchise-leaders*'
+      - 'scripts/footballdb-receiving*'
+      - 'scripts/fixtures/det-footballdb.html'
       - '.github/workflows/*franchise-leaders.yml'
   push:
     branches: [main]
@@ -13,6 +15,8 @@ on:
       - 'nfl/franchise-leaders-data*'
       - 'nfl/divstreaks-data.mjs'
       - 'scripts/*franchise-leaders*'
+      - 'scripts/footballdb-receiving*'
+      - 'scripts/fixtures/det-footballdb.html'
       - '.github/workflows/*franchise-leaders.yml'
 
 permissions:
@@ -26,4 +30,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs nfl/divstreaks-data.test.mjs
+      - run: node --test nfl/franchise-leaders-data.test.mjs scripts/franchise-leaders-source.test.mjs scripts/footballdb-receiving.test.mjs nfl/divstreaks-data.test.mjs
