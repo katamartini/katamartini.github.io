@@ -1,19 +1,15 @@
+import { DET_RECEIVING_URL, parseDetroitReceiving } from './footballdb-receiving.mjs';
 import { createHash } from 'node:crypto';
 import { setTimeout } from 'node:timers/promises';
 import { TEAMS } from '../nfl/divstreaks-data.mjs';
 import { VIEWS, leaderboardDiagnostics, parseLeaderboardTable } from '../nfl/franchise-leaders-data.mjs';
 
-// The shorthand DET receiving query returned only standings/schedule tables on
-// 2026-11-05. This explicit, equivalent career query is indexed as a leaderboard.
-// Keep exceptions narrow; do not try arbitrary queries or bypass HTTP failures.
-const QUERY_OVERRIDES = {
-  DET: { receiving: 'detroit-lions-receiving-yards-leaders-all-time' },
-};
-
+// One explicit source selection; no fallback on HTTP denial.
 export function leaderboardUrl(team, view) {
   if (!Object.hasOwn(TEAMS, team) || !Object.hasOwn(VIEWS, view)) throw new Error(`Unknown leaderboard: ${team}/${view}`);
+  if (team === 'DET' && view === 'receiving') return DET_RECEIVING_URL;
   const slug = TEAMS[team].name.toLowerCase().replace(/\s+/g, '-');
-  const query = QUERY_OVERRIDES[team]?.[view] || `${slug}-all-time-${VIEWS[view].query}-leaders`;
+  const query = `${slug}-all-time-${VIEWS[view].query}-leaders`;
   return `https://www.statmuse.com/nfl/ask/${query}`;
 }
 
@@ -44,7 +40,8 @@ export async function downloadValidated(url, parse, {
 }
 
 export function downloadLeaderboard(url, team, view, options = {}) {
-  return downloadValidated(url, html => parseLeaderboardTable(html, team, view), {
+  if (url === DET_RECEIVING_URL && (team !== 'DET' || view !== 'receiving')) throw new Error('Wrong FootballDB scope');
+  return downloadValidated(url, html => url === DET_RECEIVING_URL ? parseDetroitReceiving(html) : parseLeaderboardTable(html, team, view), {
     ...options, describe: html => ({ team, view, ...leaderboardDiagnostics(html) }),
   });
 }

@@ -8,6 +8,7 @@ import { VIEWS } from '../nfl/franchise-leaders-data.mjs';
 import { downloadLeaderboard, downloadValidated, leaderboardUrl } from './franchise-leaders-source.mjs';
 import { refreshFranchiseLeaders } from './update-franchise-leaders.mjs';
 
+const detFixture = await readFile(new URL('./fixtures/det-footballdb.html', import.meta.url), 'utf8');
 const quiet = { sleep: async () => {}, warn: () => {}, log: () => {} };
 const url = 'https://www.statmuse.com/nfl/ask/lions-all-time-receiving-yards-leaders';
 function html(view = 'receiving') {
@@ -77,7 +78,7 @@ function sourceFetch(fail = () => false) {
     if (url.includes('roster_')) return new Response('season,week,team,full_name,status\n' +
       Object.keys(TEAMS).map(team => `2026,8,${team},Alpha,ACT`).join('\n'));
     const view = Object.keys(VIEWS).find(view => Object.keys(TEAMS).some(team => leaderboardUrl(team, view) === url));
-    return new Response(fail(url) ? broken : html(view));
+    return new Response(fail(url) ? broken : url === leaderboardUrl('DET', 'receiving') ? detFixture : html(view));
   };
 }
 async function fixture(t) {
@@ -90,7 +91,7 @@ async function fixture(t) {
 }
 
 test('DET failure after ten teams and a late sacks failure both preserve saved bytes', async t => {
-  for (const target of ['detroit-lions-receiving-yards-leaders-all-time', 'vikings-all-time-sack']) {
+  for (const target of ['career-receiving-yards', 'vikings-all-time-sack']) {
     const options = await fixture(t);
     const visited = [];
     await assert.rejects(refreshFranchiseLeaders({ ...options, fetchImpl: sourceFetch(url => {
@@ -147,7 +148,7 @@ test('only DET receiving changes query; every other source retains its original 
       const expected = team === 'DET' && view === 'receiving'
         ? 'detroit-lions-receiving-yards-leaders-all-time'
         : `${details.name.toLowerCase().replace(/\s+/g, '-')}-all-time-${config.query}-leaders`;
-      assert.equal(leaderboardUrl(team, view), `https://www.statmuse.com/nfl/ask/${expected}`);
+      assert.equal(leaderboardUrl(team, view), team === 'DET' && view === 'receiving' ? 'https://www.footballdb.com/teams/nfl/detroit-lions/leaders/career-receiving-yards' : `https://www.statmuse.com/nfl/ask/${expected}`);
     }
   }
   assert.throws(() => leaderboardUrl('bad', 'receiving'), /Unknown/);
@@ -176,7 +177,22 @@ test('standings-only replacement responses still fail closed and preserve saved 
     if (requestUrl !== leaderboardUrl('DET', 'receiving')) return normalFetch(requestUrl);
     attempts++;
     return new Response(standingsOnly);
-  } }), error => /after 3 attempt/.test(error.message) && /Unexpected receiving columns for DET/.test(error.cause.message));
+  } }), error => /after 3 attempt/.test(error.message) && /Invalid FootballDB DET receiving/.test(error.cause.message));
   assert.equal(attempts, 3);
   assert.equal(await readFile(options.destination, 'utf8'), options.original);
+});
+
+
+test('FootballDB 403 during refresh makes one DET request and preserves saved bytes', async t => {
+  const options = await fixture(t);
+  const normalFetch = sourceFetch();
+  let detCalls = 0;
+  await assert.rejects(refreshFranchiseLeaders({ ...options, fetchImpl: async requestUrl => {
+    if (requestUrl !== leaderboardUrl('DET', 'receiving')) return normalFetch(requestUrl);
+    detCalls++;
+    return new Response('', { status: 403 });
+  } }), /after 1 attempt/);
+  assert.equal(detCalls, 1);
+  assert.equal(await readFile(options.destination, 'utf8'), options.original);
+  assert.deepEqual(await readdir(options.dir), ['leaders.json']);
 });
