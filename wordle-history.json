@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "server": "vruet",
-  "data_updated_at": "2026-11-05T11:14:24.235395+00:00",
+  "data_updated_at": "2026-11-06T00:01:37.831616+00:00",
   "players": [
     {
       "id": "8d4623a8adac4083",
@@ -8524,6 +8524,38 @@
         {
           "row_number": 4,
           "pattern": "XGGGG"
+        },
+        {
+          "row_number": 5,
+          "pattern": "GGGGG"
+        }
+      ]
+    },
+    {
+      "player_id": "1c4383b38c1691e3",
+      "player_name": "Marty",
+      "puzzle_number": 1966,
+      "score": 5,
+      "hard_mode": true,
+      "grid_pattern": "XGXXX\nXGXXX\nXGXXY\nYGGXY\nGGGGG",
+      "posted_at": "2026-11-06T00:01:37.788000+00:00",
+      "tracked_at": "2026-11-06T00:01:37.831616+00:00",
+      "rows": [
+        {
+          "row_number": 1,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 2,
+          "pattern": "XGXXX"
+        },
+        {
+          "row_number": 3,
+          "pattern": "XGXXY"
+        },
+        {
+          "row_number": 4,
+          "pattern": "YGGXY"
         },
         {
           "row_number": 5,
