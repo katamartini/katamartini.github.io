@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 9,
-  "sourceHash": "0fc585cd57b5ea4bb24394351bb0896bcfe785b41c7c6d553498bb1f2f2ea13b",
+  "sourceHash": "de730e751d41ad6bec94e81b83e7e69e949731effee91525fb5460bf7f5b89fe",
   "careerYards": [
     0,
     26,
@@ -270,23 +270,23 @@ window.JJ23K_DATA = {
     ],
     [
       17,
+      "Travis Kelce",
+      13484,
+      1113,
+      12.1,
+      84,
+      482,
+      6
+    ],
+    [
+      18,
       "Mike Evans",
       13472,
       893,
       15.1,
       111,
       420,
-      4
-    ],
-    [
-      18,
-      "Travis Kelce",
-      13412,
-      1109,
-      12.1,
-      84,
-      410,
-      5
+      3
     ],
     [
       19,
@@ -371,11 +371,11 @@ window.JJ23K_DATA = {
     [
       27,
       "Keenan Allen",
-      12376,
-      1091,
+      12402,
+      1095,
       11.3,
       71,
-      325,
+      351,
       6
     ],
     [
@@ -471,11 +471,11 @@ window.JJ23K_DATA = {
     [
       37,
       "Stefon Diggs",
-      11756,
-      969,
+      11807,
+      972,
       12.1,
       79,
-      252,
+      303,
       1
     ],
     [
@@ -701,11 +701,11 @@ window.JJ23K_DATA = {
     [
       60,
       "Brandin Cooks",
-      9844,
-      737,
+      9869,
+      739,
       13.4,
       61,
-      33,
+      58,
       2
     ],
     [
@@ -1040,6 +1040,16 @@ window.JJ23K_DATA = {
     ],
     [
       94,
+      "Cooper Kupp",
+      8607,
+      703,
+      12.2,
+      61,
+      238,
+      7
+    ],
+    [
+      95,
       "Jordy Nelson",
       8587,
       613,
@@ -1047,16 +1057,6 @@ window.JJ23K_DATA = {
       72,
       null,
       null
-    ],
-    [
-      95,
-      "Cooper Kupp",
-      8575,
-      700,
-      12.3,
-      61,
-      206,
-      6
     ],
     [
       96,
@@ -1100,13 +1100,13 @@ window.JJ23K_DATA = {
     ],
     [
       100,
-      "DJ Moore",
-      8473,
-      624,
-      13.6,
-      43,
-      260,
-      5
+      "George Kittle",
+      8491,
+      633,
+      13.4,
+      57,
+      483,
+      8
     ]
   ]
 };
