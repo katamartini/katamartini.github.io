@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-06T14:11:09.799Z",
+  "checkedAt": "2026-11-09T16:06:41.826Z",
   "season": 2026,
-  "through": "2026-11-05",
+  "through": "2026-11-08",
   "latestWeek": 9,
   "rosterWeek": 9,
   "firstStatsSeason": 1999,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "1da6e3755ee0e9882b5ec9531fe4508952d98edc0551a8ecea3efd6fd3cdb674",
+  "sourceHash": "b4ef0eefb1a2bb5cb8ed462403e64704b52dcfda1db2972d495b04a43950d4df",
   "sources": [
     {
       "kind": "stats",
@@ -338,7 +338,7 @@
       "id": "00-0030506:2014_01_TEN_KC",
       "playerId": "00-0030506",
       "name": "Travis Kelce",
-      "length": 198,
+      "length": 199,
       "start": {
         "date": "2014-09-07",
         "season": 2014,
@@ -347,11 +347,11 @@
         "opponent": "TEN"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_KC_DEN",
+        "game": "2026_09_NYJ_KC",
         "team": "KC",
-        "opponent": "DEN"
+        "opponent": "NYJ"
       },
       "teams": [
         "KC"
@@ -570,7 +570,7 @@
       "id": "00-0031588:2015_04_MIN_DEN",
       "playerId": "00-0031588",
       "name": "Stefon Diggs",
-      "length": 167,
+      "length": 168,
       "start": {
         "date": "2015-10-04",
         "season": 2015,
@@ -579,11 +579,11 @@
         "opponent": "DEN"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_PHI_WAS",
+        "game": "2026_09_LA_WAS",
         "team": "WAS",
-        "opponent": "PHI"
+        "opponent": "LA"
       },
       "teams": [
         "MIN",
@@ -1079,6 +1079,38 @@
       "rank": 26
     },
     {
+      "id": "00-0030279:2018_16_BAL_LAC",
+      "playerId": "00-0030279",
+      "name": "Keenan Allen",
+      "length": 111,
+      "start": {
+        "date": "2018-12-22",
+        "season": 2018,
+        "game": "2018_16_BAL_LAC",
+        "team": "LAC",
+        "opponent": "BAL"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_DAL_IND",
+        "team": "IND",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "LAC",
+        "CHI",
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 27
+    },
+    {
       "id": "00-0027874:2011_13_DEN_MIN",
       "playerId": "00-0027874",
       "name": "Demaryius Thomas",
@@ -1113,7 +1145,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 27
+      "rank": 28
     },
     {
       "id": "00-0033881:2017_06_NYG_DEN",
@@ -1150,38 +1182,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 28
-    },
-    {
-      "id": "00-0030279:2018_16_BAL_LAC",
-      "playerId": "00-0030279",
-      "name": "Keenan Allen",
-      "length": 110,
-      "start": {
-        "date": "2018-12-22",
-        "season": 2018,
-        "game": "2018_16_BAL_LAC",
-        "team": "LAC",
-        "opponent": "BAL"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_IND_JAX",
-        "team": "IND",
-        "opponent": "JAX"
-      },
-      "teams": [
-        "LAC",
-        "CHI",
-        "IND"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 29
     },
@@ -1754,6 +1754,36 @@
       "rank": 46
     },
     {
+      "id": "00-0036900:2021_01_MIN_CIN",
+      "playerId": "00-0036900",
+      "name": "Ja'Marr Chase",
+      "length": 86,
+      "start": {
+        "date": "2021-09-12",
+        "season": 2021,
+        "game": "2021_01_MIN_CIN",
+        "team": "CIN",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_CIN_ATL",
+        "team": "CIN",
+        "opponent": "ATL"
+      },
+      "teams": [
+        "CIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 47
+    },
+    {
       "id": "archive:00-0015218:86",
       "playerId": "00-0015218",
       "name": "Jimmy Smith",
@@ -1777,7 +1807,7 @@
       "startUnknown": false,
       "active": false,
       "archive": true,
-      "rank": 47
+      "rank": 48
     },
     {
       "id": "00-0011754:1999_01_MIN_ATL",
@@ -1809,36 +1839,6 @@
       "lowerBound": true,
       "startUnknown": true,
       "active": false,
-      "archive": false,
-      "rank": 48
-    },
-    {
-      "id": "00-0036900:2021_01_MIN_CIN",
-      "playerId": "00-0036900",
-      "name": "Ja'Marr Chase",
-      "length": 85,
-      "start": {
-        "date": "2021-09-12",
-        "season": 2021,
-        "game": "2021_01_MIN_CIN",
-        "team": "CIN",
-        "opponent": "MIN"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_TEN_CIN",
-        "team": "CIN",
-        "opponent": "TEN"
-      },
-      "teams": [
-        "CIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 49
     },
@@ -2866,6 +2866,36 @@
       "rank": 78
     },
     {
+      "id": "00-0033906:2021_05_NO_WAS",
+      "playerId": "00-0033906",
+      "name": "Alvin Kamara",
+      "length": 69,
+      "start": {
+        "date": "2021-10-10",
+        "season": 2021,
+        "game": "2021_05_NO_WAS",
+        "team": "NO",
+        "opponent": "WAS"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_CLE_NO",
+        "team": "NO",
+        "opponent": "CLE"
+      },
+      "teams": [
+        "NO"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 79
+    },
+    {
       "id": "archive:historical:elbie-nickel:68",
       "playerId": "historical:elbie-nickel",
       "name": "Elbie Nickel",
@@ -2889,7 +2919,7 @@
       "startUnknown": false,
       "active": false,
       "archive": true,
-      "rank": 79
+      "rank": 80
     },
     {
       "id": "00-0013232:2000_07_SD_BUF",
@@ -2923,7 +2953,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 80
+      "rank": 81
     },
     {
       "id": "00-0033921:2018_16_TB_DAL",
@@ -2959,29 +2989,30 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 81
+      "rank": 82
     },
     {
-      "id": "00-0033906:2021_05_NO_WAS",
-      "playerId": "00-0033906",
-      "name": "Alvin Kamara",
+      "id": "00-0034383:2022_07_DET_DAL",
+      "playerId": "00-0034383",
+      "name": "Dalton Schultz",
       "length": 68,
       "start": {
-        "date": "2021-10-10",
-        "season": 2021,
-        "game": "2021_05_NO_WAS",
-        "team": "NO",
-        "opponent": "WAS"
+        "date": "2022-10-23",
+        "season": 2022,
+        "game": "2022_07_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_PIT_NO",
-        "team": "NO",
-        "opponent": "PIT"
+        "game": "2026_09_HOU_LAC",
+        "team": "HOU",
+        "opponent": "LAC"
       },
       "teams": [
-        "NO"
+        "DAL",
+        "HOU"
       ],
       "endedBy": null,
       "gapAfter": null,
@@ -2989,7 +3020,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 82
+      "rank": 83
     },
     {
       "id": "archive:STA285936:67",
@@ -3015,7 +3046,7 @@
       "startUnknown": false,
       "active": false,
       "archive": true,
-      "rank": 83
+      "rank": 84
     },
     {
       "id": "00-0022910:2004_08_ARI_BUF",
@@ -3051,7 +3082,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 84
+      "rank": 85
     },
     {
       "id": "00-0023367:2008_03_PIT_PHI",
@@ -3085,7 +3116,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 85
+      "rank": 86
     },
     {
       "id": "00-0030279:2013_02_SD_PHI",
@@ -3121,7 +3152,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 86
+      "rank": 87
     },
     {
       "id": "00-0035229:2021_11_DET_CLE",
@@ -3152,30 +3183,29 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 87
+      "rank": 88
     },
     {
-      "id": "00-0034383:2022_07_DET_DAL",
-      "playerId": "00-0034383",
-      "name": "Dalton Schultz",
+      "id": "00-0037744:2022_10_ARI_LA",
+      "playerId": "00-0037744",
+      "name": "Trey McBride",
       "length": 67,
       "start": {
-        "date": "2022-10-23",
+        "date": "2022-11-13",
         "season": 2022,
-        "game": "2022_07_DET_DAL",
-        "team": "DAL",
-        "opponent": "DET"
+        "game": "2022_10_ARI_LA",
+        "team": "ARI",
+        "opponent": "LA"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_NYG_HOU",
-        "team": "HOU",
-        "opponent": "NYG"
+        "game": "2026_09_ARI_SEA",
+        "team": "ARI",
+        "opponent": "SEA"
       },
       "teams": [
-        "DAL",
-        "HOU"
+        "ARI"
       ],
       "endedBy": null,
       "gapAfter": null,
@@ -3183,7 +3213,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 88
+      "rank": 89
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI",
@@ -3206,36 +3236,6 @@
       },
       "teams": [
         "PHI"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "rank": 89
-    },
-    {
-      "id": "00-0037744:2022_10_ARI_LA",
-      "playerId": "00-0037744",
-      "name": "Trey McBride",
-      "length": 66,
-      "start": {
-        "date": "2022-11-13",
-        "season": 2022,
-        "game": "2022_10_ARI_LA",
-        "team": "ARI",
-        "opponent": "LA"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_ARI_DAL",
-        "team": "ARI",
-        "opponent": "DAL"
-      },
-      "teams": [
-        "ARI"
       ],
       "endedBy": null,
       "gapAfter": null,
@@ -3617,7 +3617,7 @@
       "id": "00-0030506:2014_01_TEN_KC",
       "playerId": "00-0030506",
       "name": "Travis Kelce",
-      "length": 198,
+      "length": 199,
       "start": {
         "date": "2014-09-07",
         "season": 2014,
@@ -3626,11 +3626,11 @@
         "opponent": "TEN"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_KC_DEN",
+        "game": "2026_09_NYJ_KC",
         "team": "KC",
-        "opponent": "DEN"
+        "opponent": "NYJ"
       },
       "teams": [
         "KC"
@@ -3647,7 +3647,7 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 198,
+          "length": 199,
           "rank": 4,
           "tied": false,
           "record": 274,
@@ -3699,10 +3699,10 @@
           "scope": "KC",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 198,
+          "length": 199,
           "rank": 1,
           "tied": false,
-          "record": 198,
+          "record": 199,
           "recordHolders": [
             {
               "id": "00-0030506:2014_01_TEN_KC",
@@ -3711,7 +3711,7 @@
                 "KC"
               ],
               "opponent": null,
-              "length": 198,
+              "length": 199,
               "firstSeason": 2014,
               "lastSeason": 2026,
               "years": "2014–2026",
@@ -3733,7 +3733,7 @@
       "id": "00-0031588:2015_04_MIN_DEN",
       "playerId": "00-0031588",
       "name": "Stefon Diggs",
-      "length": 167,
+      "length": 168,
       "start": {
         "date": "2015-10-04",
         "season": 2015,
@@ -3742,11 +3742,11 @@
         "opponent": "DEN"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_PHI_WAS",
+        "game": "2026_09_LA_WAS",
         "team": "WAS",
-        "opponent": "PHI"
+        "opponent": "LA"
       },
       "teams": [
         "MIN",
@@ -3767,7 +3767,7 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 167,
+          "length": 168,
           "rank": 12,
           "tied": false,
           "record": 274,
@@ -3818,8 +3818,8 @@
           "scope": "WAS",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 6,
-          "rank": 116,
+          "length": 7,
+          "rank": 105,
           "tied": true,
           "record": 76,
           "recordHolders": [
@@ -3839,8 +3839,8 @@
             }
           ],
           "nextHigher": {
-            "length": 7,
-            "rank": 104,
+            "length": 8,
+            "rank": 92,
             "holders": [
               {
                 "id": "00-0041040:2026_01_WAS_PHI",
@@ -3849,7 +3849,7 @@
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
+                "length": 8,
                 "firstSeason": 2026,
                 "lastSeason": 2026,
                 "years": "2026",
@@ -3857,163 +3857,177 @@
                 "lowerBound": false
               },
               {
-                "id": "00-0021190:2006_01_MIN_WAS",
-                "name": "Antwaan Randle El",
+                "id": "00-0037746:2024_08_CHI_WAS",
+                "name": "Brian Robinson",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2006,
-                "lastSeason": 2006,
-                "years": "2006",
+                "length": 8,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
                 "active": false,
-                "lowerBound": true
+                "lowerBound": false
               },
               {
-                "id": "00-0020464:2002_14_NYG_WAS",
-                "name": "Darnerien McCants",
+                "id": "00-0016373:2002_10_WAS_JAX",
+                "name": "Derrius Thompson",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
+                "length": 8,
                 "firstSeason": 2002,
-                "lastSeason": 2003,
-                "years": "2002–2003",
+                "lastSeason": 2002,
+                "years": "2002",
                 "active": false,
                 "lowerBound": true
               },
               {
-                "id": "00-0012642:2005_01_CHI_WAS",
-                "name": "David Patten",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2005,
-                "lastSeason": 2005,
-                "years": "2005",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0026188:2012_01_WAS_NO",
+                "id": "00-0026188:2010_06_IND_WAS",
                 "name": "Fred Davis",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
+                "length": 8,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
                 "active": false,
                 "lowerBound": true
               },
               {
-                "id": "00-0036142:2020_03_WAS_CLE",
-                "name": "Isaiah Wright",
+                "id": "00-0005616:2000_09_TEN_WAS",
+                "name": "Irving Fryar",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
+                "length": 8,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
                 "active": false,
-                "lowerBound": false
+                "lowerBound": true
               },
               {
-                "id": "00-0032362:2018_05_WAS_NO",
-                "name": "Maurice Harris",
+                "id": "00-0033955:2025_10_DET_WAS",
+                "name": "Jeremy McNichols",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
+                "length": 8,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0014655:2005_04_SEA_WAS",
+                "id": "00-0014655:2009_17_WAS_SD",
                 "name": "Mike Sellers",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2005,
-                "lastSeason": 2005,
-                "years": "2005",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0014655:2009_06_KC_WAS",
-                "name": "Mike Sellers",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
+                "length": 8,
                 "firstSeason": 2009,
-                "lastSeason": 2009,
-                "years": "2009",
+                "lastSeason": 2010,
+                "years": "2009–2010",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020525:2004_10_CIN_WAS",
+                "name": "Rod Gardner",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 2004,
+                "lastSeason": 2004,
+                "years": "2004",
                 "active": false,
                 "lowerBound": true
               },
               {
-                "id": "00-0033526:2017_10_MIN_WAS",
-                "name": "Samaje Perine",
+                "id": "00-0031068:2014_17_DAL_WAS",
+                "name": "Ryan Grant",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2017,
-                "lastSeason": 2017,
-                "years": "2017",
+                "length": 8,
+                "firstSeason": 2014,
+                "lastSeason": 2015,
+                "years": "2014–2015",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0020494:2012_14_BAL_WAS",
-                "name": "Santana Moss",
+                "id": "00-0004052:1999_06_WAS_ARI",
+                "name": "Stephen Davis",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2012,
-                "lastSeason": 2013,
-                "years": "2012–2013",
+                "length": 8,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0034928:2019_13_WAS_CAR",
-                "name": "Steven Sims",
+                "id": "00-0004052:2000_14_NYG_WAS",
+                "name": "Stephen Davis",
                 "teams": [
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 7,
-                "firstSeason": 2019,
-                "lastSeason": 2020,
-                "years": "2019–2020",
+                "length": 8,
+                "firstSeason": 2000,
+                "lastSeason": 2001,
+                "years": "2000–2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0024221:2018_12_WAS_DAL",
+                "name": "Vernon Davis",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 2018,
+                "lastSeason": 2019,
+                "years": "2018–2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030061:2025_06_CHI_WAS",
+                "name": "Zach Ertz",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
                 "active": false,
                 "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 104,
+            "rank": 92,
             "tied": true
           },
           "lowerBound": false
@@ -4080,7 +4094,7 @@
             }
           ],
           "nextHigher": {
-            "length": 167,
+            "length": 168,
             "rank": 12,
             "holders": [
               {
@@ -4094,7 +4108,7 @@
                   "WAS"
                 ],
                 "opponent": null,
-                "length": 167,
+                "length": 168,
                 "firstSeason": 2015,
                 "lastSeason": 2026,
                 "years": "2015–2026",
@@ -4166,7 +4180,7 @@
       "id": "00-0030279:2018_16_BAL_LAC",
       "playerId": "00-0030279",
       "name": "Keenan Allen",
-      "length": 110,
+      "length": 111,
       "start": {
         "date": "2018-12-22",
         "season": 2018,
@@ -4175,11 +4189,11 @@
         "opponent": "BAL"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_IND_JAX",
+        "game": "2026_09_DAL_IND",
         "team": "IND",
-        "opponent": "JAX"
+        "opponent": "DAL"
       },
       "teams": [
         "LAC",
@@ -4198,9 +4212,9 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 110,
+          "length": 111,
           "rank": 27,
-          "tied": true,
+          "tied": false,
           "record": 274,
           "recordHolders": [
             {
@@ -4251,8 +4265,8 @@
           "scope": "IND",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 7,
-          "rank": 85,
+          "length": 8,
+          "rank": 73,
           "tied": true,
           "record": 190,
           "recordHolders": [
@@ -4272,45 +4286,143 @@
             }
           ],
           "nextHigher": {
-            "length": 8,
-            "rank": 73,
+            "length": 9,
+            "rank": 61,
             "holders": [
               {
-                "id": "00-0039890:2024_05_IND_JAX",
-                "name": "Adonai Mitchell",
+                "id": "00-0032355:2017_16_IND_BAL",
+                "name": "Chester Rogers",
                 "teams": [
                   "IND"
                 ],
                 "opponent": null,
-                "length": 8,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
+                "length": 9,
+                "firstSeason": 2017,
+                "lastSeason": 2018,
+                "years": "2017–2018",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0022165:2007_11_KC_IND",
+                "id": "00-0022165:2006_17_MIA_IND",
                 "name": "Dallas Clark",
                 "teams": [
                   "IND"
                 ],
                 "opponent": null,
-                "length": 8,
-                "firstSeason": 2007,
-                "lastSeason": 2008,
-                "years": "2007–2008",
+                "length": 9,
+                "firstSeason": 2006,
+                "lastSeason": 2007,
+                "years": "2006–2007",
                 "active": false,
                 "lowerBound": true
               },
               {
-                "id": "00-0026983:2013_06_IND_SD",
-                "name": "Darrius Heyward-Bey",
+                "id": "00-0027003:2011_08_IND_TEN",
+                "name": "Donald Brown",
                 "teams": [
                   "IND"
                 ],
                 "opponent": null,
-                "length": 8,
+                "length": 9,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0031387:2018_01_CIN_IND",
+                "name": "Eric Ebron",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2018,
+                "lastSeason": 2018,
+                "years": "2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030854:2016_15_IND_MIN",
+                "name": "Erik Swoope",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2016,
+                "lastSeason": 2018,
+                "years": "2016–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033217:2020_08_IND_DET",
+                "name": "Mo Alie-Cox",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2020,
+                "lastSeason": 2020,
+                "years": "2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0008059:2002_01_IND_JAX",
+                "name": "Qadry Ismail",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0020498:2002_06_BAL_IND",
+                "name": "Reggie Wayne",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0031068:2018_01_CIN_IND",
+                "name": "Ryan Grant",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
+                "firstSeason": 2018,
+                "lastSeason": 2018,
+                "years": "2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028178:2013_02_MIA_IND",
+                "name": "Stanley Havili",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 9,
                 "firstSeason": 2013,
                 "lastSeason": 2013,
                 "years": "2013",
@@ -4318,135 +4430,37 @@
                 "lowerBound": false
               },
               {
-                "id": "00-0019863:2001_10_IND_NO",
-                "name": "Dominic Rhodes",
+                "id": "00-0029675:2013_14_IND_CIN",
+                "name": "Trent Richardson",
                 "teams": [
                   "IND"
                 ],
                 "opponent": null,
-                "length": 8,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0031339:2016_16_IND_OAK",
-                "name": "Donte Moncrief",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
+                "length": 9,
+                "firstSeason": 2013,
+                "lastSeason": 2014,
+                "years": "2013–2014",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0008241:2003_08_HOU_IND",
-                "name": "Edgerrin James",
+                "id": "00-0030710:2020_04_IND_CHI",
+                "name": "Trey Burton",
                 "teams": [
                   "IND"
                 ],
                 "opponent": null,
-                "length": 8,
-                "firstSeason": 2003,
-                "lastSeason": 2003,
-                "years": "2003",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0024245:2007_14_IND_BAL",
-                "name": "Joseph Addai",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2007,
-                "lastSeason": 2008,
-                "years": "2007–2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028497:2017_01_IND_LA",
-                "name": "Kamar Aiken",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2017,
-                "lastSeason": 2017,
-                "years": "2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0004294:2001_10_IND_NO",
-                "name": "Ken Dilger",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036876:2022_01_IND_HOU",
-                "name": "Kylen Granson",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033217:2021_16_IND_ARI",
-                "name": "Mo Alie-Cox",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2021,
-                "lastSeason": 2022,
-                "years": "2021–2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033251:2019_03_ATL_IND",
-                "name": "Zach Pascal",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2019,
-                "lastSeason": 2019,
-                "years": "2019",
+                "length": 9,
+                "firstSeason": 2020,
+                "lastSeason": 2020,
+                "years": "2020",
                 "active": false,
                 "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 73,
+            "rank": 61,
             "tied": true
           },
           "lowerBound": false
@@ -4512,7 +4526,7 @@
           ],
           "nextHigher": {
             "length": 110,
-            "rank": 27,
+            "rank": 28,
             "holders": [
               {
                 "id": "00-0027874:2011_13_DEN_MIN",
@@ -4543,22 +4557,6 @@
                 "lastSeason": 2025,
                 "years": "2017–2025",
                 "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030279:2018_16_BAL_LAC",
-                "name": "Keenan Allen",
-                "teams": [
-                  "LAC",
-                  "CHI",
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 110,
-                "firstSeason": 2018,
-                "lastSeason": 2026,
-                "years": "2018–2026",
-                "active": true,
                 "lowerBound": false
               }
             ]
@@ -5441,7 +5439,7 @@
       "id": "00-0036900:2021_01_MIN_CIN",
       "playerId": "00-0036900",
       "name": "Ja'Marr Chase",
-      "length": 85,
+      "length": 86,
       "start": {
         "date": "2021-09-12",
         "season": 2021,
@@ -5450,11 +5448,11 @@
         "opponent": "MIN"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_TEN_CIN",
+        "game": "2026_09_CIN_ATL",
         "team": "CIN",
-        "opponent": "TEN"
+        "opponent": "ATL"
       },
       "teams": [
         "CIN"
@@ -5471,8 +5469,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 85,
-          "rank": 48,
+          "length": 86,
+          "rank": 47,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -5493,27 +5491,46 @@
             }
           ],
           "nextHigher": {
-            "length": 86,
-            "rank": 47,
+            "length": 87,
+            "rank": 45,
             "holders": [
               {
-                "id": "archive:00-0015218:86",
-                "name": "Jimmy Smith",
+                "id": "00-0026201:2011_15_DAL_TB",
+                "name": "Martellus Bennett",
                 "teams": [
-                  "JAX"
+                  "DAL",
+                  "NYG",
+                  "CHI",
+                  "NE",
+                  "GB"
                 ],
                 "opponent": null,
-                "length": 86,
-                "firstSeason": 1995,
-                "lastSeason": 2000,
-                "years": "1995–2000",
+                "length": 87,
+                "firstSeason": 2011,
+                "lastSeason": 2017,
+                "years": "2011–2017",
                 "active": false,
-                "lowerBound": false
+                "lowerBound": true
+              },
+              {
+                "id": "00-0026345:2012_11_PHI_WAS",
+                "name": "Pierre Garcon",
+                "teams": [
+                  "WAS",
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 87,
+                "firstSeason": 2012,
+                "lastSeason": 2018,
+                "years": "2012–2018",
+                "active": false,
+                "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 47,
+            "rank": 45,
             "tied": true
           },
           "lowerBound": false
@@ -5522,7 +5539,7 @@
           "scope": "CIN",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 85,
+          "length": 86,
           "rank": 2,
           "tied": false,
           "record": 102,
@@ -6465,7 +6482,7 @@
       "id": "00-0033906:2021_05_NO_WAS",
       "playerId": "00-0033906",
       "name": "Alvin Kamara",
-      "length": 68,
+      "length": 69,
       "start": {
         "date": "2021-10-10",
         "season": 2021,
@@ -6474,11 +6491,11 @@
         "opponent": "WAS"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_PIT_NO",
+        "game": "2026_09_CLE_NO",
         "team": "NO",
-        "opponent": "PIT"
+        "opponent": "CLE"
       },
       "teams": [
         "NO"
@@ -6495,8 +6512,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 68,
-          "rank": 79,
+          "length": 69,
+          "rank": 76,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -6517,56 +6534,57 @@
             }
           ],
           "nextHigher": {
-            "length": 69,
-            "rank": 76,
+            "length": 70,
+            "rank": 73,
             "holders": [
               {
-                "id": "00-0029137:2012_16_CHI_ARI",
-                "name": "Alshon Jeffery",
+                "id": "00-0036963:2021_08_PHI_DET",
+                "name": "Amon-Ra St. Brown",
                 "teams": [
-                  "CHI",
-                  "PHI"
+                  "DET"
                 ],
                 "opponent": null,
-                "length": 69,
-                "firstSeason": 2012,
-                "lastSeason": 2017,
-                "years": "2012–2017",
+                "length": 70,
+                "firstSeason": 2021,
+                "lastSeason": 2025,
+                "years": "2021–2025",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0033908:2019_11_CHI_LA",
-                "name": "Cooper Kupp",
+                "id": "00-0032688:2016_17_BUF_NYJ",
+                "name": "Robbie Chosen",
                 "teams": [
-                  "LA"
+                  "NYJ",
+                  "CAR"
                 ],
                 "opponent": null,
-                "length": 69,
-                "firstSeason": 2019,
-                "lastSeason": 2024,
-                "years": "2019–2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033009:2016_01_CIN_NYJ",
-                "name": "Tyler Boyd",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 69,
+                "length": 70,
                 "firstSeason": 2016,
-                "lastSeason": 2020,
-                "years": "2016–2020",
+                "lastSeason": 2021,
+                "years": "2016–2021",
                 "active": false,
                 "lowerBound": false
+              },
+              {
+                "id": "00-0026364:2010_01_MIA_BUF",
+                "name": "Steve Johnson",
+                "teams": [
+                  "BUF",
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 70,
+                "firstSeason": 2010,
+                "lastSeason": 2014,
+                "years": "2010–2014",
+                "active": false,
+                "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 76,
+            "rank": 73,
             "tied": true
           },
           "lowerBound": false
@@ -6575,7 +6593,7 @@
           "scope": "NO",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 68,
+          "length": 69,
           "rank": 2,
           "tied": false,
           "record": 81,
@@ -6625,6 +6643,184 @@
       }
     },
     {
+      "id": "00-0034383:2022_07_DET_DAL",
+      "playerId": "00-0034383",
+      "name": "Dalton Schultz",
+      "length": 68,
+      "start": {
+        "date": "2022-10-23",
+        "season": 2022,
+        "game": "2022_07_DET_DAL",
+        "team": "DAL",
+        "opponent": "DET"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_HOU_LAC",
+        "team": "HOU",
+        "opponent": "LAC"
+      },
+      "teams": [
+        "DAL",
+        "HOU"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "HOU",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 68,
+          "rank": 80,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 69,
+            "rank": 76,
+            "holders": [
+              {
+                "id": "00-0029137:2012_16_CHI_ARI",
+                "name": "Alshon Jeffery",
+                "teams": [
+                  "CHI",
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2012,
+                "lastSeason": 2017,
+                "years": "2012–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033906:2021_05_NO_WAS",
+                "name": "Alvin Kamara",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033908:2019_11_CHI_LA",
+                "name": "Cooper Kupp",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2019,
+                "lastSeason": 2024,
+                "years": "2019–2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033009:2016_01_CIN_NYJ",
+                "name": "Tyler Boyd",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 76,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "HOU",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 57,
+          "rank": 3,
+          "tied": false,
+          "record": 110,
+          "recordHolders": [
+            {
+              "id": "00-0030564:2013_01_HOU_SD",
+              "name": "DeAndre Hopkins",
+              "teams": [
+                "HOU"
+              ],
+              "opponent": null,
+              "length": 110,
+              "firstSeason": 2013,
+              "lastSeason": 2019,
+              "years": "2013–2019",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 63,
+            "rank": 2,
+            "holders": [
+              {
+                "id": "00-0036554:2021_14_SEA_HOU",
+                "name": "Nico Collins",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "HOU"
+      }
+    },
+    {
       "id": "00-0035229:2021_11_DET_CLE",
       "playerId": "00-0035229",
       "name": "T.J. Hockenson",
@@ -6660,7 +6856,7 @@
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 67,
-          "rank": 83,
+          "rank": 84,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -6682,22 +6878,8 @@
           ],
           "nextHigher": {
             "length": 68,
-            "rank": 79,
+            "rank": 80,
             "holders": [
-              {
-                "id": "00-0033906:2021_05_NO_WAS",
-                "name": "Alvin Kamara",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              },
               {
                 "id": "00-0033921:2018_16_TB_DAL",
                 "name": "Chris Godwin Jr.",
@@ -6710,6 +6892,21 @@
                 "lastSeason": 2023,
                 "years": "2018–2023",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034383:2022_07_DET_DAL",
+                "name": "Dalton Schultz",
+                "teams": [
+                  "DAL",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -6744,7 +6941,7 @@
             ]
           },
           "next": {
-            "rank": 79,
+            "rank": 80,
             "tied": true
           },
           "lowerBound": false
@@ -6803,27 +7000,26 @@
       }
     },
     {
-      "id": "00-0034383:2022_07_DET_DAL",
-      "playerId": "00-0034383",
-      "name": "Dalton Schultz",
+      "id": "00-0037744:2022_10_ARI_LA",
+      "playerId": "00-0037744",
+      "name": "Trey McBride",
       "length": 67,
       "start": {
-        "date": "2022-10-23",
+        "date": "2022-11-13",
         "season": 2022,
-        "game": "2022_07_DET_DAL",
-        "team": "DAL",
-        "opponent": "DET"
+        "game": "2022_10_ARI_LA",
+        "team": "ARI",
+        "opponent": "LA"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_NYG_HOU",
-        "team": "HOU",
-        "opponent": "NYG"
+        "game": "2026_09_ARI_SEA",
+        "team": "ARI",
+        "opponent": "SEA"
       },
       "teams": [
-        "DAL",
-        "HOU"
+        "ARI"
       ],
       "endedBy": null,
       "gapAfter": null,
@@ -6831,14 +7027,14 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "HOU",
+      "currentTeam": "ARI",
       "leaderboard": {
         "overall": {
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 67,
-          "rank": 83,
+          "rank": 84,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -6860,22 +7056,8 @@
           ],
           "nextHigher": {
             "length": 68,
-            "rank": 79,
+            "rank": 80,
             "holders": [
-              {
-                "id": "00-0033906:2021_05_NO_WAS",
-                "name": "Alvin Kamara",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              },
               {
                 "id": "00-0033921:2018_16_TB_DAL",
                 "name": "Chris Godwin Jr.",
@@ -6888,6 +7070,21 @@
                 "lastSeason": 2023,
                 "years": "2018–2023",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034383:2022_07_DET_DAL",
+                "name": "Dalton Schultz",
+                "teams": [
+                  "DAL",
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -6922,62 +7119,62 @@
             ]
           },
           "next": {
-            "rank": 79,
+            "rank": 80,
             "tied": true
           },
           "lowerBound": false
         },
         "franchise": {
-          "scope": "HOU",
+          "scope": "ARI",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 56,
-          "rank": 3,
+          "length": 67,
+          "rank": 2,
           "tied": false,
-          "record": 110,
+          "record": 256,
           "recordHolders": [
             {
-              "id": "00-0030564:2013_01_HOU_SD",
-              "name": "DeAndre Hopkins",
+              "id": "archive:00-0022921:256",
+              "name": "Larry Fitzgerald",
               "teams": [
-                "HOU"
+                "ARI"
               ],
               "opponent": null,
-              "length": 110,
-              "firstSeason": 2013,
-              "lastSeason": 2019,
-              "years": "2013–2019",
+              "length": 256,
+              "firstSeason": 2004,
+              "lastSeason": 2020,
+              "years": "2004–2020",
               "active": false,
               "lowerBound": false
             }
           ],
           "nextHigher": {
-            "length": 62,
-            "rank": 2,
+            "length": 256,
+            "rank": 1,
             "holders": [
               {
-                "id": "00-0036554:2021_14_SEA_HOU",
-                "name": "Nico Collins",
+                "id": "archive:00-0022921:256",
+                "name": "Larry Fitzgerald",
                 "teams": [
-                  "HOU"
+                  "ARI"
                 ],
                 "opponent": null,
-                "length": 62,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
+                "length": 256,
+                "firstSeason": 2004,
+                "lastSeason": 2020,
+                "years": "2004–2020",
+                "active": false,
                 "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 3,
+            "rank": 2,
             "tied": false
           },
           "lowerBound": false
         },
-        "franchiseTeam": "HOU"
+        "franchiseTeam": "ARI"
       }
     },
     {
@@ -7015,8 +7212,8 @@
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 66,
-          "rank": 89,
-          "tied": true,
+          "rank": 90,
+          "tied": false,
           "record": 274,
           "recordHolders": [
             {
@@ -7037,23 +7234,8 @@
           ],
           "nextHigher": {
             "length": 67,
-            "rank": 83,
+            "rank": 84,
             "holders": [
-              {
-                "id": "00-0034383:2022_07_DET_DAL",
-                "name": "Dalton Schultz",
-                "teams": [
-                  "DAL",
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
               {
                 "id": "archive:STA285936:67",
                 "name": "John Stallworth",
@@ -7125,11 +7307,25 @@
                 "years": "2021–2026",
                 "active": true,
                 "lowerBound": false
+              },
+              {
+                "id": "00-0037744:2022_10_ARI_LA",
+                "name": "Trey McBride",
+                "teams": [
+                  "ARI"
+                ],
+                "opponent": null,
+                "length": 67,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 83,
+            "rank": 84,
             "tied": true
           },
           "lowerBound": false
@@ -7185,213 +7381,6 @@
           "lowerBound": false
         },
         "franchiseTeam": "PHI"
-      }
-    },
-    {
-      "id": "00-0037744:2022_10_ARI_LA",
-      "playerId": "00-0037744",
-      "name": "Trey McBride",
-      "length": 66,
-      "start": {
-        "date": "2022-11-13",
-        "season": 2022,
-        "game": "2022_10_ARI_LA",
-        "team": "ARI",
-        "opponent": "LA"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_ARI_DAL",
-        "team": "ARI",
-        "opponent": "DAL"
-      },
-      "teams": [
-        "ARI"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "currentTeam": "ARI",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 66,
-          "rank": 89,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 67,
-            "rank": 83,
-            "holders": [
-              {
-                "id": "00-0034383:2022_07_DET_DAL",
-                "name": "Dalton Schultz",
-                "teams": [
-                  "DAL",
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "archive:STA285936:67",
-                "name": "John Stallworth",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 1977,
-                "lastSeason": 1982,
-                "years": "1977–1982",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030279:2013_02_SD_PHI",
-                "name": "Keenan Allen",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2013,
-                "lastSeason": 2018,
-                "years": "2013–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022910:2004_08_ARI_BUF",
-                "name": "Lee Evans",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2004,
-                "lastSeason": 2008,
-                "years": "2004–2008",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0023367:2008_03_PIT_PHI",
-                "name": "Nate Washington",
-                "teams": [
-                  "PIT",
-                  "TEN"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2008,
-                "lastSeason": 2012,
-                "years": "2008–2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0035229:2021_11_DET_CLE",
-                "name": "T.J. Hockenson",
-                "teams": [
-                  "DET",
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 83,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "ARI",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 66,
-          "rank": 2,
-          "tied": false,
-          "record": 256,
-          "recordHolders": [
-            {
-              "id": "archive:00-0022921:256",
-              "name": "Larry Fitzgerald",
-              "teams": [
-                "ARI"
-              ],
-              "opponent": null,
-              "length": 256,
-              "firstSeason": 2004,
-              "lastSeason": 2020,
-              "years": "2004–2020",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 256,
-            "rank": 1,
-            "holders": [
-              {
-                "id": "archive:00-0022921:256",
-                "name": "Larry Fitzgerald",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 256,
-                "firstSeason": 2004,
-                "lastSeason": 2020,
-                "years": "2004–2020",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 2,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "ARI"
       }
     },
     {
@@ -7657,7 +7646,7 @@
       "id": "00-0036554:2021_14_SEA_HOU",
       "playerId": "00-0036554",
       "name": "Nico Collins",
-      "length": 62,
+      "length": 63,
       "start": {
         "date": "2021-12-12",
         "season": 2021,
@@ -7666,11 +7655,11 @@
         "opponent": "SEA"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_NYG_HOU",
+        "game": "2026_09_HOU_LAC",
         "team": "HOU",
-        "opponent": "NYG"
+        "opponent": "LAC"
       },
       "teams": [
         "HOU"
@@ -7687,8 +7676,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 62,
-          "rank": 105,
+          "length": 63,
+          "rank": 102,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -7709,34 +7698,18 @@
             }
           ],
           "nextHigher": {
-            "length": 63,
-            "rank": 102,
+            "length": 64,
+            "rank": 95,
             "holders": [
               {
-                "id": "00-0033699:2021_02_DAL_LAC",
-                "name": "Austin Ekeler",
+                "id": "00-0032009:2016_01_TB_ATL",
+                "name": "Adam Humphries",
                 "teams": [
-                  "LAC",
-                  "WAS"
+                  "TB",
+                  "TEN"
                 ],
                 "opponent": null,
-                "length": 63,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0027061:2016_01_GB_JAX",
-                "name": "Jared Cook",
-                "teams": [
-                  "GB",
-                  "LV",
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 63,
+                "length": 64,
                 "firstSeason": 2016,
                 "lastSeason": 2020,
                 "years": "2016–2020",
@@ -7744,23 +7717,98 @@
                 "lowerBound": false
               },
               {
-                "id": "00-0020536:2001_01_WAS_SD",
-                "name": "LaDainian Tomlinson",
+                "id": "00-0028434:2014_01_GB_SEA",
+                "name": "Doug Baldwin",
                 "teams": [
-                  "LAC"
+                  "SEA"
                 ],
                 "opponent": null,
-                "length": 63,
-                "firstSeason": 2001,
-                "lastSeason": 2004,
-                "years": "2001–2004",
+                "length": 64,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030472:2013_01_PHI_WAS",
+                "name": "Jordan Reed",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2013,
+                "lastSeason": 2018,
+                "years": "2013–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029664:2012_01_PHI_CLE",
+                "name": "Josh Gordon",
+                "teams": [
+                  "CLE",
+                  "NE",
+                  "SEA",
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2012,
+                "lastSeason": 2021,
+                "years": "2012–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000339:1999_01_NE_NYJ",
+                "name": "Richie Anderson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0032385:2016_13_NYG_PIT",
+                "name": "Sterling Shepard",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2016,
+                "lastSeason": 2022,
+                "years": "2016–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022427:2011_01_NE_MIA",
+                "name": "Wes Welker",
+                "teams": [
+                  "NE",
+                  "DEN",
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2011,
+                "lastSeason": 2015,
+                "years": "2011–2015",
                 "active": false,
                 "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 102,
+            "rank": 95,
             "tied": true
           },
           "lowerBound": false
@@ -7769,7 +7817,7 @@
           "scope": "HOU",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 62,
+          "length": 63,
           "rank": 2,
           "tied": false,
           "record": 110,
@@ -7822,7 +7870,7 @@
       "id": "00-0037239:2022_01_NO_ATL",
       "playerId": "00-0037239",
       "name": "Chris Olave",
-      "length": 62,
+      "length": 63,
       "start": {
         "date": "2022-09-11",
         "season": 2022,
@@ -7831,11 +7879,11 @@
         "opponent": "ATL"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_PIT_NO",
+        "game": "2026_09_CLE_NO",
         "team": "NO",
-        "opponent": "PIT"
+        "opponent": "CLE"
       },
       "teams": [
         "NO"
@@ -7852,8 +7900,233 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
+          "length": 63,
+          "rank": 102,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 64,
+            "rank": 95,
+            "holders": [
+              {
+                "id": "00-0032009:2016_01_TB_ATL",
+                "name": "Adam Humphries",
+                "teams": [
+                  "TB",
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0028434:2014_01_GB_SEA",
+                "name": "Doug Baldwin",
+                "teams": [
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030472:2013_01_PHI_WAS",
+                "name": "Jordan Reed",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2013,
+                "lastSeason": 2018,
+                "years": "2013–2018",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029664:2012_01_PHI_CLE",
+                "name": "Josh Gordon",
+                "teams": [
+                  "CLE",
+                  "NE",
+                  "SEA",
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2012,
+                "lastSeason": 2021,
+                "years": "2012–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000339:1999_01_NE_NYJ",
+                "name": "Richie Anderson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0032385:2016_13_NYG_PIT",
+                "name": "Sterling Shepard",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2016,
+                "lastSeason": 2022,
+                "years": "2016–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0022427:2011_01_NE_MIA",
+                "name": "Wes Welker",
+                "teams": [
+                  "NE",
+                  "DEN",
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 64,
+                "firstSeason": 2011,
+                "lastSeason": 2015,
+                "years": "2011–2015",
+                "active": false,
+                "lowerBound": true
+              }
+            ]
+          },
+          "next": {
+            "rank": 95,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "NO",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 63,
+          "rank": 3,
+          "tied": true,
+          "record": 81,
+          "recordHolders": [
+            {
+              "id": "00-0032765:2016_01_OAK_NO",
+              "name": "Michael Thomas",
+              "teams": [
+                "NO"
+              ],
+              "opponent": null,
+              "length": 81,
+              "firstSeason": 2016,
+              "lastSeason": 2023,
+              "years": "2016–2023",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 69,
+            "rank": 2,
+            "holders": [
+              {
+                "id": "00-0033906:2021_05_NO_WAS",
+                "name": "Alvin Kamara",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "NO"
+      }
+    },
+    {
+      "id": "00-0033280:2022_01_CLE_CAR",
+      "playerId": "00-0033280",
+      "name": "Christian McCaffrey",
+      "length": 62,
+      "start": {
+        "date": "2022-09-11",
+        "season": 2022,
+        "game": "2022_01_CLE_CAR",
+        "team": "CAR",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_LV_SF",
+        "team": "SF",
+        "opponent": "LV"
+      },
+      "teams": [
+        "CAR",
+        "SF"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "SF",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
           "length": 62,
-          "rank": 105,
+          "rank": 107,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -7893,6 +8166,20 @@
                 "lowerBound": false
               },
               {
+                "id": "00-0037239:2022_01_NO_ATL",
+                "name": "Chris Olave",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
                 "id": "00-0027061:2016_01_GB_JAX",
                 "name": "Jared Cook",
                 "teams": [
@@ -7921,6 +8208,20 @@
                 "years": "2001–2004",
                 "active": false,
                 "lowerBound": true
+              },
+              {
+                "id": "00-0036554:2021_14_SEA_HOU",
+                "name": "Nico Collins",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 63,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
               }
             ]
           },
@@ -7931,190 +8232,12 @@
           "lowerBound": false
         },
         "franchise": {
-          "scope": "NO",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 62,
-          "rank": 4,
-          "tied": false,
-          "record": 81,
-          "recordHolders": [
-            {
-              "id": "00-0032765:2016_01_OAK_NO",
-              "name": "Michael Thomas",
-              "teams": [
-                "NO"
-              ],
-              "opponent": null,
-              "length": 81,
-              "firstSeason": 2016,
-              "lastSeason": 2023,
-              "years": "2016–2023",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 63,
-            "rank": 3,
-            "holders": [
-              {
-                "id": "00-0007744:2000_01_DET_NO",
-                "name": "Joe Horn",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 63,
-                "firstSeason": 2000,
-                "lastSeason": 2003,
-                "years": "2000–2003",
-                "active": false,
-                "lowerBound": true
-              }
-            ]
-          },
-          "next": {
-            "rank": 3,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "NO"
-      }
-    },
-    {
-      "id": "00-0033280:2022_01_CLE_CAR",
-      "playerId": "00-0033280",
-      "name": "Christian McCaffrey",
-      "length": 61,
-      "start": {
-        "date": "2022-09-11",
-        "season": 2022,
-        "game": "2022_01_CLE_CAR",
-        "team": "CAR",
-        "opponent": "CLE"
-      },
-      "last": {
-        "date": "2026-10-25",
-        "season": 2026,
-        "game": "2026_07_SF_ATL",
-        "team": "SF",
-        "opponent": "ATL"
-      },
-      "teams": [
-        "CAR",
-        "SF"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "currentTeam": "SF",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 61,
-          "rank": 109,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 62,
-            "rank": 105,
-            "holders": [
-              {
-                "id": "00-0022084:2013_01_GB_SF",
-                "name": "Anquan Boldin",
-                "teams": [
-                  "SF",
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 62,
-                "firstSeason": 2013,
-                "lastSeason": 2016,
-                "years": "2013–2016",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0037239:2022_01_NO_ATL",
-                "name": "Chris Olave",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 62,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0002099:2000_01_DEN_STL",
-                "name": "Isaac Bruce",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 62,
-                "firstSeason": 2000,
-                "lastSeason": 2003,
-                "years": "2000–2003",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0036554:2021_14_SEA_HOU",
-                "name": "Nico Collins",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 62,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 105,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
           "scope": "SF",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 55,
-          "rank": 4,
-          "tied": false,
+          "length": 56,
+          "rank": 3,
+          "tied": true,
           "record": 114,
           "recordHolders": [
             {
@@ -8133,20 +8256,20 @@
             }
           ],
           "nextHigher": {
-            "length": 56,
-            "rank": 3,
+            "length": 58,
+            "rank": 2,
             "holders": [
               {
-                "id": "00-0036261:2021_02_SF_PHI",
-                "name": "Brandon Aiyuk",
+                "id": "00-0024221:2008_14_NYJ_SF",
+                "name": "Vernon Davis",
                 "teams": [
                   "SF"
                 ],
                 "opponent": null,
-                "length": 56,
-                "firstSeason": 2021,
-                "lastSeason": 2024,
-                "years": "2021–2024",
+                "length": 58,
+                "firstSeason": 2008,
+                "lastSeason": 2012,
+                "years": "2008–2012",
                 "active": false,
                 "lowerBound": false
               }
@@ -8154,7 +8277,7 @@
           },
           "next": {
             "rank": 3,
-            "tied": true
+            "tied": false
           },
           "lowerBound": false
         },
@@ -8165,7 +8288,7 @@
       "id": "00-0038543:2023_01_LA_SEA",
       "playerId": "00-0038543",
       "name": "Jaxon Smith-Njigba",
-      "length": 59,
+      "length": 60,
       "start": {
         "date": "2023-09-10",
         "season": 2023,
@@ -8174,11 +8297,11 @@
         "opponent": "LA"
       },
       "last": {
-        "date": "2026-11-02",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_CHI_SEA",
+        "game": "2026_09_ARI_SEA",
         "team": "SEA",
-        "opponent": "CHI"
+        "opponent": "ARI"
       },
       "teams": [
         "SEA"
@@ -8195,8 +8318,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 59,
-          "rank": 115,
+          "length": 60,
+          "rank": 114,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -8217,27 +8340,72 @@
             }
           ],
           "nextHigher": {
-            "length": 60,
-            "rank": 114,
+            "length": 61,
+            "rank": 110,
             "holders": [
               {
-                "id": "00-0036613:2021_01_MIA_NE",
-                "name": "Jaylen Waddle",
+                "id": "00-0034348:2018_01_SEA_DEN",
+                "name": "Courtland Sutton",
+                "teams": [
+                  "DEN"
+                ],
+                "opponent": null,
+                "length": 61,
+                "firstSeason": 2018,
+                "lastSeason": 2022,
+                "years": "2018–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0026000:2008_01_NYJ_MIA",
+                "name": "Davone Bess",
                 "teams": [
                   "MIA"
                 ],
                 "opponent": null,
-                "length": 60,
-                "firstSeason": 2021,
-                "lastSeason": 2024,
-                "years": "2021–2024",
+                "length": 61,
+                "firstSeason": 2008,
+                "lastSeason": 2011,
+                "years": "2008–2011",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0027685:2017_01_LAC_DEN",
+                "name": "Emmanuel Sanders",
+                "teams": [
+                  "DEN",
+                  "SF",
+                  "NO",
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 61,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033857:2017_02_MIN_PIT",
+                "name": "JuJu Smith-Schuster",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 61,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
                 "active": false,
                 "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 114,
+            "rank": 110,
             "tied": true
           },
           "lowerBound": false
@@ -8246,7 +8414,7 @@
           "scope": "SEA",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 59,
+          "length": 60,
           "rank": 5,
           "tied": false,
           "record": 177,
@@ -8293,6 +8461,197 @@
           "lowerBound": false
         },
         "franchiseTeam": "SEA"
+      }
+    },
+    {
+      "id": "00-0038997:2023_01_JAX_IND",
+      "playerId": "00-0038997",
+      "name": "Josh Downs",
+      "length": 56,
+      "start": {
+        "date": "2023-09-10",
+        "season": 2023,
+        "game": "2023_01_JAX_IND",
+        "team": "IND",
+        "opponent": "JAX"
+      },
+      "last": {
+        "date": "2026-11-08",
+        "season": 2026,
+        "game": "2026_09_DAL_IND",
+        "team": "IND",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "IND"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "IND",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 126,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 57,
+            "rank": 121,
+            "holders": [
+              {
+                "id": "00-0027681:2014_03_OAK_NE",
+                "name": "Brandon LaFell",
+                "teams": [
+                  "NE",
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033280:2017_01_CAR_SF",
+                "name": "Christian McCaffrey",
+                "teams": [
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0018343:1999_01_CIN_TEN",
+                "name": "Frank Wycheck",
+                "teams": [
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037740:2022_01_BAL_NYJ",
+                "name": "Garrett Wilson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2022,
+                "lastSeason": 2025,
+                "years": "2022–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030107:2014_16_DET_CHI",
+                "name": "Theo Riddick",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2018,
+                "years": "2014–2018",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 121,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "IND",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 5,
+          "tied": false,
+          "record": 190,
+          "recordHolders": [
+            {
+              "id": "archive:00-0007024:190",
+              "name": "Marvin Harrison",
+              "teams": [
+                "IND"
+              ],
+              "opponent": null,
+              "length": 190,
+              "firstSeason": 1996,
+              "lastSeason": 2008,
+              "years": "1996–2008",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 95,
+            "rank": 4,
+            "holders": [
+              {
+                "id": "00-0036252:2020_01_IND_JAX",
+                "name": "Michael Pittman",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 95,
+                "firstSeason": 2020,
+                "lastSeason": 2025,
+                "years": "2020–2025",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 5,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "IND"
       }
     },
     {
@@ -8474,172 +8833,10 @@
       }
     },
     {
-      "id": "00-0038997:2023_01_JAX_IND",
-      "playerId": "00-0038997",
-      "name": "Josh Downs",
-      "length": 55,
-      "start": {
-        "date": "2023-09-10",
-        "season": 2023,
-        "game": "2023_01_JAX_IND",
-        "team": "IND",
-        "opponent": "JAX"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_IND_JAX",
-        "team": "IND",
-        "opponent": "JAX"
-      },
-      "teams": [
-        "IND"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "currentTeam": "IND",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 55,
-          "rank": 129,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 56,
-            "rank": 126,
-            "holders": [
-              {
-                "id": "00-0036261:2021_02_SF_PHI",
-                "name": "Brandon Aiyuk",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 56,
-                "firstSeason": 2021,
-                "lastSeason": 2024,
-                "years": "2021–2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034983:2019_01_DEN_OAK",
-                "name": "Hunter Renfrow",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": null,
-                "length": 56,
-                "firstSeason": 2019,
-                "lastSeason": 2022,
-                "years": "2019–2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0039064:2023_01_HOU_BAL",
-                "name": "Zay Flowers",
-                "teams": [
-                  "BAL"
-                ],
-                "opponent": null,
-                "length": 56,
-                "firstSeason": 2023,
-                "lastSeason": 2026,
-                "years": "2023–2026",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 126,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "IND",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 55,
-          "rank": 5,
-          "tied": false,
-          "record": 190,
-          "recordHolders": [
-            {
-              "id": "archive:00-0007024:190",
-              "name": "Marvin Harrison",
-              "teams": [
-                "IND"
-              ],
-              "opponent": null,
-              "length": 190,
-              "firstSeason": 1996,
-              "lastSeason": 2008,
-              "years": "1996–2008",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 95,
-            "rank": 4,
-            "holders": [
-              {
-                "id": "00-0036252:2020_01_IND_JAX",
-                "name": "Michael Pittman",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 95,
-                "firstSeason": 2020,
-                "lastSeason": 2025,
-                "years": "2020–2025",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 5,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "IND"
-      }
-    },
-    {
       "id": "00-0037238:2023_02_GB_ATL",
       "playerId": "00-0037238",
       "name": "Drake London",
-      "length": 52,
+      "length": 53,
       "start": {
         "date": "2023-09-17",
         "season": 2023,
@@ -8648,11 +8845,11 @@
         "opponent": "GB"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_ATL_TB",
+        "game": "2026_09_CIN_ATL",
         "team": "ATL",
-        "opponent": "TB"
+        "opponent": "CIN"
       },
       "teams": [
         "ATL"
@@ -8669,8 +8866,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 52,
-          "rank": 137,
+          "length": 53,
+          "rank": 136,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -8691,28 +8888,41 @@
             }
           ],
           "nextHigher": {
-            "length": 53,
-            "rank": 136,
+            "length": 54,
+            "rank": 134,
             "holders": [
               {
-                "id": "00-0010500:2003_01_OAK_TEN",
-                "name": "Derrick Mason",
+                "id": "00-0033906:2017_01_NO_MIN",
+                "name": "Alvin Kamara",
                 "teams": [
-                  "TEN",
-                  "BAL"
+                  "NO"
                 ],
                 "opponent": null,
-                "length": 53,
-                "firstSeason": 2003,
-                "lastSeason": 2006,
-                "years": "2003–2006",
+                "length": 54,
+                "firstSeason": 2017,
+                "lastSeason": 2020,
+                "years": "2017–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000745:2001_06_PHI_NYG",
+                "name": "Tiki Barber",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 54,
+                "firstSeason": 2001,
+                "lastSeason": 2004,
+                "years": "2001–2004",
                 "active": false,
                 "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 136,
+            "rank": 134,
             "tied": true
           },
           "lowerBound": false
@@ -8721,9 +8931,9 @@
           "scope": "ATL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 52,
-          "rank": 5,
-          "tied": false,
+          "length": 53,
+          "rank": 4,
+          "tied": true,
           "record": 128,
           "recordHolders": [
             {
@@ -8742,20 +8952,20 @@
             }
           ],
           "nextHigher": {
-            "length": 53,
-            "rank": 4,
+            "length": 80,
+            "rank": 3,
             "holders": [
               {
-                "id": "00-0029632:2016_01_TB_ATL",
-                "name": "Mohamed Sanu",
+                "id": "00-0006101:2009_01_MIA_ATL",
+                "name": "Tony Gonzalez",
                 "teams": [
                   "ATL"
                 ],
                 "opponent": null,
-                "length": 53,
-                "firstSeason": 2016,
-                "lastSeason": 2019,
-                "years": "2016–2019",
+                "length": 80,
+                "firstSeason": 2009,
+                "lastSeason": 2013,
+                "years": "2009–2013",
                 "active": false,
                 "lowerBound": false
               }
@@ -8763,7 +8973,7 @@
           },
           "next": {
             "rank": 4,
-            "tied": true
+            "tied": false
           },
           "lowerBound": false
         },
@@ -8774,7 +8984,7 @@
       "id": "00-0039075:2023_01_LA_SEA",
       "playerId": "00-0039075",
       "name": "Puka Nacua",
-      "length": 50,
+      "length": 51,
       "start": {
         "date": "2023-09-10",
         "season": 2023,
@@ -8783,11 +8993,11 @@
         "opponent": "SEA"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_08_LAC_LA",
+        "game": "2026_09_LA_WAS",
         "team": "LA",
-        "opponent": "LAC"
+        "opponent": "WAS"
       },
       "teams": [
         "LA"
@@ -8804,8 +9014,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 50,
-          "rank": 148,
+          "length": 51,
+          "rank": 143,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -8826,83 +9036,86 @@
             }
           ],
           "nextHigher": {
-            "length": 51,
-            "rank": 143,
+            "length": 52,
+            "rank": 138,
             "holders": [
               {
-                "id": "00-0023438:2006_01_NO_CLE",
-                "name": "Braylon Edwards",
+                "id": "00-0036275:2020_01_CHI_DET",
+                "name": "D'Andre Swift",
+                "teams": [
+                  "DET",
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2020,
+                "lastSeason": 2023,
+                "years": "2020–2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033885:2021_17_CLE_PIT",
+                "name": "David Njoku",
                 "teams": [
                   "CLE"
                 ],
                 "opponent": null,
-                "length": 51,
-                "firstSeason": 2006,
-                "lastSeason": 2009,
-                "years": "2006–2009",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0034351:2019_04_PHI_GB",
-                "name": "Dallas Goedert",
-                "teams": [
-                  "PHI"
-                ],
-                "opponent": null,
-                "length": 51,
-                "firstSeason": 2019,
-                "lastSeason": 2022,
-                "years": "2019–2022",
+                "length": 52,
+                "firstSeason": 2021,
+                "lastSeason": 2025,
+                "years": "2021–2025",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0031062:2017_12_MIA_NE",
-                "name": "James White",
+                "id": "00-0011727:1999_02_GB_DET",
+                "name": "Johnnie Morton",
                 "teams": [
-                  "NE"
+                  "DET",
+                  "KC"
                 ],
                 "opponent": null,
-                "length": 51,
-                "firstSeason": 2017,
+                "length": 52,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034367:2018_01_CIN_IND",
+                "name": "Nyheim Hines",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 52,
+                "firstSeason": 2018,
                 "lastSeason": 2021,
-                "years": "2017–2021",
+                "years": "2018–2021",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0011754:2007_01_NE_NYJ",
-                "name": "Randy Moss",
+                "id": "00-0030431:2015_10_BUF_NYJ",
+                "name": "Robert Woods",
                 "teams": [
-                  "NE"
+                  "BUF",
+                  "LA"
                 ],
                 "opponent": null,
-                "length": 51,
-                "firstSeason": 2007,
-                "lastSeason": 2010,
-                "years": "2007–2010",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0033556:2017_01_ATL_CHI",
-                "name": "Tarik Cohen",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 51,
-                "firstSeason": 2017,
-                "lastSeason": 2020,
-                "years": "2017–2020",
+                "length": 52,
+                "firstSeason": 2015,
+                "lastSeason": 2019,
+                "years": "2015–2019",
                 "active": false,
                 "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 143,
+            "rank": 138,
             "tied": true
           },
           "lowerBound": false
@@ -8911,7 +9124,7 @@
           "scope": "LA",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 50,
+          "length": 51,
           "rank": 5,
           "tied": false,
           "record": 97,
@@ -8961,47 +9174,41 @@
       }
     },
     {
-      "id": "00-0038542:2023_09_MIN_ATL",
-      "playerId": "00-0038542",
-      "name": "Bijan Robinson",
+      "id": "00-0039065:2023_01_DET_KC",
+      "playerId": "00-0039065",
+      "name": "Sam LaPorta",
       "length": 50,
       "start": {
-        "date": "2023-11-05",
+        "date": "2023-09-07",
         "season": 2023,
-        "game": "2023_09_MIN_ATL",
-        "team": "ATL",
-        "opponent": "MIN"
+        "game": "2023_01_DET_KC",
+        "team": "DET",
+        "opponent": "KC"
       },
       "last": {
-        "date": "2026-10-25",
+        "date": "2026-11-08",
         "season": 2026,
-        "game": "2026_07_SF_ATL",
-        "team": "ATL",
-        "opponent": "SF"
+        "game": "2026_09_DET_MIA",
+        "team": "DET",
+        "opponent": "MIA"
       },
       "teams": [
-        "ATL"
+        "DET"
       ],
-      "endedBy": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_ATL_TB",
-        "team": "ATL",
-        "opponent": "TB"
-      },
+      "endedBy": null,
       "gapAfter": null,
       "lowerBound": false,
       "startUnknown": false,
-      "active": false,
+      "active": true,
       "archive": false,
-      "currentTeam": null,
+      "currentTeam": "DET",
       "leaderboard": {
         "overall": {
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 50,
-          "rank": 148,
+          "rank": 149,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -9065,6 +9272,230 @@
                 "lastSeason": 2021,
                 "years": "2017–2021",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0039075:2023_01_LA_SEA",
+                "name": "Puka Nacua",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0011754:2007_01_NE_NYJ",
+                "name": "Randy Moss",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2007,
+                "lastSeason": 2010,
+                "years": "2007–2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0033556:2017_01_ATL_CHI",
+                "name": "Tarik Cohen",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2017,
+                "lastSeason": 2020,
+                "years": "2017–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 143,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "DET",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 6,
+          "tied": false,
+          "record": 75,
+          "recordHolders": [
+            {
+              "id": "00-0025389:2011_01_DET_TB",
+              "name": "Calvin Johnson",
+              "teams": [
+                "DET"
+              ],
+              "opponent": null,
+              "length": 75,
+              "firstSeason": 2011,
+              "lastSeason": 2015,
+              "years": "2011–2015",
+              "active": false,
+              "lowerBound": true
+            }
+          ],
+          "nextHigher": {
+            "length": 57,
+            "rank": 5,
+            "holders": [
+              {
+                "id": "00-0030107:2014_16_DET_CHI",
+                "name": "Theo Riddick",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2018,
+                "years": "2014–2018",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 6,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "DET"
+      }
+    },
+    {
+      "id": "00-0038542:2023_09_MIN_ATL",
+      "playerId": "00-0038542",
+      "name": "Bijan Robinson",
+      "length": 50,
+      "start": {
+        "date": "2023-11-05",
+        "season": 2023,
+        "game": "2023_09_MIN_ATL",
+        "team": "ATL",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-10-25",
+        "season": 2026,
+        "game": "2026_07_SF_ATL",
+        "team": "ATL",
+        "opponent": "SF"
+      },
+      "teams": [
+        "ATL"
+      ],
+      "endedBy": {
+        "date": "2026-11-01",
+        "season": 2026,
+        "game": "2026_08_ATL_TB",
+        "team": "ATL",
+        "opponent": "TB"
+      },
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": false,
+      "archive": false,
+      "currentTeam": null,
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 50,
+          "rank": 149,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 51,
+            "rank": 143,
+            "holders": [
+              {
+                "id": "00-0023438:2006_01_NO_CLE",
+                "name": "Braylon Edwards",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2006,
+                "lastSeason": 2009,
+                "years": "2006–2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034351:2019_04_PHI_GB",
+                "name": "Dallas Goedert",
+                "teams": [
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2019,
+                "lastSeason": 2022,
+                "years": "2019–2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0031062:2017_12_MIA_NE",
+                "name": "James White",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0039075:2023_01_LA_SEA",
+                "name": "Puka Nacua",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -9128,8 +9559,8 @@
             }
           ],
           "nextHigher": {
-            "length": 52,
-            "rank": 5,
+            "length": 53,
+            "rank": 4,
             "holders": [
               {
                 "id": "00-0037238:2023_02_GB_ATL",
@@ -9138,11 +9569,25 @@
                   "ATL"
                 ],
                 "opponent": null,
-                "length": 52,
+                "length": 53,
                 "firstSeason": 2023,
                 "lastSeason": 2026,
                 "years": "2023–2026",
                 "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029632:2016_01_TB_ATL",
+                "name": "Mohamed Sanu",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 53,
+                "firstSeason": 2016,
+                "lastSeason": 2019,
+                "years": "2016–2019",
+                "active": false,
                 "lowerBound": false
               }
             ]
@@ -9192,7 +9637,7 @@
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 50,
-          "rank": 148,
+          "rank": 149,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -9256,6 +9701,20 @@
                 "lastSeason": 2021,
                 "years": "2017–2021",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0039075:2023_01_LA_SEA",
+                "name": "Puka Nacua",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 51,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -9453,7 +9912,7 @@
       "value": 192,
       "action": "Extended from 191 to 192 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_02_IND_KC",
@@ -9475,7 +9934,7 @@
       "value": 193,
       "action": "Extended from 192 to 193 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_03_KC_MIA",
@@ -9497,7 +9956,7 @@
       "value": 194,
       "action": "Extended from 193 to 194 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_04_KC_LV",
@@ -9519,7 +9978,7 @@
       "value": 195,
       "action": "Extended from 194 to 195 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_06_LAC_KC",
@@ -9541,7 +10000,7 @@
       "value": 196,
       "action": "Extended from 195 to 196 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_07_KC_SEA",
@@ -9563,7 +10022,7 @@
       "value": 197,
       "action": "Extended from 196 to 197 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_08_KC_DEN",
@@ -9585,7 +10044,29 @@
       "value": 198,
       "action": "Extended from 197 to 198 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0030506:2014_01_TEN_KC:2026_09_NYJ_KC",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "KC",
+      "title": "Travis Kelce: 199 straight appearances with a catch",
+      "detail": "Run began 2014-09-07. Length after this game: 199.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_NYJ_KC",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 198,
+      "after": 199,
+      "value": 199,
+      "action": "Extended from 198 to 199 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_01_WAS_PHI",
@@ -9607,7 +10088,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_02_WAS_DAL",
@@ -9629,7 +10110,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_03_SEA_WAS",
@@ -9651,7 +10132,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_04_IND_WAS",
@@ -9673,7 +10154,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_06_WAS_SF",
@@ -9695,7 +10176,7 @@
       "value": 166,
       "action": "Extended from 165 to 166 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_08_PHI_WAS",
@@ -9717,7 +10198,29 @@
       "value": 167,
       "action": "Extended from 166 to 167 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0031588:2015_04_MIN_DEN:2026_09_LA_WAS",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "WAS",
+      "title": "Stefon Diggs: 168 straight appearances with a catch",
+      "detail": "Run began 2015-10-04. Length after this game: 168.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_LA_WAS",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 167,
+      "after": 168,
+      "value": 168,
+      "action": "Extended from 167 to 168 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_01_SF_LA",
@@ -9739,7 +10242,7 @@
       "value": 160,
       "action": "Extended from 159 to 160 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_02_NYG_LA",
@@ -9761,7 +10264,7 @@
       "value": 161,
       "action": "Extended from 160 to 161 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_03_LA_DEN",
@@ -9783,7 +10286,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_04_LA_PHI",
@@ -9805,7 +10308,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_05_BUF_LA",
@@ -9827,7 +10330,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_06_ARI_LA",
@@ -9849,7 +10352,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_01_BAL_IND",
@@ -9871,7 +10374,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_02_IND_KC",
@@ -9893,7 +10396,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_03_HOU_IND",
@@ -9915,7 +10418,7 @@
       "value": 106,
       "action": "Extended from 105 to 106 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_05_IND_PIT",
@@ -9937,7 +10440,7 @@
       "value": 107,
       "action": "Extended from 106 to 107 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_06_TEN_IND",
@@ -9959,7 +10462,7 @@
       "value": 108,
       "action": "Extended from 107 to 108 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_07_IND_MIN",
@@ -9981,7 +10484,7 @@
       "value": 109,
       "action": "Extended from 108 to 109 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_08_IND_JAX",
@@ -10003,7 +10506,29 @@
       "value": 110,
       "action": "Extended from 109 to 110 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0030279:2018_16_BAL_LAC:2026_09_DAL_IND",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "IND",
+      "title": "Keenan Allen: 111 straight appearances with a catch",
+      "detail": "Run began 2018-12-22. Length after this game: 111.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_DAL_IND",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 110,
+      "after": 111,
+      "value": 111,
+      "action": "Extended from 110 to 111 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_01_ATL_PIT",
@@ -10025,7 +10550,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_02_PIT_NE",
@@ -10047,7 +10572,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_03_CIN_PIT",
@@ -10069,7 +10594,7 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_04_PIT_CLE",
@@ -10091,7 +10616,7 @@
       "value": 101,
       "action": "Extended from 100 to 101 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_05_IND_PIT",
@@ -10113,7 +10638,7 @@
       "value": 102,
       "action": "Extended from 101 to 102 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_06_PIT_TB",
@@ -10135,7 +10660,7 @@
       "value": 103,
       "action": "Extended from 102 to 103 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_07_PIT_NO",
@@ -10157,7 +10682,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_08_CLE_PIT",
@@ -10179,7 +10704,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_01_GB_MIN",
@@ -10201,7 +10726,7 @@
       "value": 95,
       "action": "Extended from 94 to 95 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_02_MIN_CHI",
@@ -10223,7 +10748,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_03_MIN_TB",
@@ -10245,7 +10770,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_05_MIN_NO",
@@ -10267,7 +10792,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_07_IND_MIN",
@@ -10289,7 +10814,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_08_MIN_DET",
@@ -10311,7 +10836,7 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_01_ATL_PIT",
@@ -10333,7 +10858,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_03_CIN_PIT",
@@ -10355,7 +10880,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_04_PIT_CLE",
@@ -10377,7 +10902,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_01_TB_CIN",
@@ -10399,7 +10924,7 @@
       "value": 79,
       "action": "Extended from 78 to 79 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_02_CIN_HOU",
@@ -10421,7 +10946,7 @@
       "value": 80,
       "action": "Extended from 79 to 80 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_03_CIN_PIT",
@@ -10443,7 +10968,7 @@
       "value": 81,
       "action": "Extended from 80 to 81 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_04_JAX_CIN",
@@ -10465,7 +10990,7 @@
       "value": 82,
       "action": "Extended from 81 to 82 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_05_CIN_MIA",
@@ -10487,7 +11012,7 @@
       "value": 83,
       "action": "Extended from 82 to 83 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_07_CIN_BAL",
@@ -10509,7 +11034,7 @@
       "value": 84,
       "action": "Extended from 83 to 84 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_08_TEN_CIN",
@@ -10531,7 +11056,29 @@
       "value": 85,
       "action": "Extended from 84 to 85 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036900:2021_01_MIN_CIN:2026_09_CIN_ATL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "CIN",
+      "title": "Ja'Marr Chase: 86 straight appearances with a catch",
+      "detail": "Run began 2021-09-12. Length after this game: 86.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_CIN_ATL",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 85,
+      "after": 86,
+      "value": 86,
+      "action": "Extended from 85 to 86 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_01_NE_SEA",
@@ -10553,7 +11100,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_06_NYJ_NE",
@@ -10575,7 +11122,7 @@
       "value": 74,
       "action": "Extended from 73 to 74 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_07_NE_CHI",
@@ -10597,7 +11144,7 @@
       "value": 75,
       "action": "Extended from 74 to 75 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_01_CLE_JAX",
@@ -10619,7 +11166,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_02_JAX_DEN",
@@ -10641,7 +11188,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_03_NE_JAX",
@@ -10663,7 +11210,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_04_JAX_CIN",
@@ -10685,7 +11232,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_05_PHI_JAX",
@@ -10707,7 +11254,7 @@
       "value": 70,
       "action": "Extended from 69 to 70 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_06_HOU_JAX",
@@ -10729,7 +11276,7 @@
       "value": 71,
       "action": "Extended from 70 to 71 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_08_IND_JAX",
@@ -10751,7 +11298,7 @@
       "value": 72,
       "action": "Extended from 71 to 72 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_09_JAX_BAL",
@@ -10773,7 +11320,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_02_NO_BAL",
@@ -10795,7 +11342,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_03_LV_NO",
@@ -10817,7 +11364,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_04_ATL_NO",
@@ -10839,7 +11386,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_05_MIN_NO",
@@ -10861,7 +11408,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_06_NO_NYG",
@@ -10883,7 +11430,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_07_PIT_NO",
@@ -10905,161 +11452,29 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0035229:2021_11_DET_CLE:2026_01_GB_MIN",
+      "id": "00-0033906:2021_05_NO_WAS:2026_09_CLE_NO",
       "category": "receiving",
       "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 61 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 61.",
+      "team": "NO",
+      "title": "Alvin Kamara: 69 straight appearances with a catch",
+      "detail": "Run began 2021-10-10. Length after this game: 69.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_01_GB_MIN",
-      "date": "2026-09-13",
+      "game": "2026_09_CLE_NO",
+      "date": "2026-11-08",
       "season": 2026,
-      "week": 1,
+      "week": 9,
       "gameType": "REG",
       "status": "continued",
-      "before": 60,
-      "after": 61,
-      "value": 61,
-      "action": "Extended from 60 to 61 games.",
+      "before": 68,
+      "after": 69,
+      "value": 69,
+      "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_02_MIN_CHI",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 62 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 62.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_02_MIN_CHI",
-      "date": "2026-09-20",
-      "season": 2026,
-      "week": 2,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 61,
-      "after": 62,
-      "value": 62,
-      "action": "Extended from 61 to 62 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_03_MIN_TB",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 63 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 63.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_03_MIN_TB",
-      "date": "2026-09-27",
-      "season": 2026,
-      "week": 3,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 62,
-      "after": 63,
-      "value": 63,
-      "action": "Extended from 62 to 63 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_04_MIA_MIN",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 64 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 64.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_04_MIA_MIN",
-      "date": "2026-10-04",
-      "season": 2026,
-      "week": 4,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 63,
-      "after": 64,
-      "value": 64,
-      "action": "Extended from 63 to 64 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_05_MIN_NO",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 65 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 65.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_05_MIN_NO",
-      "date": "2026-10-11",
-      "season": 2026,
-      "week": 5,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 64,
-      "after": 65,
-      "value": 65,
-      "action": "Extended from 64 to 65 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_07_IND_MIN",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 66 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 66.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_07_IND_MIN",
-      "date": "2026-10-25",
-      "season": 2026,
-      "week": 7,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 65,
-      "after": 66,
-      "value": 66,
-      "action": "Extended from 65 to 66 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE:2026_08_MIN_DET",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "MIN",
-      "title": "T.J. Hockenson: 67 straight appearances with a catch",
-      "detail": "Run began 2021-11-21. Length after this game: 67.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_08_MIN_DET",
-      "date": "2026-11-01",
-      "season": 2026,
-      "week": 8,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 66,
-      "after": 67,
-      "value": 67,
-      "action": "Extended from 66 to 67 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_01_BUF_HOU",
@@ -11081,7 +11496,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_02_CIN_HOU",
@@ -11103,7 +11518,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_03_HOU_IND",
@@ -11125,7 +11540,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_04_DAL_HOU",
@@ -11147,7 +11562,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_05_HOU_TEN",
@@ -11169,7 +11584,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_06_HOU_JAX",
@@ -11191,7 +11606,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_07_NYG_HOU",
@@ -11213,21 +11628,87 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0036912:2022_02_MIN_PHI:2026_01_WAS_PHI",
+      "id": "00-0034383:2022_07_DET_DAL:2026_09_HOU_LAC",
       "category": "receiving",
       "kind": "streak",
-      "team": "PHI",
-      "title": "DeVonta Smith: 63 straight appearances with a catch",
-      "detail": "Run began 2022-09-19. Length after this game: 63.",
+      "team": "HOU",
+      "title": "Dalton Schultz: 68 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 68.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_01_WAS_PHI",
+      "game": "2026_09_HOU_LAC",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 67,
+      "after": 68,
+      "value": 68,
+      "action": "Extended from 67 to 68 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE:2026_01_GB_MIN",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 61 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 61.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_01_GB_MIN",
       "date": "2026-09-13",
       "season": 2026,
       "week": 1,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 60,
+      "after": 61,
+      "value": 61,
+      "action": "Extended from 60 to 61 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE:2026_02_MIN_CHI",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 62 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 62.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_02_MIN_CHI",
+      "date": "2026-09-20",
+      "season": 2026,
+      "week": 2,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 61,
+      "after": 62,
+      "value": 62,
+      "action": "Extended from 61 to 62 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE:2026_03_MIN_TB",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 63 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 63.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_03_MIN_TB",
+      "date": "2026-09-27",
+      "season": 2026,
+      "week": 3,
       "gameType": "REG",
       "status": "continued",
       "before": 62,
@@ -11235,21 +11716,21 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0036912:2022_02_MIN_PHI:2026_02_PHI_TEN",
+      "id": "00-0035229:2021_11_DET_CLE:2026_04_MIA_MIN",
       "category": "receiving",
       "kind": "streak",
-      "team": "PHI",
-      "title": "DeVonta Smith: 64 straight appearances with a catch",
-      "detail": "Run began 2022-09-19. Length after this game: 64.",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 64 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 64.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_02_PHI_TEN",
-      "date": "2026-09-20",
+      "game": "2026_04_MIA_MIN",
+      "date": "2026-10-04",
       "season": 2026,
-      "week": 2,
+      "week": 4,
       "gameType": "REG",
       "status": "continued",
       "before": 63,
@@ -11257,21 +11738,21 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0036912:2022_02_MIN_PHI:2026_03_PHI_CHI",
+      "id": "00-0035229:2021_11_DET_CLE:2026_05_MIN_NO",
       "category": "receiving",
       "kind": "streak",
-      "team": "PHI",
-      "title": "DeVonta Smith: 65 straight appearances with a catch",
-      "detail": "Run began 2022-09-19. Length after this game: 65.",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 65 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 65.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_03_PHI_CHI",
-      "date": "2026-09-28",
+      "game": "2026_05_MIN_NO",
+      "date": "2026-10-11",
       "season": 2026,
-      "week": 3,
+      "week": 5,
       "gameType": "REG",
       "status": "continued",
       "before": 64,
@@ -11279,21 +11760,21 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0036912:2022_02_MIN_PHI:2026_06_CAR_PHI",
+      "id": "00-0035229:2021_11_DET_CLE:2026_07_IND_MIN",
       "category": "receiving",
       "kind": "streak",
-      "team": "PHI",
-      "title": "DeVonta Smith: 66 straight appearances with a catch",
-      "detail": "Run began 2022-09-19. Length after this game: 66.",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 66 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 66.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_06_CAR_PHI",
-      "date": "2026-10-18",
+      "game": "2026_07_IND_MIN",
+      "date": "2026-10-25",
       "season": 2026,
-      "week": 6,
+      "week": 7,
       "gameType": "REG",
       "status": "continued",
       "before": 65,
@@ -11301,7 +11782,29 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE:2026_08_MIN_DET",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 67 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 67.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_08_MIN_DET",
+      "date": "2026-11-01",
+      "season": 2026,
+      "week": 8,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 66,
+      "after": 67,
+      "value": 67,
+      "action": "Extended from 66 to 67 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_01_ARI_LAC",
@@ -11323,7 +11826,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_02_SEA_ARI",
@@ -11345,7 +11848,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_03_ARI_SF",
@@ -11367,7 +11870,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_04_ARI_NYG",
@@ -11389,7 +11892,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_05_DET_ARI",
@@ -11411,7 +11914,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_06_ARI_LA",
@@ -11433,7 +11936,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_07_DEN_ARI",
@@ -11455,7 +11958,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_08_ARI_DAL",
@@ -11477,7 +11980,117 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0037744:2022_10_ARI_LA:2026_09_ARI_SEA",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "ARI",
+      "title": "Trey McBride: 67 straight appearances with a catch",
+      "detail": "Run began 2022-11-13. Length after this game: 67.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_ARI_SEA",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 66,
+      "after": 67,
+      "value": 67,
+      "action": "Extended from 66 to 67 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI:2026_01_WAS_PHI",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "PHI",
+      "title": "DeVonta Smith: 63 straight appearances with a catch",
+      "detail": "Run began 2022-09-19. Length after this game: 63.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_01_WAS_PHI",
+      "date": "2026-09-13",
+      "season": 2026,
+      "week": 1,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 62,
+      "after": 63,
+      "value": 63,
+      "action": "Extended from 62 to 63 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI:2026_02_PHI_TEN",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "PHI",
+      "title": "DeVonta Smith: 64 straight appearances with a catch",
+      "detail": "Run began 2022-09-19. Length after this game: 64.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_02_PHI_TEN",
+      "date": "2026-09-20",
+      "season": 2026,
+      "week": 2,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 63,
+      "after": 64,
+      "value": 64,
+      "action": "Extended from 63 to 64 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI:2026_03_PHI_CHI",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "PHI",
+      "title": "DeVonta Smith: 65 straight appearances with a catch",
+      "detail": "Run began 2022-09-19. Length after this game: 65.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_03_PHI_CHI",
+      "date": "2026-09-28",
+      "season": 2026,
+      "week": 3,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 64,
+      "after": 65,
+      "value": 65,
+      "action": "Extended from 64 to 65 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI:2026_06_CAR_PHI",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "PHI",
+      "title": "DeVonta Smith: 66 straight appearances with a catch",
+      "detail": "Run began 2022-09-19. Length after this game: 66.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_06_CAR_PHI",
+      "date": "2026-10-18",
+      "season": 2026,
+      "week": 6,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 65,
+      "after": 66,
+      "value": 66,
+      "action": "Extended from 65 to 66 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_04_IND_WAS",
@@ -11499,7 +12112,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_05_NYG_WAS",
@@ -11521,7 +12134,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_06_WAS_SF",
@@ -11543,7 +12156,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_08_PHI_WAS",
@@ -11565,7 +12178,7 @@
       "value": 63,
       "action": "A zero-catch appearance ended the run at 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_01_BUF_HOU",
@@ -11587,7 +12200,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_04_DAL_HOU",
@@ -11609,7 +12222,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_05_HOU_TEN",
@@ -11631,7 +12244,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_06_HOU_JAX",
@@ -11653,7 +12266,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_07_NYG_HOU",
@@ -11675,7 +12288,29 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0036554:2021_14_SEA_HOU:2026_09_HOU_LAC",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Nico Collins: 63 straight appearances with a catch",
+      "detail": "Run began 2021-12-12. Length after this game: 63.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_HOU_LAC",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 62,
+      "after": 63,
+      "value": 63,
+      "action": "Extended from 62 to 63 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_01_NO_DET",
@@ -11697,7 +12332,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_02_NO_BAL",
@@ -11719,7 +12354,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_03_LV_NO",
@@ -11741,7 +12376,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_04_ATL_NO",
@@ -11763,7 +12398,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_05_MIN_NO",
@@ -11785,7 +12420,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_06_NO_NYG",
@@ -11807,7 +12442,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_07_PIT_NO",
@@ -11829,7 +12464,29 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0037239:2022_01_NO_ATL:2026_09_CLE_NO",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "NO",
+      "title": "Chris Olave: 63 straight appearances with a catch",
+      "detail": "Run began 2022-09-11. Length after this game: 63.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_CLE_NO",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 62,
+      "after": 63,
+      "value": 63,
+      "action": "Extended from 62 to 63 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_01_SF_LA",
@@ -11851,7 +12508,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_02_MIA_SF",
@@ -11873,7 +12530,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_03_ARI_SF",
@@ -11895,7 +12552,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_04_DEN_SF",
@@ -11917,7 +12574,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_05_SF_SEA",
@@ -11939,7 +12596,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_06_WAS_SF",
@@ -11961,7 +12618,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_07_SF_ATL",
@@ -11983,7 +12640,29 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0033280:2022_01_CLE_CAR:2026_09_LV_SF",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "SF",
+      "title": "Christian McCaffrey: 62 straight appearances with a catch",
+      "detail": "Run began 2022-09-11. Length after this game: 62.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_LV_SF",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 61,
+      "after": 62,
+      "value": 62,
+      "action": "Extended from 61 to 62 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_01_NE_SEA",
@@ -12005,7 +12684,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_02_SEA_ARI",
@@ -12027,7 +12706,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_03_SEA_WAS",
@@ -12049,7 +12728,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_04_LAC_SEA",
@@ -12071,7 +12750,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_05_SF_SEA",
@@ -12093,7 +12772,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_06_SEA_DEN",
@@ -12115,7 +12794,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_07_KC_SEA",
@@ -12137,7 +12816,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_08_CHI_SEA",
@@ -12159,161 +12838,29 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_01_BAL_IND",
+      "id": "00-0038543:2023_01_LA_SEA:2026_09_ARI_SEA",
       "category": "receiving",
       "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 51 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 51.",
+      "team": "SEA",
+      "title": "Jaxon Smith-Njigba: 60 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 60.",
       "unit": "games",
       "href": "/nfl/receiving-streaks.html",
-      "game": "2026_01_BAL_IND",
-      "date": "2026-09-13",
+      "game": "2026_09_ARI_SEA",
+      "date": "2026-11-08",
       "season": 2026,
-      "week": 1,
+      "week": 9,
       "gameType": "REG",
       "status": "continued",
-      "before": 50,
-      "after": 51,
-      "value": 51,
-      "action": "Extended from 50 to 51 games.",
+      "before": 59,
+      "after": 60,
+      "value": 60,
+      "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_03_BAL_DAL",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 52 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 52.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_03_BAL_DAL",
-      "date": "2026-09-27",
-      "season": 2026,
-      "week": 3,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 51,
-      "after": 52,
-      "value": 52,
-      "action": "Extended from 51 to 52 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_04_TEN_BAL",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 53 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 53.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_04_TEN_BAL",
-      "date": "2026-10-04",
-      "season": 2026,
-      "week": 4,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 52,
-      "after": 53,
-      "value": 53,
-      "action": "Extended from 52 to 53 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_05_BAL_ATL",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 54 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 54.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_05_BAL_ATL",
-      "date": "2026-10-11",
-      "season": 2026,
-      "week": 5,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 53,
-      "after": 54,
-      "value": 54,
-      "action": "Extended from 53 to 54 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_06_BAL_CLE",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 55 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 55.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_06_BAL_CLE",
-      "date": "2026-10-18",
-      "season": 2026,
-      "week": 6,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 54,
-      "after": 55,
-      "value": 55,
-      "action": "Extended from 54 to 55 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_07_CIN_BAL",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 56 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Length after this game: 56.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_07_CIN_BAL",
-      "date": "2026-10-25",
-      "season": 2026,
-      "week": 7,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 55,
-      "after": 56,
-      "value": 56,
-      "action": "Extended from 55 to 56 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
-    },
-    {
-      "id": "00-0039064:2023_01_HOU_BAL:2026_08_BAL_BUF",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "BAL",
-      "title": "Zay Flowers: 56 straight appearances with a catch",
-      "detail": "Run began 2023-09-10. Final recorded length: 56.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_08_BAL_BUF",
-      "date": "2026-11-01",
-      "season": 2026,
-      "week": 8,
-      "gameType": "REG",
-      "status": "ended",
-      "before": 56,
-      "after": 56,
-      "value": 56,
-      "action": "A zero-catch appearance ended the run at 56 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_03_HOU_IND",
@@ -12335,7 +12882,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_04_IND_WAS",
@@ -12357,7 +12904,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_05_IND_PIT",
@@ -12379,7 +12926,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_06_TEN_IND",
@@ -12401,7 +12948,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_07_IND_MIN",
@@ -12423,7 +12970,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_08_IND_JAX",
@@ -12445,7 +12992,183 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0038997:2023_01_JAX_IND:2026_09_DAL_IND",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "IND",
+      "title": "Josh Downs: 56 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 56.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_DAL_IND",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 55,
+      "after": 56,
+      "value": 56,
+      "action": "Extended from 55 to 56 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_01_BAL_IND",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 51 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 51.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_01_BAL_IND",
+      "date": "2026-09-13",
+      "season": 2026,
+      "week": 1,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 50,
+      "after": 51,
+      "value": 51,
+      "action": "Extended from 50 to 51 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_03_BAL_DAL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 52 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 52.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_03_BAL_DAL",
+      "date": "2026-09-27",
+      "season": 2026,
+      "week": 3,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 51,
+      "after": 52,
+      "value": 52,
+      "action": "Extended from 51 to 52 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_04_TEN_BAL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 53 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 53.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_04_TEN_BAL",
+      "date": "2026-10-04",
+      "season": 2026,
+      "week": 4,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 52,
+      "after": 53,
+      "value": 53,
+      "action": "Extended from 52 to 53 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_05_BAL_ATL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 54 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 54.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_05_BAL_ATL",
+      "date": "2026-10-11",
+      "season": 2026,
+      "week": 5,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 53,
+      "after": 54,
+      "value": 54,
+      "action": "Extended from 53 to 54 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_06_BAL_CLE",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 55 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 55.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_06_BAL_CLE",
+      "date": "2026-10-18",
+      "season": 2026,
+      "week": 6,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 54,
+      "after": 55,
+      "value": 55,
+      "action": "Extended from 54 to 55 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_07_CIN_BAL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 56 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 56.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_07_CIN_BAL",
+      "date": "2026-10-25",
+      "season": 2026,
+      "week": 7,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 55,
+      "after": 56,
+      "value": 56,
+      "action": "Extended from 55 to 56 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039064:2023_01_HOU_BAL:2026_08_BAL_BUF",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "BAL",
+      "title": "Zay Flowers: 56 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Final recorded length: 56.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_08_BAL_BUF",
+      "date": "2026-11-01",
+      "season": 2026,
+      "week": 8,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 56,
+      "after": 56,
+      "value": 56,
+      "action": "A zero-catch appearance ended the run at 56 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_06_CHI_ATL",
@@ -12467,7 +13190,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_07_SF_ATL",
@@ -12489,7 +13212,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_08_ATL_TB",
@@ -12511,7 +13234,29 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0037238:2023_02_GB_ATL:2026_09_CIN_ATL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "ATL",
+      "title": "Drake London: 53 straight appearances with a catch",
+      "detail": "Run began 2023-09-17. Length after this game: 53.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_CIN_ATL",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 52,
+      "after": 53,
+      "value": 53,
+      "action": "Extended from 52 to 53 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0039075:2023_01_LA_SEA:2026_08_LAC_LA",
@@ -12533,7 +13278,51 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039075:2023_01_LA_SEA:2026_09_LA_WAS",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "LA",
+      "title": "Puka Nacua: 51 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 51.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_LA_WAS",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 50,
+      "after": 51,
+      "value": 51,
+      "action": "Extended from 50 to 51 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-08"
+    },
+    {
+      "id": "00-0039065:2023_01_DET_KC:2026_09_DET_MIA",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "DET",
+      "title": "Sam LaPorta: 50 straight appearances with a catch",
+      "detail": "Run began 2023-09-07. Length after this game: 50.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_DET_MIA",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 49,
+      "after": 50,
+      "value": 50,
+      "action": "Extended from 49 to 50 games.",
+      "newlyNoteworthy": true,
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_07_SF_ATL",
@@ -12555,7 +13344,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_08_ATL_TB",
@@ -12577,7 +13366,7 @@
       "value": 50,
       "action": "A zero-catch appearance ended the run at 50 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     },
     {
       "id": "00-0038117:2023_09_NYG_LV:2026_08_TEN_CIN",
@@ -12599,7 +13388,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-05"
+      "sourceThrough": "2026-11-08"
     }
   ]
 }
