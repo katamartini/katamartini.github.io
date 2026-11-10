@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 9,
-  "sourceHash": "de730e751d41ad6bec94e81b83e7e69e949731effee91525fb5460bf7f5b89fe",
+  "sourceHash": "eba48d433015553ba35931093cc262a7ae7f073833c8d1803b676e7ea770a59e",
   "careerYards": [
     0,
     26,
@@ -105,7 +105,8 @@ window.JJ23K_DATA = {
     8659,
     8738,
     8782,
-    8815
+    8815,
+    8873
   ],
   "leaders": [
     [
@@ -920,6 +921,16 @@ window.JJ23K_DATA = {
     ],
     [
       82,
+      "Justin Jefferson",
+      8873,
+      610,
+      14.5,
+      46,
+      393,
+      16
+    ],
+    [
+      83,
       "Mark Duper",
       8869,
       511,
@@ -929,7 +940,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      83,
+      84,
       "Terry Glenn",
       8823,
       593,
@@ -937,16 +948,6 @@ window.JJ23K_DATA = {
       44,
       null,
       null
-    ],
-    [
-      84,
-      "Justin Jefferson",
-      8815,
-      607,
-      14.5,
-      46,
-      335,
-      14
     ],
     [
       85,
@@ -1090,6 +1091,16 @@ window.JJ23K_DATA = {
     ],
     [
       99,
+      "DJ Moore",
+      8498,
+      627,
+      13.6,
+      43,
+      285,
+      6
+    ],
+    [
+      100,
       "Adam Thielen",
       8497,
       704,
@@ -1097,16 +1108,6 @@ window.JJ23K_DATA = {
       64,
       null,
       null
-    ],
-    [
-      100,
-      "George Kittle",
-      8491,
-      633,
-      13.4,
-      57,
-      483,
-      8
     ]
   ]
 };
