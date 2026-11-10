@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-09T16:06:41.826Z",
+  "checkedAt": "2026-11-10T14:46:46.858Z",
   "season": 2026,
-  "through": "2026-11-08",
+  "through": "2026-11-09",
   "latestWeek": 9,
   "rosterWeek": 9,
   "firstStatsSeason": 1999,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "b4ef0eefb1a2bb5cb8ed462403e64704b52dcfda1db2972d495b04a43950d4df",
+  "sourceHash": "dfb05d20454c379eb39866b920af5ca895ef6cfc946d347fa9ccd8ce9f5b3325",
   "sources": [
     {
       "kind": "stats",
@@ -1322,6 +1322,36 @@
       "rank": 33
     },
     {
+      "id": "00-0036322:2020_01_GB_MIN",
+      "playerId": "00-0036322",
+      "name": "Justin Jefferson",
+      "length": 101,
+      "start": {
+        "date": "2020-09-13",
+        "season": 2020,
+        "game": "2020_01_GB_MIN",
+        "team": "MIN",
+        "opponent": "GB"
+      },
+      "last": {
+        "date": "2026-11-09",
+        "season": 2026,
+        "game": "2026_09_BUF_MIN",
+        "team": "MIN",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 34
+    },
+    {
       "id": "00-0031941:2015_01_MIA_WAS",
       "playerId": "00-0031941",
       "name": "Jamison Crowder",
@@ -1357,7 +1387,7 @@
       "startUnknown": false,
       "active": false,
       "archive": false,
-      "rank": 34
+      "rank": 35
     },
     {
       "id": "00-0029608:2015_01_IND_BUF",
@@ -1387,36 +1417,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 35
-    },
-    {
-      "id": "00-0036322:2020_01_GB_MIN",
-      "playerId": "00-0036322",
-      "name": "Justin Jefferson",
-      "length": 100,
-      "start": {
-        "date": "2020-09-13",
-        "season": 2020,
-        "game": "2020_01_GB_MIN",
-        "team": "MIN",
-        "opponent": "GB"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_MIN_DET",
-        "team": "MIN",
-        "opponent": "DET"
-      },
-      "teams": [
-        "MIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 36
     },
@@ -2992,6 +2992,37 @@
       "rank": 82
     },
     {
+      "id": "00-0035229:2021_11_DET_CLE",
+      "playerId": "00-0035229",
+      "name": "T.J. Hockenson",
+      "length": 68,
+      "start": {
+        "date": "2021-11-21",
+        "season": 2021,
+        "game": "2021_11_DET_CLE",
+        "team": "DET",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-11-09",
+        "season": 2026,
+        "game": "2026_09_BUF_MIN",
+        "team": "MIN",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 83
+    },
+    {
       "id": "00-0034383:2022_07_DET_DAL",
       "playerId": "00-0034383",
       "name": "Dalton Schultz",
@@ -3020,7 +3051,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "rank": 83
+      "rank": 84
     },
     {
       "id": "archive:STA285936:67",
@@ -3046,7 +3077,7 @@
       "startUnknown": false,
       "active": false,
       "archive": true,
-      "rank": 84
+      "rank": 85
     },
     {
       "id": "00-0022910:2004_08_ARI_BUF",
@@ -3082,7 +3113,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 85
+      "rank": 86
     },
     {
       "id": "00-0023367:2008_03_PIT_PHI",
@@ -3116,7 +3147,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 86
+      "rank": 87
     },
     {
       "id": "00-0030279:2013_02_SD_PHI",
@@ -3151,37 +3182,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 87
-    },
-    {
-      "id": "00-0035229:2021_11_DET_CLE",
-      "playerId": "00-0035229",
-      "name": "T.J. Hockenson",
-      "length": 67,
-      "start": {
-        "date": "2021-11-21",
-        "season": 2021,
-        "game": "2021_11_DET_CLE",
-        "team": "DET",
-        "opponent": "CLE"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_MIN_DET",
-        "team": "MIN",
-        "opponent": "DET"
-      },
-      "teams": [
-        "DET",
-        "MIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 88
     },
@@ -4652,7 +4652,7 @@
       "id": "00-0036322:2020_01_GB_MIN",
       "playerId": "00-0036322",
       "name": "Justin Jefferson",
-      "length": 100,
+      "length": 101,
       "start": {
         "date": "2020-09-13",
         "season": 2020,
@@ -4661,11 +4661,11 @@
         "opponent": "GB"
       },
       "last": {
-        "date": "2026-11-01",
+        "date": "2026-11-09",
         "season": 2026,
-        "game": "2026_08_MIN_DET",
+        "game": "2026_09_BUF_MIN",
         "team": "MIN",
-        "opponent": "DET"
+        "opponent": "BUF"
       },
       "teams": [
         "MIN"
@@ -4682,8 +4682,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 100,
-          "rank": 34,
+          "length": 101,
+          "rank": 33,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -4704,29 +4704,27 @@
             }
           ],
           "nextHigher": {
-            "length": 101,
-            "rank": 33,
+            "length": 102,
+            "rank": 32,
             "holders": [
               {
-                "id": "00-0029000:2015_14_DAL_GB",
-                "name": "Cole Beasley",
+                "id": "00-0020397:2002_05_CIN_IND",
+                "name": "Chad Johnson",
                 "teams": [
-                  "DAL",
-                  "BUF",
-                  "TB"
+                  "CIN"
                 ],
                 "opponent": null,
-                "length": 101,
-                "firstSeason": 2015,
-                "lastSeason": 2022,
-                "years": "2015–2022",
+                "length": 102,
+                "firstSeason": 2002,
+                "lastSeason": 2008,
+                "years": "2002–2008",
                 "active": false,
-                "lowerBound": false
+                "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 33,
+            "rank": 32,
             "tied": true
           },
           "lowerBound": false
@@ -4735,10 +4733,10 @@
           "scope": "MIN",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 100,
+          "length": 101,
           "rank": 1,
           "tied": false,
-          "record": 100,
+          "record": 101,
           "recordHolders": [
             {
               "id": "00-0036322:2020_01_GB_MIN",
@@ -4747,7 +4745,7 @@
                 "MIN"
               ],
               "opponent": null,
-              "length": 100,
+              "length": 101,
               "firstSeason": 2020,
               "lastSeason": 2026,
               "years": "2020–2026",
@@ -4823,7 +4821,7 @@
           ],
           "nextHigher": {
             "length": 100,
-            "rank": 34,
+            "rank": 35,
             "holders": [
               {
                 "id": "00-0031941:2015_01_MIA_WAS",
@@ -4839,20 +4837,6 @@
                 "lastSeason": 2022,
                 "years": "2015–2022",
                 "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036322:2020_01_GB_MIN",
-                "name": "Justin Jefferson",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 100,
-                "firstSeason": 2020,
-                "lastSeason": 2026,
-                "years": "2020–2026",
-                "active": true,
                 "lowerBound": false
               },
               {
@@ -6643,6 +6627,184 @@
       }
     },
     {
+      "id": "00-0035229:2021_11_DET_CLE",
+      "playerId": "00-0035229",
+      "name": "T.J. Hockenson",
+      "length": 68,
+      "start": {
+        "date": "2021-11-21",
+        "season": 2021,
+        "game": "2021_11_DET_CLE",
+        "team": "DET",
+        "opponent": "CLE"
+      },
+      "last": {
+        "date": "2026-11-09",
+        "season": 2026,
+        "game": "2026_09_BUF_MIN",
+        "team": "MIN",
+        "opponent": "BUF"
+      },
+      "teams": [
+        "DET",
+        "MIN"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "MIN",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 68,
+          "rank": 80,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 69,
+            "rank": 76,
+            "holders": [
+              {
+                "id": "00-0029137:2012_16_CHI_ARI",
+                "name": "Alshon Jeffery",
+                "teams": [
+                  "CHI",
+                  "PHI"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2012,
+                "lastSeason": 2017,
+                "years": "2012–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033906:2021_05_NO_WAS",
+                "name": "Alvin Kamara",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033908:2019_11_CHI_LA",
+                "name": "Cooper Kupp",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2019,
+                "lastSeason": 2024,
+                "years": "2019–2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033009:2016_01_CIN_NYJ",
+                "name": "Tyler Boyd",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 76,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "MIN",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 58,
+          "rank": 4,
+          "tied": false,
+          "record": 101,
+          "recordHolders": [
+            {
+              "id": "00-0036322:2020_01_GB_MIN",
+              "name": "Justin Jefferson",
+              "teams": [
+                "MIN"
+              ],
+              "opponent": null,
+              "length": 101,
+              "firstSeason": 2020,
+              "lastSeason": 2026,
+              "years": "2020–2026",
+              "active": true,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 70,
+            "rank": 3,
+            "holders": [
+              {
+                "id": "00-0031588:2015_04_MIN_DEN",
+                "name": "Stefon Diggs",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 70,
+                "firstSeason": 2015,
+                "lastSeason": 2019,
+                "years": "2015–2019",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 4,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "MIN"
+      }
+    },
+    {
       "id": "00-0034383:2022_07_DET_DAL",
       "playerId": "00-0034383",
       "name": "Dalton Schultz",
@@ -6821,185 +6983,6 @@
       }
     },
     {
-      "id": "00-0035229:2021_11_DET_CLE",
-      "playerId": "00-0035229",
-      "name": "T.J. Hockenson",
-      "length": 67,
-      "start": {
-        "date": "2021-11-21",
-        "season": 2021,
-        "game": "2021_11_DET_CLE",
-        "team": "DET",
-        "opponent": "CLE"
-      },
-      "last": {
-        "date": "2026-11-01",
-        "season": 2026,
-        "game": "2026_08_MIN_DET",
-        "team": "MIN",
-        "opponent": "DET"
-      },
-      "teams": [
-        "DET",
-        "MIN"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
-      "archive": false,
-      "currentTeam": "MIN",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 67,
-          "rank": 84,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 68,
-            "rank": 80,
-            "holders": [
-              {
-                "id": "00-0033921:2018_16_TB_DAL",
-                "name": "Chris Godwin Jr.",
-                "teams": [
-                  "TB"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 2018,
-                "lastSeason": 2023,
-                "years": "2018–2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034383:2022_07_DET_DAL",
-                "name": "Dalton Schultz",
-                "teams": [
-                  "DAL",
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "archive:historical:elbie-nickel:68",
-                "name": "Elbie Nickel",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 1951,
-                "lastSeason": 1957,
-                "years": "1951–1957",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0013232:2000_07_SD_BUF",
-                "name": "Peerless Price",
-                "teams": [
-                  "BUF",
-                  "ATL"
-                ],
-                "opponent": null,
-                "length": 68,
-                "firstSeason": 2000,
-                "lastSeason": 2004,
-                "years": "2000–2004",
-                "active": false,
-                "lowerBound": true
-              }
-            ]
-          },
-          "next": {
-            "rank": 80,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "MIN",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 57,
-          "rank": 4,
-          "tied": false,
-          "record": 100,
-          "recordHolders": [
-            {
-              "id": "00-0036322:2020_01_GB_MIN",
-              "name": "Justin Jefferson",
-              "teams": [
-                "MIN"
-              ],
-              "opponent": null,
-              "length": 100,
-              "firstSeason": 2020,
-              "lastSeason": 2026,
-              "years": "2020–2026",
-              "active": true,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 70,
-            "rank": 3,
-            "holders": [
-              {
-                "id": "00-0031588:2015_04_MIN_DEN",
-                "name": "Stefon Diggs",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 70,
-                "firstSeason": 2015,
-                "lastSeason": 2019,
-                "years": "2015–2019",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 4,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "MIN"
-      }
-    },
-    {
       "id": "00-0037744:2022_10_ARI_LA",
       "playerId": "00-0037744",
       "name": "Trey McBride",
@@ -7034,7 +7017,7 @@
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
           "length": 67,
-          "rank": 84,
+          "rank": 85,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -7115,6 +7098,21 @@
                 "years": "2000–2004",
                 "active": false,
                 "lowerBound": true
+              },
+              {
+                "id": "00-0035229:2021_11_DET_CLE",
+                "name": "T.J. Hockenson",
+                "teams": [
+                  "DET",
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 68,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
               }
             ]
           },
@@ -7234,7 +7232,7 @@
           ],
           "nextHigher": {
             "length": 67,
-            "rank": 84,
+            "rank": 85,
             "holders": [
               {
                 "id": "archive:STA285936:67",
@@ -7294,21 +7292,6 @@
                 "lowerBound": true
               },
               {
-                "id": "00-0035229:2021_11_DET_CLE",
-                "name": "T.J. Hockenson",
-                "teams": [
-                  "DET",
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
                 "id": "00-0037744:2022_10_ARI_LA",
                 "name": "Trey McBride",
                 "teams": [
@@ -7325,7 +7308,7 @@
             ]
           },
           "next": {
-            "rank": 84,
+            "rank": 85,
             "tied": true
           },
           "lowerBound": false
@@ -9912,7 +9895,7 @@
       "value": 192,
       "action": "Extended from 191 to 192 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_02_IND_KC",
@@ -9934,7 +9917,7 @@
       "value": 193,
       "action": "Extended from 192 to 193 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_03_KC_MIA",
@@ -9956,7 +9939,7 @@
       "value": 194,
       "action": "Extended from 193 to 194 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_04_KC_LV",
@@ -9978,7 +9961,7 @@
       "value": 195,
       "action": "Extended from 194 to 195 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_06_LAC_KC",
@@ -10000,7 +9983,7 @@
       "value": 196,
       "action": "Extended from 195 to 196 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_07_KC_SEA",
@@ -10022,7 +10005,7 @@
       "value": 197,
       "action": "Extended from 196 to 197 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_08_KC_DEN",
@@ -10044,7 +10027,7 @@
       "value": 198,
       "action": "Extended from 197 to 198 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_09_NYJ_KC",
@@ -10066,7 +10049,7 @@
       "value": 199,
       "action": "Extended from 198 to 199 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_01_WAS_PHI",
@@ -10088,7 +10071,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_02_WAS_DAL",
@@ -10110,7 +10093,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_03_SEA_WAS",
@@ -10132,7 +10115,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_04_IND_WAS",
@@ -10154,7 +10137,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_06_WAS_SF",
@@ -10176,7 +10159,7 @@
       "value": 166,
       "action": "Extended from 165 to 166 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_08_PHI_WAS",
@@ -10198,7 +10181,7 @@
       "value": 167,
       "action": "Extended from 166 to 167 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_09_LA_WAS",
@@ -10220,7 +10203,7 @@
       "value": 168,
       "action": "Extended from 167 to 168 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_01_SF_LA",
@@ -10242,7 +10225,7 @@
       "value": 160,
       "action": "Extended from 159 to 160 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_02_NYG_LA",
@@ -10264,7 +10247,7 @@
       "value": 161,
       "action": "Extended from 160 to 161 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_03_LA_DEN",
@@ -10286,7 +10269,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_04_LA_PHI",
@@ -10308,7 +10291,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_05_BUF_LA",
@@ -10330,7 +10313,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_06_ARI_LA",
@@ -10352,7 +10335,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_01_BAL_IND",
@@ -10374,7 +10357,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_02_IND_KC",
@@ -10396,7 +10379,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_03_HOU_IND",
@@ -10418,7 +10401,7 @@
       "value": 106,
       "action": "Extended from 105 to 106 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_05_IND_PIT",
@@ -10440,7 +10423,7 @@
       "value": 107,
       "action": "Extended from 106 to 107 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_06_TEN_IND",
@@ -10462,7 +10445,7 @@
       "value": 108,
       "action": "Extended from 107 to 108 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_07_IND_MIN",
@@ -10484,7 +10467,7 @@
       "value": 109,
       "action": "Extended from 108 to 109 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_08_IND_JAX",
@@ -10506,7 +10489,7 @@
       "value": 110,
       "action": "Extended from 109 to 110 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_09_DAL_IND",
@@ -10528,7 +10511,7 @@
       "value": 111,
       "action": "Extended from 110 to 111 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_01_ATL_PIT",
@@ -10550,7 +10533,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_02_PIT_NE",
@@ -10572,7 +10555,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_03_CIN_PIT",
@@ -10594,7 +10577,7 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_04_PIT_CLE",
@@ -10616,7 +10599,7 @@
       "value": 101,
       "action": "Extended from 100 to 101 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_05_IND_PIT",
@@ -10638,7 +10621,7 @@
       "value": 102,
       "action": "Extended from 101 to 102 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_06_PIT_TB",
@@ -10660,7 +10643,7 @@
       "value": 103,
       "action": "Extended from 102 to 103 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_07_PIT_NO",
@@ -10682,7 +10665,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_08_CLE_PIT",
@@ -10704,7 +10687,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_01_GB_MIN",
@@ -10726,7 +10709,7 @@
       "value": 95,
       "action": "Extended from 94 to 95 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_02_MIN_CHI",
@@ -10748,7 +10731,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_03_MIN_TB",
@@ -10770,7 +10753,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_05_MIN_NO",
@@ -10792,7 +10775,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_07_IND_MIN",
@@ -10814,7 +10797,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_08_MIN_DET",
@@ -10836,7 +10819,29 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0036322:2020_01_GB_MIN:2026_09_BUF_MIN",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "Justin Jefferson: 101 straight appearances with a catch",
+      "detail": "Run began 2020-09-13. Length after this game: 101.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_BUF_MIN",
+      "date": "2026-11-09",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 100,
+      "after": 101,
+      "value": 101,
+      "action": "Extended from 100 to 101 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_01_ATL_PIT",
@@ -10858,7 +10863,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_03_CIN_PIT",
@@ -10880,7 +10885,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_04_PIT_CLE",
@@ -10902,7 +10907,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_01_TB_CIN",
@@ -10924,7 +10929,7 @@
       "value": 79,
       "action": "Extended from 78 to 79 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_02_CIN_HOU",
@@ -10946,7 +10951,7 @@
       "value": 80,
       "action": "Extended from 79 to 80 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_03_CIN_PIT",
@@ -10968,7 +10973,7 @@
       "value": 81,
       "action": "Extended from 80 to 81 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_04_JAX_CIN",
@@ -10990,7 +10995,7 @@
       "value": 82,
       "action": "Extended from 81 to 82 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_05_CIN_MIA",
@@ -11012,7 +11017,7 @@
       "value": 83,
       "action": "Extended from 82 to 83 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_07_CIN_BAL",
@@ -11034,7 +11039,7 @@
       "value": 84,
       "action": "Extended from 83 to 84 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_08_TEN_CIN",
@@ -11056,7 +11061,7 @@
       "value": 85,
       "action": "Extended from 84 to 85 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_09_CIN_ATL",
@@ -11078,7 +11083,7 @@
       "value": 86,
       "action": "Extended from 85 to 86 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_01_NE_SEA",
@@ -11100,7 +11105,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_06_NYJ_NE",
@@ -11122,7 +11127,7 @@
       "value": 74,
       "action": "Extended from 73 to 74 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_07_NE_CHI",
@@ -11144,7 +11149,7 @@
       "value": 75,
       "action": "Extended from 74 to 75 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_01_CLE_JAX",
@@ -11166,7 +11171,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_02_JAX_DEN",
@@ -11188,7 +11193,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_03_NE_JAX",
@@ -11210,7 +11215,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_04_JAX_CIN",
@@ -11232,7 +11237,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_05_PHI_JAX",
@@ -11254,7 +11259,7 @@
       "value": 70,
       "action": "Extended from 69 to 70 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_06_HOU_JAX",
@@ -11276,7 +11281,7 @@
       "value": 71,
       "action": "Extended from 70 to 71 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_08_IND_JAX",
@@ -11298,7 +11303,7 @@
       "value": 72,
       "action": "Extended from 71 to 72 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_09_JAX_BAL",
@@ -11320,7 +11325,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_02_NO_BAL",
@@ -11342,7 +11347,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_03_LV_NO",
@@ -11364,7 +11369,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_04_ATL_NO",
@@ -11386,7 +11391,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_05_MIN_NO",
@@ -11408,7 +11413,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_06_NO_NYG",
@@ -11430,7 +11435,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_07_PIT_NO",
@@ -11452,7 +11457,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_09_CLE_NO",
@@ -11474,183 +11479,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_01_BUF_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 61 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 61.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_01_BUF_HOU",
-      "date": "2026-09-13",
-      "season": 2026,
-      "week": 1,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 60,
-      "after": 61,
-      "value": 61,
-      "action": "Extended from 60 to 61 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_02_CIN_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 62 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 62.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_02_CIN_HOU",
-      "date": "2026-09-20",
-      "season": 2026,
-      "week": 2,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 61,
-      "after": 62,
-      "value": 62,
-      "action": "Extended from 61 to 62 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_03_HOU_IND",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 63 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 63.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_03_HOU_IND",
-      "date": "2026-09-27",
-      "season": 2026,
-      "week": 3,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 62,
-      "after": 63,
-      "value": 63,
-      "action": "Extended from 62 to 63 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_04_DAL_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 64 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 64.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_04_DAL_HOU",
-      "date": "2026-10-04",
-      "season": 2026,
-      "week": 4,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 63,
-      "after": 64,
-      "value": 64,
-      "action": "Extended from 63 to 64 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_05_HOU_TEN",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 65 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 65.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_05_HOU_TEN",
-      "date": "2026-10-11",
-      "season": 2026,
-      "week": 5,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 64,
-      "after": 65,
-      "value": 65,
-      "action": "Extended from 64 to 65 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_06_HOU_JAX",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 66 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 66.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_06_HOU_JAX",
-      "date": "2026-10-18",
-      "season": 2026,
-      "week": 6,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 65,
-      "after": 66,
-      "value": 66,
-      "action": "Extended from 65 to 66 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_07_NYG_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 67 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 67.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_07_NYG_HOU",
-      "date": "2026-10-25",
-      "season": 2026,
-      "week": 7,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 66,
-      "after": 67,
-      "value": 67,
-      "action": "Extended from 66 to 67 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
-    },
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_09_HOU_LAC",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "title": "Dalton Schultz: 68 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Length after this game: 68.",
-      "unit": "games",
-      "href": "/nfl/receiving-streaks.html",
-      "game": "2026_09_HOU_LAC",
-      "date": "2026-11-08",
-      "season": 2026,
-      "week": 9,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 67,
-      "after": 68,
-      "value": 68,
-      "action": "Extended from 67 to 68 games.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_01_GB_MIN",
@@ -11672,7 +11501,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_02_MIN_CHI",
@@ -11694,7 +11523,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_03_MIN_TB",
@@ -11716,7 +11545,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_04_MIA_MIN",
@@ -11738,7 +11567,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_05_MIN_NO",
@@ -11760,7 +11589,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_07_IND_MIN",
@@ -11782,7 +11611,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_08_MIN_DET",
@@ -11804,7 +11633,205 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0035229:2021_11_DET_CLE:2026_09_BUF_MIN",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "MIN",
+      "title": "T.J. Hockenson: 68 straight appearances with a catch",
+      "detail": "Run began 2021-11-21. Length after this game: 68.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_BUF_MIN",
+      "date": "2026-11-09",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 67,
+      "after": 68,
+      "value": 68,
+      "action": "Extended from 67 to 68 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_01_BUF_HOU",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 61 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 61.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_01_BUF_HOU",
+      "date": "2026-09-13",
+      "season": 2026,
+      "week": 1,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 60,
+      "after": 61,
+      "value": 61,
+      "action": "Extended from 60 to 61 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_02_CIN_HOU",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 62 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 62.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_02_CIN_HOU",
+      "date": "2026-09-20",
+      "season": 2026,
+      "week": 2,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 61,
+      "after": 62,
+      "value": 62,
+      "action": "Extended from 61 to 62 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_03_HOU_IND",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 63 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 63.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_03_HOU_IND",
+      "date": "2026-09-27",
+      "season": 2026,
+      "week": 3,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 62,
+      "after": 63,
+      "value": 63,
+      "action": "Extended from 62 to 63 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_04_DAL_HOU",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 64 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 64.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_04_DAL_HOU",
+      "date": "2026-10-04",
+      "season": 2026,
+      "week": 4,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 63,
+      "after": 64,
+      "value": 64,
+      "action": "Extended from 63 to 64 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_05_HOU_TEN",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 65 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 65.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_05_HOU_TEN",
+      "date": "2026-10-11",
+      "season": 2026,
+      "week": 5,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 64,
+      "after": 65,
+      "value": 65,
+      "action": "Extended from 64 to 65 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_06_HOU_JAX",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 66 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 66.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_06_HOU_JAX",
+      "date": "2026-10-18",
+      "season": 2026,
+      "week": 6,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 65,
+      "after": 66,
+      "value": 66,
+      "action": "Extended from 65 to 66 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_07_NYG_HOU",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 67 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 67.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_07_NYG_HOU",
+      "date": "2026-10-25",
+      "season": 2026,
+      "week": 7,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 66,
+      "after": 67,
+      "value": 67,
+      "action": "Extended from 66 to 67 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
+    },
+    {
+      "id": "00-0034383:2022_07_DET_DAL:2026_09_HOU_LAC",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "HOU",
+      "title": "Dalton Schultz: 68 straight appearances with a catch",
+      "detail": "Run began 2022-10-23. Length after this game: 68.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_09_HOU_LAC",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 67,
+      "after": 68,
+      "value": 68,
+      "action": "Extended from 67 to 68 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_01_ARI_LAC",
@@ -11826,7 +11853,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_02_SEA_ARI",
@@ -11848,7 +11875,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_03_ARI_SF",
@@ -11870,7 +11897,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_04_ARI_NYG",
@@ -11892,7 +11919,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_05_DET_ARI",
@@ -11914,7 +11941,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_06_ARI_LA",
@@ -11936,7 +11963,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_07_DEN_ARI",
@@ -11958,7 +11985,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_08_ARI_DAL",
@@ -11980,7 +12007,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_09_ARI_SEA",
@@ -12002,7 +12029,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_01_WAS_PHI",
@@ -12024,7 +12051,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_02_PHI_TEN",
@@ -12046,7 +12073,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_03_PHI_CHI",
@@ -12068,7 +12095,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_06_CAR_PHI",
@@ -12090,7 +12117,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_04_IND_WAS",
@@ -12112,7 +12139,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_05_NYG_WAS",
@@ -12134,7 +12161,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_06_WAS_SF",
@@ -12156,7 +12183,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_08_PHI_WAS",
@@ -12178,7 +12205,7 @@
       "value": 63,
       "action": "A zero-catch appearance ended the run at 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_01_BUF_HOU",
@@ -12200,7 +12227,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_04_DAL_HOU",
@@ -12222,7 +12249,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_05_HOU_TEN",
@@ -12244,7 +12271,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_06_HOU_JAX",
@@ -12266,7 +12293,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_07_NYG_HOU",
@@ -12288,7 +12315,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_09_HOU_LAC",
@@ -12310,7 +12337,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_01_NO_DET",
@@ -12332,7 +12359,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_02_NO_BAL",
@@ -12354,7 +12381,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_03_LV_NO",
@@ -12376,7 +12403,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_04_ATL_NO",
@@ -12398,7 +12425,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_05_MIN_NO",
@@ -12420,7 +12447,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_06_NO_NYG",
@@ -12442,7 +12469,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_07_PIT_NO",
@@ -12464,7 +12491,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_09_CLE_NO",
@@ -12486,7 +12513,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_01_SF_LA",
@@ -12508,7 +12535,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_02_MIA_SF",
@@ -12530,7 +12557,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_03_ARI_SF",
@@ -12552,7 +12579,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_04_DEN_SF",
@@ -12574,7 +12601,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_05_SF_SEA",
@@ -12596,7 +12623,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_06_WAS_SF",
@@ -12618,7 +12645,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_07_SF_ATL",
@@ -12640,7 +12667,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_09_LV_SF",
@@ -12662,7 +12689,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_01_NE_SEA",
@@ -12684,7 +12711,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_02_SEA_ARI",
@@ -12706,7 +12733,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_03_SEA_WAS",
@@ -12728,7 +12755,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_04_LAC_SEA",
@@ -12750,7 +12777,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_05_SF_SEA",
@@ -12772,7 +12799,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_06_SEA_DEN",
@@ -12794,7 +12821,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_07_KC_SEA",
@@ -12816,7 +12843,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_08_CHI_SEA",
@@ -12838,7 +12865,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_09_ARI_SEA",
@@ -12860,7 +12887,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_03_HOU_IND",
@@ -12882,7 +12909,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_04_IND_WAS",
@@ -12904,7 +12931,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_05_IND_PIT",
@@ -12926,7 +12953,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_06_TEN_IND",
@@ -12948,7 +12975,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_07_IND_MIN",
@@ -12970,7 +12997,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_08_IND_JAX",
@@ -12992,7 +13019,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_09_DAL_IND",
@@ -13014,7 +13041,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_01_BAL_IND",
@@ -13036,7 +13063,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_03_BAL_DAL",
@@ -13058,7 +13085,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_04_TEN_BAL",
@@ -13080,7 +13107,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_05_BAL_ATL",
@@ -13102,7 +13129,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_06_BAL_CLE",
@@ -13124,7 +13151,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_07_CIN_BAL",
@@ -13146,7 +13173,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_08_BAL_BUF",
@@ -13168,7 +13195,7 @@
       "value": 56,
       "action": "A zero-catch appearance ended the run at 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_06_CHI_ATL",
@@ -13190,7 +13217,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_07_SF_ATL",
@@ -13212,7 +13239,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_08_ATL_TB",
@@ -13234,7 +13261,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_09_CIN_ATL",
@@ -13256,7 +13283,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039075:2023_01_LA_SEA:2026_08_LAC_LA",
@@ -13278,7 +13305,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039075:2023_01_LA_SEA:2026_09_LA_WAS",
@@ -13300,7 +13327,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0039065:2023_01_DET_KC:2026_09_DET_MIA",
@@ -13322,7 +13349,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_07_SF_ATL",
@@ -13344,7 +13371,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_08_ATL_TB",
@@ -13366,7 +13393,7 @@
       "value": 50,
       "action": "A zero-catch appearance ended the run at 50 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     },
     {
       "id": "00-0038117:2023_09_NYG_LV:2026_08_TEN_CIN",
@@ -13388,7 +13415,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-08"
+      "sourceThrough": "2026-11-09"
     }
   ]
 }
