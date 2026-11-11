@@ -1,176 +1,82 @@
-(function () {
+/* Static public history plus an explicitly selected local editing workspace. */
+(function(){
   'use strict';
-
-  const URL = 'https://urwhknxbumwjcuplfwni.supabase.co';
-  const KEY = 'sb_publishable_WnP1QNaJOLB5wtHQ2krzQw_NyoZVXLn';
-  const CACHE = 'dlns.database.matches.v1';
-  const AUTH_STORAGE = 'dlns.auth.v1';
-  const RETURN_TAB = 'dlns.auth.returnTab';
-  const auth = {user:null,admin:false,ready:true,error:''};
-  const listeners = new Set();
-  let clientPromise, client, matches = [], teams = [], authVersion = 0;
-
-  function notify() {
-    listeners.forEach(listener => listener({...auth}));
+  const editable=new URLSearchParams(location.search).get('storage')==='local';
+  const SNAPSHOT='dlns/history.json'; // Change only to a separately reviewed public export.
+  const store=createDLNSLocalStore(DLNSModel,window.indexedDB);
+  let state={version:0,matches:[],teams:[]}, ready=false;
+  const listeners=new Set();
+  function accept(next){state=next;ready=true;listeners.forEach(fn=>fn(db.auth));return db.matches;}
+  async function readSnapshot(){
+    const response=await fetch(SNAPSHOT,{cache:'no-store'});
+    if(!response.ok)throw Error(`Published history could not be loaded (${response.status}).`);
+    return store.validate(await response.json());
   }
-
-  function readCache() {
-    try {
-      const cached = JSON.parse(localStorage.getItem(CACHE) || 'null');
-      if (cached && Array.isArray(cached.matches)) {
-        matches = cached.matches;
-        teams = Array.isArray(cached.teams) ? cached.teams : [];
-        return cached;
-      }
-    } catch (_) {}
-    return null;
-  }
-
-  function remember(next) {
-    matches = next.slice().sort((a,b) => DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));
-    try { localStorage.setItem(CACHE,JSON.stringify({at:Date.now(),matches,teams})); } catch (_) {}
-    return matches;
-  }
-
-  async function loadRows(table,order,label) {
-    const all = [];
-    for (let offset = 0;; offset += 500) {
-      const query = new URLSearchParams({select:'*',order,limit:'500',offset:String(offset)});
-      const response = await fetch(`${URL}/rest/v1/${table}?${query}`,{headers:{apikey:KEY},cache:'no-store'});
-      if (!response.ok) throw new Error(`The ${label} database could not be loaded (${response.status}).`);
-      const page = await response.json();
-      if (!Array.isArray(page)) throw new Error(`The ${label} database returned an invalid response.`);
-      all.push(...page);
-      if (page.length < 500) break;
-    }
-    return all;
-  }
-
-  async function loadMatches() {
-    const [all,registered] = await Promise.all([
-      loadRows('dlns_matches','week.asc,region.asc,round.asc,game.asc','match'),
-      loadRows('dlns_teams','region.asc,name.asc','team')
-    ]);
-    teams = registered;
-    return remember(all);
-  }
-
-  async function refreshAuth(session) {
-    const version = ++authVersion;
-    auth.user = session?.user || null;
-    auth.admin = false;
-    auth.ready = !session;
-    auth.error = '';
-    notify();
-    if (session) {
-      const {data,error} = await client.rpc('dlns_is_admin');
-      if (version !== authVersion) return;
-      auth.admin = !error && data === true;
-      auth.ready = true;
-      if (error) auth.error = 'Your editing permissions could not be checked. Try signing in again.';
-      notify();
-    }
-    try {
-      if (session && sessionStorage.getItem(RETURN_TAB)) {
-        sessionStorage.removeItem(RETURN_TAB);
-        window.location.hash = '#draftsim';
-      }
-    } catch (_) {}
-  }
-
-  function getClient() {
-    if (clientPromise) return clientPromise;
-    clientPromise = new Promise((resolve,reject) => {
-      const script = document.createElement('script');
-      script.src = 'dlns/vendor/supabase-2.118.0.js';
-      script.onload = resolve;
-      script.onerror = () => reject(new Error('The sign-in client could not be loaded. Reload the page and try again.'));
-      document.head.appendChild(script);
-    }).then(async () => {
-      client = window.supabase.createClient(URL,KEY,{
-        auth:{flowType:'pkce',storageKey:AUTH_STORAGE,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
-      });
-      client.auth.onAuthStateChange((_event,session) => {
-        window.setTimeout(() => { refreshAuth(session).catch(reportAuthError); },0);
-      });
-      const {data,error} = await client.auth.getSession();
-      if (error) throw error;
-      await refreshAuth(data.session);
-      return client;
-    }).catch(error => {
-      clientPromise = null;
-      reportAuthError(error);
-      throw error;
-    });
-    return clientPromise;
-  }
-
-  function reportAuthError(error) {
-    auth.ready = true;
-    auth.admin = false;
-    auth.error = error.message || 'Sign-in failed. Please try again.';
-    notify();
-  }
-
-  async function signIn() {
-    if (window.location.protocol === 'file:') throw new Error('Open DLNS through the website or localhost to sign in.');
-    try { sessionStorage.setItem(RETURN_TAB,'draftsim'); } catch (_) {}
-    const sdk = await getClient();
-    const redirectTo = window.location.origin + window.location.pathname;
-    const {error} = await sdk.auth.signInWithOAuth({provider:'github',options:{redirectTo,scopes:'read:user user:email'}});
-    if (error) throw error;
-  }
-
-  async function signOut() {
-    const sdk = await getClient();
-    const {error} = await sdk.auth.signOut({scope:'local'});
-    if (error) throw error;
-    await refreshAuth(null);
-  }
-
-  async function saveMatch(match,revision = null,originalId = null) {
-    const errors = DLNSModel.validateMatch(match);
-    if (errors.length) throw new Error(errors.join(' '));
-    const sdk = await getClient();
-    const {data,error} = await sdk.rpc('dlns_save_match',{
-      p_match:match,p_expected_revision:revision,p_original_match_id:originalId
-    });
-    if (error) throw new Error(error.message);
-    const saved = Array.isArray(data) ? data[0] : data;
-    if (!saved?.match_id) throw new Error('The server did not confirm the saved match. Reload data before retrying.');
-    remember([...matches.filter(item => item.match_id !== originalId && item.match_id !== saved.match_id),saved]);
-    return saved;
-  }
-
-  async function addTeam(name,region) {
-    const errors = DLNSModel.validateTeam(name,region);
-    if (errors.length) throw new Error(errors.join(' '));
-    const sdk = await getClient();
-    const {data,error} = await sdk.rpc('dlns_add_team',{p_name:name.trim(),p_region:region});
-    if (error) throw new Error(error.message);
-    const saved = Array.isArray(data) ? data[0] : data;
-    if (!saved?.name || saved.region !== region) throw new Error('The server did not confirm the saved team. Reload data before retrying.');
-    teams = [...teams.filter(team=>team.region !== region || team.name.toLowerCase() !== saved.name.toLowerCase()),saved];
-    remember(matches);
-    return saved;
-  }
-
-  window.DLNSDatabase = {
-    loadMatches,readCache,signIn,signOut,saveMatch,addTeam,
-    get matches() { return matches; },
-    get teams() { return teams; },
-    get auth() { return {...auth}; },
-    subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
-    initAuth() {
-      let saved = false;
-      try { saved = Boolean(localStorage.getItem(AUTH_STORAGE)); } catch (_) {}
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('error_description')) reportAuthError(new Error(params.get('error_description')));
-      if (saved || params.has('code')) {
-        auth.ready = false;
-        notify();
-        getClient().catch(() => {});
-      }
+  const db=window.DLNSDatabase={
+    local:editable,
+    get auth(){return {user:null,admin:editable&&ready,ready:true,error:''};},
+    get version(){return state.version;},
+    get matches(){return state.matches.slice().sort((a,b)=>DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));},
+    get teams(){return state.teams || [];},
+    get sourceNote(){
+      const last=db.matches.at(-1)?.match_id || 'none';
+      return editable ? `Local workspace: ${state.matches.length} matches; last match ${last}. Source: ${state.provenance?.label || 'empty'}. Saved only in this browser — export backups.` : `Published snapshot: ${state.matches.length} matches; last match ${last}. This is not a live database or proof of complete history.`;
+    },
+    subscribe(fn){listeners.add(fn);return ()=>listeners.delete(fn);},initAuth(){},
+    async loadMatches(){return accept(editable ? await store.read() : await readSnapshot());},
+    async saveMatch(match,revision,originalId,workspaceVersion){
+      if(!editable || !ready)throw Error('Open the local workspace to edit.');
+      accept(await store.saveMatch(match,revision,originalId,originalId ? workspaceVersion : state.version));
+      return state.matches.find(item=>item.match_id===match.match_id);
+    },
+    async addTeam(name,region){
+      if(!editable || !ready)throw Error('Open the local workspace to edit.');
+      accept(await store.addTeam(name,region,state.version));
+      return state.teams.find(t=>t.region===region && t.name.trim().toLowerCase()===name.trim().toLowerCase());
     }
   };
+  function download(content,name){
+    const url=URL.createObjectURL(new Blob([content],{type:'application/json'}));
+    const link=document.createElement('a');link.href=url;link.download=name;link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  window.addEventListener('DOMContentLoaded',()=>{
+    const panel=document.createElement('details');panel.className='panel';panel.open=editable;
+    panel.innerHTML='<summary>History, local editing &amp; backups</summary><p>Everyone can view the published history. Local edits stay in this browser and require no login. To share changes, export and publish a reviewed history file through the repository.</p><p><a href="DLNS.html">View published history</a> · <a href="?storage=local#draftsim">Open local workspace</a></p><button id="localCacheExport">Download original database cache</button> <button id="localExport">Export local backup</button> <button id="localSeed">Import published history</button> <label>Import JSON <input id="localImport" type="file" accept="application/json,.json"></label><p>Keep downloaded backups outside this browser before clearing site data. Imports replace the local working copy; they never publish or change the original cache.</p><p id="localStatus" role="status"></p>';
+    document.getElementById('sourceNote').after(panel);
+    const $=id=>document.getElementById(id), status=text=>{$('localStatus').textContent=text;};
+    let busy=false;
+    const buttons=['localExport','localSeed','localImport'];
+    function controls(){for(const id of buttons)$(id).disabled=!editable || busy;}
+    async function run(fn){
+      if(busy)return;busy=true;controls();
+      try{await fn();}catch(error){status(error.message);}finally{busy=false;controls();}
+    }
+    async function importData(input,label){
+      store.validate(input);
+      if(!confirm(`Import ${input.matches.length} matches from ${label}? This replaces only the local working copy. Export your current backup first. The previous copy is also retained in local change history.`))return;
+      accept(await store.importData(input,label,state.version));
+      window.DLNSApp.applyMatches(db.matches);
+      status('Imported locally. Load a match before editing; export a backup after saving. Nothing was published.');
+    }
+    $('localCacheExport').onclick=()=>run(async()=>{
+      const raw=localStorage.getItem('dlns.database.matches.v1');
+      if(!raw)throw Error('No original cache on this browser and site address. Try the device, profile and site address used previously.');
+      download(raw,`dlns-original-cache-${Date.now()}.json`);
+      status('Original cache downloaded verbatim, without changing or importing it. Preserve this file.');
+    });
+    $('localExport').onclick=()=>run(async()=>{
+      download(JSON.stringify({...await store.read(),exported_at:new Date().toISOString()},null,2),`dlns-local-${Date.now()}.json`);
+      status('Local backup downloaded, including source details and local change history.');
+    });
+    $('localSeed').onclick=()=>run(async()=>{await importData(await readSnapshot(),'published file: '+SNAPSHOT);});
+    $('localImport').onchange=event=>{
+      const file=event.target.files[0];event.target.value='';if(!file)return;
+      run(async()=>{
+        if(file.size>30*1024*1024)throw Error('Import is larger than 30 MB.');
+        await importData(JSON.parse(await file.text()),file.name);
+      });
+    };
+    controls();
+  });
 })();

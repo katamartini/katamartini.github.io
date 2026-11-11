@@ -2,11 +2,11 @@
   'use strict';
 
   const db = window.DLNSDatabase, model = window.DLNSModel, app = window.DLNSApp;
-  const STORE = 'dlns.matchEntry.v1';
+  const STORE = db.local ? 'dlns.local.matchEntry.v1' : 'dlns.public.matchEntry.v1';
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},editing:null,revision:null,selected:''});
-  let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '', loginBusy = false;
+  let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '';
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && typeof saved === 'object') {
@@ -100,15 +100,12 @@
     if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
-    const identity = auth.user?.user_metadata?.user_name || auth.user?.user_metadata?.preferred_username || auth.user?.email || '';
-    const authButtons = auth.user ? `<span class="small">${esc(identity)}</span>${auth.ready && !auth.admin ? '<span class="small">Read-only</span>' : ''}<button id="simSignOut" ${loginBusy?'disabled':''}>Sign out</button>`
-      : `<button id="simSignIn" ${loginBusy || !auth.ready?'disabled':''}>${auth.ready?'Sign in with GitHub':'Checking sign-in...'}</button>`;
+    const authButtons = db.local ? '<span class="small">Local editing — saved only in this browser</span>' : '<a href="?storage=local#draftsim">Open local workspace to edit</a>';
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
     root.className = 'matchEntry';
     if (!auth.admin) {
       root.innerHTML = header + ((auth.error || message) ? `<div class="matchEntryStatus errorText" role="status">${esc(auth.error || message)}</div>` : '');
       playerSlots.forEach(slot=>{ slot.innerHTML = ''; });
-      bindAuth();
       return;
     }
     const matches = db.matches.slice().reverse();
@@ -144,7 +141,6 @@
         persist();
       };
     });
-    bindAuth();
     const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
     Object.entries(fields).forEach(([id,key]) => {
       $(id).oninput = event => {
@@ -186,18 +182,6 @@
     dialog.showModal();
   }
 
-  function bindAuth() {
-    if ($('simSignIn')) $('simSignIn').onclick = async () => {
-      loginBusy = true; render();
-      try { await db.signIn(); } catch (error) { loginBusy = false; setMessage(error.message,'errorText'); render(); }
-    };
-    if ($('simSignOut')) $('simSignOut').onclick = async () => {
-      loginBusy = true;
-      try { await db.signOut(); setMessage(''); } catch (error) { setMessage(error.message,'errorText'); }
-      finally { loginBusy = false; render(); }
-    };
-  }
-
   function loadSelected() {
     return loadMatch(entry.selected);
   }
@@ -208,7 +192,7 @@
     if (!match) { setMessage('Select a saved match first.','errorText'); return false; }
     entry = {...blank(),week:String(match.week),region:match.region,round:match.round,game:String(match.game),winner:match.winner || '',
       players:Object.fromEntries(match.actions.filter(action=>action.type==='pick').map(action=>[action.hero,action.player || ''])),
-      editing:match.match_id,revision:match.revision,selected:match.match_id};
+      editing:match.match_id,revision:match.revision,workspaceVersion:db.version,selected:match.match_id};
     persist();
     setMessage('');
     app.setSim(model.matchToSim(match));
@@ -269,11 +253,11 @@
     if (errors.length) { setMessage(errors.join(' '),'errorText'); return; }
     saving = true; setMessage(''); window.renderDraftSim();
     try {
-      const saved = await db.saveMatch(match,entry.revision,entry.editing);
-      entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision;
+      const saved = await db.saveMatch(match,entry.revision,entry.editing,entry.workspaceVersion);
+      entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision; entry.workspaceVersion = db.version;
       persist();
       app.applyMatches(db.matches);
-      setMessage(`Saved ${saved.match_id} (revision ${saved.revision})`,'success');
+      setMessage(`Saved ${saved.match_id} locally (revision ${saved.revision}). Export a backup; this is not published.`,'success');
     } catch (error) { setMessage(error.message,'errorText'); }
     finally { saving = false; window.renderDraftSim(); }
   }

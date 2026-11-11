@@ -574,7 +574,7 @@ grid-template-columns:1fr}
 <div class="bar">
 <div>
 <div class="label">Draft source</div>
-<div class="muted" id="sourceNote">Loading the match database.</div>
+<div class="muted" id="sourceNote">Loading published history.</div>
 </div>
 <button id="loadBtn">Reload data</button>
 </div>
@@ -599,10 +599,9 @@ grid-template-columns:1fr}
 </section>
 </main><script src="dlns/model.js?v=20261022-rank-backgrounds"></script>
 <script src="dlns/combinations.js?v=20261022-top20"></script>
-<script src="dlns/database.js?v=20261021-teams"></script>
+<script src="dlns/local-store.js?v=20261111"></script>
+<script src="dlns/database.js?v=20261111-static"></script>
 <script>
-const SNAPSHOT_SCRIPT='DLNS.snapshot.js';
-let EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'',snapshotLoad=null;
 const LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
 let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,currentRarityIndex=null,sorts={
 hero:{
@@ -1254,52 +1253,16 @@ window.dispatchEvent(new Event('dlns:data'))}
 function applyDatabaseMatches(matches){
 applyDraftRecords(matches.flatMap(DLNSModel.matchToRecords));
 $('status').textContent='loaded';
-$('sourceNote').textContent='Using the DLNS match database.';
+$('sourceNote').textContent=DLNSDatabase.sourceNote;
 $('error').classList.add('hidden')}
-function useCache(){
-try{
-const cached=DLNSDatabase.readCache();
-if(!cached?.matches?.length)return false;
-applyDraftRecords(cached.matches.flatMap(DLNSModel.matchToRecords));
-$('status').textContent='cached';
-$('sourceNote').textContent='Using cached matches; checking for updates.';
-return true}
-catch{return false}}
-function loadEmbeddedSnapshot(){
-if(EMBEDDED_CSV_B64)return Promise.resolve(true);
-if(window.EMBEDDED_CSV_B64){
-EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64;
-return Promise.resolve(true)}
-if(snapshotLoad)return snapshotLoad;
-snapshotLoad=new Promise(res=>{
-const s=document.createElement('script');s.src=SNAPSHOT_SCRIPT;s.onload=()=>{
-EMBEDDED_CSV_B64=window.EMBEDDED_CSV_B64||'';res(!!EMBEDDED_CSV_B64)};s.onerror=()=>res(false);document.head.appendChild(s)});
-return snapshotLoad}
-async function useEmbeddedFallback(){
-try{
-if(!await loadEmbeddedSnapshot())return false;
-const bytes=Uint8Array.from(atob(EMBEDDED_CSV_B64),c=>c.charCodeAt(0)),text=new TextDecoder().decode(bytes);
-const rows=objs(csv(text));
-if(!rows.length)return false;
-applyDraftRecords(rows);
-$('status').textContent='snapshot';
-$('sourceNote').textContent='Using an offline history snapshot. Live updates are unavailable.';
-$('error').classList.add('hidden');
-return true}
-catch{
-return false}}
-async function loadData(force=false){
-const cached=!force&&useCache();
-if(!cached)$('status').textContent='loading';
+async function loadData(){
+$('status').textContent='loading';
 $('error').classList.add('hidden');
 try{
-const matches=await DLNSDatabase.loadMatches();
-if(!matches.length)throw Error('No matches are available yet.');
-applyDatabaseMatches(matches)}
+applyDatabaseMatches(await DLNSDatabase.loadMatches())}
 catch(err){
-if(!records.length&&await useEmbeddedFallback())return;
 $('status').textContent=records.length?'offline':'error';
-$('sourceNote').textContent=records.length?'Live database unavailable. Showing the last loaded matches.':'The match database is unavailable.';
+$('sourceNote').textContent='History could not be loaded. Existing displayed data has not been replaced.';
 $('error').textContent=err.message||String(err);
 $('error').classList.remove('hidden')}}
 function setTab(name){
@@ -2118,7 +2081,7 @@ grid-template-columns:repeat(3,1fr)}
 }
 </style><script>
 (function(){
-const ID='draftsim',SIM_STORE='draftSimulator.v1',HEROES=DLNSModel.heroes;function blankSlots(){
+const ID='draftsim',SIM_STORE=DLNSDatabase.local?'dlns.local.sim.v1':'dlns.public.sim.v1',HEROES=DLNSModel.heroes;function blankSlots(){
 return{
 left:{
 picks:Array(6).fill(''),bans:Array(2).fill('')},right:{
@@ -2367,7 +2330,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261026-fill-players"></script>
+<script src="dlns/submission.js?v=20261111-local"></script>
 </body>
 </html>
 

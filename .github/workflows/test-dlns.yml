@@ -1,4 +1,4 @@
-name: Check DLNS Database
+name: Check DLNS History
 
 on:
   pull_request:
@@ -28,5 +28,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install --prefix .cache/dlns-tools --ignore-scripts @electric-sql/pglite@0.5.10
+      - run: npm install --prefix .cache/dlns-tools --ignore-scripts @electric-sql/pglite@0.5.10 fake-indexeddb@6.2.4 playwright@1.58.2
       - run: node scripts/test-dlns-database.mjs
+      - run: node scripts/test-dlns-local.mjs
+      - run: node scripts/test-dlns-public-export.mjs
+      - run: node .cache/dlns-tools/node_modules/playwright/cli.js install --with-deps chromium
+      - run: node scripts/test-dlns-local-browser.mjs
