@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-10T14:46:46.858Z",
+  "checkedAt": "2026-11-11T14:10:20.047Z",
   "season": 2026,
   "through": "2026-11-09",
   "latestWeek": 9,
-  "rosterWeek": 9,
+  "rosterWeek": 10,
   "firstStatsSeason": 1999,
   "firstParticipationSeason": 2013,
   "historicalCoverage": "partial",
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "dfb05d20454c379eb39866b920af5ca895ef6cfc946d347fa9ccd8ce9f5b3325",
+  "sourceHash": "bf657a82cb1f50ba06ef5adc918f10213fc965d416496481d7ac527df7a75456",
   "sources": [
     {
       "kind": "stats",
@@ -8444,6 +8444,197 @@
           "lowerBound": false
         },
         "franchiseTeam": "SEA"
+      }
+    },
+    {
+      "id": "00-0036261:2021_02_SF_PHI",
+      "playerId": "00-0036261",
+      "name": "Brandon Aiyuk",
+      "length": 56,
+      "start": {
+        "date": "2021-09-19",
+        "season": 2021,
+        "game": "2021_02_SF_PHI",
+        "team": "SF",
+        "opponent": "PHI"
+      },
+      "last": {
+        "date": "2024-10-20",
+        "season": 2024,
+        "game": "2024_07_KC_SF",
+        "team": "SF",
+        "opponent": "KC"
+      },
+      "teams": [
+        "SF"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "currentTeam": "SF",
+      "leaderboard": {
+        "overall": {
+          "scope": "Recorded NFL",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 126,
+          "tied": true,
+          "record": 274,
+          "recordHolders": [
+            {
+              "id": "archive:00-0013639:274",
+              "name": "Jerry Rice",
+              "teams": [
+                "SF",
+                "LV"
+              ],
+              "opponent": null,
+              "length": 274,
+              "firstSeason": 1985,
+              "lastSeason": 2004,
+              "years": "1985–2004",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 57,
+            "rank": 121,
+            "holders": [
+              {
+                "id": "00-0027681:2014_03_OAK_NE",
+                "name": "Brandon LaFell",
+                "teams": [
+                  "NE",
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2017,
+                "years": "2014–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033280:2017_01_CAR_SF",
+                "name": "Christian McCaffrey",
+                "teams": [
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2017,
+                "lastSeason": 2021,
+                "years": "2017–2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0018343:1999_01_CIN_TEN",
+                "name": "Frank Wycheck",
+                "teams": [
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 1999,
+                "lastSeason": 2002,
+                "years": "1999–2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0037740:2022_01_BAL_NYJ",
+                "name": "Garrett Wilson",
+                "teams": [
+                  "NYJ"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2022,
+                "lastSeason": 2025,
+                "years": "2022–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030107:2014_16_DET_CHI",
+                "name": "Theo Riddick",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 57,
+                "firstSeason": 2014,
+                "lastSeason": 2018,
+                "years": "2014–2018",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 121,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchise": {
+          "scope": "SF",
+          "coverage": "1999+ game logs plus documented older records",
+          "partial": true,
+          "length": 56,
+          "rank": 3,
+          "tied": true,
+          "record": 114,
+          "recordHolders": [
+            {
+              "id": "00-0033288:2017_01_CAR_SF",
+              "name": "George Kittle",
+              "teams": [
+                "SF"
+              ],
+              "opponent": null,
+              "length": 114,
+              "firstSeason": 2017,
+              "lastSeason": 2025,
+              "years": "2017–2025",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 58,
+            "rank": 2,
+            "holders": [
+              {
+                "id": "00-0024221:2008_14_NYJ_SF",
+                "name": "Vernon Davis",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 58,
+                "firstSeason": 2008,
+                "lastSeason": 2012,
+                "years": "2008–2012",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 3,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "SF"
       }
     },
     {
