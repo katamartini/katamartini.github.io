@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-11-11T14:38:34.167Z",
+  "checkedAt": "2026-11-12T15:29:24.311Z",
   "season": 2026,
   "through": "2026-11-09",
   "rosterWeek": 10,
@@ -499,33 +499,6 @@
       }
     },
     {
-      "id": "00-0029604",
-      "espn": "14880",
-      "name": "Kirk Cousins",
-      "team": "LV",
-      "since": 2026,
-      "seasons": 1,
-      "status": "ACT",
-      "rosterWeek": 10,
-      "length": 9,
-      "start": {
-        "id": "2026_01_MIA_LV",
-        "event": "401872928",
-        "date": "2026-09-13",
-        "season": 2026,
-        "week": 1,
-        "opponent": "MIA"
-      },
-      "last": {
-        "id": "2026_09_LV_SF",
-        "event": "401873047",
-        "date": "2026-11-08",
-        "season": 2026,
-        "week": 9,
-        "opponent": "SF"
-      }
-    },
-    {
       "id": "00-0036355",
       "espn": "4038941",
       "name": "Justin Herbert",
@@ -559,7 +532,7 @@
       "team": "MIA",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 10,
       "length": 8,
       "start": {
@@ -802,7 +775,7 @@
       "team": "ARI",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 10,
       "length": 1,
       "start": {
@@ -1632,7 +1605,7 @@
       "team": "ARI",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 10
     },
     {
@@ -1759,20 +1732,10 @@
       "id": "00-0041203",
       "espn": null,
       "name": "Joey Aguilar",
-      "team": "JAX",
+      "team": "ARI",
       "since": 2026,
       "seasons": 1,
-      "status": "DEV",
-      "rosterWeek": 10
-    },
-    {
-      "id": "00-0026300",
-      "espn": "11394",
-      "name": "Josh Johnson",
-      "team": "CIN",
-      "since": 2026,
-      "seasons": 1,
-      "status": "DEV",
+      "status": "ACT",
       "rosterWeek": 10
     },
     {
@@ -1819,7 +1782,7 @@
       "id": "00-0029604",
       "espn": "14880",
       "name": "Kirk Cousins",
-      "team": "LV",
+      "team": "MIN",
       "since": 2026,
       "seasons": 1,
       "status": "ACT",
@@ -1882,7 +1845,7 @@
       "team": "MIA",
       "since": 2026,
       "seasons": 1,
-      "status": "ACT",
+      "status": "RES",
       "rosterWeek": 10
     },
     {
@@ -2006,7 +1969,12 @@
       "rosterWeek": 10
     }
   ],
-  "unavailable": [],
+  "unavailable": [
+    {
+      "team": "LV",
+      "reason": "Latest starter is not on the current eligible QB roster."
+    }
+  ],
   "history": {
     "firstSeason": 1950,
     "lastCompleteSeason": 2025,
