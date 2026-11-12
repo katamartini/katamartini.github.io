@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-11T14:10:20.047Z",
+  "checkedAt": "2026-11-12T15:04:25.428Z",
   "season": 2026,
   "through": "2026-11-09",
   "latestWeek": 9,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "bf657a82cb1f50ba06ef5adc918f10213fc965d416496481d7ac527df7a75456",
+  "sourceHash": "92ba78ea2dc0288e7494c2537514eae8bccd1271c16a60f1d2087298a2a63377",
   "sources": [
     {
       "kind": "stats",
@@ -4206,7 +4206,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "IND",
+      "currentTeam": "SF",
       "leaderboard": {
         "overall": {
           "scope": "Recorded NFL",
@@ -4261,211 +4261,8 @@
           },
           "lowerBound": false
         },
-        "franchise": {
-          "scope": "IND",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 8,
-          "rank": 73,
-          "tied": true,
-          "record": 190,
-          "recordHolders": [
-            {
-              "id": "archive:00-0007024:190",
-              "name": "Marvin Harrison",
-              "teams": [
-                "IND"
-              ],
-              "opponent": null,
-              "length": 190,
-              "firstSeason": 1996,
-              "lastSeason": 2008,
-              "years": "1996–2008",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 9,
-            "rank": 61,
-            "holders": [
-              {
-                "id": "00-0032355:2017_16_IND_BAL",
-                "name": "Chester Rogers",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2017,
-                "lastSeason": 2018,
-                "years": "2017–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022165:2006_17_MIA_IND",
-                "name": "Dallas Clark",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2006,
-                "lastSeason": 2007,
-                "years": "2006–2007",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0027003:2011_08_IND_TEN",
-                "name": "Donald Brown",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2011,
-                "lastSeason": 2011,
-                "years": "2011",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031387:2018_01_CIN_IND",
-                "name": "Eric Ebron",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030854:2016_15_IND_MIN",
-                "name": "Erik Swoope",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2016,
-                "lastSeason": 2018,
-                "years": "2016–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033217:2020_08_IND_DET",
-                "name": "Mo Alie-Cox",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0008059:2002_01_IND_JAX",
-                "name": "Qadry Ismail",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0020498:2002_06_BAL_IND",
-                "name": "Reggie Wayne",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0031068:2018_01_CIN_IND",
-                "name": "Ryan Grant",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028178:2013_02_MIA_IND",
-                "name": "Stanley Havili",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029675:2013_14_IND_CIN",
-                "name": "Trent Richardson",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2013,
-                "lastSeason": 2014,
-                "years": "2013–2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030710:2020_04_IND_CHI",
-                "name": "Trey Burton",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 9,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 61,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "IND"
+        "franchise": null,
+        "franchiseTeam": "SF"
       }
     },
     {
@@ -8665,7 +8462,7 @@
       "startUnknown": false,
       "active": true,
       "archive": false,
-      "currentTeam": "IND",
+      "currentTeam": "KC",
       "leaderboard": {
         "overall": {
           "scope": "Recorded NFL",
@@ -8775,57 +8572,8 @@
           },
           "lowerBound": false
         },
-        "franchise": {
-          "scope": "IND",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 56,
-          "rank": 5,
-          "tied": false,
-          "record": 190,
-          "recordHolders": [
-            {
-              "id": "archive:00-0007024:190",
-              "name": "Marvin Harrison",
-              "teams": [
-                "IND"
-              ],
-              "opponent": null,
-              "length": 190,
-              "firstSeason": 1996,
-              "lastSeason": 2008,
-              "years": "1996–2008",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 95,
-            "rank": 4,
-            "holders": [
-              {
-                "id": "00-0036252:2020_01_IND_JAX",
-                "name": "Michael Pittman",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 95,
-                "firstSeason": 2020,
-                "lastSeason": 2025,
-                "years": "2020–2025",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 5,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "IND"
+        "franchise": null,
+        "franchiseTeam": "KC"
       }
     },
     {
