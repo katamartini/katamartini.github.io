@@ -2,8 +2,8 @@
 window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
-  "throughWeek": 9,
-  "sourceHash": "27e6b8fb3ef5c2fdea0d3dd8a5588469e3e2e9b09f2d744d92dfbcebdeab2914",
+  "throughWeek": 10,
+  "sourceHash": "210832a4cdab036a8fc0a9349d3f571dfad78cd6e0fccea40d4142396521e383",
   "careerYards": [
     0,
     26,
@@ -451,6 +451,16 @@ window.JJ23K_DATA = {
     ],
     [
       35,
+      "Stefon Diggs",
+      11890,
+      978,
+      12.2,
+      80,
+      386,
+      3
+    ],
+    [
+      36,
       "Antonio Gates",
       11841,
       955,
@@ -460,7 +470,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      36,
+      37,
       "Don Maynard",
       11834,
       633,
@@ -468,16 +478,6 @@ window.JJ23K_DATA = {
       88,
       null,
       null
-    ],
-    [
-      37,
-      "Stefon Diggs",
-      11807,
-      972,
-      12.1,
-      79,
-      303,
-      1
     ],
     [
       38,
