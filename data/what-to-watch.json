@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "season": 2026,
-  "through": "2026-11-09",
+  "through": "2026-11-12",
   "thresholds": {
     "team": 5,
     "matchup": 5,
@@ -19,20 +19,6 @@
     "start": "2026-11-12",
     "end": "2026-11-16",
     "games": [
-      {
-        "id": "2026_10_WAS_NYG",
-        "season": 2026,
-        "type": "REG",
-        "week": 10,
-        "date": "2026-11-12",
-        "away": "WAS",
-        "home": "NYG",
-        "awayScore": null,
-        "homeScore": null,
-        "completed": false,
-        "location": "Home",
-        "kickoff": "20:15"
-      },
       {
         "id": "2026_10_BUF_NYJ",
         "season": 2026,
@@ -218,1271 +204,6 @@
     ]
   },
   "watch": [
-    {
-      "id": "matchup:WAS:NYG:winless:2026_10_WAS_NYG",
-      "category": "matchup",
-      "team": "NYG",
-      "opponent": "WAS",
-      "href": "/nfl/what-to-watch.html#method",
-      "detail": "Last win against the Commanders: 2023-11-19.",
-      "sourceThrough": null,
-      "kind": "drought",
-      "value": 5,
-      "unit": "games",
-      "title": "Giants: 5 games without a win against the Commanders",
-      "drought": {
-        "since": "2023-11-19",
-        "through": "2026-11-12",
-        "elapsed": "2 years, 11 months",
-        "days": 1089,
-        "count": 5,
-        "unit": "meetings",
-        "anchor": "since last win",
-        "lowerBound": false
-      },
-      "action": "A win ends the drought; a tie keeps it going.",
-      "game": "2026_10_WAS_NYG",
-      "date": "2026-11-12",
-      "season": 2026,
-      "week": 10,
-      "gameType": "REG",
-      "status": "watch",
-      "leaderboard": {
-        "label": "Matchup droughts",
-        "franchise": {
-          "scope": "NYG",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 5,
-          "rank": 5,
-          "tied": true,
-          "record": 9,
-          "recordHolders": [
-            {
-              "id": "matchup:DAL:NYG:winless:2021_05_NYG_DAL",
-              "name": "Giants",
-              "teams": [
-                "NYG"
-              ],
-              "opponent": "DAL",
-              "length": 9,
-              "firstSeason": 2021,
-              "lastSeason": 2025,
-              "years": "2021–2025",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 6,
-            "rank": 4,
-            "holders": [
-              {
-                "id": "matchup:MIN:NYG:winless:2015_16_NYG_MIN",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": "MIN",
-                "length": 6,
-                "firstSeason": 2015,
-                "lastSeason": 2025,
-                "years": "2015–2025",
-                "active": true,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 4,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "overall": {
-          "scope": "Current franchises",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 5,
-          "rank": 127,
-          "tied": true,
-          "record": 16,
-          "recordHolders": [
-            {
-              "id": "matchup:KC:DEN:winless:2015_10_KC_DEN",
-              "name": "Broncos",
-              "teams": [
-                "DEN"
-              ],
-              "opponent": "KC",
-              "length": 16,
-              "firstSeason": 2015,
-              "lastSeason": 2023,
-              "years": "2015–2023",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 6,
-            "rank": 66,
-            "holders": [
-              {
-                "id": "matchup:LA:SF:winless:1999_05_SF_STL",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": "LA",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2001,
-                "years": "1999–2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:NO:SF:winless:2002_07_SF_NO",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": "NO",
-                "length": 6,
-                "firstSeason": 2002,
-                "lastSeason": 2010,
-                "years": "2002–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:SEA:SF:winless:2003_06_SF_SEA",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": "SEA",
-                "length": 6,
-                "firstSeason": 2003,
-                "lastSeason": 2005,
-                "years": "2003–2005",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:CAR:SF:winless:2004_10_CAR_SF",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": "CAR",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2017,
-                "years": "2004–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:DET:CHI:winless:2013_04_CHI_DET",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": "DET",
-                "length": 6,
-                "firstSeason": 2013,
-                "lastSeason": 2015,
-                "years": "2013–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:CIN:winless:1999_07_CIN_IND",
-                "name": "Bengals",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2010,
-                "years": "1999–2010",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:BUF:CIN:winless:2002_17_CIN_BUF",
-                "name": "Bengals",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": "BUF",
-                "length": 6,
-                "firstSeason": 2002,
-                "lastSeason": 2010,
-                "years": "2002–2010",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:IND:BUF:winless:2000_05_IND_BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2006,
-                "years": "2000–2006",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:PIT:BUF:winless:2001_03_PIT_BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": "PIT",
-                "length": 6,
-                "firstSeason": 2001,
-                "lastSeason": 2016,
-                "years": "2001–2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NYJ:BUF:winless:2009_13_NYJ_BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": "NYJ",
-                "length": 6,
-                "firstSeason": 2009,
-                "lastSeason": 2012,
-                "years": "2009–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:BUF:winless:2011_17_BUF_NE",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2011,
-                "lastSeason": 2014,
-                "years": "2011–2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:CLE:winless:2013_14_CLE_NE",
-                "name": "Browns",
-                "teams": [
-                  "CLE"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2013,
-                "lastSeason": 2025,
-                "years": "2013–2025",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:BAL:TB:winless:2006_01_BAL_TB",
-                "name": "Buccaneers",
-                "teams": [
-                  "TB"
-                ],
-                "opponent": "BAL",
-                "length": 6,
-                "firstSeason": 2006,
-                "lastSeason": 2024,
-                "years": "2006–2024",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:CAR:TB:winless:2013_08_CAR_TB",
-                "name": "Buccaneers",
-                "teams": [
-                  "TB"
-                ],
-                "opponent": "CAR",
-                "length": 6,
-                "firstSeason": 2013,
-                "lastSeason": 2015,
-                "years": "2013–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:MIA:LAC:winless:1999_15_SD_MIA",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": "MIA",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2008,
-                "years": "1999–2008",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:NE:LAC:winless:2010_07_NE_SD",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2021,
-                "years": "2010–2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:IND:winless:2010_11_IND_NE",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2018,
-                "years": "2010–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:ATL:WAS:winless:2006_13_ATL_WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": "ATL",
-                "length": 6,
-                "firstSeason": 2006,
-                "lastSeason": 2018,
-                "years": "2006–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NYG:WAS:winless:2008_01_WAS_NYG",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": "NYG",
-                "length": 6,
-                "firstSeason": 2008,
-                "lastSeason": 2010,
-                "years": "2008–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:PHI:WAS:winless:2017_01_PHI_WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": "PHI",
-                "length": 6,
-                "firstSeason": 2017,
-                "lastSeason": 2019,
-                "years": "2017–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:DAL:winless:1999_13_DAL_NE",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2019,
-                "years": "1999–2019",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:PHI:DAL:winless:2000_01_PHI_DAL",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": "PHI",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2002,
-                "years": "2000–2002",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NYJ:MIA:winless:1999_14_MIA_NYJ",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": "NYJ",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2001,
-                "years": "1999–2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:BUF:MIA:winless:2022_15_MIA_BUF",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": "BUF",
-                "length": 6,
-                "firstSeason": 2022,
-                "lastSeason": 2025,
-                "years": "2022–2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:PIT:ATL:winless:2010_01_ATL_PIT",
-                "name": "Falcons",
-                "teams": [
-                  "ATL"
-                ],
-                "opponent": "PIT",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2026,
-                "years": "2010–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:MIN:NYG:winless:2015_16_NYG_MIN",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": "MIN",
-                "length": 6,
-                "firstSeason": 2015,
-                "lastSeason": 2025,
-                "years": "2015–2025",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:BAL:JAX:winless:2000_02_JAX_BAL",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": "BAL",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2003,
-                "years": "2000–2003",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:MIN:JAX:winless:2004_12_JAX_MIN",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": "MIN",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2024,
-                "years": "2004–2024",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:LAC:JAX:winless:2010_02_JAX_SD",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": "LAC",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2016,
-                "years": "2010–2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:JAX:winless:2012_10_IND_JAX",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2012,
-                "lastSeason": 2015,
-                "years": "2012–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:HOU:JAX:winless:2014_14_HOU_JAX",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": "HOU",
-                "length": 6,
-                "firstSeason": 2014,
-                "lastSeason": 2016,
-                "years": "2014–2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:PHI:NYJ:winless:2003_08_NYJ_PHI",
-                "name": "Jets",
-                "teams": [
-                  "NYJ"
-                ],
-                "opponent": "PHI",
-                "length": 6,
-                "firstSeason": 2003,
-                "lastSeason": 2021,
-                "years": "2003–2021",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:SEA:NYJ:winless:2008_16_NYJ_SEA",
-                "name": "Jets",
-                "teams": [
-                  "NYJ"
-                ],
-                "opponent": "SEA",
-                "length": 6,
-                "firstSeason": 2008,
-                "lastSeason": 2024,
-                "years": "2008–2024",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:NYJ:winless:2010_13_NYJ_NE",
-                "name": "Jets",
-                "teams": [
-                  "NYJ"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2013,
-                "years": "2010–2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:GB:DET:winless:2000_15_DET_GB",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "GB",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2003,
-                "years": "2000–2003",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:CIN:DET:winless:2001_07_CIN_DET",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "CIN",
-                "length": 6,
-                "firstSeason": 2001,
-                "lastSeason": 2021,
-                "years": "2001–2021",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:TEN:DET:winless:2001_06_TEN_DET",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "TEN",
-                "length": 6,
-                "firstSeason": 2001,
-                "lastSeason": 2020,
-                "years": "2001–2020",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:MIN:DET:winless:2007_13_DET_MIN",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "MIN",
-                "length": 6,
-                "firstSeason": 2007,
-                "lastSeason": 2010,
-                "years": "2007–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:CHI:DET:winless:2008_05_CHI_DET",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "CHI",
-                "length": 6,
-                "firstSeason": 2008,
-                "lastSeason": 2010,
-                "years": "2008–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:BUF:DET:winless:2010_10_DET_BUF",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": "BUF",
-                "length": 6,
-                "firstSeason": 2010,
-                "lastSeason": 2026,
-                "years": "2010–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:ATL:CAR:winless:2000_03_ATL_CAR",
-                "name": "Panthers",
-                "teams": [
-                  "CAR"
-                ],
-                "opponent": "ATL",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2002,
-                "years": "2000–2002",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:GB:LV:winless:1999_01_OAK_GB",
-                "name": "Raiders",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": "GB",
-                "length": 6,
-                "firstSeason": 1999,
-                "lastSeason": 2019,
-                "years": "1999–2019",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:ATL:LV:winless:2004_14_OAK_ATL",
-                "name": "Raiders",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": "ATL",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2024,
-                "years": "2004–2024",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:LV:winless:2005_01_OAK_NE",
-                "name": "Raiders",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2005,
-                "lastSeason": 2020,
-                "years": "2005–2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:KC:LV:winless:2020_11_KC_LV",
-                "name": "Raiders",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": "KC",
-                "length": 6,
-                "firstSeason": 2020,
-                "lastSeason": 2023,
-                "years": "2020–2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:MIA:LA:winless:2004_07_STL_MIA",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": "MIA",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2024,
-                "years": "2004–2024",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:PHI:LA:winless:2005_15_PHI_STL",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": "PHI",
-                "length": 6,
-                "firstSeason": 2005,
-                "lastSeason": 2018,
-                "years": "2005–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:BAL:winless:2002_06_BAL_IND",
-                "name": "Ravens",
-                "teams": [
-                  "BAL"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2002,
-                "lastSeason": 2009,
-                "years": "2002–2009",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:WAS:SEA:winless:2001_08_SEA_WAS",
-                "name": "Seahawks",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": "WAS",
-                "length": 6,
-                "firstSeason": 2001,
-                "lastSeason": 2011,
-                "years": "2001–2011",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:PHI:HOU:winless:2002_04_HOU_PHI",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "PHI",
-                "length": 6,
-                "firstSeason": 2002,
-                "lastSeason": 2022,
-                "years": "2002–2022",
-                "active": true,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:MIN:HOU:winless:2004_05_MIN_HOU",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "MIN",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2024,
-                "years": "2004–2024",
-                "active": true,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:NYG:HOU:winless:2006_09_HOU_NYG",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "NYG",
-                "length": 6,
-                "firstSeason": 2006,
-                "lastSeason": 2026,
-                "years": "2006–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:HOU:winless:2007_03_IND_HOU",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2007,
-                "lastSeason": 2009,
-                "years": "2007–2009",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:HOU:winless:2012_17_HOU_IND",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2012,
-                "lastSeason": 2015,
-                "years": "2012–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:NE:HOU:winless:2012_14_HOU_NE",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": "NE",
-                "length": 6,
-                "firstSeason": 2012,
-                "lastSeason": 2018,
-                "years": "2012–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:LAC:TEN:winless:2004_04_TEN_SD",
-                "name": "Titans",
-                "teams": [
-                  "TEN"
-                ],
-                "opponent": "LAC",
-                "length": 6,
-                "firstSeason": 2004,
-                "lastSeason": 2012,
-                "years": "2004–2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:IND:TEN:winless:2023_05_TEN_IND",
-                "name": "Titans",
-                "teams": [
-                  "TEN"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2023,
-                "lastSeason": 2025,
-                "years": "2023–2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:IND:MIN:winless:2000_17_MIN_IND",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": "IND",
-                "length": 6,
-                "firstSeason": 2000,
-                "lastSeason": 2020,
-                "years": "2000–2020",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "matchup:TB:MIN:winless:2001_07_MIN_TB",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": "TB",
-                "length": 6,
-                "firstSeason": 2001,
-                "lastSeason": 2012,
-                "years": "2001–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:CHI:MIN:winless:2009_16_MIN_CHI",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": "CHI",
-                "length": 6,
-                "firstSeason": 2009,
-                "lastSeason": 2012,
-                "years": "2009–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "matchup:SEA:MIN:winless:2012_09_MIN_SEA",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": "SEA",
-                "length": 6,
-                "firstSeason": 2012,
-                "lastSeason": 2020,
-                "years": "2012–2020",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 66,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "NYG"
-      }
-    },
-    {
-      "id": "00-0031588:2015_04_MIN_DEN:2026_10_WAS_NYG",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "WAS",
-      "value": 168,
-      "unit": "games",
-      "title": "Stefon Diggs: 168 straight appearances with a catch",
-      "detail": "Run began 2015-10-04. Last verified 2026-11-08.",
-      "action": "A catch in his next appearance makes it 169. A zero-catch appearance ends it; missed games do not.",
-      "href": "/nfl/receiving-streaks.html",
-      "sourceThrough": "2026-11-09",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 168,
-          "rank": 12,
-          "tied": false,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 177,
-            "rank": 11,
-            "holders": [
-              {
-                "id": "archive:LAR118653:177",
-                "name": "Steve Largent",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": null,
-                "length": 177,
-                "firstSeason": 1976,
-                "lastSeason": 1989,
-                "years": "1976–1989",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 12,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "WAS",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 7,
-          "rank": 105,
-          "tied": true,
-          "record": 76,
-          "recordHolders": [
-            {
-              "id": "00-0022738:2004_10_CIN_WAS",
-              "name": "Chris Cooley",
-              "teams": [
-                "WAS"
-              ],
-              "opponent": null,
-              "length": 76,
-              "firstSeason": 2004,
-              "lastSeason": 2009,
-              "years": "2004–2009",
-              "active": false,
-              "lowerBound": true
-            }
-          ],
-          "nextHigher": {
-            "length": 8,
-            "rank": 92,
-            "holders": [
-              {
-                "id": "00-0041040:2026_01_WAS_PHI",
-                "name": "Antonio Williams",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0037746:2024_08_CHI_WAS",
-                "name": "Brian Robinson",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0016373:2002_10_WAS_JAX",
-                "name": "Derrius Thompson",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0026188:2010_06_IND_WAS",
-                "name": "Fred Davis",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2010,
-                "lastSeason": 2010,
-                "years": "2010",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0005616:2000_09_TEN_WAS",
-                "name": "Irving Fryar",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2000,
-                "lastSeason": 2000,
-                "years": "2000",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0033955:2025_10_DET_WAS",
-                "name": "Jeremy McNichols",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0014655:2009_17_WAS_SD",
-                "name": "Mike Sellers",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2009,
-                "lastSeason": 2010,
-                "years": "2009–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0020525:2004_10_CIN_WAS",
-                "name": "Rod Gardner",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0031068:2014_17_DAL_WAS",
-                "name": "Ryan Grant",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2014,
-                "lastSeason": 2015,
-                "years": "2014–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0004052:1999_06_WAS_ARI",
-                "name": "Stephen Davis",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 1999,
-                "lastSeason": 1999,
-                "years": "1999",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0004052:2000_14_NYG_WAS",
-                "name": "Stephen Davis",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2000,
-                "lastSeason": 2001,
-                "years": "2000–2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0024221:2018_12_WAS_DAL",
-                "name": "Vernon Davis",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2018,
-                "lastSeason": 2019,
-                "years": "2018–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030061:2025_06_CHI_WAS",
-                "name": "Zach Ertz",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 92,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "WAS"
-      },
-      "game": "2026_10_WAS_NYG",
-      "date": "2026-11-12",
-      "season": 2026,
-      "week": 10,
-      "gameType": "REG",
-      "status": "watch"
-    },
     {
       "id": "all:00-0029822:2025_12_MIN_GB:452:2026_10_LA_ARI",
       "category": "kicking",
@@ -2944,7 +1665,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 5,
-          "rank": 127,
+          "rank": 128,
           "tied": true,
           "record": 16,
           "recordHolders": [
@@ -3328,6 +2049,20 @@
                 "firstSeason": 2015,
                 "lastSeason": 2025,
                 "years": "2015–2025",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "matchup:WAS:NYG:winless:2024_02_NYG_WAS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": "WAS",
+                "length": 6,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
                 "active": true,
                 "lowerBound": false
               },
@@ -14537,7 +13272,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 5,
-          "rank": 127,
+          "rank": 128,
           "tied": true,
           "record": 16,
           "recordHolders": [
@@ -14921,6 +13656,20 @@
                 "firstSeason": 2015,
                 "lastSeason": 2025,
                 "years": "2015–2025",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "matchup:WAS:NYG:winless:2024_02_NYG_WAS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": "WAS",
+                "length": 6,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
                 "active": true,
                 "lowerBound": false
               },
@@ -28763,7 +27512,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 5,
-          "rank": 127,
+          "rank": 128,
           "tied": true,
           "record": 16,
           "recordHolders": [
@@ -29147,6 +27896,20 @@
                 "firstSeason": 2015,
                 "lastSeason": 2025,
                 "years": "2015–2025",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "matchup:WAS:NYG:winless:2024_02_NYG_WAS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": "WAS",
+                "length": 6,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
                 "active": true,
                 "lowerBound": false
               },
@@ -32946,7 +31709,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 5,
-          "rank": 127,
+          "rank": 128,
           "tied": true,
           "record": 16,
           "recordHolders": [
@@ -33330,6 +32093,20 @@
                 "firstSeason": 2015,
                 "lastSeason": 2025,
                 "years": "2015–2025",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "matchup:WAS:NYG:winless:2024_02_NYG_WAS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": "WAS",
+                "length": 6,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
                 "active": true,
                 "lowerBound": false
               },
@@ -33921,7 +32698,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 5,
-          "rank": 127,
+          "rank": 128,
           "tied": true,
           "record": 16,
           "recordHolders": [
@@ -34305,6 +33082,20 @@
                 "firstSeason": 2015,
                 "lastSeason": 2025,
                 "years": "2015–2025",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "matchup:WAS:NYG:winless:2024_02_NYG_WAS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": "WAS",
+                "length": 6,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
                 "active": true,
                 "lowerBound": false
               },
@@ -49502,9 +48293,9 @@
       "date": "2026-11-12",
       "away": "WAS",
       "home": "NYG",
-      "awayScore": null,
-      "homeScore": null,
-      "completed": false,
+      "awayScore": 24,
+      "homeScore": 21,
+      "completed": true,
       "location": "Home",
       "kickoff": "20:15"
     },
@@ -59645,9 +58436,8 @@
       "start": "2026-11-12",
       "end": "2026-11-16",
       "totalGames": 14,
-      "completedGames": 0,
+      "completedGames": 1,
       "pendingGames": [
-        "2026_10_WAS_NYG",
         "2026_10_BUF_NYJ",
         "2026_10_CAR_NO",
         "2026_10_HOU_CLE",
@@ -59663,40 +58453,24 @@
         "2026_10_LAC_BAL"
       ],
       "awaitingFeeds": {
-        "qbs": [],
-        "receiving": [],
-        "kicking": []
+        "qbs": [
+          "2026_10_WAS_NYG"
+        ],
+        "receiving": [
+          "2026_10_WAS_NYG"
+        ],
+        "kicking": [
+          "2026_10_WAS_NYG"
+        ]
       },
       "events": [
-        {
-          "id": "00-0031588:2015_04_MIN_DEN:2026_10_WAS_NYG",
-          "category": "receiving",
-          "kind": "streak",
-          "team": "WAS",
-          "title": "Stefon Diggs: 168 straight appearances with a catch",
-          "detail": "Run began 2015-10-04. Last verified 2026-11-08.",
-          "unit": "games",
-          "href": "/nfl/receiving-streaks.html",
-          "game": "2026_10_WAS_NYG",
-          "date": "2026-11-12",
-          "season": 2026,
-          "week": 10,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 168,
-          "after": null,
-          "value": 168,
-          "action": "A catch in his next appearance makes it 169. A zero-catch appearance ends it; missed games do not.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-09"
-        },
         {
           "id": "matchup:WAS:NYG:winless:2026_10_WAS_NYG",
           "category": "matchup",
           "kind": "drought",
           "team": "NYG",
           "opponent": "WAS",
-          "title": "Giants: 5 games without a win against the Commanders",
+          "title": "Giants: 6 games without a win against the Commanders",
           "detail": "Last win against the Commanders: 2023-11-19.",
           "unit": "games",
           "href": "/nfl/what-to-watch.html#method",
@@ -59705,22 +58479,23 @@
           "season": 2026,
           "week": 10,
           "gameType": "REG",
-          "status": "pending",
+          "status": "continued",
           "before": 5,
-          "after": null,
-          "value": 5,
-          "action": "A win ends the drought; a tie keeps it going.",
+          "after": 6,
+          "value": 6,
+          "action": "A loss kept the drought going: 5 → 6 games.",
           "newlyNoteworthy": false,
           "drought": {
             "since": "2023-11-19",
             "through": "2026-11-12",
             "elapsed": "2 years, 11 months",
             "days": 1089,
-            "count": 5,
+            "count": 6,
             "unit": "meetings",
             "anchor": "since last win",
             "lowerBound": false
-          }
+          },
+          "sourceThrough": "2026-11-12"
         },
         {
           "id": "00-0034857:2026_10_BUF_NYJ",
@@ -60794,9 +59569,9 @@
         }
       ],
       "counts": {
-        "continued": 0,
+        "continued": 1,
         "ended": 0,
-        "pending": 47
+        "pending": 45
       }
     }
   ],
@@ -60808,6 +59583,6 @@
     "receiving": "/data/receiving-streaks.json",
     "kicking": "/data/kicking.json"
   },
-  "sourceHash": "bf4abdbcf64a60cd0d9ae1caa1961f78b5a476ced7c38485e88d42bb1272e3d1",
-  "checkedAt": "2026-11-12T14:40:19.287Z"
+  "sourceHash": "0f0cb1e676f89dfbfe311e09a7cf4f8953bc41b89bb6b597587b09ee5151d84e",
+  "checkedAt": "2026-11-13T06:24:10.126Z"
 }
