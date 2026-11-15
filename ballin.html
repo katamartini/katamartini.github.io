@@ -2042,6 +2042,7 @@
         <button class="dashboard-tab" id="bestThroughTab" type="button" role="tab" aria-selected="false" aria-controls="bestThroughPanel" data-dashboard-tab="best" tabindex="-1">Best of</button>
         <button class="dashboard-tab" id="worstThroughTab" type="button" role="tab" aria-selected="false" aria-controls="worstThroughPanel" data-dashboard-tab="worst" tabindex="-1">Worst of</button>
         <button class="dashboard-tab" id="breakdownTab" type="button" role="tab" aria-selected="false" aria-controls="breakdownPanel" data-dashboard-tab="breakdown" tabindex="-1">Breakdown by 10</button>
+        <button class="dashboard-tab" id="thousandsTab" type="button" role="tab" aria-selected="false" aria-controls="thousandsPanel" data-dashboard-tab="thousands" tabindex="-1">Every 1,000 shots</button>
       </div>
       <div class="dashboard-layout">
         <section class="best-through-panel panel" id="bestThroughPanel" role="tabpanel" aria-labelledby="bestThroughTab" tabindex="0" hidden>
@@ -2154,6 +2155,17 @@
                 </tr>
               </thead>
               <tbody id="worstThroughTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="breakdown-panel panel" id="thousandsPanel" role="tabpanel" aria-labelledby="thousandsTab" tabindex="0" hidden>
+          <div class="panel-title"><h2>Every 1,000 shots</h2><span id="thousandsCount"></span></div>
+          <p class="chart-note" id="thousandsNote">Non-overlapping lifetime blocks: shots 1–1,000, 1,001–2,000, and so on, ordered by run date then import order. Includes legacy sets of 10. The last block may be incomplete. If a boundary splits a legacy set, a range is shown rather than guessing individual shots.</p>
+          <div class="breakdown-table-wrap" role="region" aria-label="Lifetime 1,000-shot breakdown" tabindex="0">
+            <table class="breakdown-table" aria-describedby="thousandsNote">
+              <thead><tr><th scope="col">Shots</th><th scope="col">Dates</th><th scope="col">Attempts</th><th scope="col">Makes</th><th scope="col">Misses</th><th scope="col">Make %</th><th scope="col">Status</th></tr></thead>
+              <tbody id="thousandsTableBody"></tbody>
             </table>
           </div>
         </section>
@@ -2547,7 +2559,8 @@
         overview: "overview",
         best: "best-through-x",
         worst: "worst-through-x",
-        breakdown: "breakdown-by-10"
+        breakdown: "breakdown-by-10",
+        thousands: "every-1000-shots"
       };
 
       const elements = {
@@ -2557,6 +2570,9 @@
         overviewPanel: document.querySelector("#overviewPanel"),
         bestThroughPanel: document.querySelector("#bestThroughPanel"),
         worstThroughPanel: document.querySelector("#worstThroughPanel"),
+        thousandsPanel: document.querySelector("#thousandsPanel"),
+        thousandsCount: document.querySelector("#thousandsCount"),
+        thousandsTableBody: document.querySelector("#thousandsTableBody"),
         breakdownPanel: document.querySelector("#breakdownPanel"),
         breakdownCount: document.querySelector("#breakdownCount"),
         breakdownTableBody: document.querySelector("#breakdownTableBody"),
@@ -4170,6 +4186,58 @@
         renderRecordsTable("worst");
       }
 
+      function thousandShotChunks(runs) {
+        const chunks = [];
+        let position = 0;
+        for (const run of runs) {
+          const groups = run.format === "tens"
+            ? run.tenCounts.map((makes) => ({ attempts: 10, makes }))
+            : run.shots.map((made) => ({ attempts: 1, makes: Number(Boolean(made)) }));
+          for (const group of groups) {
+            let remaining = group.attempts;
+            while (remaining > 0) {
+              const index = Math.floor(position / 1000);
+              const chunk = chunks[index] ||= { start: index * 1000 + 1, attempts: 0, minMakes: 0, maxMakes: 0, firstDate: run.date, lastDate: run.date };
+              const take = Math.min(remaining, 1000 - chunk.attempts);
+              // A split legacy set provides bounds, never fabricated shot order.
+              chunk.minMakes += Math.max(0, group.makes - (group.attempts - take));
+              chunk.maxMakes += Math.min(group.makes, take);
+              chunk.attempts += take;
+              chunk.lastDate = run.date;
+              position += take;
+              remaining -= take;
+            }
+          }
+        }
+        return chunks;
+      }
+
+      function renderThousands() {
+        const chunks = thousandShotChunks(chronologicalRuns());
+        elements.thousandsCount.textContent = `${chunks.length} ${chunks.length === 1 ? "block" : "blocks"}`;
+        elements.thousandsTableBody.replaceChildren();
+        const range = (low, high, format = String) => low === high ? format(low) : `${format(low)}–${format(high)}`;
+        chunks.forEach((chunk) => {
+          const row = document.createElement("tr");
+          const values = [
+            `${chunk.start.toLocaleString()}–${(chunk.start + chunk.attempts - 1).toLocaleString()}`,
+            chunk.firstDate === chunk.lastDate ? formatDate(chunk.firstDate) : `${formatDate(chunk.firstDate)} – ${formatDate(chunk.lastDate)}`,
+            chunk.attempts.toLocaleString(),
+            range(chunk.minMakes, chunk.maxMakes),
+            range(chunk.attempts - chunk.maxMakes, chunk.attempts - chunk.minMakes),
+            range(chunk.minMakes / chunk.attempts * 100, chunk.maxMakes / chunk.attempts * 100, formatPercentage),
+            chunk.attempts === 1000 ? "Complete" : `${chunk.attempts}/1,000 · In progress`
+          ];
+          values.forEach((value, index) => {
+            const cell = document.createElement(index === 0 ? "th" : "td");
+            if (index === 0) cell.scope = "row";
+            cell.textContent = value;
+            row.appendChild(cell);
+          });
+          elements.thousandsTableBody.appendChild(row);
+        });
+      }
+
       function renderBreakdown() {
         const rows = chronologicalRuns().map((run, index) => ({
           run,
@@ -5010,7 +5078,7 @@
       }
 
       function selectDashboardTab(name, focus = false, updateHash = false) {
-        if (!["overview", "best", "worst", "breakdown"].includes(name)) return;
+        if (!["overview", "best", "worst", "breakdown", "thousands"].includes(name)) return;
         activeDashboardTab = name;
         elements.dashboardTabs.forEach((tab) => {
           const selected = tab.dataset.dashboardTab === name;
@@ -5022,6 +5090,7 @@
         elements.bestThroughPanel.hidden = name !== "best";
         elements.worstThroughPanel.hidden = name !== "worst";
         elements.breakdownPanel.hidden = name !== "breakdown";
+        elements.thousandsPanel.hidden = name !== "thousands";
         chartTooltip.hidden = true;
         if (updateHash) updateDashboardTabHash(name);
       }
@@ -5058,6 +5127,7 @@
         renderBlocks();
         renderCheckpoints();
         renderBreakdown();
+        renderThousands();
         renderTheoreticalRunControls();
         renderTheoreticalCumulativeMakes();
         renderHistory();
@@ -5098,6 +5168,7 @@
             ? { key, direction: breakdownSort.direction === "asc" ? "desc" : "asc" }
             : { key, direction: key === "run" ? "asc" : "desc" };
           renderBreakdown();
+        renderThousands();
         });
       });
       elements.trendStartRange.addEventListener("input", () => {
@@ -5183,3 +5254,4 @@
   </script>
 </body>
 </html>
+
