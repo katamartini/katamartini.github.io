@@ -2162,11 +2162,10 @@
 
         <section class="breakdown-panel panel" id="runsPanel" role="tabpanel" aria-labelledby="runsTab" tabindex="0" hidden>
           <div class="panel-title"><h2>Every run</h2><span id="runsChartCount"></span></div>
-          <p class="chart-note" id="runsChartNote">Click a bar or run number to open that run’s differential below. Each bar shows one run's make percentage on a 0–100% scale. Select a table heading to sort both chart and table; select it again to reverse. Run numbers keep their original chronological meaning. Unknown values sort last. Scroll across to see every run; legacy streaks are unavailable.</p>
+          <p class="chart-note" id="runsChartNote">Click a bar or run number to open that run’s differential directly beneath its table row. Each bar shows one run's make percentage on a 0–100% scale. Select a table heading to sort both chart and table; select it again to reverse. Run numbers keep their original chronological meaning. Unknown values sort last. Scroll across to see every run; legacy streaks are unavailable.</p>
           <div class="breakdown-table-wrap" role="region" aria-label="Make percentage for every run" tabindex="0">
             <svg id="allRunsChart" style="height:240px;display:block" role="group" aria-labelledby="allRunsChartTitle allRunsChartDescription"></svg>
           </div>
-          <section id="selectedRunDetail" aria-label="Selected run differential" tabindex="-1" hidden></section>
           <div class="breakdown-table-wrap" role="region" aria-label="Statistics for every run" tabindex="0">
             <table class="breakdown-table" aria-describedby="runsChartNote"><thead><tr><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="number">Run <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="date">Date <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="format">Format <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="attempts">Attempts <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="makes">Makes <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="misses">Misses <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="percentage">Make % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="first">First 50 % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="second">Next 50 % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="makeStreak">Best make streak <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="missStreak">Longest miss streak <span aria-hidden="true">↕</span></button></th></tr></thead><tbody id="allRunsTableBody"></tbody></table>
           </div>
@@ -4225,6 +4224,7 @@
 
       function renderSelectedRunDetail() {
         const panel = document.querySelector("#selectedRunDetail");
+        if (!panel) return;
         panel.querySelectorAll("svg").forEach((chart) => chart.readoutCleanup?.());
         panel.replaceChildren();
         const runs = chronologicalRuns();
@@ -4255,6 +4255,7 @@
         selectedRunId = run.id;
         renderAllRuns();
         const panel = document.querySelector("#selectedRunDetail");
+        if (!panel) return;
         panel.focus({ preventScroll: true });
         panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
@@ -4270,6 +4271,7 @@
         elements.runsChartCount.textContent = `${runs.length} ${runs.length === 1 ? "run" : "runs"}`;
         const chart = elements.allRunsChart;
         chart.replaceChildren();
+        elements.allRunsTableBody.querySelectorAll("svg").forEach((chart) => chart.readoutCleanup?.());
         elements.allRunsTableBody.replaceChildren();
         const width = Math.max(700, runs.length * 32 + 64);
         chart.setAttribute("viewBox", `0 0 ${width} 240`);
@@ -4307,6 +4309,8 @@
               select.textContent = value;
               select.setAttribute("aria-label", `Show differential for run ${runNumber}, ${formatDate(run.date)}`);
               select.setAttribute("aria-pressed", String(run.id === selectedRunId));
+              select.setAttribute("aria-expanded", String(run.id === selectedRunId));
+              if (run.id === selectedRunId) select.setAttribute("aria-controls", "selectedRunDetail");
               select.addEventListener("click", () => selectRunDetail(run));
               cell.replaceChildren(select);
             }
@@ -4314,6 +4318,20 @@
             row.appendChild(cell);
           });
           elements.allRunsTableBody.appendChild(row);
+          if (run.id === selectedRunId) {
+            const detailRow = document.createElement("tr");
+            detailRow.className = "run-detail-row";
+            const detailCell = document.createElement("td");
+            detailCell.colSpan = values.length;
+            const panel = document.createElement("section");
+            panel.id = "selectedRunDetail";
+            panel.tabIndex = -1;
+            panel.setAttribute("aria-label", "Selected run differential");
+            panel.style.cssText = "white-space:normal;text-align:left;padding:12px;max-width:900px";
+            detailCell.appendChild(panel);
+            detailRow.appendChild(detailCell);
+            elements.allRunsTableBody.appendChild(detailRow);
+          }
           const x = 44 + index * slot;
           const height = total.percentage * 1.7;
           const bar = svgElement("rect", { x: x + slot * .15, y: 200 - height, width: slot * .7, height: Math.max(height, 1), fill: run.id === selectedRunId ? "#ffffff" : "#f39b3d", tabindex: 0, role: "button", "aria-pressed": String(run.id === selectedRunId), "aria-label": `Show differential for run ${runNumber}, ${formatDate(run.date)}: ${total.makes} of ${total.attempts}, ${formatPercentage(total.percentage)}` });
