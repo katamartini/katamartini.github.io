@@ -2162,10 +2162,11 @@
 
         <section class="breakdown-panel panel" id="runsPanel" role="tabpanel" aria-labelledby="runsTab" tabindex="0" hidden>
           <div class="panel-title"><h2>Every run</h2><span id="runsChartCount"></span></div>
-          <p class="chart-note" id="runsChartNote">Each bar shows one run's make percentage on a 0–100% scale. Select a table heading to sort both chart and table; select it again to reverse. Run numbers keep their original chronological meaning. Unknown values sort last. Scroll across to see every run; legacy streaks are unavailable.</p>
+          <p class="chart-note" id="runsChartNote">Click a bar or run number to open that run’s differential below. Each bar shows one run's make percentage on a 0–100% scale. Select a table heading to sort both chart and table; select it again to reverse. Run numbers keep their original chronological meaning. Unknown values sort last. Scroll across to see every run; legacy streaks are unavailable.</p>
           <div class="breakdown-table-wrap" role="region" aria-label="Make percentage for every run" tabindex="0">
-            <svg id="allRunsChart" style="height:240px;display:block" role="img" aria-labelledby="allRunsChartTitle allRunsChartDescription"></svg>
+            <svg id="allRunsChart" style="height:240px;display:block" role="group" aria-labelledby="allRunsChartTitle allRunsChartDescription"></svg>
           </div>
+          <section id="selectedRunDetail" aria-label="Selected run differential" tabindex="-1" hidden></section>
           <div class="breakdown-table-wrap" role="region" aria-label="Statistics for every run" tabindex="0">
             <table class="breakdown-table" aria-describedby="runsChartNote"><thead><tr><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="number">Run <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="date">Date <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="format">Format <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="attempts">Attempts <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="makes">Makes <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="misses">Misses <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="percentage">Make % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="first">First 50 % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="second">Next 50 % <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="makeStreak">Best make streak <span aria-hidden="true">↕</span></button></th><th scope="col" aria-sort="none"><button class="breakdown-sort" type="button" data-run-sort="missStreak">Longest miss streak <span aria-hidden="true">↕</span></button></th></tr></thead><tbody id="allRunsTableBody"></tbody></table>
           </div>
@@ -2700,6 +2701,7 @@
         worst: { key: "through", direction: "asc" }
       };
       let breakdownSort = { key: "run", direction: "asc" };
+      let selectedRunId = null;
       let allRunsSort = { key: "number", direction: "asc" };
       let activeDashboardTab = dashboardTabFromHash(location.hash) || "overview";
       let trendRange = { start: null, end: null };
@@ -4221,6 +4223,42 @@
         });
       }
 
+      function renderSelectedRunDetail() {
+        const panel = document.querySelector("#selectedRunDetail");
+        panel.querySelectorAll("svg").forEach((chart) => chart.readoutCleanup?.());
+        panel.replaceChildren();
+        const runs = chronologicalRuns();
+        const index = runs.findIndex((run) => run.id === selectedRunId);
+        panel.hidden = index < 0;
+        if (index < 0) return;
+        const run = runs[index];
+        const total = runSummary(run);
+        const heading = document.createElement("h3");
+        heading.textContent = `Run ${index + 1} · ${formatDate(run.date)}`;
+        const stats = document.createElement("p");
+        stats.className = "chart-note";
+        stats.textContent = `${total.makes} makes · ${total.misses} misses · ${formatPercentage(total.percentage)} · Final differential ${formatDifferential(total.makes - total.misses)}`;
+        panel.append(heading, stats);
+        if (run.format === "exact" && run.shots.length) {
+          const detail = createShotChart(run);
+          detail.open = true;
+          panel.appendChild(detail);
+        } else {
+          const note = document.createElement("p");
+          note.className = "chart-note";
+          note.textContent = "Shot-by-shot differential is unavailable for this legacy run: only totals for groups of 10 were recorded. The final differential above is exact; no shot order has been invented.";
+          panel.appendChild(note);
+        }
+      }
+
+      function selectRunDetail(run) {
+        selectedRunId = run.id;
+        renderAllRuns();
+        const panel = document.querySelector("#selectedRunDetail");
+        panel.focus({ preventScroll: true });
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
       function renderAllRuns() {
         const rows = allRunRows(chronologicalRuns(), allRunsSort);
         const runs = rows.map((row) => row.run);
@@ -4262,20 +4300,39 @@
             const cell = document.createElement(column === 0 ? "th" : "td");
             if (column === 0) cell.scope = "row";
             cell.textContent = value;
+            if (column === 0) {
+              const select = document.createElement("button");
+              select.type = "button";
+              select.className = "breakdown-sort";
+              select.textContent = value;
+              select.setAttribute("aria-label", `Show differential for run ${runNumber}, ${formatDate(run.date)}`);
+              select.setAttribute("aria-pressed", String(run.id === selectedRunId));
+              select.addEventListener("click", () => selectRunDetail(run));
+              cell.replaceChildren(select);
+            }
             if (column === 7 || column === 8) cell.title = `${column === 7 ? first.attempts : second.attempts} recorded attempts in this half`;
             row.appendChild(cell);
           });
           elements.allRunsTableBody.appendChild(row);
           const x = 44 + index * slot;
           const height = total.percentage * 1.7;
-          const bar = svgElement("rect", { x: x + slot * .15, y: 200 - height, width: slot * .7, height: Math.max(height, 1), fill: "#f39b3d", tabindex: 0, role: "img", "aria-label": `Run ${runNumber}, ${formatDate(run.date)}: ${total.makes} of ${total.attempts}, ${formatPercentage(total.percentage)}` });
+          const bar = svgElement("rect", { x: x + slot * .15, y: 200 - height, width: slot * .7, height: Math.max(height, 1), fill: run.id === selectedRunId ? "#ffffff" : "#f39b3d", tabindex: 0, role: "button", "aria-pressed": String(run.id === selectedRunId), "aria-label": `Show differential for run ${runNumber}, ${formatDate(run.date)}: ${total.makes} of ${total.attempts}, ${formatPercentage(total.percentage)}` });
           const tip = svgElement("title");
           tip.textContent = `Run ${runNumber} · ${formatDate(run.date)} · ${total.makes}/${total.attempts} made · ${total.misses} misses · ${formatPercentage(total.percentage)}`;
+          bar.style.cursor = "pointer";
+          bar.addEventListener("click", () => selectRunDetail(run));
+          bar.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              selectRunDetail(run);
+            }
+          });
           bar.appendChild(tip);
           const label = svgElement("text", { x: x + slot / 2, y: 220, fill: "#a8abba", "font-size": 10, "text-anchor": "middle" });
           label.textContent = runNumber;
           chart.append(bar, label);
         });
+        renderSelectedRunDetail();
       }
 
       function thousandShotChunks(runs) {
@@ -5356,4 +5413,5 @@
   </script>
 </body>
 </html>
+
 
