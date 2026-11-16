@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-13T13:57:06.725Z",
+  "checkedAt": "2026-11-16T14:50:25.901Z",
   "firstSeason": 1999,
   "season": 2026,
-  "through": "2026-11-12",
+  "through": "2026-11-15",
   "latestWeek": 10,
   "rosterWeek": 10,
-  "sourceHash": "310f99637a96487674acea0e1226e03feb8170a0ceaecf15801ec1ac52073372",
+  "sourceHash": "86107fc1f65b1e442a1ed0bfe8731b4b58f141a4094502bf8c796f324c946b54",
   "sources": [
     {
       "season": 1999,
@@ -1932,7 +1932,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 1,
-            "rank": 118,
+            "rank": 119,
             "tied": true,
             "record": 26,
             "recordHolders": [
@@ -1953,7 +1953,7 @@
             ],
             "nextHigher": {
               "length": 2,
-              "rank": 94,
+              "rank": 95,
               "holders": [
                 {
                   "id": "fg:00-0003395:2000_17_NYJ_BAL:2364",
@@ -2294,7 +2294,7 @@
               ]
             },
             "next": {
-              "rank": 94,
+              "rank": 95,
               "tied": true
             },
             "lowerBound": false
@@ -3077,6 +3077,166 @@
         "gapAfter": null
       },
       {
+        "id": "fg:00-0036162:2024_15_BUF_DET:3452",
+        "playerId": "00-0036162",
+        "name": "Tyler Bass",
+        "length": 25,
+        "fieldGoals": 25,
+        "extraPoints": 0,
+        "teams": [
+          "BUF"
+        ],
+        "start": {
+          "date": "2024-12-15",
+          "team": "BUF",
+          "opponent": "DET",
+          "game": "2024_15_BUF_DET",
+          "play": 3452,
+          "type": "FG",
+          "distance": 50
+        },
+        "last": {
+          "date": "2026-11-15",
+          "team": "BUF",
+          "opponent": "NYJ",
+          "game": "2026_10_BUF_NYJ",
+          "play": 1432,
+          "type": "FG",
+          "distance": 37
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 50,
+            "tied": true,
+            "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 26,
+              "rank": 46,
+              "holders": [
+                {
+                  "id": "fg:00-0028660:2011_02_DAL_SF:4002",
+                  "name": "Dan Bailey",
+                  "teams": [
+                    "DAL"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2011,
+                  "lastSeason": 2011,
+                  "years": "2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029621:2023_05_NYJ_DEN:285",
+                  "name": "Greg Zuerlein",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023252:2005_16_CHI_GB:2354",
+                  "name": "Robbie Gould",
+                  "teams": [
+                    "CHI"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0032569:2018_02_CLE_NO:4023",
+                  "name": "Wil Lutz",
+                  "teams": [
+                    "NO"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2018,
+                  "lastSeason": 2018,
+                  "years": "2018",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
+            "next": {
+              "rank": 46,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "BUF",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 1,
+            "tied": false,
+            "record": 25,
+            "recordHolders": [
+              {
+                "id": "fg:00-0036162:2024_15_BUF_DET:3452",
+                "name": "Tyler Bass",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 25,
+                "firstSeason": 2024,
+                "lastSeason": 2026,
+                "years": "2024–2026",
+                "active": true,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "BUF"
+        }
+      },
+      {
         "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
         "playerId": "00-0038428",
         "name": "Andre Szmyt",
@@ -3262,6 +3422,175 @@
             "lowerBound": false
           },
           "franchiseTeam": "CLE"
+        }
+      },
+      {
+        "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+        "playerId": "00-0036854",
+        "name": "Evan McPherson",
+        "length": 25,
+        "fieldGoals": 25,
+        "extraPoints": 0,
+        "teams": [
+          "CIN"
+        ],
+        "start": {
+          "date": "2025-11-16",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2025_11_CIN_PIT",
+          "play": 2467,
+          "type": "FG",
+          "distance": 43
+        },
+        "last": {
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 381,
+          "type": "FG",
+          "distance": 24
+        },
+        "endedBy": {
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 1328,
+          "type": "FG",
+          "distance": 43,
+          "result": "missed"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 50,
+            "tied": true,
+            "record": 44,
+            "recordHolders": [
+              {
+                "id": "fg:00-0016919:2015_04_JAX_IND:626",
+                "name": "Adam Vinatieri",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 44,
+                "firstSeason": 2015,
+                "lastSeason": 2016,
+                "years": "2015–2016",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 26,
+              "rank": 46,
+              "holders": [
+                {
+                  "id": "fg:00-0028660:2011_02_DAL_SF:4002",
+                  "name": "Dan Bailey",
+                  "teams": [
+                    "DAL"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2011,
+                  "lastSeason": 2011,
+                  "years": "2011",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0029621:2023_05_NYJ_DEN:285",
+                  "name": "Greg Zuerlein",
+                  "teams": [
+                    "NYJ"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0023252:2005_16_CHI_GB:2354",
+                  "name": "Robbie Gould",
+                  "teams": [
+                    "CHI"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0032569:2018_02_CLE_NO:4023",
+                  "name": "Wil Lutz",
+                  "teams": [
+                    "NO"
+                  ],
+                  "opponent": null,
+                  "length": 26,
+                  "firstSeason": 2018,
+                  "lastSeason": 2018,
+                  "years": "2018",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
+            "next": {
+              "rank": 46,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "CIN",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 25,
+            "rank": 1,
+            "tied": false,
+            "record": 25,
+            "recordHolders": [
+              {
+                "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+                "name": "Evan McPherson",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 25,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": null,
+            "next": {
+              "rank": 1,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "CIN"
         }
       },
       {
@@ -3566,211 +3895,6 @@
         "gapAfter": null
       },
       {
-        "id": "fg:00-0036162:2024_15_BUF_DET:3452",
-        "playerId": "00-0036162",
-        "name": "Tyler Bass",
-        "length": 24,
-        "fieldGoals": 24,
-        "extraPoints": 0,
-        "teams": [
-          "BUF"
-        ],
-        "start": {
-          "date": "2024-12-15",
-          "team": "BUF",
-          "opponent": "DET",
-          "game": "2024_15_BUF_DET",
-          "play": 3452,
-          "type": "FG",
-          "distance": 50
-        },
-        "last": {
-          "date": "2026-11-09",
-          "team": "BUF",
-          "opponent": "MIN",
-          "game": "2026_09_BUF_MIN",
-          "play": 3935,
-          "type": "FG",
-          "distance": 52
-        },
-        "endedBy": null,
-        "active": true,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null,
-        "leaderboard": {
-          "overall": {
-            "scope": "Recorded NFL",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 24,
-            "rank": 57,
-            "tied": true,
-            "record": 44,
-            "recordHolders": [
-              {
-                "id": "fg:00-0016919:2015_04_JAX_IND:626",
-                "name": "Adam Vinatieri",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 44,
-                "firstSeason": 2015,
-                "lastSeason": 2016,
-                "years": "2015–2016",
-                "active": false,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": {
-              "length": 25,
-              "rank": 50,
-              "holders": [
-                {
-                  "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
-                  "name": "Andre Szmyt",
-                  "teams": [
-                    "CLE"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2025,
-                  "lastSeason": 2026,
-                  "years": "2025–2026",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0031136:2019_12_PIT_CIN:1329",
-                  "name": "Chris Boswell",
-                  "teams": [
-                    "PIT"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2019,
-                  "lastSeason": 2020,
-                  "years": "2019–2020",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0026138:2011_06_NO_TB:3011",
-                  "name": "Connor Barth",
-                  "teams": [
-                    "TB"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2011,
-                  "lastSeason": 2012,
-                  "years": "2011–2012",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0034173:2022_10_ATL_CAR:448",
-                  "name": "Eddy Pineiro",
-                  "teams": [
-                    "CAR"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2022,
-                  "lastSeason": 2023,
-                  "years": "2022–2023",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0000282:2001_10_NYG_MIN:2409",
-                  "name": "Morten Andersen",
-                  "teams": [
-                    "NYG",
-                    "KC"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2001,
-                  "lastSeason": 2002,
-                  "years": "2001–2002",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0023252:2018_06_SF_GB:2087",
-                  "name": "Robbie Gould",
-                  "teams": [
-                    "SF"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2018,
-                  "lastSeason": 2019,
-                  "years": "2018–2019",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0019536:2009_11_CIN_OAK:2648",
-                  "name": "Shayne Graham",
-                  "teams": [
-                    "CIN",
-                    "NE",
-                    "MIA"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2009,
-                  "lastSeason": 2011,
-                  "years": "2009–2011",
-                  "active": false,
-                  "lowerBound": false
-                }
-              ]
-            },
-            "next": {
-              "rank": 50,
-              "tied": true
-            },
-            "lowerBound": false
-          },
-          "franchise": {
-            "scope": "BUF",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 24,
-            "rank": 1,
-            "tied": false,
-            "record": 24,
-            "recordHolders": [
-              {
-                "id": "fg:00-0036162:2024_15_BUF_DET:3452",
-                "name": "Tyler Bass",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 24,
-                "firstSeason": 2024,
-                "lastSeason": 2026,
-                "years": "2024–2026",
-                "active": true,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": null,
-            "next": {
-              "rank": 1,
-              "tied": false
-            },
-            "lowerBound": false
-          },
-          "franchiseTeam": "BUF"
-        }
-      },
-      {
         "id": "fg:00-0039409:2025_09_JAX_LV:2100",
         "playerId": "00-0039409",
         "name": "Cam Little",
@@ -3818,7 +3942,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 24,
-            "rank": 57,
+            "rank": 59,
             "tied": true,
             "record": 44,
             "recordHolders": [
@@ -3898,6 +4022,20 @@
                   "lowerBound": false
                 },
                 {
+                  "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
+                  "name": "Evan McPherson",
+                  "teams": [
+                    "CIN"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2025,
+                  "lastSeason": 2026,
+                  "years": "2025–2026",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
                   "id": "fg:00-0000282:2001_10_NYG_MIN:2409",
                   "name": "Morten Andersen",
                   "teams": [
@@ -3940,6 +4078,20 @@
                   "lastSeason": 2011,
                   "years": "2009–2011",
                   "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "fg:00-0036162:2024_15_BUF_DET:3452",
+                  "name": "Tyler Bass",
+                  "teams": [
+                    "BUF"
+                  ],
+                  "opponent": null,
+                  "length": 25,
+                  "firstSeason": 2024,
+                  "lastSeason": 2026,
+                  "years": "2024–2026",
+                  "active": true,
                   "lowerBound": false
                 }
               ]
@@ -4010,211 +4162,6 @@
             "lowerBound": false
           },
           "franchiseTeam": "JAX"
-        }
-      },
-      {
-        "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
-        "playerId": "00-0036854",
-        "name": "Evan McPherson",
-        "length": 24,
-        "fieldGoals": 24,
-        "extraPoints": 0,
-        "teams": [
-          "CIN"
-        ],
-        "start": {
-          "date": "2025-11-16",
-          "team": "CIN",
-          "opponent": "PIT",
-          "game": "2025_11_CIN_PIT",
-          "play": 2467,
-          "type": "FG",
-          "distance": 43
-        },
-        "last": {
-          "date": "2026-11-08",
-          "team": "CIN",
-          "opponent": "ATL",
-          "game": "2026_09_CIN_ATL",
-          "play": 3775,
-          "type": "FG",
-          "distance": 43
-        },
-        "endedBy": null,
-        "active": true,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null,
-        "leaderboard": {
-          "overall": {
-            "scope": "Recorded NFL",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 24,
-            "rank": 57,
-            "tied": true,
-            "record": 44,
-            "recordHolders": [
-              {
-                "id": "fg:00-0016919:2015_04_JAX_IND:626",
-                "name": "Adam Vinatieri",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 44,
-                "firstSeason": 2015,
-                "lastSeason": 2016,
-                "years": "2015–2016",
-                "active": false,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": {
-              "length": 25,
-              "rank": 50,
-              "holders": [
-                {
-                  "id": "fg:00-0038428:2025_10_CLE_NYJ:2309",
-                  "name": "Andre Szmyt",
-                  "teams": [
-                    "CLE"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2025,
-                  "lastSeason": 2026,
-                  "years": "2025–2026",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0031136:2019_12_PIT_CIN:1329",
-                  "name": "Chris Boswell",
-                  "teams": [
-                    "PIT"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2019,
-                  "lastSeason": 2020,
-                  "years": "2019–2020",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0026138:2011_06_NO_TB:3011",
-                  "name": "Connor Barth",
-                  "teams": [
-                    "TB"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2011,
-                  "lastSeason": 2012,
-                  "years": "2011–2012",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0034173:2022_10_ATL_CAR:448",
-                  "name": "Eddy Pineiro",
-                  "teams": [
-                    "CAR"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2022,
-                  "lastSeason": 2023,
-                  "years": "2022–2023",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0000282:2001_10_NYG_MIN:2409",
-                  "name": "Morten Andersen",
-                  "teams": [
-                    "NYG",
-                    "KC"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2001,
-                  "lastSeason": 2002,
-                  "years": "2001–2002",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0023252:2018_06_SF_GB:2087",
-                  "name": "Robbie Gould",
-                  "teams": [
-                    "SF"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2018,
-                  "lastSeason": 2019,
-                  "years": "2018–2019",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "fg:00-0019536:2009_11_CIN_OAK:2648",
-                  "name": "Shayne Graham",
-                  "teams": [
-                    "CIN",
-                    "NE",
-                    "MIA"
-                  ],
-                  "opponent": null,
-                  "length": 25,
-                  "firstSeason": 2009,
-                  "lastSeason": 2011,
-                  "years": "2009–2011",
-                  "active": false,
-                  "lowerBound": false
-                }
-              ]
-            },
-            "next": {
-              "rank": 50,
-              "tied": true
-            },
-            "lowerBound": false
-          },
-          "franchise": {
-            "scope": "CIN",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 24,
-            "rank": 1,
-            "tied": false,
-            "record": 24,
-            "recordHolders": [
-              {
-                "id": "fg:00-0036854:2025_11_CIN_PIT:2467",
-                "name": "Evan McPherson",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 24,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": null,
-            "next": {
-              "rank": 1,
-              "tied": false
-            },
-            "lowerBound": false
-          },
-          "franchiseTeam": "CIN"
         }
       },
       {
@@ -10058,6 +10005,243 @@
         "gapAfter": null
       },
       {
+        "id": "all:00-0029822:2025_12_MIN_GB:452",
+        "playerId": "00-0029822",
+        "name": "Brandon McManus",
+        "length": 48,
+        "fieldGoals": 18,
+        "extraPoints": 30,
+        "teams": [
+          "GB",
+          "LA"
+        ],
+        "start": {
+          "date": "2025-11-23",
+          "team": "GB",
+          "opponent": "MIN",
+          "game": "2025_12_MIN_GB",
+          "play": 452,
+          "type": "XP",
+          "distance": 33
+        },
+        "last": {
+          "date": "2026-11-15",
+          "team": "LA",
+          "opponent": "ARI",
+          "game": "2026_10_LA_ARI",
+          "play": 3060,
+          "type": "FG",
+          "distance": 43
+        },
+        "endedBy": null,
+        "active": true,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "leaderboard": {
+          "overall": {
+            "scope": "Recorded NFL",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 48,
+            "rank": 63,
+            "tied": true,
+            "record": 98,
+            "recordHolders": [
+              {
+                "id": "all:00-0016830:2002_15_IND_CLE:2297",
+                "name": "Mike Vanderjagt",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 98,
+                "firstSeason": 2002,
+                "lastSeason": 2004,
+                "years": "2002–2004",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 49,
+              "rank": 55,
+              "holders": [
+                {
+                  "id": "all:00-0016919:2005_13_NYJ_NE:1316",
+                  "name": "Adam Vinatieri",
+                  "teams": [
+                    "NE",
+                    "IND"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0037692:2023_01_DAL_NYG:704",
+                  "name": "Brandon Aubrey",
+                  "teams": [
+                    "DAL"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0037224:2023_03_LAC_MIN:3074",
+                  "name": "Cameron Dicker",
+                  "teams": [
+                    "LAC"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0038562:2023_07_SF_MIN:1642",
+                  "name": "Jake Moody",
+                  "teams": [
+                    "SF"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2023,
+                  "lastSeason": 2023,
+                  "years": "2023",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0031492:2022_05_SEA_NO:4003",
+                  "name": "Jason Myers",
+                  "teams": [
+                    "SEA"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2022,
+                  "lastSeason": 2022,
+                  "years": "2022",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0020737:2007_12_MIA_PIT:3169",
+                  "name": "Jeff Reed",
+                  "teams": [
+                    "PIT"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2007,
+                  "lastSeason": 2008,
+                  "years": "2007–2008",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0023853:2011_14_CHI_DEN:3718",
+                  "name": "Matt Prater",
+                  "teams": [
+                    "DEN"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2011,
+                  "lastSeason": 2012,
+                  "years": "2011–2012",
+                  "active": false,
+                  "lowerBound": false
+                },
+                {
+                  "id": "all:00-0024333:2013_03_TB_NE:1405",
+                  "name": "Stephen Gostkowski",
+                  "teams": [
+                    "NE"
+                  ],
+                  "opponent": null,
+                  "length": 49,
+                  "firstSeason": 2013,
+                  "lastSeason": 2013,
+                  "years": "2013",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
+            "next": {
+              "rank": 55,
+              "tied": true
+            },
+            "lowerBound": false
+          },
+          "franchise": {
+            "scope": "LA",
+            "coverage": "1999+ play-by-play plus documented older records",
+            "partial": true,
+            "length": 19,
+            "rank": 23,
+            "tied": false,
+            "record": 96,
+            "recordHolders": [
+              {
+                "id": "all:00-0017693:1999_16_CHI_STL:1210",
+                "name": "Jeff Wilkins",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 96,
+                "firstSeason": 1999,
+                "lastSeason": 2001,
+                "years": "1999–2001",
+                "active": false,
+                "lowerBound": false
+              }
+            ],
+            "nextHigher": {
+              "length": 21,
+              "rank": 22,
+              "holders": [
+                {
+                  "id": "all:00-0017693:2007_08_CLE_STL:211",
+                  "name": "Jeff Wilkins",
+                  "teams": [
+                    "LA"
+                  ],
+                  "opponent": null,
+                  "length": 21,
+                  "firstSeason": 2007,
+                  "lastSeason": 2007,
+                  "years": "2007",
+                  "active": false,
+                  "lowerBound": false
+                }
+              ]
+            },
+            "next": {
+              "rank": 23,
+              "tied": false
+            },
+            "lowerBound": false
+          },
+          "franchiseTeam": "LA"
+        }
+      },
+      {
         "id": "all:00-0009028:2007_15_SEA_CAR:2878",
         "playerId": "00-0009028",
         "name": "John Kasay",
@@ -11180,7 +11364,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 44,
-            "rank": 85,
+            "rank": 86,
             "tied": true,
             "record": 98,
             "recordHolders": [
@@ -11201,7 +11385,7 @@
             ],
             "nextHigher": {
               "length": 45,
-              "rank": 81,
+              "rank": 82,
               "holders": [
                 {
                   "id": "all:00-0026138:2011_06_NO_TB:3011",
@@ -11262,7 +11446,7 @@
               ]
             },
             "next": {
-              "rank": 81,
+              "rank": 82,
               "tied": true
             },
             "lowerBound": false
@@ -12053,36 +12237,44 @@
         "gapAfter": null
       },
       {
-        "id": "all:00-0029822:2025_12_MIN_GB:452",
-        "playerId": "00-0029822",
-        "name": "Brandon McManus",
+        "id": "all:00-0036854:2026_01_TB_CIN:580",
+        "playerId": "00-0036854",
+        "name": "Evan McPherson",
         "length": 42,
-        "fieldGoals": 16,
-        "extraPoints": 26,
+        "fieldGoals": 13,
+        "extraPoints": 29,
         "teams": [
-          "GB",
-          "LA"
+          "CIN"
         ],
         "start": {
-          "date": "2025-11-23",
-          "team": "GB",
-          "opponent": "MIN",
-          "game": "2025_12_MIN_GB",
-          "play": 452,
+          "date": "2026-09-13",
+          "team": "CIN",
+          "opponent": "TB",
+          "game": "2026_01_TB_CIN",
+          "play": 580,
           "type": "XP",
           "distance": 33
         },
         "last": {
-          "date": "2026-11-08",
-          "team": "LA",
-          "opponent": "WAS",
-          "game": "2026_09_LA_WAS",
-          "play": 3568,
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 948,
           "type": "XP",
           "distance": 33
         },
-        "endedBy": null,
-        "active": true,
+        "endedBy": {
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 1328,
+          "type": "FG",
+          "distance": 43,
+          "result": "missed"
+        },
+        "active": false,
         "startUnknown": false,
         "lowerBound": false,
         "gapAfter": null,
@@ -12092,7 +12284,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 42,
-            "rank": 105,
+            "rank": 106,
             "tied": true,
             "record": 98,
             "recordHolders": [
@@ -12113,7 +12305,7 @@
             ],
             "nextHigher": {
               "length": 43,
-              "rank": 94,
+              "rank": 95,
               "holders": [
                 {
                   "id": "all:00-0020972:2010_09_MIA_BAL:3223",
@@ -12273,118 +12465,90 @@
               ]
             },
             "next": {
-              "rank": 94,
+              "rank": 95,
               "tied": true
             },
             "lowerBound": false
           },
           "franchise": {
-            "scope": "LA",
+            "scope": "CIN",
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
-            "length": 13,
-            "rank": 41,
-            "tied": true,
-            "record": 96,
+            "length": 42,
+            "rank": 3,
+            "tied": false,
+            "record": 45,
             "recordHolders": [
               {
-                "id": "all:00-0017693:1999_16_CHI_STL:1210",
-                "name": "Jeff Wilkins",
+                "id": "all:00-0019536:2005_09_CIN_BAL:3275",
+                "name": "Shayne Graham",
                 "teams": [
-                  "LA"
+                  "CIN"
                 ],
                 "opponent": null,
-                "length": 96,
-                "firstSeason": 1999,
-                "lastSeason": 2001,
-                "years": "1999–2001",
+                "length": 45,
+                "firstSeason": 2005,
+                "lastSeason": 2006,
+                "years": "2005–2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "all:00-0019536:2007_01_BAL_CIN:912",
+                "name": "Shayne Graham",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 45,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
                 "active": false,
                 "lowerBound": false
               }
             ],
             "nextHigher": {
-              "length": 14,
-              "rank": 36,
+              "length": 45,
+              "rank": 1,
               "holders": [
                 {
-                  "id": "all:00-0029621:2019_03_LA_CLE:2317",
-                  "name": "Greg Zuerlein",
+                  "id": "all:00-0019536:2005_09_CIN_BAL:3275",
+                  "name": "Shayne Graham",
                   "teams": [
-                    "LA"
+                    "CIN"
                   ],
                   "opponent": null,
-                  "length": 14,
-                  "firstSeason": 2019,
-                  "lastSeason": 2019,
-                  "years": "2019",
+                  "length": 45,
+                  "firstSeason": 2005,
+                  "lastSeason": 2006,
+                  "years": "2005–2006",
                   "active": false,
                   "lowerBound": false
                 },
                 {
-                  "id": "all:00-0017693:1999_11_STL_SF:615",
-                  "name": "Jeff Wilkins",
+                  "id": "all:00-0019536:2007_01_BAL_CIN:912",
+                  "name": "Shayne Graham",
                   "teams": [
-                    "LA"
+                    "CIN"
                   ],
                   "opponent": null,
-                  "length": 14,
-                  "firstSeason": 1999,
-                  "lastSeason": 1999,
-                  "years": "1999",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0017693:2002_09_STL_ARI:849",
-                  "name": "Jeff Wilkins",
-                  "teams": [
-                    "LA"
-                  ],
-                  "opponent": null,
-                  "length": 14,
-                  "firstSeason": 2002,
-                  "lastSeason": 2002,
-                  "years": "2002",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0017693:2006_17_STL_MIN:135",
-                  "name": "Jeff Wilkins",
-                  "teams": [
-                    "LA"
-                  ],
-                  "opponent": null,
-                  "length": 14,
-                  "firstSeason": 2006,
+                  "length": 45,
+                  "firstSeason": 2007,
                   "lastSeason": 2007,
-                  "years": "2006–2007",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0021940:2008_14_STL_ARI:3145",
-                  "name": "Josh Brown",
-                  "teams": [
-                    "LA"
-                  ],
-                  "opponent": null,
-                  "length": 14,
-                  "firstSeason": 2008,
-                  "lastSeason": 2008,
-                  "years": "2008",
+                  "years": "2007",
                   "active": false,
                   "lowerBound": false
                 }
               ]
             },
             "next": {
-              "rank": 36,
-              "tied": true
+              "rank": 3,
+              "tied": false
             },
             "lowerBound": false
           },
-          "franchiseTeam": "LA"
+          "franchiseTeam": "CIN"
         }
       },
       {
@@ -13029,7 +13193,7 @@
             "coverage": "1999+ play-by-play plus documented older records",
             "partial": true,
             "length": 40,
-            "rank": 116,
+            "rank": 117,
             "tied": true,
             "record": 98,
             "recordHolders": [
@@ -13050,7 +13214,7 @@
             ],
             "nextHigher": {
               "length": 41,
-              "rank": 112,
+              "rank": 113,
               "holders": [
                 {
                   "id": "all:00-0033787:2021_07_PHI_LV:243",
@@ -13111,7 +13275,7 @@
               ]
             },
             "next": {
-              "rank": 112,
+              "rank": 113,
               "tied": true
             },
             "lowerBound": false
@@ -13167,213 +13331,6 @@
             "lowerBound": false
           },
           "franchiseTeam": "TB"
-        }
-      },
-      {
-        "id": "all:00-0036854:2026_01_TB_CIN:580",
-        "playerId": "00-0036854",
-        "name": "Evan McPherson",
-        "length": 40,
-        "fieldGoals": 12,
-        "extraPoints": 28,
-        "teams": [
-          "CIN"
-        ],
-        "start": {
-          "date": "2026-09-13",
-          "team": "CIN",
-          "opponent": "TB",
-          "game": "2026_01_TB_CIN",
-          "play": 580,
-          "type": "XP",
-          "distance": 33
-        },
-        "last": {
-          "date": "2026-11-08",
-          "team": "CIN",
-          "opponent": "ATL",
-          "game": "2026_09_CIN_ATL",
-          "play": 3775,
-          "type": "FG",
-          "distance": 43
-        },
-        "endedBy": null,
-        "active": true,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null,
-        "leaderboard": {
-          "overall": {
-            "scope": "Recorded NFL",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 40,
-            "rank": 116,
-            "tied": true,
-            "record": 98,
-            "recordHolders": [
-              {
-                "id": "all:00-0016830:2002_15_IND_CLE:2297",
-                "name": "Mike Vanderjagt",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 98,
-                "firstSeason": 2002,
-                "lastSeason": 2004,
-                "years": "2002–2004",
-                "active": false,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": {
-              "length": 41,
-              "rank": 112,
-              "holders": [
-                {
-                  "id": "all:00-0033787:2021_07_PHI_LV:243",
-                  "name": "Jake Elliott",
-                  "teams": [
-                    "PHI"
-                  ],
-                  "opponent": null,
-                  "length": 41,
-                  "firstSeason": 2021,
-                  "lastSeason": 2021,
-                  "years": "2021",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0032726:2023_03_HOU_JAX:477",
-                  "name": "Ka'imi Fairbairn",
-                  "teams": [
-                    "HOU"
-                  ],
-                  "opponent": null,
-                  "length": 41,
-                  "firstSeason": 2023,
-                  "lastSeason": 2023,
-                  "years": "2023",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0019676:2010_14_BAL_HOU:2155",
-                  "name": "Neil Rackers",
-                  "teams": [
-                    "HOU"
-                  ],
-                  "opponent": null,
-                  "length": 41,
-                  "firstSeason": 2010,
-                  "lastSeason": 2011,
-                  "years": "2010–2011",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0032569:2016_11_NO_CAR:3086",
-                  "name": "Wil Lutz",
-                  "teams": [
-                    "NO"
-                  ],
-                  "opponent": null,
-                  "length": 41,
-                  "firstSeason": 2016,
-                  "lastSeason": 2017,
-                  "years": "2016–2017",
-                  "active": false,
-                  "lowerBound": false
-                }
-              ]
-            },
-            "next": {
-              "rank": 112,
-              "tied": true
-            },
-            "lowerBound": false
-          },
-          "franchise": {
-            "scope": "CIN",
-            "coverage": "1999+ play-by-play plus documented older records",
-            "partial": true,
-            "length": 40,
-            "rank": 3,
-            "tied": true,
-            "record": 45,
-            "recordHolders": [
-              {
-                "id": "all:00-0019536:2005_09_CIN_BAL:3275",
-                "name": "Shayne Graham",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 2005,
-                "lastSeason": 2006,
-                "years": "2005–2006",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "all:00-0019536:2007_01_BAL_CIN:912",
-                "name": "Shayne Graham",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              }
-            ],
-            "nextHigher": {
-              "length": 45,
-              "rank": 1,
-              "holders": [
-                {
-                  "id": "all:00-0019536:2005_09_CIN_BAL:3275",
-                  "name": "Shayne Graham",
-                  "teams": [
-                    "CIN"
-                  ],
-                  "opponent": null,
-                  "length": 45,
-                  "firstSeason": 2005,
-                  "lastSeason": 2006,
-                  "years": "2005–2006",
-                  "active": false,
-                  "lowerBound": false
-                },
-                {
-                  "id": "all:00-0019536:2007_01_BAL_CIN:912",
-                  "name": "Shayne Graham",
-                  "teams": [
-                    "CIN"
-                  ],
-                  "opponent": null,
-                  "length": 45,
-                  "firstSeason": 2007,
-                  "lastSeason": 2007,
-                  "years": "2007",
-                  "active": false,
-                  "lowerBound": false
-                }
-              ]
-            },
-            "next": {
-              "rank": 3,
-              "tied": false
-            },
-            "lowerBound": false
-          },
-          "franchiseTeam": "CIN"
         }
       }
     ],
@@ -18238,6 +18195,61 @@
         "afterMiss": 17
       },
       {
+        "id": "near-fg:00-0036854:2025_07_PIT_CIN:2367",
+        "playerId": "00-0036854",
+        "name": "Evan McPherson",
+        "length": 33,
+        "fieldGoals": 32,
+        "extraPoints": 0,
+        "teams": [
+          "CIN"
+        ],
+        "start": {
+          "date": "2025-10-16",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2025_07_PIT_CIN",
+          "play": 2367,
+          "type": "FG",
+          "distance": 49
+        },
+        "last": {
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 381,
+          "type": "FG",
+          "distance": 24
+        },
+        "endedBy": {
+          "date": "2026-11-15",
+          "team": "CIN",
+          "opponent": "PIT",
+          "game": "2026_10_PIT_CIN",
+          "play": 1328,
+          "type": "FG",
+          "distance": 43,
+          "result": "missed"
+        },
+        "active": false,
+        "startUnknown": false,
+        "lowerBound": false,
+        "gapAfter": null,
+        "missed": {
+          "date": "2025-11-02",
+          "team": "CIN",
+          "opponent": "CHI",
+          "game": "2025_09_CHI_CIN",
+          "play": 3983,
+          "type": "FG",
+          "distance": 54,
+          "result": "missed"
+        },
+        "beforeMiss": 7,
+        "afterMiss": 25
+      },
+      {
         "id": "near-fg:00-0017693:1999_15_NYG_STL:576",
         "playerId": "00-0017693",
         "name": "Jeff Wilkins",
@@ -18841,62 +18853,6 @@
         },
         "beforeMiss": 6,
         "afterMiss": 25
-      },
-      {
-        "id": "near-fg:00-0034794:2024_05_MIA_NE:2794",
-        "playerId": "00-0034794",
-        "name": "Jason Sanders",
-        "length": 32,
-        "fieldGoals": 31,
-        "extraPoints": 0,
-        "teams": [
-          "MIA",
-          "NYJ"
-        ],
-        "start": {
-          "date": "2024-10-06",
-          "team": "MIA",
-          "opponent": "NE",
-          "game": "2024_05_MIA_NE",
-          "play": 2794,
-          "type": "FG",
-          "distance": 32
-        },
-        "last": {
-          "date": "2026-09-13",
-          "team": "NYJ",
-          "opponent": "TEN",
-          "game": "2026_01_NYJ_TEN",
-          "play": 1533,
-          "type": "FG",
-          "distance": 33
-        },
-        "endedBy": {
-          "date": "2026-09-13",
-          "team": "NYJ",
-          "opponent": "TEN",
-          "game": "2026_01_NYJ_TEN",
-          "play": 1674,
-          "type": "FG",
-          "distance": 54,
-          "result": "missed"
-        },
-        "active": false,
-        "startUnknown": false,
-        "lowerBound": false,
-        "gapAfter": null,
-        "missed": {
-          "date": "2024-10-20",
-          "team": "MIA",
-          "opponent": "IND",
-          "game": "2024_07_MIA_IND",
-          "play": 3787,
-          "type": "FG",
-          "distance": 54,
-          "result": "missed"
-        },
-        "beforeMiss": 3,
-        "afterMiss": 28
       }
     ],
     "near-all": [
@@ -24436,7 +24392,7 @@
       "value": 20,
       "action": "Extended from 19 to 20 kicks.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_02_MIN_CHI",
@@ -24458,7 +24414,7 @@
       "value": 23,
       "action": "Extended from 20 to 23 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_03_MIN_TB",
@@ -24480,7 +24436,7 @@
       "value": 26,
       "action": "Extended from 23 to 26 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_04_MIA_MIN",
@@ -24502,7 +24458,7 @@
       "value": 31,
       "action": "Extended from 26 to 31 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_05_MIN_NO",
@@ -24524,7 +24480,7 @@
       "value": 34,
       "action": "Extended from 31 to 34 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039404:2025_09_MIN_DET:1528:2026_07_IND_MIN",
@@ -24546,7 +24502,7 @@
       "value": 36,
       "action": "A 59-yard field goal was blocked, ending the run at 36 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0034794:2024_08_ARI_MIA:813:2026_01_NYJ_TEN",
@@ -24568,95 +24524,7 @@
       "value": 28,
       "action": "A 54-yard field goal was missed, ending the run at 28 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_03_CAR_CLE",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 20 consecutive field goals made",
-      "detail": "Run began 2025-11-09. Length after this game: 20.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#fg",
-      "game": "2026_03_CAR_CLE",
-      "date": "2026-09-27",
-      "season": 2026,
-      "week": 3,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 18,
-      "after": 20,
-      "value": 20,
-      "action": "Extended from 18 to 20 kicks (+2).",
-      "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_04_PIT_CLE",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 22 consecutive field goals made",
-      "detail": "Run began 2025-11-09. Length after this game: 22.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#fg",
-      "game": "2026_04_PIT_CLE",
-      "date": "2026-10-01",
-      "season": 2026,
-      "week": 4,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 20,
-      "after": 22,
-      "value": 22,
-      "action": "Extended from 20 to 22 kicks (+2).",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_05_CLE_NYJ",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 24 consecutive field goals made",
-      "detail": "Run began 2025-11-09. Length after this game: 24.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#fg",
-      "game": "2026_05_CLE_NYJ",
-      "date": "2026-10-11",
-      "season": 2026,
-      "week": 5,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 22,
-      "after": 24,
-      "value": 24,
-      "action": "Extended from 22 to 24 kicks (+2).",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_06_BAL_CLE",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 25 consecutive field goals made",
-      "detail": "Run began 2025-11-09. Final recorded length: 25.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#fg",
-      "game": "2026_06_BAL_CLE",
-      "date": "2026-10-18",
-      "season": 2026,
-      "week": 6,
-      "gameType": "REG",
-      "status": "ended",
-      "before": 24,
-      "after": 25,
-      "value": 25,
-      "action": "A 48-yard field goal was missed, ending the run at 25 kicks.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036162:2024_15_BUF_DET:3452:2026_08_BAL_BUF",
@@ -24678,7 +24546,7 @@
       "value": 21,
       "action": "Extended from 18 to 21 kicks (+3).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036162:2024_15_BUF_DET:3452:2026_09_BUF_MIN",
@@ -24700,21 +24568,65 @@
       "value": 24,
       "action": "Extended from 21 to 24 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
-      "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_01_CLE_JAX",
+      "id": "fg:00-0036162:2024_15_BUF_DET:3452:2026_10_BUF_NYJ",
       "category": "kicking",
       "kind": "streak",
-      "team": "JAX",
-      "title": "Cam Little: 22 consecutive field goals made",
-      "detail": "Run began 2025-11-02. Length after this game: 22.",
+      "team": "BUF",
+      "title": "Tyler Bass: 25 consecutive field goals made",
+      "detail": "Run began 2024-12-15. Length after this game: 25.",
       "unit": "kicks",
       "href": "/nfl/kicking.html#fg",
-      "game": "2026_01_CLE_JAX",
-      "date": "2026-09-13",
+      "game": "2026_10_BUF_NYJ",
+      "date": "2026-11-15",
       "season": 2026,
-      "week": 1,
+      "week": 10,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 24,
+      "after": 25,
+      "value": 25,
+      "action": "Extended from 24 to 25 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_03_CAR_CLE",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CLE",
+      "title": "Andre Szmyt: 20 consecutive field goals made",
+      "detail": "Run began 2025-11-09. Length after this game: 20.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_03_CAR_CLE",
+      "date": "2026-09-27",
+      "season": 2026,
+      "week": 3,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 18,
+      "after": 20,
+      "value": 20,
+      "action": "Extended from 18 to 20 kicks (+2).",
+      "newlyNoteworthy": true,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_04_PIT_CLE",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CLE",
+      "title": "Andre Szmyt: 22 consecutive field goals made",
+      "detail": "Run began 2025-11-09. Length after this game: 22.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_04_PIT_CLE",
+      "date": "2026-10-01",
+      "season": 2026,
+      "week": 4,
       "gameType": "REG",
       "status": "continued",
       "before": 20,
@@ -24722,29 +24634,51 @@
       "value": 22,
       "action": "Extended from 20 to 22 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
-      "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_02_JAX_DEN",
+      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_05_CLE_NYJ",
       "category": "kicking",
       "kind": "streak",
-      "team": "JAX",
-      "title": "Cam Little: 24 consecutive field goals made",
-      "detail": "Run began 2025-11-02. Final recorded length: 24.",
+      "team": "CLE",
+      "title": "Andre Szmyt: 24 consecutive field goals made",
+      "detail": "Run began 2025-11-09. Length after this game: 24.",
       "unit": "kicks",
       "href": "/nfl/kicking.html#fg",
-      "game": "2026_02_JAX_DEN",
-      "date": "2026-09-20",
+      "game": "2026_05_CLE_NYJ",
+      "date": "2026-10-11",
       "season": 2026,
-      "week": 2,
+      "week": 5,
       "gameType": "REG",
-      "status": "ended",
+      "status": "continued",
       "before": 22,
       "after": 24,
       "value": 24,
-      "action": "A 54-yard field goal was missed, ending the run at 24 kicks.",
+      "action": "Extended from 22 to 24 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0038428:2025_10_CLE_NYJ:2309:2026_06_BAL_CLE",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CLE",
+      "title": "Andre Szmyt: 25 consecutive field goals made",
+      "detail": "Run began 2025-11-09. Final recorded length: 25.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_06_BAL_CLE",
+      "date": "2026-10-18",
+      "season": 2026,
+      "week": 6,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 24,
+      "after": 25,
+      "value": 25,
+      "action": "A 48-yard field goal was missed, ending the run at 25 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_03_CIN_PIT",
@@ -24766,7 +24700,7 @@
       "value": 20,
       "action": "Extended from 18 to 20 kicks (+2).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_04_JAX_CIN",
@@ -24788,7 +24722,7 @@
       "value": 21,
       "action": "Extended from 20 to 21 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_05_CIN_MIA",
@@ -24810,7 +24744,7 @@
       "value": 22,
       "action": "Extended from 21 to 22 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_09_CIN_ATL",
@@ -24832,7 +24766,73 @@
       "value": 24,
       "action": "Extended from 22 to 24 kicks (+2).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0036854:2025_11_CIN_PIT:2467:2026_10_PIT_CIN",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CIN",
+      "title": "Evan McPherson: 25 consecutive field goals made",
+      "detail": "Run began 2025-11-16. Final recorded length: 25.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_10_PIT_CIN",
+      "date": "2026-11-15",
+      "season": 2026,
+      "week": 10,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 24,
+      "after": 25,
+      "value": 25,
+      "action": "A 43-yard field goal was missed, ending the run at 25 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_01_CLE_JAX",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "JAX",
+      "title": "Cam Little: 22 consecutive field goals made",
+      "detail": "Run began 2025-11-02. Length after this game: 22.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_01_CLE_JAX",
+      "date": "2026-09-13",
+      "season": 2026,
+      "week": 1,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 20,
+      "after": 22,
+      "value": 22,
+      "action": "Extended from 20 to 22 kicks (+2).",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "fg:00-0039409:2025_09_JAX_LV:2100:2026_02_JAX_DEN",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "JAX",
+      "title": "Cam Little: 24 consecutive field goals made",
+      "detail": "Run began 2025-11-02. Final recorded length: 24.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#fg",
+      "game": "2026_02_JAX_DEN",
+      "date": "2026-09-20",
+      "season": 2026,
+      "week": 2,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 22,
+      "after": 24,
+      "value": 24,
+      "action": "A 54-yard field goal was missed, ending the run at 24 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039576:2025_03_IND_TEN:2180:2026_06_TEN_IND",
@@ -24854,7 +24854,7 @@
       "value": 21,
       "action": "Extended from 19 to 21 kicks (+2).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0039576:2025_03_IND_TEN:2180:2026_07_IND_MIN",
@@ -24876,7 +24876,7 @@
       "value": 22,
       "action": "A 56-yard field goal was missed, ending the run at 22 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "fg:00-0035358:2026_01_TB_CIN:340:2026_09_TB_CHI",
@@ -24898,7 +24898,7 @@
       "value": 22,
       "action": "Extended from 19 to 22 kicks (+3).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039409:2025_07_LA_JAX:3900:2026_01_CLE_JAX",
@@ -24920,7 +24920,7 @@
       "value": 63,
       "action": "Extended from 57 to 63 kicks (+6).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039409:2025_07_LA_JAX:3900:2026_02_JAX_DEN",
@@ -24942,7 +24942,7 @@
       "value": 66,
       "action": "A 54-yard field goal was missed, ending the run at 66 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_01_GB_MIN",
@@ -24964,7 +24964,7 @@
       "value": 43,
       "action": "Extended from 38 to 43 kicks (+5).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_02_MIN_CHI",
@@ -24986,7 +24986,7 @@
       "value": 46,
       "action": "Extended from 43 to 46 kicks (+3).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_03_MIN_TB",
@@ -25008,7 +25008,7 @@
       "value": 51,
       "action": "Extended from 46 to 51 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_04_MIA_MIN",
@@ -25030,7 +25030,7 @@
       "value": 56,
       "action": "Extended from 51 to 56 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_05_MIN_NO",
@@ -25052,7 +25052,7 @@
       "value": 61,
       "action": "Extended from 56 to 61 kicks (+5).",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0039404:2025_08_MIN_LAC:2884:2026_07_IND_MIN",
@@ -25074,51 +25074,7 @@
       "value": 64,
       "action": "A 59-yard field goal was blocked, ending the run at 64 kicks.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_04_PIT_CLE",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 42 consecutive kicks made",
-      "detail": "Run began 2025-11-09. Length after this game: 42.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#all",
-      "game": "2026_04_PIT_CLE",
-      "date": "2026-10-01",
-      "season": 2026,
-      "week": 4,
-      "gameType": "REG",
-      "status": "continued",
-      "before": 37,
-      "after": 42,
-      "value": 42,
-      "action": "Extended from 37 to 42 kicks (+5).",
-      "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
-    },
-    {
-      "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_05_CLE_NYJ",
-      "category": "kicking",
-      "kind": "streak",
-      "team": "CLE",
-      "title": "Andre Szmyt: 44 consecutive kicks made",
-      "detail": "Run began 2025-11-09. Final recorded length: 44.",
-      "unit": "kicks",
-      "href": "/nfl/kicking.html#all",
-      "game": "2026_05_CLE_NYJ",
-      "date": "2026-10-11",
-      "season": 2026,
-      "week": 5,
-      "gameType": "REG",
-      "status": "ended",
-      "before": 42,
-      "after": 44,
-      "value": 44,
-      "action": "A 33-yard extra point was missed, ending the run at 44 kicks.",
-      "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0029822:2025_12_MIN_GB:452:2026_09_LA_WAS",
@@ -25140,29 +25096,73 @@
       "value": 42,
       "action": "Extended from 38 to 42 kicks (+4).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
     },
     {
-      "id": "all:00-0035358:2026_01_TB_CIN:340:2026_09_TB_CHI",
+      "id": "all:00-0029822:2025_12_MIN_GB:452:2026_10_LA_ARI",
       "category": "kicking",
       "kind": "streak",
-      "team": "TB",
-      "title": "Chase McLaughlin: 40 consecutive kicks made",
-      "detail": "Run began 2026-09-13. Length after this game: 40.",
+      "team": "LA",
+      "title": "Brandon McManus: 48 consecutive kicks made",
+      "detail": "Run began 2025-11-23. Length after this game: 48.",
       "unit": "kicks",
       "href": "/nfl/kicking.html#all",
-      "game": "2026_09_TB_CHI",
-      "date": "2026-11-08",
+      "game": "2026_10_LA_ARI",
+      "date": "2026-11-15",
       "season": 2026,
-      "week": 9,
+      "week": 10,
       "gameType": "REG",
       "status": "continued",
-      "before": 36,
-      "after": 40,
-      "value": 40,
-      "action": "Extended from 36 to 40 kicks (+4).",
+      "before": 42,
+      "after": 48,
+      "value": 48,
+      "action": "Extended from 42 to 48 kicks (+6).",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_04_PIT_CLE",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CLE",
+      "title": "Andre Szmyt: 42 consecutive kicks made",
+      "detail": "Run began 2025-11-09. Length after this game: 42.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#all",
+      "game": "2026_04_PIT_CLE",
+      "date": "2026-10-01",
+      "season": 2026,
+      "week": 4,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 37,
+      "after": 42,
+      "value": 42,
+      "action": "Extended from 37 to 42 kicks (+5).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "all:00-0038428:2025_10_CLE_NYJ:570:2026_05_CLE_NYJ",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CLE",
+      "title": "Andre Szmyt: 44 consecutive kicks made",
+      "detail": "Run began 2025-11-09. Final recorded length: 44.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#all",
+      "game": "2026_05_CLE_NYJ",
+      "date": "2026-10-11",
+      "season": 2026,
+      "week": 5,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 42,
+      "after": 44,
+      "value": 44,
+      "action": "A 33-yard extra point was missed, ending the run at 44 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
     },
     {
       "id": "all:00-0036854:2026_01_TB_CIN:580:2026_09_CIN_ATL",
@@ -25184,7 +25184,51 @@
       "value": 40,
       "action": "Extended from 34 to 40 kicks (+6).",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-12"
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "all:00-0036854:2026_01_TB_CIN:580:2026_10_PIT_CIN",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "CIN",
+      "title": "Evan McPherson: 42 consecutive kicks made",
+      "detail": "Run began 2026-09-13. Final recorded length: 42.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#all",
+      "game": "2026_10_PIT_CIN",
+      "date": "2026-11-15",
+      "season": 2026,
+      "week": 10,
+      "gameType": "REG",
+      "status": "ended",
+      "before": 40,
+      "after": 42,
+      "value": 42,
+      "action": "A 43-yard field goal was missed, ending the run at 42 kicks.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-15"
+    },
+    {
+      "id": "all:00-0035358:2026_01_TB_CIN:340:2026_09_TB_CHI",
+      "category": "kicking",
+      "kind": "streak",
+      "team": "TB",
+      "title": "Chase McLaughlin: 40 consecutive kicks made",
+      "detail": "Run began 2026-09-13. Length after this game: 40.",
+      "unit": "kicks",
+      "href": "/nfl/kicking.html#all",
+      "game": "2026_09_TB_CHI",
+      "date": "2026-11-08",
+      "season": 2026,
+      "week": 9,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 36,
+      "after": 40,
+      "value": 40,
+      "action": "Extended from 36 to 40 kicks (+4).",
+      "newlyNoteworthy": true,
+      "sourceThrough": "2026-11-15"
     }
   ]
 }
