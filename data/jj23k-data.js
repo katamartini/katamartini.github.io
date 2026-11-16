@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 10,
-  "sourceHash": "bcacf968ece9245e2e5098f685bb33f1bc185be976fe906f677038c28343dd2c",
+  "sourceHash": "263a39b00af7ab1695bff998479e123541d8d851fc24c42a80591e0e6d651c24",
   "careerYards": [
     0,
     26,
@@ -106,7 +106,8 @@ window.JJ23K_DATA = {
     8738,
     8782,
     8815,
-    8873
+    8873,
+    8947
   ],
   "leaders": [
     [
@@ -272,11 +273,11 @@ window.JJ23K_DATA = {
     [
       17,
       "Travis Kelce",
-      13484,
-      1113,
+      13514,
+      1115,
       12.1,
       84,
-      482,
+      512,
       6
     ],
     [
@@ -372,11 +373,11 @@ window.JJ23K_DATA = {
     [
       27,
       "Keenan Allen",
-      12402,
-      1095,
+      12463,
+      1100,
       11.3,
       71,
-      351,
+      412,
       6
     ],
     [
@@ -901,6 +902,16 @@ window.JJ23K_DATA = {
     ],
     [
       80,
+      "Justin Jefferson",
+      8947,
+      619,
+      14.5,
+      46,
+      467,
+      18
+    ],
+    [
+      81,
       "Tyler Lockett",
       8885,
       693,
@@ -910,7 +921,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      81,
+      82,
       "Ricky Proehl",
       8878,
       669,
@@ -918,16 +929,6 @@ window.JJ23K_DATA = {
       54,
       null,
       null
-    ],
-    [
-      82,
-      "Justin Jefferson",
-      8873,
-      610,
-      14.5,
-      46,
-      393,
-      16
     ],
     [
       83,
@@ -1021,16 +1022,26 @@ window.JJ23K_DATA = {
     ],
     [
       92,
+      "Cooper Kupp",
+      8641,
+      704,
+      12.3,
+      62,
+      272,
+      9
+    ],
+    [
+      93,
       "Zach Ertz",
       8614,
       828,
       10.4,
       57,
       22,
-      0
+      -1
     ],
     [
-      93,
+      94,
       "Laveranues Coles",
       8609,
       674,
@@ -1040,17 +1051,17 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      94,
-      "Cooper Kupp",
-      8607,
-      703,
-      12.2,
-      61,
-      238,
-      7
+      95,
+      "DJ Moore",
+      8588,
+      631,
+      13.6,
+      44,
+      375,
+      10
     ],
     [
-      95,
+      96,
       "Jordy Nelson",
       8587,
       613,
@@ -1060,7 +1071,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      96,
+      97,
       "Paul Warfield",
       8565,
       427,
@@ -1070,7 +1081,17 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      97,
+      98,
+      "George Kittle",
+      8565,
+      639,
+      13.4,
+      57,
+      557,
+      10
+    ],
+    [
+      99,
       "Jimmy Graham",
       8545,
       719,
@@ -1080,31 +1101,11 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      98,
+      100,
       "Plaxico Burress",
       8499,
       553,
       15.4,
-      64,
-      null,
-      null
-    ],
-    [
-      99,
-      "DJ Moore",
-      8498,
-      627,
-      13.6,
-      43,
-      285,
-      6
-    ],
-    [
-      100,
-      "Adam Thielen",
-      8497,
-      704,
-      12.1,
       64,
       null,
       null
