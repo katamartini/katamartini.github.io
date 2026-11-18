@@ -54,7 +54,7 @@ try{
  await page.locator('#simLoadMatchBtn').click();failure=403;await page.locator('#simSubmitMatch').click();
  await page.waitForFunction(()=>document.getElementById('simMatchStatus').textContent.includes('denied'));
  assert.equal(writes,2);failure=0;
- await page.locator('#githubDisconnect').click();await page.waitForFunction(()=>!DLNSDatabase.auth.user);
+ await page.locator('#githubDisconnect').click();await page.waitForFunction(()=>!DLNSDatabase.auth.user && !document.getElementById('simSubmitMatch')); 
  assert.equal(await page.locator('#simSubmitMatch').count(),0);
  owner=123;await page.locator('#githubToken').fill('github_pat_OTHER');await page.locator('#githubConnect').click();
  await page.waitForFunction(()=>document.getElementById('githubStatus').textContent.includes('Only'));

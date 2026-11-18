@@ -106,7 +106,7 @@
         let value=$('githubToken').value;$('githubToken').value='';
         authAction(async()=>{const pending=github.connect(value);value='';accept(await pending);$('githubStatus').textContent='Connected. Submit match saves directly to GitHub. Public Pages updates after deployment.';});
       };
-      $('githubDisconnect').onclick=()=>authAction(async()=>{github.disconnect();accept(await readSnapshot());$('githubStatus').textContent='Disconnected. Token cleared from memory. Public view restored.';});
+      $('githubDisconnect').onclick=()=>authAction(async()=>{github.disconnect();listeners.forEach(fn=>fn(db.auth));accept(await readSnapshot());$('githubStatus').textContent='Disconnected. Token cleared from memory. Public view restored.';});
       $('githubReload').onclick=()=>authAction(async()=>{accept(await github.read());$('githubStatus').textContent='Latest GitHub history loaded. Load the match again before editing.';});
       db.subscribe(authControls);
     }
