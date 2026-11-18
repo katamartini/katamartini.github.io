@@ -20,7 +20,7 @@ const browser=await chromium.launch({...(process.env.CHROMIUM_PATH?{executablePa
 try{
  const context=await browser.newContext(),errors=[];
  const original=JSON.parse(await fs.readFile(path.join(root,'dlns/published-history.json'),'utf8'));
- let data=structuredClone(original),sha='sha1',writes=0,owner=66887569,failure=0;
+ let data=structuredClone(original),sha='sha1',writes=0,owner=66887569,failure=0,readGate=null;
  await context.route('**/*',async route=>{
   const request=route.request(),url=request.url();
   if(url.startsWith(origin))return route.continue();
@@ -33,15 +33,33 @@ try{
     const update=request.postDataJSON();assert.equal(update.sha,sha);
     data=JSON.parse(Buffer.from(update.content,'base64').toString());sha='sha'+(writes+1);
     body={content:{sha},commit:{sha:'commit'+writes}};
-  }else body={type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')};
+  }else {if(readGate)await readGate;body={type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')};}
   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
  });
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await page.goto(origin+'/DLNS.html#draftsim');await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
  assert.equal(await page.locator('#simSubmitMatch').count(),0);
- await page.locator('summary').filter({hasText:'Owner: connect'}).click();
+ assert.equal(await page.locator('a[href*="storage=local"]').count(),0);
+ assert.match(await page.locator('#simSignIn').innerText(),/Sign in with GitHub/);
+ await page.locator('#simSignIn').click();
+ await page.locator('#githubToken').fill('github_pat_CANCEL');
+ await page.locator('#githubCancel').click();
+ await page.locator('#githubAuthDialog').waitFor({state:'hidden'});
+ assert.equal(await page.locator('#githubAuthDialog').isVisible(),false);
+ assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);
+ await page.locator('#simSignIn').click();
+ assert.equal(await page.locator('#githubToken').inputValue(),'');
+ await page.locator('#githubToken').fill('github_pat_ESCAPE');
+ await page.keyboard.press('Escape');
+ await page.locator('#githubAuthDialog').waitFor({state:'hidden'});
+ assert.equal(await page.locator('#githubAuthDialog').isVisible(),false);
+ await page.locator('#simSignIn').click();
+ assert.equal(await page.locator('#githubToken').inputValue(),'');
  await page.locator('#githubToken').fill('github_pat_TEST');await page.locator('#githubConnect').click();
- await page.waitForFunction(()=>!!DLNSDatabase.auth.user);assert.equal(await page.locator('#githubToken').inputValue(),'');
+ await page.waitForFunction(()=>!!DLNSDatabase.auth.user && !!document.getElementById('simSubmitMatch'));
+ await page.locator('#githubAuthDialog').waitFor({state:'hidden'});
+ assert.equal(await page.locator('#githubAuthDialog').isVisible(),false);
+ assert.match(await page.locator('.matchAuth').innerText(),/katamartini/);
  assert.ok(!(await page.evaluate(()=>JSON.stringify({...localStorage,...sessionStorage}))).includes('github_pat_TEST'));
  await page.locator('#simLoadMatch').selectOption('54-NA-F-2');await page.locator('#simLoadMatchBtn').click();
  await page.locator('#simSubmitMatch').click();await page.waitForFunction(()=>DLNSDatabase.matches.find(m=>m.match_id==='54-NA-F-2').revision===2);
@@ -50,18 +68,25 @@ try{
  sha='external-change';await page.locator('#simSubmitMatch').click();
  await page.waitForFunction(()=>document.getElementById('simMatchStatus').textContent.includes('History changed'));
  assert.equal(writes,1);
- await page.locator('#githubReload').click();await page.waitForFunction(()=>DLNSDatabase.version==='external-change');
+ let releaseRead;readGate=new Promise(resolve=>{releaseRead=resolve;});await page.locator('#githubReload').click();
+ assert.equal(await page.locator('#simSubmitMatch').isDisabled(),true);
+ releaseRead();readGate=null;await page.waitForFunction(()=>DLNSDatabase.version==='external-change');
  await page.locator('#simLoadMatchBtn').click();failure=403;await page.locator('#simSubmitMatch').click();
  await page.waitForFunction(()=>document.getElementById('simMatchStatus').textContent.includes('denied'));
  assert.equal(writes,2);failure=0;
- await page.locator('#githubDisconnect').click();await page.waitForFunction(()=>!DLNSDatabase.auth.user && !document.getElementById('simSubmitMatch'));
+ await page.locator('#simSignOut').click();await page.waitForFunction(()=>!DLNSDatabase.auth.user && !document.getElementById('simSubmitMatch'));
  assert.equal(await page.locator('#simSubmitMatch').count(),0);
- owner=123;await page.locator('#githubToken').fill('github_pat_OTHER');await page.locator('#githubConnect').click();
+ owner=123;await page.locator('#simSignIn').click();await page.locator('#githubToken').fill('github_pat_OTHER');await page.locator('#githubConnect').click();
  await page.waitForFunction(()=>document.getElementById('githubStatus').textContent.includes('Only'));
  assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);
  owner=66887569;await page.locator('#githubToken').fill('github_pat_TEST');await page.locator('#githubConnect').click();await page.waitForFunction(()=>!!DLNSDatabase.auth.user);
  await page.reload();await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
- assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);assert.equal(await page.locator('#githubToken').inputValue(),'');
+ assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);await page.locator('#simSignIn').click();assert.equal(await page.locator('#githubToken').inputValue(),'');
+ await page.locator('#githubCancel').click();
+ await page.goto(origin+'/DLNS.html?storage=local#draftsim');await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
+ assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);assert.equal(await page.locator('#simSubmitMatch').count(),0);
+ assert.equal(await page.locator('#localImport, #localSeed').count(),0);
+ assert.equal(await page.locator('a[href*="storage=local"]').count(),0);
  assert.deepEqual(errors,[]);
- console.log('PASS token Chromium: public anonymous view, connect/save, data preservation, stale conflict, denied write, disconnect, wrong owner, reload clears credentials, no page errors. All GitHub requests mocked.');
+ console.log('PASS token Chromium: public anonymous view, restored header, modal cancel/Escape/reopen, connect/save, data preservation, stale conflict, denied write, disconnect, wrong owner, reload clears credentials, old local URL read-only, no page errors. All GitHub requests mocked.');
 }finally{await browser.close();server.close();}
