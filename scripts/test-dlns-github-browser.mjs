@@ -20,7 +20,7 @@ const browser=await chromium.launch({...(process.env.CHROMIUM_PATH?{executablePa
 try{
  const context=await browser.newContext(),errors=[];
  const original=JSON.parse(await fs.readFile(path.join(root,'dlns/published-history.json'),'utf8'));
- let data=structuredClone(original),sha='sha1',writes=0,owner=66887569,failure=0;
+ let data=structuredClone(original),sha='sha1',writes=0,owner=66887569,failure=0,readGate=null;
  await context.route('**/*',async route=>{
   const request=route.request(),url=request.url();
   if(url.startsWith(origin))return route.continue();
@@ -33,7 +33,7 @@ try{
     const update=request.postDataJSON();assert.equal(update.sha,sha);
     data=JSON.parse(Buffer.from(update.content,'base64').toString());sha='sha'+(writes+1);
     body={content:{sha},commit:{sha:'commit'+writes}};
-  }else body={type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')};
+  }else {if(readGate)await readGate;body={type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')};}
   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
  });
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
@@ -68,7 +68,9 @@ try{
  sha='external-change';await page.locator('#simSubmitMatch').click();
  await page.waitForFunction(()=>document.getElementById('simMatchStatus').textContent.includes('History changed'));
  assert.equal(writes,1);
- await page.locator('#githubReload').click();await page.waitForFunction(()=>DLNSDatabase.version==='external-change');
+ let releaseRead;readGate=new Promise(resolve=>{releaseRead=resolve;});await page.locator('#githubReload').click();
+ assert.equal(await page.locator('#simSubmitMatch').isDisabled(),true);
+ releaseRead();readGate=null;await page.waitForFunction(()=>DLNSDatabase.version==='external-change');
  await page.locator('#simLoadMatchBtn').click();failure=403;await page.locator('#simSubmitMatch').click();
  await page.waitForFunction(()=>document.getElementById('simMatchStatus').textContent.includes('denied'));
  assert.equal(writes,2);failure=0;

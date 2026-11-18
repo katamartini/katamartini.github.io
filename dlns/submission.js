@@ -57,7 +57,7 @@
   }
 
   function fillPlayers() {
-    if (saving || autofilling || addingTeam || !db.auth.admin) return;
+    if (saving || autofilling || loginBusy || addingTeam || !db.auth.admin) return;
     const sim = app.getSim(), records = app.getRecords();
     let filled = 0;
     for (const side of ['left','right']) {
@@ -98,7 +98,7 @@
   function render() {
     const root = $('simMatchEntry'), playerSlots = document.querySelectorAll('[data-player-hero]');
     if (!root) return;
-    const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
+    const auth = db.auth, sim = app.getSim(), busy = saving || autofilling || loginBusy;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
     const authButtons = auth.user ? `<span class="small">${esc(auth.user.login)}</span><button id="githubReload" ${loginBusy || auth.busy?'disabled':''}>Reload history</button><button id="simSignOut" ${loginBusy || auth.busy?'disabled':''}>Sign out</button>` : `<button id="simSignIn" ${loginBusy || auth.busy?'disabled':''}>Sign in with GitHub</button>`;
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
@@ -157,7 +157,7 @@
   }
 
   function openNewPlayer(hero) {
-    if (saving || autofilling || !db.auth.admin || $('simNewPlayerDialog')) return;
+    if (saving || autofilling || loginBusy || !db.auth.admin || $('simNewPlayerDialog')) return;
     const dialog = document.createElement('dialog');
     dialog.id = 'simNewPlayerDialog';
     dialog.className = 'matchTeamDialog';
@@ -173,7 +173,7 @@
     $('simCancelPlayer').onclick = () => dialog.close();
     dialog.querySelector('form').onsubmit = event => {
       event.preventDefault();
-      if (saving || autofilling || !db.auth.admin) return;
+      if (saving || autofilling || loginBusy || !db.auth.admin) return;
       const input = $('simNewPlayerName'), name = input.value.trim();
       if (!name) { input.setCustomValidity('Enter a player name.'); input.reportValidity(); return; }
       entry.players[hero] = name;
@@ -199,7 +199,7 @@
   }
 
   function loadMatch(id) {
-    if (saving || autofilling || addingTeam) return false;
+    if (saving || autofilling || loginBusy || addingTeam) return false;
     const match = db.matches.find(item=>item.match_id === id);
     if (!match) { setMessage('Select a saved match first.','errorText'); return false; }
     entry = {...blank(),week:String(match.week),region:match.region,round:match.round,game:String(match.game),winner:match.winner || '',
@@ -212,7 +212,7 @@
   }
 
   function openAddTeam(side) {
-    if (saving || autofilling || addingTeam || !db.auth.admin || !['left','right'].includes(side)) return;
+    if (saving || autofilling || loginBusy || addingTeam || !db.auth.admin || !['left','right'].includes(side)) return;
     const selectId = side === 'left' ? 'simLeftTeam' : 'simRightTeam';
     $(selectId).value = app.getSim()[side];
     if ($('simAddTeamDialog')) return;
@@ -259,7 +259,7 @@
   }
 
   async function submit() {
-    if (saving || autofilling || !db.auth.admin) return;
+    if (saving || autofilling || loginBusy || !db.auth.admin) return;
     const match = model.simToMatch(app.getSim(),entry,entry.players);
     const errors = model.validateMatch(match);
     if (errors.length) { setMessage(errors.join(' '),'errorText'); return; }
@@ -275,7 +275,7 @@
   }
 
   async function autofill() {
-    if (saving || autofilling || !db.auth.admin) return;
+    if (saving || autofilling || loginBusy || !db.auth.admin) return;
     autofilling = true; setMessage(''); window.renderDraftSim();
     try {
       const matches = await db.loadMatches();
@@ -292,13 +292,13 @@
     get region() { return entry.region; },
     get winner() { return entry.winner; },
     get editingMatchId() { return entry.editing; },
-    get saving() { return saving || autofilling || addingTeam; },
+    get saving() { return saving || autofilling || loginBusy || addingTeam; },
     get seriesWins() { return model.seriesWins(db.matches,entry,app.getSim()); },
     fillPlayers,
     loadMatch,
     openAddTeam,
     setRegion(region) {
-      if (saving || autofilling || !['EU','NA'].includes(region) || region === entry.region) return;
+      if (saving || autofilling || loginBusy || !['EU','NA'].includes(region) || region === entry.region) return;
       entry.region = region;
       const sim = app.getSim(), teams = teamNames(region);
       const next = {...sim};
@@ -309,7 +309,7 @@
       persist(); setMessage(''); app.setSim(next);
     },
     setTeam(side,team) {
-      if (saving || autofilling || !['left','right'].includes(side)) return;
+      if (saving || autofilling || loginBusy || !['left','right'].includes(side)) return;
       const sim = app.getSim(), other = side === 'left' ? 'right' : 'left';
       if (team === sim[other] || !teamNames().includes(team)) return;
       if (sim[side] === team) return;
@@ -317,7 +317,7 @@
       persist(); setMessage(''); app.setSim({...sim,[side]:team});
     },
     setWinner(side) {
-      if (saving || autofilling || !['','left','right'].includes(side)) return;
+      if (saving || autofilling || loginBusy || !['','left','right'].includes(side)) return;
       entry.winner = side;
       persist(); setMessage(''); window.renderDraftSim();
     }
