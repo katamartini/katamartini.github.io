@@ -2,11 +2,11 @@
   'use strict';
 
   const db = window.DLNSDatabase, model = window.DLNSModel, app = window.DLNSApp;
-  const STORE = db.local ? 'dlns.local.matchEntry.v1' : 'dlns.public.matchEntry.v1';
+  const STORE = 'dlns.public.matchEntry.v1';
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const blank = () => ({week:'',region:'EU',round:'Challenger',game:'1',winner:'',players:{},editing:null,revision:null,selected:''});
-  let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '';
+  let entry = blank(), saving = false, autofilling = false, addingTeam = false, message = '', messageKind = '', loginBusy = false;
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
     if (saved && typeof saved === 'object') {
@@ -100,13 +100,13 @@
     if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
-    const authButtons = !db.local && auth.user ? '<span class="small">GitHub connected · saves publish to the repository</span>' : db.local ? '<span class="small">Local editing — saved only in this browser</span>' : '<a href="?storage=local#draftsim">Open local workspace to edit</a>';
+    const authButtons = auth.user ? `<span class="small">${esc(auth.user.login)}</span><button id="githubReload" ${loginBusy || auth.busy?'disabled':''}>Reload history</button><button id="simSignOut" ${loginBusy || auth.busy?'disabled':''}>Sign out</button>` : `<button id="simSignIn" ${loginBusy || auth.busy?'disabled':''}>Sign in with GitHub</button>`;
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
     root.className = 'matchEntry';
     if (!auth.admin) {
       root.innerHTML = header + ((auth.error || message) ? `<div class="matchEntryStatus errorText" role="status">${esc(auth.error || message)}</div>` : '');
       playerSlots.forEach(slot=>{ slot.innerHTML = ''; });
-      return;
+      bindAuth();return;
     }
     const matches = db.matches.slice().reverse();
     const option = (value,label,current) => `<option value="${esc(value)}" ${value===current?'selected':''}>${esc(label)}</option>`;
@@ -141,6 +141,7 @@
         persist();
       };
     });
+    bindAuth();
     const fields = {simMatchWeek:'week',simMatchRound:'round',simMatchGame:'game'};
     Object.entries(fields).forEach(([id,key]) => {
       $(id).oninput = event => {
@@ -180,6 +181,17 @@
     };
     $('simNewPlayerName').oninput = event => event.target.setCustomValidity('');
     dialog.showModal();
+  }
+
+  function bindAuth() {
+    if ($('simSignIn')) $('simSignIn').onclick = () => db.signIn();
+    const run = async action => {
+      if (loginBusy) return; loginBusy = true; render();
+      try { await action(); setMessage(''); } catch(error) { setMessage(error.message,'errorText'); }
+      finally { loginBusy = false; render(); }
+    };
+    if ($('simSignOut')) $('simSignOut').onclick = () => run(()=>db.signOut());
+    if ($('githubReload')) $('githubReload').onclick = () => run(()=>db.reload());
   }
 
   function loadSelected() {
@@ -257,7 +269,7 @@
       entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision; entry.workspaceVersion = db.version;
       persist();
       app.applyMatches(db.matches);
-      setMessage(db.local ? `Saved ${saved.match_id} locally (revision ${saved.revision}). Export a backup; this is not published.` : `Saved ${saved.match_id} to GitHub (revision ${saved.revision}). Public Pages updates after deployment, usually within a few minutes.`,'success');
+      setMessage(`Saved ${saved.match_id} to GitHub (revision ${saved.revision}). Public Pages updates after deployment, usually within a few minutes.`,'success');
     } catch (error) { setMessage(error.message,'errorText'); }
     finally { saving = false; window.renderDraftSim(); }
   }

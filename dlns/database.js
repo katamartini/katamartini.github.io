@@ -1,7 +1,6 @@
-/* Static public history plus an explicitly selected local editing workspace. */
+/* Public GitHub-backed history; legacy browser data is export-only. */
 (function(){
   'use strict';
-  const editable=new URLSearchParams(location.search).get('storage')==='local';
   const SNAPSHOT='dlns/published-history.json'; // Change only to a separately reviewed public export.
   const store=createDLNSLocalStore(DLNSModel,window.indexedDB);
   const github=createDLNSGitHubStore(DLNSModel,store.validate);
@@ -18,26 +17,29 @@
     return store.validate(await response.json());
   }
   const db=window.DLNSDatabase={
-    local:editable,
-    get auth(){return {user:github.user,admin:ready&&(editable||!!github.user),ready:true,error:''};},
+    local:false,
+    get auth(){return {user:github.user,admin:ready&&!!github.user,ready:true,busy:github.busy,error:''};},
     get version(){return state.version;},
     get matches(){return state.matches.slice().sort((a,b)=>DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));},
     get teams(){return state.teams || [];},
     get sourceNote(){
       const last=db.matches.at(-1)?.match_id || 'none';
       if(github.user)return `GitHub history: ${state.matches.length} matches; last match ${last}. Connected as ${github.user.login}. Saves create public commits; Pages may take a few minutes to update.`;
-      return editable ? `Local workspace: ${state.matches.length} matches; last match ${last}. Source: ${state.provenance?.label || 'empty'}. Saved only in this browser — export backups.` : `Published snapshot: ${state.matches.length} matches; last match ${last}. This is not a live database or proof of complete history.`;
+      return `Match history: ${state.matches.length} matches; last match ${last}.`;
     },
     subscribe(fn){listeners.add(fn);return ()=>listeners.delete(fn);},initAuth(){},
-    async loadMatches(){return accept(editable ? await store.read() : github.user ? await github.read() : await readSnapshot());},
+    signIn(){const dialog=document.getElementById('githubAuthDialog');dialog.showModal();document.getElementById('githubToken').focus();},
+    async signOut(){github.disconnect();listeners.forEach(fn=>fn(db.auth));await db.loadMatches();window.DLNSApp.applyMatches(db.matches);},
+    async reload(){await db.loadMatches();window.DLNSApp.applyMatches(db.matches);},
+    async loadMatches(){return accept(github.user ? await github.read() : await readSnapshot());},
     async saveMatch(match,revision,originalId,workspaceVersion){
-      if(!db.auth.admin)throw Error('Connect GitHub or open the local workspace to edit.');
-      accept(await operation(()=>(editable?store:github).saveMatch(match,revision,originalId,originalId ? workspaceVersion : state.version)));
+      if(!db.auth.admin)throw Error('Sign in with your GitHub token to edit.');
+      accept(await operation(()=>github.saveMatch(match,revision,originalId,originalId ? workspaceVersion : state.version)));
       return state.matches.find(item=>item.match_id===match.match_id);
     },
     async addTeam(name,region){
-      if(!db.auth.admin)throw Error('Connect GitHub or open the local workspace to edit.');
-      accept(await operation(()=>(editable?store:github).addTeam(name,region,state.version)));
+      if(!db.auth.admin)throw Error('Sign in with your GitHub token to edit.');
+      accept(await operation(()=>github.addTeam(name,region,state.version)));
       return state.teams.find(t=>t.region===region && t.name.trim().toLowerCase()===name.trim().toLowerCase());
     }
   };
@@ -47,69 +49,35 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   window.addEventListener('DOMContentLoaded',()=>{
-    const panel=document.createElement('details');panel.className='panel';panel.open=editable;
-    panel.innerHTML='<summary>History, local editing &amp; backups</summary><p>Everyone can view the published history. Local edits stay in this browser and require no login. To share changes, export and publish a reviewed history file through the repository.</p><p><a href="DLNS.html">View published history</a> · <a href="?storage=local#draftsim">Open local workspace</a></p><button id="localCacheExport">Download original database cache</button> <button id="localExport">Export local backup</button> <button id="localSeed">Import published history</button> <label>Import JSON <input id="localImport" type="file" accept="application/json,.json"></label><p>Keep downloaded backups outside this browser before clearing site data. Imports replace the local working copy; they never publish or change the original cache.</p><p id="localStatus" role="status"></p>';
-    document.getElementById('sourceNote').after(panel);
-    const $=id=>document.getElementById(id), status=text=>{$('localStatus').textContent=text;};
-    let busy=false;
-    const buttons=['localExport','localSeed','localImport'];
-    function controls(){for(const id of buttons)$(id).disabled=!editable || busy;}
-    async function run(fn){
-      if(busy)return;busy=true;controls();
-      try{await fn();}catch(error){status(error.message);}finally{busy=false;controls();}
-    }
-    async function importData(input,label){
-      store.validate(input);
-      if(!confirm(`Import ${input.matches.length} matches from ${label}? This replaces only the local working copy. Export your current backup first. The previous copy is also retained in local change history.`))return;
-      accept(await store.importData(input,label,state.version));
-      window.DLNSApp.applyMatches(db.matches);
-      status('Imported locally. Load a match before editing; export a backup after saving. Nothing was published.');
-    }
-    $('localCacheExport').onclick=()=>run(async()=>{
-      const raw=localStorage.getItem('dlns.database.matches.v1');
-      if(!raw)throw Error('No original cache on this browser and site address. Try the device, profile and site address used previously.');
-      download(raw,`dlns-original-cache-${Date.now()}.json`);
-      status('Original cache downloaded verbatim, without changing or importing it. Preserve this file.');
-    });
-    $('localExport').onclick=()=>run(async()=>{
-      download(JSON.stringify({...await store.read(),exported_at:new Date().toISOString()},null,2),`dlns-local-${Date.now()}.json`);
-      status('Local backup downloaded, including source details and local change history.');
-    });
-    $('localSeed').onclick=()=>run(async()=>{await importData(await readSnapshot(),'published file: '+SNAPSHOT);});
-    $('localImport').onchange=event=>{
-      const file=event.target.files[0];event.target.value='';if(!file)return;
-      run(async()=>{
-        if(file.size>30*1024*1024)throw Error('Import is larger than 30 MB.');
-        await importData(JSON.parse(await file.text()),file.name);
-      });
+    const $=id=>document.getElementById(id);
+    const dialog=document.createElement('dialog');dialog.id='githubAuthDialog';dialog.className='matchTeamDialog';
+    dialog.setAttribute('aria-labelledby','githubAuthTitle');
+    dialog.innerHTML='<form><h2 id="githubAuthTitle">Sign in with GitHub</h2><p>Use your fine-grained GitHub token to publish matches as katamartini. This is a token connection, not OAuth.</p><label>Token <input id="githubToken" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" required></label><details><summary>Token setup &amp; security</summary><p>Create a fine-grained token in <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener noreferrer">GitHub settings</a>: owner katamartini, only katamartini.github.io, Contents: Read and write, short expiration. Metadata read is automatic. This grants contents access across the repository, not only DLNS.</p><p>The token is sent only to api.github.com and kept only in this tab’s memory. Refresh, close the tab or sign out to clear it. Use a trusted browser. Never paste a token into chat.</p></details><p id="githubStatus" role="status"></p><div class="matchEntryActions"><button type="button" id="githubCancel">Cancel</button><button type="submit" id="githubConnect">Sign in</button></div></form>';
+    document.body.append(dialog);
+    let connecting=false;
+    const dismiss=()=>{if(connecting)return; $('githubToken').value='';$('githubStatus').textContent='';dialog.close();};
+    $('githubCancel').onclick=dismiss;
+    dialog.addEventListener('cancel',event=>{event.preventDefault();dismiss();});
+    dialog.querySelector('form').onsubmit=async event=>{
+      event.preventDefault();if(connecting)return;
+      let value=$('githubToken').value;$('githubToken').value='';connecting=true;
+      $('githubConnect').disabled=true;$('githubCancel').disabled=true;$('githubToken').disabled=true;$('githubStatus').textContent='Connecting…';
+      try{const pending=github.connect(value);value='';accept(await pending);window.DLNSApp.applyMatches(db.matches);$('githubStatus').textContent='';dialog.close();}
+      catch(error){$('githubStatus').textContent=error.message;}
+      finally{connecting=false;$('githubConnect').disabled=false;$('githubCancel').disabled=false;$('githubToken').disabled=false;listeners.forEach(fn=>fn(db.auth));}
     };
-    if(!editable){
-      const authPanel=document.createElement('details');authPanel.className='panel';
-      authPanel.innerHTML='<summary>Owner: connect GitHub token</summary><p>Anyone can view. Only katamartini can submit public matches. This uses a fine-grained personal access token, not GitHub OAuth login. The token goes only to api.github.com and is kept in this tab’s memory, never saved. Refreshing or disconnecting clears it. Only use this on a trusted browser without untrusted extensions.</p><p>Create a fine-grained token in <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener noreferrer">GitHub settings</a>: resource owner katamartini, only katamartini.github.io, Contents: Read and write (Metadata read is automatic), with a short expiration. It grants repository contents access, not just DLNS. Do not paste a token into chat.</p><label>Token <input id="githubToken" type="password" autocomplete="off" autocapitalize="none" spellcheck="false"></label> <button id="githubConnect">Connect</button> <button id="githubDisconnect" disabled>Disconnect</button> <button id="githubReload" disabled>Reload GitHub history</button><p id="githubStatus" role="status"></p>';
-      panel.before(authPanel);
-      let connecting=false;
-      function authControls(){
-        const blocked=connecting||github.busy;
-        $('githubConnect').disabled=blocked||!!github.user;
-        $('githubToken').disabled=blocked||!!github.user;
-        $('githubDisconnect').disabled=blocked||!github.user;
-        $('githubReload').disabled=blocked||!github.user;
-      }
-      async function authAction(action){
-        if(connecting||github.busy)return;
-        connecting=true;authControls();
-        try{await action();window.DLNSApp.applyMatches(db.matches);}
-        catch(error){$('githubStatus').textContent=error.message;}
-        finally{connecting=false;authControls();listeners.forEach(fn=>fn(db.auth));}
-      }
-      $('githubConnect').onclick=()=>{
-        let value=$('githubToken').value;$('githubToken').value='';
-        authAction(async()=>{const pending=github.connect(value);value='';accept(await pending);$('githubStatus').textContent='Connected. Submit match saves directly to GitHub. Public Pages updates after deployment.';});
-      };
-      $('githubDisconnect').onclick=()=>authAction(async()=>{github.disconnect();listeners.forEach(fn=>fn(db.auth));accept(await readSnapshot());$('githubStatus').textContent='Disconnected. Token cleared from memory. Public view restored.';});
-      $('githubReload').onclick=()=>authAction(async()=>{accept(await github.read());$('githubStatus').textContent='Latest GitHub history loaded. Load the match again before editing.';});
-      db.subscribe(authControls);
-    }
-    controls();
+    // Recovery is intentionally export-only. Never import, delete, or mutate old browser records.
+    const panel=document.createElement('details');panel.className='panel';panel.id='legacyRecovery';
+    panel.innerHTML='<summary>Recover older browser-only data</summary><p>Older local matches and drafts are still stored in this browser, but new submissions now publish through GitHub. Download these backups before clearing site data. Nothing here publishes or changes your saved data.</p><button id="localExport">Download older local matches</button> <button id="localCacheExport">Download original database cache</button> <button id="legacyDraftExport">Download older draft forms</button><p id="localStatus" role="status"></p>';
+    (document.querySelector('main') || document.body).append(panel);
+    async function recover(action){try{await action();$('localStatus').textContent='Backup downloaded. Existing browser data is unchanged.';}catch(error){$('localStatus').textContent=error.message;}}
+    $('localExport').onclick=()=>recover(async()=>download(JSON.stringify({...await store.read(),exported_at:new Date().toISOString()},null,2),`dlns-local-${Date.now()}.json`));
+    $('localCacheExport').onclick=()=>recover(async()=>{const raw=localStorage.getItem('dlns.database.matches.v1');if(!raw)throw Error('No original cache in this browser. Try the device and browser used previously.');download(raw,`dlns-original-cache-${Date.now()}.json`);});
+    $('legacyDraftExport').onclick=()=>recover(async()=>{
+      const keys=['dlns.local.sim.v1','dlns.local.matchEntry.v1','dlns.matchEntry.v1','draftSimulator.v1'];
+      const drafts=Object.fromEntries(keys.map(key=>[key,localStorage.getItem(key)]).filter(([,value])=>value!==null));
+      if(!Object.keys(drafts).length)throw Error('No older draft forms in this browser.');
+      download(JSON.stringify({format:'dlns-legacy-drafts-v1',drafts},null,2),`dlns-older-drafts-${Date.now()}.json`);
+    });
   });
 })();
