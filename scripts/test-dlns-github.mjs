@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url),model=require('../dlns/model.js');
+const validate=require('../dlns/local-store.js')(model,null).validate;
+const create=require('../dlns/github-store.js');
+const original=JSON.parse(fs.readFileSync(new URL('../dlns/published-history.json',import.meta.url)));
+let data=structuredClone(original),sha='sha1',owner=66887569,writeError=0,networkError=false,writes=0,requests=[];
+const response=(body,status=200)=>({ok:status===200,status,json:async()=>body,text:async()=>JSON.stringify(body)});
+const fake=async(url,options)=>{
+ requests.push({url,options});assert.ok(url.startsWith('https://api.github.com/'));assert.equal(options.redirect,'error');
+ if(url.endsWith('/user'))return response({id:owner,login:'katamartini'});
+ if(url.endsWith('/katamartini.github.io'))return response({owner:{id:66887569},full_name:'katamartini/katamartini.github.io',permissions:{push:true}});
+ if(options.method==='PUT'){
+   writes++; if(networkError)throw Error('fake network failure');if(writeError)return response({},writeError);
+   const payload=JSON.parse(options.body);assert.equal(payload.sha,sha);data=JSON.parse(Buffer.from(payload.content,'base64').toString());sha='sha'+(writes+1);
+   assert.equal(data.changes,undefined);assert.equal(data.provenance,undefined);return response({content:{sha},commit:{sha:'commit'+writes}});
+ }
+ return response({type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')});
+};
+const store=create(model,validate,fake);
+await assert.rejects(store.connect('invalid'),/fine-grained/);assert.equal(requests.length,0);
+owner=1;await assert.rejects(store.connect('github_pat_TEST'),/Only/);assert.equal(store.user,null);owner=66887569;
+let state=await store.connect('github_pat_TEST');assert.equal(state.matches.length,363);
+assert.equal(store.user.id,66887569);
+const match=structuredClone(state.matches[0]);match.winner=match.winner==='left'?'right':'left';
+state=await store.saveMatch(match,1,match.match_id,state.version);assert.equal(state.matches.find(m=>m.match_id===match.match_id).revision,2);
+assert.equal(state.matches.length,363);assert.deepEqual(state.matches.filter(m=>m.match_id!==match.match_id),original.matches.filter(m=>m.match_id!==match.match_id));
+await assert.rejects(store.saveMatch(match,1,match.match_id,state.version),/changed/);
+await assert.rejects(store.saveMatch(match,null,null,state.version),/exists/);
+await assert.rejects(store.saveMatch({...match,actions:[]},2,match.match_id,state.version),/Complete/);
+await assert.rejects(store.saveMatch(match,2,match.match_id,'old'),/History changed/);
+assert.equal(writes,1);
+state=await store.addTeam('日本語 team','EU',state.version);assert.equal(state.teams[0].name,'日本語 team');
+writeError=409;await assert.rejects(store.saveMatch(match,2,match.match_id,state.version),/rejected/);assert.equal(store.uncertain,false);assert.equal(writes,3);
+writeError=0;state=await store.connect('github_pat_TEST');networkError=true;
+await assert.rejects(store.saveMatch(match,2,match.match_id,state.version),/unknown/);assert.equal(store.uncertain,true);networkError=false;
+store.disconnect();assert.equal(store.user,null);await assert.rejects(store.read(),/Connect/);
+assert.ok(!fs.readFileSync(new URL('../dlns/github-store.js',import.meta.url),'utf8').includes('localStorage'));
+assert.deepEqual(JSON.parse(fs.readFileSync(new URL('../dlns/history.json',import.meta.url))),original);
+console.log('PASS GitHub owner/token validation, public dataset preservation, UTF-8, revisions, duplicate/invalid/stale rejection, conflict and ambiguous-write lockout, disconnect, immutable original snapshot.');

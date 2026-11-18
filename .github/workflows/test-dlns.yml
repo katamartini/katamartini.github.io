@@ -31,7 +31,9 @@ jobs:
       - run: npm install --prefix .cache/dlns-tools --ignore-scripts @electric-sql/pglite@0.5.10 fake-indexeddb@6.2.4 playwright@1.58.2
       - run: node scripts/test-dlns-recovered.mjs
       - run: node scripts/test-dlns-database.mjs
+      - run: node scripts/test-dlns-github.mjs
       - run: node scripts/test-dlns-local.mjs
       - run: node scripts/test-dlns-public-export.mjs
       - run: node .cache/dlns-tools/node_modules/playwright/cli.js install --with-deps chromium
       - run: node scripts/test-dlns-local-browser.mjs
+      - run: node scripts/test-dlns-github-browser.mjs

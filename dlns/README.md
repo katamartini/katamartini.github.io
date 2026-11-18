@@ -1,28 +1,38 @@
 # DLNS — static history and local editing
 
-`DLNS.html` reads match history from the repository's `dlns/history.json`. It does not contact Supabase, load an authentication SDK, or require a backend service. Public statistics, player history, validation, and the draft simulator use that published file.
+`DLNS.html` reads match history from the repository's `dlns/published-history.json`. It does not contact Supabase, load an authentication SDK, or require a backend service. Public statistics, player history, validation, and the draft simulator use that published file.
 
-## Editing
+## GitHub owner publishing (token method)
+
+Open **Owner: connect GitHub token** on the ordinary public page. Create your own **fine-grained** token in GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens: resource owner `katamartini`, only `katamartini.github.io`, **Contents: Read and write**, and a short expiration. Metadata read is automatic. No other permissions are needed. Never send a token in chat. This permission covers the repository's contents, not only DLNS; GitHub does not provide a path-scoped contents token. Branch rules may prevent direct writes.
+
+The page verifies the authenticated GitHub user ID and repository access. GitHub enforces actual repository permissions; hiding editor controls alone is not a security boundary. The token is sent only to `https://api.github.com` with redirects disallowed, and is retained only in the tab's JavaScript memory. It is never put in cookies, local/session storage, exports, URLs or commits. Disconnect, refresh or closing the tab clears it. Use a trusted browser: scripts on this site and privileged browser extensions can access browser-entered credentials.
+
+Connect loads the latest repository version, then **Submit match** creates a public GitHub commit, rather than saving only locally. Team registration also creates a commit. Match validation, duplicate IDs, revision checks and GitHub's file SHA protect against stale writes. If another tab changes history, reload GitHub history and load the match again. Failed or ambiguous writes are never automatically retried; reconnect and inspect the latest history first. An accepted commit is not proof of a successful Pages deployment: public viewers see changes after Pages rebuilds, typically a few minutes. The editor uses the saved repository result immediately.
+
+The initial maintained file is an exact copy of the existing 363-match snapshot. `dlns/history.json`, `DLNS.snapshot.js`, original browser caches and separate partial recovery data remain untouched. This feature does not recover missing weeks.
+
+## Local editing
 
 Choose **Open local workspace to edit**, or visit `DLNS.html?storage=local#draftsim`. The workspace initially starts empty. Open **History, local editing & backups** and either import the published history or import a preserved cache/backup JSON file. Imports replace the local working copy after confirmation; they do not merge or publish.
 
 Use the existing match editor to choose teams, enter week/round/game, complete 12 picks and 4 bans, assign players, and set the winner. Load an existing match to correct it. New teams are stored in the same local workspace. Autofill uses the local history, and statistics update after saving. Strict validation still applies to new saves; historical anomalies can be imported unchanged but must be corrected before editing those records.
 
-**Saves are local to this browser profile and site address.** There is no owner login or remote sync. Anyone using this profile can edit its workspace; this does not grant repository publishing access. Export dated backups after editing and keep copies outside the browser. Browser eviction, private browsing, clearing site data, or losing the device can remove local records. This is not an offline-installed app: serve the repository locally or use the static website to load its assets.
+**Saves are local to this browser profile and site address.** Local mode has no remote sync; use the ordinary public page’s separate token connection to publish individual matches. Anyone using this profile can edit its workspace; this does not grant repository publishing access. Export dated backups after editing and keep copies outside the browser. Browser eviction, private browsing, clearing site data, or losing the device can remove local records. This is not an offline-installed app: serve the repository locally or use the static website to load its assets.
 
 IndexedDB transactions reject conflicting saves from other tabs, changed imports, and stale match revisions. After a conflict, reload data and load the match again. Match edits retain the previous record in local change history. Imports retain the previous dataset and imported backup history. Export includes this history; there is no automatic rollback UI. Inputs are limited to 30 MB and 20,000 matches. Large accumulated backups may eventually require a separately reviewed compact snapshot.
 
-## Publishing updates
+## Publishing exported local updates manually
 
-Repository write access controls public updates. Local edits are never automatically uploaded, and this page does not store a GitHub token.
+Repository write access controls public updates. Local edits are never automatically uploaded. Connecting a token on the ordinary page does not import a local workspace. Tokens are never persisted.
 
 1. Export the local backup. Keep that full backup private because it includes historical revisions.
 2. Prepare a **new** public file:
    ```sh
-   node scripts/prepare-dlns-public.mjs downloaded-backup.json dlns/published-history.json
+   node scripts/prepare-dlns-public.mjs downloaded-backup.json reviewed-history.json
    ```
    The script validates the matches, omits local audit history and cache metadata, and refuses to overwrite an existing file. Match, team, and player names remain public. It only prepares a file; it does not publish.
-3. Review the data, including missing weeks and corrections. Change `SNAPSHOT` in `dlns/database.js` to the new file path. Keep `history.json` and `DLNS.snapshot.js` intact as recovery evidence. For later updates use a new output filename, then review its diff and update the path.
+3. Review the data, including missing weeks and corrections. Replace the maintained `dlns/published-history.json` with the reviewed export, checking for newer GitHub edits first. Keep `history.json` and `DLNS.snapshot.js` intact as recovery evidence. Public reads and token writes both use `published-history.json`; do not change only one path.
 4. Publish the reviewed change through the usual GitHub repository workflow. Viewers then receive the new history on reload. Local workspaces are independent and require an explicit import to adopt it.
 
 ## Recovery limits and original cache
@@ -43,6 +53,7 @@ Node.js 20+ and Python 3 are sufficient to serve the page and run the storage/ex
 
 ```sh
 npm install --prefix .cache/dlns-tools --ignore-scripts fake-indexeddb@6.2.4 playwright@1.58.2 @electric-sql/pglite@0.5.10
+node scripts/test-dlns-github.mjs
 node scripts/test-dlns-local.mjs
 node scripts/test-dlns-public-export.mjs
 node scripts/test-dlns-database.mjs
