@@ -601,7 +601,8 @@ grid-template-columns:1fr}
 </main><script src="dlns/model.js?v=20261022-rank-backgrounds"></script>
 <script src="dlns/combinations.js?v=20261022-top20"></script>
 <script src="dlns/local-store.js?v=20261111"></script>
-<script src="dlns/database.js?v=20261111-static"></script>
+<script src="dlns/github-store.js?v=20261118-token"></script>
+<script src="dlns/database.js?v=20261118-token"></script>
 <script>
 const LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','rostermoves','rosternarrative','draftsim','validation','players'];
 let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,currentRarityIndex=null,sorts={
@@ -2331,7 +2332,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261111-local"></script>
+<script src="dlns/submission.js?v=20261118-token"></script>
 </body>
 </html>
 

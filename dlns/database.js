@@ -2,11 +2,16 @@
 (function(){
   'use strict';
   const editable=new URLSearchParams(location.search).get('storage')==='local';
-  const SNAPSHOT='dlns/history.json'; // Change only to a separately reviewed public export.
+  const SNAPSHOT='dlns/published-history.json'; // Change only to a separately reviewed public export.
   const store=createDLNSLocalStore(DLNSModel,window.indexedDB);
+  const github=createDLNSGitHubStore(DLNSModel,store.validate);
   let state={version:0,matches:[],teams:[]}, ready=false;
   const listeners=new Set();
   function accept(next){state=next;ready=true;listeners.forEach(fn=>fn(db.auth));return db.matches;}
+  async function operation(action){
+    const promise=action();listeners.forEach(fn=>fn(db.auth));
+    try{return await promise;}finally{listeners.forEach(fn=>fn(db.auth));}
+  }
   async function readSnapshot(){
     const response=await fetch(SNAPSHOT,{cache:'no-store'});
     if(!response.ok)throw Error(`Published history could not be loaded (${response.status}).`);
@@ -14,24 +19,25 @@
   }
   const db=window.DLNSDatabase={
     local:editable,
-    get auth(){return {user:null,admin:editable&&ready,ready:true,error:''};},
+    get auth(){return {user:github.user,admin:ready&&(editable||!!github.user),ready:true,error:''};},
     get version(){return state.version;},
     get matches(){return state.matches.slice().sort((a,b)=>DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));},
     get teams(){return state.teams || [];},
     get sourceNote(){
       const last=db.matches.at(-1)?.match_id || 'none';
+      if(github.user)return `GitHub history: ${state.matches.length} matches; last match ${last}. Connected as ${github.user.login}. Saves create public commits; Pages may take a few minutes to update.`;
       return editable ? `Local workspace: ${state.matches.length} matches; last match ${last}. Source: ${state.provenance?.label || 'empty'}. Saved only in this browser — export backups.` : `Published snapshot: ${state.matches.length} matches; last match ${last}. This is not a live database or proof of complete history.`;
     },
     subscribe(fn){listeners.add(fn);return ()=>listeners.delete(fn);},initAuth(){},
-    async loadMatches(){return accept(editable ? await store.read() : await readSnapshot());},
+    async loadMatches(){return accept(editable ? await store.read() : github.user ? await github.read() : await readSnapshot());},
     async saveMatch(match,revision,originalId,workspaceVersion){
-      if(!editable || !ready)throw Error('Open the local workspace to edit.');
-      accept(await store.saveMatch(match,revision,originalId,originalId ? workspaceVersion : state.version));
+      if(!db.auth.admin)throw Error('Connect GitHub or open the local workspace to edit.');
+      accept(await operation(()=>(editable?store:github).saveMatch(match,revision,originalId,originalId ? workspaceVersion : state.version)));
       return state.matches.find(item=>item.match_id===match.match_id);
     },
     async addTeam(name,region){
-      if(!editable || !ready)throw Error('Open the local workspace to edit.');
-      accept(await store.addTeam(name,region,state.version));
+      if(!db.auth.admin)throw Error('Connect GitHub or open the local workspace to edit.');
+      accept(await operation(()=>(editable?store:github).addTeam(name,region,state.version)));
       return state.teams.find(t=>t.region===region && t.name.trim().toLowerCase()===name.trim().toLowerCase());
     }
   };
@@ -77,6 +83,33 @@
         await importData(JSON.parse(await file.text()),file.name);
       });
     };
+    if(!editable){
+      const authPanel=document.createElement('details');authPanel.className='panel';
+      authPanel.innerHTML='<summary>Owner: connect GitHub token</summary><p>Anyone can view. Only katamartini can submit public matches. This uses a fine-grained personal access token, not GitHub OAuth login. The token goes only to api.github.com and is kept in this tab’s memory, never saved. Refreshing or disconnecting clears it. Only use this on a trusted browser without untrusted extensions.</p><p>Create a fine-grained token in <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener noreferrer">GitHub settings</a>: resource owner katamartini, only katamartini.github.io, Contents: Read and write (Metadata read is automatic), with a short expiration. It grants repository contents access, not just DLNS. Do not paste a token into chat.</p><label>Token <input id="githubToken" type="password" autocomplete="off" autocapitalize="none" spellcheck="false"></label> <button id="githubConnect">Connect</button> <button id="githubDisconnect" disabled>Disconnect</button> <button id="githubReload" disabled>Reload GitHub history</button><p id="githubStatus" role="status"></p>';
+      panel.before(authPanel);
+      let connecting=false;
+      function authControls(){
+        const blocked=connecting||github.busy;
+        $('githubConnect').disabled=blocked||!!github.user;
+        $('githubToken').disabled=blocked||!!github.user;
+        $('githubDisconnect').disabled=blocked||!github.user;
+        $('githubReload').disabled=blocked||!github.user;
+      }
+      async function authAction(action){
+        if(connecting||github.busy)return;
+        connecting=true;authControls();
+        try{await action();window.DLNSApp.applyMatches(db.matches);}
+        catch(error){$('githubStatus').textContent=error.message;}
+        finally{connecting=false;authControls();listeners.forEach(fn=>fn(db.auth));}
+      }
+      $('githubConnect').onclick=()=>{
+        let value=$('githubToken').value;$('githubToken').value='';
+        authAction(async()=>{const pending=github.connect(value);value='';accept(await pending);$('githubStatus').textContent='Connected. Submit match saves directly to GitHub. Public Pages updates after deployment.';});
+      };
+      $('githubDisconnect').onclick=()=>authAction(async()=>{github.disconnect();accept(await readSnapshot());$('githubStatus').textContent='Disconnected. Token cleared from memory. Public view restored.';});
+      $('githubReload').onclick=()=>authAction(async()=>{accept(await github.read());$('githubStatus').textContent='Latest GitHub history loaded. Load the match again before editing.';});
+      db.subscribe(authControls);
+    }
     controls();
   });
 })();

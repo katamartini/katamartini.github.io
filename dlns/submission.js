@@ -100,7 +100,7 @@
     if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
-    const authButtons = db.local ? '<span class="small">Local editing — saved only in this browser</span>' : '<a href="?storage=local#draftsim">Open local workspace to edit</a>';
+    const authButtons = !db.local && auth.user ? '<span class="small">GitHub connected · saves publish to the repository</span>' : db.local ? '<span class="small">Local editing — saved only in this browser</span>' : '<a href="?storage=local#draftsim">Open local workspace to edit</a>';
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
     root.className = 'matchEntry';
     if (!auth.admin) {
@@ -257,7 +257,7 @@
       entry.editing = saved.match_id; entry.selected = saved.match_id; entry.revision = saved.revision; entry.workspaceVersion = db.version;
       persist();
       app.applyMatches(db.matches);
-      setMessage(`Saved ${saved.match_id} locally (revision ${saved.revision}). Export a backup; this is not published.`,'success');
+      setMessage(db.local ? `Saved ${saved.match_id} locally (revision ${saved.revision}). Export a backup; this is not published.` : `Saved ${saved.match_id} to GitHub (revision ${saved.revision}). Public Pages updates after deployment, usually within a few minutes.`,'success');
     } catch (error) { setMessage(error.message,'errorText'); }
     finally { saving = false; window.renderDraftSim(); }
   }
