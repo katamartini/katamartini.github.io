@@ -86,6 +86,30 @@ export function kickFromPlay(row) {
     distance: row.kick_distance ? Number(row.kick_distance) : null };
 }
 
+// A cached season was written only after its download passed the historical
+// floor. Check the cache again before using it in place of a rejected download.
+export function resolveHistoricalKicks(year, downloaded, cache) {
+  const minimum = 1500;
+  if (downloaded.length >= minimum) return { attempts: downloaded, usedCache: false };
+  const message = `Incomplete historical season: ${year} (${downloaded.length} kicks, minimum ${minimum})`;
+  if (year !== 2003) throw new Error(message);
+  const previous = cache?.attempts;
+  const keys = new Set(), types = new Set();
+  const valid = cache?.schemaVersion === 1 && Array.isArray(previous) && previous.length >= minimum &&
+    previous.every(kick => {
+      if (kick?.season !== year || typeof kick.game !== 'string' || !kick.game.startsWith(`${year}_`) || !Number.isInteger(kick.play) ||
+          !kick.id || !kick.shortName || !/^\d{4}-\d{2}-\d{2}$/.test(kick.date) || !TEAMS[kick.team] ||
+          !TEAMS[kick.opponent] || !['FG', 'XP'].includes(kick.type) || typeof kick.made !== 'boolean') return false;
+      const key = `${kick.game}:${kick.play}`;
+      if (keys.has(key)) return false;
+      keys.add(key);
+      types.add(kick.type);
+      return true;
+    }) && types.size === 2;
+  if (!valid) throw new Error(`${message}; no valid prior 2003 cache, retaining saved data`);
+  return { attempts: previous, usedCache: true };
+}
+
 export function calculateKickingStreaks(attempts, players = new Map(), currentIds = new Set(), gaps = [], splitByTeam = false) {
   const keys = new Set();
   const ordered = [...attempts, ...gaps].sort((a, b) => a.date.localeCompare(b.date) || a.game.localeCompare(b.game) || a.play - b.play);
