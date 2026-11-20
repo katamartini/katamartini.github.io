@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "season": 2026,
-  "through": "2026-11-16",
+  "through": "2026-11-19",
   "thresholds": {
     "team": 5,
     "matchup": 5,
@@ -19,20 +19,6 @@
     "start": "2026-11-19",
     "end": "2026-11-23",
     "games": [
-      {
-        "id": "2026_11_IND_HOU",
-        "season": 2026,
-        "type": "REG",
-        "week": 11,
-        "date": "2026-11-19",
-        "away": "IND",
-        "home": "HOU",
-        "awayScore": null,
-        "homeScore": null,
-        "completed": false,
-        "location": "Home",
-        "kickoff": "20:15"
-      },
       {
         "id": "2026_11_ARI_KC",
         "season": 2026,
@@ -204,545 +190,6 @@
     ]
   },
   "watch": [
-    {
-      "id": "00-0034383:2022_07_DET_DAL:2026_11_IND_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "value": 69,
-      "unit": "games",
-      "title": "Dalton Schultz: 69 straight appearances with a catch",
-      "detail": "Run began 2022-10-23. Last verified 2026-11-15.",
-      "action": "A catch in his next appearance makes it 70. A zero-catch appearance ends it; missed games do not.",
-      "href": "/nfl/receiving-streaks.html",
-      "sourceThrough": "2026-11-16",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 69,
-          "rank": 77,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 70,
-            "rank": 73,
-            "holders": [
-              {
-                "id": "00-0033906:2021_05_NO_WAS",
-                "name": "Alvin Kamara",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 70,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036963:2021_08_PHI_DET",
-                "name": "Amon-Ra St. Brown",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 70,
-                "firstSeason": 2021,
-                "lastSeason": 2025,
-                "years": "2021–2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032688:2016_17_BUF_NYJ",
-                "name": "Robbie Chosen",
-                "teams": [
-                  "NYJ",
-                  "CAR"
-                ],
-                "opponent": null,
-                "length": 70,
-                "firstSeason": 2016,
-                "lastSeason": 2021,
-                "years": "2016–2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0026364:2010_01_MIA_BUF",
-                "name": "Steve Johnson",
-                "teams": [
-                  "BUF",
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 70,
-                "firstSeason": 2010,
-                "lastSeason": 2014,
-                "years": "2010–2014",
-                "active": false,
-                "lowerBound": true
-              }
-            ]
-          },
-          "next": {
-            "rank": 73,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "HOU",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 58,
-          "rank": 3,
-          "tied": false,
-          "record": 110,
-          "recordHolders": [
-            {
-              "id": "00-0030564:2013_01_HOU_SD",
-              "name": "DeAndre Hopkins",
-              "teams": [
-                "HOU"
-              ],
-              "opponent": null,
-              "length": 110,
-              "firstSeason": 2013,
-              "lastSeason": 2019,
-              "years": "2013–2019",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 64,
-            "rank": 2,
-            "holders": [
-              {
-                "id": "00-0036554:2021_14_SEA_HOU",
-                "name": "Nico Collins",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 64,
-                "firstSeason": 2021,
-                "lastSeason": 2026,
-                "years": "2021–2026",
-                "active": true,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 3,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "HOU"
-      },
-      "game": "2026_11_IND_HOU",
-      "date": "2026-11-19",
-      "season": 2026,
-      "week": 11,
-      "gameType": "REG",
-      "status": "watch"
-    },
-    {
-      "id": "00-0036554:2021_14_SEA_HOU:2026_11_IND_HOU",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "HOU",
-      "value": 64,
-      "unit": "games",
-      "title": "Nico Collins: 64 straight appearances with a catch",
-      "detail": "Run began 2021-12-12. Last verified 2026-11-15.",
-      "action": "A catch in his next appearance makes it 65. A zero-catch appearance ends it; missed games do not.",
-      "href": "/nfl/receiving-streaks.html",
-      "sourceThrough": "2026-11-16",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 64,
-          "rank": 95,
-          "tied": true,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 65,
-            "rank": 91,
-            "holders": [
-              {
-                "id": "00-0021547:2012_03_ATL_SD",
-                "name": "Antonio Gates",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 65,
-                "firstSeason": 2012,
-                "lastSeason": 2016,
-                "years": "2012–2016",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0035216:2020_05_PHI_PIT",
-                "name": "Diontae Johnson",
-                "teams": [
-                  "PIT",
-                  "CAR"
-                ],
-                "opponent": null,
-                "length": 65,
-                "firstSeason": 2020,
-                "lastSeason": 2024,
-                "years": "2020–2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031408:2015_03_TB_HOU",
-                "name": "Mike Evans",
-                "teams": [
-                  "TB"
-                ],
-                "opponent": null,
-                "length": 65,
-                "firstSeason": 2015,
-                "lastSeason": 2019,
-                "years": "2015–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029632:2015_14_PIT_CIN",
-                "name": "Mohamed Sanu",
-                "teams": [
-                  "CIN",
-                  "ATL",
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 65,
-                "firstSeason": 2015,
-                "lastSeason": 2019,
-                "years": "2015–2019",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 91,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "HOU",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 64,
-          "rank": 2,
-          "tied": false,
-          "record": 110,
-          "recordHolders": [
-            {
-              "id": "00-0030564:2013_01_HOU_SD",
-              "name": "DeAndre Hopkins",
-              "teams": [
-                "HOU"
-              ],
-              "opponent": null,
-              "length": 110,
-              "firstSeason": 2013,
-              "lastSeason": 2019,
-              "years": "2013–2019",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 110,
-            "rank": 1,
-            "holders": [
-              {
-                "id": "00-0030564:2013_01_HOU_SD",
-                "name": "DeAndre Hopkins",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 110,
-                "firstSeason": 2013,
-                "lastSeason": 2019,
-                "years": "2013–2019",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 2,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "HOU"
-      },
-      "game": "2026_11_IND_HOU",
-      "date": "2026-11-19",
-      "season": 2026,
-      "week": 11,
-      "gameType": "REG",
-      "status": "watch"
-    },
-    {
-      "id": "away:IND:losses:2026_11_IND_HOU",
-      "category": "team",
-      "team": "IND",
-      "opponent": "HOU",
-      "href": "/nfl/what-to-watch.html#method",
-      "detail": "Run began 2025-11-02.",
-      "sourceThrough": null,
-      "kind": "drought",
-      "value": 9,
-      "unit": "games",
-      "title": "Colts: 9 straight losses on the road",
-      "drought": {
-        "since": "2025-10-19",
-        "through": "2026-11-19",
-        "elapsed": "1 year, 1 month",
-        "days": 396,
-        "count": 9,
-        "unit": "losses",
-        "anchor": "since last win",
-        "lowerBound": false
-      },
-      "action": "A win or tie ends the losing streak.",
-      "game": "2026_11_IND_HOU",
-      "date": "2026-11-19",
-      "season": 2026,
-      "week": 11,
-      "gameType": "REG",
-      "status": "watch",
-      "leaderboard": {
-        "label": "Road runs",
-        "franchise": {
-          "scope": "IND",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 9,
-          "rank": 2,
-          "tied": false,
-          "record": 10,
-          "recordHolders": [
-            {
-              "id": "away:IND:losses:2011_01_IND_HOU",
-              "name": "Colts",
-              "teams": [
-                "IND"
-              ],
-              "opponent": null,
-              "length": 10,
-              "firstSeason": 2011,
-              "lastSeason": 2012,
-              "years": "2011–2012",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 10,
-            "rank": 1,
-            "holders": [
-              {
-                "id": "away:IND:losses:2011_01_IND_HOU",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2011,
-                "lastSeason": 2012,
-                "years": "2011–2012",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 1,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "overall": {
-          "scope": "Current franchises",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 9,
-          "rank": 30,
-          "tied": true,
-          "record": 26,
-          "recordHolders": [
-            {
-              "id": "away:DET:losses:2007_10_DET_ARI",
-              "name": "Lions",
-              "teams": [
-                "DET"
-              ],
-              "opponent": null,
-              "length": 26,
-              "firstSeason": 2007,
-              "lastSeason": 2010,
-              "years": "2007–2010",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 10,
-            "rank": 24,
-            "holders": [
-              {
-                "id": "away:CHI:losses:2016_01_CHI_HOU",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "away:IND:losses:2011_01_IND_HOU",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2011,
-                "lastSeason": 2012,
-                "years": "2011–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "away:MIA:losses:2018_04_MIA_NE",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2018,
-                "lastSeason": 2019,
-                "years": "2018–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "away:JAX:losses:2012_07_JAX_OAK",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2012,
-                "lastSeason": 2013,
-                "years": "2012–2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "away:NYJ:losses:2004_14_NYJ_PIT",
-                "name": "Jets",
-                "teams": [
-                  "NYJ"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2004,
-                "lastSeason": 2005,
-                "years": "2004–2005",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "away:CAR:losses:2023_01_CAR_ATL",
-                "name": "Panthers",
-                "teams": [
-                  "CAR"
-                ],
-                "opponent": null,
-                "length": 10,
-                "firstSeason": 2023,
-                "lastSeason": 2024,
-                "years": "2023–2024",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 24,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "IND"
-      }
-    },
     {
       "id": "all:00-0035358:2026_01_TB_CIN:340:2026_11_TB_DET",
       "category": "kicking",
@@ -67342,9 +66789,9 @@
       "date": "2026-11-19",
       "away": "IND",
       "home": "HOU",
-      "awayScore": null,
-      "homeScore": null,
-      "completed": false,
+      "awayScore": 3,
+      "homeScore": 26,
+      "completed": true,
       "location": "Home",
       "kickoff": "20:15"
     },
@@ -78724,9 +78171,8 @@
       "start": "2026-11-19",
       "end": "2026-11-23",
       "totalGames": 13,
-      "completedGames": 0,
+      "completedGames": 1,
       "pendingGames": [
-        "2026_11_IND_HOU",
         "2026_11_ARI_KC",
         "2026_11_BAL_CAR",
         "2026_11_JAX_NYG",
@@ -78741,62 +78187,24 @@
         "2026_11_CIN_WAS"
       ],
       "awaitingFeeds": {
-        "qbs": [],
-        "receiving": [],
-        "kicking": []
+        "qbs": [
+          "2026_11_IND_HOU"
+        ],
+        "receiving": [
+          "2026_11_IND_HOU"
+        ],
+        "kicking": [
+          "2026_11_IND_HOU"
+        ]
       },
       "events": [
-        {
-          "id": "00-0034383:2022_07_DET_DAL:2026_11_IND_HOU",
-          "category": "receiving",
-          "kind": "streak",
-          "team": "HOU",
-          "title": "Dalton Schultz: 69 straight appearances with a catch",
-          "detail": "Run began 2022-10-23. Last verified 2026-11-15.",
-          "unit": "games",
-          "href": "/nfl/receiving-streaks.html",
-          "game": "2026_11_IND_HOU",
-          "date": "2026-11-19",
-          "season": 2026,
-          "week": 11,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 69,
-          "after": null,
-          "value": 69,
-          "action": "A catch in his next appearance makes it 70. A zero-catch appearance ends it; missed games do not.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-16"
-        },
-        {
-          "id": "00-0036554:2021_14_SEA_HOU:2026_11_IND_HOU",
-          "category": "receiving",
-          "kind": "streak",
-          "team": "HOU",
-          "title": "Nico Collins: 64 straight appearances with a catch",
-          "detail": "Run began 2021-12-12. Last verified 2026-11-15.",
-          "unit": "games",
-          "href": "/nfl/receiving-streaks.html",
-          "game": "2026_11_IND_HOU",
-          "date": "2026-11-19",
-          "season": 2026,
-          "week": 11,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 64,
-          "after": null,
-          "value": 64,
-          "action": "A catch in his next appearance makes it 65. A zero-catch appearance ends it; missed games do not.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-16"
-        },
         {
           "id": "away:IND:losses:2026_11_IND_HOU",
           "category": "team",
           "kind": "drought",
           "team": "IND",
           "opponent": "HOU",
-          "title": "Colts: 9 straight losses on the road",
+          "title": "Colts: 10 straight losses on the road",
           "detail": "Run began 2025-11-02.",
           "unit": "games",
           "href": "/nfl/what-to-watch.html#method",
@@ -78805,22 +78213,23 @@
           "season": 2026,
           "week": 11,
           "gameType": "REG",
-          "status": "pending",
+          "status": "continued",
           "before": 9,
-          "after": null,
-          "value": 9,
-          "action": "A win or tie ends the losing streak.",
+          "after": 10,
+          "value": 10,
+          "action": "A loss kept the drought going: 9 → 10 games.",
           "newlyNoteworthy": false,
           "drought": {
             "since": "2025-10-19",
             "through": "2026-11-19",
             "elapsed": "1 year, 1 month",
             "days": 396,
-            "count": 9,
+            "count": 10,
             "unit": "losses",
             "anchor": "since last win",
             "lowerBound": false
-          }
+          },
+          "sourceThrough": "2026-11-19"
         },
         {
           "id": "00-0030506:2014_01_TEN_KC:2026_11_ARI_KC",
@@ -79786,9 +79195,9 @@
         }
       ],
       "counts": {
-        "continued": 0,
+        "continued": 1,
         "ended": 0,
-        "pending": 44
+        "pending": 41
       }
     }
   ],
@@ -79800,6 +79209,6 @@
     "receiving": "/data/receiving-streaks.json",
     "kicking": "/data/kicking.json"
   },
-  "sourceHash": "b5cd3568d31a46c333a1b22fde4221a1497309cfec2eade57222326fa36ee3ee",
-  "checkedAt": "2026-11-17T16:21:37.290Z"
+  "sourceHash": "46adde330944011ca477eb0a8489a8cf678c778c5861538ffddc599310117783",
+  "checkedAt": "2026-11-20T06:57:57.715Z"
 }
