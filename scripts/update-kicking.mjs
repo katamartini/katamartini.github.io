@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { createGunzip } from 'node:zlib';
 import { parseCsv, currentRoster, normalizeName, normalizeTeam } from '../nfl/franchise-leaders-data.mjs';
-import { FIRST_SEASON, KICK_COLUMNS, readProjectedCsv, kickFromPlay, calculateKickingStreaks } from '../nfl/kicking-data.mjs';
+import { FIRST_SEASON, KICK_COLUMNS, readProjectedCsv, kickFromPlay, resolveHistoricalKicks, calculateKickingStreaks } from '../nfl/kicking-data.mjs';
 import { historicalKicks } from '../nfl/kicking-history.mjs';
 import { mergeHistoricalStreaks } from '../nfl/kicking-archive.mjs';
 import { playerStreakContext } from '../nfl/streak-context.mjs';
@@ -48,9 +48,17 @@ for (let year = FIRST_SEASON; year <= season; year++) {
     const stream = Readable.fromWeb(response.body).pipe(createGunzip());
     stream.setEncoding('utf8');
     await readProjectedCsv(stream, KICK_COLUMNS, row => { const kick = kickFromPlay(row); if (kick) kicks.push(kick); });
-    if (year < season && kicks.length < 1500) throw new Error(`Incomplete historical season: ${year}`);
-    await writeFile(cacheFile, JSON.stringify({ schemaVersion: 1, etag: response.headers.get('etag'), attempts: kicks }));
-    console.log(`${year}: downloaded ${kicks.length} kicks`);
+    const downloadedCount = kicks.length;
+    const selected = year < season ? resolveHistoricalKicks(year, kicks, cache) : { attempts: kicks, usedCache: false };
+    kicks = selected.attempts;
+    if (selected.usedCache) {
+      // Keep the previously validated bytes and ETag so the bad source is never
+      // cached as valid and a later upstream correction is still picked up.
+      console.warn(`${year}: rejected incomplete download (${downloadedCount} kicks); using ${kicks.length} previously validated cached kicks`);
+    } else {
+      await writeFile(cacheFile, JSON.stringify({ schemaVersion: 1, etag: response.headers.get('etag'), attempts: kicks }));
+      console.log(`${year}: downloaded ${kicks.length} kicks`);
+    }
   }
   attempts.push(...kicks);
   for (const kick of kicks) {

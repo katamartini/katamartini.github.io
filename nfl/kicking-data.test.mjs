@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { KICKING_VIEWS, calculateKickingStreaks, kickingView, kickFromPlay, readProjectedCsv } from './kicking-data.mjs';
+import { KICKING_VIEWS, calculateKickingStreaks, kickingView, kickFromPlay, readProjectedCsv, resolveHistoricalKicks } from './kicking-data.mjs';
 import { HISTORICAL_GAMES, historicalKicks } from './kicking-history.mjs';
 import { HISTORICAL_STREAKS, mergeHistoricalStreaks } from './kicking-archive.mjs';
 
@@ -38,6 +38,27 @@ test('only official regular-season kicks count; blocked and failed kicks break s
   assert.throws(() => kickFromPlay({ ...row, kicker_player_id: '' }), /Incomplete/);
   assert.equal(kickFromPlay({ ...row, field_goal_attempt: '0', extra_point_attempt: '1', extra_point_result: 'good' }).made, true);
   assert.equal(kickFromPlay({ ...row, field_goal_attempt: '0', extra_point_attempt: '1', extra_point_result: 'failed' }).made, false);
+});
+
+test('incomplete 2003 download uses only a valid prior cache; good downloads and other seasons keep their existing behavior', () => {
+  const shortDownload = Array.from({ length: 951 }, (_, i) => kick(i, 'FG', true, {
+    season: 2003, game: '2003_01_KC_SD', date: '2003-09-07'
+  }));
+  // Synthetic rows: no claim to reproduce the historical attempts.
+  const attempts = Array.from({ length: 2058 }, (_, i) => ({ ...shortDownload[0], play: i,
+    type: i < 950 ? 'FG' : 'XP' }));
+  const cache = { schemaVersion: 1, etag: 'last-good', attempts };
+  assert.deepEqual(resolveHistoricalKicks(2003, shortDownload, cache), { attempts, usedCache: true });
+  const goodDownload = attempts.slice(0, 2050);
+  assert.deepEqual(resolveHistoricalKicks(2003, goodDownload, cache), { attempts: goodDownload, usedCache: false });
+  assert.throws(() => resolveHistoricalKicks(2002, shortDownload, cache), /2002.*951.*1500/);
+  for (const invalid of [null, { ...cache, schemaVersion: 2 }, { ...cache, attempts: shortDownload },
+    { ...cache, attempts: attempts.slice(0, 1499) },
+    { ...cache, attempts: attempts.map(row => ({ ...row, type: 'FG' })) },
+    { ...cache, attempts: [{ ...attempts[0], season: 2002 }, ...attempts.slice(1)] },
+    { ...cache, attempts: [attempts[1], ...attempts.slice(1)] }]) {
+    assert.throws(() => resolveHistoricalKicks(2003, shortDownload, invalid), /no valid prior 2003 cache/);
+  }
 });
 
 test('FG view ignores extra-point misses; combined view counts both kick types in order', () => {
