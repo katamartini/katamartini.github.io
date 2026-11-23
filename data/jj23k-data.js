@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 11,
-  "sourceHash": "3e11382277740f77a9df40000bc44245f3e0bfd9bf1269c2637648be818fbfb1",
+  "sourceHash": "a02336c5d5c5a01ba3e77c420200734e2baef8db879af13244f0e8dbce051581",
   "careerYards": [
     0,
     26,
@@ -107,7 +107,8 @@ window.JJ23K_DATA = {
     8782,
     8815,
     8873,
-    8947
+    8947,
+    9033
   ],
   "leaders": [
     [
@@ -273,21 +274,21 @@ window.JJ23K_DATA = {
     [
       17,
       "Travis Kelce",
-      13514,
-      1115,
+      13588,
+      1121,
       12.1,
-      84,
-      512,
+      86,
+      586,
       6
     ],
     [
       18,
       "Mike Evans",
-      13472,
-      893,
+      13581,
+      899,
       15.1,
-      111,
-      420,
+      112,
+      529,
       3
     ],
     [
@@ -373,11 +374,11 @@ window.JJ23K_DATA = {
     [
       27,
       "Keenan Allen",
-      12463,
-      1100,
+      12501,
+      1103,
       11.3,
       71,
-      412,
+      450,
       6
     ],
     [
@@ -852,6 +853,16 @@ window.JJ23K_DATA = {
     ],
     [
       75,
+      "Justin Jefferson",
+      9033,
+      626,
+      14.4,
+      46,
+      553,
+      23
+    ],
+    [
+      76,
       "Harold Carmichael",
       8985,
       590,
@@ -861,7 +872,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      76,
+      77,
       "Mark Clayton",
       8974,
       582,
@@ -871,7 +882,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      77,
+      78,
       "Fred Biletnikoff",
       8974,
       589,
@@ -881,7 +892,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      78,
+      79,
       "Wes Chandler",
       8966,
       559,
@@ -891,7 +902,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      79,
+      80,
       "Roy Green",
       8965,
       559,
@@ -899,16 +910,6 @@ window.JJ23K_DATA = {
       66,
       null,
       null
-    ],
-    [
-      80,
-      "Justin Jefferson",
-      8947,
-      619,
-      14.5,
-      46,
-      467,
-      18
     ],
     [
       81,
@@ -1022,26 +1023,36 @@ window.JJ23K_DATA = {
     ],
     [
       92,
+      "DJ Moore",
+      8679,
+      639,
+      13.6,
+      45,
+      466,
+      13
+    ],
+    [
+      93,
       "Cooper Kupp",
       8641,
       704,
       12.3,
       62,
       272,
-      9
+      8
     ],
     [
-      93,
+      94,
       "Zach Ertz",
       8614,
       828,
       10.4,
       57,
       22,
-      -1
+      -2
     ],
     [
-      94,
+      95,
       "Laveranues Coles",
       8609,
       674,
@@ -1051,17 +1062,17 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      95,
-      "DJ Moore",
-      8588,
-      631,
-      13.6,
-      44,
-      375,
-      10
+      96,
+      "George Kittle",
+      8599,
+      642,
+      13.4,
+      59,
+      591,
+      12
     ],
     [
-      96,
+      97,
       "Jordy Nelson",
       8587,
       613,
@@ -1071,7 +1082,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      97,
+      98,
       "Paul Warfield",
       8565,
       427,
@@ -1079,16 +1090,6 @@ window.JJ23K_DATA = {
       85,
       null,
       null
-    ],
-    [
-      98,
-      "George Kittle",
-      8565,
-      639,
-      13.4,
-      57,
-      557,
-      10
     ],
     [
       99,
@@ -1102,13 +1103,13 @@ window.JJ23K_DATA = {
     ],
     [
       100,
-      "Plaxico Burress",
-      8499,
-      553,
-      15.4,
-      64,
-      null,
-      null
+      "CeeDee Lamb",
+      8524,
+      659,
+      12.9,
+      50,
+      1108,
+      19
     ]
   ]
 };
