@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 11,
-  "sourceHash": "a02336c5d5c5a01ba3e77c420200734e2baef8db879af13244f0e8dbce051581",
+  "sourceHash": "dce6e5a6e3aeaa490f4fb51a3b394fe027ee714d283f5d06d8019bb268e444f4",
   "careerYards": [
     0,
     26,
@@ -443,6 +443,16 @@ window.JJ23K_DATA = {
     ],
     [
       34,
+      "Stefon Diggs",
+      11935,
+      982,
+      12.2,
+      80,
+      431,
+      4
+    ],
+    [
+      35,
       "Michael Irvin",
       11904,
       750,
@@ -450,16 +460,6 @@ window.JJ23K_DATA = {
       65,
       null,
       null
-    ],
-    [
-      35,
-      "Stefon Diggs",
-      11890,
-      978,
-      12.2,
-      80,
-      386,
-      3
     ],
     [
       36,
