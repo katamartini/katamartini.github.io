@@ -1,8 +1,114 @@
 {
   "version": 2,
-  "savedAt": "2026-11-24T15:41:53.424Z",
-  "dataUpdatedAt": "2026-11-24T15:41:52.486Z",
+  "savedAt": "2026-11-24T18:46:00.075Z",
+  "dataUpdatedAt": "2026-11-24T18:45:59.107Z",
   "shows": [
+    {
+      "id": 67367,
+      "tvmazeUrl": "https://www.tvmaze.com/shows/67367/jury-duty",
+      "name": "Jury Duty",
+      "status": "watching",
+      "network": "Prime Video",
+      "premiere": "2023-04-07",
+      "ended": "2023-04-21",
+      "image": "https://static.tvmaze.com/uploads/images/original_untouched/619/1547538.jpg",
+      "genres": [
+        "Comedy",
+        "Legal"
+      ],
+      "summary": "Jury Duty chronicles the inner workings of an American jury trial through the eyes of one particular juror, Ronald Gladden. Gladden is unaware the entire case is fake, everyone except him is an actor, including Marsden, and everything that happens — inside the courtroom and out — is carefully planned.",
+      "episodes": [
+        {
+          "id": 2501221,
+          "season": 1,
+          "number": 1,
+          "name": "Voir Dire",
+          "airdate": "2023-04-07",
+          "runtime": 26,
+          "rating": 7.2,
+          "summary": "Ronald Gladden arrives for jury selection, unaware that an entirely fictional court case has been created just for him. "
+        },
+        {
+          "id": 2501222,
+          "season": 1,
+          "number": 2,
+          "name": "Opening Arguments",
+          "airdate": "2023-04-07",
+          "runtime": 29,
+          "rating": 7.3,
+          "summary": "Ronald and other jurors move into their hotel and adjust to sequestered life."
+        },
+        {
+          "id": 2501223,
+          "season": 1,
+          "number": 3,
+          "name": "Foreperson",
+          "airdate": "2023-04-07",
+          "runtime": 29,
+          "rating": 7.2,
+          "summary": "The jurors' eccentric behavior presents a challenge for Ronald as their newly-appointed foreperson."
+        },
+        {
+          "id": 2501224,
+          "season": 1,
+          "number": 4,
+          "name": "Field Trip",
+          "airdate": "2023-04-07",
+          "runtime": 27,
+          "rating": 7.3,
+          "summary": "A suspicious discovery during a surprise field trip to the scene of the incident sheds new light on the case."
+        },
+        {
+          "id": 2501225,
+          "season": 1,
+          "number": 5,
+          "name": "Ineffective Assistance",
+          "airdate": "2023-04-14",
+          "runtime": 30,
+          "rating": 7.3,
+          "summary": "Things go from bad to worse for the defendant."
+        },
+        {
+          "id": 2501226,
+          "season": 1,
+          "number": 6,
+          "name": "Closing Arguments",
+          "airdate": "2023-04-14",
+          "runtime": 30,
+          "rating": 7.3,
+          "summary": "The defense is on the ropes after a series of questionable strategic moves and Ken is in a bind after teaching Ronald to play a Korean board game."
+        },
+        {
+          "id": 2501227,
+          "season": 1,
+          "number": 7,
+          "name": "Deliberations",
+          "airdate": "2023-04-21",
+          "runtime": 28,
+          "rating": 7.7,
+          "summary": "As the foreperson, it's up to Ronald to lead the jury through deliberations and arrive at a unanimous verdict. "
+        },
+        {
+          "id": 2501228,
+          "season": 1,
+          "number": 8,
+          "name": "The Verdict",
+          "airdate": "2023-04-21",
+          "runtime": 30,
+          "rating": 7.3,
+          "summary": "After delivering the verdict, Ronald finds out that another trial was being held in this court and another verdict has been reached."
+        }
+      ],
+      "watched": {},
+      "autoFinished": false,
+      "pinned": false,
+      "watchBaseUrl": "",
+      "imdbId": "tt22074164",
+      "ratingBackfilledAt": "2026-11-24T18:45:59.106Z",
+      "lastWatchedAt": "",
+      "addedAt": "2026-11-24T18:45:59.106Z",
+      "updatedAt": "2026-11-24T18:45:59.106Z"
+    },
     {
       "id": 73519,
       "tvmazeUrl": "https://www.tvmaze.com/shows/73519/vivant",
@@ -27927,7 +28033,7 @@
       "updatedAt": "2026-07-12T16:05:29.121Z"
     }
   ],
-  "selectedId": 73519,
+  "selectedId": 67367,
   "libraryFilter": "active",
   "sortMode": "progress",
   "sortDirection": "asc",
