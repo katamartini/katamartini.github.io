@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": "2026-11-24T15:42:29.612Z",
+  "generatedAt": "2026-11-24T18:46:37.526Z",
   "source": "IMDb non-commercial datasets + TVMaze show IMDb IDs",
   "shows": {
     "118": {
@@ -14660,6 +14660,62 @@
           "rating": 9,
           "votes": 8327,
           "runtime": 50
+        }
+      }
+    },
+    "67367": {
+      "name": "Jury Duty",
+      "imdbId": "tt22074164",
+      "matchedEpisodes": 8,
+      "knownImdbEpisodes": 19,
+      "episodes": {
+        "1:1": {
+          "imdbId": "tt27047640",
+          "rating": 7.6,
+          "votes": 1775,
+          "runtime": 26
+        },
+        "1:2": {
+          "imdbId": "tt27390263",
+          "rating": 7.7,
+          "votes": 1551,
+          "runtime": 29
+        },
+        "1:3": {
+          "imdbId": "tt27360694",
+          "rating": 7.8,
+          "votes": 1476,
+          "runtime": 29
+        },
+        "1:4": {
+          "imdbId": "tt27390288",
+          "rating": 8,
+          "votes": 1446,
+          "runtime": 27
+        },
+        "1:5": {
+          "imdbId": "tt27390343",
+          "rating": 7.8,
+          "votes": 1352,
+          "runtime": 30
+        },
+        "1:6": {
+          "imdbId": "tt27390358",
+          "rating": 7.8,
+          "votes": 1282,
+          "runtime": 30
+        },
+        "1:7": {
+          "imdbId": "tt27390359",
+          "rating": 8.2,
+          "votes": 1306,
+          "runtime": 28
+        },
+        "1:8": {
+          "imdbId": "tt27390365",
+          "rating": 8.9,
+          "votes": 2036,
+          "runtime": 30
         }
       }
     },
