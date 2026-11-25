@@ -616,7 +616,8 @@
     }
 
     .lifetime-panel,
-    .theoretical-panel {
+    .theoretical-panel,
+    .personal-best-panel {
       margin-top: 14px;
       padding: 22px;
     }
@@ -889,6 +890,22 @@
       min-height: 250px;
     }
 
+    .personal-best-chart-wrap {
+      min-height: 0;
+    }
+
+    @media (max-width: 680px) {
+      #personalBestGrid .chart-grid-label {
+        font-size: 18px;
+      }
+    }
+
+    .personal-best-panel .personal-best-current {
+      color: var(--orange);
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
     .trend-chart {
       display: block;
       width: 100%;
@@ -1016,6 +1033,27 @@
       flex-wrap: wrap;
       gap: 8px;
       margin: -5px 0 14px;
+    }
+
+    .chart-run-overlays {
+      margin: 0 0 14px;
+    }
+
+    .chart-run-overlays summary {
+      width: fit-content;
+      min-height: 28px;
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .chart-run-overlays summary::marker {
+      color: var(--orange);
+    }
+
+    .chart-run-overlays .chart-overlay-controls {
+      margin: 4px 0 0;
     }
 
     .chart-overlay-label {
@@ -2349,12 +2387,34 @@
         <p class="chart-note" id="lifetimeChartNote">The legacy total provides the starting point, followed by every fully logged shot.</p>
           </section>
 
+          <section class="personal-best-panel panel" aria-labelledby="personalBestHeading">
+            <div class="panel-title">
+              <h2 id="personalBestHeading">Personal best progression</h2>
+              <span class="personal-best-current" id="personalBestCurrent"></span>
+            </div>
+            <div class="chart-wrap personal-best-chart-wrap">
+              <svg class="trend-chart" id="personalBestChart" viewBox="0 0 700 230"
+                role="img" aria-labelledby="personalBestTitle personalBestDescription">
+                <title id="personalBestTitle">Best single-run free throw percentage over time</title>
+                <desc id="personalBestDescription"></desc>
+                <g id="personalBestGrid"></g>
+                <path class="chart-line" id="personalBestLine"></path>
+                <g id="personalBestPoints"></g>
+              </svg>
+            </div>
+            <p class="chart-note">The line holds at your best single-run percentage until you beat it. Tap or hover for the run and its makes and attempts.</p>
+          </section>
+
           <section class="theoretical-panel panel">
         <div class="panel-title">
           <h2>Cumulative makes</h2>
           <span id="theoreticalChartScope">Best through X</span>
         </div>
-        <div class="chart-overlay-controls" id="theoreticalRunControls" role="group" aria-label="Chart series and run overlays"></div>
+        <div class="chart-overlay-controls" id="theoreticalRunControls" role="group" aria-label="Chart series"></div>
+        <details class="chart-run-overlays">
+          <summary>Individual runs</summary>
+          <div class="chart-overlay-controls" id="theoreticalIndividualRunControls" role="group" aria-label="Individual run overlays"></div>
+        </details>
         <div class="chart-wrap">
           <svg
             class="trend-chart"
@@ -2663,6 +2723,12 @@
         recentChange: document.querySelector("#recentChange"),
         bestRun: document.querySelector("#bestRun"),
         bestRunDate: document.querySelector("#bestRunDate"),
+        personalBestChart: document.querySelector("#personalBestChart"),
+        personalBestCurrent: document.querySelector("#personalBestCurrent"),
+        personalBestDescription: document.querySelector("#personalBestDescription"),
+        personalBestGrid: document.querySelector("#personalBestGrid"),
+        personalBestLine: document.querySelector("#personalBestLine"),
+        personalBestPoints: document.querySelector("#personalBestPoints"),
         trendChart: document.querySelector("#trendChart"),
         trendChartTitle: document.querySelector("#trendChartTitle"),
         trendView: document.querySelector("#trendView"),
@@ -2701,6 +2767,7 @@
         theoreticalChartDescription: document.querySelector("#theoreticalChartDescription"),
         theoreticalChartScope: document.querySelector("#theoreticalChartScope"),
         theoreticalRunControls: document.querySelector("#theoreticalRunControls"),
+        theoreticalIndividualRunControls: document.querySelector("#theoreticalIndividualRunControls"),
         theoreticalChartGrid: document.querySelector("#theoreticalChartGrid"),
         theoreticalChartOverlays: document.querySelector("#theoreticalChartOverlays"),
         theoreticalChartLine: document.querySelector("#theoreticalChartLine"),
@@ -3672,6 +3739,82 @@
           chart.removeEventListener("pointerleave", hide);
           window.removeEventListener("scroll", hide, true);
         };
+      }
+
+      function renderPersonalBest() {
+        const runs = chronologicalRuns();
+        const records = [];
+        let best = null;
+        const frames = runs.map((run, index) => {
+          const summary = runSummary(run);
+          const runNumber = index + 1;
+          if (!best || summary.makes * best.attempts > best.makes * summary.attempts) {
+            best = { ...summary, run, runNumber };
+            records.push(best);
+          }
+          return { runNumber, run, best };
+        });
+
+        const width = 700;
+        const height = 230;
+        const left = 49;
+        const right = width - 16;
+        const top = 16;
+        const bottom = height - 30;
+        const yMin = Math.max(0, Math.floor((records[0].percentage - 5) / 10) * 10);
+        const yMax = Math.min(100, Math.ceil((best.percentage + 5) / 10) * 10);
+        const xPosition = (number) => runs.length === 1
+          ? (left + right) / 2
+          : left + ((number - 1) / (runs.length - 1)) * (right - left);
+        const yPosition = (percentage) => top + (yMax - percentage) / (yMax - yMin) * (bottom - top);
+
+        elements.personalBestGrid.replaceChildren();
+        const tickStep = yMax - yMin > 60 ? 20 : 10;
+        const ticks = [yMin];
+        for (let value = yMin + tickStep; value < yMax; value += tickStep) ticks.push(value);
+        ticks.push(yMax);
+        for (const value of ticks) {
+          const y = yPosition(value);
+          const label = svgElement("text", { class: "chart-grid-label", x: left - 9, y: y + 4, "text-anchor": "end" });
+          label.textContent = `${value}%`;
+          elements.personalBestGrid.append(
+            svgElement("line", { class: "chart-grid-line", x1: left, x2: right, y1: y, y2: y }), label
+          );
+        }
+        const runLabels = runs.length === 1 ? [[1, "middle"]] : [[1, "start"], [runs.length, "end"]];
+        for (const [number, anchor] of runLabels) {
+          const label = svgElement("text", {
+            class: "chart-grid-label", x: xPosition(number), y: height - 9, "text-anchor": anchor
+          });
+          label.textContent = `Run ${number}`;
+          elements.personalBestGrid.append(label);
+        }
+
+        const start = records[0];
+        const steps = records.slice(1).map((record) => `H ${xPosition(record.runNumber)} V ${yPosition(record.percentage)}`);
+        elements.personalBestLine.setAttribute("d",
+          `M ${xPosition(1)} ${yPosition(start.percentage)} ${steps.join(" ")} H ${xPosition(runs.length)}`);
+        const describeRecord = (record) =>
+          `Run ${record.runNumber}, ${formatDate(record.run.date)}: ${formatPercentage(record.percentage)} (${record.makes}/${record.attempts} made)`;
+        const markers = records.map((record) => {
+          const point = svgElement("circle", {
+            class: "chart-point", cx: xPosition(record.runNumber), cy: yPosition(record.percentage), r: 5
+          });
+          const title = svgElement("title");
+          title.textContent = describeRecord(record);
+          point.append(title);
+          return point;
+        });
+        elements.personalBestPoints.replaceChildren(...markers);
+        elements.personalBestCurrent.textContent = `${formatPercentage(best.percentage)} best`;
+        elements.personalBestDescription.textContent = `Best-so-far shooting percentage by run. ${records.map(describeRecord).join("; ")}.`;
+        attachChartReadout(elements.personalBestChart, frames.map((frame) => ({
+          x: xPosition(frame.runNumber),
+          label: `Run ${frame.runNumber} · ${formatDate(frame.run.date)}`,
+          values: [{ text: frame.runNumber === frame.best.runNumber
+            ? `New best: ${formatPercentage(frame.best.percentage)} · ${frame.best.makes}/${frame.best.attempts} made`
+            : `Best so far: ${formatPercentage(frame.best.percentage)} · Run ${frame.best.runNumber} (${frame.best.makes}/${frame.best.attempts} made)` }]
+        })), top, bottom);
       }
 
       function renderTrend() {
@@ -4670,6 +4813,7 @@
         if (selectionChanged) saveTheoreticalOverlayIds();
 
         elements.theoreticalRunControls.replaceChildren();
+        elements.theoreticalIndividualRunControls.replaceChildren();
         const label = document.createElement("span");
         label.className = "chart-overlay-label";
         label.textContent = "Show";
@@ -4789,7 +4933,7 @@
           });
 
           option.append(input, swatch, text, format);
-          elements.theoreticalRunControls.appendChild(option);
+          elements.theoreticalIndividualRunControls.appendChild(option);
         });
       }
 
@@ -5379,6 +5523,7 @@
 
         renderOverview();
         renderLifetimeTrend();
+        renderPersonalBest();
         renderTrend();
         renderBlocks();
         renderCheckpoints();
