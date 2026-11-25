@@ -2402,7 +2402,7 @@
                 <g id="personalBestPoints"></g>
               </svg>
             </div>
-            <p class="chart-note">The line holds at your best single-run percentage until you beat it. Tap or hover for the run and its makes and attempts.</p>
+            <p class="chart-note">The line holds at your best single-run percentage until you beat it. Tap or hover over a record marker for the run and its makes and attempts.</p>
           </section>
 
           <section class="theoretical-panel panel">
@@ -3693,8 +3693,9 @@
       chartTooltip.setAttribute("role", "tooltip");
       document.body.appendChild(chartTooltip);
 
-      function attachChartReadout(chart, frames, top, bottom) {
+      function attachChartReadout(chart, frames, top, bottom, { markersOnly = false } = {}) {
         if (chart.readoutCleanup) chart.readoutCleanup();
+        const markerFrames = markersOnly ? new Map(frames.map((frame) => [frame.marker, frame])) : null;
         const guide = svgElement("line", { class: "chart-crosshair", y1: top, y2: bottom });
         guide.style.display = "none";
         chart.appendChild(guide);
@@ -3703,12 +3704,18 @@
           guide.style.display = "none";
         };
         const move = (event) => {
-          const matrix = chart.getScreenCTM();
-          if (!matrix || !frames.length) return hide();
-          const local = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
-          if (local.y < top || local.y > bottom || local.x < frames[0].x - 8 || local.x > frames.at(-1).x + 8) return hide();
-          const nearest = frames.reduce((best, frame) =>
-            Math.abs(frame.x - local.x) < Math.abs(best.x - local.x) ? frame : best);
+          let nearest;
+          if (markerFrames) {
+            nearest = markerFrames.get(event.target);
+            if (!nearest) return hide();
+          } else {
+            const matrix = chart.getScreenCTM();
+            if (!matrix || !frames.length) return hide();
+            const local = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
+            if (local.y < top || local.y > bottom || local.x < frames[0].x - 8 || local.x > frames.at(-1).x + 8) return hide();
+            nearest = frames.reduce((best, frame) =>
+              Math.abs(frame.x - local.x) < Math.abs(best.x - local.x) ? frame : best);
+          }
           guide.setAttribute("x1", nearest.x);
           guide.setAttribute("x2", nearest.x);
           guide.style.display = "";
@@ -3745,14 +3752,13 @@
         const runs = chronologicalRuns();
         const records = [];
         let best = null;
-        const frames = runs.map((run, index) => {
+        runs.forEach((run, index) => {
           const summary = runSummary(run);
           const runNumber = index + 1;
           if (!best || summary.makes * best.attempts > best.makes * summary.attempts) {
             best = { ...summary, run, runNumber };
             records.push(best);
           }
-          return { runNumber, run, best };
         });
 
         const width = 700;
@@ -3808,13 +3814,12 @@
         elements.personalBestPoints.replaceChildren(...markers);
         elements.personalBestCurrent.textContent = `${formatPercentage(best.percentage)} best`;
         elements.personalBestDescription.textContent = `Best-so-far shooting percentage by run. ${records.map(describeRecord).join("; ")}.`;
-        attachChartReadout(elements.personalBestChart, frames.map((frame) => ({
-          x: xPosition(frame.runNumber),
-          label: `Run ${frame.runNumber} · ${formatDate(frame.run.date)}`,
-          values: [{ text: frame.runNumber === frame.best.runNumber
-            ? `New best: ${formatPercentage(frame.best.percentage)} · ${frame.best.makes}/${frame.best.attempts} made`
-            : `Best so far: ${formatPercentage(frame.best.percentage)} · Run ${frame.best.runNumber} (${frame.best.makes}/${frame.best.attempts} made)` }]
-        })), top, bottom);
+        attachChartReadout(elements.personalBestChart, records.map((record, index) => ({
+          marker: markers[index],
+          x: xPosition(record.runNumber),
+          label: `Run ${record.runNumber} · ${formatDate(record.run.date)}`,
+          values: [{ text: `New best: ${formatPercentage(record.percentage)} · ${record.makes}/${record.attempts} made` }]
+        })), top, bottom, { markersOnly: true });
       }
 
       function renderTrend() {
