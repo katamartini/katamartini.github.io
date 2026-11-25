@@ -686,17 +686,24 @@
       text-align: right;
     }
 
+    .trend-view-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      grid-column: 1 / -1;
+    }
+
     .trend-view-field {
       display: flex;
       align-items: center;
       gap: 8px;
-      grid-column: 1 / -1;
       color: var(--muted);
       font-size: 0.78rem;
       font-weight: 750;
     }
 
-    .trend-view-field select {
+    .trend-view-field select,
+    .trend-view-field input {
       max-width: 100%;
       min-width: 0;
       min-height: 36px;
@@ -706,6 +713,18 @@
       background: #11161d;
       color: var(--text);
       font: inherit;
+    }
+
+    .trend-view-field input {
+      width: 72px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .trend-window-error {
+      flex-basis: 100%;
+      margin: 0;
+      color: var(--red);
+      font-size: 0.78rem;
     }
 
     .lifetime-range-controls {
@@ -2366,13 +2385,20 @@
             <span id="trendChartScope">All runs</span>
           </div>
           <div class="trend-range-controls" aria-label="Run trend range">
-            <label class="trend-view-field" for="trendView">
-              <span>View</span>
-              <select id="trendView">
-                <option value="per-run">Individual runs</option>
-                <option value="rolling-4">4-run rolling average</option>
-              </select>
-            </label>
+            <div class="trend-view-controls">
+              <label class="trend-view-field" for="trendView">
+                <span>View</span>
+                <select id="trendView">
+                  <option value="per-run">Individual runs</option>
+                  <option value="rolling">Rolling average</option>
+                </select>
+              </label>
+              <label class="trend-view-field" id="trendWindowField" for="trendWindowSize" hidden>
+                <span>Runs in average</span>
+                <input id="trendWindowSize" type="number" min="1" step="1" value="4" inputmode="numeric" required aria-describedby="trendWindowError">
+              </label>
+              <p class="trend-window-error" id="trendWindowError" role="status" hidden></p>
+            </div>
             <label class="trend-range-field" for="trendStartRange">
               <span>From</span>
               <input id="trendStartRange" type="range" min="1" max="1" value="1">
@@ -2408,7 +2434,7 @@
             </svg>
             <p class="chart-empty" id="chartEmpty" hidden>Select at least two runs to see a trend line.</p>
           </div>
-          <p class="chart-note" id="trendViewNote" hidden>Each point averages that run and the previous three, with equal weight per run. The selected range only changes which points you see.</p>
+          <p class="chart-note" id="trendViewNote" hidden>Each point averages the selected number of runs ending at that point, with equal weight per run. The selected range only changes which points you see.</p>
           <p class="chart-note">The Y-axis spans 40–80%. Values outside that range sit at the chart edge; hover for the exact percentage.</p>
         </article>
 
@@ -2640,6 +2666,9 @@
         trendChart: document.querySelector("#trendChart"),
         trendChartTitle: document.querySelector("#trendChartTitle"),
         trendView: document.querySelector("#trendView"),
+        trendWindowField: document.querySelector("#trendWindowField"),
+        trendWindowSize: document.querySelector("#trendWindowSize"),
+        trendWindowError: document.querySelector("#trendWindowError"),
         trendViewNote: document.querySelector("#trendViewNote"),
         trendChartDescription: document.querySelector("#trendChartDescription"),
         trendChartScope: document.querySelector("#trendChartScope"),
@@ -2737,6 +2766,7 @@
       let allRunsSort = { key: "number", direction: "asc" };
       let activeDashboardTab = dashboardTabFromHash(location.hash) || "overview";
       let trendRange = { start: null, end: null };
+      let trendWindowSize = Number(elements.trendWindowSize.value);
       let lifetimeYRange = loadLifetimeYRange();
       const selectedTheoreticalRunIds = loadTheoreticalOverlayIds();
       let bestThroughVisible = loadChartVisibility(BEST_THROUGH_VISIBLE_KEY);
@@ -3650,8 +3680,8 @@
         const start = Math.max(1, Math.min(Number(trendRange.start) || 1, totalRuns || 1));
         const end = Math.max(start, Math.min(Number(trendRange.end) || totalRuns || 1, totalRuns || 1));
         const visibleRuns = allRuns.slice(start - 1, end);
-        const rolling = elements.trendView.value === "rolling-4";
-        const windowSize = 4;
+        const rolling = elements.trendView.value === "rolling";
+        const windowSize = trendWindowSize;
         const history = rolling ? allRuns.map(runSummary) : [];
         const values = visibleRuns.map((run, index) => {
           if (!rolling) return runSummary(run).percentage;
@@ -3661,8 +3691,10 @@
           return window.reduce((sum, summary) => sum + summary.percentage, 0) / windowSize;
         });
         elements.trendViewNote.hidden = !rolling;
+        elements.trendWindowField.hidden = !rolling;
+        elements.trendWindowError.hidden = !rolling || !elements.trendWindowError.textContent;
         elements.trendChartTitle.textContent = rolling
-          ? "Four-run rolling average free throw percentage"
+          ? `${windowSize}-run rolling average free throw percentage`
           : "Free throw percentage by run";
         const width = 700;
         const height = 260;
@@ -3765,8 +3797,8 @@
         elements.chartEmpty.hidden = points.length >= (rolling ? 1 : 2);
         elements.chartEmpty.textContent = rolling
           ? (totalRuns < windowSize
-            ? "Import at least four runs to see a rolling average."
-            : "Include Run 4 or later to see a rolling average.")
+            ? `This average needs ${windowSize} runs. You have ${totalRuns}.`
+            : `Include Run ${windowSize} or later to see a rolling average.`)
           : (totalRuns < 2
             ? "Import a second run to see a trend line."
             : "Widen the range to at least two runs to see a trend line.");
@@ -3776,7 +3808,7 @@
             x: point.x,
             label: `Run ${point.runNumber} · ${formatDate(point.run.date)}`,
             values: [{ text: rolling
-              ? `${formatPercentage(point.value)} average · Runs ${point.runNumber - windowSize + 1}–${point.runNumber}`
+              ? `${formatPercentage(point.value)} average${windowSize > 1 ? ` · Runs ${point.runNumber - windowSize + 1}–${point.runNumber}` : ""}`
               : `${formatPercentage(point.value)} · ${summary.makes}/${summary.attempts} made` }]
           };
         }), padding.top, padding.top + chartHeight);
@@ -5398,6 +5430,19 @@
         });
       });
       elements.trendView.addEventListener("change", renderTrend);
+      elements.trendWindowSize.addEventListener("input", () => {
+        const input = elements.trendWindowSize;
+        const value = input.valueAsNumber;
+        const valid = input.validity.valid && Number.isSafeInteger(value);
+        input.setAttribute("aria-invalid", String(!valid));
+        elements.trendWindowError.textContent = valid
+          ? ""
+          : `Enter a positive whole number. Showing the ${trendWindowSize}-run average.`;
+        elements.trendWindowError.hidden = valid;
+        if (!valid) return;
+        trendWindowSize = value;
+        renderTrend();
+      });
       elements.trendStartRange.addEventListener("input", () => {
         trendRange.start = Number(elements.trendStartRange.value);
         const currentEnd = Number(elements.trendEndRange.value);
