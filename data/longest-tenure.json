@@ -1438,17 +1438,6 @@
       "rank": 72
     },
     {
-      "id": "00-0036261",
-      "team": "SF",
-      "name": "Brandon Aiyuk",
-      "position": "WR",
-      "since": 2020,
-      "through": 2026,
-      "seasons": 7,
-      "active": true,
-      "rank": 72
-    },
-    {
       "id": "00-0036081",
       "team": "BAL",
       "name": "Broderick Washington",
@@ -1673,6 +1662,17 @@
       "team": "NO",
       "name": "Juwan Johnson",
       "position": "TE",
+      "since": 2020,
+      "through": 2026,
+      "seasons": 7,
+      "active": true,
+      "rank": 72
+    },
+    {
+      "id": "00-0036198",
+      "team": "NE",
+      "name": "Mike Onwenu",
+      "position": "G",
       "since": 2020,
       "through": 2026,
       "seasons": 7,
@@ -2782,8 +2782,8 @@
       "rank": 88
     }
   ],
-  "activeCount": 2549,
-  "allTimeCount": 59794,
+  "activeCount": 2550,
+  "allTimeCount": 59798,
   "franchiseLeaders": {
     "ARI": [
       {"id":"historical:jimhart:1944-04-29","team":"ARI","name":"Jim Hart","position":"QB","since":1966,"through":1983,"seasons":18,"active":false,"rank":1},
@@ -6050,5 +6050,5 @@
       {"id":"00-0004052","team":"WAS","name":"Stephen Davis","position":"RB","since":1996,"through":2002,"seasons":7,"active":false,"rank":77}
     ]
   },
-  "updated": "2026-11-24"
+  "updated": "2026-11-25"
 }
