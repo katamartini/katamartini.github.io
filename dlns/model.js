@@ -23,9 +23,13 @@
 
   const THREE_BAN_START = 62;
   const banCount = week => Number(week) >= THREE_BAN_START ? 3 : 2;
-  const slotIndex = (side,type,count,week) => type === 'pick'
-    ? (side === 'left' ? count : 5-count)
-    : (side === 'left' ? banCount(week)-1-count : count);
+  function slotIndex(side,type,count,week) {
+    if (type === 'pick') return side === 'left' ? count : 5-count;
+    const slots = banCount(week);
+    // New bans start at the outer edge; historical bans start nearest the center.
+    const reversed = slots === 3 ? side === 'right' : side === 'left';
+    return reversed ? slots-1-count : count;
+  }
 
   function sequence(first = 'left', week) {
     const side = other(first), modern = banCount(week) === 3;

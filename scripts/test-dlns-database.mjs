@@ -170,13 +170,17 @@ for (const week of [62,63,9999]) for (const first of ['left','right']) {
   assert.match(model.validateMatch({...match,actions:match.actions.slice(0,16)}).join(' '),/6 bans/);
   assert.match(model.validateMatch({...match,actions:match.actions.map((a,i)=>i===2?{...a,side:first==='left'?'right':'left'}:a)}).join(' '),/Invalid action at draft slot 3/);
   const sim=model.matchToSim(match);
-  assert.deepEqual(sim.slots.left.bans,match.actions.filter(a=>a.side==='left'&&a.type==='ban').map(a=>a.hero).reverse());
-  assert.deepEqual(sim.slots.right.bans,match.actions.filter(a=>a.side==='right'&&a.type==='ban').map(a=>a.hero));
+  assert.deepEqual(sim.slots.left.bans,match.actions.filter(a=>a.side==='left'&&a.type==='ban').map(a=>a.hero));
+  assert.deepEqual(sim.slots.right.bans,match.actions.filter(a=>a.side==='right'&&a.type==='ban').map(a=>a.hero).reverse());
   assert.deepEqual(model.simToMatch(sim,match),match);
   const flipped=model.withFirstPick(sim,first==='left'?'right':'left');
   assert.deepEqual(model.withFirstPick(flipped,first),sim);
 }
 assert.equal(model.sequence('left',61).length,16);
+assert.deepEqual([0,1].map(i=>model.slotIndex('left','ban',i,61)),[1,0]);
+assert.deepEqual([0,1].map(i=>model.slotIndex('right','ban',i,61)),[0,1]);
+assert.deepEqual([0,1,2].map(i=>model.slotIndex('left','ban',i,62)),[0,1,2]);
+assert.deepEqual([0,1,2].map(i=>model.slotIndex('right','ban',i,62)),[2,1,0]);
 const records = history.matches.flatMap(model.matchToRecords);
 assert.ok(model.teamsForRegion(records,'EU').includes('Abrahams'));
 assert.ok(!model.teamsForRegion(records,'EU').includes('Melee Creeps'));

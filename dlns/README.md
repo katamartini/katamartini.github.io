@@ -21,6 +21,8 @@ Through Shift 61, a draft has 12 picks and four bans. From Shift 62, it has 12 p
 - Bans 5–6: B A
 - Picks 7–12: B A A B A B
 
+From Shift 62 onward, each team's ban slots fill from its outer edge toward the center. Older shifts keep their original inside-out layout. This changes slot placement only, not the sequence.
+
 DraftSim's owner view follows the match week; loading an old match restores its original format. Crossing the boundary with a draft in progress preserves the draft and requires **Reset** before continuing with the changed week. In the public simulator, choose either draft format. In the JSON action list, `order` remains numbered separately for picks and bans.
 
 ## Older browser-only data

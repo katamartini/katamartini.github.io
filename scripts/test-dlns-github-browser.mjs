@@ -47,6 +47,22 @@ try{
  assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),2);
  await page.locator('#simDraftFormat').selectOption('62');
  assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),3);
+ const activeBan=side=>page.locator('.simSide.'+side+' .simSlot.ban').evaluateAll(slots=>slots.findIndex(slot=>slot.classList.contains('active')));
+ assert.equal(await activeBan('left'),0,'the first modern ban highlights the outer-left slot');
+ await page.locator('.simHeroBtn[data-hero="Abrams"]').click();
+ assert.equal(await activeBan('right'),2,'the second modern ban highlights the outer-right slot');
+ await page.locator('.simHeroBtn[data-hero="Bebop"]').click();
+ assert.equal(await activeBan('left'),1,'the next left ban moves inward');
+ await page.reload();
+ await page.waitForFunction((count)=>DLNSDatabase.matches.length===count,publishedCount);
+ assert.deepEqual(await page.evaluate(()=>[draftSimState.slots.left.bans,draftSimState.slots.right.bans]),[['Abrams','',''],['','','Bebop']]);
+ await page.getByRole('button',{name:'Undo',exact:true}).click();
+ assert.equal(await activeBan('right'),2,'Undo reopens the outside slot');
+ await page.getByRole('button',{name:'Reset',exact:true}).click();
+ await page.locator('#simDraftFormat').selectOption('61');
+ assert.equal(await activeBan('left'),1,'legacy bans still begin at the inside-left slot');
+ await page.locator('#simDraftFormat').selectOption('62');
+
  assert.equal(await page.locator('a[href*="storage=local"]').count(),0);
  assert.match(await page.locator('#simSignIn').innerText(),/Sign in with GitHub/);
  await page.locator('#simSignIn').click();
@@ -158,6 +174,8 @@ try{
  const seq=['bL','bR','bL','bR','pL','pR','pR','pL','pR','pL','bR','bL','pR','pL','pL','pR','pL','pR'];
  const actual=await page.evaluate(()=>draftSimState.events.map(e=>e.type[0]+e.side[0].toUpperCase()));
  assert.deepEqual(actual,seq);
+ assert.deepEqual(await page.evaluate(()=>[draftSimState.slots.left.bans,draftSimState.slots.right.bans]),
+   [[heroes[0],heroes[2],heroes[11]],[heroes[10],heroes[3],heroes[1]]]);
  await setWeek(9999); // Mocked publication, independent of the real Shift 62 history.
  assert.equal(await page.locator('#simSubmitMatch').isDisabled(),false);
  await page.locator('#simSubmitMatch').click();
@@ -168,6 +186,8 @@ try{
    await page.locator('#simLoadMatchBtn').click();
    assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),bans);
    assert.equal(await page.evaluate(()=>draftSimState.events.length),12+bans*2);
+   if(bans===3)assert.deepEqual(await page.evaluate(()=>[draftSimState.slots.left.bans,draftSimState.slots.right.bans]),
+     [[heroes[0],heroes[2],heroes[11]],[heroes[10],heroes[3],heroes[1]]]);
  }
  await page.setViewportSize({width:390,height:844});
  const side=await page.locator('.simSide.right .simBans').boundingBox();
