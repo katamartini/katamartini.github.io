@@ -6,11 +6,22 @@
 
 In the draft simulator’s **Match entry** bar, choose **Sign in with GitHub**. The familiar sign-in/sign-out layout now uses a token dialog rather than Supabase OAuth. Create your own **fine-grained** token in GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens: resource owner `katamartini`, only `katamartini.github.io`, **Contents: Read and write**, and a short expiration. Metadata read is automatic. No other permissions are needed. Never send a token in chat. This permission covers the repository's contents, not only DLNS; GitHub does not provide a path-scoped contents token. Branch rules may prevent direct writes.
 
-The page verifies the authenticated GitHub user ID and repository access. GitHub enforces actual repository permissions; hiding editor controls alone is not a security boundary. The token is sent only to `https://api.github.com` with redirects disallowed, and is retained only in the tab's JavaScript memory. It is never put in cookies, local/session storage, exports, URLs or commits. Sign out, refresh or closing the tab clears it. Use a trusted browser: scripts on this site and privileged browser extensions can access browser-entered credentials.
+The page verifies the authenticated GitHub user ID and repository access. GitHub enforces actual repository permissions; hiding editor controls alone is not a security boundary. The token is sent only to `https://api.github.com` with redirects disallowed, and stays in page memory by default. **Remember this browser** opts into storing the token in this site's browser local storage, which survives refreshes and browser restarts. On a new page, DraftSim verifies the owner and repository again. Sign out or clear site data to remove the stored token. Use the checkbox only on trusted devices: same-origin scripts and privileged extensions can read browser storage. DraftSim does not read or change Ballin's saved token. The token does not go into cookies, exports, URLs, or commits.
 
 Connect loads the latest repository version, then **Submit match** creates a public GitHub commit, rather than saving only locally. Team registration also creates a commit. Match validation, duplicate IDs, revision checks and GitHub's file SHA protect against stale writes. If another tab changes history, reload GitHub history and load the match again. Failed or ambiguous writes are never automatically retried; reconnect and inspect the latest history first. An accepted commit is not proof of a successful Pages deployment: public viewers see changes after Pages rebuilds, typically a few minutes. The editor uses the saved repository result immediately.
 
 The initial maintained file is an exact copy of the existing 363-match snapshot. `dlns/history.json`, `DLNS.snapshot.js`, original browser caches and separate partial recovery data remain untouched. This feature does not recover missing weeks.
+
+## Draft format by shift
+
+Through Shift 61, a draft has 12 picks and four bans. From Shift 62, it has 12 picks and six bans. In the sequence below, A is the selected first-pick team and B is the other team. The new order was checked against the [EDL EU finals](https://edl.gg/events/deadlock-night-shift-62-eu/series/grand-final-1-deadlock-night-shift-62-eu-template-grand-final?match=match-1) and [EDL NA finals](https://edl.gg/events/deadlock-night-shift-62-na/series/grand-final-1-deadlock-night-shift-62-na-template-grand-final?match=match-1).
+
+- Bans 1–4: A B A B
+- Picks 1–6: A B B A B A
+- Bans 5–6: B A
+- Picks 7–12: B A A B A B
+
+DraftSim's owner view follows the match week; loading an old match restores its original format. Crossing the boundary with a draft in progress preserves the draft and requires **Reset** before continuing with the changed week. In the public simulator, choose either draft format. In the JSON action list, `order` remains numbered separately for picks and bans.
 
 ## Older browser-only data
 
@@ -20,7 +31,7 @@ Existing IndexedDB matches, local revision history, old simulator/entry drafts a
 
 ## Publishing exported local updates manually
 
-Repository write access controls public updates. Local edits are never automatically uploaded. Connecting a token on the ordinary page does not import a local workspace. Tokens are never persisted.
+Repository write access controls public updates. Local edits are never automatically uploaded. Connecting a token on the ordinary page does not import a local workspace. Only the explicit Remember this browser option persists a DraftSim token.
 
 1. Export the local backup. Keep that full backup private because it includes historical revisions.
 2. Prepare a **new** public file:

@@ -21,14 +21,25 @@
     return Number(week)*100000 + (region === 'NA' ? 2000 : 0) + (round === 'F' ? 1000 : 0) + Number(game);
   };
 
-  function sequence(first = 'left') {
-    const side = other(first);
-    const owners = [first,side,side,first,first,side,side,first,first,side,side,first];
+  const THREE_BAN_START = 62;
+  const banCount = week => Number(week) >= THREE_BAN_START ? 3 : 2;
+  const slotIndex = (side,type,count,week) => type === 'pick'
+    ? (side === 'left' ? count : 5-count)
+    : (side === 'left' ? banCount(week)-1-count : count);
+
+  function sequence(first = 'left', week) {
+    const side = other(first), modern = banCount(week) === 3;
+    const owners = modern
+      ? [first,side,side,first,side,first,side,first,first,side,first,side]
+      : [first,side,side,first,first,side,side,first,first,side,side,first];
+    const picks = owners.map((owner,i) => ({type:'pick',order:i+1,side:owner}));
+    const ban = (order,owner) => ({type:'ban',order,side:owner});
     return [
-      {type:'ban',order:1,side:first}, {type:'ban',order:2,side},
-      ...owners.slice(0,6).map((owner,i) => ({type:'pick',order:i+1,side:owner})),
-      {type:'ban',order:3,side}, {type:'ban',order:4,side:first},
-      ...owners.slice(6).map((owner,i) => ({type:'pick',order:i+7,side:owner}))
+      ban(1,first), ban(2,side),
+      ...(modern ? [ban(3,first),ban(4,side)] : []),
+      ...picks.slice(0,6),
+      ban(modern ? 5 : 3,side), ban(modern ? 6 : 4,first),
+      ...picks.slice(6)
     ];
   }
 
@@ -44,11 +55,12 @@
     if (!left || !right || left.length > 100 || right.length > 100 || [left,right].some(t => /^team [12]$/i.test(t))) errors.push('Enter the actual team names (100 characters or fewer).');
     if (left.toLowerCase() === right.toLowerCase()) errors.push('The two teams must be different.');
     if (match.match_id !== matchId(match)) errors.push('The match ID does not match its details.');
-    if (!Array.isArray(match.actions) || match.actions.length !== 16) {
-      errors.push('Complete all 12 picks and 4 bans.');
+    const expected = sequence(match.first_pick,match.week);
+    if (!Array.isArray(match.actions) || match.actions.length !== expected.length) {
+      errors.push(`Complete all 12 picks and ${2*banCount(match.week)} bans.`);
       return errors;
     }
-    const seenHeroes = new Set(), seenPlayers = new Set(), expected = sequence(match.first_pick);
+    const seenHeroes = new Set(), seenPlayers = new Set();
     match.actions.forEach((action,i) => {
       const wanted = expected[i];
       if (!action || action.type !== wanted.type || action.order !== wanted.order || action.side !== wanted.side) {
@@ -143,8 +155,8 @@
 
   function withFirstPick(sim, first) {
     if (!['left','right'].includes(first)) throw new Error('Choose the first-pick team.');
-    const actions = sequence(first).slice(0,sim.events.length).map((action,i) => ({...action,hero:sim.events[i].hero}));
-    return matchToSim({left_team:sim.left,right_team:sim.right,first_pick:first,actions});
+    const actions = sequence(first,sim.week).slice(0,sim.events.length).map((action,i) => ({...action,hero:sim.events[i].hero}));
+    return matchToSim({week:sim.week,left_team:sim.left,right_team:sim.right,first_pick:first,actions});
   }
 
   function seriesWins(matches, details, teams) {
@@ -196,16 +208,17 @@
   }
 
   function matchToSim(match) {
-    const slots = {left:{picks:Array(6).fill(''),bans:Array(2).fill('')},right:{picks:Array(6).fill(''),bans:Array(2).fill('')}};
+    const sideSlots = () => ({picks:Array(6).fill(''),bans:Array(banCount(match.week)).fill('')});
+    const slots = {left:sideSlots(),right:sideSlots()};
     const counts = {left:{pick:0,ban:0},right:{pick:0,ban:0}};
     const events = match.actions.map(action => {
       const count = counts[action.side][action.type]++;
-      const index = action.type === 'pick' ? (action.side === 'left' ? count : 5-count) : (action.side === 'left' ? 1-count : count);
+      const index = slotIndex(action.side,action.type,count,match.week);
       slots[action.side][`${action.type}s`][index] = action.hero;
       return {type:action.type,n:action.order,side:action.side,index,hero:action.hero};
     });
-    return {left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
+    return {week:match.week,left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,heroPickBadge,validateTeam,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,THREE_BAN_START,banCount,slotIndex,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,heroPickBadge,validateTeam,withFirstPick,seriesWins,nextMatch});
 });

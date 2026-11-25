@@ -6,6 +6,8 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require('../.cache/dlns-tools/node_modules/playwright');
 const root=path.resolve(new URL('..',import.meta.url).pathname);
+const original=JSON.parse(await fs.readFile(path.join(root,'dlns/published-history.json'),'utf8'));
+const publishedCount=original.matches.length;
 const server=http.createServer(async(req,res)=>{
   try{
     const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
@@ -19,14 +21,15 @@ const origin=`http://127.0.0.1:${server.address().port}`;
 const browser=await chromium.launch({...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{}),headless:true,args:['--no-sandbox']});
 try{
  const context=await browser.newContext(),errors=[];
- const original=JSON.parse(await fs.readFile(path.join(root,'dlns/published-history.json'),'utf8'));
+ const rememberKey='dlns.github.remembered-token.v1';
+ let authStatus=0;
  let data=structuredClone(original),sha='sha1',writes=0,owner=66887569,failure=0,readGate=null;
  await context.route('**/*',async route=>{
   const request=route.request(),url=request.url();
   if(url.startsWith(origin))return route.continue();
   if(!url.startsWith('https://api.github.com/'))return route.abort();
   let body;
-  if(url.endsWith('/user'))body={id:owner,login:'katamartini'};
+  if(url.endsWith('/user')){if(authStatus)return route.fulfill({status:authStatus,json:{}});body={id:owner,login:'katamartini'};}
   else if(url.endsWith('/katamartini.github.io'))body={owner:{id:66887569},full_name:'katamartini/katamartini.github.io',permissions:{push:true}};
   else if(request.method()==='PUT'){
     writes++; if(failure)return route.fulfill({status:failure,contentType:'application/json',body:'{}'});
@@ -36,9 +39,14 @@ try{
   }else {if(readGate)await readGate;body={type:'file',sha,encoding:'base64',content:Buffer.from(JSON.stringify(data)).toString('base64')};}
   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
  });
- const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
- await page.goto(origin+'/DLNS.html#draftsim');await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
+ const page=await context.newPage();page.on('dialog',dialog=>dialog.accept());page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(origin+'/DLNS.html#draftsim');await page.waitForFunction((count)=>DLNSDatabase.matches.length===count,publishedCount);
  assert.equal(await page.locator('#simSubmitMatch').count(),0);
+ assert.equal(await page.locator('.simSide.left .simSlot.ban').count(),3);
+ await page.locator('#simDraftFormat').selectOption('61');
+ assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),2);
+ await page.locator('#simDraftFormat').selectOption('62');
+ assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),3);
  assert.equal(await page.locator('a[href*="storage=local"]').count(),0);
  assert.match(await page.locator('#simSignIn').innerText(),/Sign in with GitHub/);
  await page.locator('#simSignIn').click();
@@ -62,6 +70,7 @@ try{
  assert.match(await page.locator('.matchAuth').innerText(),/katamartini/);
  assert.ok(!(await page.evaluate(()=>JSON.stringify({...localStorage,...sessionStorage}))).includes('github_pat_TEST'));
  await page.locator('#simLoadMatch').selectOption('54-NA-F-2');await page.locator('#simLoadMatchBtn').click();
+ assert.equal(await page.locator('.simSide.left .simSlot.ban').count(),2);
  await page.locator('#simSubmitMatch').click();await page.waitForFunction(()=>DLNSDatabase.matches.find(m=>m.match_id==='54-NA-F-2').revision===2);
  assert.equal(writes,1);assert.match(await page.locator('#simMatchStatus').innerText(),/GitHub/);
  assert.deepEqual(data.matches.filter(m=>m.match_id!=='54-NA-F-2'),original.matches.filter(m=>m.match_id!=='54-NA-F-2'));
@@ -80,13 +89,90 @@ try{
  await page.waitForFunction(()=>document.getElementById('githubStatus').textContent.includes('Only'));
  assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);
  owner=66887569;await page.locator('#githubToken').fill('github_pat_TEST');await page.locator('#githubConnect').click();await page.waitForFunction(()=>!!DLNSDatabase.auth.user);
- await page.reload();await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
+ await page.reload();await page.waitForFunction((count)=>DLNSDatabase.matches.length===count,publishedCount);
  assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);await page.locator('#simSignIn').click();assert.equal(await page.locator('#githubToken').inputValue(),'');
  await page.locator('#githubCancel').click();
- await page.goto(origin+'/DLNS.html?storage=local#draftsim');await page.waitForFunction(()=>DLNSDatabase.matches.length===363);
+ await page.goto(origin+'/DLNS.html?storage=local#draftsim');await page.waitForFunction((count)=>DLNSDatabase.matches.length===count,publishedCount);
  assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);assert.equal(await page.locator('#simSubmitMatch').count(),0);
  assert.equal(await page.locator('#localImport, #localSeed').count(),0);
  assert.equal(await page.locator('a[href*="storage=local"]').count(),0);
+ // Persistent sign-in is opt-in, separate from Ballin, and revalidates owner/repo on every new page.
+ const ballinKey='ballin.githubBackupToken.v1';
+ await page.evaluate(key=>localStorage.setItem(key,'ballin-fixture-untouched'),ballinKey);
+ await page.locator('#simSignIn').click();
+ assert.equal(await page.locator('#githubRememberBrowser').isChecked(),false);
+ await page.locator('#githubToken').fill('github_pat_REMEMBER');
+ await page.locator('#githubRememberBrowser').check();
+ await page.locator('#githubConnect').click();
+ await page.waitForFunction(()=>DLNSDatabase.auth.admin && !!document.getElementById('simNewMatch'));
+ assert.equal(await page.evaluate(key=>localStorage.getItem(key),rememberKey),'github_pat_REMEMBER');
+ await page.reload();
+ await page.waitForFunction(()=>DLNSDatabase.auth.admin && !!document.getElementById('simNewMatch'));
+ const second=await context.newPage();
+ await second.goto(origin+'/DLNS.html#draftsim');
+ await second.waitForFunction(()=>DLNSDatabase.auth.admin && !!document.getElementById('simNewMatch'));
+ await page.locator('#simSignOut').click();
+ await second.waitForFunction(()=>!DLNSDatabase.auth.admin);
+ assert.equal(await page.evaluate(key=>localStorage.getItem(key),rememberKey),null);
+ assert.equal(await second.evaluate(key=>localStorage.getItem(key),ballinKey),'ballin-fixture-untouched');
+ await second.close();
+
+ // Temporary errors preserve the opt-in, expired tokens clear it.
+ await page.evaluate(key=>localStorage.setItem(key,'github_pat_REMEMBER'),rememberKey);
+ authStatus=502;
+ await page.reload();
+ await page.waitForFunction(()=>DLNSDatabase.auth.error.includes('not removed'));
+ assert.equal(await page.evaluate(key=>localStorage.getItem(key),rememberKey),'github_pat_REMEMBER');
+ authStatus=401;
+ await page.reload();
+ await page.waitForFunction(()=>DLNSDatabase.auth.error.includes('no longer valid'));
+ assert.equal(await page.evaluate(key=>localStorage.getItem(key),rememberKey),null);
+ authStatus=0;
+
+ await page.locator('#simSignIn').click();
+ await page.locator('#githubToken').fill('github_pat_TEST');
+ await page.locator('#githubConnect').click();
+ await page.waitForFunction(()=>DLNSDatabase.auth.admin && !!document.getElementById('simNewMatch'));
+ await page.locator('#simNewMatch').click();
+ const setWeek=async week=>{const input=page.locator('#simMatchWeek');await input.fill(String(week));await input.press('Tab');};
+ await setWeek(61);
+ assert.equal(await page.locator('.simSide.left .simSlot.ban').count(),2);
+ await setWeek(62);
+ assert.equal(await page.locator('.simSide.left .simSlot.ban').count(),3);
+ const left=original.matches.find(match=>match.match_id==='54-EU-F-1').left_team;
+ const right=original.matches.find(match=>match.match_id==='54-EU-F-1').right_team;
+ await page.locator('#simLeftTeam').selectOption(left);
+ await page.locator('#simRightTeam').selectOption(right);
+ const heroes=await page.evaluate(()=>DLNSModel.heroes.slice(0,18));
+ const choose=hero=>page.locator('.simHeroBtn[data-hero='+JSON.stringify(hero)+']').click();
+ await choose(heroes[0]);
+ await setWeek(61);
+ assert.match(await page.locator('#simMatchStatus').innerText(),/Reset to switch/);
+ assert.equal(await page.locator('#simSubmitMatch').isDisabled(),true);
+ assert.equal(await page.evaluate(()=>draftSimState.step),1);
+ await setWeek(62);
+ assert.equal(await page.evaluate(()=>draftSimState.step),1);
+ for(const hero of heroes.slice(1,16))await choose(hero);
+ assert.equal(await page.locator('#simSubmitMatch').isDisabled(),true);
+ for(const hero of heroes.slice(16))await choose(hero);
+ const seq=['bL','bR','bL','bR','pL','pR','pR','pL','pR','pL','bR','bL','pR','pL','pL','pR','pL','pR'];
+ const actual=await page.evaluate(()=>draftSimState.events.map(e=>e.type[0]+e.side[0].toUpperCase()));
+ assert.deepEqual(actual,seq);
+ await setWeek(9999); // Mocked publication, independent of the real Shift 62 history.
+ assert.equal(await page.locator('#simSubmitMatch').isDisabled(),false);
+ await page.locator('#simSubmitMatch').click();
+ await page.waitForFunction(()=>DLNSDatabase.matches.find(match=>match.match_id==='9999-EU-C-1')?.revision===1);
+ assert.equal(data.matches.find(match=>match.match_id==='9999-EU-C-1').actions.length,18);
+ for(const [id,bans] of [['54-EU-F-1',2],['9999-EU-C-1',3]]){
+   await page.locator('#simLoadMatch').selectOption(id);
+   await page.locator('#simLoadMatchBtn').click();
+   assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),bans);
+   assert.equal(await page.evaluate(()=>draftSimState.events.length),12+bans*2);
+ }
+ await page.setViewportSize({width:390,height:844});
+ const side=await page.locator('.simSide.right .simBans').boundingBox();
+ const third=await page.locator('.simSide.right .simSlot.ban').last().boundingBox();
+ assert.ok(third.x+third.width<=side.x+side.width,'all three ban slots fit on mobile');
  assert.deepEqual(errors,[]);
- console.log('PASS token Chromium: public anonymous view, restored header, modal cancel/Escape/reopen, connect/save, data preservation, stale conflict, denied write, disconnect, wrong owner, reload clears credentials, old local URL read-only, no page errors. All GitHub requests mocked.');
+ console.log('PASS token Chromium: public anonymous view, restored header, modal cancel/Escape/reopen, connect/save, data preservation, stale conflict, denied write, disconnect, wrong owner, reload clears credentials, old local URL read-only, two draft formats, reload and cross-tab token persistence, no page errors. All GitHub requests mocked.');
 }finally{await browser.close();server.close();}

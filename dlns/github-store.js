@@ -1,4 +1,4 @@
-/* Direct owner-only GitHub publishing. Token stays in this closure, never storage. */
+/* Direct owner-only GitHub publishing. This store holds the active token in memory. */
 (function(root,factory){
   if(typeof module==='object' && module.exports)module.exports=factory;
   else root.createDLNSGitHubStore=factory;
@@ -9,6 +9,7 @@
   const FILE=REPO+'/contents/dlns/published-history.json', OWNER=66887569;
   let token='', user=null, busy=false, uncertain=false;
   function clear(){token='';user=null;}
+  const invalidCredential = message => Object.assign(Error(message),{invalidCredential:true});
   async function request(path,options={}){
     const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),30000);
     let response;
@@ -17,7 +18,7 @@
     finally{clearTimeout(timer);}
     if(!response.ok){
       if(options.method==='PUT' && response.status>=400 && response.status<500)uncertain=false;
-      if(response.status===401){clear();throw Error('Token expired or invalid. Connect again with a valid token.');}
+      if(response.status===401){clear();throw invalidCredential('Token expired or invalid. Connect again with a valid token.');}
       if([409,422].includes(response.status))throw Error('GitHub rejected the update or the file changed. Reload history and the match before saving again.');
       if(response.status===403)throw Error('GitHub denied access. Check token expiry, selected repository, Contents write permission, rate limits and branch rules.');
       throw Error('GitHub request failed ('+response.status+'). Check the repository before retrying a save.');
@@ -58,13 +59,13 @@
     async connect(value){
       if(busy)throw Error('Wait for the GitHub operation to finish.');
       clear();uncertain=false;token=String(value).trim();
-      if(!/^github_pat_[A-Za-z0-9_]+$/.test(token)){clear();throw Error('Use a fine-grained GitHub personal access token.');}
+      if(!/^github_pat_[A-Za-z0-9_]+$/.test(token)){clear();throw invalidCredential('Use a fine-grained GitHub personal access token.');}
       busy=true;
       try{
         const identity=await request('/user');
-        if(identity.id!==OWNER)throw Error('Only the katamartini owner account can connect here.');
+        if(identity.id!==OWNER)throw invalidCredential('Only the katamartini owner account can connect here.');
         const repo=await request(REPO);
-        if(repo.owner?.id!==OWNER || repo.full_name!=='katamartini/katamartini.github.io' || !repo.permissions?.push)throw Error('This token does not have write access to the DLNS repository.');
+        if(repo.owner?.id!==OWNER || repo.full_name!=='katamartini/katamartini.github.io' || !repo.permissions?.push)throw invalidCredential('This token does not have write access to the DLNS repository.');
         user={id:identity.id,login:identity.login};
         return await read();
       }catch(error){clear();throw error;}finally{busy=false;}

@@ -120,10 +120,10 @@ for (const hero of model.heroes) {
   await fs.access(new URL('../'+path,import.meta.url));
 }
 assert.ok(html.includes('HEROES=DLNSModel.heroes;'));
-const restoredSim = createContext({HEROES:model.heroes});
-new Script(html.slice(html.indexOf('function blankSlots('),html.indexOf('function loadSim('))).runInContext(restoredSim);
+const restoredSim = createContext({HEROES:model.heroes,DLNSModel:model,START:model.THREE_BAN_START});
+new Script(html.slice(html.indexOf('function blankSim('),html.indexOf('function loadSim('))).runInContext(restoredSim);
 for (const hero of Object.keys(newHeroes)) {
-  const partial = model.matchToSim({...history.matches[0],actions:[{type:'ban',order:1,side:'left',hero}]});
+  const partial = model.matchToSim({...history.matches[0],first_pick:'left',actions:[{type:'ban',order:1,side:'left',hero}]});
   assert.equal(restoredSim.cleanSim(partial).events[0].hero,hero,`${hero} survives draft restoration`);
 }
 const db = new PGlite();
@@ -159,6 +159,24 @@ for (const match of history.matches) {
   assert.equal(model.matchToRecords(match).length,16);
 }
 assert.deepEqual(model.sequence('right').filter(a=>a.type==='ban').map(a=>a.side),['right','left','left','right']);
+for (const week of [62,63,9999]) for (const first of ['left','right']) {
+  const code = ['BA','BB','BA','BB','PA','PB','PB','PA','PB','PA','BB','BA','PB','PA','PA','PB','PA','PB'];
+  const seq = model.sequence(first,week);
+  assert.deepEqual(seq.map(a=>a.type[0].toUpperCase()+(a.side===first?'A':'B')),code);
+  assert.deepEqual(seq.filter(a=>a.type==='ban').map(a=>a.order),[1,2,3,4,5,6]);
+  const match = {match_id:`${week}-EU-C-1`,week,region:'EU',round:'Challenger',game:1,first_pick:first,
+    left_team:'First Team',right_team:'Second Team',winner:null,actions:seq.map((a,i)=>({...a,hero:model.heroes[i],player:''}))};
+  assert.deepEqual(model.validateMatch(match),[]);
+  assert.match(model.validateMatch({...match,actions:match.actions.slice(0,16)}).join(' '),/6 bans/);
+  assert.match(model.validateMatch({...match,actions:match.actions.map((a,i)=>i===2?{...a,side:first==='left'?'right':'left'}:a)}).join(' '),/Invalid action at draft slot 3/);
+  const sim=model.matchToSim(match);
+  assert.deepEqual(sim.slots.left.bans,match.actions.filter(a=>a.side==='left'&&a.type==='ban').map(a=>a.hero).reverse());
+  assert.deepEqual(sim.slots.right.bans,match.actions.filter(a=>a.side==='right'&&a.type==='ban').map(a=>a.hero));
+  assert.deepEqual(model.simToMatch(sim,match),match);
+  const flipped=model.withFirstPick(sim,first==='left'?'right':'left');
+  assert.deepEqual(model.withFirstPick(flipped,first),sim);
+}
+assert.equal(model.sequence('left',61).length,16);
 const records = history.matches.flatMap(model.matchToRecords);
 assert.ok(model.teamsForRegion(records,'EU').includes('Abrahams'));
 assert.ok(!model.teamsForRegion(records,'EU').includes('Melee Creeps'));

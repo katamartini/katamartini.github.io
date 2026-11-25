@@ -38,6 +38,22 @@
     return String(Math.max(0,...db.matches.map(match=>match.week)) + 1);
   }
 
+  function draftWeek() {
+    const week = Number(entry.week);
+    return db.auth.admin && Number.isInteger(week) && week >= 1 && week <= 9999 ? week : null;
+  }
+
+  function formatMismatch(sim = app.getSim()) {
+    const week = draftWeek();
+    return week !== null && model.banCount(week) !== model.banCount(sim.week);
+  }
+
+  function syncEmptyDraft(sim) {
+    if (!formatMismatch(sim) || sim.events.length) return false;
+    app.setSim(model.matchToSim({week:draftWeek(),left_team:sim.left,right_team:sim.right,first_pick:sim.first,actions:[]}));
+    return true;
+  }
+
   function playerList(team) {
     const records = app.getRecords(), roster = new Set(), teamKey = team.trim().toLowerCase();
     let latest = -Infinity;
@@ -87,12 +103,14 @@
   }
 
   function statusText() {
-    if (message) return message;
     const sim = app.getSim();
+    if (formatMismatch(sim)) return `Week ${entry.week} uses ${model.banCount(entry.week)} bans per team. Reset to switch formats, or change the week back to keep this draft.`;
+    if (message) return message;
     if (saving) return 'Saving match...';
     if (autofilling) return 'Checking the latest match...';
     if (entry.editing) return `Editing ${entry.editing} (revision ${entry.revision})`;
-    return sim.events.length === 16 ? 'Draft complete' : `${sim.events.length} / 16 draft actions`;
+    const total = model.sequence(sim.first,sim.week).length;
+    return sim.events.length === total ? 'Draft complete' : `${sim.events.length} / ${total} draft actions`;
   }
 
   function render() {
@@ -100,6 +118,7 @@
     if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling || loginBusy;
     if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
+    if (auth.admin && syncEmptyDraft(sim)) return;
     const authButtons = auth.user ? `<span class="small">${esc(auth.user.login)}</span><button id="githubReload" ${loginBusy || auth.busy?'disabled':''}>Reload history</button><button id="simSignOut" ${loginBusy || auth.busy?'disabled':''}>Sign out</button>` : `<button id="simSignIn" ${loginBusy || auth.busy?'disabled':''}>Sign in with GitHub</button>`;
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
     root.className = 'matchEntry';
@@ -110,7 +129,7 @@
     }
     const matches = db.matches.slice().reverse();
     const option = (value,label,current) => `<option value="${esc(value)}" ${value===current?'selected':''}>${esc(label)}</option>`;
-    root.innerHTML = header + `
+    root.innerHTML = header + (auth.error ? `<div class="matchEntryStatus errorText" role="status">${esc(auth.error)}</div>` : '') + `
       <div class="matchManagement">
         <select id="simLoadMatch" aria-label="Saved match" ${busy?'disabled':''}>${option('','Select a saved match',entry.selected)}${matches.map(match=>option(match.match_id,`${match.match_id} | ${match.left_team} vs ${match.right_team}`,entry.selected)).join('')}</select>
         <button id="simLoadMatchBtn" ${busy?'disabled':''}>Load match</button>
@@ -122,7 +141,7 @@
         <label><div class="label">Round</div><select id="simMatchRound" ${busy?'disabled':''}>${['Challenger','Finals'].map(value=>option(value,value,entry.round)).join('')}</select></label>
         <label><div class="label">Game</div><input id="simMatchGame" type="number" min="1" max="99" step="1" value="${esc(entry.game)}" ${busy?'disabled':''}></label>
       </div>
-      <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${busy || sim.events.length!==16?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
+      <div class="matchEntryActions"><span class="matchId" id="simMatchId">${esc(model.matchId(entry))}</span><span class="matchEntryStatus ${messageKind}" id="simMatchStatus" role="status">${esc(statusText())}</span><button id="simSubmitMatch" ${busy || !draftWeek() || formatMismatch(sim) || sim.events.length!==model.sequence(sim.first,sim.week).length?'disabled':''}>${saving?'Saving...':entry.editing?'Save changes':'Submit match'}</button></div>`;
     const players = Object.fromEntries(['left','right'].map(side=>[side,playerList(sim[side])]));
     playerSlots.forEach(slot=>{
       const hero = slot.dataset.playerHero, side = slot.dataset.playerSide, selected = entry.players[hero] || '';
@@ -149,9 +168,10 @@
         window.updateDraftSeriesScore?.();
       };
     });
+    $('simMatchWeek').onchange = () => window.renderDraftSim();
     $('simLoadMatch').onchange = event => { entry.selected = event.target.value; persist(); };
     $('simLoadMatchBtn').onclick = loadSelected;
-    $('simNewMatch').onclick = () => { entry = {...blank(),week:suggestedWeek()}; persist(); setMessage(''); app.setSim(model.matchToSim({left_team:'Team 1',right_team:'Team 2',first_pick:'left',actions:[]})); };
+    $('simNewMatch').onclick = () => { entry = {...blank(),week:suggestedWeek()}; persist(); setMessage(''); app.setSim(model.matchToSim({week:Number(entry.week),left_team:'Team 1',right_team:'Team 2',first_pick:'left',actions:[]})); };
     $('simAutofillMatch').onclick = autofill;
     $('simSubmitMatch').onclick = submit;
   }
@@ -259,7 +279,7 @@
   }
 
   async function submit() {
-    if (saving || autofilling || loginBusy || !db.auth.admin) return;
+    if (saving || autofilling || loginBusy || !draftWeek() || formatMismatch()) return;
     const match = model.simToMatch(app.getSim(),entry,entry.players);
     const errors = model.validateMatch(match);
     if (errors.length) { setMessage(errors.join(' '),'errorText'); return; }
@@ -290,6 +310,8 @@
 
   window.DLNSMatchEntry = {
     get region() { return entry.region; },
+    get draftWeek() { return draftWeek(); },
+    get formatMismatch() { return formatMismatch(); },
     get winner() { return entry.winner; },
     get editingMatchId() { return entry.editing; },
     get saving() { return saving || autofilling || loginBusy || addingTeam; },
