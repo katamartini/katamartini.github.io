@@ -73,3 +73,9 @@ python -m http.server 4173 --bind 127.0.0.1
 ```
 
 To use a system Chromium, set `CHROMIUM_PATH=/usr/bin/chromium` for the browser test. The test starts its own localhost server and blocks external requests. It verifies the ordinary public route, export-only recovery, cache preservation, token dialog cancellation and sign-in/sign-out, unavailable storage, and absence of Supabase requests. The PGlite regression suite tests the historical schema locally without contacting the project.
+
+## APAC chronology
+
+APAC keeps its own official numbering (`1-APAC-C-1` is the APAC #1 Challenger), with the three-ban draft from its first event. The EDL schedule in `model.js` records known event dates without assuming an APAC event every week. For an unlisted APAC shift, enter the match date when saving; a recorded date overrides the schedule. Older undated EU/NA history keeps its existing order. APAC #1 belongs to the same calendar week as EU/NA #63 and sorts after NA #63 but before EU #64.
+
+New Match and Autofill suggest the earliest unfinished game in the latest entered calendar week, including scheduled APAC events. Select a region on an empty draft to work in that region independently. Games 2 and 3 copy the saved Game 1 team positions for the same region, shift and round. Use the same scope in stats to distinguish all-region first appearances from regional first appearances.

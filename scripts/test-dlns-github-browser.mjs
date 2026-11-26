@@ -2,15 +2,20 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {githubWriteFixture} from './test-dlns-fixture.mjs';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require('../.cache/dlns-tools/node_modules/playwright');
 const root=path.resolve(new URL('..',import.meta.url).pathname);
-const original=JSON.parse(await fs.readFile(path.join(root,'dlns/published-history.json'),'utf8'));
+const original=githubWriteFixture();
 const publishedCount=original.matches.length;
 const server=http.createServer(async(req,res)=>{
   try{
-    const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
+    const pathname=new URL(req.url,'http://localhost').pathname;
+    if(pathname==='/dlns/published-history.json'){
+      res.setHeader('Content-Type','application/json');res.end(JSON.stringify(original));return;
+    }
+    const file=path.resolve(root,'.'+pathname);
     if(!file.startsWith(root+'/'))throw Error();
     res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.json')?'application/json':file.endsWith('.html')?'text/html':'application/octet-stream');
     res.end(await fs.readFile(file));
@@ -193,6 +198,67 @@ try{
  const side=await page.locator('.simSide.right .simBans').boundingBox();
  const third=await page.locator('.simSide.right .simSlot.ban').last().boundingBox();
  assert.ok(third.x+third.width<=side.x+side.width,'all three ban slots fit on mobile');
+ // Recreate a current-window fixture; no APAC drafts are added to the real snapshot.
+ const fixtureMatches=await page.evaluate(()=>{
+  const game=(week,region,round,game,winner)=>{
+   const meta={week,region,round,game,first_pick:'left',winner,left_team:region+' left',right_team:region+' right'};
+   return {...meta,match_id:DLNSModel.matchId(meta),revision:1,source:'github',
+    actions:DLNSModel.sequence('left',week,region).map((e,i)=>({...e,hero:DLNSModel.heroes[i]}))};
+  };
+  return ['EU','NA'].flatMap(region=>[game(63,region,'Challenger',1,'left'),game(63,region,'Finals',1,'left'),game(63,region,'Finals',2,'left')]);
+ });
+ data={...structuredClone(original),matches:[...original.matches,...fixtureMatches],
+  teams:[...original.teams,{name:'APAC left',region:'APAC'},{name:'APAC right',region:'APAC'}]};
+ sha='apac-baseline';
+ await page.locator('#githubReload').click();
+ await page.waitForFunction(()=>DLNSDatabase.matches.some(m=>m.match_id==='63-NA-F-2'));
+ await page.locator('#simAutofillMatch').click();
+ await page.waitForFunction(()=>document.getElementById('simMatchStatus').innerText.includes('Use New match'));
+ await page.locator('#simNewMatch').click();
+ assert.equal(await page.locator('#simMatchId').innerText(),'1-APAC-C-1');
+ assert.equal(await page.locator('#simMatchDate').inputValue(),'2026-11-06');
+ assert.equal(await page.locator('#simRegion').inputValue(),'APAC');
+ assert.equal(await page.locator('.simSide.right .simSlot.ban').count(),3);
+ await page.locator('#simRegion').selectOption('EU');
+ assert.equal(await page.locator('#simMatchId').innerText(),'64-EU-C-1');
+ await page.locator('#simAutofillMatch').click();
+ await page.waitForFunction(()=>document.getElementById('simMatchId').innerText==='1-APAC-C-1');
+ await page.locator('#simLeftTeam').selectOption('APAC left');
+ await page.locator('#simRightTeam').selectOption('APAC right');
+ for(const hero of heroes)await choose(hero);
+ const beforeAPACWrites=writes;
+ await page.locator('#simSubmitMatch').click();
+ await page.waitForFunction(()=>DLNSDatabase.matches.some(m=>m.match_id==='1-APAC-C-1'));
+ assert.equal(writes,beforeAPACWrites+1);
+ assert.equal(data.matches.find(m=>m.match_id==='1-APAC-C-1').actions.length,18);
+ assert.equal(data.matches.find(m=>m.match_id==='1-APAC-C-1').played_on,'2026-11-06');
+ const template=data.matches.find(m=>m.match_id==='1-APAC-C-1');
+ data.matches.push({...template,match_id:'1-APAC-F-1',round:'Finals',winner:'left'},
+  {...template,match_id:'1-APAC-F-2',round:'Finals',game:2,winner:'right'});
+ sha='apac-finals';
+ await page.locator('#githubReload').click();
+ await page.waitForFunction(()=>DLNSDatabase.matches.some(m=>m.match_id==='1-APAC-F-2'));
+ await page.locator('#simNewMatch').click();
+ assert.equal(await page.locator('#simMatchId').innerText(),'1-APAC-F-3');
+ assert.equal(await page.locator('#simLeftTeam').inputValue(),'APAC left');
+ assert.equal(await page.locator('#simRightTeam').inputValue(),'APAC right');
+ await page.locator('#simLoadMatch').selectOption('1-APAC-C-1');
+ await page.locator('#simLoadMatchBtn').click();
+ await page.reload();
+ await page.waitForFunction(()=>draftSimState.events.length===18);
+ assert.equal(await page.locator('#simRegion').inputValue(),'APAC');
+ await page.locator('#simSignIn').click();
+ await page.locator('#githubToken').fill('github_pat_TEST');
+ await page.locator('#githubConnect').click();
+ await page.waitForFunction(()=>DLNSDatabase.auth.admin && DLNSDatabase.matches.some(m=>m.match_id==='1-APAC-F-2'));
+ await page.locator('#tabBtn-search').click();
+ assert.equal(await page.locator('#draftSearchResults .r.match').first().locator('b').first().innerText(),'1-APAC-F-2');
+ await page.locator('#tabBtn-unseen').click();
+ await page.locator('#region').selectOption('NA');
+ await page.locator('#tabBtn-search').click();
+ await page.waitForFunction(()=>document.querySelector('#draftSearchResults .r.match b')?.textContent==='63-NA-F-2');
+ assert.deepEqual(errors,[]);
+ console.log('PASS APAC Chromium: chronological suggestions, skip by region, mocked save/load/reload, three bans, same-series sides, search ordering, and region filtering.');
  assert.deepEqual(errors,[]);
  console.log('PASS token Chromium: public anonymous view, restored header, modal cancel/Escape/reopen, connect/save, data preservation, stale conflict, denied write, disconnect, wrong owner, reload clears credentials, old local URL read-only, two draft formats, reload and cross-tab token persistence, no page errors. All GitHub requests mocked.');
 }finally{await browser.close();server.close();}

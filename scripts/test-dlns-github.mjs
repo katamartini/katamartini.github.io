@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {archiveSnapshot,githubWriteFixture} from './test-dlns-fixture.mjs';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url),model=require('../dlns/model.js');
 const validate=require('../dlns/local-store.js')(model,null).validate;
 const create=require('../dlns/github-store.js');
-const original=JSON.parse(fs.readFileSync(new URL('../dlns/published-history.json',import.meta.url)));
+const original=githubWriteFixture();
 let data=structuredClone(original),sha='sha1',owner=66887569,writeError=0,networkError=false,writes=0,requests=[];
 const response=(body,status=200)=>({ok:status===200,status,json:async()=>body,text:async()=>JSON.stringify(body)});
 const fake=async(url,options)=>{
@@ -31,12 +32,19 @@ await assert.rejects(store.saveMatch(match,null,null,state.version),/exists/);
 await assert.rejects(store.saveMatch({...match,actions:[]},2,match.match_id,state.version),/Complete/);
 await assert.rejects(store.saveMatch(match,2,match.match_id,'old'),/History changed/);
 assert.equal(writes,1);
-state=await store.addTeam('日本語 team','EU',state.version);assert.equal(state.teams[0].name,'日本語 team');
+const added={name:'日本語 team',region:'EU'};
+state=await store.addTeam(added.name,added.region,state.version);
+assert.deepEqual(state.teams.filter(team=>team.name===added.name),[added]);
+assert.deepEqual(state.teams.filter(team=>team.name!==added.name),original.teams);
 writeError=409;await assert.rejects(store.saveMatch(match,2,match.match_id,state.version),/rejected/);assert.equal(store.uncertain,false);assert.equal(writes,3);
 writeError=0;state=await store.connect('github_pat_TEST');networkError=true;
 await assert.rejects(store.saveMatch(match,2,match.match_id,state.version),/unknown/);assert.equal(store.uncertain,true);networkError=false;
 store.disconnect();assert.equal(store.user,null);await assert.rejects(store.read(),/Connect/);
 assert.ok(!fs.readFileSync(new URL('../dlns/github-store.js',import.meta.url),'utf8').includes('localStorage'));
-const archive=JSON.parse(fs.readFileSync(new URL('../dlns/history.json',import.meta.url)));
-assert.deepEqual(original.matches.filter(match=>match.source==='google-sheet'),archive.matches);
+// Validate the real maintained snapshot separately without mocking its contents.
+const published=validate(JSON.parse(fs.readFileSync(new URL('../dlns/published-history.json',import.meta.url))));
+const archive=new Map(archiveSnapshot().matches.map(match=>[match.match_id,match]));
+for(const match of published.matches){
+  if(match.source==='google-sheet')assert.deepEqual(match,archive.get(match.match_id),match.match_id);
+}
 console.log('PASS GitHub owner/token validation, public dataset preservation, UTF-8, revisions, duplicate/invalid/stale rejection, conflict and ambiguous-write lockout, disconnect, immutable original snapshot.');

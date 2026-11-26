@@ -2,7 +2,7 @@
 .matchEntryBar,.matchManagement{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .matchEntryTitle{font-size:14px;font-weight:750}
 .matchAuth,.matchEntryActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.matchEntryFields{display:grid;grid-template-columns:minmax(90px,.65fr) minmax(130px,1fr) minmax(80px,.5fr);gap:10px;margin:12px 0}
+.matchEntryFields{display:grid;grid-template-columns:minmax(90px,.65fr) minmax(130px,1fr) minmax(80px,.5fr) minmax(135px,1fr);gap:10px;margin:12px 0}
 .matchEntryFields label{min-width:0}
 .matchEntryFields input,.matchEntryFields select{width:100%;box-sizing:border-box;min-width:0}
 .matchEntryFields .label{margin-bottom:5px}
@@ -29,5 +29,5 @@
 .matchTeamActions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
 .matchTeamActions button:first-child{background:var(--chip);color:var(--t)}
 .matchTeamActions button:disabled{opacity:.5;cursor:default}
-@media(max-width:850px){.matchEntryFields{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:850px){.matchEntryFields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.matchEntryFields{grid-template-columns:repeat(2,minmax(0,1fr))}.matchManagement select{width:100%}.matchAuth{width:100%}}

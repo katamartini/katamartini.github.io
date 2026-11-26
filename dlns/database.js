@@ -47,7 +47,7 @@
     local:false,
     get auth(){return {user:github.user,admin:ready&&!!github.user&&!disconnectPending,ready:true,busy:github.busy,error:authMessage};},
     get version(){return state.version;},
-    get matches(){return state.matches.slice().sort((a,b)=>DLNSModel.chronology(a.match_id)-DLNSModel.chronology(b.match_id));},
+    get matches(){return state.matches.slice().sort((a,b)=>DLNSModel.chronology(a)-DLNSModel.chronology(b));},
     get teams(){return state.teams || [];},
     get sourceNote(){
       const last=db.matches.at(-1)?.match_id || 'none';

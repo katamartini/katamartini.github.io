@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Draft Stats</title>
 <link rel="icon" type="image/png" href="images/deadlock/icons/abrams.png">
-<link rel="stylesheet" href="dlns/submission.css?v=20261125-remember-browser">
+<link rel="stylesheet" href="dlns/submission.css?v=20261126-apac">
 <style>
 :root{
 --bg:#07111f;
@@ -615,11 +615,11 @@ grid-template-columns:1fr}
 </nav>
 <section id="panels">
 </section>
-</main><script src="dlns/model.js?v=20261126-next-match"></script>
+</main><script src="dlns/model.js?v=20261126-apac"></script>
 <script src="dlns/combinations.js?v=20261022-top20"></script>
 <script src="dlns/local-store.js?v=20261111"></script>
 <script src="dlns/github-store.js?v=20261125-remember-browser"></script>
-<script src="dlns/database.js?v=20261125-remember-browser"></script>
+<script src="dlns/database.js?v=20261126-apac"></script>
 <script>
 const LF=String.fromCharCode(10),CR=String.fromCharCode(13),TABS=['search','unseen','duos','trios','quints','herostats','draftsim','rostermoves','rosternarrative','validation','players'];
 let records=[],lastRegions=[],currentHeroUniverse=[],currentAllDrafts=[],currentCoverageMaps=null,currentRarityIndex=null,sorts={
@@ -632,11 +632,7 @@ key:'count',dir:'desc'},search:{
 key:'matchID',dir:'desc'}},rt=null,dt=null;
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'),fmt=(n,d=2)=>Number.isFinite(n)?n.toFixed(d):'0.00',num=n=>(n||0).toLocaleString(),lst=t=>String(t||'').replaceAll(LF,',').replaceAll(CR,',').split(',').map(x=>x.trim()).filter(Boolean),wv=w=>{
 const n=Number(w);
-return Number.isFinite(n)?n:-Infinity},mv=m=>{
-const n=Number(String(m||'').split('-')[0]);
-return Number.isFinite(n)?n:0},mo=(id,w)=>{
-const p=String(id||'').split('-'),wk=Number(w||p[0]),phase=(p[1]==='EU'?0:p[1]==='NA'?2:4)+(p[2]==='F'?1:0),game=Number(p[3])||0;
-return (Number.isFinite(wk)?wk:0)*100000+phase*1000+game},keyOf=a=>[...a].sort((x,y)=>x.localeCompare(y)).join('|'),canon=(h,u=[])=>{
+return Number.isFinite(n)?n:-Infinity},matchDates=new Map(),mo=(id,w)=>DLNSModel.chronology(id||String(w||0)+'-EU-C-0',matchDates.get(id)),timeline=(id,date)=>{const [week,region]=String(id||'').split('-');return DLNSModel.timelineWeek({week,region,played_on:date||matchDates.get(id)})},shiftLabel=d=>d.region==='APAC'?'APAC #'+d.week:String(d.week||''),keyOf=a=>[...a].sort((x,y)=>x.localeCompare(y)).join('|'),canon=(h,u=[])=>{
 const v=String(h||'').trim(),l=v.toLowerCase();
 return u.find(x=>x.toLowerCase()===l)||v};
 const HERO_AVAIL=DLNSModel.availability,heroAvailVal=h=>mo(HERO_AVAIL[h]||'1-EU-C-1');
@@ -804,7 +800,7 @@ const active=b.dataset.sort===s.key,base=b.dataset.label||b.textContent.replace(
 function playerOf(r){
 return r.player||r.playername||r.pickplayer||r.pickedby||r.username||r.name||''}
 function groupDrafts(filter=true){
-const g=new Map(),heroes=new Set(),regions=new Set(),rf=$('region')?.value||'All',resf=$('resultFilter')?.value||'All';
+const g=new Map(),heroes=new Set(),regions=new Set(DLNSModel.regions),rf=$('region')?.value||'All',resf=$('resultFilter')?.value||'All';
 for(const r of records){
 const type=(r.type||'').toLowerCase(),hero=r.hero,region=r.region,team=r.team,matchID=r.matchid,result=r.matchresult||'',player=playerOf(r);
 if(region)regions.add(region);
@@ -984,19 +980,18 @@ renderRarityProgress();
 $('heroOptions').innerHTML=u.map(h=>'<option value="'+esc(h)+'"></option>').join('');
 updateSearchIcons(u);
 const entered=Array.from({
-length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new Set(entered)],all=currentAllDrafts,matches=all.filter(d=>unique.every(h=>d.heroes.includes(h))),matchSort=(a,b)=>String(a.matchID).localeCompare(String(b.matchID),undefined,{
-numeric:true}),heroSort=(a,b)=>{
+length:6},(_,i)=>canon($('draftHero'+i).value,u)).filter(Boolean),unique=[...new Set(entered)],all=currentAllDrafts.filter(d=>$('region').value==='All'||d.region===$('region').value),matches=all.filter(d=>unique.every(h=>d.heroes.includes(h))),matchSort=(a,b)=>mo(a.matchID,a.week)-mo(b.matchID,b.week),heroSort=(a,b)=>{
 for(let i=0;i<Math.max(a.heroes.length,b.heroes.length);i++){
 const c=String(a.heroes[i]||'').localeCompare(String(b.heroes[i]||''));if(c)return c}
 return 0},rarityRank=m=>draftRarityInfo(m.heroes,true)?.rank??Infinity,rarityText=m=>{const r=draftRarityInfo(m.heroes,true);return r?num(r.rank)+suffix(r.rank):'...'},s=sorts.search,dir=s.dir==='asc'?1:-1;
 matches.sort((a,b)=>s.key==='heroes'?dir*heroSort(a,b)||-matchSort(a,b):s.key==='rarityRank'?dir*((rarityRank(a)>rarityRank(b))-(rarityRank(a)<rarityRank(b)))||-matchSort(a,b):dir*matchSort(a,b));
 $('draftSearchSummary').textContent=unique.length<entered.length?'Each selected hero needs to be unique.':unique.length?'Showing '+matches.length+' of '+all.length+' drafts containing '+unique.join(' / ')+'.':'Showing all '+matches.length+' drafts.';
-$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div><div><button class="sort searchSort" data-sort="rarityRank">Likelihood Rank</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b></div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div><div class="mono">'+rarityText(m)+'</div></div>').join('');
+$('draftSearchResults').innerHTML=unique.length<entered.length?'':'<div class="head match"><div><button class="sort searchSort" data-sort="matchID">Match ID</button></div><div>Region</div><div>Team</div><div>Result</div><div>Round / Game</div><div><button class="sort searchSort" data-sort="heroes">Heroes</button></div><div><button class="sort searchSort" data-sort="rarityRank">Likelihood Rank</button></div></div>'+matches.map(m=>'<div class="r match"><div><b>'+esc(m.matchID)+'</b>'+((matchDates.get(m.matchID)||DLNSModel.scheduledOn(m))?'<div class="small">'+esc(matchDates.get(m.matchID)||DLNSModel.scheduledOn(m))+'</div>':'')+'</div><div>'+esc(m.region)+'</div><div><b>'+esc(m.team)+'</b></div><div>'+esc(m.result)+'</div><div>'+esc([m.round,m.game?'Game '+m.game:''].filter(Boolean).join(' / '))+'</div><div class="heroes">'+m.heroes.map(h=>ih(h)).join('')+'</div><div class="mono">'+rarityText(m)+'</div></div>').join('');
 bindSort('search',()=>renderDraftSearch(currentHeroUniverse));
 markSort('search')}
 function renderCombo(kind,heroes,m){
 const size=kind==='duo'?2:3,show=!!($('showSeen'+(kind==='duo'?'Duos':'Trios'))?.checked),req=lst($(kind+'FilterText')?.value).map(h=>canon(h,heroes)).filter(Boolean),first=new Map(),all=[];
-for(const d of currentAllDrafts)combos(d.heroes,size,t=>{
+for(const d of groupDrafts(true).drafts)combos(d.heroes,size,t=>{
 const k=keyOf(t),val=mo(d.matchID,d.week),old=first.get(k);if(!old||val<old.val)first.set(k,{
 val,matchID:d.matchID,team:d.team})});
 combos(heroes,size,t=>{
@@ -1041,7 +1036,7 @@ $('quintResults').innerHTML=rows.map(x=>{
 const draftList='<div class="quintDrafts">'+x.drafts.map(d=>'<div class="quintDraft"><div><b>'+esc(d.matchID)+'</b><div class="small">'+esc(d.team)+'</div></div><div class="heroes">'+d.heroes.map(h=>h?ih(h,'dIcon'):'').join('')+'</div></div>').join('')+'</div>';
 return'<div class="r quint"><div>#'+x.rank+'</div><div class="heroes">'+x.heroes.map(h=>ih(h,'dIcon')).join('')+'</div><div class="score mono">'+x.count+'</div><div>'+draftList+'</div></div>'}).join('')||'<div class="r"><div class="muted">No repeated quints match this filter.</div></div>'}
 function rosterChanges(drafts){
-const sorted=[...drafts].sort((a,b)=>wv(a.week)-wv(b.week)||mv(a.matchID)-mv(b.matchID)),last=new Map(),changes=[];
+const sorted=[...drafts].sort((a,b)=>mo(a.matchID,a.week)-mo(b.matchID,b.week)),last=new Map(),changes=[];
 for(const d of sorted){
 const players=[...new Set(d.players.filter(Boolean))].sort((a,b)=>a.localeCompare(b)),key=(d.region||'')+'||'+d.team,prev=last.get(key);
 if(prev){
@@ -1073,8 +1068,8 @@ standIn,replaced})=>x.removed.includes(standIn)&&x.added.includes(replaced));
 };
 for(let i=0;i<changes.length;i++){
 const x=changes[i],d=x.d,k=rk(x.players),prior=seenRosters.get(k);
-if(d.week!==week){
-week=d.week;
+if(timeline(d.matchID)!==week){
+week=timeline(d.matchID);
 html+='<div class="week">Week '+esc(week||'-')+'</div>'}
 const temps=standIns(x,i);
 if(temps.length)for(const t of temps){
@@ -1142,7 +1137,7 @@ setTab('draftsim');
 $('tabBtn-draftsim')?.focus({preventScroll:true});
 $('tab-draftsim')?.scrollIntoView({block:'start'})})}
 function renderRosterMoves(drafts){
-const sorted=[...drafts].sort((a,b)=>wv(a.week)-wv(b.week)||mv(a.matchID)-mv(b.matchID)),firstPlayer=new Map(),last=new Map(),changes=[];
+const sorted=[...drafts].sort((a,b)=>mo(a.matchID,a.week)-mo(b.matchID,b.week)),firstPlayer=new Map(),last=new Map(),changes=[];
 [...drafts].sort((a,b)=>mo(a.matchID,a.week)-mo(b.matchID,b.week)).forEach(d=>d.players.forEach(p=>{
 if(!firstPlayer.has(p))firstPlayer.set(p,mo(d.matchID,d.week))}));
 for(const d of sorted){
@@ -1166,11 +1161,11 @@ l:rows.slice(0,6).map(r=>slot(r[0],r[1],false)).join(''),r:rows.slice(0,6).map(r
 let html='<div class="head roster"><div>Week</div><div>Region</div><div>Team</div><div>Match</div><div>Previous</div><div>New</div></div>',week=null;
 for(const x of changes){
 const d=x.d;
-if(d.week!==week){
-week=d.week;
+if(timeline(d.matchID)!==week){
+week=timeline(d.matchID);
 html+='<div class="week">Week '+esc(week||'-')+'</div>'}
 const firstSet=new Set(x.players.filter(p=>firstPlayer.get(p)===mo(d.matchID,d.week))),c=cmp(x.prev,x.players,x.newTeam,firstSet);
-html+='<div class="r roster"><div>'+esc(d.week||'-')+'</div><div>'+esc(d.region)+'</div><div><b>'+esc(d.team)+'</b>'+(x.newTeam?'<div class="small">new team</div>':'')+'</div><div><b>'+esc(d.matchID)+'</b>'+(x.prevID?'<div class="small">prev '+esc(x.prevID)+'</div>':'')+'</div><div class="compare">'+c.l+'</div><div class="compare">'+c.r+'</div></div>'}
+html+='<div class="r roster"><div>'+esc(shiftLabel(d)||'-')+'</div><div>'+esc(d.region)+'</div><div><b>'+esc(d.team)+'</b>'+(x.newTeam?'<div class="small">new team</div>':'')+'</div><div><b>'+esc(d.matchID)+'</b>'+(x.prevID?'<div class="small">prev '+esc(x.prevID)+'</div>':'')+'</div><div class="compare">'+c.l+'</div><div class="compare">'+c.r+'</div></div>'}
 $('rosterMovesResults').innerHTML=html}
 function sortRows(rows,s,textKey){
 const dir=s.dir==='asc'?1:-1;
@@ -1192,12 +1187,13 @@ const unseen=unseenCombosByHero(currentHeroUniverse,currentCoverageMaps);
 const matchVals=new Map(),map=new Map(),ensure=h=>map.get(h)||map.set(h,{
 hero:h,picks:0,bans:0,wins:0,losses:0,firstPicked:0,lastSeen:'',lastSeenValue:-Infinity,pc:new Map()}).get(h);
 records.forEach(r=>{
+if($('region').value!=='All'&&r.region!==$('region').value)return;
 const k=r.matchid||[r.week,r.region,r.shift,r.map].join('|');if(k&&!matchVals.has(k))matchVals.set(k,mo(r.matchid,r.week));if((r.type||'').toLowerCase()==='ban'&&r.hero)ensure(r.hero).bans++});
 Object.keys(HERO_AVAIL).forEach(ensure);
 currentHeroUniverse.forEach(ensure);
 drafts.forEach(d=>d.heroes.forEach(h=>{
-const x=ensure(h),p=d.playersByHero[h];x.picks++;if(d.result==='Win')x.wins++;else if(d.result==='Loss')x.losses++;if(d.firstPickHero===h)x.firstPicked++;if(p)x.pc.set(p,(x.pc.get(p)||0)+1);if(wv(d.week)>x.lastSeenValue){
-x.lastSeenValue=wv(d.week);x.lastSeen=d.week||''}}));
+const x=ensure(h),p=d.playersByHero[h];x.picks++;if(d.result==='Win')x.wins++;else if(d.result==='Loss')x.losses++;if(d.firstPickHero===h)x.firstPicked++;if(p)x.pc.set(p,(x.pc.get(p)||0)+1);if(mo(d.matchID,d.week)>x.lastSeenValue){
+x.lastSeenValue=mo(d.matchID,d.week);x.lastSeen=shiftLabel(d)}}));
 const matchList=[...matchVals.values()];
 let rows=[...map.values()].map(x=>{
 let p='',c=0;for(const [pp,cc]of x.pc)if(cc>c||cc===c&&pp.localeCompare(p)<0){
@@ -1220,7 +1216,7 @@ return items.map(t=>'<span class="chip '+(t.current?'current':'')+'"><span class
 function renderPlayerStats(drafts){
 const latest=new Map(),lastFinal=new Map(),champ=new Map(),map=new Map();
 drafts.forEach(d=>{
-const tk=(d.region||'')+'||'+d.team,old=latest.get(tk),a=wv(d.week),b=mv(d.matchID);if(!old||a>old.w||a===old.w&&b>old.m)latest.set(tk,{
+const tk=(d.region||'')+'||'+d.team,old=latest.get(tk),a=timeline(d.matchID),b=mo(d.matchID,d.week);if(!old||a>old.w||a===old.w&&b>old.m)latest.set(tk,{
 w:a,m:b,players:new Set(d.players)});if(/final/i.test(d.round||'')){
 const fk=(d.week||'')+'||'+(d.region||''),val=mo(d.matchID,d.week),fo=lastFinal.get(fk);if(!fo||val>fo.val)lastFinal.set(fk,{
 val,matchID:d.matchID})}});
@@ -1229,9 +1225,9 @@ const f=lastFinal.get((d.week||'')+'||'+(d.region||''));if(f&&f.matchID===d.matc
 const ensure=p=>map.get(p)||map.set(p,{
 player:p,picks:0,wins:0,losses:0,lastSeen:'',lastSeenValue:-Infinity,lastMatchValue:-Infinity,hc:new Map(),tl:[],weeks:new Set(),lastTeamKey:''}).get(p);
 drafts.forEach(d=>d.heroes.forEach(h=>{
-const p=d.playersByHero[h];if(!p)return;const x=ensure(p),a=wv(d.week),b=mv(d.matchID),tk=(d.region||'')+'||'+d.team;x.picks++;x.weeks.add(d.week);if(d.result==='Win')x.wins++;else if(d.result==='Loss')x.losses++;x.hc.set(h,(x.hc.get(h)||0)+1);x.tl.push({
-teamKey:tk,team:d.team,week:d.week,w:a,m:b});if(a>x.lastSeenValue||a===x.lastSeenValue&&b>x.lastMatchValue){
-x.lastSeenValue=a;x.lastMatchValue=b;x.lastSeen=d.week||'';x.lastTeamKey=tk}}));
+const p=d.playersByHero[h];if(!p)return;const x=ensure(p),a=timeline(d.matchID),b=mo(d.matchID,d.week),tk=(d.region||'')+'||'+d.team;x.picks++;x.weeks.add(timeline(d.matchID));if(d.result==='Win')x.wins++;else if(d.result==='Loss')x.losses++;x.hc.set(h,(x.hc.get(h)||0)+1);x.tl.push({
+teamKey:tk,team:d.team,week:a,w:a,m:b});if(a>x.lastSeenValue||a===x.lastSeenValue&&b>x.lastMatchValue){
+x.lastSeenValue=a;x.lastMatchValue=b;x.lastSeen=shiftLabel(d);x.lastTeamKey=tk}}));
 let rows=[...map.values()].map(x=>{
 const st=[];[...x.tl].sort((a,b)=>a.w-b.w||a.m-b.m).forEach(t=>{
 let s=st[st.length-1];if(!s||s.teamKey!==t.teamKey)st.push(s={
@@ -1258,7 +1254,7 @@ heroes:+$('wHeroes').value||0,duos:+$('wDuos').value||0,trios:+$('wTrios').value
 currentCoverageMaps=maps;
 const raritySig=raritySignature(heroes,maps,w);
 if(currentRarityIndex?.signature!==raritySig)currentRarityIndex=null;
-renderHeroStats(currentAllDrafts);
+renderHeroStats(currentAllDrafts.filter(d=>$('region').value==='All'||d.region===$('region').value));
 renderPlayerStats(currentAllDrafts);
 renderRosterMoves(currentAllDrafts);
 renderRosterNarrative(currentAllDrafts);
@@ -1284,6 +1280,7 @@ if(JSON.stringify(records)===JSON.stringify(rows)){
 window.dispatchEvent(new Event('dlns:data'));
 return}
 records=rows;
+matchDates.clear();for(const row of rows)if(row.played_on)matchDates.set(row.matchid,row.played_on);
 currentRarityIndex=null;
 rarityBuildToken++;
 rarityBuildStatus=null;
@@ -1503,9 +1500,9 @@ Paradox:'1-EU-C-1',Abrams:'1-EU-C-1',Shiv:'1-EU-C-1',Billy:'2-NA-C-1',Mina:'2-EU
 return mo(AVAIL[hero]||'1-EU-C-1')<=val}
 function weeklyMeta(){
 const universe=[...new Set([...records.map(r=>r.hero).filter(Boolean),...Object.keys(AVAIL)])].sort((a,b)=>a.localeCompare(b)),weeks=new Map();for(const r of records){
-const hero=r.hero,week=r.week||'-',p=points(r);if(!hero||!p)continue;if(!weeks.has(week))weeks.set(week,{
+const hero=r.hero,week=String(timeline(r.matchid)||r.week||'-'),p=points(r);if(!hero||!p)continue;if(!weeks.has(week))weeks.set(week,{
 week,heroes:new Map(),total:0,val:0,events:[]});const w=weeks.get(week),old=w.heroes.get(hero)||{
-hero,score:0,count:0,pct:0};old.score+=p;old.count++;w.heroes.set(hero,old);w.total+=p;const val=mo(r.matchid,week);w.val=Math.max(w.val,val);w.events.push({
+hero,score:0,count:0,pct:0};old.score+=p;old.count++;w.heroes.set(hero,old);w.total+=p;const val=mo(r.matchid,r.week);w.val=Math.max(w.val,val);w.events.push({
 p,val})}
 const rows=[...weeks.values()].sort((a,b)=>wv(a.week)-wv(b.week));rows.forEach(w=>{
 w.list=universe.filter(hero=>available(hero,w.val)).map(hero=>{
@@ -1544,9 +1541,9 @@ Paradox:'1-EU-C-1',Abrams:'1-EU-C-1',Shiv:'1-EU-C-1',Billy:'2-NA-C-1',Mina:'2-EU
 return mo(AVAIL[hero]||'1-EU-C-1')<=val}
 function trendRows(){
 const universe=[...new Set([...records.map(r=>r.hero).filter(Boolean),...Object.keys(AVAIL)])].sort((a,b)=>a.localeCompare(b)),weeks=new Map();for(const r of records){
-const hero=r.hero,week=r.week||'-',p=points(r);if(!hero||!p)continue;if(!weeks.has(week))weeks.set(week,{
+const hero=r.hero,week=String(timeline(r.matchid)||r.week||'-'),p=points(r);if(!hero||!p)continue;if(!weeks.has(week))weeks.set(week,{
 week,heroes:new Map(),total:0,val:0,events:[],matches:new Map()});const w=weeks.get(week),old=w.heroes.get(hero)||{
-hero,score:0,count:0,pct:0};old.score+=p;old.count++;w.heroes.set(hero,old);w.total+=p;const val=mo(r.matchid,week),mid=r.matchid||[r.week,r.region,r.round,r.game].join('|');w.val=Math.max(w.val,val);w.events.push({
+hero,score:0,count:0,pct:0};old.score+=p;old.count++;w.heroes.set(hero,old);w.total+=p;const val=mo(r.matchid,r.week),mid=r.matchid||[r.week,r.region,r.round,r.game].join('|');w.val=Math.max(w.val,val);w.events.push({
 p,val});if(mid)w.matches.set(mid,val)}
 const rows=[...weeks.values()].sort((a,b)=>wv(a.week)-wv(b.week));rows.forEach(w=>{
 w.list=universe.filter(hero=>available(hero,w.val)).map(hero=>{
@@ -2130,11 +2127,11 @@ return DLNSModel.matchToSim({week,left_team:'Team 1',right_team:'Team 2',first_p
 function cleanSim(x){
 if(!x||typeof x!=='object')return blankSim();
 const savedWeek=Number(x.week),week=Number.isInteger(savedWeek)&&savedWeek>=1&&savedWeek<=9999?savedWeek:(x.events?.length?START-1:START);
-const first=x.first==='right'?'right':'left',expected=DLNSModel.sequence(first,week),actions=[],seen=new Set();
+const first=x.first==='right'?'right':'left',region=DLNSModel.regions.includes(x.region)?x.region:undefined,expected=DLNSModel.sequence(first,week,region),actions=[],seen=new Set();
 for(const [i,e] of (Array.isArray(x.events)?x.events:[]).entries()){
 const wanted=expected[i];if(!wanted||!e||e.type!==wanted.type||Number(e.n)!==wanted.order||e.side!==wanted.side||!HEROES.includes(e.hero)||seen.has(e.hero))break;
 seen.add(e.hero);actions.push({...wanted,hero:e.hero})}
-return DLNSModel.matchToSim({week,left_team:String(x.left||'Team 1'),right_team:String(x.right||'Team 2'),first_pick:first,actions})}
+return DLNSModel.matchToSim({week,region,left_team:String(x.left||'Team 1'),right_team:String(x.right||'Team 2'),first_pick:first,actions})}
 function loadSim(){
 try{
 return cleanSim(JSON.parse(localStorage.getItem(SIM_STORE)||'null'))}
@@ -2164,9 +2161,9 @@ return sim[s]||s}
 function other(s){
 return s==='left'?'right':'left'}
 function seq(){
-return DLNSModel.sequence(sim.first,sim.week).map(({type,order,side})=>({type,n:order,side}))}
+return DLNSModel.sequence(sim.first,sim.week,sim.region).map(({type,order,side})=>({type,n:order,side}))}
 function pos(side,type,count){
-return DLNSModel.slotIndex(side,type,count,sim.week)}
+return DLNSModel.slotIndex(side,type,count,sim.week,sim.region)}
 function filled(side,type){
 return sim.slots[side][type+'s'].filter(Boolean).length}
 function current(){
@@ -2174,7 +2171,7 @@ return seq()[sim.step]}
 function used(){
 return new Set(sim.events.map(e=>e.hero))}
 function resetDraft(){
-const week=window.DLNSMatchEntry?.draftWeek||sim.week;sim=DLNSModel.matchToSim({week,left_team:sim.left,right_team:sim.right,first_pick:sim.first,actions:[]});saveSim();if(window.DLNSMatchEntry)window.DLNSMatchEntry.setWinner('');else renderSim()}
+const week=window.DLNSMatchEntry?.draftWeek||sim.week;const region=window.DLNSMatchEntry?.region||sim.region;sim=DLNSModel.matchToSim({week,region,left_team:sim.left,right_team:sim.right,first_pick:sim.first,actions:[]});saveSim();if(window.DLNSMatchEntry)window.DLNSMatchEntry.setWinner('');else renderSim()}
 function setFirstPick(v){
 if(v===sim.first||window.DLNSMatchEntry?.saving)return;
 sim=DLNSModel.withFirstPick(sim,v);saveSim();renderSim()}
@@ -2338,10 +2335,10 @@ const c=current(),u=used(),region=window.DLNSMatchEntry?.region||'EU',filterBadg
 updateSimRanks();
 prepareSimLeaders();
 simPickRanks=DLNSModel.heroPickRanks(records,sim.slots.left.picks.concat(sim.slots.right.picks),window.DLNSMatchEntry?.editingMatchId);
-const modern=DLNSModel.banCount(sim.week)===3,admin=window.DLNSDatabase?.auth?.admin,formatMismatch=window.DLNSMatchEntry?.formatMismatch;
-const format=admin?'<span class="small">'+(modern?'3 bans per team':'2 bans per team')+'</span>':
+const modern=DLNSModel.banCount(sim.week,sim.region)===3,admin=window.DLNSDatabase?.auth?.admin,formatMismatch=window.DLNSMatchEntry?.formatMismatch;
+const format=admin||region==='APAC'?'<span class="small">'+(modern?'3 bans per team':'2 bans per team')+'</span>':
 '<label><div class="label">Draft format</div><select id="simDraftFormat"><option value="'+START+'" '+(modern?'selected':'')+'>Shift '+START+'+ · 3 bans/team</option><option value="'+(START-1)+'" '+(!modern?'selected':'')+'>Through Shift '+(START-1)+' · 2 bans/team</option></select></label>';
-root.innerHTML='<div class="simControls">'+format+'<label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+['EU','NA'].map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
+root.innerHTML='<div class="simControls">'+format+'<label><div class="label">Region</div><select id="simRegion" '+(window.DLNSMatchEntry?.saving?'disabled':'')+'>'+DLNSModel.regions.map(value=>'<option '+(value===region?'selected':'')+'>'+value+'</option>').join('')+'</select></label><button onclick="undoSim()">Undo</button><button onclick="resetDraft()">Reset</button><button onclick="exportDraft()">Export draft</button></div>'+
 '<div id="simMatchEntry"></div><textarea id="simExportText" class="simExport hidden" readonly></textarea>'+
 '<div class="bar simHeroBar" style="margin-bottom:8px"><div class="title">Heroes</div>'+filterBadge+'</div>'+
 '<div class="simPool">'+HEROES.map(h=>'<button class="simHeroBtn '+(u.has(h)?'used ':'')+(simHeroFilter&&!simHeroMatches(h)?'filteredOut':'')+'" '+(u.has(h)||formatMismatch?'disabled':'')+' data-hero="'+esc(h)+'">'+ih(h)+'<span>'+esc(h)+'</span></button>').join('')+'</div>'+
@@ -2349,7 +2346,7 @@ root.innerHTML='<div class="simControls">'+format+'<label><div class="label">Reg
 const selector=$('simDraftFormat');if(selector)selector.onchange=e=>{
 const week=Number(e.target.value);
 if(sim.events.length&&!window.confirm('Changing draft format clears the current draft. Continue?')){selector.value=String(modern?START:START-1);return}
-sim=DLNSModel.matchToSim({week,left_team:sim.left,right_team:sim.right,first_pick:sim.first,actions:[]});
+sim=DLNSModel.matchToSim({week,region,left_team:sim.left,right_team:sim.right,first_pick:sim.first,actions:[]});
 if(window.DLNSMatchEntry)window.DLNSMatchEntry.setWinner('');else renderSim();
 $('simDraftFormat')?.focus({preventScroll:true})};
 if(window.renderCoverageStats)window.renderCoverageStats(sim);
@@ -2370,7 +2367,7 @@ window.renderDraftSimLeaders=renderSimLeaders;
 window.setDraftSimState=next=>{sim=cleanSim(next);saveSim();renderSim()};window.chooseHero=chooseHero;window.undoSim=undoSim;window.resetDraft=resetDraft;window.setFirstPick=setFirstPick;window.exportDraft=exportDraft;window.renderDraftSim=renderSim;window.clearDraftSimRarityCache=()=>simRarityCache.clear();addSimUI();const oldSimRecompute=recompute;recompute=function(){
 oldSimRecompute();renderSim()};renderSim();if(location.hash==='#'+ID)setTab(ID)})();
 </script>
-<script src="dlns/submission.js?v=20261126-next-match"></script>
+<script src="dlns/submission.js?v=20261126-apac"></script>
 </body>
 </html>
 
