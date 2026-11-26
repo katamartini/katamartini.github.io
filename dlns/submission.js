@@ -34,8 +34,34 @@
     if (status) { status.textContent = message; status.className = 'matchEntryStatus ' + kind; }
   }
 
-  function suggestedWeek() {
-    return String(Math.max(0,...db.matches.map(match=>match.week)) + 1);
+  function matchEntry(next) {
+    return {...blank(),...next,week:String(next.week),game:String(next.game)};
+  }
+
+  function newMatch() {
+    try {
+      const next = model.nextOpenMatch(db.matches);
+      const teams = model.gameOneTeams(db.matches,next);
+      entry = matchEntry(next);
+      persist(); setMessage('');
+      app.setSim(model.matchToSim({week:next.week,left_team:teams?.left || 'Team 1',
+        right_team:teams?.right || 'Team 2',first_pick:'left',actions:[]}));
+    } catch (error) { setMessage(error.message,'errorText'); }
+  }
+
+  function applyGameOneTeams(sim) {
+    const teams = model.gameOneTeams(db.matches,entry);
+    if (!teams || (sim.left===teams.left && sim.right===teams.right)) return false;
+    entry.winner = '';
+    persist();
+    app.setSim({...sim,...teams});
+    return true;
+  }
+
+  function onMatchDetailsChanged(event) {
+    const sim = app.getSim();
+    if (!entry.editing && !sim.events.length && applyGameOneTeams(sim)) return;
+    if(event.target.id==='simMatchWeek')window.renderDraftSim();
   }
 
   function draftWeek() {
@@ -117,7 +143,12 @@
     const root = $('simMatchEntry'), playerSlots = document.querySelectorAll('[data-player-hero]');
     if (!root) return;
     const auth = db.auth, sim = app.getSim(), busy = saving || autofilling || loginBusy;
-    if (!entry.week && db.matches.length) { entry.week = suggestedWeek(); persist(); }
+    if (auth.admin && !entry.week) {
+      try { entry = matchEntry(model.nextOpenMatch(db.matches)); }
+      catch (_) { entry.week = String(db.matches.at(-1)?.week || 1); }
+      persist();
+      if (!sim.events.length && applyGameOneTeams(sim)) return;
+    }
     if (auth.admin && syncEmptyDraft(sim)) return;
     const authButtons = auth.user ? `<span class="small">${esc(auth.user.login)}</span><button id="githubReload" ${loginBusy || auth.busy?'disabled':''}>Reload history</button><button id="simSignOut" ${loginBusy || auth.busy?'disabled':''}>Sign out</button>` : `<button id="simSignIn" ${loginBusy || auth.busy?'disabled':''}>Sign in with GitHub</button>`;
     const header = `<div class="matchEntryBar"><div class="matchEntryTitle">Match entry</div><div class="matchAuth">${authButtons}</div></div>`;
@@ -168,10 +199,10 @@
         window.updateDraftSeriesScore?.();
       };
     });
-    $('simMatchWeek').onchange = () => window.renderDraftSim();
+    for(const id of Object.keys(fields)) $(id).onchange = onMatchDetailsChanged;
     $('simLoadMatch').onchange = event => { entry.selected = event.target.value; persist(); };
     $('simLoadMatchBtn').onclick = loadSelected;
-    $('simNewMatch').onclick = () => { entry = {...blank(),week:suggestedWeek()}; persist(); setMessage(''); app.setSim(model.matchToSim({week:Number(entry.week),left_team:'Team 1',right_team:'Team 2',first_pick:'left',actions:[]})); };
+    $('simNewMatch').onclick = newMatch;
     $('simAutofillMatch').onclick = autofill;
     $('simSubmitMatch').onclick = submit;
   }
@@ -300,9 +331,10 @@
     try {
       const matches = await db.loadMatches();
       app.applyMatches(matches);
-      const next = model.nextMatch(matches);
+      const next = model.nextOpenMatch(matches);
       entry = {...entry,...next,week:String(next.week),game:String(next.game),winner:'',editing:null,revision:null,selected:''};
-      persist(); refreshTeams();
+      persist();
+      if (!applyGameOneTeams(app.getSim())) refreshTeams();
       setMessage(`Autofilled ${model.matchId(next)}.`,'success');
     } catch (error) { setMessage(error.message,'errorText'); }
     finally { autofilling = false; window.renderDraftSim(); }
@@ -322,7 +354,9 @@
     setRegion(region) {
       if (saving || autofilling || loginBusy || !['EU','NA'].includes(region) || region === entry.region) return;
       entry.region = region;
-      const sim = app.getSim(), teams = teamNames(region);
+      const sim = app.getSim();
+      if (!entry.editing && !sim.events.length && applyGameOneTeams(sim)) return;
+      const teams = teamNames(region);
       const next = {...sim};
       for (const [side,fallback] of [['left','Team 1'],['right','Team 2']]) {
         if (!teams.includes(sim[side])) next[side] = fallback;

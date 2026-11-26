@@ -200,6 +200,30 @@
     return next;
   }
 
+  function nextOpenMatch(matches) {
+    if (!matches.length) return nextMatch(matches);
+    const week = Math.max(...matches.map(match=>Number(match.week)));
+    for (const region of ['EU','NA']) {
+      const regional = matches.filter(match=>Number(match.week)===week && match.region===region);
+      const has = (round,game) => regional.some(match=>match.round===round && Number(match.game)===game);
+      for (const [round,game] of [['Challenger',1],['Finals',1],['Finals',2]]) {
+        if (!has(round,game)) return {week,region,round,game};
+      }
+      if (has('Finals',3)) continue;
+      const next = nextMatch(regional);
+      if (next.region===region && next.week===week) return next;
+    }
+    if (week >= 9999) throw new Error('The next match would exceed week 9999.');
+    return {week:week+1,region:'EU',round:'Challenger',game:1};
+  }
+
+  function gameOneTeams(matches, details) {
+    if (![2,3].includes(Number(details.game))) return null;
+    const first = matches.find(match=>Number(match.week)===Number(details.week)
+      && match.region===details.region && match.round===details.round && Number(match.game)===1);
+    return first ? {left:first.left_team,right:first.right_team} : null;
+  }
+
   function simToMatch(sim, details, players = {}) {
     const match = {
       week:Number(details.week),region:details.region,round:details.round,game:Number(details.game),
@@ -224,5 +248,5 @@
     return {week:match.week,left:match.left_team,right:match.right_team,first:match.first_pick,step:events.length,events,slots};
   }
 
-  return Object.freeze({heroes,availability,THREE_BAN_START,banCount,slotIndex,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,heroPickBadge,validateTeam,withFirstPick,seriesWins,nextMatch});
+  return Object.freeze({heroes,availability,THREE_BAN_START,banCount,slotIndex,sequence,matchId,chronology,validateMatch,matchToRecords,simToMatch,matchToSim,teamsForRegion,latestHeroPlayer,heroPickRanks,heroPickBadge,validateTeam,withFirstPick,seriesWins,nextMatch,nextOpenMatch,gameOneTeams});
 });

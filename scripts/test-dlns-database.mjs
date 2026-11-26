@@ -324,6 +324,25 @@ assert.throws(()=>model.nextMatch([seriesGame,{...seriesGame,game:2,right_team:'
 assert.throws(()=>model.nextMatch([{...seriesGame,game:4}]),/outside.*sequence/);
 assert.throws(()=>model.nextMatch([{...seriesGame,week:9999,region:'NA',game:3}]),/exceed week 9999/);
 
+// New Match searches only the newest entered week, even when matches arrived out of order.
+const openId = matches=>model.matchId(model.nextOpenMatch(matches));
+const euC={...seriesGame,round:'Challenger'}, euF={...seriesGame}, naC={...euC,region:'NA'}, naF={...euF,region:'NA'};
+const second=(match,winner='left')=>({...match,game:2,winner});
+assert.equal(openId([]),'1-EU-C-1');
+assert.equal(openId([euC,euF]),'80-EU-F-2');
+assert.equal(openId([euC,euF,second(euF,'right'),naC,naF,second(naF)]),'80-EU-F-3');
+assert.equal(openId([euC,euF,second(euF),naC]),'80-NA-F-1');
+assert.equal(openId([euC,euF,second(euF),naC,naF,second(naF)]),'81-EU-C-1');
+assert.equal(openId([euC,naC,naF,second(naF)]),'80-EU-F-1');
+assert.throws(()=>openId([euC,euF,second(euF,null)]),/need winners/);
+assert.equal(openId(history.matches),'55-EU-C-1');
+for (const game of [2,3]) {
+  const details={...euF,game:String(game),week:String(euF.week)};
+  assert.deepEqual(model.gameOneTeams([naF,euC,{...euF,game:2,left_team:'Bravo',right_team:'Alpha'},euF],details),seriesTeams);
+  assert.equal(model.gameOneTeams([naF,euC],details),null,'do not copy another series');
+}
+assert.equal(model.gameOneTeams([euF],euF),null);
+
 const owner = '00000000-0000-4000-8000-000000000001';
 const outsider = '00000000-0000-4000-8000-000000000002';
 await db.query("insert into auth.identities values ($1,'github','66887569'),($2,'github','1234')",[owner,outsider]);
