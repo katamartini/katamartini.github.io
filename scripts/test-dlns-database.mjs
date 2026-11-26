@@ -96,7 +96,11 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
       const emptySlots = cell.match(/class="coverageCombo coverageComboBlank(?: coverageComboUnavailable)?" aria-hidden="true">(?:<span class="sIcon"><\/span>)*<\/span>/g) || [];
       assert.equal(emptySlots.length,maxByKind[kind]-pickedUnseen,kind+': empty slots for '+side);
       for(const slot of emptySlots)assert.equal((slot.match(/class="sIcon"/g)||[]).length,size);
-      const unavailable=Math.max(0,maxByKind[kind]-unseenPossible);
+      let newlyFormable=0;
+      coverage.combos('ABCDEF'.split(''),size,slots=>{
+        if (slots.some(h=>'ABCDEF'.indexOf(h)>=state.slots[side].picks.length)) newlyFormable++;
+      });
+      const unavailable=emptySlots.length-Math.min(unseenPossible-pickedUnseen,newlyFormable);
       assert.equal(emptySlots.filter(slot=>slot.includes('coverageComboUnavailable')).length,unavailable,kind+': unavailable slots for '+side);
       assert.deepEqual(emptySlots.map(slot=>slot.includes('coverageComboUnavailable')),Array.from({length:emptySlots.length},(_,i)=>i>=emptySlots.length-unavailable));
       assert.ok(pickedUnseen <= unseenPossible);
@@ -122,6 +126,13 @@ for(const [kind,size] of coverageSizes)for(const side of ['left','right']){
     prior=actual;
   }
 }
+// Five heroes already picked: seven unseen duo candidates, but one remaining pick can add only five.
+const example=coverage.coverageComboIcons([],2,15,7,10);
+assert.equal((example.match(/coverageComboUnavailable/g)||[]).length,10);
+assert.equal((example.match(/coverageComboBlank"/g)||[]).length,5);
+const partlyFilled=coverage.coverageComboIcons([['A','B'],['A','C'],['A','D']],2,15,7,10);
+assert.equal((partlyFilled.match(/coverageComboUnavailable/g)||[]).length,8);
+assert.equal((partlyFilled.match(/coverageComboBlank"/g)||[]).length,4);
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
