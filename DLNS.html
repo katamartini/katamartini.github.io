@@ -199,13 +199,16 @@ gap:7px}
 background:rgba(125,211,252,.08);
 color:#c7d9f2}
 .heroStat{
-grid-template-columns:58px 160px 94px 94px 68px 68px 78px 68px 68px 72px 100px 145px 80px;
-min-width:1281px}
+grid-template-columns:78px 58px 160px 94px 94px 68px 68px 78px 68px 68px 72px 100px 145px 80px;
+min-width:1359px}
 @media(max-width:620px){
 .heroStat{
-grid-template-columns:40px 92px 74px 78px 68px 68px 78px 68px 68px 72px 100px 145px 80px;
-min-width:1149px}
+grid-template-columns:68px 40px 92px 74px 78px 68px 68px 78px 68px 68px 72px 100px 145px 80px;
+min-width:1217px}
 }
+.heroStatsRank{
+display:flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums;font-weight:700}
+.heroStatsRank img{width:25px;height:25px;object-fit:contain;flex:none}
 .playerStat{
 grid-template-columns:165px 48px 65px 58px 58px 58px 68px 92px 285px 185px 70px;
 min-width:1210px}
@@ -766,7 +769,7 @@ return'<section id="tab-search" class="tab-panel"><section class="searchLayout">
 function head(labels,keys,cls,type){
 return'<div class="head '+cls+'">'+labels.map((x,i)=>'<div>'+(keys[i]?'<button class="sort '+type+'Sort" data-sort="'+keys[i]+'">'+x+'</button>':x)+'</div>').join('')+'</div>'}
 function heroTab(){
-return'<section id="tab-herostats" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Hero stats</div><div class="table">'+head(['Icon','Hero','Unseen Duos','Unseen Trios','Picks','Bans','Contest%','Wins','Losses','Win %','First-Picked','Most Played By','Last Seen'],['','hero','unseenDuos','unseenTrios','picks','bans','contestRate','wins','losses','winRate','firstPicked','mostPlayedBy','lastSeen'],'heroStat','hero')+'<div id="heroStatsResults"></div></div></div></section></section>'}
+return'<section id="tab-herostats" class="tab-panel hidden"><section class="card"><div class="in"><div class="title">Hero stats</div><div class="table">'+head(['Rank','Icon','Hero','Unseen Duos','Unseen Trios','Picks','Bans','Contest%','Wins','Losses','Win %','First-Picked','Most Played By','Last Seen'],['pickRank','','hero','unseenDuos','unseenTrios','picks','bans','contestRate','wins','losses','winRate','firstPicked','mostPlayedBy','lastSeen'],'heroStat','hero')+'<div id="heroStatsResults"></div></div></div></section></section>'}
 function playersTab(){
 return'<section id="tab-players" class="tab-panel hidden"><section class="card"><div class="in"><div class="bar"><div class="title">Players</div><button class="tableToggle" id="playerExpandAllBtn" onclick="toggleAllPlayerRows()">Expand</button></div><div class="table">'+head(['Player','&#127942;','Shifts','Games','Wins','Losses','Win %','Heroes Played','Hero Pool','Team History','Last Seen'],['player','championships','shifts','picks','wins','losses','winRate','heroPoolSize','heroPoolSize','teamHistoryCount','lastSeen'],'playerStat','player')+'<div id="playerStatsResults"></div></div></div></section></section>'}
 function rosterTab(){
@@ -792,7 +795,7 @@ document.querySelectorAll('.'+type+'Sort').forEach(b=>b.onclick=()=>{
 const k=b.dataset.sort,s=sorts[type];sorts[type]=s.key===k?{
 key:k,dir:s.dir==='asc'?'desc':'asc'}
 :{
-key:k,dir:k==='firstSeen'||k==='player'||k==='hero'||k==='heroes'?'asc':'desc'};render()})}
+key:k,dir:k==='pickRank'||k==='firstSeen'||k==='player'||k==='hero'||k==='heroes'?'asc':'desc'};render()})}
 function markSort(type){
 const s=sorts[type];
 document.querySelectorAll('.'+type+'Sort').forEach(b=>{
@@ -1182,16 +1185,20 @@ for(const key of maps?.[kind]?.keys()||[]){
 const members=key.split('|');
 if(members.every(hero=>counts.has(hero)))for(const hero of members)counts.get(hero)[field]--}}
 return counts}
+function heroStatsRankHTML(rank,picks){
+const badge=DLNSModel.heroPickBadge(rank),label='Pick rank #'+rank+' · '+badge.name+' · '+picks+' picks';
+return '<div class="heroStatsRank" title="'+esc(label)+'"><img src="'+esc(badge.image)+'" alt="'+esc(badge.name)+'" loading="lazy"><span>#'+rank+'</span></div>'}
 function renderHeroStats(drafts){
+const region=$('region').value;
 const unseen=unseenCombosByHero(currentHeroUniverse,currentCoverageMaps);
 const matchVals=new Map(),map=new Map(),ensure=h=>map.get(h)||map.set(h,{
 hero:h,picks:0,bans:0,wins:0,losses:0,firstPicked:0,lastSeen:'',lastSeenValue:-Infinity,pc:new Map()}).get(h);
 records.forEach(r=>{
-if($('region').value!=='All'&&r.region!==$('region').value)return;
+if(region!=='All'&&r.region!==region)return;
 const k=r.matchid||[r.week,r.region,r.shift,r.map].join('|');if(k&&!matchVals.has(k))matchVals.set(k,mo(r.matchid,r.week));if((r.type||'').toLowerCase()==='ban'&&r.hero)ensure(r.hero).bans++});
 Object.keys(HERO_AVAIL).forEach(ensure);
 currentHeroUniverse.forEach(ensure);
-drafts.forEach(d=>d.heroes.forEach(h=>{
+drafts.filter(d=>region==='All'||d.region===region).forEach(d=>d.heroes.forEach(h=>{
 const x=ensure(h),p=d.playersByHero[h];x.picks++;if(d.result==='Win')x.wins++;else if(d.result==='Loss')x.losses++;if(d.firstPickHero===h)x.firstPicked++;if(p)x.pc.set(p,(x.pc.get(p)||0)+1);if(mo(d.matchID,d.week)>x.lastSeenValue){
 x.lastSeenValue=mo(d.matchID,d.week);x.lastSeen=shiftLabel(d)}}));
 const matchList=[...matchVals.values()];
@@ -1200,9 +1207,13 @@ let p='',c=0;for(const [pp,cc]of x.pc)if(cc>c||cc===c&&pp.localeCompare(p)<0){
 p=pp;c=cc}
 const avail=heroAvailVal(x.hero),availableMatches=matchList.filter(v=>v>=avail).length,contestRate=availableMatches?(x.picks+x.bans)/availableMatches*100:null;return{
 ...x,...unseen.get(x.hero),availableMatches,contestRate,winRate:x.wins+x.losses?x.wins/(x.wins+x.losses)*100:null,mostPlayedBy:p,mostPlayedByCount:c}});
+// Competition ranking: tied pick counts share a rank and the next rank skips those places.
+const sortedCounts=rows.map(x=>x.picks).sort((a,b)=>b-a),rankByCount=new Map();
+sortedCounts.forEach((count,i)=>{if(!rankByCount.has(count))rankByCount.set(count,i+1)});
+rows.forEach(x=>{x.pickRank=rankByCount.get(x.picks)});
 sortRows(rows,sorts.hero,'hero');
 markSort('hero');
-$('heroStatsResults').innerHTML=rows.map(x=>'<div class="r heroStat"><div>'+ih(x.hero,'hIcon')+'</div><div><b>'+esc(x.hero)+'</b></div><div class="mono" data-unseen="duos">'+(x.unseenDuos==null?'-':num(x.unseenDuos))+'</div><div class="mono" data-unseen="trios">'+(x.unseenTrios==null?'-':num(x.unseenTrios))+'</div><div>'+x.picks+'</div><div>'+x.bans+'</div><div>'+(x.contestRate==null?'-':fmt(x.contestRate,1)+'%')+'</div><div>'+x.wins+'</div><div>'+x.losses+'</div><div>'+(x.winRate==null?'-':fmt(x.winRate,1)+'%')+'</div><div>'+x.firstPicked+'</div><div>'+(x.mostPlayedBy?'<span class="badge">'+x.mostPlayedByCount+'</span>'+esc(x.mostPlayedBy):'-')+'</div><div>'+esc(x.lastSeen||'-')+'</div></div>').join('')}
+$('heroStatsResults').innerHTML=rows.map(x=>'<div class="r heroStat">'+heroStatsRankHTML(x.pickRank,x.picks)+'<div>'+ih(x.hero,'hIcon')+'</div><div><b>'+esc(x.hero)+'</b></div><div class="mono" data-unseen="duos">'+(x.unseenDuos==null?'-':num(x.unseenDuos))+'</div><div class="mono" data-unseen="trios">'+(x.unseenTrios==null?'-':num(x.unseenTrios))+'</div><div>'+x.picks+'</div><div>'+x.bans+'</div><div>'+(x.contestRate==null?'-':fmt(x.contestRate,1)+'%')+'</div><div>'+x.wins+'</div><div>'+x.losses+'</div><div>'+(x.winRate==null?'-':fmt(x.winRate,1)+'%')+'</div><div>'+x.firstPicked+'</div><div>'+(x.mostPlayedBy?'<span class="badge">'+x.mostPlayedByCount+'</span>'+esc(x.mostPlayedBy):'-')+'</div><div>'+esc(x.lastSeen||'-')+'</div></div>').join('')}
 window.playerRowsExpanded=window.playerRowsExpanded||false;
 function toggleAllPlayerRows(){
 playerRowsExpanded=!playerRowsExpanded;
@@ -1254,7 +1265,7 @@ heroes:+$('wHeroes').value||0,duos:+$('wDuos').value||0,trios:+$('wTrios').value
 currentCoverageMaps=maps;
 const raritySig=raritySignature(heroes,maps,w);
 if(currentRarityIndex?.signature!==raritySig)currentRarityIndex=null;
-renderHeroStats(currentAllDrafts.filter(d=>$('region').value==='All'||d.region===$('region').value));
+renderHeroStats(currentAllDrafts);
 renderPlayerStats(currentAllDrafts);
 renderRosterMoves(currentAllDrafts);
 renderRosterNarrative(currentAllDrafts);

@@ -34,6 +34,38 @@ try{
   assert.equal(await page.evaluate(()=>DLNSDatabase.auth.admin),false);
   assert.equal(await page.locator('#simSignIn').count(),1);
   assert.equal(await page.locator('#simSubmitMatch').count(),0);
+  await page.locator('#tabBtn-herostats').click();
+  const checkHeroRanks=()=>page.locator('#heroStatsResults .heroStat').evaluateAll(rows=>{
+    const read=row=>({picks:Number(row.children[5].textContent),rank:Number(row.children[0].innerText.slice(1)),
+      image:row.children[0].querySelector('img').getAttribute('src'),
+      portrait:row.children[1].querySelector('img')!==null});
+    const data=rows.map(read);
+    return {ranks:data.map(row=>row.rank),total:data.reduce((sum,row)=>sum+row.picks,0),
+      valid:data.every(row=>row.rank===1+data.filter(other=>other.picks>row.picks).length &&
+        row.image===DLNSModel.heroPickBadge(row.rank).image && row.portrait)};
+  });
+  const allRanks=await checkHeroRanks();
+  assert.ok(allRanks.valid && allRanks.ranks.length>=44 && allRanks.ranks[0]===1);
+  await page.locator('.heroSort[data-sort="pickRank"]').click();
+  assert.deepEqual((await checkHeroRanks()).ranks,[...allRanks.ranks].sort((a,b)=>a-b));
+  await page.locator('.heroSort[data-sort="pickRank"]').click();
+  assert.deepEqual((await checkHeroRanks()).ranks,[...allRanks.ranks].sort((a,b)=>b-a));
+  await page.setViewportSize({width:390,height:844});
+  const firstRow=page.locator('#heroStatsResults .heroStat').first();
+  const rankBounds=await firstRow.locator('.heroStatsRank img').boundingBox();
+  const heroBounds=await firstRow.locator('.hIcon').boundingBox();
+  assert.ok(rankBounds && heroBounds && rankBounds.x+rankBounds.width<heroBounds.x);
+  await page.locator('#tabBtn-unseen').click();
+  await page.locator('#region').selectOption('EU');
+  await page.waitForFunction(total=>Array.from(document.querySelectorAll('#heroStatsResults .heroStat'))
+    .reduce((sum,row)=>sum+Number(row.children[5].textContent),0)<total,allRanks.total);
+  await page.locator('#tabBtn-herostats').click();
+  const euRanks=await checkHeroRanks();
+  assert.ok(euRanks.valid && euRanks.total>0 && euRanks.total<allRanks.total);
+  await page.locator('.heroSort[data-sort="pickRank"]').click();
+  assert.equal((await checkHeroRanks()).total,euRanks.total,'sorting keeps the region scope');
+  await page.setViewportSize({width:1280,height:720});
+  await page.locator('#tabBtn-draftsim').click();
   const cache='{"at":123,"matches":[],"teams":[]}';
    const preserved=await page.evaluate(async({raw,snapshot})=>{
     localStorage.setItem('dlns.database.matches.v1',raw);
