@@ -92,10 +92,13 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
       assert.ok(cell,`${kind}: coverage cell for ${side}`);
       assert.ok(cell.includes(`<strong class="coverageCount">${pickedUnseen} / ${unseenPossible}</strong>`),`${kind}: picked / possible unseen for ${side}`);
       assert.ok(cell.includes(`${coverage.esc(coverage.coveragePct(pickedUnseen,unseenPossible))} picked`));
-      assert.ok(cell.includes('>Max '+maxByKind[kind]+' new</div>'),kind+': max new combos for '+side);
-      const emptySlots = cell.match(/class="coverageCombo coverageComboBlank" aria-hidden="true">(?:<span class="sIcon"><\/span>)*<\/span>/g) || [];
+      assert.ok(!cell.includes('coverageMax'),kind+': max label removed');
+      const emptySlots = cell.match(/class="coverageCombo coverageComboBlank(?: coverageComboUnavailable)?" aria-hidden="true">(?:<span class="sIcon"><\/span>)*<\/span>/g) || [];
       assert.equal(emptySlots.length,maxByKind[kind]-pickedUnseen,kind+': empty slots for '+side);
       for(const slot of emptySlots)assert.equal((slot.match(/class="sIcon"/g)||[]).length,size);
+      const unavailable=Math.max(0,maxByKind[kind]-unseenPossible);
+      assert.equal(emptySlots.filter(slot=>slot.includes('coverageComboUnavailable')).length,unavailable,kind+': unavailable slots for '+side);
+      assert.deepEqual(emptySlots.map(slot=>slot.includes('coverageComboUnavailable')),Array.from({length:emptySlots.length},(_,i)=>i>=emptySlots.length-unavailable));
       assert.ok(pickedUnseen <= unseenPossible);
       if (state.slots[side].picks.length === 6) {
         assert.equal(pickedUnseen,unseenPossible,`${kind}: all possible unseen combos picked for a completed team`);
@@ -122,7 +125,7 @@ for(const [kind,size] of coverageSizes)for(const side of ['left','right']){
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, max combo slots and hero icons passed.');
+console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, available and unavailable combo slots and hero icons passed.');
 const unseenStart=html.indexOf('function unseenCombosByHero('),unseenEnd=html.indexOf('function renderHeroStats(');
 assert.ok(unseenStart>0 && unseenEnd>unseenStart);
 new Script(html.slice(unseenStart,unseenEnd)).runInContext(coverage);
