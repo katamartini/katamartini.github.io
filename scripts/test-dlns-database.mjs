@@ -107,6 +107,20 @@ coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
 console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, max combos per team and hero icons passed.');
+const unseenStart=html.indexOf('function unseenCombosByHero('),unseenEnd=html.indexOf('function renderHeroStats(');
+assert.ok(unseenStart>0 && unseenEnd>unseenStart);
+new Script(html.slice(unseenStart,unseenEnd)).runInContext(coverage);
+const unseenHeroes=['A','B','C','D'];
+const sampleSeen={duos:new Map([['A|B',5],['A|C',1],['D|X',7]]),trios:new Map([['A|B|C',2],['B|D|X',7]])};
+const unseenByHero=coverage.unseenCombosByHero(unseenHeroes,sampleSeen);
+for (const hero of unseenHeroes) for (const [kind,size,field] of [['duos',2,'unseenDuos'],['trios',3,'unseenTrios']]) {
+  let expected=0;
+  coverage.combos(unseenHeroes,size,list=>{
+    if (list.includes(hero) && !sampleSeen[kind].has(coverage.keyOf(list))) expected++;
+  });
+  assert.equal(unseenByHero.get(hero)[field],expected,hero+' '+kind);
+}
+assert.equal(coverage.unseenCombosByHero(['A'],sampleSeen).get('A').unseenTrios,0);
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }
