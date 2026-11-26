@@ -29,10 +29,14 @@ const coverageStart = html.indexOf('function coveragePct('), coverageEnd = html.
 assert.ok(coverageStart > 0 && coverageEnd > coverageStart);
 new Script(html.slice(html.indexOf('function combos('),html.indexOf('function draftSimTab('))
   + html.slice(coverageStart,coverageEnd)).runInContext(coverage);
-assert.equal(coverage.coveragePct(1,3),'33.333%');
-assert.equal(coverage.coveragePct(1,1),'100.000%');
-assert.equal(coverage.coveragePct(0,10),'0.000%');
-assert.equal(coverage.coveragePct(0,0),'0.000%');
+assert.equal(coverage.coveragePct(1,3),'33.3%');
+assert.equal(coverage.coveragePct(1,1),'100%');
+assert.equal(coverage.coveragePct(0,10),'0%');
+assert.equal(coverage.coveragePct(0,0),'0%');
+assert.equal(coverage.coveragePct(1,2),'50%');
+assert.equal(coverage.coveragePct(1,10000),'<0.1%');
+assert.equal(coverage.coveragePct(9999,10000),'>99.9%');
+const maxByKind = {duos:15,trios:20,quads:15,fives:6,sixes:1};
 const coverageSizes = [['duos',2],['trios',3],['quads',4],['fives',5],['sixes',6]];
 const projectionChanges = new Set();
 const seenDrafts = ['ABCDEF','GHIJKQ','ABGHQR'].map(draft=>draft.split(''));
@@ -74,8 +78,8 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
     assert.equal((row.match(/coverageCountReduced/g) || []).length,reduced ? 1 : 0);
     assert.equal((row.match(/coverageNumerator coverageProjectedNumerator/g) || []).length,1);
     assert.equal((row.match(/class="coverageCountArrow"/g) || []).length,2);
-    assert.ok(row.includes(`${coverage.coveragePct(unseen,total)} &rarr; ${coverage.coveragePct(projected,total)}`));
-    for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+\.\d{3}%$/);
+    assert.ok(row.includes(`${coverage.esc(coverage.coveragePct(unseen,total))} &rarr; ${coverage.esc(coverage.coveragePct(projected,total))}`));
+    for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+(?:\.\d)?%$/);
     assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
     for (const side of ['left','right']) {
       const possible = coverage.possibleSeenForSide(kind,size,side,state,coverage.currentCoverageMaps,coverage.currentHeroUniverse);
@@ -87,11 +91,12 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
       const cell = row.match(new RegExp(`<td class="coverageSide" data-side="${side}">([\\s\\S]*?)</td>`))?.[1];
       assert.ok(cell,`${kind}: coverage cell for ${side}`);
       assert.ok(cell.includes(`<strong class="coverageCount">${pickedUnseen} / ${unseenPossible}</strong>`),`${kind}: picked / possible unseen for ${side}`);
-      assert.ok(cell.includes(`${coverage.coveragePct(pickedUnseen,unseenPossible)} picked`));
+      assert.ok(cell.includes(`${coverage.esc(coverage.coveragePct(pickedUnseen,unseenPossible))} picked`));
+      assert.ok(cell.includes('>Max '+maxByKind[kind]+' new</div>'),kind+': max new combos for '+side);
       assert.ok(pickedUnseen <= unseenPossible);
       if (state.slots[side].picks.length === 6) {
         assert.equal(pickedUnseen,unseenPossible,`${kind}: all possible unseen combos picked for a completed team`);
-        assert.ok(cell.includes(pickedUnseen ? '100.000% picked' : '0.000% picked'));
+        assert.ok(cell.includes(pickedUnseen ? '100% picked' : '0% picked'));
       }
     }
     assert.ok(!row.includes('coverageNewCount'));
@@ -101,7 +106,7 @@ assert.deepEqual([...projectionChanges].sort(),[false,true],'coverage colors exe
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, three-decimal precision and hero icons passed.');
+console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, max combos per team and hero icons passed.');
 for (const hero of history.heroes) {
   assert.equal(model.availability[hero.name],hero.first_available,`${hero.name} availability`);
 }
