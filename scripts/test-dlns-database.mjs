@@ -93,6 +93,9 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
       assert.ok(cell.includes(`<strong class="coverageCount">${pickedUnseen} / ${unseenPossible}</strong>`),`${kind}: picked / possible unseen for ${side}`);
       assert.ok(cell.includes(`${coverage.esc(coverage.coveragePct(pickedUnseen,unseenPossible))} picked`));
       assert.ok(cell.includes('>Max '+maxByKind[kind]+' new</div>'),kind+': max new combos for '+side);
+      const emptySlots = cell.match(/class="coverageCombo coverageComboBlank" aria-hidden="true">(?:<span class="sIcon"><\/span>)*<\/span>/g) || [];
+      assert.equal(emptySlots.length,maxByKind[kind]-pickedUnseen,kind+': empty slots for '+side);
+      for(const slot of emptySlots)assert.equal((slot.match(/class="sIcon"/g)||[]).length,size);
       assert.ok(pickedUnseen <= unseenPossible);
       if (state.slots[side].picks.length === 6) {
         assert.equal(pickedUnseen,unseenPossible,`${kind}: all possible unseen combos picked for a completed team`);
@@ -103,10 +106,23 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
   }
 }
 assert.deepEqual([...projectionChanges].sort(),[false,true],'coverage colors exercise unchanged and decreased counts');
+// As draft picks are added, existing fills remain at the start of the same row.
+for(const [kind,size] of coverageSizes)for(const side of ['left','right']){
+  let prior=[];
+  const picks='GHIJKL'.split('');
+  for(let i=0;i<=picks.length;i++){
+    const selected=picks.slice(0,i);
+    if(side==='right')selected.reverse();
+    const partial={slots:{[side]:{picks:selected}}};
+    const actual=coverage.newPickedCombosForSide(kind,size,side,partial,coverage.currentCoverageMaps).items.map(coverage.keyOf);
+    assert.deepEqual(Array.from(actual.slice(0,prior.length)),Array.from(prior),kind+': existing slot order');
+    prior=actual;
+  }
+}
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, max combos per team and hero icons passed.');
+console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, max combo slots and hero icons passed.');
 const unseenStart=html.indexOf('function unseenCombosByHero('),unseenEnd=html.indexOf('function renderHeroStats(');
 assert.ok(unseenStart>0 && unseenEnd>unseenStart);
 new Script(html.slice(unseenStart,unseenEnd)).runInContext(coverage);

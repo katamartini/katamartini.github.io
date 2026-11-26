@@ -518,6 +518,13 @@ background:rgba(125,211,252,.07)}
 width:20px;
 height:20px;
 border-radius:4px}
+.coverageComboBlank{
+border-style:dashed;
+border-color:rgba(125,211,252,.18);
+background:transparent}
+.coverageComboBlank .sIcon{
+display:block;
+background:rgba(125,211,252,.09)}
 @media(max-width:760px){
 .coverageTable,.coverageTable tbody{
 display:block}
@@ -721,12 +728,17 @@ seen,total}}
 function newPickedCombosForSide(kind,size,side,state,maps){
 const mine=(state?.slots?.[side]?.picks||[]).filter(Boolean),total=nCk(mine.length,size);
 const items=[];
-combos(mine,size,p=>{
-if(!maps[kind].has(keyOf(p)))items.push(p)});
+// The right board stores picks in reverse visual order.
+if(side==='right')mine.reverse();
+// Put combos unlocked by a later pick after the existing slots.
+for(let i=size-1;i<mine.length;i++)combos(mine.slice(0,i),size-1,prior=>{
+const combo=[...prior,mine[i]];
+if(!maps[kind].has(keyOf(combo)))items.push(combo)});
 return{
 items,total}}
-function coverageComboIcons(items){
-return items.length?'<div class="coverageNewCombos">'+items.map(combo=>'<span class="coverageCombo" title="'+esc(combo.join(' + '))+'">'+combo.map(h=>ih(h,'sIcon')).join('')+'</span>').join('')+'</div>':''}
+function coverageComboIcons(items,size,maxNew){
+const empty='<span class="coverageCombo coverageComboBlank" aria-hidden="true">'+'<span class="sIcon"></span>'.repeat(size)+'</span>';
+return '<div class="coverageNewCombos">'+items.map(combo=>'<span class="coverageCombo" title="'+esc(combo.join(' + '))+'">'+combo.map(h=>ih(h,'sIcon')).join('')+'</span>').join('')+empty.repeat(maxNew-items.length)+'</div>'}
 function coverageRowHTML(id,size,label,state,maps,heroes){
 const total=nCk(heroes.length,size),unseen=Math.max(0,total-maps[id].size);
 const sides=state?.slots?['left','right'].map(side=>{
@@ -736,7 +748,7 @@ const newKeys=new Set(sides.flatMap(side=>side.fresh.items.map(keyOf))),projecte
 const currentPct=esc(coveragePct(unseen,total)),projectedPct=esc(coveragePct(projectedUnseen,total)),maxNew=nCk(6,size);
 return '<tr id="'+id+'Coverage"><th scope="row">'+label+'</th><td class="coverageOverall"><div class="coverageCellLabel" aria-hidden="true">Overall unseen</div><div class="coverageCount mono coverageRawCounts" id="'+id+'Base"><span class="coverageCurrentCount"><span class="coverageCountArrow" aria-hidden="true"></span><span class="coverageNumerator">'+num(unseen)+'</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">'+num(total)+'</span></span><span class="coverageProjectedCount"><span class="coverageCountArrow">&rarr;</span><span class="coverageNumerator coverageProjectedNumerator'+(projectedUnseen<unseen?' coverageCountReduced':'')+'">'+num(projectedUnseen)+'</span><span class="coverageFractionSeparator"> / </span><span class="coverageDenominator">'+num(total)+'</span></span></div><div class="coveragePct mono" id="'+id+'Pct" title="Unseen percentage now, then after adding this draft">'+currentPct+' &rarr; '+projectedPct+'</div></td>'+['left','right'].map((side,index)=>{
 const name=state?.[side]||(index===0?'Team 1':'Team 2'),data=sides[index];
-return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'<span class="coverageHeaderNote">Picked / possible unseen</span></div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.fresh.items.length)+' / '+num(data.unseen)+'</strong><span class="coverageRate">'+esc(coveragePct(data.fresh.items.length,data.unseen))+' picked</span></div>':'&mdash;')+'<div class="coverageMax" title="Maximum new combinations one team can unlock with six picks">Max '+num(maxNew)+' new</div>'+(data?coverageComboIcons(data.fresh.items):'')+'</td>'}).join('')+'</tr>'}
+return '<td class="coverageSide" data-side="'+side+'"><div class="coverageCellLabel" aria-hidden="true">'+esc(name)+'<span class="coverageHeaderNote">Picked / possible unseen</span></div>'+(data?'<div class="coverageMetric mono"><strong class="coverageCount">'+num(data.fresh.items.length)+' / '+num(data.unseen)+'</strong><span class="coverageRate">'+esc(coveragePct(data.fresh.items.length,data.unseen))+' picked</span></div>':'&mdash;')+'<div class="coverageMax" title="Maximum new combinations one team can unlock with six picks">Max '+num(maxNew)+' new</div>'+coverageComboIcons(data?.fresh.items||[],size,maxNew)+'</td>'}).join('')+'</tr>'}
 function renderCoverageStats(state=window.draftSimState){
 const root=$('coverageStats'),heroes=currentHeroUniverse,maps=currentCoverageMaps;
 if(!root||!heroes.length||!maps)return;
