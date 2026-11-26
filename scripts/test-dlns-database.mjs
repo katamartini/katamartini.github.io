@@ -78,8 +78,8 @@ for (const [left,right] of [['',''],['ABC','GH'],['ABCDE','GHIJ'],['ABCDEF','GHI
     assert.equal((row.match(/coverageCountReduced/g) || []).length,reduced ? 1 : 0);
     assert.equal((row.match(/coverageNumerator coverageProjectedNumerator/g) || []).length,1);
     assert.equal((row.match(/class="coverageCountArrow"/g) || []).length,2);
-    assert.ok(row.includes(`${coverage.esc(coverage.coveragePct(unseen,total))} &rarr; ${coverage.esc(coverage.coveragePct(projected,total))}`));
-    for (const percentage of row.match(/\d+(?:\.\d+)?%/g) || []) assert.match(percentage,/^\d+(?:\.\d)?%$/);
+    const overall=row.match(/class="coveragePct mono"[^>]*>([^<]+)<\/div>/)?.[1];
+    assert.equal(overall,(unseen/total*100).toFixed(3)+'% &rarr; '+(projected/total*100).toFixed(3)+'%');
     assert.equal((row.match(/class="coverageCombo"/g) || []).length,fresh.length);
     for (const side of ['left','right']) {
       const possible = coverage.possibleSeenForSide(kind,size,side,state,coverage.currentCoverageMaps,coverage.currentHeroUniverse);
@@ -125,7 +125,7 @@ for(const [kind,size] of coverageSizes)for(const side of ['left','right']){
 coverage.renderCoverageStats();
 assert.ok(coverageRoot.innerHTML.includes('<caption>Unseen combinations</caption>'));
 assert.equal((coverageRoot.innerHTML.match(/&mdash;/g) || []).length,10);
-console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw count/percentage projections, compact percentages, available and unavailable combo slots and hero icons passed.');
+console.log('DLNS coverage: picked / possible unseen ratios, complete and partial drafts, raw counts and three-decimal projections, compact picked percentages, available and unavailable combo slots and hero icons passed.');
 const unseenStart=html.indexOf('function unseenCombosByHero('),unseenEnd=html.indexOf('function renderHeroStats(');
 assert.ok(unseenStart>0 && unseenEnd>unseenStart);
 new Script(html.slice(unseenStart,unseenEnd)).runInContext(coverage);
