@@ -3,7 +3,7 @@ window.JJ23K_DATA = {
   "schemaVersion": 4,
   "season": 2026,
   "throughWeek": 12,
-  "sourceHash": "a403a46239554e29f1ba907bc0ce3ab3f22ba8bed7150b5115f573ab3459e021",
+  "sourceHash": "0810b8df97efa7cd5ace07921a899638ab76581e6f5338f8d0daeba815df2e4c",
   "careerYards": [
     0,
     26,
@@ -274,11 +274,11 @@ window.JJ23K_DATA = {
     [
       17,
       "Travis Kelce",
-      13588,
-      1121,
+      13659,
+      1125,
       12.1,
       86,
-      586,
+      657,
       6
     ],
     [
@@ -1003,6 +1003,16 @@ window.JJ23K_DATA = {
     ],
     [
       90,
+      "DJ Moore",
+      8694,
+      641,
+      13.6,
+      45,
+      481,
+      15
+    ],
+    [
+      91,
       "Cliff Branch",
       8685,
       501,
@@ -1012,7 +1022,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      91,
+      92,
       "Greg Olsen",
       8683,
       742,
@@ -1022,37 +1032,37 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      92,
-      "DJ Moore",
-      8679,
-      639,
-      13.6,
-      45,
-      466,
-      13
+      93,
+      "CeeDee Lamb",
+      8658,
+      666,
+      13,
+      50,
+      1242,
+      26
     ],
     [
-      93,
+      94,
       "Cooper Kupp",
       8641,
       704,
       12.3,
       62,
       272,
-      8
+      7
     ],
     [
-      94,
+      95,
       "Zach Ertz",
       8614,
       828,
       10.4,
       57,
       22,
-      -2
+      -3
     ],
     [
-      95,
+      96,
       "Laveranues Coles",
       8609,
       674,
@@ -1062,17 +1072,17 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      96,
+      97,
       "George Kittle",
       8599,
       642,
       13.4,
       59,
       591,
-      12
+      11
     ],
     [
-      97,
+      98,
       "Jordy Nelson",
       8587,
       613,
@@ -1082,7 +1092,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      98,
+      99,
       "Paul Warfield",
       8565,
       427,
@@ -1092,7 +1102,7 @@ window.JJ23K_DATA = {
       null
     ],
     [
-      99,
+      100,
       "Jimmy Graham",
       8545,
       719,
@@ -1100,16 +1110,6 @@ window.JJ23K_DATA = {
       89,
       null,
       null
-    ],
-    [
-      100,
-      "CeeDee Lamb",
-      8524,
-      659,
-      12.9,
-      50,
-      1108,
-      19
     ]
   ]
 };
