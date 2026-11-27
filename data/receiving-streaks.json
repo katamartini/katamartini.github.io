@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-26T16:47:51.263Z",
+  "checkedAt": "2026-11-27T16:33:20.916Z",
   "season": 2026,
-  "through": "2026-11-25",
+  "through": "2026-11-26",
   "latestWeek": 12,
   "rosterWeek": 12,
   "firstStatsSeason": 1999,
@@ -38,7 +38,7 @@
       "reason": "Unassigned catches; game excluded conservatively"
     }
   ],
-  "sourceHash": "115992825faed5389103fa86b11f40f6d20cdfb3f81699ec3fcf78c156a4240d",
+  "sourceHash": "ec9fc47e67801c8831cd9291b1ba081d4ce10fbdbe3825d0462450e30bc38f62",
   "sources": [
     {
       "kind": "stats",
@@ -338,7 +338,7 @@
       "id": "00-0030506:2014_01_TEN_KC",
       "playerId": "00-0030506",
       "name": "Travis Kelce",
-      "length": 201,
+      "length": 202,
       "start": {
         "date": "2014-09-07",
         "season": 2014,
@@ -347,11 +347,11 @@
         "opponent": "TEN"
       },
       "last": {
-        "date": "2026-11-22",
+        "date": "2026-11-26",
         "season": 2026,
-        "game": "2026_11_ARI_KC",
+        "game": "2026_12_KC_BUF",
         "team": "KC",
-        "opponent": "ARI"
+        "opponent": "BUF"
       },
       "teams": [
         "KC"
@@ -3085,6 +3085,36 @@
       "rank": 85
     },
     {
+      "id": "00-0036912:2022_02_MIN_PHI",
+      "playerId": "00-0036912",
+      "name": "DeVonta Smith",
+      "length": 68,
+      "start": {
+        "date": "2022-09-19",
+        "season": 2022,
+        "game": "2022_02_MIN_PHI",
+        "team": "PHI",
+        "opponent": "MIN"
+      },
+      "last": {
+        "date": "2026-11-26",
+        "season": 2026,
+        "game": "2026_12_PHI_DAL",
+        "team": "PHI",
+        "opponent": "DAL"
+      },
+      "teams": [
+        "PHI"
+      ],
+      "endedBy": null,
+      "gapAfter": null,
+      "lowerBound": false,
+      "startUnknown": false,
+      "active": true,
+      "archive": false,
+      "rank": 86
+    },
+    {
       "id": "archive:STA285936:67",
       "playerId": "STA285936",
       "name": "John Stallworth",
@@ -3108,7 +3138,7 @@
       "startUnknown": false,
       "active": false,
       "archive": true,
-      "rank": 86
+      "rank": 87
     },
     {
       "id": "00-0022910:2004_08_ARI_BUF",
@@ -3144,7 +3174,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 87
+      "rank": 88
     },
     {
       "id": "00-0023367:2008_03_PIT_PHI",
@@ -3178,7 +3208,7 @@
       "startUnknown": true,
       "active": false,
       "archive": false,
-      "rank": 88
+      "rank": 89
     },
     {
       "id": "00-0030279:2013_02_SD_PHI",
@@ -3213,36 +3243,6 @@
       "lowerBound": false,
       "startUnknown": false,
       "active": false,
-      "archive": false,
-      "rank": 89
-    },
-    {
-      "id": "00-0036912:2022_02_MIN_PHI",
-      "playerId": "00-0036912",
-      "name": "DeVonta Smith",
-      "length": 67,
-      "start": {
-        "date": "2022-09-19",
-        "season": 2022,
-        "game": "2022_02_MIN_PHI",
-        "team": "PHI",
-        "opponent": "MIN"
-      },
-      "last": {
-        "date": "2026-11-22",
-        "season": 2026,
-        "game": "2026_11_PIT_PHI",
-        "team": "PHI",
-        "opponent": "PIT"
-      },
-      "teams": [
-        "PHI"
-      ],
-      "endedBy": null,
-      "gapAfter": null,
-      "lowerBound": false,
-      "startUnknown": false,
-      "active": true,
       "archive": false,
       "rank": 90
     },
@@ -3605,7 +3605,7 @@
       "id": "00-0030506:2014_01_TEN_KC",
       "playerId": "00-0030506",
       "name": "Travis Kelce",
-      "length": 201,
+      "length": 202,
       "start": {
         "date": "2014-09-07",
         "season": 2014,
@@ -3614,11 +3614,11 @@
         "opponent": "TEN"
       },
       "last": {
-        "date": "2026-11-22",
+        "date": "2026-11-26",
         "season": 2026,
-        "game": "2026_11_ARI_KC",
+        "game": "2026_12_KC_BUF",
         "team": "KC",
-        "opponent": "ARI"
+        "opponent": "BUF"
       },
       "teams": [
         "KC"
@@ -3635,7 +3635,7 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 201,
+          "length": 202,
           "rank": 4,
           "tied": false,
           "record": 274,
@@ -3687,10 +3687,10 @@
           "scope": "KC",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 201,
+          "length": 202,
           "rank": 1,
           "tied": false,
-          "record": 201,
+          "record": 202,
           "recordHolders": [
             {
               "id": "00-0030506:2014_01_TEN_KC",
@@ -3699,7 +3699,7 @@
                 "KC"
               ],
               "opponent": null,
-              "length": 201,
+              "length": 202,
               "firstSeason": 2014,
               "lastSeason": 2026,
               "years": "2014–2026",
@@ -8025,7 +8025,7 @@
       "id": "00-0036912:2022_02_MIN_PHI",
       "playerId": "00-0036912",
       "name": "DeVonta Smith",
-      "length": 67,
+      "length": 68,
       "start": {
         "date": "2022-09-19",
         "season": 2022,
@@ -8034,11 +8034,11 @@
         "opponent": "MIN"
       },
       "last": {
-        "date": "2026-11-22",
+        "date": "2026-11-26",
         "season": 2026,
-        "game": "2026_11_PIT_PHI",
+        "game": "2026_12_PHI_DAL",
         "team": "PHI",
-        "opponent": "PIT"
+        "opponent": "DAL"
       },
       "teams": [
         "PHI"
@@ -8055,8 +8055,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 67,
-          "rank": 86,
+          "length": 68,
+          "rank": 83,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -8077,56 +8077,85 @@
             }
           ],
           "nextHigher": {
-            "length": 68,
-            "rank": 83,
+            "length": 69,
+            "rank": 78,
             "holders": [
               {
-                "id": "00-0033921:2018_16_TB_DAL",
-                "name": "Chris Godwin Jr.",
+                "id": "00-0029137:2012_16_CHI_ARI",
+                "name": "Alshon Jeffery",
                 "teams": [
-                  "TB"
+                  "CHI",
+                  "PHI"
                 ],
                 "opponent": null,
-                "length": 68,
-                "firstSeason": 2018,
-                "lastSeason": 2023,
-                "years": "2018–2023",
+                "length": 69,
+                "firstSeason": 2012,
+                "lastSeason": 2017,
+                "years": "2012–2017",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "archive:historical:elbie-nickel:68",
-                "name": "Elbie Nickel",
+                "id": "00-0033908:2019_11_CHI_LA",
+                "name": "Cooper Kupp",
                 "teams": [
-                  "PIT"
+                  "LA"
                 ],
                 "opponent": null,
-                "length": 68,
-                "firstSeason": 1951,
-                "lastSeason": 1957,
-                "years": "1951–1957",
+                "length": 69,
+                "firstSeason": 2019,
+                "lastSeason": 2024,
+                "years": "2019–2024",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0013232:2000_07_SD_BUF",
-                "name": "Peerless Price",
+                "id": "00-0035229:2021_11_DET_CLE",
+                "name": "T.J. Hockenson",
                 "teams": [
-                  "BUF",
-                  "ATL"
+                  "DET",
+                  "MIN"
                 ],
                 "opponent": null,
-                "length": 68,
-                "firstSeason": 2000,
-                "lastSeason": 2004,
-                "years": "2000–2004",
+                "length": 69,
+                "firstSeason": 2021,
+                "lastSeason": 2026,
+                "years": "2021–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037744:2022_10_ARI_LA",
+                "name": "Trey McBride",
+                "teams": [
+                  "ARI"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2022,
+                "lastSeason": 2026,
+                "years": "2022–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0033009:2016_01_CIN_NYJ",
+                "name": "Tyler Boyd",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 69,
+                "firstSeason": 2016,
+                "lastSeason": 2020,
+                "years": "2016–2020",
                 "active": false,
-                "lowerBound": true
+                "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 83,
+            "rank": 78,
             "tied": true
           },
           "lowerBound": false
@@ -8135,7 +8164,7 @@
           "scope": "PHI",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 67,
+          "length": 68,
           "rank": 3,
           "tied": false,
           "record": 127,
@@ -8241,22 +8270,8 @@
           ],
           "nextHigher": {
             "length": 67,
-            "rank": 86,
+            "rank": 87,
             "holders": [
-              {
-                "id": "00-0036912:2022_02_MIN_PHI",
-                "name": "DeVonta Smith",
-                "teams": [
-                  "PHI"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
               {
                 "id": "archive:STA285936:67",
                 "name": "John Stallworth",
@@ -8432,22 +8447,8 @@
           ],
           "nextHigher": {
             "length": 67,
-            "rank": 86,
+            "rank": 87,
             "holders": [
-              {
-                "id": "00-0036912:2022_02_MIN_PHI",
-                "name": "DeVonta Smith",
-                "teams": [
-                  "PHI"
-                ],
-                "opponent": null,
-                "length": 67,
-                "firstSeason": 2022,
-                "lastSeason": 2026,
-                "years": "2022–2026",
-                "active": true,
-                "lowerBound": false
-              },
               {
                 "id": "archive:STA285936:67",
                 "name": "John Stallworth",
@@ -9201,7 +9202,7 @@
       "id": "00-0038997:2023_01_JAX_IND",
       "playerId": "00-0038997",
       "name": "Josh Downs",
-      "length": 58,
+      "length": 59,
       "start": {
         "date": "2023-09-10",
         "season": 2023,
@@ -9210,11 +9211,11 @@
         "opponent": "JAX"
       },
       "last": {
-        "date": "2026-11-22",
+        "date": "2026-11-26",
         "season": 2026,
-        "game": "2026_11_ARI_KC",
+        "game": "2026_12_KC_BUF",
         "team": "KC",
-        "opponent": "ARI"
+        "opponent": "BUF"
       },
       "teams": [
         "IND",
@@ -9232,8 +9233,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 58,
-          "rank": 117,
+          "length": 59,
+          "rank": 116,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -9254,27 +9255,27 @@
             }
           ],
           "nextHigher": {
-            "length": 59,
-            "rank": 116,
+            "length": 60,
+            "rank": 115,
             "holders": [
               {
-                "id": "00-0021547:2005_02_SD_DEN",
-                "name": "Antonio Gates",
+                "id": "00-0036613:2021_01_MIA_NE",
+                "name": "Jaylen Waddle",
                 "teams": [
-                  "LAC"
+                  "MIA"
                 ],
                 "opponent": null,
-                "length": 59,
-                "firstSeason": 2005,
-                "lastSeason": 2008,
-                "years": "2005–2008",
+                "length": 60,
+                "firstSeason": 2021,
+                "lastSeason": 2024,
+                "years": "2021–2024",
                 "active": false,
-                "lowerBound": true
+                "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 116,
+            "rank": 115,
             "tied": true
           },
           "lowerBound": false
@@ -9283,10 +9284,10 @@
           "scope": "KC",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 2,
-          "rank": 298,
+          "length": 3,
+          "rank": 216,
           "tied": true,
-          "record": 201,
+          "record": 202,
           "recordHolders": [
             {
               "id": "00-0030506:2014_01_TEN_KC",
@@ -9295,7 +9296,7 @@
                 "KC"
               ],
               "opponent": null,
-              "length": 201,
+              "length": 202,
               "firstSeason": 2014,
               "lastSeason": 2026,
               "years": "2014–2026",
@@ -9304,101 +9305,59 @@
             }
           ],
           "nextHigher": {
-            "length": 3,
-            "rank": 216,
+            "length": 4,
+            "rank": 176,
             "holders": [
               {
-                "id": "00-0029654:2014_04_NE_KC",
-                "name": "A.J. Jenkins",
+                "id": "00-0013770:1999_11_SEA_KC",
+                "name": "Andre Rison",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0030669:2014_14_KC_ARI",
-                "name": "Albert Wilson",
+                "id": "00-0022144:2009_11_PIT_KC",
+                "name": "Bobby Wade",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
+                "length": 4,
+                "firstSeason": 2009,
+                "lastSeason": 2009,
+                "years": "2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0040078:2025_04_BAL_KC",
+                "name": "Brashard Smith",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2025,
+                "lastSeason": 2025,
+                "years": "2025",
                 "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0030669:2016_04_KC_PIT",
-                "name": "Albert Wilson",
+                "id": "00-0034297:2019_03_BAL_KC",
+                "name": "Byron Pringle",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2016,
-                "lastSeason": 2016,
-                "years": "2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028074:2013_03_KC_PHI",
-                "name": "Anthony Sherman",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028074:2013_11_KC_DEN",
-                "name": "Anthony Sherman",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028074:2014_05_KC_SF",
-                "name": "Anthony Sherman",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032062:2019_15_DEN_KC",
-                "name": "Blake Bell",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
+                "length": 4,
                 "firstSeason": 2019,
                 "lastSeason": 2019,
                 "years": "2019",
@@ -9406,83 +9365,13 @@
                 "lowerBound": false
               },
               {
-                "id": "00-0032062:2021_01_CLE_KC",
-                "name": "Blake Bell",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032062:2022_17_DEN_KC",
-                "name": "Blake Bell",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2022,
-                "lastSeason": 2023,
-                "years": "2022–2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0026216:2009_13_DEN_KC",
-                "name": "Brad Cottam",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2009,
-                "lastSeason": 2009,
-                "years": "2009",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0040078:2025_16_KC_TEN",
-                "name": "Brashard Smith",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030668:2016_16_DEN_KC",
-                "name": "Charcandrick West",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0020446:2010_09_KC_OAK",
+                "id": "00-0020446:2010_14_KC_SD",
                 "name": "Chris Chambers",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
+                "length": 4,
                 "firstSeason": 2010,
                 "lastSeason": 2010,
                 "years": "2010",
@@ -9490,937 +9379,27 @@
                 "lowerBound": true
               },
               {
-                "id": "00-0040890:2026_06_LAC_KC",
-                "name": "Cyrus Allen",
+                "id": "00-0021424:2004_16_OAK_KC",
+                "name": "Chris Horn",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029298:2013_15_KC_OAK",
-                "name": "Cyrus Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0019539:2004_10_KC_NO",
-                "name": "Dante Hall",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0019539:2004_14_KC_TEN",
-                "name": "Dante Hall",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0019539:2006_14_BAL_KC",
-                "name": "Dante Hall",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2006,
-                "lastSeason": 2006,
-                "years": "2006",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034301:2020_08_NYJ_KC",
-                "name": "Darrel Williams",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034301:2021_16_PIT_KC",
-                "name": "Darrel Williams",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031060:2014_07_KC_SD",
-                "name": "De'Anthony Thomas",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031060:2015_07_PIT_KC",
-                "name": "De'Anthony Thomas",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2015,
-                "lastSeason": 2015,
-                "years": "2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031060:2017_05_KC_HOU",
-                "name": "De'Anthony Thomas",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2017,
-                "lastSeason": 2017,
-                "years": "2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031060:2018_04_KC_DEN",
-                "name": "De'Anthony Thomas",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2018,
-                "lastSeason": 2019,
-                "years": "2018–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032775:2021_16_PIT_KC",
-                "name": "Demarcus Robinson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030155:2018_03_SF_KC",
-                "name": "Demetrius Harris",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030155:2018_11_KC_LA",
-                "name": "Demetrius Harris",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034319:2020_15_KC_NO",
-                "name": "Deon Yelder",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0020315:2002_17_KC_OAK",
-                "name": "Derrick Blaylock",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2002,
-                "lastSeason": 2003,
-                "years": "2002–2003",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0020315:2004_06_KC_JAX",
-                "name": "Derrick Blaylock",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0022739:2008_01_KC_NE",
-                "name": "Devard Darling",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022739:2008_05_KC_CAR",
-                "name": "Devard Darling",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022739:2008_11_NO_KC",
-                "name": "Devard Darling",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0022739:2008_15_SD_KC",
-                "name": "Devard Darling",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0029274:2012_15_KC_OAK",
-                "name": "Devon Wylie",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0025410:2012_12_DEN_KC",
-                "name": "Dwayne Bowe",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0009163:2007_10_DEN_KC",
-                "name": "Eddie Kennison",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0025337:2007_13_SD_KC",
-                "name": "Gilbert Harris",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0040081:2026_08_KC_DEN",
-                "name": "Jake Briningstool",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0026213:2008_12_BUF_KC",
-                "name": "Jamaal Charles",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0024404:2007_09_GB_KC",
-                "name": "Jeff Webb",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0031376:2021_05_BUF_KC",
-                "name": "Jerick McKinnon",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0031376:2021_18_KC_DEN",
-                "name": "Jerick McKinnon",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2022,
-                "years": "2021–2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0035547:2021_02_KC_BAL",
-                "name": "Joseph Fortson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033857:2025_16_KC_TEN",
-                "name": "JuJu Smith-Schuster",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0010007:1999_17_OAK_KC",
-                "name": "Kevin Lockett",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 1999,
-                "lastSeason": 2000,
-                "years": "1999–2000",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0030280:2013_13_DEN_KC",
-                "name": "Knile Davis",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030280:2013_17_KC_SD",
-                "name": "Knile Davis",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2014,
-                "years": "2013–2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030280:2014_14_KC_ARI",
-                "name": "Knile Davis",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0025535:2008_05_KC_CAR",
-                "name": "Kolby Smith",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0021976:2004_12_SD_KC",
-                "name": "Larry Johnson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0021976:2004_16_OAK_KC",
-                "name": "Larry Johnson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
+                "length": 4,
                 "firstSeason": 2004,
                 "lastSeason": 2005,
                 "years": "2004–2005",
                 "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0012569:2001_06_KC_ARI",
-                "name": "Larry Parker",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0024287:2011_15_GB_KC",
-                "name": "Leonard Pope",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2011,
-                "lastSeason": 2011,
-                "years": "2011",
-                "active": false,
                 "lowerBound": true
               },
               {
-                "id": "00-0020583:2002_16_SD_KC",
-                "name": "Marc Boerigter",
+                "id": "00-0021424:2005_07_KC_MIA",
+                "name": "Chris Horn",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2002,
-                "lastSeason": 2003,
-                "years": "2002–2003",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0023474:2008_16_MIA_KC",
-                "name": "Mark Bradley",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2009,
-                "years": "2008–2009",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0023474:2009_09_KC_JAX",
-                "name": "Mark Bradley",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2009,
-                "lastSeason": 2009,
-                "years": "2009",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034272:2023_07_LAC_KC",
-                "name": "Marquez Valdes-Scantling",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2023,
-                "lastSeason": 2023,
-                "years": "2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0020514:2007_01_KC_HOU",
-                "name": "Michael Bennett",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034192:2020_06_KC_BUF",
-                "name": "Nick Keizer",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2020,
-                "lastSeason": 2020,
-                "years": "2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036637:2022_01_KC_ARI",
-                "name": "Noah Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036637:2023_15_KC_NE",
-                "name": "Noah Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2023,
-                "lastSeason": 2023,
-                "years": "2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036637:2025_06_DET_KC",
-                "name": "Noah Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036637:2025_11_KC_DEN",
-                "name": "Noah Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036637:2025_17_DEN_KC",
-                "name": "Noah Gray",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0037569:2024_09_TB_KC",
-                "name": "Peyton Hendershot",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0026367:2012_08_OAK_KC",
-                "name": "Peyton Hillis",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0033526:2024_01_BAL_KC",
-                "name": "Samaje Perine",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022754:2007_15_TEN_KC",
-                "name": "Samie Parker",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0031325:2018_01_KC_LAC",
-                "name": "Sammy Watkins",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029391:2013_13_DEN_KC",
-                "name": "Sean McGrath",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0038090:2022_04_KC_TB",
-                "name": "Skyy Moore",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0038090:2022_10_JAX_KC",
-                "name": "Skyy Moore",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030414:2015_11_KC_SD",
-                "name": "Spencer Ware",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2015,
-                "lastSeason": 2015,
-                "years": "2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0030414:2018_05_JAX_KC",
-                "name": "Spencer Ware",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022388:2011_15_GB_KC",
-                "name": "Terrance Copper",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2011,
-                "lastSeason": 2011,
-                "years": "2011",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0025672:2010_01_SD_KC",
-                "name": "Tim Castille",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2010,
-                "lastSeason": 2010,
-                "years": "2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0013694:2004_11_NE_KC",
-                "name": "Tony Richardson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0013694:2004_15_DEN_KC",
-                "name": "Tony Richardson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0013694:2005_07_KC_MIA",
-                "name": "Tony Richardson",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 3,
+                "length": 4,
                 "firstSeason": 2005,
                 "lastSeason": 2005,
                 "years": "2005",
@@ -10428,37 +9407,471 @@
                 "lowerBound": true
               },
               {
-                "id": "00-0038104:2026_02_IND_KC",
-                "name": "Tyquan Thornton",
+                "id": "00-0036360:2023_01_DET_KC",
+                "name": "Clyde Edwards-Helaire",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": true,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
                 "lowerBound": false
               },
               {
-                "id": "00-0026245:2008_11_NO_KC",
-                "name": "Will Franklin",
+                "id": "00-0019539:2006_09_KC_STL",
+                "name": "Dante Hall",
                 "teams": [
                   "KC"
                 ],
                 "opponent": null,
-                "length": 3,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0032775:2019_07_KC_DEN",
+                "name": "Demarcus Robinson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0030155:2017_14_OAK_KC",
+                "name": "Demetrius Harris",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2017,
+                "lastSeason": 2017,
+                "years": "2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000145:2001_03_KC_WAS",
+                "name": "Derrick Alexander",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0027651:2010_03_SF_KC",
+                "name": "Dexter McCluster",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0041013:2026_04_KC_LV",
+                "name": "Emmett Johnson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2026,
+                "lastSeason": 2026,
+                "years": "2026",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0026995:2016_14_OAK_KC",
+                "name": "Jeremy Maclin",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0011727:2002_11_BUF_KC",
+                "name": "Johnnie Morton",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034386:2023_08_KC_DEN",
+                "name": "Justin Watson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034386:2023_14_BUF_KC",
+                "name": "Justin Watson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0034386:2024_01_BAL_KC",
+                "name": "Justin Watson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000279:2000_11_KC_SF",
+                "name": "Kimble Anders",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0021976:2006_12_DEN_KC",
+                "name": "Larry Johnson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0021976:2009_04_NYG_KC",
+                "name": "Larry Johnson",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2009,
+                "lastSeason": 2009,
+                "years": "2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0025524:2011_07_KC_OAK",
+                "name": "Le'Ron McClain",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0024287:2010_13_DEN_KC",
+                "name": "Leonard Pope",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2010,
+                "lastSeason": 2010,
+                "years": "2010",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020583:2005_04_PHI_KC",
+                "name": "Marc Boerigter",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2005,
+                "lastSeason": 2005,
+                "years": "2005",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0023474:2009_03_KC_PHI",
+                "name": "Mark Bradley",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2009,
+                "lastSeason": 2009,
+                "years": "2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0034272:2023_12_KC_LV",
+                "name": "Marquez Valdes-Scantling",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0035140:2023_07_LAC_KC",
+                "name": "Mecole Hardman",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2023,
+                "lastSeason": 2023,
+                "years": "2023",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020514:2006_11_OAK_KC",
+                "name": "Michael Bennett",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0026033:2009_14_BUF_KC",
+                "name": "Mike Cox",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2009,
+                "lastSeason": 2009,
+                "years": "2009",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0013712:2001_05_PIT_KC",
+                "name": "Mikhael Ricks",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0007661:2004_06_KC_JAX",
+                "name": "Priest Holmes",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2004,
+                "lastSeason": 2004,
+                "years": "2004",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0007661:2007_07_KC_OAK",
+                "name": "Priest Holmes",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0014759:1999_01_KC_CHI",
+                "name": "Rashaan Shehee",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0031325:2019_08_GB_KC",
+                "name": "Sammy Watkins",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2019,
+                "lastSeason": 2019,
+                "years": "2019",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0029391:2013_02_DAL_KC",
+                "name": "Sean McGrath",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2013,
+                "lastSeason": 2013,
+                "years": "2013",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0020272:2001_14_DEN_KC",
+                "name": "Snoop Minnis",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0019726:2000_04_KC_DEN",
+                "name": "Sylvester Morris",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0027695:2012_01_ATL_KC",
+                "name": "Tony Moeaki",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "00-0004524:2000_04_KC_DEN",
+                "name": "Troy Drayton",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 4,
+                "firstSeason": 2000,
+                "lastSeason": 2000,
+                "years": "2000",
                 "active": false,
                 "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 216,
+            "rank": 176,
             "tied": true
           },
           "lowerBound": false
@@ -10825,7 +10238,7 @@
       "id": "00-0039065:2023_01_DET_KC",
       "playerId": "00-0039065",
       "name": "Sam LaPorta",
-      "length": 52,
+      "length": 53,
       "start": {
         "date": "2023-09-07",
         "season": 2023,
@@ -10834,11 +10247,11 @@
         "opponent": "KC"
       },
       "last": {
-        "date": "2026-11-22",
+        "date": "2026-11-26",
         "season": 2026,
-        "game": "2026_11_TB_DET",
+        "game": "2026_12_CHI_DET",
         "team": "DET",
-        "opponent": "TB"
+        "opponent": "CHI"
       },
       "teams": [
         "DET"
@@ -10855,8 +10268,8 @@
           "scope": "Recorded NFL",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 52,
-          "rank": 138,
+          "length": 53,
+          "rank": 137,
           "tied": true,
           "record": 274,
           "recordHolders": [
@@ -10877,28 +10290,55 @@
             }
           ],
           "nextHigher": {
-            "length": 53,
-            "rank": 137,
+            "length": 54,
+            "rank": 134,
             "holders": [
               {
-                "id": "00-0010500:2003_01_OAK_TEN",
-                "name": "Derrick Mason",
+                "id": "00-0033906:2017_01_NO_MIN",
+                "name": "Alvin Kamara",
                 "teams": [
-                  "TEN",
-                  "BAL"
+                  "NO"
                 ],
                 "opponent": null,
-                "length": 53,
-                "firstSeason": 2003,
-                "lastSeason": 2006,
-                "years": "2003–2006",
+                "length": 54,
+                "firstSeason": 2017,
+                "lastSeason": 2020,
+                "years": "2017–2020",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0037238:2023_02_GB_ATL",
+                "name": "Drake London",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 54,
+                "firstSeason": 2023,
+                "lastSeason": 2026,
+                "years": "2023–2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "00-0000745:2001_06_PHI_NYG",
+                "name": "Tiki Barber",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 54,
+                "firstSeason": 2001,
+                "lastSeason": 2004,
+                "years": "2001–2004",
                 "active": false,
                 "lowerBound": true
               }
             ]
           },
           "next": {
-            "rank": 137,
+            "rank": 134,
             "tied": true
           },
           "lowerBound": false
@@ -10907,7 +10347,7 @@
           "scope": "DET",
           "coverage": "1999+ game logs plus documented older records",
           "partial": true,
-          "length": 52,
+          "length": 53,
           "rank": 6,
           "tied": false,
           "record": 75,
@@ -11013,7 +10453,7 @@
           ],
           "nextHigher": {
             "length": 52,
-            "rank": 138,
+            "rank": 139,
             "holders": [
               {
                 "id": "00-0036275:2020_01_CHI_DET",
@@ -11087,25 +10527,11 @@
                 "years": "2015–2019",
                 "active": false,
                 "lowerBound": false
-              },
-              {
-                "id": "00-0039065:2023_01_DET_KC",
-                "name": "Sam LaPorta",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 52,
-                "firstSeason": 2023,
-                "lastSeason": 2026,
-                "years": "2023–2026",
-                "active": true,
-                "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 138,
+            "rank": 139,
             "tied": true
           },
           "lowerBound": false
@@ -11221,7 +10647,7 @@
           ],
           "nextHigher": {
             "length": 52,
-            "rank": 138,
+            "rank": 139,
             "holders": [
               {
                 "id": "00-0036275:2020_01_CHI_DET",
@@ -11295,25 +10721,11 @@
                 "years": "2015–2019",
                 "active": false,
                 "lowerBound": false
-              },
-              {
-                "id": "00-0039065:2023_01_DET_KC",
-                "name": "Sam LaPorta",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 52,
-                "firstSeason": 2023,
-                "lastSeason": 2026,
-                "years": "2023–2026",
-                "active": true,
-                "lowerBound": false
               }
             ]
           },
           "next": {
-            "rank": 138,
+            "rank": 139,
             "tied": true
           },
           "lowerBound": false
@@ -11758,7 +11170,7 @@
       "value": 192,
       "action": "Extended from 191 to 192 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_02_IND_KC",
@@ -11780,7 +11192,7 @@
       "value": 193,
       "action": "Extended from 192 to 193 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_03_KC_MIA",
@@ -11802,7 +11214,7 @@
       "value": 194,
       "action": "Extended from 193 to 194 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_04_KC_LV",
@@ -11824,7 +11236,7 @@
       "value": 195,
       "action": "Extended from 194 to 195 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_06_LAC_KC",
@@ -11846,7 +11258,7 @@
       "value": 196,
       "action": "Extended from 195 to 196 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_07_KC_SEA",
@@ -11868,7 +11280,7 @@
       "value": 197,
       "action": "Extended from 196 to 197 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_08_KC_DEN",
@@ -11890,7 +11302,7 @@
       "value": 198,
       "action": "Extended from 197 to 198 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_09_NYJ_KC",
@@ -11912,7 +11324,7 @@
       "value": 199,
       "action": "Extended from 198 to 199 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_10_KC_ATL",
@@ -11934,7 +11346,7 @@
       "value": 200,
       "action": "Extended from 199 to 200 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030506:2014_01_TEN_KC:2026_11_ARI_KC",
@@ -11956,7 +11368,29 @@
       "value": 201,
       "action": "Extended from 200 to 201 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
+    },
+    {
+      "id": "00-0030506:2014_01_TEN_KC:2026_12_KC_BUF",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "KC",
+      "title": "Travis Kelce: 202 straight appearances with a catch",
+      "detail": "Run began 2014-09-07. Length after this game: 202.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_12_KC_BUF",
+      "date": "2026-11-26",
+      "season": 2026,
+      "week": 12,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 201,
+      "after": 202,
+      "value": 202,
+      "action": "Extended from 201 to 202 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_01_WAS_PHI",
@@ -11978,7 +11412,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_02_WAS_DAL",
@@ -12000,7 +11434,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_03_SEA_WAS",
@@ -12022,7 +11456,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_04_IND_WAS",
@@ -12044,7 +11478,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_06_WAS_SF",
@@ -12066,7 +11500,7 @@
       "value": 166,
       "action": "Extended from 165 to 166 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_08_PHI_WAS",
@@ -12088,7 +11522,7 @@
       "value": 167,
       "action": "Extended from 166 to 167 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_09_LA_WAS",
@@ -12110,7 +11544,7 @@
       "value": 168,
       "action": "Extended from 167 to 168 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_10_WAS_NYG",
@@ -12132,7 +11566,7 @@
       "value": 169,
       "action": "Extended from 168 to 169 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031588:2015_04_MIN_DEN:2026_11_CIN_WAS",
@@ -12154,7 +11588,7 @@
       "value": 170,
       "action": "Extended from 169 to 170 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_01_SF_LA",
@@ -12176,7 +11610,7 @@
       "value": 160,
       "action": "Extended from 159 to 160 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_02_NYG_LA",
@@ -12198,7 +11632,7 @@
       "value": 161,
       "action": "Extended from 160 to 161 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_03_LA_DEN",
@@ -12220,7 +11654,7 @@
       "value": 162,
       "action": "Extended from 161 to 162 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_04_LA_PHI",
@@ -12242,7 +11676,7 @@
       "value": 163,
       "action": "Extended from 162 to 163 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_05_BUF_LA",
@@ -12264,7 +11698,7 @@
       "value": 164,
       "action": "Extended from 163 to 164 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0031381:2015_08_GB_DEN:2026_06_ARI_LA",
@@ -12286,7 +11720,7 @@
       "value": 165,
       "action": "Extended from 164 to 165 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_01_BAL_IND",
@@ -12308,7 +11742,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_02_IND_KC",
@@ -12330,7 +11764,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_03_HOU_IND",
@@ -12352,7 +11786,7 @@
       "value": 106,
       "action": "Extended from 105 to 106 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_05_IND_PIT",
@@ -12374,7 +11808,7 @@
       "value": 107,
       "action": "Extended from 106 to 107 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_06_TEN_IND",
@@ -12396,7 +11830,7 @@
       "value": 108,
       "action": "Extended from 107 to 108 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_07_IND_MIN",
@@ -12418,7 +11852,7 @@
       "value": 109,
       "action": "Extended from 108 to 109 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_08_IND_JAX",
@@ -12440,7 +11874,7 @@
       "value": 110,
       "action": "Extended from 109 to 110 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_09_DAL_IND",
@@ -12462,7 +11896,7 @@
       "value": 111,
       "action": "Extended from 110 to 111 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_10_SF_DAL",
@@ -12484,7 +11918,7 @@
       "value": 112,
       "action": "Extended from 111 to 112 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0030279:2018_16_BAL_LAC:2026_11_MIN_SF",
@@ -12506,7 +11940,7 @@
       "value": 113,
       "action": "Extended from 112 to 113 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_01_ATL_PIT",
@@ -12528,7 +11962,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_02_PIT_NE",
@@ -12550,7 +11984,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_03_CIN_PIT",
@@ -12572,7 +12006,7 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_04_PIT_CLE",
@@ -12594,7 +12028,7 @@
       "value": 101,
       "action": "Extended from 100 to 101 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_05_IND_PIT",
@@ -12616,7 +12050,7 @@
       "value": 102,
       "action": "Extended from 101 to 102 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_06_PIT_TB",
@@ -12638,7 +12072,7 @@
       "value": 103,
       "action": "Extended from 102 to 103 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_07_PIT_NO",
@@ -12660,7 +12094,7 @@
       "value": 104,
       "action": "Extended from 103 to 104 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_08_CLE_PIT",
@@ -12682,7 +12116,7 @@
       "value": 105,
       "action": "Extended from 104 to 105 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_10_PIT_CIN",
@@ -12704,7 +12138,7 @@
       "value": 106,
       "action": "Extended from 105 to 106 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035640:2019_17_SF_SEA:2026_11_PIT_PHI",
@@ -12726,7 +12160,7 @@
       "value": 107,
       "action": "Extended from 106 to 107 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_01_GB_MIN",
@@ -12748,7 +12182,7 @@
       "value": 95,
       "action": "Extended from 94 to 95 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_02_MIN_CHI",
@@ -12770,7 +12204,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_03_MIN_TB",
@@ -12792,7 +12226,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_05_MIN_NO",
@@ -12814,7 +12248,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_07_IND_MIN",
@@ -12836,7 +12270,7 @@
       "value": 99,
       "action": "Extended from 98 to 99 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_08_MIN_DET",
@@ -12858,7 +12292,7 @@
       "value": 100,
       "action": "Extended from 99 to 100 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_09_BUF_MIN",
@@ -12880,7 +12314,7 @@
       "value": 101,
       "action": "Extended from 100 to 101 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_10_MIN_GB",
@@ -12902,7 +12336,7 @@
       "value": 102,
       "action": "Extended from 101 to 102 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036322:2020_01_GB_MIN:2026_11_MIN_SF",
@@ -12924,7 +12358,7 @@
       "value": 103,
       "action": "Extended from 102 to 103 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_01_ATL_PIT",
@@ -12946,7 +12380,7 @@
       "value": 96,
       "action": "Extended from 95 to 96 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_03_CIN_PIT",
@@ -12968,7 +12402,7 @@
       "value": 97,
       "action": "Extended from 96 to 97 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036252:2020_01_IND_JAX:2026_04_PIT_CLE",
@@ -12990,7 +12424,7 @@
       "value": 98,
       "action": "Extended from 97 to 98 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_01_TB_CIN",
@@ -13012,7 +12446,7 @@
       "value": 79,
       "action": "Extended from 78 to 79 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_02_CIN_HOU",
@@ -13034,7 +12468,7 @@
       "value": 80,
       "action": "Extended from 79 to 80 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_03_CIN_PIT",
@@ -13056,7 +12490,7 @@
       "value": 81,
       "action": "Extended from 80 to 81 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_04_JAX_CIN",
@@ -13078,7 +12512,7 @@
       "value": 82,
       "action": "Extended from 81 to 82 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_05_CIN_MIA",
@@ -13100,7 +12534,7 @@
       "value": 83,
       "action": "Extended from 82 to 83 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_07_CIN_BAL",
@@ -13122,7 +12556,7 @@
       "value": 84,
       "action": "Extended from 83 to 84 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_08_TEN_CIN",
@@ -13144,7 +12578,7 @@
       "value": 85,
       "action": "Extended from 84 to 85 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_09_CIN_ATL",
@@ -13166,7 +12600,7 @@
       "value": 86,
       "action": "Extended from 85 to 86 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_10_PIT_CIN",
@@ -13188,7 +12622,7 @@
       "value": 87,
       "action": "Extended from 86 to 87 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036900:2021_01_MIN_CIN:2026_11_CIN_WAS",
@@ -13210,7 +12644,7 @@
       "value": 88,
       "action": "Extended from 87 to 88 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_01_NE_SEA",
@@ -13232,7 +12666,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_06_NYJ_NE",
@@ -13254,7 +12688,7 @@
       "value": 74,
       "action": "Extended from 73 to 74 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_07_NE_CHI",
@@ -13276,7 +12710,7 @@
       "value": 75,
       "action": "Extended from 74 to 75 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035676:2021_05_TEN_JAX:2026_10_NE_DET",
@@ -13298,7 +12732,7 @@
       "value": 76,
       "action": "Extended from 75 to 76 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_01_CLE_JAX",
@@ -13320,7 +12754,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_02_JAX_DEN",
@@ -13342,7 +12776,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_03_NE_JAX",
@@ -13364,7 +12798,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_04_JAX_CIN",
@@ -13386,7 +12820,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_05_PHI_JAX",
@@ -13408,7 +12842,7 @@
       "value": 70,
       "action": "Extended from 69 to 70 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_06_HOU_JAX",
@@ -13430,7 +12864,7 @@
       "value": 71,
       "action": "Extended from 70 to 71 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_08_IND_JAX",
@@ -13452,7 +12886,7 @@
       "value": 72,
       "action": "Extended from 71 to 72 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_09_JAX_BAL",
@@ -13474,7 +12908,7 @@
       "value": 73,
       "action": "Extended from 72 to 73 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_10_JAX_TEN",
@@ -13496,7 +12930,7 @@
       "value": 74,
       "action": "Extended from 73 to 74 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034960:2021_15_NE_IND:2026_11_JAX_NYG",
@@ -13518,7 +12952,7 @@
       "value": 75,
       "action": "Extended from 74 to 75 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_02_NO_BAL",
@@ -13540,7 +12974,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_03_LV_NO",
@@ -13562,7 +12996,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_04_ATL_NO",
@@ -13584,7 +13018,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_05_MIN_NO",
@@ -13606,7 +13040,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_06_NO_NYG",
@@ -13628,7 +13062,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_07_PIT_NO",
@@ -13650,7 +13084,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_09_CLE_NO",
@@ -13672,7 +13106,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_10_CAR_NO",
@@ -13694,7 +13128,7 @@
       "value": 70,
       "action": "Extended from 69 to 70 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033906:2021_05_NO_WAS:2026_11_NO_CHI",
@@ -13716,7 +13150,7 @@
       "value": 71,
       "action": "Extended from 70 to 71 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_01_BUF_HOU",
@@ -13738,7 +13172,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_02_CIN_HOU",
@@ -13760,7 +13194,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_03_HOU_IND",
@@ -13782,7 +13216,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_04_DAL_HOU",
@@ -13804,7 +13238,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_05_HOU_TEN",
@@ -13826,7 +13260,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_06_HOU_JAX",
@@ -13848,7 +13282,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_07_NYG_HOU",
@@ -13870,7 +13304,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_09_HOU_LAC",
@@ -13892,7 +13326,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_10_HOU_CLE",
@@ -13914,7 +13348,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0034383:2022_07_DET_DAL:2026_11_IND_HOU",
@@ -13936,7 +13370,7 @@
       "value": 70,
       "action": "Extended from 69 to 70 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_01_GB_MIN",
@@ -13958,7 +13392,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_02_MIN_CHI",
@@ -13980,7 +13414,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_03_MIN_TB",
@@ -14002,7 +13436,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_04_MIA_MIN",
@@ -14024,7 +13458,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_05_MIN_NO",
@@ -14046,7 +13480,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_07_IND_MIN",
@@ -14068,7 +13502,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_08_MIN_DET",
@@ -14090,7 +13524,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_09_BUF_MIN",
@@ -14112,7 +13546,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0035229:2021_11_DET_CLE:2026_11_MIN_SF",
@@ -14134,7 +13568,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_01_ARI_LAC",
@@ -14156,7 +13590,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_02_SEA_ARI",
@@ -14178,7 +13612,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_03_ARI_SF",
@@ -14200,7 +13634,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_04_ARI_NYG",
@@ -14222,7 +13656,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_05_DET_ARI",
@@ -14244,7 +13678,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_06_ARI_LA",
@@ -14266,7 +13700,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_07_DEN_ARI",
@@ -14288,7 +13722,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_08_ARI_DAL",
@@ -14310,7 +13744,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_09_ARI_SEA",
@@ -14332,7 +13766,7 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_10_LA_ARI",
@@ -14354,7 +13788,7 @@
       "value": 68,
       "action": "Extended from 67 to 68 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037744:2022_10_ARI_LA:2026_11_ARI_KC",
@@ -14376,7 +13810,7 @@
       "value": 69,
       "action": "Extended from 68 to 69 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_01_WAS_PHI",
@@ -14398,7 +13832,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_02_PHI_TEN",
@@ -14420,7 +13854,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_03_PHI_CHI",
@@ -14442,7 +13876,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_06_CAR_PHI",
@@ -14464,7 +13898,7 @@
       "value": 66,
       "action": "Extended from 65 to 66 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036912:2022_02_MIN_PHI:2026_11_PIT_PHI",
@@ -14486,7 +13920,29 @@
       "value": 67,
       "action": "Extended from 66 to 67 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
+    },
+    {
+      "id": "00-0036912:2022_02_MIN_PHI:2026_12_PHI_DAL",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "PHI",
+      "title": "DeVonta Smith: 68 straight appearances with a catch",
+      "detail": "Run began 2022-09-19. Length after this game: 68.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_12_PHI_DAL",
+      "date": "2026-11-26",
+      "season": 2026,
+      "week": 12,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 67,
+      "after": 68,
+      "value": 68,
+      "action": "Extended from 67 to 68 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_01_BUF_HOU",
@@ -14508,7 +13964,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_04_DAL_HOU",
@@ -14530,7 +13986,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_05_HOU_TEN",
@@ -14552,7 +14008,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_06_HOU_JAX",
@@ -14574,7 +14030,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_07_NYG_HOU",
@@ -14596,7 +14052,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_09_HOU_LAC",
@@ -14618,7 +14074,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_10_HOU_CLE",
@@ -14640,7 +14096,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0036554:2021_14_SEA_HOU:2026_11_IND_HOU",
@@ -14662,7 +14118,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_01_NO_DET",
@@ -14684,7 +14140,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_02_NO_BAL",
@@ -14706,7 +14162,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_03_LV_NO",
@@ -14728,7 +14184,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_04_ATL_NO",
@@ -14750,7 +14206,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_05_MIN_NO",
@@ -14772,7 +14228,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_06_NO_NYG",
@@ -14794,7 +14250,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_07_PIT_NO",
@@ -14816,7 +14272,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_09_CLE_NO",
@@ -14838,7 +14294,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_10_CAR_NO",
@@ -14860,7 +14316,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037239:2022_01_NO_ATL:2026_11_NO_CHI",
@@ -14882,7 +14338,7 @@
       "value": 65,
       "action": "Extended from 64 to 65 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_01_SF_LA",
@@ -14904,7 +14360,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_02_MIA_SF",
@@ -14926,7 +14382,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_03_ARI_SF",
@@ -14948,7 +14404,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_04_DEN_SF",
@@ -14970,7 +14426,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_05_SF_SEA",
@@ -14992,7 +14448,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_06_WAS_SF",
@@ -15014,7 +14470,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_07_SF_ATL",
@@ -15036,7 +14492,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_09_LV_SF",
@@ -15058,7 +14514,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_10_SF_DAL",
@@ -15080,7 +14536,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033280:2022_01_CLE_CAR:2026_11_MIN_SF",
@@ -15102,7 +14558,7 @@
       "value": 64,
       "action": "Extended from 63 to 64 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_04_IND_WAS",
@@ -15124,7 +14580,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_05_NYG_WAS",
@@ -15146,7 +14602,7 @@
       "value": 62,
       "action": "Extended from 61 to 62 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_06_WAS_SF",
@@ -15168,7 +14624,7 @@
       "value": 63,
       "action": "Extended from 62 to 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0033699:2021_02_DAL_LAC:2026_08_PHI_WAS",
@@ -15190,7 +14646,7 @@
       "value": 63,
       "action": "A zero-catch appearance ended the run at 63 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_01_NE_SEA",
@@ -15212,7 +14668,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_02_SEA_ARI",
@@ -15234,7 +14690,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_03_SEA_WAS",
@@ -15256,7 +14712,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_04_LAC_SEA",
@@ -15278,7 +14734,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_05_SF_SEA",
@@ -15300,7 +14756,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_06_SEA_DEN",
@@ -15322,7 +14778,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_07_KC_SEA",
@@ -15344,7 +14800,7 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_08_CHI_SEA",
@@ -15366,7 +14822,7 @@
       "value": 59,
       "action": "Extended from 58 to 59 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_09_ARI_SEA",
@@ -15388,7 +14844,7 @@
       "value": 60,
       "action": "Extended from 59 to 60 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038543:2023_01_LA_SEA:2026_10_SEA_LV",
@@ -15410,7 +14866,7 @@
       "value": 61,
       "action": "Extended from 60 to 61 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_03_HOU_IND",
@@ -15432,7 +14888,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_04_IND_WAS",
@@ -15454,7 +14910,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_05_IND_PIT",
@@ -15476,7 +14932,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_06_TEN_IND",
@@ -15498,7 +14954,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_07_IND_MIN",
@@ -15520,7 +14976,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_08_IND_JAX",
@@ -15542,7 +14998,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_09_DAL_IND",
@@ -15564,7 +15020,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_10_KC_ATL",
@@ -15586,7 +15042,7 @@
       "value": 57,
       "action": "Extended from 56 to 57 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038997:2023_01_JAX_IND:2026_11_ARI_KC",
@@ -15608,7 +15064,29 @@
       "value": 58,
       "action": "Extended from 57 to 58 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
+    },
+    {
+      "id": "00-0038997:2023_01_JAX_IND:2026_12_KC_BUF",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "KC",
+      "title": "Josh Downs: 59 straight appearances with a catch",
+      "detail": "Run began 2023-09-10. Length after this game: 59.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_12_KC_BUF",
+      "date": "2026-11-26",
+      "season": 2026,
+      "week": 12,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 58,
+      "after": 59,
+      "value": 59,
+      "action": "Extended from 58 to 59 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_01_BAL_IND",
@@ -15630,7 +15108,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_03_BAL_DAL",
@@ -15652,7 +15130,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_04_TEN_BAL",
@@ -15674,7 +15152,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_05_BAL_ATL",
@@ -15696,7 +15174,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_06_BAL_CLE",
@@ -15718,7 +15196,7 @@
       "value": 55,
       "action": "Extended from 54 to 55 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_07_CIN_BAL",
@@ -15740,7 +15218,7 @@
       "value": 56,
       "action": "Extended from 55 to 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039064:2023_01_HOU_BAL:2026_08_BAL_BUF",
@@ -15762,7 +15240,7 @@
       "value": 56,
       "action": "A zero-catch appearance ended the run at 56 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_06_CHI_ATL",
@@ -15784,7 +15262,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_07_SF_ATL",
@@ -15806,7 +15284,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_08_ATL_TB",
@@ -15828,7 +15306,7 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_09_CIN_ATL",
@@ -15850,7 +15328,7 @@
       "value": 53,
       "action": "Extended from 52 to 53 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0037238:2023_02_GB_ATL:2026_10_KC_ATL",
@@ -15872,7 +15350,7 @@
       "value": 54,
       "action": "Extended from 53 to 54 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039065:2023_01_DET_KC:2026_09_DET_MIA",
@@ -15894,7 +15372,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039065:2023_01_DET_KC:2026_10_NE_DET",
@@ -15916,7 +15394,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039065:2023_01_DET_KC:2026_11_TB_DET",
@@ -15938,7 +15416,29 @@
       "value": 52,
       "action": "Extended from 51 to 52 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
+    },
+    {
+      "id": "00-0039065:2023_01_DET_KC:2026_12_CHI_DET",
+      "category": "receiving",
+      "kind": "streak",
+      "team": "DET",
+      "title": "Sam LaPorta: 53 straight appearances with a catch",
+      "detail": "Run began 2023-09-07. Length after this game: 53.",
+      "unit": "games",
+      "href": "/nfl/receiving-streaks.html",
+      "game": "2026_12_CHI_DET",
+      "date": "2026-11-26",
+      "season": 2026,
+      "week": 12,
+      "gameType": "REG",
+      "status": "continued",
+      "before": 52,
+      "after": 53,
+      "value": 53,
+      "action": "Extended from 52 to 53 games.",
+      "newlyNoteworthy": false,
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039075:2023_01_LA_SEA:2026_08_LAC_LA",
@@ -15960,7 +15460,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0039075:2023_01_LA_SEA:2026_09_LA_WAS",
@@ -15982,7 +15482,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038117:2023_09_NYG_LV:2026_08_TEN_CIN",
@@ -16004,7 +15504,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038117:2023_09_NYG_LV:2026_10_JAX_TEN",
@@ -16026,7 +15526,7 @@
       "value": 51,
       "action": "Extended from 50 to 51 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_07_SF_ATL",
@@ -16048,7 +15548,7 @@
       "value": 50,
       "action": "Extended from 49 to 50 games.",
       "newlyNoteworthy": true,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     },
     {
       "id": "00-0038542:2023_09_MIN_ATL:2026_08_ATL_TB",
@@ -16070,7 +15570,7 @@
       "value": 50,
       "action": "A zero-catch appearance ended the run at 50 games.",
       "newlyNoteworthy": false,
-      "sourceThrough": "2026-11-25"
+      "sourceThrough": "2026-11-26"
     }
   ]
 }
