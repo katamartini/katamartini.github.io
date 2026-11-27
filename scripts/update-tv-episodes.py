@@ -1,4 +1,4 @@
-"""Add new TVMaze episodes to watching shows in the repo-backed tracker."""
+"""Add new TVMaze episodes and remove known placeholders from the repo-backed tracker."""
 
 import argparse
 import base64
@@ -116,6 +116,20 @@ def add_new_episodes(payload, episode_lists):
     return added, changed_shows
 
 
+def remove_excluded_episodes(payload):
+    removed = 0
+    for show in payload["shows"]:
+        blocked_ids = EXCLUDED_EPISODE_IDS.get(show["id"])
+        if not blocked_ids:
+            continue
+        existing = show["episodes"]
+        filtered = [episode for episode in existing if episode["id"] not in blocked_ids]
+        if len(filtered) != len(existing):
+            show["episodes"] = filtered
+            removed += len(existing) - len(filtered)
+    return removed
+
+
 def update_payload(payload, cache):
     watching = [show for show in payload["shows"] if show.get("status") == "watching"]
     for index, show in enumerate(watching):
@@ -123,7 +137,9 @@ def update_payload(payload, cache):
             if index:
                 time.sleep(0.6)
             cache[show["id"]] = fetch_episodes(show["id"])
-    return add_new_episodes(payload, cache)
+    added, changes = add_new_episodes(payload, cache)
+    removed = remove_excluded_episodes(payload)
+    return added, removed, changes
 
 
 def github_file(repo, token):
@@ -150,12 +166,12 @@ def run_github(repo, token):
     cache = {}
     for attempt in range(3):
         payload, sha, newline, trailing_newline = github_file(repo, token)
-        added, changes = update_payload(payload, cache)
-        if not added:
+        added, removed, changes = update_payload(payload, cache)
+        if not (added or removed):
             print("No new episodes for watching shows.")
             return
         body = {
-            "message": "Update watching show episodes",
+            "message": "Update watching show episodes" if added else "Remove known TVmaze placeholders",
             "content": base64.b64encode(encode_payload(payload, newline, trailing_newline)).decode("ascii"),
             "sha": sha,
             "branch": "main",
@@ -167,7 +183,10 @@ def run_github(repo, token):
                 raise
             print("Tracker changed during update; retrying with the latest repo data.")
             continue
-        print(f"Added {added} episode(s): {', '.join(changes)}")
+        if added:
+            print(f"Added {added} episode(s): {', '.join(changes)}")
+        if removed:
+            print(f"Removed {removed} known placeholder episode(s).")
         request_json(f"https://api.github.com/repos/{repo}/pages/builds", token, method="POST")
         return
     raise RuntimeError("Could not update the tracker after three attempts")
@@ -180,8 +199,13 @@ def main():
     args = parser.parse_args()
     if args.dry_run:
         payload = json.loads(args.data_path.read_text(encoding="utf-8"))
-        added, changes = update_payload(payload, {})
-        print(f"Would add {added} episode(s): {', '.join(changes)}" if added else "No new episodes for watching shows.")
+        added, removed, changes = update_payload(payload, {})
+        if added:
+            print(f"Would add {added} episode(s): {', '.join(changes)}")
+        if removed:
+            print(f"Would remove {removed} known placeholder episode(s).")
+        if not (added or removed):
+            print("No new episodes for watching shows.")
     else:
         repo = os.environ["GITHUB_REPOSITORY"]
         token = os.environ["GITHUB_TOKEN"]

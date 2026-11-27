@@ -80,6 +80,27 @@ class EpisodeUpdateTests(unittest.TestCase):
         self.assertEqual((added, changes), (0, []))
         self.assertEqual(self.payload, before)
 
+    def test_removal_only_save_repairs_stale_vivant_payload(self):
+        finale = dict(self.watched_episode, id=3758633, season=2, number=14)
+        placeholders = [dict(finale, id=3758634 + i, number=15 + i) for i in range(6)]
+        show = self.payload["shows"][0]
+        show.update(id=73519, name="VIVANT", watched={"3758628": True}, episodes=[finale, *placeholders])
+        self.payload["shows"][1]["watchBaseUrl"] = "https://example.com/unrelated"
+        expected = deepcopy(self.payload)
+        expected["shows"][0]["episodes"] = [finale]
+
+        with patch.object(updater, "github_file", return_value=(self.payload, "data-sha", b"\n", False)), \
+             patch.object(updater, "fetch_episodes", return_value=[finale, *placeholders]), \
+             patch.object(updater, "request_json") as request:
+            updater.run_github("owner/repo", "token")
+
+        write, publish = request.call_args_list
+        self.assertEqual(write.kwargs["method"], "PUT")
+        self.assertEqual(write.kwargs["body"]["sha"], "data-sha")
+        self.assertEqual(json.loads(base64.b64decode(write.kwargs["body"]["content"])), expected)
+        self.assertEqual(publish.kwargs["method"], "POST")
+        self.assertEqual(updater.update_payload(expected, {73519: [finale, *placeholders]}), (0, 0, []))
+
     def test_preserves_repo_line_endings(self):
         data = updater.encode_payload({"a": 1}, b"\r\n", False)
         self.assertEqual(data, b'{\r\n  "a": 1\r\n}')
