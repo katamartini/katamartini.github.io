@@ -2641,13 +2641,16 @@
     }
 
     async function refreshShow(id) {
-      const existing = state.shows.find((show) => show.id === id);
-      if (!existing) return;
+      if (!state.shows.some((show) => show.id === id)) return;
 
       showToast("Refreshing episode list...");
       try {
         const fresh = await fetchShow(id);
+        const existing = state.shows.find((show) => show.id === id);
+        if (!existing) return;
+
         fresh.status = existing.status;
+        fresh.pinned = existing.pinned;
         fresh.watched = existing.watched;
         fresh.watchBaseUrl = existing.watchBaseUrl;
         fresh.lastWatchedAt = existing.lastWatchedAt;
