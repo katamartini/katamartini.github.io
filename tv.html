@@ -1690,6 +1690,10 @@
       searchWasClicked = false;
     }
 
+    // TBS ended VIVANT at S2E14. TVmaze still lists these six placeholder IDs.
+    // https://www.tbs.co.jp/VIVANT_tbs/news/
+    const VIVANT_PLACEHOLDER_IDS = new Set([3758634, 3758635, 3758636, 3758637, 3758638, 3758639]);
+
     function normalizeShow(show) {
       return {
         id: Number(show.id),
@@ -1702,7 +1706,9 @@
         image: show.image || "",
         genres: Array.isArray(show.genres) ? show.genres : [],
         summary: show.summary || "",
-        episodes: Array.isArray(show.episodes) ? show.episodes.map(normalizeEpisode) : [],
+        episodes: Array.isArray(show.episodes)
+          ? show.episodes.map(normalizeEpisode).filter((episode) => Number(show.id) !== 73519 || !VIVANT_PLACEHOLDER_IDS.has(episode.id))
+          : [],
         watched: show.watched && typeof show.watched === "object" ? show.watched : {},
         autoFinished: !!show.autoFinished,
         pinned: !!show.pinned,

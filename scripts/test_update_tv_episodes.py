@@ -68,6 +68,18 @@ class EpisodeUpdateTests(unittest.TestCase):
         self.assertEqual(len(episodes), 1)
         self.assertEqual(episodes[0]["summary"], "New & improved")
 
+    def test_vivant_placeholders_do_not_return(self):
+        finale = dict(self.watched_episode, id=3758633, season=2, number=14)
+        placeholders = [
+            dict(finale, id=3758634 + i, number=15 + i) for i in range(6)
+        ]
+        original = self.payload["shows"][0]
+        original.update(id=73519, name="VIVANT", watched={"3758628": True}, episodes=[finale])
+        before = deepcopy(self.payload)
+        added, changes = updater.add_new_episodes(self.payload, {73519: [finale, *placeholders]})
+        self.assertEqual((added, changes), (0, []))
+        self.assertEqual(self.payload, before)
+
     def test_preserves_repo_line_endings(self):
         data = updater.encode_payload({"a": 1}, b"\r\n", False)
         self.assertEqual(data, b'{\r\n  "a": 1\r\n}')

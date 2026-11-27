@@ -14,6 +14,8 @@ from urllib.request import Request, urlopen
 
 DATA_PATH = "tv-data.json"
 SPECIAL_TYPES = {"significant_special", "insignificant_special"}
+# TBS ended VIVANT at S2E14: https://www.tbs.co.jp/VIVANT_tbs/news/
+EXCLUDED_EPISODE_IDS = {73519: frozenset(range(3758634, 3758640))}
 
 
 class TextExtractor(HTMLParser):
@@ -95,7 +97,11 @@ def add_new_episodes(payload, episode_lists):
             continue
         existing = show["episodes"]
         known_ids = {episode["id"] for episode in existing}
-        fresh = [episode for episode in episode_lists[show["id"]] if episode["id"] not in known_ids]
+        blocked_ids = EXCLUDED_EPISODE_IDS.get(show["id"], ())
+        fresh = [
+            episode for episode in episode_lists[show["id"]]
+            if episode["id"] not in known_ids and episode["id"] not in blocked_ids
+        ]
         if not fresh:
             continue
         existing.extend(fresh)
