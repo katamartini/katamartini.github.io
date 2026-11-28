@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "season": 2026,
-  "through": "2026-11-26",
+  "through": "2026-11-27",
   "thresholds": {
     "team": 5,
     "matchup": 5,
@@ -19,20 +19,6 @@
     "start": "2026-11-25",
     "end": "2026-11-30",
     "games": [
-      {
-        "id": "2026_12_DEN_PIT",
-        "season": 2026,
-        "type": "REG",
-        "week": 12,
-        "date": "2026-11-27",
-        "away": "DEN",
-        "home": "PIT",
-        "awayScore": null,
-        "homeScore": null,
-        "completed": false,
-        "location": "Home",
-        "kickoff": "15:00"
-      },
       {
         "id": "2026_12_ATL_MIN",
         "season": 2026,
@@ -190,2911 +176,6 @@
     ]
   },
   "watch": [
-    {
-      "id": "00-0039732:2026_12_DEN_PIT",
-      "category": "qb",
-      "kind": "streak",
-      "team": "DEN",
-      "value": 44,
-      "unit": "starts",
-      "title": "Bo Nix: 44 consecutive starts for his team",
-      "detail": "Run began 2024-09-08. Last verified 2026-11-22.",
-      "action": "Starting this game makes it 45. A different starting QB ends the run.",
-      "href": "/nfl/QBs.html#starts",
-      "sourceThrough": "2026-11-26",
-      "leaderboard": {
-        "label": "Consecutive QB starts",
-        "franchiseTeam": "DEN",
-        "franchise": {
-          "scope": "DEN",
-          "coverage": "1950+",
-          "partial": false,
-          "length": 44,
-          "rank": 3,
-          "tied": false,
-          "record": 57,
-          "recordHolders": [
-            {
-              "id": "DEN:2012_01_PIT_DEN:00-0010346",
-              "name": "Peyton Manning",
-              "teams": [
-                "DEN"
-              ],
-              "opponent": null,
-              "length": 57,
-              "firstSeason": 2012,
-              "lastSeason": 2015,
-              "years": "2012–2015",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 47,
-            "rank": 2,
-            "holders": [
-              {
-                "id": "DEN:1989-11-26_SEA_DEN:historical:johnelway",
-                "name": "John Elway",
-                "teams": [
-                  "DEN"
-                ],
-                "opponent": null,
-                "length": 47,
-                "firstSeason": 1989,
-                "lastSeason": 1992,
-                "years": "1989–1992",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 3,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "overall": {
-          "scope": "NFL",
-          "coverage": "1950+",
-          "partial": false,
-          "length": 44,
-          "rank": 89,
-          "tied": true,
-          "record": 253,
-          "recordHolders": [
-            {
-              "id": "GB:1992-09-27_PIT_GB:00-0005106",
-              "name": "Brett Favre",
-              "teams": [
-                "GB"
-              ],
-              "opponent": null,
-              "length": 253,
-              "firstSeason": 1992,
-              "lastSeason": 2007,
-              "years": "1992–2007",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 45,
-            "rank": 85,
-            "holders": [
-              {
-                "id": "GB:2008_01_MIN_GB:00-0023459",
-                "name": "Aaron Rodgers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 2008,
-                "lastSeason": 2010,
-                "years": "2008–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "GB:1963-11-24_SF_GB:historical:bartstarr",
-                "name": "Bart Starr",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 1963,
-                "lastSeason": 1966,
-                "years": "1963–1966",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "IND:1974-12-01_IND_BUF:historical:bertjones",
-                "name": "Bert Jones",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 1974,
-                "lastSeason": 1977,
-                "years": "1974–1977",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "NO:1994-09-04_KC_NO:historical:jimeverett",
-                "name": "Jim Everett",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 45,
-                "firstSeason": 1994,
-                "lastSeason": 1996,
-                "years": "1994–1996",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 85,
-            "tied": true
-          },
-          "lowerBound": false
-        }
-      },
-      "game": "2026_12_DEN_PIT",
-      "date": "2026-11-27",
-      "season": 2026,
-      "week": 12,
-      "gameType": "REG",
-      "status": "watch"
-    },
-    {
-      "id": "00-0035640:2019_17_SF_SEA:2026_12_DEN_PIT",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "PIT",
-      "value": 107,
-      "unit": "games",
-      "title": "DK Metcalf: 107 straight appearances with a catch",
-      "detail": "Run began 2019-12-29. Last verified 2026-11-22.",
-      "action": "A catch in his next appearance makes it 108. A zero-catch appearance ends it; missed games do not.",
-      "href": "/nfl/receiving-streaks.html",
-      "sourceThrough": "2026-11-26",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 107,
-          "rank": 30,
-          "tied": false,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 110,
-            "rank": 28,
-            "holders": [
-              {
-                "id": "00-0027874:2011_13_DEN_MIN",
-                "name": "Demaryius Thomas",
-                "teams": [
-                  "DEN",
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 110,
-                "firstSeason": 2011,
-                "lastSeason": 2018,
-                "years": "2011–2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0033881:2017_06_NYG_DEN",
-                "name": "Evan Engram",
-                "teams": [
-                  "NYG",
-                  "JAX",
-                  "DEN"
-                ],
-                "opponent": null,
-                "length": 110,
-                "firstSeason": 2017,
-                "lastSeason": 2025,
-                "years": "2017–2025",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 30,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "PIT",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 25,
-          "rank": 19,
-          "tied": true,
-          "record": 186,
-          "recordHolders": [
-            {
-              "id": "archive:00-0017162:186",
-              "name": "Hines Ward",
-              "teams": [
-                "PIT"
-              ],
-              "opponent": null,
-              "length": 186,
-              "firstSeason": 1998,
-              "lastSeason": 2010,
-              "years": "1998–2010",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 27,
-            "rank": 18,
-            "holders": [
-              {
-                "id": "00-0036326:2020_01_PIT_NYG",
-                "name": "Chase Claypool",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 27,
-                "firstSeason": 2020,
-                "lastSeason": 2021,
-                "years": "2020–2021",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 19,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "PIT"
-      },
-      "game": "2026_12_DEN_PIT",
-      "date": "2026-11-27",
-      "season": 2026,
-      "week": 12,
-      "gameType": "REG",
-      "status": "watch"
-    },
-    {
-      "id": "00-0036252:2020_01_IND_JAX:2026_12_DEN_PIT",
-      "category": "receiving",
-      "kind": "streak",
-      "team": "PIT",
-      "value": 98,
-      "unit": "games",
-      "title": "Michael Pittman: 98 straight appearances with a catch",
-      "detail": "Run began 2020-09-13. Last verified 2026-10-01.",
-      "action": "A catch in his next appearance makes it 99. A zero-catch appearance ends it; missed games do not.",
-      "href": "/nfl/receiving-streaks.html",
-      "sourceThrough": "2026-11-26",
-      "leaderboard": {
-        "overall": {
-          "scope": "Recorded NFL",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 98,
-          "rank": 37,
-          "tied": false,
-          "record": 274,
-          "recordHolders": [
-            {
-              "id": "archive:00-0013639:274",
-              "name": "Jerry Rice",
-              "teams": [
-                "SF",
-                "LV"
-              ],
-              "opponent": null,
-              "length": 274,
-              "firstSeason": 1985,
-              "lastSeason": 2004,
-              "years": "1985–2004",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 100,
-            "rank": 35,
-            "holders": [
-              {
-                "id": "00-0031941:2015_01_MIA_WAS",
-                "name": "Jamison Crowder",
-                "teams": [
-                  "WAS",
-                  "NYJ",
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 100,
-                "firstSeason": 2015,
-                "lastSeason": 2022,
-                "years": "2015–2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029608:2015_01_IND_BUF",
-                "name": "T.Y. Hilton",
-                "teams": [
-                  "IND",
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 100,
-                "firstSeason": 2015,
-                "lastSeason": 2022,
-                "years": "2015–2022",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 37,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "franchise": {
-          "scope": "PIT",
-          "coverage": "1999+ game logs plus documented older records",
-          "partial": true,
-          "length": 3,
-          "rank": 192,
-          "tied": true,
-          "record": 186,
-          "recordHolders": [
-            {
-              "id": "archive:00-0017162:186",
-              "name": "Hines Ward",
-              "teams": [
-                "PIT"
-              ],
-              "opponent": null,
-              "length": 186,
-              "firstSeason": 1998,
-              "lastSeason": 2010,
-              "years": "1998–2010",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 4,
-            "rank": 155,
-            "holders": [
-              {
-                "id": "00-0018501:2001_09_PIT_CLE",
-                "name": "Amos Zereoue",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0018501:2002_09_PIT_CLE",
-                "name": "Amos Zereoue",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0014729:2001_07_TEN_PIT",
-                "name": "Bobby Shaw",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0037837:2023_01_SF_PIT",
-                "name": "Calvin Austin III",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2023,
-                "lastSeason": 2023,
-                "years": "2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036326:2022_05_PIT_BUF",
-                "name": "Chase Claypool",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029140:2012_01_PIT_DEN",
-                "name": "Chris Rainey",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0030578:2024_13_PIT_CIN",
-                "name": "Cordarrelle Patterson",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0038558:2023_09_TEN_PIT",
-                "name": "Darnell Washington",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2023,
-                "lastSeason": 2023,
-                "years": "2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0027685:2010_10_NE_PIT",
-                "name": "Emmanuel Sanders",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2010,
-                "lastSeason": 2010,
-                "years": "2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0017162:2011_10_PIT_CIN",
-                "name": "Hines Ward",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2011,
-                "lastSeason": 2011,
-                "years": "2011",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0033553:2019_06_PIT_LAC",
-                "name": "James Conner",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2019,
-                "lastSeason": 2019,
-                "years": "2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034676:2018_17_CIN_PIT",
-                "name": "James Washington",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2018,
-                "lastSeason": 2019,
-                "years": "2018–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0037228:2022_02_NE_PIT",
-                "name": "Jaylen Warren",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0037228:2025_13_BUF_PIT",
-                "name": "Jaylen Warren",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032135:2015_09_OAK_PIT",
-                "name": "Jesse James",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2015,
-                "lastSeason": 2015,
-                "years": "2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0032135:2018_12_PIT_DEN",
-                "name": "Jesse James",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2018,
-                "lastSeason": 2018,
-                "years": "2018",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0027786:2013_09_PIT_NE",
-                "name": "Jonathan Dwyer",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0029275:2016_12_PIT_IND",
-                "name": "Ladarius Green",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2016,
-                "lastSeason": 2016,
-                "years": "2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0002102:1999_02_PIT_BAL",
-                "name": "Mark Bruener",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 1999,
-                "lastSeason": 1999,
-                "years": "1999",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0002102:1999_12_CIN_PIT",
-                "name": "Mark Bruener",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 1999,
-                "lastSeason": 1999,
-                "years": "1999",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0002102:2002_01_PIT_NE",
-                "name": "Mark Bruener",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0034272:2025_15_MIA_PIT",
-                "name": "Marquez Valdes-Scantling",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2025,
-                "lastSeason": 2025,
-                "years": "2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022217:2009_17_PIT_MIA",
-                "name": "Mewelde Moore",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2009,
-                "lastSeason": 2010,
-                "years": "2009–2010",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0036893:2022_05_PIT_BUF",
-                "name": "Najee Harris",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036893:2022_11_CIN_PIT",
-                "name": "Najee Harris",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034407:2021_03_CIN_PIT",
-                "name": "Ray-Ray McCloud",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0007969:1999_15_PIT_KC",
-                "name": "Richard Huntley",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 1999,
-                "lastSeason": 2000,
-                "years": "1999–2000",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0036139:2026_01_ATL_PIT",
-                "name": "Rico Dowdle",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0039739:2026_01_ATL_PIT",
-                "name": "Roman Wilson",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0034928:2022_14_BAL_PIT",
-                "name": "Steven Sims",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0010539:2002_01_PIT_NE",
-                "name": "Terance Mathis",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0010539:2002_08_PIT_BAL",
-                "name": "Terance Mathis",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0004780:2001_05_PIT_KC",
-                "name": "Troy Edwards",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0021279:2005_02_PIT_HOU",
-                "name": "Verron Haynes",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2005,
-                "lastSeason": 2005,
-                "years": "2005",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0028841:2012_07_PIT_CIN",
-                "name": "Will Johnson",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "00-0022250:2007_07_PIT_DEN",
-                "name": "Willie Parker",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "00-0022250:2007_12_MIA_PIT",
-                "name": "Willie Parker",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 4,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 155,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "PIT"
-      },
-      "game": "2026_12_DEN_PIT",
-      "date": "2026-11-27",
-      "season": 2026,
-      "week": 12,
-      "gameType": "REG",
-      "status": "watch"
-    },
-    {
-      "id": "home:PIT:wins:2026_12_DEN_PIT",
-      "category": "team",
-      "team": "PIT",
-      "opponent": "DEN",
-      "href": "/nfl/what-to-watch.html#method",
-      "detail": "Run began 2025-12-15.",
-      "sourceThrough": null,
-      "kind": "streak",
-      "value": 6,
-      "unit": "games",
-      "title": "Steelers: 6 straight wins at home",
-      "action": "A win makes it 7; a loss or tie ends the run.",
-      "game": "2026_12_DEN_PIT",
-      "date": "2026-11-27",
-      "season": 2026,
-      "week": 12,
-      "gameType": "REG",
-      "status": "watch",
-      "leaderboard": {
-        "label": "Home runs",
-        "franchise": {
-          "scope": "PIT",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 6,
-          "rank": 6,
-          "tied": true,
-          "record": 11,
-          "recordHolders": [
-            {
-              "id": "home:PIT:wins:2003_14_OAK_PIT",
-              "name": "Steelers",
-              "teams": [
-                "PIT"
-              ],
-              "opponent": null,
-              "length": 11,
-              "firstSeason": 2003,
-              "lastSeason": 2005,
-              "years": "2003–2005",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 7,
-            "rank": 3,
-            "holders": [
-              {
-                "id": "home:PIT:wins:2007_02_BUF_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PIT:wins:2011_13_CIN_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2011,
-                "lastSeason": 2012,
-                "years": "2011–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PIT:wins:2015_09_OAK_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2015,
-                "lastSeason": 2016,
-                "years": "2015–2016",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 3,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "overall": {
-          "scope": "Current franchises",
-          "coverage": "1999+ · today’s 32 franchises",
-          "partial": false,
-          "length": 6,
-          "rank": 91,
-          "tied": true,
-          "record": 20,
-          "recordHolders": [
-            {
-              "id": "home:NE:wins:2008_16_ARI_NE",
-              "name": "Patriots",
-              "teams": [
-                "NE"
-              ],
-              "opponent": null,
-              "length": 20,
-              "firstSeason": 2008,
-              "lastSeason": 2011,
-              "years": "2008–2011",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 7,
-            "rank": 63,
-            "holders": [
-              {
-                "id": "home:BUF:wins:2022_14_NYJ_BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2022,
-                "lastSeason": 2023,
-                "years": "2022–2023",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:CLE:wins:2007_02_CIN_CLE",
-                "name": "Browns",
-                "teams": [
-                  "CLE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:ARI:wins:2007_13_CLE_ARI",
-                "name": "Cardinals",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2007,
-                "lastSeason": 2008,
-                "years": "2007–2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:ARI:wins:2014_01_SD_ARI",
-                "name": "Cardinals",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:LAC:wins:2004_04_TEN_SD",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:LAC:wins:2009_08_OAK_SD",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2009,
-                "lastSeason": 2010,
-                "years": "2009–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:KC:wins:2010_01_SD_KC",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2010,
-                "lastSeason": 2010,
-                "years": "2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:IND:wins:2012_05_GB_IND",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2012,
-                "lastSeason": 2013,
-                "years": "2012–2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:IND:wins:2018_07_BUF_IND",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2018,
-                "lastSeason": 2019,
-                "years": "2018–2019",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:IND:wins:2024_16_TEN_IND",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2024,
-                "lastSeason": 2025,
-                "years": "2024–2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:MIA:wins:2001_12_DEN_MIA",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2001,
-                "lastSeason": 2002,
-                "years": "2001–2002",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PHI:wins:2004_01_NYG_PHI",
-                "name": "Eagles",
-                "teams": [
-                  "PHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2004,
-                "lastSeason": 2004,
-                "years": "2004",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:ATL:wins:2004_06_SD_ATL",
-                "name": "Falcons",
-                "teams": [
-                  "ATL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2004,
-                "lastSeason": 2005,
-                "years": "2004–2005",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:ATL:wins:2009_16_BUF_ATL",
-                "name": "Falcons",
-                "teams": [
-                  "ATL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2009,
-                "lastSeason": 2010,
-                "years": "2009–2010",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:JAX:wins:1999_06_CLE_JAX",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1999,
-                "lastSeason": 2000,
-                "years": "1999–2000",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:JAX:wins:2025_11_LAC_JAX",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "home:GB:wins:2019_06_DET_GB",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2019,
-                "lastSeason": 2020,
-                "years": "2019–2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:BAL:wins:2000_12_DAL_BAL",
-                "name": "Ravens",
-                "teams": [
-                  "BAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2000,
-                "lastSeason": 2001,
-                "years": "2000–2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:BAL:wins:2003_08_DEN_BAL",
-                "name": "Ravens",
-                "teams": [
-                  "BAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2003,
-                "lastSeason": 2004,
-                "years": "2003–2004",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:BAL:wins:2019_06_CIN_BAL",
-                "name": "Ravens",
-                "teams": [
-                  "BAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2019,
-                "lastSeason": 2020,
-                "years": "2019–2020",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:NO:wins:2017_06_DET_NO",
-                "name": "Saints",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2017,
-                "lastSeason": 2017,
-                "years": "2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:SEA:wins:2014_09_OAK_SEA",
-                "name": "Seahawks",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2014,
-                "lastSeason": 2015,
-                "years": "2014–2015",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:SEA:wins:2016_01_MIA_SEA",
-                "name": "Seahawks",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2016,
-                "lastSeason": 2016,
-                "years": "2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:SEA:wins:2025_07_HOU_SEA",
-                "name": "Seahawks",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PIT:wins:2007_02_BUF_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PIT:wins:2011_13_CIN_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2011,
-                "lastSeason": 2012,
-                "years": "2011–2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:PIT:wins:2015_09_OAK_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2015,
-                "lastSeason": 2016,
-                "years": "2015–2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "home:MIN:wins:2014_13_CAR_MIN",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2014,
-                "lastSeason": 2015,
-                "years": "2014–2015",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 63,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "PIT"
-      }
-    },
-    {
-      "id": "overall:DEN:wins:2026_12_DEN_PIT",
-      "category": "team",
-      "team": "DEN",
-      "opponent": "PIT",
-      "href": "/nfl/droughts.html#win-streaks",
-      "detail": "Run began 2026-10-11.",
-      "sourceThrough": null,
-      "kind": "streak",
-      "value": 6,
-      "unit": "games",
-      "title": "Broncos: 6 straight wins",
-      "action": "A win makes it 7; a loss or tie ends the run.",
-      "game": "2026_12_DEN_PIT",
-      "date": "2026-11-27",
-      "season": 2026,
-      "week": 12,
-      "gameType": "REG",
-      "status": "watch",
-      "leaderboard": {
-        "label": "Overall runs",
-        "franchise": {
-          "scope": "DEN",
-          "coverage": "1920+ · today’s 32 franchises",
-          "partial": false,
-          "length": 6,
-          "rank": 9,
-          "tied": true,
-          "record": 17,
-          "recordHolders": [
-            {
-              "id": "overall:DEN:wins:2012_06_DEN_SD",
-              "name": "Broncos",
-              "teams": [
-                "DEN"
-              ],
-              "opponent": null,
-              "length": 17,
-              "firstSeason": 2012,
-              "lastSeason": 2013,
-              "years": "2012–2013",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 8,
-            "rank": 6,
-            "holders": [
-              {
-                "id": "overall:DEN:wins:archive:1976-12-05:KC:DEN",
-                "name": "Broncos",
-                "teams": [
-                  "DEN"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 1976,
-                "lastSeason": 1977,
-                "years": "1976–1977",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DEN:wins:archive:1985-12-14:KC:DEN",
-                "name": "Broncos",
-                "teams": [
-                  "DEN"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 1985,
-                "lastSeason": 1986,
-                "years": "1985–1986",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DEN:wins:2014_17_OAK_DEN",
-                "name": "Broncos",
-                "teams": [
-                  "DEN"
-                ],
-                "opponent": null,
-                "length": 8,
-                "firstSeason": 2014,
-                "lastSeason": 2015,
-                "years": "2014–2015",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 9,
-            "tied": false
-          },
-          "lowerBound": false
-        },
-        "overall": {
-          "scope": "Current franchises",
-          "coverage": "1920+ · today’s 32 franchises",
-          "partial": false,
-          "length": 6,
-          "rank": 289,
-          "tied": true,
-          "record": 23,
-          "recordHolders": [
-            {
-              "id": "overall:IND:wins:2008_09_NE_IND",
-              "name": "Colts",
-              "teams": [
-                "IND"
-              ],
-              "opponent": null,
-              "length": 23,
-              "firstSeason": 2008,
-              "lastSeason": 2009,
-              "years": "2008–2009",
-              "active": false,
-              "lowerBound": false
-            }
-          ],
-          "nextHigher": {
-            "length": 7,
-            "rank": 197,
-            "holders": [
-              {
-                "id": "overall:SF:wins:archive:1981-09-27:NO:SF",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1981,
-                "lastSeason": 1981,
-                "years": "1981",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:SF:wins:archive:1987-09-20:SF:CIN",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1987,
-                "lastSeason": 1987,
-                "years": "1987",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:SF:wins:archive:1991-11-17:ARI:SF",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1991,
-                "lastSeason": 1992,
-                "years": "1991–1992",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:SF:wins:2013_12_SF_WAS",
-                "name": "49ers",
-                "teams": [
-                  "SF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2013,
-                "lastSeason": 2014,
-                "years": "2013–2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1935-12-08:CHI:ARI",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1935,
-                "lastSeason": 1936,
-                "years": "1935–1936",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1937-11-14:historical:BKN:CHI",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1937,
-                "lastSeason": 1938,
-                "years": "1937–1938",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1940-11-24:LA:CHI",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1940,
-                "lastSeason": 1941,
-                "years": "1940–1941",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1943-10-03:CHI:DET",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1943,
-                "lastSeason": 1943,
-                "years": "1943",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1956-10-07:CHI:GB",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1956,
-                "lastSeason": 1956,
-                "years": "1956",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:archive:1962-12-09:LA:CHI",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1962,
-                "lastSeason": 1963,
-                "years": "1962–1963",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CHI:wins:2006_01_CHI_GB",
-                "name": "Bears",
-                "teams": [
-                  "CHI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2006,
-                "lastSeason": 2006,
-                "years": "2006",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CIN:wins:archive:1973-11-11:CIN:BUF",
-                "name": "Bengals",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1973,
-                "lastSeason": 1974,
-                "years": "1973–1974",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CIN:wins:2024_14_CIN_DAL",
-                "name": "Bengals",
-                "teams": [
-                  "CIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2024,
-                "lastSeason": 2025,
-                "years": "2024–2025",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:BUF:wins:archive:1988-10-09:IND:BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1988,
-                "lastSeason": 1988,
-                "years": "1988",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:BUF:wins:2022_11_CLE_BUF",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:BUF:wins:2024_06_BUF_NYJ",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2024,
-                "lastSeason": 2024,
-                "years": "2024",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:BUF:wins:2026_05_BUF_LA",
-                "name": "Bills",
-                "teams": [
-                  "BUF"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2026,
-                "lastSeason": 2026,
-                "years": "2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CLE:wins:archive:1946-09-06:historical:MSA:CLE",
-                "name": "Browns",
-                "teams": [
-                  "CLE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1946,
-                "lastSeason": 1946,
-                "years": "1946",
-                "active": false,
-                "lowerBound": true
-              },
-              {
-                "id": "overall:CLE:wins:archive:1962-12-15:CLE:SF",
-                "name": "Browns",
-                "teams": [
-                  "CLE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1962,
-                "lastSeason": 1963,
-                "years": "1962–1963",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:ARI:wins:archive:1974-09-15:PHI:ARI",
-                "name": "Cardinals",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1974,
-                "lastSeason": 1974,
-                "years": "1974",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:ARI:wins:2021_01_ARI_TEN",
-                "name": "Cardinals",
-                "teams": [
-                  "ARI"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LAC:wins:archive:1965-12-04:NYJ:LAC",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1965,
-                "lastSeason": 1966,
-                "years": "1965–1966",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LAC:wins:archive:1995-11-27:LV:LAC",
-                "name": "Chargers",
-                "teams": [
-                  "LAC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1995,
-                "lastSeason": 1996,
-                "years": "1995–1996",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:KC:wins:archive:1968-11-10:KC:CIN",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1968,
-                "lastSeason": 1969,
-                "years": "1968–1969",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:KC:wins:archive:1969-10-05:KC:DEN",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1969,
-                "lastSeason": 1969,
-                "years": "1969",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:KC:wins:archive:1995-10-01:KC:ARI",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1995,
-                "lastSeason": 1995,
-                "years": "1995",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:KC:wins:archive:1997-11-16:DEN:KC",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1997,
-                "lastSeason": 1998,
-                "years": "1997–1998",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:KC:wins:2016_16_DEN_KC",
-                "name": "Chiefs",
-                "teams": [
-                  "KC"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:IND:wins:archive:1959-11-15:IND:GB",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1959,
-                "lastSeason": 1960,
-                "years": "1959–1960",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:IND:wins:archive:1967-10-29:IND:WAS",
-                "name": "Colts",
-                "teams": [
-                  "IND"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1967,
-                "lastSeason": 1967,
-                "years": "1967",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:WAS:wins:archive:1940-09-15:historical:BKN:WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1940,
-                "lastSeason": 1940,
-                "years": "1940",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:WAS:wins:archive:1970-12-13:PHI:WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1970,
-                "lastSeason": 1971,
-                "years": "1970–1971",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:WAS:wins:archive:1981-12-06:PHI:WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1981,
-                "lastSeason": 1982,
-                "years": "1981–1982",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:WAS:wins:archive:1996-09-08:CHI:WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1996,
-                "lastSeason": 1996,
-                "years": "1996",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:WAS:wins:2012_11_PHI_WAS",
-                "name": "Commanders",
-                "teams": [
-                  "WAS"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1965-12-05:DAL:PHI",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1965,
-                "lastSeason": 1966,
-                "years": "1965–1966",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1970-11-22:DAL:WAS",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1970,
-                "lastSeason": 1971,
-                "years": "1970–1971",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1975-12-13:WAS:DAL",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1975,
-                "lastSeason": 1976,
-                "years": "1975–1976",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1983-09-05:DAL:WAS",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1983,
-                "lastSeason": 1983,
-                "years": "1983",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1993-09-19:DAL:ARI",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1993,
-                "lastSeason": 1993,
-                "years": "1993",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:archive:1993-12-06:PHI:DAL",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1993,
-                "lastSeason": 1994,
-                "years": "1993–1994",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DAL:wins:2007_07_MIN_DAL",
-                "name": "Cowboys",
-                "teams": [
-                  "DAL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2007,
-                "lastSeason": 2007,
-                "years": "2007",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIA:wins:archive:1975-09-28:MIA:NE",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1975,
-                "lastSeason": 1975,
-                "years": "1975",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIA:wins:archive:1978-12-03:MIA:WAS",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1978,
-                "lastSeason": 1979,
-                "years": "1978–1979",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIA:wins:archive:1981-11-30:PHI:MIA",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1981,
-                "lastSeason": 1982,
-                "years": "1981–1982",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIA:wins:archive:1985-11-10:NYJ:MIA",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1985,
-                "lastSeason": 1985,
-                "years": "1985",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIA:wins:2021_09_HOU_MIA",
-                "name": "Dolphins",
-                "teams": [
-                  "MIA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:ATL:wins:archive:1973-10-14:CHI:ATL",
-                "name": "Falcons",
-                "teams": [
-                  "ATL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1973,
-                "lastSeason": 1973,
-                "years": "1973",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:ATL:wins:2016_14_ATL_LA",
-                "name": "Falcons",
-                "teams": [
-                  "ATL"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1925-11-01:historical:CIB:NYG",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1925,
-                "lastSeason": 1925,
-                "years": "1925",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1929-11-28:NYG:historical:SIS",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1929,
-                "lastSeason": 1930,
-                "years": "1929–1930",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1933-11-05:DET:NYG",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1933,
-                "lastSeason": 1933,
-                "years": "1933",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1943-11-21:ARI:NYG",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1943,
-                "lastSeason": 1944,
-                "years": "1943–1944",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1951-11-25:NYG:ARI",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1951,
-                "lastSeason": 1952,
-                "years": "1951–1952",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:archive:1959-11-22:NYG:ARI",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1959,
-                "lastSeason": 1960,
-                "years": "1959–1960",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NYG:wins:2008_07_SF_NYG",
-                "name": "Giants",
-                "teams": [
-                  "NYG"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2008,
-                "lastSeason": 2008,
-                "years": "2008",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:JAX:wins:archive:1997-12-14:JAX:BUF",
-                "name": "Jaguars",
-                "teams": [
-                  "JAX"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1997,
-                "lastSeason": 1998,
-                "years": "1997–1998",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DET:wins:archive:1962-10-28:CHI:DET",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1962,
-                "lastSeason": 1962,
-                "years": "1962",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:DET:wins:archive:1995-11-12:TB:DET",
-                "name": "Lions",
-                "teams": [
-                  "DET"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1995,
-                "lastSeason": 1995,
-                "years": "1995",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:archive:1932-10-02:NYG:GB",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1932,
-                "lastSeason": 1932,
-                "years": "1932",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:archive:1937-10-03:DET:GB",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1937,
-                "lastSeason": 1937,
-                "years": "1937",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:2000_14_GB_CHI",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2000,
-                "lastSeason": 2001,
-                "years": "2000–2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:2002_03_GB_DET",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2002,
-                "lastSeason": 2002,
-                "years": "2002",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:2016_12_GB_PHI",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2016,
-                "lastSeason": 2017,
-                "years": "2016–2017",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:GB:wins:2021_02_DET_GB",
-                "name": "Packers",
-                "teams": [
-                  "GB"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CAR:wins:archive:1996-11-10:NYG:CAR",
-                "name": "Panthers",
-                "teams": [
-                  "CAR"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1996,
-                "lastSeason": 1996,
-                "years": "1996",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:CAR:wins:2002_16_CHI_CAR",
-                "name": "Panthers",
-                "teams": [
-                  "CAR"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2002,
-                "lastSeason": 2003,
-                "years": "2002–2003",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:archive:1976-11-07:BUF:NE",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1976,
-                "lastSeason": 1977,
-                "years": "1976–1977",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:archive:1978-09-24:NE:LV",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1978,
-                "lastSeason": 1978,
-                "years": "1978",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:archive:1986-10-19:NE:PIT",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1986,
-                "lastSeason": 1986,
-                "years": "1986",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:2012_07_NYJ_NE",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2012,
-                "lastSeason": 2012,
-                "years": "2012",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:2014_05_CIN_NE",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2014,
-                "lastSeason": 2014,
-                "years": "2014",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:2016_11_NE_SF",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2016,
-                "lastSeason": 2016,
-                "years": "2016",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NE:wins:2021_07_NYJ_NE",
-                "name": "Patriots",
-                "teams": [
-                  "NE"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2021,
-                "lastSeason": 2021,
-                "years": "2021",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LV:wins:archive:1975-10-26:LAC:LV",
-                "name": "Raiders",
-                "teams": [
-                  "LV"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1975,
-                "lastSeason": 1975,
-                "years": "1975",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:archive:1975-11-16:LA:ATL",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1975,
-                "lastSeason": 1976,
-                "years": "1975–1976",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:archive:1978-09-03:LA:PHI",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1978,
-                "lastSeason": 1978,
-                "years": "1978",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:archive:1985-09-08:DEN:LA",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1985,
-                "lastSeason": 1985,
-                "years": "1985",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:1999_10_CAR_STL",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1999,
-                "lastSeason": 1999,
-                "years": "1999",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:2000_17_STL_NO",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2000,
-                "lastSeason": 2001,
-                "years": "2000–2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:LA:wins:2003_10_BAL_STL",
-                "name": "Rams",
-                "teams": [
-                  "LA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2003,
-                "lastSeason": 2003,
-                "years": "2003",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:NO:wins:archive:1988-09-11:NO:ATL",
-                "name": "Saints",
-                "teams": [
-                  "NO"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1988,
-                "lastSeason": 1988,
-                "years": "1988",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:SEA:wins:2013_06_TEN_SEA",
-                "name": "Seahawks",
-                "teams": [
-                  "SEA"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2013,
-                "lastSeason": 2013,
-                "years": "2013",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:PIT:wins:archive:1983-10-02:TEN:PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1983,
-                "lastSeason": 1983,
-                "years": "1983",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:PIT:wins:archive:1994-11-06:PIT:TEN",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1994,
-                "lastSeason": 1994,
-                "years": "1994",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:PIT:wins:2001_09_PIT_CLE",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2001,
-                "lastSeason": 2001,
-                "years": "2001",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:HOU:wins:2011_07_HOU_TEN",
-                "name": "Texans",
-                "teams": [
-                  "HOU"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2011,
-                "lastSeason": 2011,
-                "years": "2011",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:TEN:wins:archive:1962-11-04:TEN:KC",
-                "name": "Titans",
-                "teams": [
-                  "TEN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1962,
-                "lastSeason": 1962,
-                "years": "1962",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIN:wins:archive:1970-10-11:MIN:CHI",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1970,
-                "lastSeason": 1970,
-                "years": "1970",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIN:wins:archive:1973-12-08:MIN:GB",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 1973,
-                "lastSeason": 1974,
-                "years": "1973–1974",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIN:wins:2008_17_NYG_MIN",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2008,
-                "lastSeason": 2009,
-                "years": "2008–2009",
-                "active": false,
-                "lowerBound": false
-              },
-              {
-                "id": "overall:MIN:wins:2022_03_DET_MIN",
-                "name": "Vikings",
-                "teams": [
-                  "MIN"
-                ],
-                "opponent": null,
-                "length": 7,
-                "firstSeason": 2022,
-                "lastSeason": 2022,
-                "years": "2022",
-                "active": false,
-                "lowerBound": false
-              }
-            ]
-          },
-          "next": {
-            "rank": 197,
-            "tied": true
-          },
-          "lowerBound": false
-        },
-        "franchiseTeam": "DEN"
-      }
-    },
     {
       "id": "matchup-away:MIA:NYJ:winless:2026_12_NYJ_MIA",
       "category": "matchup",
@@ -13997,7 +11078,7 @@
           ],
           "nextHigher": {
             "length": 6,
-            "rank": 91,
+            "rank": 92,
             "holders": [
               {
                 "id": "home:SF:wins:2001_04_CAR_SF",
@@ -14644,20 +11725,6 @@
                 "lowerBound": false
               },
               {
-                "id": "home:PIT:wins:2025_15_MIA_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 6,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
                 "id": "home:HOU:wins:2015_17_JAX_HOU",
                 "name": "Texans",
                 "teams": [
@@ -14744,7 +11811,7 @@
             ]
           },
           "next": {
-            "rank": 91,
+            "rank": 92,
             "tied": true
           },
           "lowerBound": false
@@ -14863,7 +11930,7 @@
           ],
           "nextHigher": {
             "length": 6,
-            "rank": 91,
+            "rank": 92,
             "holders": [
               {
                 "id": "home:SF:wins:2001_04_CAR_SF",
@@ -15510,20 +12577,6 @@
                 "lowerBound": false
               },
               {
-                "id": "home:PIT:wins:2025_15_MIA_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 6,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
                 "id": "home:HOU:wins:2015_17_JAX_HOU",
                 "name": "Texans",
                 "teams": [
@@ -15610,7 +12663,7 @@
             ]
           },
           "next": {
-            "rank": 91,
+            "rank": 92,
             "tied": true
           },
           "lowerBound": false
@@ -16180,6 +13233,1433 @@
     }
   ],
   "ended": [
+    {
+      "id": "overall:DEN:wins:2026_12_DEN_PIT",
+      "category": "team",
+      "team": "DEN",
+      "opponent": "PIT",
+      "href": "/nfl/droughts.html#win-streaks",
+      "detail": "Run began 2026-10-11.",
+      "sourceThrough": "2026-11-27",
+      "kind": "streak",
+      "value": 6,
+      "unit": "games",
+      "title": "Broncos: 6 straight wins",
+      "action": "The Broncos lost, ending the run.",
+      "game": "2026_12_DEN_PIT",
+      "date": "2026-11-27",
+      "season": 2026,
+      "week": 12,
+      "gameType": "REG",
+      "status": "ended",
+      "result": "Broncos 5, Steelers 27",
+      "leaderboard": {
+        "label": "Overall runs",
+        "franchise": {
+          "scope": "DEN",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 9,
+          "tied": true,
+          "record": 17,
+          "recordHolders": [
+            {
+              "id": "overall:DEN:wins:2012_06_DEN_SD",
+              "name": "Broncos",
+              "teams": [
+                "DEN"
+              ],
+              "opponent": null,
+              "length": 17,
+              "firstSeason": 2012,
+              "lastSeason": 2013,
+              "years": "2012–2013",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 8,
+            "rank": 6,
+            "holders": [
+              {
+                "id": "overall:DEN:wins:archive:1976-12-05:KC:DEN",
+                "name": "Broncos",
+                "teams": [
+                  "DEN"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 1976,
+                "lastSeason": 1977,
+                "years": "1976–1977",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DEN:wins:archive:1985-12-14:KC:DEN",
+                "name": "Broncos",
+                "teams": [
+                  "DEN"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 1985,
+                "lastSeason": 1986,
+                "years": "1985–1986",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DEN:wins:2014_17_OAK_DEN",
+                "name": "Broncos",
+                "teams": [
+                  "DEN"
+                ],
+                "opponent": null,
+                "length": 8,
+                "firstSeason": 2014,
+                "lastSeason": 2015,
+                "years": "2014–2015",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 9,
+            "tied": false
+          },
+          "lowerBound": false
+        },
+        "overall": {
+          "scope": "Current franchises",
+          "coverage": "1920+ · today’s 32 franchises",
+          "partial": false,
+          "length": 6,
+          "rank": 289,
+          "tied": true,
+          "record": 23,
+          "recordHolders": [
+            {
+              "id": "overall:IND:wins:2008_09_NE_IND",
+              "name": "Colts",
+              "teams": [
+                "IND"
+              ],
+              "opponent": null,
+              "length": 23,
+              "firstSeason": 2008,
+              "lastSeason": 2009,
+              "years": "2008–2009",
+              "active": false,
+              "lowerBound": false
+            }
+          ],
+          "nextHigher": {
+            "length": 7,
+            "rank": 197,
+            "holders": [
+              {
+                "id": "overall:SF:wins:archive:1981-09-27:NO:SF",
+                "name": "49ers",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1981,
+                "lastSeason": 1981,
+                "years": "1981",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:SF:wins:archive:1987-09-20:SF:CIN",
+                "name": "49ers",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1987,
+                "lastSeason": 1987,
+                "years": "1987",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:SF:wins:archive:1991-11-17:ARI:SF",
+                "name": "49ers",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1991,
+                "lastSeason": 1992,
+                "years": "1991–1992",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:SF:wins:2013_12_SF_WAS",
+                "name": "49ers",
+                "teams": [
+                  "SF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2013,
+                "lastSeason": 2014,
+                "years": "2013–2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1935-12-08:CHI:ARI",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1935,
+                "lastSeason": 1936,
+                "years": "1935–1936",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1937-11-14:historical:BKN:CHI",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1937,
+                "lastSeason": 1938,
+                "years": "1937–1938",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1940-11-24:LA:CHI",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1940,
+                "lastSeason": 1941,
+                "years": "1940–1941",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1943-10-03:CHI:DET",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1943,
+                "lastSeason": 1943,
+                "years": "1943",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1956-10-07:CHI:GB",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1956,
+                "lastSeason": 1956,
+                "years": "1956",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:archive:1962-12-09:LA:CHI",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1962,
+                "lastSeason": 1963,
+                "years": "1962–1963",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CHI:wins:2006_01_CHI_GB",
+                "name": "Bears",
+                "teams": [
+                  "CHI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2006,
+                "lastSeason": 2006,
+                "years": "2006",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CIN:wins:archive:1973-11-11:CIN:BUF",
+                "name": "Bengals",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1973,
+                "lastSeason": 1974,
+                "years": "1973–1974",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CIN:wins:2024_14_CIN_DAL",
+                "name": "Bengals",
+                "teams": [
+                  "CIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2024,
+                "lastSeason": 2025,
+                "years": "2024–2025",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:BUF:wins:archive:1988-10-09:IND:BUF",
+                "name": "Bills",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1988,
+                "lastSeason": 1988,
+                "years": "1988",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:BUF:wins:2022_11_CLE_BUF",
+                "name": "Bills",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:BUF:wins:2024_06_BUF_NYJ",
+                "name": "Bills",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2024,
+                "lastSeason": 2024,
+                "years": "2024",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:BUF:wins:2026_05_BUF_LA",
+                "name": "Bills",
+                "teams": [
+                  "BUF"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2026,
+                "lastSeason": 2026,
+                "years": "2026",
+                "active": true,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CLE:wins:archive:1946-09-06:historical:MSA:CLE",
+                "name": "Browns",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1946,
+                "lastSeason": 1946,
+                "years": "1946",
+                "active": false,
+                "lowerBound": true
+              },
+              {
+                "id": "overall:CLE:wins:archive:1962-12-15:CLE:SF",
+                "name": "Browns",
+                "teams": [
+                  "CLE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1962,
+                "lastSeason": 1963,
+                "years": "1962–1963",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:ARI:wins:archive:1974-09-15:PHI:ARI",
+                "name": "Cardinals",
+                "teams": [
+                  "ARI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1974,
+                "lastSeason": 1974,
+                "years": "1974",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:ARI:wins:2021_01_ARI_TEN",
+                "name": "Cardinals",
+                "teams": [
+                  "ARI"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LAC:wins:archive:1965-12-04:NYJ:LAC",
+                "name": "Chargers",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1965,
+                "lastSeason": 1966,
+                "years": "1965–1966",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LAC:wins:archive:1995-11-27:LV:LAC",
+                "name": "Chargers",
+                "teams": [
+                  "LAC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1995,
+                "lastSeason": 1996,
+                "years": "1995–1996",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:KC:wins:archive:1968-11-10:KC:CIN",
+                "name": "Chiefs",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1968,
+                "lastSeason": 1969,
+                "years": "1968–1969",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:KC:wins:archive:1969-10-05:KC:DEN",
+                "name": "Chiefs",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1969,
+                "lastSeason": 1969,
+                "years": "1969",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:KC:wins:archive:1995-10-01:KC:ARI",
+                "name": "Chiefs",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1995,
+                "lastSeason": 1995,
+                "years": "1995",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:KC:wins:archive:1997-11-16:DEN:KC",
+                "name": "Chiefs",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1997,
+                "lastSeason": 1998,
+                "years": "1997–1998",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:KC:wins:2016_16_DEN_KC",
+                "name": "Chiefs",
+                "teams": [
+                  "KC"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2017,
+                "years": "2016–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:IND:wins:archive:1959-11-15:IND:GB",
+                "name": "Colts",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1959,
+                "lastSeason": 1960,
+                "years": "1959–1960",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:IND:wins:archive:1967-10-29:IND:WAS",
+                "name": "Colts",
+                "teams": [
+                  "IND"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1967,
+                "lastSeason": 1967,
+                "years": "1967",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:WAS:wins:archive:1940-09-15:historical:BKN:WAS",
+                "name": "Commanders",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1940,
+                "lastSeason": 1940,
+                "years": "1940",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:WAS:wins:archive:1970-12-13:PHI:WAS",
+                "name": "Commanders",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1970,
+                "lastSeason": 1971,
+                "years": "1970–1971",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:WAS:wins:archive:1981-12-06:PHI:WAS",
+                "name": "Commanders",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1981,
+                "lastSeason": 1982,
+                "years": "1981–1982",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:WAS:wins:archive:1996-09-08:CHI:WAS",
+                "name": "Commanders",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1996,
+                "lastSeason": 1996,
+                "years": "1996",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:WAS:wins:2012_11_PHI_WAS",
+                "name": "Commanders",
+                "teams": [
+                  "WAS"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1965-12-05:DAL:PHI",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1965,
+                "lastSeason": 1966,
+                "years": "1965–1966",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1970-11-22:DAL:WAS",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1970,
+                "lastSeason": 1971,
+                "years": "1970–1971",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1975-12-13:WAS:DAL",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1975,
+                "lastSeason": 1976,
+                "years": "1975–1976",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1983-09-05:DAL:WAS",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1983,
+                "lastSeason": 1983,
+                "years": "1983",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1993-09-19:DAL:ARI",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1993,
+                "lastSeason": 1993,
+                "years": "1993",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:archive:1993-12-06:PHI:DAL",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1993,
+                "lastSeason": 1994,
+                "years": "1993–1994",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DAL:wins:2007_07_MIN_DAL",
+                "name": "Cowboys",
+                "teams": [
+                  "DAL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2007,
+                "lastSeason": 2007,
+                "years": "2007",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIA:wins:archive:1975-09-28:MIA:NE",
+                "name": "Dolphins",
+                "teams": [
+                  "MIA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1975,
+                "lastSeason": 1975,
+                "years": "1975",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIA:wins:archive:1978-12-03:MIA:WAS",
+                "name": "Dolphins",
+                "teams": [
+                  "MIA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1978,
+                "lastSeason": 1979,
+                "years": "1978–1979",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIA:wins:archive:1981-11-30:PHI:MIA",
+                "name": "Dolphins",
+                "teams": [
+                  "MIA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1981,
+                "lastSeason": 1982,
+                "years": "1981–1982",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIA:wins:archive:1985-11-10:NYJ:MIA",
+                "name": "Dolphins",
+                "teams": [
+                  "MIA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1985,
+                "lastSeason": 1985,
+                "years": "1985",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIA:wins:2021_09_HOU_MIA",
+                "name": "Dolphins",
+                "teams": [
+                  "MIA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:ATL:wins:archive:1973-10-14:CHI:ATL",
+                "name": "Falcons",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1973,
+                "lastSeason": 1973,
+                "years": "1973",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:ATL:wins:2016_14_ATL_LA",
+                "name": "Falcons",
+                "teams": [
+                  "ATL"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2017,
+                "years": "2016–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1925-11-01:historical:CIB:NYG",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1925,
+                "lastSeason": 1925,
+                "years": "1925",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1929-11-28:NYG:historical:SIS",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1929,
+                "lastSeason": 1930,
+                "years": "1929–1930",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1933-11-05:DET:NYG",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1933,
+                "lastSeason": 1933,
+                "years": "1933",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1943-11-21:ARI:NYG",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1943,
+                "lastSeason": 1944,
+                "years": "1943–1944",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1951-11-25:NYG:ARI",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1951,
+                "lastSeason": 1952,
+                "years": "1951–1952",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:archive:1959-11-22:NYG:ARI",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1959,
+                "lastSeason": 1960,
+                "years": "1959–1960",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NYG:wins:2008_07_SF_NYG",
+                "name": "Giants",
+                "teams": [
+                  "NYG"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2008,
+                "lastSeason": 2008,
+                "years": "2008",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:JAX:wins:archive:1997-12-14:JAX:BUF",
+                "name": "Jaguars",
+                "teams": [
+                  "JAX"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1997,
+                "lastSeason": 1998,
+                "years": "1997–1998",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DET:wins:archive:1962-10-28:CHI:DET",
+                "name": "Lions",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1962,
+                "lastSeason": 1962,
+                "years": "1962",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:DET:wins:archive:1995-11-12:TB:DET",
+                "name": "Lions",
+                "teams": [
+                  "DET"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1995,
+                "lastSeason": 1995,
+                "years": "1995",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:archive:1932-10-02:NYG:GB",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1932,
+                "lastSeason": 1932,
+                "years": "1932",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:archive:1937-10-03:DET:GB",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1937,
+                "lastSeason": 1937,
+                "years": "1937",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:2000_14_GB_CHI",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2000,
+                "lastSeason": 2001,
+                "years": "2000–2001",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:2002_03_GB_DET",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2002,
+                "lastSeason": 2002,
+                "years": "2002",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:2016_12_GB_PHI",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2017,
+                "years": "2016–2017",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:GB:wins:2021_02_DET_GB",
+                "name": "Packers",
+                "teams": [
+                  "GB"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CAR:wins:archive:1996-11-10:NYG:CAR",
+                "name": "Panthers",
+                "teams": [
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1996,
+                "lastSeason": 1996,
+                "years": "1996",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:CAR:wins:2002_16_CHI_CAR",
+                "name": "Panthers",
+                "teams": [
+                  "CAR"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2002,
+                "lastSeason": 2003,
+                "years": "2002–2003",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:archive:1976-11-07:BUF:NE",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1976,
+                "lastSeason": 1977,
+                "years": "1976–1977",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:archive:1978-09-24:NE:LV",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1978,
+                "lastSeason": 1978,
+                "years": "1978",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:archive:1986-10-19:NE:PIT",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1986,
+                "lastSeason": 1986,
+                "years": "1986",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:2012_07_NYJ_NE",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2012,
+                "lastSeason": 2012,
+                "years": "2012",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:2014_05_CIN_NE",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2014,
+                "lastSeason": 2014,
+                "years": "2014",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:2016_11_NE_SF",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2016,
+                "lastSeason": 2016,
+                "years": "2016",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NE:wins:2021_07_NYJ_NE",
+                "name": "Patriots",
+                "teams": [
+                  "NE"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2021,
+                "lastSeason": 2021,
+                "years": "2021",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LV:wins:archive:1975-10-26:LAC:LV",
+                "name": "Raiders",
+                "teams": [
+                  "LV"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1975,
+                "lastSeason": 1975,
+                "years": "1975",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:archive:1975-11-16:LA:ATL",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1975,
+                "lastSeason": 1976,
+                "years": "1975–1976",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:archive:1978-09-03:LA:PHI",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1978,
+                "lastSeason": 1978,
+                "years": "1978",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:archive:1985-09-08:DEN:LA",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1985,
+                "lastSeason": 1985,
+                "years": "1985",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:1999_10_CAR_STL",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1999,
+                "lastSeason": 1999,
+                "years": "1999",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:2000_17_STL_NO",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2000,
+                "lastSeason": 2001,
+                "years": "2000–2001",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:LA:wins:2003_10_BAL_STL",
+                "name": "Rams",
+                "teams": [
+                  "LA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2003,
+                "lastSeason": 2003,
+                "years": "2003",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:NO:wins:archive:1988-09-11:NO:ATL",
+                "name": "Saints",
+                "teams": [
+                  "NO"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1988,
+                "lastSeason": 1988,
+                "years": "1988",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:SEA:wins:2013_06_TEN_SEA",
+                "name": "Seahawks",
+                "teams": [
+                  "SEA"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2013,
+                "lastSeason": 2013,
+                "years": "2013",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:PIT:wins:archive:1983-10-02:TEN:PIT",
+                "name": "Steelers",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1983,
+                "lastSeason": 1983,
+                "years": "1983",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:PIT:wins:archive:1994-11-06:PIT:TEN",
+                "name": "Steelers",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1994,
+                "lastSeason": 1994,
+                "years": "1994",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:PIT:wins:2001_09_PIT_CLE",
+                "name": "Steelers",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2001,
+                "lastSeason": 2001,
+                "years": "2001",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:HOU:wins:2011_07_HOU_TEN",
+                "name": "Texans",
+                "teams": [
+                  "HOU"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2011,
+                "lastSeason": 2011,
+                "years": "2011",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:TEN:wins:archive:1962-11-04:TEN:KC",
+                "name": "Titans",
+                "teams": [
+                  "TEN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1962,
+                "lastSeason": 1962,
+                "years": "1962",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIN:wins:archive:1970-10-11:MIN:CHI",
+                "name": "Vikings",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1970,
+                "lastSeason": 1970,
+                "years": "1970",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIN:wins:archive:1973-12-08:MIN:GB",
+                "name": "Vikings",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 1973,
+                "lastSeason": 1974,
+                "years": "1973–1974",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIN:wins:2008_17_NYG_MIN",
+                "name": "Vikings",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2008,
+                "lastSeason": 2009,
+                "years": "2008–2009",
+                "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "overall:MIN:wins:2022_03_DET_MIN",
+                "name": "Vikings",
+                "teams": [
+                  "MIN"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2022,
+                "lastSeason": 2022,
+                "years": "2022",
+                "active": false,
+                "lowerBound": false
+              }
+            ]
+          },
+          "next": {
+            "rank": 197,
+            "tied": true
+          },
+          "lowerBound": false
+        },
+        "franchiseTeam": "DEN"
+      }
+    },
     {
       "id": "overall:DET:wins:2026_12_CHI_DET",
       "category": "team",
@@ -17691,7 +16171,7 @@
           ],
           "nextHigher": {
             "length": 6,
-            "rank": 91,
+            "rank": 92,
             "holders": [
               {
                 "id": "home:SF:wins:2001_04_CAR_SF",
@@ -18338,20 +16818,6 @@
                 "lowerBound": false
               },
               {
-                "id": "home:PIT:wins:2025_15_MIA_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 6,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
                 "id": "home:HOU:wins:2015_17_JAX_HOU",
                 "name": "Texans",
                 "teams": [
@@ -18438,7 +16904,7 @@
             ]
           },
           "next": {
-            "rank": 91,
+            "rank": 92,
             "tied": true
           },
           "lowerBound": false
@@ -19061,7 +17527,7 @@
                 "firstSeason": 2026,
                 "lastSeason": 2026,
                 "years": "2026",
-                "active": true,
+                "active": false,
                 "lowerBound": false
               },
               {
@@ -30666,7 +29132,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 6,
-          "rank": 91,
+          "rank": 92,
           "tied": true,
           "record": 20,
           "recordHolders": [
@@ -31065,6 +29531,20 @@
                 "lastSeason": 2016,
                 "years": "2015–2016",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "home:PIT:wins:2025_15_MIA_PIT",
+                "name": "Steelers",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -38116,7 +36596,7 @@
                 "firstSeason": 2026,
                 "lastSeason": 2026,
                 "years": "2026",
-                "active": true,
+                "active": false,
                 "lowerBound": false
               },
               {
@@ -41834,7 +40314,7 @@
           "coverage": "1999+ · today’s 32 franchises",
           "partial": false,
           "length": 6,
-          "rank": 91,
+          "rank": 92,
           "tied": true,
           "record": 20,
           "recordHolders": [
@@ -42233,6 +40713,20 @@
                 "lastSeason": 2016,
                 "years": "2015–2016",
                 "active": false,
+                "lowerBound": false
+              },
+              {
+                "id": "home:PIT:wins:2025_15_MIA_PIT",
+                "name": "Steelers",
+                "teams": [
+                  "PIT"
+                ],
+                "opponent": null,
+                "length": 7,
+                "firstSeason": 2025,
+                "lastSeason": 2026,
+                "years": "2025–2026",
+                "active": true,
                 "lowerBound": false
               },
               {
@@ -58226,7 +56720,7 @@
           ],
           "nextHigher": {
             "length": 6,
-            "rank": 91,
+            "rank": 92,
             "holders": [
               {
                 "id": "home:SF:wins:2001_04_CAR_SF",
@@ -58873,20 +57367,6 @@
                 "lowerBound": false
               },
               {
-                "id": "home:PIT:wins:2025_15_MIA_PIT",
-                "name": "Steelers",
-                "teams": [
-                  "PIT"
-                ],
-                "opponent": null,
-                "length": 6,
-                "firstSeason": 2025,
-                "lastSeason": 2026,
-                "years": "2025–2026",
-                "active": true,
-                "lowerBound": false
-              },
-              {
                 "id": "home:HOU:wins:2015_17_JAX_HOU",
                 "name": "Texans",
                 "teams": [
@@ -58973,7 +57453,7 @@
             ]
           },
           "next": {
-            "rank": 91,
+            "rank": 92,
             "tied": true
           },
           "lowerBound": false
@@ -64286,9 +62766,9 @@
       "date": "2026-11-27",
       "away": "DEN",
       "home": "PIT",
-      "awayScore": null,
-      "homeScore": null,
-      "completed": false,
+      "awayScore": 5,
+      "homeScore": 27,
+      "completed": true,
       "location": "Home",
       "kickoff": "15:00"
     },
@@ -76813,9 +75293,8 @@
       "start": "2026-11-25",
       "end": "2026-11-30",
       "totalGames": 16,
-      "completedGames": 4,
+      "completedGames": 5,
       "pendingGames": [
-        "2026_12_DEN_PIT",
         "2026_12_ATL_MIN",
         "2026_12_BAL_HOU",
         "2026_12_LV_CLE",
@@ -76829,13 +75308,18 @@
         "2026_12_CAR_TB"
       ],
       "awaitingFeeds": {
-        "qbs": [],
-        "receiving": [],
+        "qbs": [
+          "2026_12_DEN_PIT"
+        ],
+        "receiving": [
+          "2026_12_DEN_PIT"
+        ],
         "kicking": [
           "2026_12_GB_LA",
           "2026_12_CHI_DET",
           "2026_12_KC_BUF",
-          "2026_12_PHI_DAL"
+          "2026_12_PHI_DAL",
+          "2026_12_DEN_PIT"
         ]
       },
       "events": [
@@ -77164,78 +75648,12 @@
           "sourceThrough": "2026-11-26"
         },
         {
-          "id": "00-0035640:2019_17_SF_SEA:2026_12_DEN_PIT",
-          "category": "receiving",
-          "kind": "streak",
-          "team": "PIT",
-          "title": "DK Metcalf: 107 straight appearances with a catch",
-          "detail": "Run began 2019-12-29. Last verified 2026-11-22.",
-          "unit": "games",
-          "href": "/nfl/receiving-streaks.html",
-          "game": "2026_12_DEN_PIT",
-          "date": "2026-11-27",
-          "season": 2026,
-          "week": 12,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 107,
-          "after": null,
-          "value": 107,
-          "action": "A catch in his next appearance makes it 108. A zero-catch appearance ends it; missed games do not.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-26"
-        },
-        {
-          "id": "00-0036252:2020_01_IND_JAX:2026_12_DEN_PIT",
-          "category": "receiving",
-          "kind": "streak",
-          "team": "PIT",
-          "title": "Michael Pittman: 98 straight appearances with a catch",
-          "detail": "Run began 2020-09-13. Last verified 2026-10-01.",
-          "unit": "games",
-          "href": "/nfl/receiving-streaks.html",
-          "game": "2026_12_DEN_PIT",
-          "date": "2026-11-27",
-          "season": 2026,
-          "week": 12,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 98,
-          "after": null,
-          "value": 98,
-          "action": "A catch in his next appearance makes it 99. A zero-catch appearance ends it; missed games do not.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-26"
-        },
-        {
-          "id": "00-0039732:2026_12_DEN_PIT",
-          "category": "qb",
-          "kind": "streak",
-          "team": "DEN",
-          "title": "Bo Nix: 44 consecutive starts for his team",
-          "detail": "Run began 2024-09-08. Last verified 2026-11-22.",
-          "unit": "starts",
-          "href": "/nfl/QBs.html#starts",
-          "game": "2026_12_DEN_PIT",
-          "date": "2026-11-27",
-          "season": 2026,
-          "week": 12,
-          "gameType": "REG",
-          "status": "pending",
-          "before": 44,
-          "after": null,
-          "value": 44,
-          "action": "Starting this game makes it 45. A different starting QB ends the run.",
-          "newlyNoteworthy": false,
-          "sourceThrough": "2026-11-26"
-        },
-        {
           "id": "home:PIT:wins:2026_12_DEN_PIT",
           "category": "team",
           "kind": "streak",
           "team": "PIT",
           "opponent": "DEN",
-          "title": "Steelers: 6 straight wins at home",
+          "title": "Steelers: 7 straight wins at home",
           "detail": "Run began 2025-12-15.",
           "unit": "games",
           "href": "/nfl/what-to-watch.html#method",
@@ -77244,12 +75662,13 @@
           "season": 2026,
           "week": 12,
           "gameType": "REG",
-          "status": "pending",
+          "status": "continued",
           "before": 6,
-          "after": null,
-          "value": 6,
-          "action": "A win makes it 7; a loss or tie ends the run.",
-          "newlyNoteworthy": false
+          "after": 7,
+          "value": 7,
+          "action": "A win extended the streak: 6 → 7 wins.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-27"
         },
         {
           "id": "overall:DEN:wins:2026_12_DEN_PIT",
@@ -77266,12 +75685,13 @@
           "season": 2026,
           "week": 12,
           "gameType": "REG",
-          "status": "pending",
+          "status": "ended",
           "before": 6,
-          "after": null,
+          "after": 6,
           "value": 6,
-          "action": "A win makes it 7; a loss or tie ends the run.",
-          "newlyNoteworthy": false
+          "action": "The Broncos lost, ending the run.",
+          "newlyNoteworthy": false,
+          "sourceThrough": "2026-11-27"
         },
         {
           "id": "00-0035229:2021_11_DET_CLE:2026_12_ATL_MIN",
@@ -78061,9 +76481,9 @@
         }
       ],
       "counts": {
-        "continued": 12,
-        "ended": 2,
-        "pending": 38
+        "continued": 13,
+        "ended": 3,
+        "pending": 33
       }
     }
   ],
@@ -78075,6 +76495,6 @@
     "receiving": "/data/receiving-streaks.json",
     "kicking": "/data/kicking.json"
   },
-  "sourceHash": "262546a11dbf18fd3af8b11b6d1e3f58edcbd9292373a7f0c6a8c92f1f85e12e",
-  "checkedAt": "2026-11-27T16:54:16.559Z"
+  "sourceHash": "411b62595458cec05789537b3a6ae553ed0f21b504f5d2e2993881022075a57b",
+  "checkedAt": "2026-11-28T07:31:24.664Z"
 }
